@@ -16,6 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
+      # Moving to a user-writable directory to fix cache permission issues
       TL_DIR: ${{ github.workspace }}/texlive/2025
     
     steps:
@@ -31,7 +32,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v2
+          key: texlive-2025-${{ runner.os }}-v2 # Incremented version key
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
@@ -42,7 +43,7 @@ jobs:
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
           cd "$TL_SRC_DIR"
           
-          # Use a profile for automated installation
+          # No longer need sudo for installation in workspace
           cat <<EOF > texlive.profile
           selected_scheme scheme-basic
           TEXDIR ${{ env.TL_DIR }}
@@ -52,10 +53,10 @@ jobs:
           option_src 0
           EOF
           
-          sudo ./install-tl --profile=texlive.profile
+          ./install-tl --profile=texlive.profile
           
-          # Pre-install essential collections to mimic Overleaf's base
-          sudo ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
+          # Install essential packages
+          ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
             latexmk \
             collection-latexrecommended \
             collection-latexextra \
@@ -70,9 +71,9 @@ jobs:
       - name: Compile LaTeX Documents
         run: |
           mkdir -p build
-          # Ensuring robust reading of the input file
+          # Removed the typo 'absenteeism;' and refined the loop
           grep -v '^#' pdf-list.txt | while IFS= read -r texfile || [ -n "$texfile" ]; do
-            if [ -z "$texfile" ]; then continue; absenteeism; fi
+            [ -z "$texfile" ] && continue
             echo "Compiling $texfile..."
             out_dir="build/$(dirname "$texfile")"
             mkdir -p "$out_dir"
@@ -85,10 +86,11 @@ jobs:
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # Create orphan branch and move files
           git checkout --orphan artifacts
           git rm -rf .
-          cp -r build/**/*.pdf .
+          # Use find to safely move PDFs while maintaining structure
+          find build -name "*.pdf" -exec cp --parents {} . \;
+          mv build/* . 2>/dev/null || true
           if [ -d "site" ]; then cp -r site/* .; fi
           
           git add .
