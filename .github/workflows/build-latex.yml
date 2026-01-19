@@ -43,10 +43,13 @@ jobs:
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
           cd "$TL_SRC_DIR"
           
-          # No longer need sudo for installation in workspace
+          # Fully encapsulated profile
           cat <<EOF > texlive.profile
           selected_scheme scheme-basic
           TEXDIR ${{ env.TL_DIR }}
+          TEXMFLOCAL ${{ env.TL_DIR }}/texmf-local
+          TEXMFSYSCONFIG ${{ env.TL_DIR }}/texmf-config
+          TEXMFSYSVAR ${{ env.TL_DIR }}/texmf-var
           TEXMFCONFIG ~/.texlive2025/texmf-config
           TEXMFVAR ~/.texlive2025/texmf-var
           option_doc 0
@@ -55,7 +58,6 @@ jobs:
           
           ./install-tl --profile=texlive.profile
           
-          # Install essential packages
           ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
             latexmk \
             collection-latexrecommended \
