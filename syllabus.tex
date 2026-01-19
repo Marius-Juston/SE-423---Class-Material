@@ -1,0 +1,324 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage[table]{xcolor}
+\usepackage[utf8]{inputenc}
+\usepackage{array}
+\usepackage{booktabs}
+\usepackage{calc}
+\usepackage{datetime2}
+\usepackage{enumitem}
+\usepackage{etoolbox}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{setspace}
+\usepackage{titlesec}
+
+\input{timline}
+
+% Custom column types for better alignment
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+% Reduce vertical space in itemize environments within tables
+\setlist[itemize]{nosep, leftmargin=*, before=\vspace{-0.5em}, after=\vspace{-0.1em}}
+
+
+\setstretch{1.15}
+
+\titleformat{\section}{\large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\normalsize\bfseries}{\thesubsection}{1em}{}
+
+\begin{document}
+
+\begin{center}
+    {\Large \textbf{SE 423 -- INTRODUCTION TO MECHATRONICS}}\\
+    \vspace{0.2cm}
+    Spring \Year\\
+    \vspace{0.2cm}
+    \url{http://coecsl.ece.illinois.edu/se423}
+\end{center}
+
+\vspace{0.5cm}
+
+\section*{Course Information}
+
+\subsection*{Lecture:} 
+Monday and Wednesday, 9:00 AM -- 9:50 AM, Room 1302 Siebel Center for Computer Science
+
+\subsection*{Laboratory Sections:}
+\begin{itemize}
+    \item Lab AB1: Wednesday, 3:00 PM -- 5:50 PM, Room 3080 ECEB
+    \item Lab AB2: Thursday, 2:00 PM -- 4:50 PM, Room 3080 ECEB
+    \item Lab AB3: Thursday, 9:00 AM -- 11:50 AM, Room 3080 ECEB
+\end{itemize}
+
+\section*{Instructional Staff}
+
+
+\subsection*{Instructor:} 
+Marius Juston \\
+Email: \href{mailto:mjuston2@illinois.edu}{mjuston2@illinois.edu}\\
+Phone: +1 (404)--583--9452\\
+Office Hours: Tuesday 3:00--5:00 PM in 3080 ECEB and by appointment
+
+\subsection*{Teaching Assistants:}
+\begin{itemize}
+    \item Dan Block\\
+    Email: \href{mailto:d-block@illinois.edu}{d-block@illinois.edu}\\
+    Office: 3005 ECE Building\\
+    Phone: +1 (217)--244--8573\\
+    Office Hours: By appointment
+
+    \item Sam Folorunsho\\
+    Email: \href{mailto:sof3@illinois.edu}{sof3@illinois.edu}\\
+    Office Hours: By appointment
+
+    \item Lakshmi Manoj\\
+    Email: \href{mailto:lmanoj2@illinois.edu}{lmanoj2@illinois.edu}\\
+    Office Hours: Tuesday 10:00 AM -- 12:00 PM in 3080 ECEB and by appointment
+\end{itemize}
+
+\section*{Textbook}
+
+Not required but recommended:
+\begin{itemize}
+    \item Herbert Schildt, \textit{Teach Yourself C}, Third Edition, Osborne McGraw-Hill, 1997.
+    \item Beej's Guide to C Programming. \href{https://beej.us/guide/bgc/}{https://beej.us/guide/bgc/}
+\end{itemize}
+Any equivalent C programming textbook is acceptable.
+
+\section*{Prerequisites}
+
+\textbf{SE 320} or an equivalent control systems course. Prior experience with C programming is highly recommended.
+
+\section*{References}
+
+\begin{itemize}
+    \item J. Edward Carryer, R. Matthew Ohline, and Thomas W. Kenny, \textit{Introduction to Mechatronic Design}, Prentice Hall, 2011.
+    \item David G. Alciatore and Michael Histand, \textit{Introduction to Mechatronics and Measurement Systems}, 2nd ed., McGraw-Hill, 2003.
+    \item Thomas J. Bress, \textit{Effective LabVIEW Programming}, NTS Press, 2013.
+    \item John Billingsley, \textit{Essentials of Mechatronics}, Wiley-Interscience, 2006.
+    \item Roland Siegwart and Illah R. Nourbakhsh, \textit{Introduction to Autonomous Mobile Robots}, MIT Press, 2004.
+    \item Gene F. Franklin, J. David Powell, and Abbas Emami-Naeini, \textit{Feedback Control of Dynamic Systems}, Addison-Wesley.
+\end{itemize}
+
+\section*{Assignments and Assessments}
+
+Homework and lab due dates are listed in the course schedule. Due dates may be adjusted as needed and announced in class. 
+\par
+The Lab ``check off” procedure will be explained thoroughly in your lab section.
+\par
+If you are late for an assignment you will be given a 0\% for the grade, and only for special circumstances would this be exempt (DRES, family problems, etc.). 
+
+\subsection*{Quizzes}
+Lecture quizzes are not planned but may be introduced depending on attendance.
+
+\subsection*{Semester Project}
+
+This is where you will put it all together.  I still have not made up my mind on the exact final project for this semester but it will be similar to previous semesters.  See the listing on the right side of the screen at \href{htttp://coecsl.ece.illinois.edu/se423}{htttp://coecsl.ece.illinois.edu/se423}. You will work in groups of 4 to complete the project.  There will be specified ``checkpoint” due dates to make sure you keep on the right track and do not wait until the last week to finish all the work.   
+\par
+Grading of this project is heavily focused on the amount of work you put into the project throughout the semester and not necessarily on the success of the project.  Even though this is a group project, you will be graded individually on the amount of work you put into the project. Groups will have at least one weekly meeting with me (or one of the TAs) to demonstrate progress but I expect we will be meeting even more often as you have questions, etc. with your project.        
+
+\section*{Grading Breakdown}
+
+All students are encouraged to attend every class period.  The lecture content will follow the laboratory assignments in an obvious manner, so failure to attend a lecture will be a severe handicap in the lab.  
+
+\begin{center}
+\begin{tabular}{l c}
+\textbf{Component} & \textbf{Weight} \\
+\hline
+Lab Check-offs & 30\% \\
+Homework & 25\% \\
+LabVIEW Assignments & 5\% \\
+Quizzes & 5\% \\
+Semester Project & 35\%
+\end{tabular}
+\end{center}
+
+The semester project will represent the entire content of the class and is representative of a final exam grade.  You are REQUIRED to attend the final project demonstration day which will be \textbf{May 15th, 2026, from 11:00am to 2:00pm}.  Make sure to write this date in your calendar for this semester.
+
+\section*{Academic Integrity}
+
+\subsection*{Policy on cheating}
+
+Students are encouraged to work together on homework assignments; however, original solutions are required.  For homework, the threshold of cheating is defined as follows: If the person grading the assignments is able to identify students who have worked together by their solutions or specific aspects of their solution approach, then the solutions are not original!  A homework or other assignment where cheating is found will automatically be given a zero grade
+\par
+Copying of information from websites without proper citation is considered cheating.  Any copying of information without proper citation will result in a zero grade for the assignment. 
+
+\subsection*{Policy on AI-Generated Content}
+
+Students are allowed to use AI tools to help with their work, primarily for brainstorming, debugging, and conceptual support; however, it is highly recommended to avoid them for whole-code generation, especially if you are a beginner software engineer, as this will prevent you from learning and understanding what you are doing. Generally, it is highly recommended not to use code from AI tools, and if you do, you should understand it, be able to explain it in detail to a TA, and later be able to reimplement it without using AI. If you are unable to reach that level of understanding, you will be asked to delete and redo the work. You are here to learn, not just copy and paste! 
+\par
+Due to the niche hardware we will be working with, it is also unclear how accurate the AI tools will be in helping with specific hardware or software problems. Please check the code and hardware documentation before running anything or ask a TA for help instead.
+An AI content detector may be used to verify the originality of your content in case your work is not your own.
+\par
+If you have relied on AI for content, you are expected to comment the lines that have been copied and pasted from AI with code comments stating the AI model used at the lines that have been copied and pasted, and for written work, have a statement saying:
+\par
+\textit{``During the preparation of this work, X used ChatGPT (OpenAI) to X. After using this tool, X reviewed and edited the content as needed and takes full responsibility for the content.”}
+
+
+\section*{Course Schedule}
+
+\small
+\begin{longtable}{@{} L{3.5cm} L{8.5cm} L{3.5cm} @{}}
+\caption{Lecture Topics and Lab Schedule} \\
+\toprule
+\textbf{Lecture Date} & \textbf{Topics} & \textbf{Current Lab} \\ \midrule
+\endfirsthead
+
+\toprule
+\textbf{Lecture Date} & \textbf{Topics} & \textbf{Current Lab} \\ \midrule
+\endhead
+
+\bottomrule
+\endfoot
+
+\GetDate{0}{2} & Introduction. What is Mechatronics?  What parts are we focusing on?  Walk through Syllabus. & Lab \#1 \\ \midrule
+
+\GetDate{1}{0} & 
+\begin{itemize}
+    \item Look at the LaunchXL-F28379D board and the green expansion board.  Start to understand the pinout. What are System and Peripheral Registers?  Hex numbers and Bitwise operators.
+    \item Code Composer Studio Development Environment
+    \item Default starter code
+    \item Timers and Digital I/O Pins 
+\end{itemize} & \\ \midrule
+
+\GetDate{1}{2} & 
+\begin{itemize}
+    \item Digital Outputs.  Turn on and off an LED
+    \item Digital Inputs.  Pull-up resistor.  Passive Push Button
+    \item What is a peripheral register?  How many I/O pins does the F28379D have?  Talk about the pin multiplexer.
+\end{itemize} & Lab \#1 / Soldering \\ \midrule
+
+\GetDate{2}{0} & 
+\begin{itemize}
+    \item What is a CPU interrupt?  Timer interrupt functions
+    \item \texttt{printf}, \texttt{sprintf}, null terminated strings
+    \item RS 232 Serial Port,  The ASCII character set
+    \item 16 bit and 32 bit integers and 2s compliment numbers
+\end{itemize} & \\ \midrule
+
+\GetDate{2}{2} \newline \textbf{\color{red}HW\#1 Due (\HWSubmitTime)} \newline \textbf{\color{red}LabVIEW \#1 Due (\LabVIEWSubmitTime)} & 
+\begin{itemize}
+    \item What is a DAC and how does it work?  What is an ADC and how does it work?   
+    \item F28379D ADC Peripheral Architecture
+\end{itemize} & Lab \#2 \\ \midrule
+
+\GetDate{3}{0} & 
+\begin{itemize}
+    \item Continue with ADC peripheral.  ADC Resolution.  Successive Approximation Register (SAR) type of ADC.  
+    \item What is an Optical Encoder?  
+    \item What is a PWM signal?  How to generate a PWM signal with the F28379D EPWM peripheral.
+    \item H-bridge, Example circuit
+\end{itemize} & \\ \midrule
+
+\GetDate{3}{2} & 
+\begin{itemize}
+    \item Examples using the EPWM peripheral.  The RCservo Motor.  
+    \item What is an Optical Encoder Sensor?  Calculating velocity
+    \item Friction Compensation
+\end{itemize} & Lab \#3 / Scope \\ \midrule
+
+\GetDate{4}{0} & 
+\begin{itemize}
+    \item Filter design and implementation, Filter Examples in Matlab
+    \item Use DMA to store ADC samples. Using the FFT algorithm to find signal’s dominant frequencies.  
+    \item Ping/Pong Buffering
+\end{itemize} & \\ \midrule
+
+\GetDate{4}{2} & Continue Filter Design and FFT Algorithms. & Lab \#3 \\ \midrule
+
+\GetDate{5}{0} & Review three serial ports UART, SPI, I2C.  SPI 4 clock modes.  F28379D SPI peripheral registers & \\ \midrule
+
+\GetDate{5}{2} \newline \textbf{\color{red}HW\#2 Due (\HWSubmitTime)} \newline \textbf{\color{red}LabVIEW \#2 Due (\LabVIEWSubmitTime)} & 
+\begin{itemize}
+    \item DAN28027 SPI Interface Datasheet
+    \item Connecting multiple slave devices to one SPI serial port. 
+    \item Understand the F28379D’s SPI Receive and Transmit FIFO
+\end{itemize} & Lab \#4 \\ \midrule
+
+\GetDate{6}{0} & 
+\begin{itemize}
+    \item PID Control: Integral Windup \& Rollover
+    \item Robot Speed and Steering Control
+\end{itemize} & \\ \midrule
+
+\GetDate{6}{2} & 
+\begin{itemize}
+    \item Linux for Embedded Systems
+    \item Threads, Processes, and Applications
+    \item Review Lab \#5’s LabVIEW display requirements
+\end{itemize} & Lab \#4 \\ \midrule
+
+\GetDate{7}{0} & 
+\begin{itemize}
+    \item Sensors: CAN IR, Rate Gyro, LIDAR
+    \item Wall-following, Inner-loop and Outer-loop controllers
+    \item Review LABVIEW application expectation.
+\end{itemize} & \\ \midrule
+
+\GetDate{7}{2} & 
+\begin{itemize}
+    \item Coordinate Transforms 
+    \item Dead-reckoning
+    \item Handling Gyro Drift 
+    \item Landmark Detection with distance sensors
+\end{itemize} & Lab \#5 \\ \midrule
+
+\rowcolor{gray!10} \GetDate{8}{0} & \textbf{Spring Break} & \textbf{Spring Break} \\ \midrule
+\rowcolor{gray!10} \GetDate{8}{2} & \textbf{Spring Break} & \textbf{Spring Break} \\ \midrule
+
+\GetDate{9}{0} & \begin{itemize}
+    \item Talk about the LIDAR. How it works and How we interface with it.  
+    \item Understand the data received by the LIDAR
+\end{itemize} & \\ \midrule
+
+\GetDate{9}{2} \newline \textbf{\color{red}HW\#3 Due (\HWSubmitTime)} & Review SPI serial interface and how to communicate with the MPU-9250 IMU chip. & Lab \#6 \\ \midrule
+
+\GetDate{10}{0} & Revisit developing Linux applications.  Deciding what processes can run in a non-real-time environment and what processes need to run in a real-time environment. & \\ \midrule
+
+\GetDate{10}{2} & 
+\begin{itemize}
+\item    Introduce Vision Processing
+\item CMOS Cameras and the BAYER format.
+\item Centroid calculation
+\item RGB \& HSV color space
+\item Blob detection algorithm
+\end{itemize} & Lab \#6 \\ \midrule
+
+\GetDate{11}{0} & \begin{itemize}
+    \item Introduce the OpenMV camera module
+    \item Robot following Flash light / Bright Color
+\end{itemize} & \\ \midrule
+
+\GetDate{11}{2} \newline \textbf{\color{red}HW\#4 Due (\HWSubmitTime)} & 
+\begin{itemize}
+    \item Using camera to calculate distance to an object
+    \item Using Landmarks to update robot’s position
+\end{itemize} & Lab \#6 (RC Servo) \\ \midrule
+
+\GetDate{12}{0} & Path Planning: Bug Algorithms \& A*. & \\ \midrule
+
+\GetDate{12}{2} & A* Path Planning Implementation. & Lab \#7 \\ \midrule
+
+\GetDate{13}{0} & A* Path Planning (Cont.). & \\ \midrule
+
+\GetDate{13}{2} \newline \textbf{\color{red}HW\#5 Due (\HWSubmitTime)} & A* Path Planning (Cont.). & Lab \#7 \\ \midrule
+
+\GetDate{14}{0} & \begin{itemize}
+    \item Dead-Reckoning
+\item Using Landmarks to update robot’s position
+\item Using Kalman filtering to help mix OptiTrack motion capture data with Dead-Reckoned robot position
+\end{itemize} & Project \\ \midrule
+
+\GetDate{14}{2} & Kalman Filtering: Code Walkthrough. & Project \\ \midrule
+
+\GetDate{15}{0} & Kalman Filtering and Move-to-XY Logic. & Project \\ \midrule
+
+\GetDate{15}{2} \newline \textbf{\color{red}HW\#6 Due (\HWSubmitTime)} & Move-to-XY Code Finalization. & Project \\ \midrule
+
+\textbf{\Final } & \textbf{\color{red}{Final Project Presentations (11:00--2:00)}} & \\
+\end{longtable}
+
+
+\end{document}

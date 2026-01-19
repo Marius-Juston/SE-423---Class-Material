@@ -1,0 +1,114 @@
+\documentclass[11pt]{article}
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\def\HWNum{5}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{HW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ Homework Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{13}{1}}. \\
+Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{13}{2}}.
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\Ex[State Machine Part 3]
+
+ For this assignment, I would like you to expand on the state machine and pseudocode of HW \#3 and HW \#4. I would like you to think about the state transition diagram for collecting a brightly colored blue golf ball or an orange golf ball. The vision code you will learn will easily find these two bright colors. In Lab 7, you will also program the robot to follow these bright colors. So when the robot sees one of the golf balls on the ground, it will be able to drive towards it. One big issue is that you have to drive the robot over the golf ball to collect it. In part of your state machine, the robot’s camera will not detect the bright color. How do you handle this? Also, you will want to record the golf ball's X and Y positions. When in your state machine would be the best time to record the X, Y position of the golf ball? Make sure to include your state transition diagram and your pseudocode. You may find a nice way to accomplish this task is to have a “sub” state machine inside the larger state machine you created in HW 3 and HW 4. 
+
+\Ex[Personal Project Demo]
+
+This homework assignment is up to you. (Same as HW \#4 Question 9). Use your creativity to build a simple mechatronic project that uses at least one RC servo motor and one sensor of your choice. You can use the actuators and sensors we have used in homework up to this point. Choose any one of the following:
+
+Choose any one of the following:
+\begin{itemize}
+    \item One or two RC Servo Motors
+    \item The Buzzer
+    \item Photo sensor
+    \item MPU-9250 IMU
+    \item Joystick
+    \item Microphone
+\end{itemize}
+%
+Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So, in other words, we are not expecting an elaborate, finely polished design.  
+
+You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer you have access to. Also, there are some building materials in the Mechatronics Lab, like machine screws, plastic sheets, and “Super Velcro”. (\textit{Ask if there is a part that you need and we will see if we have it in the lab}).          
+
+This assignment spans both HW \#4 and HW \#5. Your finished product should be completed and checked off by \GetDate{13}{1}.  
+
+\textbf{Demo and what needs to be turned into Gradescope for HW \#5 Question 2.}  
+%
+\begin{enumerate}
+    \item In-person demonstration of your project working.     
+    \item Source code you developed for this project. This source code must be commented well and submitted to Gradescope!  
+    \item A wiring schematic of all the electronic parts of your project. Pencil and paper are fine as long as they are neat.
+    \item Take a video and a few still pictures of your final design working, and submit links for us to view.  
+\end{enumerate}
+%
+\end{document}

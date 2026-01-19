@@ -1,0 +1,141 @@
+\documentclass[11pt]{article}
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\def\HWNum{4}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{LabVIEW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ LabVIEW Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+This is an optional assignment if you would like to learn about how LABVIEW can be used like MATLAB/Simulink to simulate system equations.
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\Ex
+
+For this exercise, I would like you to reproduce the two VIs shown in the pictures below. Both VIs perform the same task using different methods to implement an “if-else” condition, and one uses a SubVI. Again, for this exercise, start by creating a LabVIEW Project. Then, inside this project, add a single VI. We are using a project this time, so the SubVI you create will be saved in it. I will give some pointers and instructions below, but you will need to do some of your own hunting to find the necessary blocks and other parts of the program, and use LabVIEW help to figure out how to use/wire certain blocks. Many of the blocks I used below come from the “Control Design \& Simulation $\rightarrow$ Simulation” section of LabVIEW.  
+
+Reproduce the below VI.  
+
+Instructions/tips:
+%
+\begin{enumerate}
+    \item The entire program is inside a Simulation Loop. The default simulation settings should work fine for this exercise.
+\item You will notice that I am using a Case Structure in this VI. The case structure is implementing the following if statement:  
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize,
+breaklines
+]
+{c}
+if (velocity > 0) {
+    FricComp = Vpos*velocity + Cpos;  // viscous friction*velocity + static friction
+} else {
+    FricComp = Vneg*velocity + Cneg;
+}
+\end{minted}
+\item The signal generator is set to Square wave, Amplitude of 1, and frequency of .1 hertz
+\item Gain Blocks are set to “terminal” mode so that the gain can be changed with a control.
+\item We are implementing a PID controller. Gain values are displayed in the Control Items section of the Front Panel window.
+\item The Plant transfer function is $\frac{1600}{s^3 + 14s^2 + 448s + 3200}$.
+\item $\frac{100s}{s + 100}$ is an approximation of a derivative.  
+\item The Graph is a SimTime Waveform block.
+\item I am using a Build Array block before the SimTime Waveform to plot two signals on a single graph. 
+\item More steps continue below.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture1.png}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture2.png}
+\end{figure}
+\item Now, as a final task for this VI, change the Friction Compensation part of the VI into a SubVI. See the following tutorial to help you create this SubVI from the blocks already in your simulation. \url{https://www.youtube.com/watch?v=zr2qqv1F4kk}   
+\item Make a simple Icon for your VI and connect the inputs and outputs to the pattern shown in the picture below. There is also another picture below of the simulation with the SubVI.  
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\linewidth]{Homeworks/Figures/LabVIEW4/Picture3.png}
+    \caption{Picture of Icon and Pattern to use}
+\end{figure}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture4.png}
+    \caption{Picture with SubVI}
+\end{figure}
+\item Now, either create a new VI, or you can copy the Simulation Loop and all of its contents and run two simulation loops in one VI.  
+\item Here, in this new VI or simulation loop, everything is the same except I would like you to replace the SubVI with a Formula Node. A Formula Node allows you to add small amounts of C code to your LabVIEW program.
+\item To add a variable to a formula node, right-click on an edge of the formula node and select “Add Input.”  To add an output for the formula, right-click on an edge and select “Add Output.”
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture5.png}
+\end{figure}
+\end{enumerate}
+%
+\end{document}

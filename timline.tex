@@ -1,0 +1,28 @@
+\usepackage{pgfcalendar}
+
+%%%%%%%%%%%%%%%%%%%% MODIFY DATES HERE %%%%%%%%%%%%%%%%
+
+\def\Year{2026}
+\def\StartDate{\Year-01-19}
+
+\def\HWCheckOffTime{5PM}
+\def\HWSubmitTime{9AM}
+\def\LabVIEWSubmitTime{5PM}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcount\julianday
+\newcount\myweekday % Define a counter for the weekday index
+
+\newcommand{\GetDate}[2]{%
+    \pgfcalendardatetojulian{\StartDate}{\julianday}%
+    \advance\julianday by \numexpr #1*7 + #2\relax%
+    % 1. Convert JDN to a date (sets \myyear, \mymonth, \myday)
+    \pgfcalendarjuliantodate{\julianday}{\myyear}{\mymonth}{\myday}%
+    % 2. Convert JDN to a weekday index 0..6 and store in \myweekday
+    \pgfcalendarjuliantoweekday{\julianday}{\myweekday}%
+    % 3. Print the name using the index, then the rest
+    \pgfcalendarweekdayname{\myweekday}, \pgfcalendarmonthname{\mymonth} \myday%
+}
+
+\def\Final{\GetDate{16}{3}}

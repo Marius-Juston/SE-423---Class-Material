@@ -1,0 +1,420 @@
+\documentclass[11pt]{article}
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+
+\usepackage[siunitx, american, RPvoltages]{circuitikz}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usetikzlibrary{arrows.meta, angles, quotes}
+
+\def\HWNum{4}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{HW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ Homework Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+The Demonstration Check-Offs For Exercises 2 and 3 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{10}{1}}. \\
+The Demo Check-Offs for Exercise 4 are due by \textcolor{red}{\HWCheckOffTime~\GetDate{11}{1}}. \\
+Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{11}{2}}.
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\Ex[Linux commands]
+
+Give yourself a small introduction to working in Linux, especially at the command prompt, by reading through the help at \url{http://community.linuxmint.com/tutorial/view/244}. Answer the following questions:
+%
+\begin{enumerate}
+    \item What command, along with an option, would you type to list all the files in a directory and more information, like file date and file size?
+    \item What command is used to change to a new directory? What command displays the directory you are currently in?
+    \item What command is used to copy a file in Linux? In the \verb|/home/pi| directory, there is a file named “\verb|hw4data.dat|”. Also in the \verb|/home/pi| directory, there is a directory named “\verb|hw4|”. What text would you type to copy “\verb|hw4data.dat|” to the directory “\verb|hw4|” with the new name “\verb|hw4trial1.dat|?”
+    \item What does the “\verb|less|” and “\verb|cat|” commands do? How are they different?
+    \item What do the “\verb|ifconfig|” and “\verb|ping|” commands do?
+    \item What command line text will set the date to \verb|2:30PM April 25th, 2026| using the “\verb|date|” command?
+\end{enumerate}
+%
+\Ex[Solder battery pack]
+
+\textbf{Soldering}. Question 3 will have you program EPWM8 to drive two RC servos using its A and B PWM outputs. RC servos are position-controlled geared motors and do require a bit of current, especially when stalled. For that reason, it is not a good idea to power the RC servos with the USB power from your PC. Instead, I am giving you a battery pack that holds 4 AA batteries. Each battery is around 1.5V, so the RC servos will be powered with 6V. See the picture below to find where to solder the battery pack leads.
+%
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.395\textwidth}
+\centering
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (img)
+    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW4/Solder1.jpg}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \draw[red, ultra thick] (0.8,0.45) ellipse (0.15 and 0.075);
+\end{scope}
+\end{tikzpicture}
+% \caption{First image}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.595\textwidth}
+\centering
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (img)
+    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW4/Solder2.jpg}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \draw[red, ultra thick] (0.6,0.5) ellipse (0.2 and 0.15);
+\end{scope}
+\end{tikzpicture}
+% \caption{Second image}
+\end{subfigure}
+\caption{Demo board soldering battery pack solder}
+\label{fig:demo_board}
+\end{figure}
+%
+\Ex[Driving RC servo motors]
+
+RC servos are popular in RC airplanes and RC cars. RC servo motors are devices that you can command to move to a desired angle. Typically, they only range from -90 degrees to 90 degrees. To command these motors, a PWM signal with a slow carrier frequency of 50Hz (20 millisecond period) is used. Then, to command the motor's angle, you change the duty cycle, setting it between about 4\% and 12\%. -90 degrees is approximately 4\% duty cycle, 0 degrees is close to 8\% duty cycle, and +90 degrees is close to 12\% duty cycle. Any other angle desired is linear between those values. First, modify the initialization code for these two EPWM channels. Looking at your breakout board’s labeling, you should see that GPIO14 (EPWM8A) and GPIO15 (EPWM8B) are the pins connected to the RC Servo “3 pin” connectors. In homework \#2 and lab \#3, you set up PWM channel A to drive an LED and then drive the two motors of the robot. In this exercise, you will set up EPWM8 in a similar fashion, but now you also have to configure the B output of the EPWM8 peripheral. So first get the EPWM8A output working. You can copy the setup code you used for EPWM12 in HW\#2 as a starting point for EPWM8. However, you will need to change the PWM carrier frequency to 50Hz instead of the 5000Hz we used in HW\#2. Remember that when you set the carrier frequency, the TBPRD register is only 16 bits, so its value cannot exceed 65535. So, in other words, you will need to set CLKDIV to something other than 0. \textbf{Before you plug in your RC servo to your green board, use a digital channel of the oscilloscope to scope the PWM signal and make sure it is the signal you expect.
+Demo this to your TA before using batteries to drive an RC servo}. Then, when you have EPWM8A working, set up EPWM8B. Most EPWM8A setups also affect EPWM8B. For example, 8A and 8B must use the same carrier frequency because there is only one TBPRD register. The only additional registers you have to use for EPWM8B are AQCTLB and CMPB. AQCTLB is set very similarly to AQCTLA, but NOTE there is a CBU event. So set up EPWM8 to have the required RC Servo carrier frequency of 50Hz, and set CMPA and CMPB’s values so that it commands the RC Servos to 0 degrees (8\% duty cycle).  
+
+Similar to the PWM functions you created in Lab \#3, create two functions 
+\par 
+“\mintinline{c}{void setEPWM8A_RCServo(float angle)}” and 
+\par
+“\mintinline{c}{void setEPWM8B_RCServo(float angle)}”.  
+
+The parameter “angle” is a value between -90 and 90 degrees, where -90 equates to 4\% duty cycle, 0 equates to 8\% duty cycle, and 12\% equates to 90. Make sure to first saturate the “angle” between    -90 and 90, just in case a value outside of the range is passed. Test that your functions work by writing some code that gradually changes the value passed to “angle” so that the RC servo is driven back and forth. If you are only given one RC servo, make sure to plug it into both “3-pin” RC servo connectors so that both your EPWM8A and EPWM8B functions are working. \textbf{Show your RC servos movements to your TA}.
+
+\Ex[Interrupts]
+
+For this exercise, I would like you to look into the external interrupt capabilities of the F28379D pins, and also give you another exercise in merging code from one piece of example code into another project’s code. The F28379D allows you to set any of its GPIO pins as an input and, in addition, can generate an interrupt when the signal on the GPIO pin transitions from High to Low (or Low to High, you can pick). The best use case for this is an external chip that needs to tell the F28379D it has new data and wishes to be communicated with. An external slave chip that communicates with the master via SPI is a perfect use case for this. If you remember, with SPI, the only way the master receives data from a slave chip is by sending data to the slave. Using an external interrupt, the slave chip could set a signal high to indicate that it had new data to send to the master. This signal would be received by an F28379D GPIO, triggering an interrupt. In the interrupt function, the SPI send/receive commands could be issued to read the new data from the slave device. For this exercise, instead of having an external SPI slave chip interrupt the F28379D, we are going to have two of the push buttons on your green board cause two different external interrupts. In the same folder as HWstarter and Labstarter, there is another starter project called XINTstarter. (XINT is eXternal INTerrupt)  Go ahead and create a new project using this project starter. Build and run the program. Pull up Tera Term and notice that the number of times you have pressed push button 1 and push button 2 is displayed. Press buttons 1 and 2 several times and see how many counts occur. These are cheap push buttons, and they can have contact bounce that could cause more than one interrupt each time you press the button.  
+
+Study the external interrupt starter code, then modify it so that instead of PB1 and PB2 causing the interrupts, PB3 and PB4 cause the two interrupts XINT1 and XINT2. Then, as one final exercise to give you some more experience merging example code, move all necessary code from this application that causes external interrupts when PB3 and PB4 are pressed into your RC servo problem 3 project. Your final code should drive the two RC servos and display the number of times PB3 and PB4 have been pressed. You do not have to, but you could do something fun like move the RC servo to a new position each time PB3 is pressed. \textbf{Show this working code to your TA.}
+
+
+\Ex[Rotation matrices]
+
+Obtain the rotation matrix, which converts base J’s coordinates into base $I$’s coordinates ($R_J^I$), for the following cases:
+%
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.2]
+    % Inertial Frame I
+    \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
+    \draw[->, thick] (0,0) -- (0,2) node[above] {$I_y$};
+    
+    % Body Frame J
+    \begin{scope}[shift={(1.5,1.5)}]
+        \draw (0,0) rectangle (0.6,0.8);
+        \node at (0.3,0.35) [above] {$J_o$};
+        \draw[->] (0.3,0.4) -- (0.3,-0.5) node[below] {$J_x$};
+        \draw[->] (0.3,0.4) -- (1.3,0.4) node[right] {$J_y$};
+    \end{scope}
+\end{tikzpicture}
+\caption{First Rotation}
+\label{fig:first_rotation}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.2]
+    % Inertial Frame I
+    \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
+    \draw[->, thick] (0,0) -- (0,2) node[above] {$I_y$};
+    
+    % Body Frame J
+    \begin{scope}[shift={(-1.5, -0.5)}]
+        \draw (0,0) rectangle (0.8,0.6);
+        \node at (0.6,0.1) [above] {$J_o$};
+        \draw[->] (0.4,0.3) -- (-0.5,0.3) node[left] {$J_x$};
+        \draw[->] (0.4,0.3) -- (0.4,-0.6) node[below] {$J_y$};
+    \end{scope}
+\end{tikzpicture}
+\caption{Second Rotation}
+\label{fig:second_rotation}
+\end{subfigure}
+\begin{subfigure}[b]{0.45\textwidth}
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.2]
+    % Inertial Frame I
+    \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
+    \draw[->, thick] (0,0) -- (0,2) node[above] {$I_y$};
+%
+\begin{scope}[shift={(-1, -0.5)}]
+    % Body Frame J with Rotation
+    \begin{scope}[shift={(5,2)}, rotate=-135]
+        \draw (-0.4,-0.4) rectangle (0.4,0.4);
+        \node[rotate=0] at (0,0) (Jo) {$\circ$};
+        \node[rotate=0, above] at (0,0.1) {$J_o$};
+        
+        \draw[->, thick] (0,0) -- (1.5,0) node[below left] {$J_x$};
+        \draw[->, thick] (0,0) -- (0,1.5) node[below right] {$J_y$};
+        
+        % Coordinate for angle calculation
+        \coordinate (origin) at (0,0);
+        \coordinate (Jx_end) at (1.5,0);
+    \end{scope}
+%
+% Reference line for theta
+        \draw[densely dashed, thick] (5,2) -- (6.5,2) coordinate (ref);
+        
+        % Theta Arc
+        \draw [dashed, thick, ->] (6.2,2) arc (0:225:1.2);
+        \node at (5.2,2.9) {\large $\theta$};
+    \end{scope}
+\end{tikzpicture}
+\caption{Third Rotation}
+\label{fig:third_rotation}
+\end{subfigure}
+\caption{Rotations matrices examples}
+\label{fig:demo_board}
+\end{figure}
+%
+\Ex[Transformation vectors]
+
+Given the following translation vectors:
+%
+\begin{enumerate}
+    \item $\overrightarrow{I_0J_0} = (3.83, -1.75, 0)$
+    \item $\overrightarrow{I_0J_0} = (11.1,6.7,0)$
+    \item $\overrightarrow{I_0J_0} = (5.3,-1.4,0)$
+\end{enumerate}
+%
+Moreover, using the results on the previous \ref{fig:first_rotation}, \ref{fig:second_rotation}, and \ref{fig:third_rotation} questions respectively, obtain the homogeneous transformation matrix, which converts frame $J$ coordinates to frame $I$ coordinates.
+
+Using the homogeneous transformation matrix found in part c. above, solve the following two questions:
+%
+\begin{enumerate}
+    \item If a golf ball’s coordinates are $(2.8,-2.3,0)$ in the robot’s ($J$) frame, what are the golf ball’s coordinates in the world ($I$) frame as a function of $\theta$? What are the golf ball’s coordinates if $\theta$ equals 35°? To check that you are doing this problem correctly, you should find that x equals 8.9129. Show your work and find this x-value and the y-coordinate.
+    \item If a golf ball’s coordinates are $(2.54,1.45,0)$ in the world ($I$) frame, what are the golf ball’s coordinates in the robot ($J$) frame as a function of $\theta$? Note that the inverse of a homogeneous transformation matrix $T = \begin{bmatrix}
+        R & d \\
+        0 & 1
+    \end{bmatrix}$ is $T^{-1} = \begin{bmatrix}
+        R^\top & -R^\top d \\
+        0 & 1
+    \end{bmatrix}$. If $\theta$ equals 120°, is the golf ball on the right or left side of the robot? Remember that robot positive x points straight ahead of the robot and therefore positive y points to the robot’s left. To check that you are doing this problem correctly, you should find that x equals 3.8482. Show your work, find this x value, and also the y coordinate, and determine if the ball is on the right or left.     
+\end{enumerate}
+%
+\Ex[Transistor Synopsis]
+
+This question is mainly a For Your Information item. You will not be soldering transistors or relays to your green board, or writing any program to turn a transistor or relay on or off. All I want you to turn in for this problem is to read this information and write me a synopsis.  
+
+Look at the top left corner of your green board; there are two spots for soldering TIP122 transistors. Also, close to the transistor, there is a spot for one relay. For this exercise, you will learn how to wire/use both transistors and relays to allow the F28379D’s digital outputs to turn on and off high-current devices that the digital outputs alone would not be able to drive, and if attempted to drive these loads, would damage the digital outputs. Below explains and illustrates how to wire GPIO outputs to the given NPN transistors, then use the transistors' high-current outputs to drive an ultra-bright LED and a relay.  
+
+If you are unfamiliar with transistors, refer to an introductory electronic circuits text or check the web; a good transistor-switch tutorial is available at \url{http://electronicsclub.info/transistorcircuits.htm}. In a transistor, the (possibly large) collector-emitter current is controlled by the small base current through the relationship $I_c=h_{FE} \cdot I_B$. Since we are interested in using the transistors as switches, we will operate them only in the “on” (saturation) and “off” (cutoff) modes. We can “turn off” the load circuit by setting $I_B = 0$. Likewise, if we know the desired current IC and the gain $h_{FE}$ (from datasheet), we can choose IB so that the transistor is entirely “on” (saturated). When the transistor is saturated, the voltage drop across the collector-emitter junction is small, and the junction can be modeled as a short circuit.
+
+% https://www.circuit2tikz.tf.fau.de/designer/
+% Figures/HW4/TransistorCircuit.json
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}
+	% Paths, nodes, and wires:
+	\draw (6.75, 8.25) to[american resistor, l={$RB$}] (9.16, 8.25);
+	\node[npn](N1) at (10, 8.25){} node[anchor=west] at (N1.text){$TIP122~NPN$};
+	\node[ground](N2) at (10, 6.5){} node[anchor=west] at (N2.text){$0V =GND$};
+	\draw (10, 11) to[empty led, l={$ULTRA-BRIGHT~LED$}] (10, 10);
+	\draw (10, 12.5) to[american resistor, l={$47 \Omega$}] (10, 11);
+	\node[rground, yscale=-1](N3) at (10, 12.5){} node[anchor=south] at ([yshift=0.36cm]N3.text){$+6V$};
+	\node[ocirc](N4) at (10, 9.5){} node[anchor=east] at (N4.text){$COLLECTOR$};
+	\draw (10, 9.5) -- (10, 10);
+	\draw (10, 9) -- (10, 9.5);
+	\draw (10, 7.48) |- (10, 6.5);
+	\node[shape=rectangle, minimum width=4.215cm, minimum height=0.73cm] at (12.125, 7.367){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (12.125, 7.75){\footnotesize Routed to GND for you};
+	\node[ocirc](N5) at (6.75, 8.25){} node[anchor=north] at (N5.text){$INPUT$};
+	\draw (6.75, 8.25) -- (5.5, 8.25);
+	\node[circ](N6) at (5.5, 8.25){} node[anchor=east] at (N6.text){$GPIO$};
+\end{tikzpicture}
+    \caption{Transistors}
+    \label{fig:transistor}
+\end{figure}
+%
+% Figures/HW4/Circuit.json
+\begin{figure}[H]
+    \centering
+\begin{tikzpicture}
+	% Paths, nodes, and wires:
+	\draw (3.25, 5.48) to[american resistor, l={$RB$}] (5.66, 5.48);
+	\node[npn](N1) at (6.5, 5.48){} node[anchor=west] at (N1.text){$TIP122~NPN$};
+	\node[ground](N2) at (6.5, 3.73){} node[anchor=west] at (N2.text){$0V =GND$};
+	\node[rground, yscale=-1](N3) at (6.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N3.text){$+6V$};
+	\node[ocirc](N4) at (6.5, 6.73){} node[anchor=east] at (N4.text){$COLLECTOR$};
+	\draw (6.5, 6.73) -- (6.5, 9);
+	\draw (6.5, 6.23) -- (6.5, 6.73);
+	\draw (6.5, 4.71) |- (6.5, 3.73);
+	\node[shape=rectangle, minimum width=3.465cm, minimum height=0.73cm] at (4.75, 4.363){} node[anchor=north, align=center, text width=3.077cm, inner sep=6pt] at (4.75, 4.745){\footnotesize Routed to GND for you};
+	\node[ocirc](N5) at (3.25, 5.48){} node[anchor=north] at (N5.text){$INPUT$};
+	\draw (3.25, 5.48) -| (2.25, 5.5);
+	\node[circ](N6) at (2.25, 5.48){} node[anchor=east] at (N6.text){$GPIO$};
+	\draw (10.25, 5.98) to[empty led, l={$STANDARD~LED$}] (10.25, 4.73);
+	\draw (10.25, 4.73) |- (6.5, 4.23);
+	\draw (10.25, 7.48) to[american resistor, l={$47 \Omega$}] (10.25, 5.98);
+	\draw (6.5, 8.75) to[stroke diode, l={$1N4003$}] (6.5, 9.75);
+	\node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=3.965cm](N7) at (8.5, 9.25){} node[anchor=north] at ([yshift=-1.98cm]N7.text){$DIP05-1A57$};
+	\draw (6.5, 9.75) -- (6.5, 11.25);
+	\draw (6.5, 8.25) -- (7.25, 8.25);
+	\draw (6.5, 10.25) -- (7.25, 10.25);
+	\draw (10.25, 7.5) |- (9.75, 7.75);
+	\draw (9.75, 10.75) -| (10.5, 11.25);
+	\node[rground, yscale=-1](N8) at (10.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N8.text){$+6V$};
+	\draw (7.75, 10.25) to[american inductor] (7.75, 8.25);
+	\draw (7.25, 8.25) -- (7.75, 8.25);
+	\draw (7.25, 10.25) -- (7.75, 10.25);
+	\draw (8.75, 7.75) to[normal open switch, mirror, /tikz/circuitikz/bipoles/length=2.63cm] (8.75, 10.75);
+	\draw (9.75, 7.75) -- (7.25, 7.75);
+	\draw (9.75, 10.75) -- (7.25, 10.75);
+	\node[ocirc](N9) at (7.25, 10.75){} node[anchor=south west] at (N9.text){$1$};
+	\node[ocirc](N10) at (7.25, 10.25){} node[anchor=south west] at (N10.text){$2$};
+	\node[ocirc](N11) at (7.25, 8.25){} node[anchor=north west] at (N11.text){$6$};
+	\node[ocirc](N12) at (7.25, 7.75){} node[anchor=north west] at (N12.text){$7$};
+	\node[ocirc](N13) at (7.25, 8.75){} node[anchor=west] at (N13.text){$5$};
+	\node[ocirc](N14) at (7.25, 9.25){} node[anchor=west] at (N14.text){$4$};
+	\node[ocirc](N15) at (7.25, 9.75){} node[anchor=west] at (N15.text){$3$};
+	\node[ocirc](N16) at (9.75, 7.75){} node[anchor=north east] at (N16.text){$8$};
+	\node[ocirc](N17) at (9.75, 8.25){} node[anchor=east] at (N17.text){$9$};
+	\node[ocirc](N18) at (9.75, 8.75){} node[anchor=east] at (N18.text){$10$};
+	\node[ocirc](N19) at (9.75, 9.25){} node[anchor=east] at (N19.text){$11$};
+	\node[ocirc](N20) at (9.75, 9.75){} node[anchor=east] at (N20.text){$12$};
+	\node[ocirc](N21) at (9.75, 10.25){} node[anchor=east] at (N21.text){$13$};
+	\node[ocirc](N22) at (9.75, 10.75){} node[anchor=south east] at (N22.text){$14$};
+\end{tikzpicture}
+    \caption{Circuit}
+    \label{fig:circuit}
+\end{figure}
+%
+Refer to Figure \ref{fig:transistor} for the following example. If we want to use 5V to drive an ultra-bright LED in series with a 47$\Omega$ resistor, we can calculate. 
+\begin{equation*}
+     I_B\geq\frac{I_C}{h_{FE}}=\frac{\frac{\left(6-0.7\right)V}{47\Omega}}{h_{FE}}
+\end{equation*}
+For the TIP122 NPN Darlington Transistors you will use, $h_{FE} \geq 1000$. Therefore, $I_B \geq 0.11$ mA. To realize this current with our microcontroller’s 3.3V output, we need to determine an appropriate value for the resistor $R_B$. When $V_B > 1.4$V, the base-emitter junction of a Darlington transistor behaves like a diode with a 1.4V drop. Therefore, the drop across RB is $V_R$ = 3.3V-1.4V = 1.9V. Now $R_B\le\frac{V_R}{I_B}=\frac{1.9V}{.11}\approx17k\Omega$  Therefore, any resistor with a value less than 17k$\Omega$ would suffice.
+
+For the sake of universality, we will use a resistor with a much lower value (470$\Omega$) so that we can drive larger loads if needed. You are not asked to do this for this homework assignment, but if you want to use the transistor spots on your green board in the future, follow these guidelines. Solder the two TIP122 chips onto the green board. Solder two 470$\Omega$ resistors in the places labeled “$R_B$”. Also, solder the LED circuit to the “COLLECT” terminal of one of the transistors as shown in Fig. 1. The only power you currently have to drive the transistor loads is the 6V battery pack voltage. Do not use USB power, 3.3V, or 5.0V to drive transistor or relay loads. Solder the relay circuit shown in Fig. 2 to the “COLLECT” terminal of the second transistor. (\textbf{Note} the current rating of this small relay’s switch is 0.5 Amps, so obviously you could drive a larger current load than a standard LED.)   Solder a GPIO to the INPUT of the ultra-bright LED circuit and a different GPIO to the INPUT of the relay circuit.  
+
+\Ex[State machine part 2]
+
+For this assignment, I would like you to expand on the state machine and pseudocode of HW \#3. Now, instead of just having two distance readings from the LIDAR sensor (one front distance and one front-right distance), you have access to the 228 distance readings from the LIDAR. The robot’s LIDAR calculates 228 distance readings starting at -120 degrees on its right and sweeping to 120 degrees on its left. So the LIDAR produces a distance reading every 1.05 degrees, ranging from -120 to 120. The LIDAR readings are given to you in an array of 228 elements. Element 113 is the distance reading straight in front of the robot. The picture below gives you an idea of the sweep of measurements, but note that it shows only 17 measurements.  
+%
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+
+    % Define parameters for easy adjustment
+    \def\radius{4cm}          % Outer radius of the sector
+    \def\startAngle{-120}     % Starting angle (bottom left)
+    \def\endAngle{120}       % Ending angle (top left)
+    \def\numSectors{16}       % Number of wedges
+    \def\innerRadius{0.25cm}  % Radius of the central LiDAR circle
+
+    % 1. Draw the filled background sector
+    \fill[gray!30] (0,0) -- (\startAngle:\radius) arc (\startAngle:\endAngle:\radius) -- cycle;
+
+    % 2. Draw the radial lines (the dividers)
+    \foreach \i in {0,1,...,\numSectors} {
+        \pgfmathsetmacro{\currentAngle}{\startAngle + \i * (\endAngle - \startAngle) / \numSectors}
+        \draw[thick] (0,0) -- (\currentAngle:\radius);
+    }
+
+    % 3. Draw the outer arc boundary
+    \draw[ultra thick] (\startAngle:\radius) arc (\startAngle:\endAngle:\radius);
+
+    % 4. Draw the dashed symmetry lines (Horizontal and Vertical)
+    \draw[dash dot, thick] (-0.5,0) -- (\radius+0.5cm, 0); % Horizontal axis
+    \draw[dash dot, thick] (0, -\radius-0.2cm) -- (0, \radius+0.2cm); % Vertical axis
+
+    % 5. Draw the central LiDAR unit (the small circle)
+    \draw[fill=gray!80, thick] (0,0) circle (\innerRadius);
+
+    % 6. Add the Arrow and Text Label
+    \draw[line width=1.5pt, -{Latex[length=3mm, width=4mm]}] (-2.5,0) -- (-0.5,0);
+    \node[anchor=south, align=center, font=\sffamily\bfseries] at (-2.8,0) {LiDAR (small circle)};
+\end{tikzpicture}
+    \caption{LIDAR Viewpoint}
+    \label{fig:placeholder}
+\end{figure}
+%
+Given these new measurements from the LIDAR, modify the obstacle avoidance section of your state machine with decisions and required states to have the robot either follow the left or right wall when it recognizes an obstacle. Make sure to think about what you should do if you encounter an obstacle on your left, on your right, or straight in front of you. As a final task, think about how you could recognize human legs and what you would have your robot do?
+
+\Ex[Personal project pitch]
+
+This homework assignment is up to you. Use your creativity to build a simple mechatronics project that uses at least one RC servo motor and one sensor of your choice. You can use the actuators and sensors we have used in homework up to this point. Choose any one of the following:
+\begin{itemize}
+    \item One or two RC Servo Motors
+    \item The Buzzer
+    \item Photo sensor
+    \item MPU-9250 IMU
+    \item Joystick
+    \item Microphone
+\end{itemize}
+Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So, in other words, we are not expecting an elaborate, finely polished design.  
+
+You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer you have access to. Also, there are some building materials in the Mechatronics Lab, like machine screws, plastic sheets, and “Super Velcro”. (\textit{Ask if there is a part that you need and we will see if we have it in the lab}).          
+
+This assignment spans both HW \#4 and HW \#5. Your finished product should be completed and checked off by \GetDate{13}{1}.  
+
+\textbf{What needs to be turned in for HW \#4 question 9?}  
+%
+\begin{enumerate}
+    \item A description of what you are planning to build. What will it do? What parts will you need?   
+    \item Mechanical drawings of your device. Pencil and paper are fine as long as they are neat.  
+    \item A wiring schematic of all the electronic parts of your project. Pencil and paper are fine as long as they are neat.
+    \item Any source code you have developed to this point. 
+\end{enumerate}
+%
+\end{document}

@@ -1,0 +1,167 @@
+\documentclass[11pt]{article}
+
+\usepackage{hyperref}
+
+\begin{document}
+
+
+\begin{center}
+    {\Large \textbf{SE 423 -- INTRODUCTION TO MECHATRONICS}}\\
+    \vspace{0.2cm}
+    Lecture 1
+\end{center}
+
+\vspace{0.5cm}
+
+\section*{Introduction}
+
+Hello everyone, to SE 423 - Introduction to mechatronics!
+
+My name is Marius Juston, a PhD candidate in the ISE program. You can call me Marius or Professor, whichever you prefer!
+
+This class will be different from others you might have had, with a lot of learning-by-doing. In the lab and in homework,
+
+If you have any questions, be sure to interrupt me and ask them!
+
+What you have in front of you, you get started immediately in this class. We do have a lab this week. I hope that you received my email about that this week. 
+
+This week, we will not be doing C programming, but next week, we will. As such, teaching yourself C is essential, especially if you want to complete the labs and homework in a reasonable amount of time.
+
+It will take you much longer if you do not review C.
+
+You will have a lab this week. What you will be doing this week is soldering up your HW board. 
+
+We are going to teach you about this DSP (Digital Signal Processor) chip from Texas Instruments. You will get to keep the board after class so that you can use it for other personal projects as well! At the end of the semester, you will be well-equipped to do anything you want to build with this system!
+
+You will be doing your homework with it. You will be soldering the board and doing the surface-mount soldering on all the chips. You will be learning to do that this week in lab.
+
+As the semester goes on, you will add more items to it. So this is just the start of what you will be soldering onto it.
+
+So, what are you going to do with the red board? You will first be playing with LEDs, push buttons, and other fun things. You will add a photo sensor to measure light intensity and some RC servo motors so you can make a motor move to a specific angle.
+
+By HW5, you will come up with something on your own and make a small project using a microphone, maybe an RC servo, a buzzer, and other things. Moreover, you make yourself a little mechatronics project, that is where we are going with the HWs. 
+
+Moreover, by 2/3rds through the semester, you are done with the HW board, and by then, we have had time to really teach you the robot car for labs.
+
+So we get really going into HWs at the beginning of the semester working on that a lot and gradually teaching you the robot car and then by the end of the semester your going to be programming robot car to autonomously run around a small amount of course, locate balls, gather those balls into a little compartment, bring those golf balls, to a predetermined point, all the while avoiding obstacles and then planning your way around those obstacles.
+
+We have a long way to go then!
+
+Thinking of how to do all these things might be scaring you right now? That is good! We will teach you a lot of stuff by the end of the semester.
+
+In this class, we do not sit here and teach theory; we are not going to teach you why a PI controller is stable, or why the A* star algorithm is optimal, or all that stuff; that is in other classes. We are going to tell you ``they say it does give you the shortest path, let us implement this algorithm; that is how this class is going. We are going to talk a lot about implementation. How do we make sure that this is the circuit board? Most of the code will be running on the little processor. It runs at 150 MHz, which is fast for an embedded system. The Arduino, for example, runs at around 20-40 MHz, so these run at low power.
+
+All the algorithms will run on the microcontroller, so we have to figure out how to run them on it. At the end of the semester, to enhance the system's innovative capabilities, we will add a Raspberry Pi to the board and primarily use it for wireless communication with lab components—for example, localization using a motion-tracking system on the vehicles. The gray balls are being located by the motion capture system and will help the GPS perform.
+
+For the final project this semester, we are considering adding these April tags as a QR code. The camera system can locate those nicely.
+We can try to get some AI stuff working on the Raspberry Pi, but it can be slow if you make things too complicated.
+
+You should not use AI code generators to code the boards. Use myself, Dan Block, or the TAs for this class, Sam Folorunsho and Lakshmi Manoj, instead.
+
+What we are going to do is never start you out with a blank C code file; you will always have a starter code. For all your HWs, you will always have a starter code file for each HW, which will be added to this project with the C code you need. 
+
+Students are allowed to use AI tools to help with their work, primarily for brainstorming, debugging, and conceptual support; however, it is highly recommended to avoid them for whole-code generation, especially if you are a beginner software engineer, as this will prevent you from learning and understanding what you are doing. Generally, it is highly recommended not to use code from AI tools, and if you do, you should understand it, be able to explain it in detail to a TA, and later be able to re-implement it without using AI. You are here to learn, not just copy and paste! 
+
+If you have relied on AI for content, you are expected to comment the lines that have been copied and pasted from AI with code comments stating the AI model used at the lines that have been copied and pasted.
+
+You want to learn to use AI-generated code and make it your own. we found this \href{https://www.linkedin.com/learning/c-essential-training/plunging-into-c}{Linked-In learning page}, to help you learn as well,
+
+This will cover the basic material on C. In this class, we will not be using any very advanced features in C (or at least not very often), we will not be using pointers, which always complicate people's understanding, and we will not be using complex data structures such as trees, linked lists, and the like.
+
+If you had the prerequisite in CS 225, then that would be ideal! (How many have?) If you have, you are ahead of others. If you have not, or if you have not done any programming, that is fine! Many people have come to this class with basically zero programming experience and have done very well. As long as you put in the effort, you will be fine! 
+
+We will be around for all sorts of your questions, so please ask us!
+
+Office hours will be announced later and posted on Canvas when finalized. 
+
+You will have full 24-hour access to the lab, giving you plenty of time to work there and finish whatever you need. You can take your homework board home to work on it.
+We encourage you to bring a laptop to the lab if you have one. You should bring it to the lab this coming lab so we can help set it up with Code Composer Studio, which is used to program the Red Board.
+
+How many of you are Mac users? For Mac users, installing it is more complicated. I am not a Mac person so that it will be harder for people. There are some how-tos from previous semesters, so we can see if that works. Remember that you can always come to the lab to set things up.
+
+Reminder: you can always come to the lab to work on HW. Which is always a nice backup.
+When will you have a 24-hour backup? Next week, that should be done during the lab. Bring your I-Card to the lab this week to obtain lab access.
+
+So if you need card access during the first week to finish the soldering, even though most people can finish in 3 hours, send an email or contact me.
+
+The main thing in C is that if you have not done much programming, it will take you longer to do the labs and longer to do the homework. So, for folks who know C, it might be very easy, but it is a good precursor.
+
+The big thing about it is that it gives you the solution! That is like most training out there; that is just the way it works!
+
+Your job is to use it to your advantage and not look at it right away. If you are confused or unsure, you can peek at it and go back and forth. That is the recommendation! Please do not just look at the solution and turn it in; there is no point to that! Add comments to your code to make sure you understand what is going on. Really emphasize understanding the \texttt{printf} statement, as it will be used a LOT. Make sure you understand how to write a function and call a function in your C code. Another big one that a lot of people get confused about is how to declare and use a global variable versus a local variable. The three main types you will be using this semester are:
+
+\begin{enumerate}
+    \item 16-bit integer (an integer)
+    \item 32-bit integer (a bigger integer)
+    \item floating point ( ex, 2.01)
+\end{enumerate}
+
+This will really help you get started on this homework/lab.
+
+If you think engineering is just for CS folks, then you are not in the right class! What gets taught in mechatronics: mechanics; how to specify torque for a motor, etc.; sensor path; really understanding how that sensor works; what problems can occur if it is in the wrong lighting conditions. 
+
+The biggest goal by the end of the semester is that if you work at a company and they ask you to program a little embedded microcontroller, it will not terrify you!
+
+That is the biggest goal!
+
+Understanding process priority levels, which piece of code should go first, and all that. You will be amazed by what your robot will be able to do by the end of the semester! You will not be able to touch the robot, code the robot, etc. The robot will be fully autonomous by the end!
+
+That brings about frustration, so what happened in this class? You come in this week saying we are being taught how to solder. I cannot believe I soldered this stuff, then next week happens, and you have to write some C code, understand these crazy registers, turn one bit on, one bit off, and all this kind of stuff. Moreover, you will have to read these data sheets, which are always confusing. With a data sheet, you gotta read them, try out the code, and then reread them. However, when you are out there for a read chip with a real sensor, you have to comb through those datasheets.
+
+There is a high level of frustration in this class. There was also work done on that 24 hours last night, and I still cannot get it working. That is normal! When you are developing new things that happen all the time, you are sitting and figuring out how these things work, and it has got a small amount of noise in the signal, we did not read the datasheet quite right, etc, what that brings about is extra time. There is a significant amount of time spent at the end of the semester on the final project, which requires autonomous movement. By the end of the semester, you will be working with 3-5 people, depending on how it works. You will have a final project group: gold ball collecting and obstacle avoidance. It is not just you.
+
+During the labs section, you will be in pairs of 2, and you will group 2 groups into 1 group, forming about 10 groups for the final project. There are only about 10 robots to work with.
+
+It is engineering: you need to grind on things until you get an "EUREKA!" moment, then you need to find another problem that you gotta debug and implement. You will see that throughout the semester.
+
+LabVIEW: What is really nice is to have some interface with the robot car on the PC. By the end of the semester, it is really lovely to have a display on your computer showing a dot, square, or circle for where the robot is in the course. Moreover, monitor where the robot is and ensure it is doing the right things. Visualization is essential for debugging. 
+
+We are looking to migrate some of this LabVIEW code to Python, but it is not easy to do so at the moment. So, unless someone is a Python expert and really wants to do that and cannot stand LabVIEW, you can if you want. LabVIEW is straightforward to learn. There are 4 LabVIEW exercises you can start right now. The first exercise is pretty straightforward: you listen to a couple of YouTube videos with pictures, and then you see a couple of pictures you just need to replicate. That is something you can get started with immediately. You can install WebStore to install LabVIEW; it can take up to 4 hours due to the number of packages. You. You can instead use the EWS station computers that already have LabVIEW. 
+You can only install a couple of toolboxes that need to be installed. You should be able to access LabVIEW in Citrix; it does not run too badly.
+The easiest way is to come into the lab and do it there.
+
+What is the preferred method of communication?
+
+\begin{itemize}
+    \item Slack
+    \item Discord
+    \item Others...
+\end{itemize}
+
+I should be checking my email often, so if you do not get a hold of me, try emailing me. I also have my cell phone number. From 8 AM to 6 PM, feel free to text or call me. I prefer texting. Be sure to put your name in your first message! I do have classes I attend as well, so I may not be available during some of these times.
+
+Come to labs; please try to read beforehand. It will make things easier for you and speed things up, making things much quicker between you and your lab partner.
+
+We are not doing lab 1 this week; we will do it next week.
+
+(GO THROUGH SYLLABUS)
+
+Be sure to comment your code. 
+
+All the homework and the check-offs will be on Wednesdays at 9 AM. The TAs will also be available for check-offs.
+
+What are check-offs? You are not only going to write code and be done with it; you are also going to have this code running on the red board and show it to us working. You might have to use the oscilloscope to show the signal passing through and verify that it works. You do get to collaborate; we do not mind you working on the HWs together. What we do not want to see is identical C code. The most significant way to differentiate is by comments. If you are working together, your code will look similar, but we want individual comments in your code to explain what you just did. An example of that will be shown in the next week or two. The comments you make in your C code, make sure that you put your initials inside of it. At the top of the C code, you will put your initials, and the file will be searched; the comments will be read where the initials are. That is how the homework C code will be graded. Be sure to explain what that line of C code does. By 9 AM, you will submit the hard copy of the questions, and by then, you will also submit the commented C code to a Box folder.
+
+Like hard copy turn in because it makes you come into lectures ;)
+
+
+\section{Next steps}
+
+\begin{itemize}
+    \item HW\#1 Question 1 and Reading Question 4, \\
+\href{http://coecsl.ece.illinois.edu/se423/hw/se423_HW1_spr25.pdf}{http://coecsl.ece.illinois.edu/se423/hw/se423\_HW1\_spr25.pdf}
+    \item LABView Assignment 1 \\
+\href{http://coecsl.ece.illinois.edu/se423/hw/LabView1.pdf}{http://coecsl.ece.illinois.edu/se423/hw/LabView1.pdf}
+    \item Reading Lab 1 before next week \\
+\href{http://coecsl.ece.illinois.edu/se423/SE423_Lab1.pdf}{http://coecsl.ece.illinois.edu/se423/SE423\_Lab1.pdf}
+\end{itemize}
+
+\section*{Comments}
+
+
+I will be typing everything in LaTeX as a transcription of lecture videos from previous semesters. If you find any mistakes, please let me know!
+
+I will be trying to explore generating demo videos using \href{https://github.com/ManimCommunity/manim}{3Blue1Brown's animation toolkit} if I have time (I would happily accept student-made animations as well and showcase them during lectures if you give me permissionto ).
+
+
+\end{document}

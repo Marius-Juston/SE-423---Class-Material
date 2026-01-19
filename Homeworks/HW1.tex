@@ -1,0 +1,575 @@
+\documentclass[11pt]{article}
+
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\def\HWNum{1}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{HW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+
+
+\input{icons}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ Homework Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+The Demonstration Check-Offs For Exercises 2, 3, 5, 7, 8, 9 And 10 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{2}{1}}. \\
+Remainder Due On Gradescope, by \textcolor{red}{\HWSubmitTime~\GetDate{2}{2}}.
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\Ex[C coding practice]
+
+For this exercise, I would like you to go through the “C Essentials Training” course at \url{https://www.linkedin.com/learning/c-essential-training} (You first need to log in through the UIUC LinkedIn Learning portal with your university NetID to get past the paywall: \url{https://web.uillinois.edu/linkedinlearning} ). I am not going to check if you went through every exercise, but I highly recommend it. Go through each chapter. Then, for your Homework submission, submit your code and any screenshots showing the code working for
+\begin{itemize}
+    \item Chapter 3’s final challenge, Binary Math
+    \item Chapter 4’s final challenge, The Grid Challenge
+    \item Chapter 5’s final challenge, Complete the Code
+    \item Byte Splitting and Combining 
+\end{itemize}
+%
+Yes, I know the solution code is included in the course’s download file. Try your best not look at the solutions, as that will help you teach yourself C. DO NOT just submit the solution code! The areas I want you to really think about as you go through this training are: the different types of variables in C and how to declare global and local variables. The \texttt{printf} statement and how to use it to print integer variables and floating point variables. Writing functions and how to call those functions in your C code.  
+\par
+There are several free C compilers that you can use to run the C code you write for these training exercises. I am thinking that using an online C compiler may be the easiest way to go. You can Google “online C compilers” to see which one you like, or you can try this one, which seems to work pretty well: \url{https://www.onlinegdb.com/online_c_compiler}. I think the biggest issue you will have with the online compilers is saving your files. So, I recommend cutting and pasting your code into a text editor and saving your work from there, instead of saving it from the online webpage.
+
+\subsection*{Byte Splitting and Combining} 
+Discard bits 8-15, the top 8 bits, from the hex numbers 0xC492 and print out the resulting number as an integer, a hexadecimal number, and a binary number. Now, do the same, but by just discarding bits 0-7, the bottom 8 bits. Implement the function again for 0xB8AA. Further, combine the high byte 0xA5 and the low byte 0x5D and print the result as an integer, a hexadecimal number, and a binary number using a function. Put the combined 2-byte number back into the byte-split function.
+
+\Ex[Solder breakout board]
+
+Solder your breakout board. (When in doubt, view the demo board in the lab.)  In previous semesters, a TA made recordings while soldering a board very similar to your breakout board. On the board, he is soldering; you will see more parts than you have to solder. Keep that in mind when you are watching these videos, and use them as a guide, not as the exact way you need to solder this board.  \url{https://www.youtube.com/playlist?list=PL-csvMdAo235aAa4sEBl57S_syIAsQHoW}   
+%
+\begin{enumerate}
+    \item Solder the four 2X10 gold-plated headers.  !!Show your instructor that you have them in the correct orientation before soldering!!   
+    \item Solder 18 1k Ohm resistors along with 18 surface mount LEDs!! Make sure you know the LEDs' orientation!!
+    \item Solder 3 74LVC04 surface mount inverter chips. Also, 3 0.1uF capacitors right next to these chips.
+    \item Solder 4 push buttons.
+    \item Solder 1 buzzer, orientation does not matter, and one 100 Ohm resistor next to the buzzer.
+    \item Solder one 2X2 header, which controls the input to the buzzer. Make sure it is in the center holes.  
+    \item Solder two 3X1 and two 2X1 headers, which connect to the RC servos in homework 4.
+    \item See the demo board for the placement of a long wire and two short wires. They are shown in the picture but are clearer on the demo board. This is illustrated in Figure \ref{fig:demo_board}.
+\end{enumerate}
+%
+\begin{figure}[H]
+\centering
+%
+\begin{subfigure}[b]{0.245\textwidth}
+\centering
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (img)
+    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board2.jpg}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
+    \draw[red, thick] (0.225,0.28) ellipse (0.1 and 0.1);
+\end{scope}
+\end{tikzpicture}
+% \caption{First image}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.495\textwidth}
+\centering
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (img)
+    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board1.jpg}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \draw[red, thick] (0.3,0.765) ellipse (0.075 and 0.075);
+    \draw[red, thick] (0.575,0.765) ellipse (0.075 and 0.075);
+    \draw[red, thick] (0.31,0.46) ellipse (0.075 and 0.075);
+    \draw[red, thick] (0.575,0.46) ellipse (0.075 and 0.075);
+    \draw[red, thick] (0.076,0.575) ellipse (0.075 and 0.075);
+\end{scope}
+\end{tikzpicture}
+% \caption{Second image}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.245\textwidth}
+\centering
+\begin{tikzpicture}
+\node[anchor=south west, inner sep=0] (img)
+    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board3.jpg}};
+\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+    \draw[red, thick] (0.2,0.36) ellipse (0.15 and 0.2);
+\end{scope}
+\end{tikzpicture}
+% \caption{Third image}
+\end{subfigure}
+%
+\caption{Demo board soldering options}
+\label{fig:demo_board}
+\end{figure}
+%
+\Ex[Create you homework repository]
+%
+\begin{enumerate}
+    \item Follow the document \href{http://coecsl.ece.illinois.edu/se423/Using the SE423 Repository.pdf}{Using the SE423 Repository} and its first section “Create your Repository” to check out the SE423 repository to your lab PC and/or your personal laptop. If you are going to use both the lab PC and your laptop for development, you will want to create the same path on both. Create a folder named your NetID at the root of the \verb|C:\| drive, and keep all your files there. It is also a good idea for you to make backups of your lab files outside of your Git repository as you progress through the semester. Making this extra backup will save you when we cannot figure out what went wrong with Git. Git is awesome and normally works great, but every once in a while, I have seen issues that caused students to lose versions of their files.    
+    \item Open Code Composer Studio 12 (CCS 12) and select the “workspace” folder in your repository. For example, if your netID were “superstdnt”, you would have checked out your repository in \url{c:\\superstdnt\\SE423\_HWrepo}. The workspace folder to select would be \url{c:\\superstdnt\\SE423\_HWrepo\\workspace}.
+    \item Once CCS 12 is done loading your workspace, you need to load the “HWstarter” project. When you perform this load, the project is copied into your workspace. Therefore, if you rename this project, you can reload the “HWstarter” project to start another minimal project. I purposely placed this “HWstarter” project in the same folder as many of the example projects you will be studying this semester. These examples are part of TI's software development stack, called C2000ware. I have copied the necessary parts of C2000ware into our repository so that if you accidentally modify something, you can easily restore it. Again, if your NetID was “superstdnt”, perform the following to load your starter project. In CCS, select the menu Project$\rightarrow$Import CCS Projects. Click “Browse” and explore to “\url{C:\\superstdnt\\SE423\_HWrepo \\C2000Ware\_4\_01\_00\_00\\device\_support\\f2837xd\\examples\\cpu1\\HWstarter}” and finally press “Finish”. Your project should then be loaded into the CCS environment. Let us then rename the project “\lstinline|HW1<yourinitials>|” by right-clicking on the project name “HWstarter”. In the dialog box, change the name to “\lstinline|HW1<yourinitials>|” i.e., HW1djb. Also, explore the project and find the file “HWstarter\_main.c”. Right-Click on “HWstarter\_main.c” and select “Rename”. Change the name to “\lstinline|HW1<yourinitials>_main.c|”. To save you some headaches in the future, I recommend you take one more step after creating a new “HWstarter” project. Right-click on your project name in the Project Explorer and select “Properties.”  Select “General” on the left-hand side. Then, in the “Project” tab, find the “Connection” drop-down and select “Texas Instruments XDS100v2 USB Debug Probe.” Apply and Close.
+    \item Now that you have the project loaded, you can build the code and download it to the LaunchPad board. Plug your LaunchPad into your PC's USB port, then in CCS, hit the green “Debug” button \debugBtn, and in the dialog box that pops up, select CPU1 only. This will compile the code and load it to your LaunchPad board.
+    \item Click the Suspend button \pauseBtn to pause the code and the Resume (or Play) button \playBtn to resume or start your code’s execution. Use both of these to prove to yourself that both the blue and red LEDs are blinking on and off. Use one more button in CCS 12, the Restart \restartBtn button. Run your code, then press the pause button to stop it. If you hit the Resume button, the code resumes from where you left off. If you press the Restart button, CCS will take you back to the beginning of your code, and then you can click the Resume button to restart it. This saves time if you need to restart the same code. If you need to make changes to your code, Restart does not download the new code. You have to re-debug your code to get the new changes downloaded to the processor.
+\end{enumerate}
+%
+\Ex[Code review and commenting]
+
+Below is an introduction to the starter code given to you for this semester’s homework assignments. I used green for the code and black for my commentary. This listing omits a significant amount of the initialization starter code to keep it shorter. Read through the code and commentary below and find the same sections of code in your project you created above. You will have many questions, of course, as this is the first time you are reading through this code. We will be going over this code many times in lecture and lab sessions. Study this code and then start exercise 5.
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize,
+% linenos
+]
+{c}
+//#############################################################################
+// FILE:   hwstarter_main.c
+//
+// TITLE:  Home Work Starter
+//#############################################################################
+
+// Included Files
+#include <stdio.h>
+#include <stdlib.h>
+#include <stdarg.h>
+#include <string.h>
+#include <math.h>
+#include <limits.h>
+#include "F28x_Project.h"
+#include "driverlib.h"
+#include "device.h"
+#include "f28379dSerial.h"
+#include "LEDPatterns.h"
+#include "song.h"
+#include "dsp.h"
+#include "fpu32/fpu_rfft.h"
+
+#define PI          3.1415926535897932384626433832795
+#define TWOPI       6.283185307179586476925286766559
+#define HALFPI      1.5707963267948966192313216916398
+
+
+// Interrupt Service Routines predefinition
+__interrupt void cpu_timer0_isr(void);
+__interrupt void cpu_timer1_isr(void);
+__interrupt void cpu_timer2_isr(void);
+__interrupt void SWI_isr(void);
+
+// Count variables
+uint32_t numTimer0calls = 0;
+uint32_t numSWIcalls = 0;
+extern uint32_t numRXA;
+uint16_t UARTPrint = 0;
+uint16_t LEDdisplaynum = 0;
+\end{minted}
+%
+For these C exercises, I would like you to create any global variables or functions. Actually, the only functions we will create this semester will be global. We will never need to create a function inside another function, including not creating functions inside your \texttt{main()} function. You can, of course, put your global functions anywhere outside of other functions. It is just nice to have all your functions defined in one spot of your code so they are easier for you to find. The same goes for global variables.
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+void main(void)
+{
+    // PLL, WatchDog, enable Peripheral Clocks
+    // This example function is found in the F2837xD_SysCtrl.c file.
+    InitSysCtrl();
+
+    InitGpio();
+	
+	// Blue LED on LaunchPad
+    GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);
+    GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);
+    GpioDataRegs.GPASET.bit.GPIO31 = 1;
+
+	// Red LED on LaunchPad
+    GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);
+    GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);
+    GpioDataRegs.GPBSET.bit.GPIO34 = 1;
+\end{minted}
+%
+\textit{… Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important here …}
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+    EALLOW;  // This is needed to write to EALLOW-protected registers
+    PieVectTable.TIMER0_INT = &cpu_timer0_isr;
+    PieVectTable.TIMER1_INT = &cpu_timer1_isr;
+    PieVectTable.TIMER2_INT = &cpu_timer2_isr;
+\end{minted}
+%
+\textit{… Purposely left code out of listing …}
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+    // Configure CPU-Timer 0, 1, and 2 to interrupt every second:
+    // 200MHz CPU Freq, 1 second Period (in uSeconds)
+    ConfigCpuTimer(&CpuTimer0, 200, 10000);  
+    ConfigCpuTimer(&CpuTimer1, 200, 20000);
+    ConfigCpuTimer(&CpuTimer2, 200, 40000);
+
+   // Enable CpuTimer Interrupt bit TIE
+    CpuTimer0Regs.TCR.all = 0x4000;
+    CpuTimer1Regs.TCR.all = 0x4000;
+    CpuTimer2Regs.TCR.all = 0x4000;
+
+    init_serial(&SerialA,115200);
+\end{minted}
+%
+\textit{… Purposely left code out of listing …}
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+    // Enable global Interrupts and higher-priority real-time debug events
+    EINT;  // Enable Global interrupt INTM
+    ERTM;  // Enable Global real-time interrupt DBGM
+
+    // IDLE loop. Just sit and loop forever (optional):
+    while(1)
+    {
+\end{minted}
+%
+Look below in the timer 2’s interrupt function, \texttt{cpu\_timer2\_isr()}, and you will see that \texttt{UARTPrint} is set to 1 every 50th time the timer 2’s function is entered. So both the rate at which timer 2’s function is called and this modulus 50 determine the rate at which the \texttt{serial\_printf} function is called. \texttt{serial\_printf} prints text to Tera Term or some other serial terminal program. Also note that after the \texttt{serial\_printf} function call, \texttt{UARTPrint} is reset to 0. Think about why that is important. \textbf{Add a comment to the \texttt{UARTPrint = 0;} line of code explaining why it must be set back to zero here to make this code work correctly.}  (Correctly means that the \texttt{serial\_printf} function is called at a periodic rate.)
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+      if (UARTPrint == 1 ) {
+\end{minted}
+%
+For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this continuous while loop “\mintinline{c}{while(1)}”, is less important code. It will be your lower-priority code, which does not have as strict timing requirements. Also, this is the only place in your code that you should call \texttt{serial\_printf}. \texttt{serial\_printf} is a reasonably large function, and depending on how many variables you print, it can take some time and is not deterministic.    
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize,
+breaklines
+]
+{c}
+	serial_printf(&SerialA,"Num Timer2:%ld Num SerialRX: %ld\r\n",CpuTimer2.InterruptCount,numRXA);
+        UARTPrint = 0;
+      }
+    }
+}
+\end{minted}
+%
+Right now, consider the calling of this function, \texttt{cpu\_timer0\_isr()} “magic”. (We will explain this in detail soon in the course.) “\texttt{cpu\_timer0\_isr()} is called every 10ms, without fail, in this starter code. (It actually “interrupts” the code running in the \texttt{main()} “\mintinline{c}{while(1)}” while loop.)  In \texttt{main()} you can change the 10000 (microseconds) in the line of code “\mintinline{c}{ConfigCpuTimer(&CpuTimer0, 200, 10000);}” to have it be called at a different rate. For example, if you change the 10000 to 25000, the interrupt function will be called every 25ms.  
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+// cpu_timer0_isr - CPU Timer0 ISR
+__interrupt void cpu_timer0_isr(void)
+{
+    CpuTimer0.InterruptCount++;
+
+    numTimer0calls++;
+
+    if ((numTimer0calls%250) == 0) {
+        displayLEDletter(LEDdisplaynum);
+        LEDdisplaynum++;
+        if (LEDdisplaynum == 0xFFFF) {  // prevent roll over exception
+            LEDdisplaynum = 0;
+        }
+    }
+    // Blink LaunchPad Red LED
+    GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;
+    // Acknowledge this interrupt to receive more interrupts from group 1
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
+}
+\end{minted}
+%
+Right now, consider the calling of this function, \texttt{cpu\_timer2\_isr()} “magic”. (We will explain this in detail soon in the course.) “\texttt{cpu\_timer2\_isr()} is called every 40ms, without fail, in this starter code. (It actually “interrupts” the code running in the \texttt{main()} “\mintinline{c}{while(1)}” while loop.)  In \texttt{main()} you can change the 40000 (microseconds) in the line of code “\mintinline{c}{ConfigCpuTimer(&CpuTimer2, 200, 40000);}” to have it be called at a different rate.
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+// cpu_timer2_isr CPU Timer2 ISR
+__interrupt void cpu_timer2_isr(void)
+{
+    // Blink LaunchPad Blue LED
+    GpioDataRegs.GPATOGGLE.bit.GPIO31 = 1;
+
+    CpuTimer2.InterruptCount++;
+\end{minted}
+%
+Since “\texttt{CpuTimer2.InterruptCount}” increments by 1 each time in this function, the following if statement sets \texttt{UARTPrint} to 1 every 50th time in this function “\texttt{cpu\_timer2\_isr()}”. The \% in C is modulus. Modulus returns the remainder of the division operation. So 23 \% 50 equals 23, 67 \% 50 equals 17, etc.  
+%
+\begin{minted}
+[
+frame=lines,
+fontsize=\footnotesize
+]
+{c}
+    if ((CpuTimer2.InterruptCount % 50) == 0) {
+        UARTPrint = 1;
+    }
+}
+\end{minted}
+%
+\Ex[Interrupt Period]
+
+First, change either the periodic rate at which Timer 2’s interrupt function is called or the 50 modulus in Timer 2’s interrupt function to make the default \texttt{serial\_printf} function be called every 250ms. Debug your code and verify that the default text is printed to the TeraTerm Windows application 4 times a second.
+
+\Ex[Time after n interrupts]
+
+Answer this question after finishing Q5 above.  “\texttt{CpuTimer2.InterruptCount}” is incremented by 1 each time \texttt{cpu\_timer2\_isr()} function is run. (Remember the processor, “by magic”, runs this function at the periodic rate you set in “\texttt{ConfigCpuTimer}”.)  \textbf{If \texttt{CpuTimer2.InterruptCount} has incremented to 4823. How much time has gone by?}  This answer could be different from another student depending on what you changed to make \texttt{serial\_printf} print every 250ms. \textbf{Show your math for this calculation.}
+
+\Ex[Input saturation]
+
+Write a global function and name it “\texttt{saturate}”. Do not use any global variables in this function. This function should have two float parameters, “\texttt{input}” and “\texttt{saturation\_limit}”, and return a float. This return value is saturated by “\texttt{saturation\_limit}”. “\texttt{input}” is the input signal (or input value) that will be saturated if its value is greater than +\texttt{saturation\_limit} or less than –\texttt{saturation\_limit}. For example, if “\texttt{input}” is passed 3.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 3.4. If “\texttt{input}” is passed 9.5 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 5.5. If “\texttt{input}” is passed -7.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return -5.5. You will test this function in Exercise 8.  
+
+\Ex[Sine wave saturation:]
+
+We are going to use the “\texttt{sin()}” function to generate a sine wave at the sample rate of 250ms. Create five global float variables and one global 32-bit integer: 
+%
+\begin{enumerate}
+    \item \mintinline{c}{float sinvalue = 0;}  
+\item \mintinline{c}{float time = 0;}
+\item \mintinline{c}{float ampl = 3.0;}
+\item \mintinline{c}{float frequency = 0.05;} 
+\item \mintinline{c}{float offset = 0.25;}.  
+\item \mintinline{c}{int32_t timeint = 0;}.
+\item Then inside the same if statement where “\texttt{serial\_printf}” is called and before “\texttt{serial\_printf}” write three lines of code: 
+\item \mintinline{c}{timeint = timeint+1;} 
+\item \mintinline{c}{time = timeint*0.25;}
+\item \mintinline{c}{sinvalue = ampl*sin(2*PI*frequency*time) + offset;}
+\item Create one more global float variable, \mintinline{c}{float satvalue = 0;}
+\item In another line of C code, set “\verb|satvalue|” equal to your “\verb|saturate|” function that is passed “\verb|sinvalue|” to the “input” parameter and constant 2.65 passed to the "\verb|saturation_limit|” parameter.
+\item As a final step, modify the \texttt{serial\_printf} statement so that it prints on one line: timeint, time with 2 digits of precision, \verb|sinvalue| with 3 digits of precision, and \verb|sinvalue| with 2 digits of precision.  \%.3f is the formatter for printing a float with 3 digits of precision. \%ld is the formatter to print a 32-bit integer.   
+\item Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the prints. Demo this code to your TA in person / over video. The print out should look something like
+\item \mintinline{c}{Timeint = 30, Time = 7.50sec, Input = 2.371, SatOut = 2.37}
+\item \mintinline{c}{Timeint = 31, Time = 7.75sec, Input = 2.198, SatOut = 2.20}
+\item Etc. 
+\item A common mistake with \texttt{serial\_printf} is to use the \%d formatter for 32 bit integers. (\%d is for 16-bit integers only on the F28379D processor.)  In the \texttt{serial\_printf} statement, change the \%ld formatter to \%d and see what happens. Also, demo this to your TA in person/ over video. 
+\item On Gradescope, upload a PDF of your commented code file.
+\end{enumerate}
+%
+\subsection*{LED’s Default GPIO Assignments: (Listed here for reference)}
+%
+\begin{table}[H]
+\centering
+\caption{LED GPIO Mapping and Control Registers}
+\label{tab:led_gpio_mapping}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabularx}{\textwidth}{c c c X X X X}
+\toprule
+\textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} & \textbf{SET} & \textbf{CLEAR} & \textbf{TOGGLE} \\
+\midrule
+LED1  & 22  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+LED2  & 94  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
+LED3  & 95  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
+LED4  & 97  & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
+LED5  & 111 & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
+LED6  & 130 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+LED7  & 131 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+LED8  & 25  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+LED9  & 26  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+LED10 & 27  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+LED11 & 60  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
+LED12 & 61  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
+LED13 & 157 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+LED14 & 158 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+LED15 & 159 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+LED16 & 160 & GPF & GPFDAT & GPFSET & GPFCLEAR & GPFTOGGLE \\
+\bottomrule
+\end{tabularx}
+\end{table}
+%
+\subsection*{Push Button’s Default GPIO Assignments:}
+%
+\begin{table}[H]
+\centering
+\caption{Push Button's GPIO Mapping and Control Registers}
+\label{tab:push_button_gpio_mapping}
+\renewcommand{\arraystretch}{1.15}
+\begin{tabular}{cccc}
+\toprule
+\textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} \\
+\midrule
+PB1  & 4  & GPA & GPADAT \\
+PB2  & 5  & GPA & GPADAT \\
+PB3  & 6  & GPA & GPADAT \\
+PB4  & 7  & GPA & GPADAT \\
+JoyStick PB  & 8 & GPA & GPADAT \\
+\bottomrule
+\end{tabular}
+\end{table}
+%
+\subsubsection*{GPIO Register Use when GPIO pin set as Output:} 
+The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register at a time. The “\verb|.all|” part of the C/C++ union is the entire 32-bit register. The “\verb|.bit.GPIO19|” is just one bit in the 32-bit register. So these two lines of C code perform the same operation:
+%
+\begin{table}[H]
+\centering
+\caption{GPIO Register Functional Definitions and Usage Constraints}
+\label{tab:gpio_registers_output}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{0.13\columnwidth}|p{0.39\columnwidth}|p{0.42\columnwidth}|}
+\hline
+\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+GP?DAT & 
+\texttt{GP?DAT.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline 
+\texttt{GP?DAT.bit.GPIO? = 0;} \newline Sets Pin Low, 0V/GND \newline 
+ & \textbf{FOR TECHNICAL REASONS, DO NOT USE DAT FOR TURNING ON AND OFF LEDS. JUST USE IT TO READ THE STATE OF THE PUSHBUTTONS BELOW.}
+\\ \hline
+GP?SET & 
+\texttt{GP?SET.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline 
+\texttt{GP?SET.bit.GPIO? = 0;} \newline Does Nothing & 
+\texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 1;} \newline Sets GPIO37 High/3.3V. \newline \texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 0;} \newline Does Nothing. \\ \hline
+GP?CLEAR & 
+\texttt{GP?CLEAR.bit.GPIO? = 1;} \newline Sets Pin Low, 0V/GND \newline 
+\texttt{GP?CLEAR.bit.GPIO? = 0;} \newline Does Nothing & 
+\texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1;} \newline Sets GPIO70 Low/0V. \newline \texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0;} \newline Does Nothing. \\ \hline
+GP?TOGGLE & 
+\texttt{GP?TOGGLE.bit.GPIO? = 1;} \newline Sets Pin opposite of its current state \newline 
+\texttt{GP?TOGGLE.bit.GPIO? = 0;} \newline Does Nothing & 
+\texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1;} \newline State toggles (3.3V $\leftrightarrow$ 0V) \newline \texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;}\newline Does Nothing \\ \hline
+\end{tabular}
+\end{table}
+%
+\subsubsection*{GPIO Register Use When GPIO Pin Set as Input:}  
+Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.    
+%
+\begin{table}[H]
+\centering
+\caption{GPIO Register Functional Definitions and Usage Constraints}
+\label{tab:gpio_registers_input}
+\footnotesize
+\renewcommand{\arraystretch}{1.2}
+\begin{tabular}{|p{0.09\columnwidth}|p{0.39\columnwidth}|p{0.42\columnwidth}|}
+\hline
+\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+GP?DAT &
+If \texttt{GP?DAT.bit.GPIO? = 1}, the pin is logic high (3.3\,V).\newline
+If \texttt{GP?DAT.bit.GPIO? = 0}, the pin is logic low (0\,V/GND). &
+\begin{minipage}[t]{\linewidth}
+\begin{minted}[fontsize=\footnotesize, breaklines]{c}
+if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {
+    // Code executed when input pin GPIO19 is High (3.3V)
+} else {
+    // Code executed when input pin GPIO19 is Low (0V/GND)
+}
+\end{minted}
+\end{minipage}
+\\ \hline
+\end{tabular}
+\end{table}
+%
+\Ex[LED toggles]
+
+Using the GPIO reference tables above \textbf{(note the example code in the table)}, add code to your CPU Timer2 interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed, toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and off.  
+
+\Ex[LED patterns]
+
+Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate within one of the CPU timer interrupt functions.  
+
+\Ex[Binary operations]
+
+Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value over the serial port using the “\verb|serial_printf|” function.    
+%
+\begin{enumerate}
+    \item First, explain why each character sent over the serial port takes 10/9600 seconds, assuming that the bit rate is 9600 bits per second when using the \verb|serial_printf| function.
+\item  \mintinline{c}{x = 532 & 205;}
+\item \mintinline{c}{x = 0x4f & 0x1ad;}
+\item 	\mintinline{c}{x = 0x02ad | 0x1a1;}
+\item 	\mintinline{c}{x = 0x3ba >> 4;}
+\item 	\mintinline{c}{x = 104 << 3;}
+\item 	\mintinline{c}{x = 495 & (0x5 << 4);} 
+\end{enumerate}
+%
+\Ex[Type bit sizes]
+
+Read section 6.3 of the F28379D C reference guide (\url{http://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf}). How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: \mintinline{c}{int}, \mintinline{c}{long int}, \mintinline{c}{unsigned int}, \mintinline{c}{short int}, \mintinline{c}{char}, \mintinline{c}{double}, \mintinline{c}{float}?    
+
+
+\Ex[UART signal display]
+
+To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope was connected to the transmit line (TXD) of your TMS320F28379D processor, what would be displayed if the baud rate was set to 115200 bits per second and only two \href{https://www.ascii-code.com/}{ASCII} characters, “4” and “B”, were sent in sequence? Scoping the TXD line is not required, but you are welcome to figure out the waveform that way.
+
+
+\end{document}

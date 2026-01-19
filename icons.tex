@@ -1,0 +1,73 @@
+\usepackage{tikz}
+\usepackage{xcolor}
+
+\definecolor{iconGold}{RGB}{249,219,132}
+\definecolor{iconGreen}{RGB}{71,160,93}
+
+% Derived Border Colors (Darkened for contrast)
+\definecolor{borderGold}{RGB}{180,150,80}
+\definecolor{borderGreen}{RGB}{50,110,65}
+
+\tikzset{
+    ide_icon/.style={
+        baseline=-0.3ex,
+        line join=round,
+        line cap=round,
+        % Set a default border width that scales 
+        line width=0.4pt 
+    }
+}
+
+\newcommand{\pauseBtn}[1][0.4]{%
+\begin{tikzpicture}[ide_icon, scale=#1]
+    \filldraw[fill=iconGold, draw=borderGold] (0,0) rectangle (0.25, 0.8);
+    \filldraw[fill=iconGold, draw=borderGold] (0.4,0) rectangle (0.65, 0.8);
+\end{tikzpicture}}
+
+\newcommand{\playBtn}[1][0.4]{%
+\begin{tikzpicture}[ide_icon, scale=#1]
+    \filldraw[fill=iconGold, draw=borderGold] (0,0) rectangle (0.15, 0.8);
+    \filldraw[fill=iconGreen, draw=borderGreen] (0.25,0) -- (0.25,0.8) -- (0.75,0.4) -- cycle;
+\end{tikzpicture}}
+
+\newcommand{\debugBtn}[1][0.55]{%
+\begin{tikzpicture}[ide_icon, scale=#1, rotate=45]
+    % Legs: use border color for the stroke
+    \draw[borderGreen, line width=0.6pt] (-0.3, 0.5) -- (0.3, 0.1);
+    \draw[borderGreen, line width=0.6pt] (-0.3, 0.3) -- (0.3, 0.3);
+    \draw[borderGreen, line width=0.6pt] (-0.3, 0.1) -- (0.3, 0.5);
+
+    % Antenna
+    \draw[borderGreen, line width=0.6pt] (0, 0.6) -- (-0.15, 0.75);
+    \draw[borderGreen, line width=0.6pt] (0, 0.6) -- (0.15, 0.75);
+    % Body
+    \filldraw[fill=iconGreen, draw=borderGreen] (0,0.3) ellipse (0.18 and 0.25);
+    % Head
+    \filldraw[fill=iconGreen, draw=borderGreen] (0,0.6) circle (0.08);
+
+\end{tikzpicture}}
+
+\newcommand{\restartBtn}[1][0.8]{%
+\begin{tikzpicture}[ide_icon, scale=#1]
+
+    % Shaft with border
+    \draw[borderGold, line width=1.8pt]
+        (0,0.2) -- (0,0) -- (0.4,0) -- (0.4,0.2);
+
+    \draw[iconGold, line width=1.0pt]
+        (0,0.2) -- (0,0) -- (0.4,0) -- (0.4,0.2);
+
+    % Arrowhead with proper outline
+    \filldraw[
+        fill=iconGold,
+        draw=borderGold,
+        line join=round
+    ]
+        (-0.1,0.2) -- (0.1,0.2) -- (0,0.33) -- cycle;
+
+    % Green triangle cap
+    \filldraw[fill=iconGreen, draw=borderGreen]
+        (0.15,0.1) -- (0.15,0.5) -- (0.4,0.3) -- cycle;
+
+\end{tikzpicture}%
+}

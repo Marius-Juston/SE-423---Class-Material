@@ -1,0 +1,177 @@
+\documentclass[11pt]{article}
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+\usepackage{pdflscape}
+
+\def\HWNum{2}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{LabVIEW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ LabVIEW Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+Due By \textcolor{red}{\HWCheckOffTime~\GetDate{5}{3}}
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\textit{Note: There are a lot of small blocks in the LabVIEW code I give you below for Exercises 1 and 2. I have found that if you open the Word document, you can zoom in on the code pictures better than in the PDF file.
+}
+\Ex[Shift Registry]
+
+First, watch these two YouTube videos about shift registers (or find other tutorials online).  
+\begin{itemize}
+    \item \url{https://www.youtube.com/watch?v=wRvpb9jtRlE}
+    \item \url{https://www.youtube.com/watch?v=4ivYARn2fy8}
+\end{itemize}
+%
+For this assignment, we will start working with the 2D Picture block in LabVIEW. After performing this exercise, you could, for example, use what you learn to create a 2D pictured environment for your robot and draw where the robot is located in this environment. Below is the LabVIEW program I would like you to reproduce for this assignment. It shows you how to draw lines in a 2D Picture. Each time through the while loop, it generates a random number between 0 and 1 and draws a 25-pixel-by-30-pixel rectangle (of course, this could have been done more easily by using the Draw Rectangle block, but I wanted to show how to combine multiple draw commands). Then a shift register is used to keep track of all the lines printed in the 2D Picture as long as the Boolean LED is true. If you click the Boolean LED to make it false, the lines drawn in the previous loops should not be printed to the 2D Picture.
+
+If your screen is large enough, set the 2D Picture to $800 \times 800$ pixels.  
+
+Location of the blocks that may be new to you for this assignment:
+%
+\begin{itemize}
+    \item \textbf{From the Front Panel:}
+    \begin{enumerate}
+        \item Modern$\rightarrow$Graph$\rightarrow$Controls$\rightarrow$2D Picture
+        \item Modern$\rightarrow$Boolean$\rightarrow$Round LED
+    \end{enumerate}
+    \item \textbf{From the block diagram:}
+    \begin{enumerate}
+        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Move Pen
+        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Draw Line
+        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Empty Picture
+        \item Programming$\rightarrow$Numeric$\rightarrow$Random Number (0-1)
+        \item Programming$\rightarrow$Numeric$\rightarrow$Conversion$\rightarrow$I16
+        \item Programming$\rightarrow$Cluster, Class \& Variant$\rightarrow$Unbundle and Bundle
+    \end{enumerate}
+\end{itemize}
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture1.png}
+\end{figure}
+%
+\begin{landscape}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture2.png}
+    \end{figure}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.2\linewidth]{Homeworks/Figures/LabVIEW2/Picture3.png}
+        \caption{False Case}
+    \end{figure}
+\end{landscape}
+%
+\Ex[TCP Ethernet protocol]
+
+
+For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a nice, simple Echo Server that we are going to use.)  Then the Echo Server echoes the exact string back. We receive this string with the “TCP Read” command and assume it is different information from what we just sent. We use the “Scan From String” command to pull the two real numbers out of the string and display them.  
+
+Copy this VI and demonstrate it working. \textit{The first time you try to write data across a TCP socket from an application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in those pop-up windows, allowing public and private networks}. Because we are using this echo server, you may find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you have MATLAB installed on your laptop. If you have things to do on your laptop, give the lab PCs a try. You will need to find your computer's IP address. The easiest way is to run “\verb|ipconfig|” from a command prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection” block.  
+
+Then, before running the LabVIEW application, open MATLAB and type the command “\verb|echotcpip("on”,12321)|”. 12321 is the port the echo server will listen on. Later, if you want to turn off the echo server, type the command “\verb|echotcpip("off”)|” to turn off the server. Once the echo server is running in MATLAB, you can run your LabVIEW application. Type in some real numbers into the two Send Values and then click “SEND”. Play with different numbers and see that you get the exact numbers back. When you are done, you can click the “STOP” button.
+
+\textbf{Location of blocks you may not have used for the Block Diagram view:}
+\begin{itemize}
+    \item String$\rightarrow$Carriage Return Constant and String$\rightarrow$Line Feed Constant and String$\rightarrow$Scan From String
+    \item String$\rightarrow$Number/String Conversion$\rightarrow$Number To Fractional String
+    \item Structures$\rightarrow$Local Variable
+    \item Data Communication$\rightarrow$Protocols$\rightarrow$TCP$\rightarrow$“TCP Open Connection” and “TCP Read” and “TCP Write” and “TCP Close Connection.”
+\end{itemize}
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture4.png}
+\end{figure}
+%
+\begin{landscape}
+\begin{figure}[H]
+\centering
+\begin{subfigure}[b]{0.95\linewidth}
+\centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture5.png}
+% \caption{First image}
+\end{subfigure}
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\caption{Showing the Timeout Event}
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture6.png}
+% \caption{First image}
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{0.485\linewidth}
+\centering
+\caption{Stop: Value Change Event}
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture7.png}
+% 
+\end{subfigure}
+\end{figure}
+\end{landscape}
+%
+\end{document}

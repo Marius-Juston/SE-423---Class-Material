@@ -1,0 +1,140 @@
+\documentclass[11pt]{article}
+% Required packages:
+\input{timline}
+\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+\usepackage[most]{tcolorbox}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{lastpage}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{tabularx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{xparse}
+
+\def\HWNum{1}
+
+\setmintedinline{breaklines, breakafter=_}
+\lstset{
+    basicstyle=\ttfamily,   % Typewriter font for code
+    breaklines=true,        % Allow breaking long lines
+    columns=flexible        % Makes spacing better for inline
+}
+
+\newcounter{exercise}
+
+\NewDocumentCommand{\Ex}{o}{
+  \stepcounter{exercise}
+  \section*{Exercise \theexercise
+    \IfValueT{#1}{: #1} 
+  }
+  \addcontentsline{toc}{section}{Exercise \theexercise
+    \IfValueT{#1}{: #1}}
+}
+
+
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+
+% Footer
+\fancyfoot[L]{SE423, Mechatronic Systems}
+\fancyfoot[R]{LabVIEW\HWNum, Page \thepage\ of \pageref{LastPage}}
+
+% Optional: remove header rule
+\renewcommand{\headrulewidth}{0pt}
+%
+\begin{document}
+%
+\begin{tcolorbox}[
+    colback=gray!30!white,        % background color
+    % colframe=white,         % border color
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center,
+]
+\centering
+% \color{white}
+\setstretch{1.2}
+
+\textbf{\Large SE 423 Mechatronics \\ LabVIEW Assignment \#\HWNum}
+
+\vspace{2mm}
+
+\textbf{
+Due before \textcolor{red}{\LabVIEWSubmitTime~\GetDate{2}{3}}. Demonstrate your five LABVIEW programs working. Grading for this assignment is simply full credit if you did the assignment and no credit if you did not complete the assignment. Make sure to ask questions if you get stuck.
+}
+\end{tcolorbox}
+%
+\vspace{0.5cm}
+
+\Ex[Temperature]
+
+Read through at least the first two sections at the site \url{http://www.ni.com/gettingstarted/labviewbasics} \textit{LABVIEW Environment Basics and Dataflow Programming Basics} and watch at least the first two videos and the tenth video at the site \url{https://www.youtube.com/playlist?list=PLB968815D7BB78F9C}
+
+Reproduce (does not have to be exactly the same) the Fahrenheit to Celsius LABVIEW program that \textbf{uses a loop structure} to continuously run until a Stop button is pressed. Add some bells and whistles if you would like.  
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture1.png}
+\end{figure}
+%
+\Ex[Sequence Structures]
+
+Read through all 12 sections at the site \url{http://www.ni.com/gettingstarted/labviewbasics} and watch the first 10 videos at the site \url{https://www.youtube.com/playlist?list=PLB968815D7BB78F9C}.
+
+You can find other good YouTube videos. Here are a few others I found to get you started
+\begin{itemize}
+    \item \url{https://www.youtube.com/watch?v=Em5R_RM8E08}
+    \item \url{https://www.youtube.com/watch?v=bflByHG5jdc}
+    \item \url{https://www.youtube.com/watch?v=0Ea2IQeCIMY}
+    \item \url{https://www.youtube.com/watch?v=QxoJljThkKk}
+\end{itemize}
+%
+Furthermore, watch the YouTube video below that introduces sequence structures: \url{https://www.youtube.com/watch?v=DjN5Fpsjwng}.
+
+To give you an introduction to sequence structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=03PykG1O1x0}. You may need to find online help on “Case structures” as they are used in this video, but are not explained.  
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture2.png}
+\end{figure}
+%
+\Ex[Event Structures]
+
+To give you an introduction to event structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=8eO64fo3Pho}. You do not need to demonstrate the initial “polling” VI. Just the event structure VI.  
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture3.png}
+\end{figure}
+%
+\Ex[Multi-dimensional array]
+
+Read through the Array and Clusters Tutorial at \url{https://www.youtube.com/watch?v=rzOT1zXBDiE} and
+\url{https://www.youtube.com/watch?v=_GlQ1riWjPc&list=PLB968815D7BB78F9C}. Then reproduce the following exercises. See how a “for loop” can create a multidimensional array and use the Index Array to pull out a single row, a single column, and a single element. Sine is found under Mathematics$\rightarrow$Elementary$\rightarrow$Trig
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture4.png}
+\end{figure}
+%
+\Ex[Cluster]
+
+Create a Cluster and then produce two Clusters similar to the first.  
+%
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.875\linewidth]{Homeworks/Figures/LabVIEW1/Picture5.png}
+\end{figure}
+%
+\end{document}
