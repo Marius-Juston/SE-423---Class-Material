@@ -16,7 +16,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      TL_DIR: /usr/local/texlive/2025
+      TL_DIR: ${{ github.workspace }}/texlive/2025
     
     steps:
       - name: Checkout source
@@ -31,7 +31,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v1
+          key: texlive-2025-${{ runner.os }}-v2
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
