@@ -1,0 +1,13 @@
+Homeworks/HW1.tex
+Homeworks/HW2.tex
+Homeworks/HW3.tex
+Homeworks/HW4.tex
+Homeworks/HW5.tex
+Homeworks/HW6.tex
+Homeworks/LabVIEW1.tex
+Homeworks/LabVIEW2.tex
+Homeworks/LabVIEW3.tex
+Homeworks/LabVIEW4.tex
+Labs/Lab1.tex
+Labs/Lab2.tex
+Labs/Lab3.tex
