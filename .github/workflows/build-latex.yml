@@ -1,0 +1,94 @@
+name: Build LaTeX PDFs (TeX Live 2025) and Deploy
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '**.tex'
+      - 'pdf-list.txt'
+      - 'site/**'
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      TL_DIR: /usr/local/texlive/2025
+    
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Cache TeX Live
+        id: cache-texlive
+        uses: actions/cache@v4
+        with:
+          path: |
+            ${{ env.TL_DIR }}
+            ~/.texlive2025
+          key: texlive-2025-${{ runner.os }}-v1
+
+      - name: Install TeX Live 2025
+        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        run: |
+          sudo apt-get update && sudo apt-get install -y perl wget xz-utils
+          wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+          tar -xzf install-tl-unx.tar.gz
+          cd install-tl-*
+          
+          # Use a profile for automated installation
+          cat <<EOF > texlive.profile
+          selected_scheme scheme-basic
+          TEXDIR ${{ env.TL_DIR }}
+          TEXMFCONFIG ~/.texlive2025/texmf-config
+          TEXMFVAR ~/.texlive2025/texmf-var
+          option_doc 0
+          option_src 0
+          EOF
+          
+          sudo ./install-tl --profile=texlive.profile
+          
+          # Pre-install essential collections to mimic Overleaf's base
+          sudo ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
+            latexmk \
+            collection-latexrecommended \
+            collection-latexextra \
+            collection-fontsrecommended \
+            collection-bibtexextra \
+            amsmath \
+            environ
+
+      - name: Finalize Path
+        run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
+
+      - name: Compile LaTeX Documents
+        run: |
+          mkdir -p build
+          # Ensuring robust reading of the input file
+          grep -v '^#' pdf-list.txt | while IFS= read -r texfile || [ -n "$texfile" ]; do
+            if [ -z "$texfile" ]; then continue; absenteeism; fi
+            echo "Compiling $texfile..."
+            out_dir="build/$(dirname "$texfile")"
+            mkdir -p "$out_dir"
+            latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
+              -outdir="$out_dir" "$texfile"
+          done
+
+      - name: Deploy to Artifacts Branch
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Create orphan branch and move files
+          git checkout --orphan artifacts
+          git rm -rf .
+          cp -r build/* .
+          if [ -d "site" ]; then cp -r site/* .; fi
+          
+          git add .
+          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') [pdfLaTeX 2025]"
+          git push --force origin artifacts
