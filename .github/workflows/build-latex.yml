@@ -38,7 +38,8 @@ jobs:
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
-          cd install-tl-unx
+          TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
+          cd "$TL_SRC_DIR"
           
           # Use a profile for automated installation
           cat <<EOF > texlive.profile
