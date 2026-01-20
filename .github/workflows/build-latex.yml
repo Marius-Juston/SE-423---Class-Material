@@ -18,6 +18,7 @@ jobs:
     env:
       # Moving to a user-writable directory to fix cache permission issues
       TL_DIR: ${{ github.workspace }}/texlive/2025
+      TEXMF_OUTPUT_DIRECTORY: ${{ github.workspace }}/texlive-tmp
     
     steps:
       - name: Checkout source
