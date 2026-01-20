@@ -65,15 +65,24 @@ jobs:
           TEXMFLOCAL ${{ env.TL_DIR }}/texmf-local
           TEXMFSYSCONFIG ${{ env.TL_DIR }}/texmf-config
           TEXMFSYSVAR ${{ env.TL_DIR }}/texmf-var
-          TEXMFCONFIG ~/.texlive2025/texmf-config
-          TEXMFVAR ~/.texlive2025/texmf-var
+          TEXMFCONFIG ${{ env.TL_DIR }}/texmf-config
+          TEXMFVAR ${{ env.TL_DIR }}/texmf-var
           option_doc 0
           option_src 0
           EOF
           
           ./install-tl --profile=texlive.profile
+      - name: Normalize TeX Live permissions
+        run: |
+          chmod -R u+rwX ${{ env.TL_DIR }}
+          chmod -R u+rwX ~/.texlive2025 || true
 
+      - name: LaTeX Compilation
+        run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
+
+          # Disable automatic format generation (optional but recommended)
+          tlmgr option create_formats 0
           
           ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
             latexmk \
