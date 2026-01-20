@@ -36,7 +36,7 @@
             <h1 class="text-4xl font-bold tracking-tight">SE 423: Mechatronics</h1>
             <p class="mt-2 uiuc-orange text-lg uppercase tracking-widest font-semibold">University of Illinois Urbana-Champaign</p>
             <div class="mt-6 flex justify-center space-x-4">
-                <input type="text" id="pdfSearch" placeholder="Search assignments or labs..." 
+                <input type="text" id="pdfSearch" placeholder="Search assignments, labs, or resources..." 
                        class="px-4 py-2 w-full max-w-md rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
             </div>
         </div>
@@ -53,9 +53,7 @@
                     </svg>
                     <h2 class="text-2xl font-bold uiuc-blue">Homework</h2>
                 </div>
-                <div id="hw-list" class="space-y-4">
-                    <!-- JS will populate or you can manually edit here -->
-                </div>
+                <div id="hw-list" class="space-y-4"></div>
             </section>
 
             <!-- LabVIEW Assignments -->
@@ -66,9 +64,7 @@
                     </svg>
                     <h2 class="text-2xl font-bold uiuc-blue">LabVIEW</h2>
                 </div>
-                <div id="labview-list" class="space-y-4">
-                    <!-- LabVIEW content -->
-                </div>
+                <div id="labview-list" class="space-y-4"></div>
             </section>
 
             <!-- Lab Assignments -->
@@ -79,9 +75,7 @@
                     </svg>
                     <h2 class="text-2xl font-bold uiuc-blue">Laboratory</h2>
                 </div>
-                <div id="lab-list" class="space-y-4">
-                    <!-- Labs content -->
-                </div>
+                <div id="lab-list" class="space-y-4"></div>
             </section>
 
         </div>
@@ -95,48 +89,135 @@
     </footer>
 
     <script>
-        // Mock data structure - Update the filenames to match your actual files
+        /**
+         * Data Schema:
+         * items: Array of objects
+         * - title: Main text
+         * - file: Primary PDF link
+         * - links: Optional array of { label: string, url: string }
+         */
         const data = {
             hw: [
-                { id: 1, title: "Homework 1: Setup & Soldering", file: "Homeworks/HW1.pdf", date: "Jan 25" },
-                { id: 2, title: "Homework 2: PWM", file: "Homeworks/HW2.pdf", date: "Feb 08" },
-                { id: 3, title: "Homework 3: IMU & State Machine", file: "Homeworks/HW3.pdf", date: "Feb 22" },
-                { id: 4, title: "Homework 4: Linux & Interrupts", file: "Homeworks/HW4.pdf", date: "Mar 10" },
-                { id: 5, title: "Homework 5: Person Project", file: "Homeworks/HW5.pdf", date: "Mar 10" },
-                { id: 6, title: "Homework 6: A* & Kalman Filters", file: "Homeworks/HW6.pdf", date: "May 8" },
+                { 
+                    title: "Homework 1: Setup & Soldering", 
+                    file: "Homeworks/HW1.pdf",
+                    links: [
+                        { label: "Using Lab Repository (pdf)", url: "https://coecsl.ece.illinois.edu/se423/Using%20the%20SE423%20Repository.pdf" },
+                        { label: "Using Lab Repository (Word)", url: "https://coecsl.ece.illinois.edu/se423/Using%20the%20SE423%20Repository.docx" },
+                        { label: "Tera Term", url: "http://ttssh2.sourceforge.jp/index.html.en" },
+                        { label: "Commenting your Code, Example", url: "https://coecsl.ece.illinois.edu/se423/CommentingCodeExample.pdf" }
+                    ]
+                },
+                { 
+                    title: "Homework 2: PWM Control", 
+                    file: "Homeworks/HW2.pdf",
+                    links: [
+                        { label: "PinMux Table for HW Board (pdf)", url: "https://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf" },
+                        { label: "PinMux Table for HW Board (xlsx)", url: "https://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.xlsx" },
+                        { label: "ADC Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/ADC_Peripheral.pdf" },
+                        { label: "PWM Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/EPWM_Peripheral.pdf" },
+                        { label: "SPI Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/SPICondensed_TechRef.pdf" },
+                        { label: "F28379D Full Reference", url: "https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf" },
+                        { label: "Commenting your Code, Example", url: "https://coecsl.ece.illinois.edu/se423/CommentingCodeExample.pdf" }
+                    ] 
+                },
+                { 
+                    title: "Homework 3: IMU & State Machine", 
+                    file: "Homeworks/HW3.pdf" ,
+                    links: [
+                        { label: "SPI Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/SPICondensed_TechRef.pdf" },
+                        { label: "MPU-9250: DataSheet", url: "https://coecsl.ece.illinois.edu/se423/MPU-9250_Register_Map_10072015.pdf" },
+                        { label: "MPU-9250: Registers", url: "https://coecsl.ece.illinois.edu/se423/MPU-9250-Register-Map.pdf" },
+                        { label: "MPU-9250: Addendum/Examples", url: "https://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf" },
+                        { label: "PinMux Table for HW Board (pdf)", url: "https://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf" },
+                        { label: "PinMux Table for HW Board (xlsx)", url: "https://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.xlsx" },
+                        { label: "PWM Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/EPWM_Peripheral.pdf" },
+                        { label: "F28379D Full Reference", url: "https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf" },
+                        { label: "State Machine Example", url: "https://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf" }
+                    ]
+                },{
+                    title: "Homework 4: Linux & Interrupts", 
+                    file: "Homeworks/HW4.pdf" 
+                },{ 
+                    title: "Homework 5: Personal Project", 
+                    file: "Homeworks/HW5.pdf" 
+                },{ 
+                    title: "Homework 6: A* & Kalman Filters", 
+                    file: "Homeworks/HW6.pdf" 
+                },
             ],
             labview: [
-                { id: 1, title: "LabVIEW 1: Tutorial", file: "LabVIEW/LabVIEW1.pdf", date: "Jan 30" },
-                { id: 2, title: "LabVIEW 2: TCP Ethernet Protocol", file: "LabVIEW/LabVIEWW2.pdf", date: "Feb 15" },
-                { id: 3, title: "LabVIEW 3: Real-time Control Loops", file: "LabVIEW/LabVIEWW3.pdf", date: "Feb 15" },
-                { id: 4, title: "LabVIEW 4: SubVI & Conditional Statements", file: "LabVIEW/LabVIEWW4.pdf", date: "Feb 15" },
+                { 
+                    title: "LabVIEW 1: Tutorial", 
+                    file: "Homeworks/LabVIEW1.pdf",
+                },
+                { 
+                    title: "LabVIEW 2: TCP Ethernet Protocol", 
+                    file: "Homeworks/LabVIEW2.pdf",
+                    links: [
+                        { label: "Python Echo Server", url: "https://coecsl.ece.illinois.edu/se423/tcp_echoserver.zip" }
+                    ]
+                },
+                { 
+                    title: "LabVIEW 3: Real-time Control Loops", 
+                    file: "Homeworks/LabVIEW3.pdf",
+                },
+                { 
+                    title: "LabVIEW 4: SubVI & Conditional Statements", 
+                    file: "Homeworks/LabVIEW4.pdf",
+                },
             ],
             labs: [
-                { id: 1, title: "Lab 1: Introduction to Programming the Robot Car's TMS320F28379D Processor", file: "Labs/Lab1.pdf", date: "Feb 01" },
-                { id: 2, title: "Lab 2: Introduction to Raspberry PI4 and Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code Composer Studio", file: "Labs/Lab2.pdf", date: "Feb 15" },
-                { id: 3, title: "Lab 3: Introduction to Programming the Robot Car's TMS320F28379D Processor", file: "Labs/Lab3.pdf", date: "Mar 01" },
+                { 
+                    title: "Lab 1: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
+                    file: "Labs/Lab1.pdf" 
+                },
+                { 
+                    title: "Lab 2: Introduction to Raspberry PI4 and Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code Composer Studio", 
+                    file: "Labs/Lab2.pdf" 
+                },
+                { 
+                    title: "Lab 3: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
+                    file: "Labs/Lab3.pdf" 
+                },
             ]
         };
 
         function renderList(targetId, items) {
             const container = document.getElementById(targetId);
-            container.innerHTML = items.map(item => `
-                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()}">
-                    <div class="flex justify-between items-start mb-2">
-                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-tighter">${item.date}</span>
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-                        </svg>
+            container.innerHTML = items.map(item => {
+                // Generate optional links HTML
+                const extraLinksHtml = item.links ? `
+                    <div class="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-2">
+                        ${item.links.map(link => `
+                            <a href="${link.url}" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors flex items-center">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
+                                ${link.label}
+                            </a>
+                        `).join('')}
                     </div>
-                    <h3 class="font-semibold text-gray-800 leading-tight mb-3">${item.title}</h3>
-                    <a href="${item.file}" target="_blank" class="mt-auto inline-flex items-center text-sm font-medium uiuc-orange pdf-link">
-                        View PDF
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                    </a>
-                </div>
-            `).join('');
+                ` : '';
+
+                return `
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()}">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="font-bold text-gray-800 leading-tight">${item.title}</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        
+                        <a href="${item.file}" target="_blank" class="mt-2 inline-flex items-center text-sm font-semibold uiuc-orange pdf-link">
+                            View Assignment PDF
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                            </svg>
+                        </a>
+
+                        ${extraLinksHtml}
+                    </div>
+                `;
+            }).join('');
         }
 
         // Initial Render
@@ -144,17 +225,13 @@
         renderList('labview-list', data.labview);
         renderList('lab-list', data.labs);
 
-        // Simple Search Logic
+        // Search Logic
         document.getElementById('pdfSearch').addEventListener('input', (e) => {
             const term = e.target.value.toLowerCase();
             const items = document.querySelectorAll('.searchable-item');
             items.forEach(item => {
                 const title = item.getAttribute('data-title');
-                if (title.includes(term)) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+                item.style.display = title.includes(term) ? 'flex' : 'none';
             });
         });
     </script>
