@@ -73,16 +73,18 @@ jobs:
           
           ./install-tl --profile=texlive.profile
       - name: Normalize TeX Live permissions
+        if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           chmod -R u+rwX ${{ env.TL_DIR }}
           chmod -R u+rwX ~/.texlive2025 || true
 
       - name: LaTeX Compilation
+        if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
 
           # Disable automatic format generation (optional but recommended)
-          tlmgr option create_formats 0
+          # tlmgr option create_formats 0
           
           ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
             latexmk \
