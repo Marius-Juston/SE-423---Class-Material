@@ -150,31 +150,44 @@ jobs:
 
       - name: Deploy to Artifacts Branch
         env:
-          SAVE_LOGS: false
+          SAVE_LOGS: false 
+          TMP_ARTIFACT_FOLDER: /tmp/deployment_staging
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          git checkout --orphan artifacts
-          git rm -rf .
-      
-          # Extract PDFs from build/
+          # 1. TEMPORARY STAGING
+          # Move everything we want to KEEP into a location outside the git-managed tree
+          mkdir -p ${{env.TMP_ARTIFACT_FOLDER}}
+          
+          # Stage the PDFs (Flattening 'build' here)
           cd build
           if [ "$SAVE_LOGS" = "true" ]; then
-            find . -type f \( -name "*.pdf" -o -name "*.log" -o -name "*.aux" \) -exec cp --parents {} .. \;
+            find . -type f \( -name "*.pdf" -o -name "*.log" -o -name "*.aux" \) -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           else
-            find . -type f -name "*.pdf" -exec cp --parents {} .. \;
+            find . -type f -name "*.pdf" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           fi
           cd ..
-      
-          # Move site assets
+          
+          # Stage the Site assets
           if [ -d "site" ]; then
-            rsync -av --progress site/ .
-            rm -rf site
+            cp -r site/* ${{env.TMP_ARTIFACT_FOLDER}}/
           fi
-      
-          rm -rf build
-      
+          
+          # 2. BRANCH MANIPULATION
+          # Now it is safe to wipe everything because our 'good' files are in /tmp
+          git checkout --orphan artifacts
+          git rm -rf .
+          
+          # 3. RESTORE FROM STAGING
+          cp -r ${{env.TMP_ARTIFACT_FOLDER}}/* .
+          
+          # 4. COMMIT AND PUSH
           git add .
-          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') - Clean Production"
-          git push --force origin artifacts
+          # Verify files exist before committing to avoid empty commits
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') - Clean Production"
+            git push --force origin artifacts
+          fi
