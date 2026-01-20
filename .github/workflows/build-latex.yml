@@ -18,7 +18,8 @@ jobs:
     env:
       # Moving to a user-writable directory to fix cache permission issues
       TL_DIR: ${{ github.workspace }}/texlive/2025
-      TEXMF_OUTPUT_DIRECTORY: ${{ github.workspace }}/texlive-tmp
+      TEXMF_OUTPUT_DIRECTORY: ${{ github.workspace }}/texmf-output
+      XDG_CONFIG_HOME: ${{ github.workspace }}/.config
     
     steps:
       - name: Checkout source
@@ -79,6 +80,11 @@ jobs:
 
       - name: Finalize Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
+
+      - name: Prepare TeX output directories for minted
+        run: |
+          mkdir -p "${TEXMF_OUTPUT_DIRECTORY}"
+          mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/latexminted"
 
       - name: Compile LaTeX Documents
         run: |
