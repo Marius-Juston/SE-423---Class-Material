@@ -67,6 +67,15 @@ jobs:
             amsmath \
             environ
 
+      - name: Save TeX Live Cache
+        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            ${{ env.TL_DIR }}
+            ~/.texlive2025
+          key: ${{ steps.cache-texlive.outputs.cache-primary-key }}
+
       - name: Finalize Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
 
