@@ -150,38 +150,31 @@ jobs:
 
       - name: Deploy to Artifacts Branch
         env:
-          # Set to 'true' if you want to include .log and .aux files for debugging
-          SAVE_LOGS: false 
+          SAVE_LOGS: false
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 1. Switch to a fresh orphan branch
           git checkout --orphan artifacts
           git rm -rf .
-          
-          # 2. Extract PDFs and move them to the ROOT (stripping the 'build/' prefix)
-          # We enter the build directory so --parents starts at the subfolder level
+      
+          # Extract PDFs from build/
           cd build
           if [ "$SAVE_LOGS" = "true" ]; then
-            # Include PDF, LOG, and AUX
             find . -type f \( -name "*.pdf" -o -name "*.log" -o -name "*.aux" \) -exec cp --parents {} .. \;
           else
-            # STRICT: PDFs only
             find . -type f -name "*.pdf" -exec cp --parents {} .. \;
           fi
           cd ..
-          
-          # 3. Move site assets to the ROOT (overwriting any PDF path collisions if they exist)
+      
+          # Move site assets
           if [ -d "site" ]; then
-            cp -r site/* .
-            rm -rf site  # Clean up the source folder so only its contents remain
+            rsync -av --progress site/ .
+            rm -rf site
           fi
-
-          # 4. Final Cleanup: Ensure the 'build' directory itself is removed from the branch
+      
           rm -rf build
-          
-          # 5. Commit and Push
+      
           git add .
           git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') - Clean Production"
           git push --force origin artifacts
