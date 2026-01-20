@@ -36,12 +36,6 @@ jobs:
             ~/.texlive2025
           key: texlive-2025-${{ runner.os }}-v2 # Incremented version key
 
-      - name: Fix TeX write permissions
-        run: |
-          mkdir -p ${{ env.TL_DIR }}/texmf-var/web2c
-          chmod -R u+rwX ${{ env.TL_DIR }}
-          chmod -R u+rwX ~/.texlive2025
-
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         env:
