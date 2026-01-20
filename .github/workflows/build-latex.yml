@@ -18,6 +18,7 @@ jobs:
     env:
       # Moving to a user-writable directory to fix cache permission issues
       TL_DIR: ${{ github.workspace }}/texlive/2025
+      TEXLIVE_CACHE_KEY: texlive-2025-${{ runner.os }}-v2
     
     steps:
       - name: Checkout source
@@ -32,7 +33,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v2 # Incremented version key
+          key: ${{ env.TEXLIVE_CACHE_KEY }} # Incremented version key
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
@@ -74,7 +75,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: ${{ steps.cache-texlive.outputs.cache-primary-key }}
+          key: ${{ env.TEXLIVE_CACHE_KEY }}
 
       - name: Finalize Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
@@ -89,7 +90,7 @@ jobs:
             out_dir="build/$(dirname "$texfile")"
             mkdir -p "$out_dir"
             latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
-              -outdir="$out_dir" "$texfile"
+              -shell-escape -outdir="$out_dir" "$texfile"
           done
 
       - name: Deploy to Artifacts Branch
