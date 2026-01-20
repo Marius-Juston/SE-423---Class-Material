@@ -34,7 +34,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v2 # Incremented version key
+          key: texlive-2025-${{ runner.os }}-v3 # Incremented version key
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
@@ -108,7 +108,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v2
+          key: texlive-2025-${{ runner.os }}-v3
 
       - name: Finalize Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
