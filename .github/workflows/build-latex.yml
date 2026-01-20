@@ -16,10 +16,14 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # Moving to a user-writable directory to fix cache permission issues
+      # TL_DIR: Installation target
       TL_DIR: /home/runner/texlive/2025
-      TEXMF_OUTPUT_DIRECTORY: ${{ github.workspace }}/texmf-output
-      XDG_CONFIG_HOME: ${{ github.workspace }}/.config
+      # TEXMFVAR: Where configuration and formats live. MUST be consistent.
+      TEXMFVAR: /home/runner/texlive/2025/texmf-var
+      TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
+      TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
+      TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
+      # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
     steps:
       - name: Checkout source
@@ -34,33 +38,27 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v3 # Incremented version key
+          key: texlive-2025-${{ runner.os }}-v4 # Bumped version key due to layout change
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
-        env:
-          TEXMFVAR: ${{ env.TL_DIR }}/texmf-var
-          TEXMFSYSVAR: ${{ env.TL_DIR }}/texmf-var
-          TEXMFCONFIG: ${{ env.TL_DIR }}/texmf-config
-          TEXMFSYSCONFIG: ${{ env.TL_DIR }}/texmf-config
-          TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
         run: |
-          # 1. Install System Dependencies (Added python3-pygments for minted)
+          # 1. Install Dependencies (Added python3-pygments)
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
 
-          # 2. Fetch and Unpack TeX Live Installer
+          # 2. Download Installer
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
 
-          # 3. Prepare Directories
+          # 3. Directory Prep
           mkdir -p ${{ env.TL_DIR }}
           mkdir -p ${{ env.TL_DIR }}/texmf-var
-          mkdir -p "${GITHUB_WORKSPACE}/texmf-output"
-
+          mkdir -p ${{ env.TL_DIR }}/texmf-config
+          
           cd "$TL_SRC_DIR"
           
-          # 4. Create Profile
+          # 4. Profile (Crucial: option_sys_bin 0 avoids linking to /usr/local/bin)
           cat <<EOF > texlive.profile
           selected_scheme scheme-basic
           TEXDIR ${{ env.TL_DIR }}
@@ -73,24 +71,26 @@ jobs:
           option_src 0
           EOF
           
-          # 5. Install Base System
+          # 5. Run Install
           ./install-tl --profile=texlive.profile
 
       - name: Normalize TeX Live permissions
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
-          chmod -R u+rwX ${{ env.TL_DIR }}
-          chmod -R u+rwX ~/.texlive2025 || true
+          chmod -R u+rwX ${{ env.TL_DIR }} || true
 
-      - name: LaTeX Compilation Setup & Package Install
+      - name: Configuration and Package Installation
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
+          
+          # ENSURE TEXMFOUTPUT IS NOT SET HERE
+          unset TEXMFOUTPUT
 
-          # [CRITICAL FIX] Disable auto-format generation to prevent latex-dev failures
+          # 1. Disable auto-formats to prevent latex-dev crashes
           tlmgr option create_formats 0
           
-          # Install Packages
+          # 2. Install Packages
           tlmgr install \
             latexmk \
             collection-latexrecommended \
@@ -106,12 +106,12 @@ jobs:
             etoolbox \
             lineno
 
-          # [CRITICAL FIX] Manually generate only the STABLE formats
-          echo "Generating formats..."
+          # 3. Manually Generate STABLE formats only
+          # This will now write correctly to TEXMFVAR because TEXMFOUTPUT is unset
           fmtutil-sys --byfmt pdflatex
           fmtutil-sys --byfmt lualatex
           
-          # Optional: Regenerate file database
+          # 4. Refresh filename database
           mktexlsr
 
       - name: Save TeX Live Cache
@@ -121,25 +121,29 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v3
+          key: texlive-2025-${{ runner.os }}-v4
 
-      - name: Finalize Path
+      - name: Add TeX to Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
 
-      - name: Prepare TeX output directories for minted
-        run: |
-          mkdir -p "${TEXMF_OUTPUT_DIRECTORY}"
-          mkdir -p "${XDG_CONFIG_HOME:-$HOME/.config}/latexminted"
-
       - name: Compile LaTeX Documents
+        env:
+          # We only re-introduce TEXMFOUTPUT here if strictly necessary for minted/etc.
+          # However, usually latexmk -outdir handles this better.
+          # If you specifically need Minted to write intermediate files elsewhere:
+          TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
         run: |
           mkdir -p build
-          # Removed the typo 'absenteeism;' and refined the loop
+          mkdir -p ${{ github.workspace }}/texmf-output
+          mkdir -p "${HOME}/.config/latexminted"
+          
           grep -v '^#' pdf-list.txt | while IFS= read -r texfile || [ -n "$texfile" ]; do
             [ -z "$texfile" ] && continue
             echo "Compiling $texfile..."
             out_dir="build/$(dirname "$texfile")"
             mkdir -p "$out_dir"
+            
+            # Using -shell-escape is required for minted
             latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
               -shell-escape -outdir="$out_dir" "$texfile"
           done
@@ -151,11 +155,12 @@ jobs:
           
           git checkout --orphan artifacts
           git rm -rf .
-          # Use find to safely move PDFs while maintaining structure
+          
+          # Move PDFs
           find build -name "*.pdf" -exec cp --parents {} . \;
-          mv build/* . 2>/dev/null || true
+          # Move site assets if they exist
           if [ -d "site" ]; then cp -r site/* .; fi
           
           git add .
-          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') [pdfLaTeX 2025]"
+          git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') [TeX Live 2025]"
           git push --force origin artifacts
