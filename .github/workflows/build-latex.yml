@@ -43,10 +43,12 @@ jobs:
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
-          cd "$TL_SRC_DIR"
 
           # Ensure the directory exists
           mkdir -p ${{ env.TL_DIR }}
+          mkdir -p ${{env.TL_DIR}}/texmf-var
+
+          cd "$TL_SRC_DIR"
           
           # Fully encapsulated profile
           cat <<EOF > texlive.profile
@@ -62,6 +64,8 @@ jobs:
           EOF
           
           ./install-tl --profile=texlive.profile
+
+          export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
           
           ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
             latexmk \
