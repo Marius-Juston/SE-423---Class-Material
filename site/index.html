@@ -198,8 +198,10 @@
                     </div>
                 ` : '';
 
+                const linkValueList =  item.links? "," + item.links.map(link => link.label.toLowerCase()).join(', ') : '';
+
                 return `
-                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()}">
+                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()+linkValueList}">
                         <div class="flex justify-between items-start mb-2">
                             <h3 class="font-bold text-gray-800 leading-tight">${item.title}</h3>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
