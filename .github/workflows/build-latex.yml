@@ -45,20 +45,22 @@ jobs:
           TEXMFSYSCONFIG: ${{ env.TL_DIR }}/texmf-config
           TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
         run: |
-          sudo apt-get update && sudo apt-get install -y perl wget xz-utils
+          # 1. Install System Dependencies (Added python3-pygments for minted)
+          sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
+
+          # 2. Fetch and Unpack TeX Live Installer
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
 
-          # Ensure the directory exists
+          # 3. Prepare Directories
           mkdir -p ${{ env.TL_DIR }}
-          mkdir -p ${{env.TL_DIR}}/texmf-var
-          export TEXMFOUTPUT="${GITHUB_WORKSPACE}/texmf-output"
-          mkdir -p "$TEXMFOUTPUT"
+          mkdir -p ${{ env.TL_DIR }}/texmf-var
+          mkdir -p "${GITHUB_WORKSPACE}/texmf-output"
 
           cd "$TL_SRC_DIR"
           
-          # Fully encapsulated profile
+          # 4. Create Profile
           cat <<EOF > texlive.profile
           selected_scheme scheme-basic
           TEXDIR ${{ env.TL_DIR }}
@@ -71,22 +73,25 @@ jobs:
           option_src 0
           EOF
           
+          # 5. Install Base System
           ./install-tl --profile=texlive.profile
+
       - name: Normalize TeX Live permissions
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           chmod -R u+rwX ${{ env.TL_DIR }}
           chmod -R u+rwX ~/.texlive2025 || true
 
-      - name: LaTeX Compilation
+      - name: LaTeX Compilation Setup & Package Install
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
 
-          # Disable automatic format generation (optional but recommended)
-          # tlmgr option create_formats 0
+          # [CRITICAL FIX] Disable auto-format generation to prevent latex-dev failures
+          tlmgr option create_formats 0
           
-          ${{ env.TL_DIR }}/bin/x86_64-linux/tlmgr install \
+          # Install Packages
+          tlmgr install \
             latexmk \
             collection-latexrecommended \
             collection-latexextra \
@@ -100,6 +105,14 @@ jobs:
             xcolor \
             etoolbox \
             lineno
+
+          # [CRITICAL FIX] Manually generate only the STABLE formats
+          echo "Generating formats..."
+          fmtutil-sys --byfmt pdflatex
+          fmtutil-sys --byfmt lualatex
+          
+          # Optional: Regenerate file database
+          mktexlsr
 
       - name: Save TeX Live Cache
         if: steps.cache-texlive.outputs.cache-hit != 'true'
