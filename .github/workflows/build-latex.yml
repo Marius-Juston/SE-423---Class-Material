@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # Moving to a user-writable directory to fix cache permission issues
-      TL_DIR: ${{ github.workspace }}/texlive/2025
+      TL_DIR: /home/runner/texlive/2025
       TEXMF_OUTPUT_DIRECTORY: ${{ github.workspace }}/texmf-output
       XDG_CONFIG_HOME: ${{ github.workspace }}/.config
     
@@ -44,6 +44,9 @@ jobs:
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
           cd "$TL_SRC_DIR"
+
+          # Ensure the directory exists
+          mkdir -p ${{ env.TL_DIR }}
           
           # Fully encapsulated profile
           cat <<EOF > texlive.profile
@@ -67,7 +70,13 @@ jobs:
             collection-fontsrecommended \
             collection-bibtexextra \
             amsmath \
-            environ
+            environ \
+            minted \
+            fvextra \
+            catchfile \
+            xcolor \
+            etoolbox \
+            lineno
 
       - name: Save TeX Live Cache
         if: steps.cache-texlive.outputs.cache-hit != 'true'
