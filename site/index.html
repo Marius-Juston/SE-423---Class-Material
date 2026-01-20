@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SE 423 | Mechatronics Resource Hub</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .uiuc-orange { color: #E84A27; }
+        .uiuc-blue { color: #13294B; }
+        .bg-uiuc-blue { background-color: #13294B; }
+        .border-uiuc-orange { border-color: #E84A27; }
+        
+        .card-transition {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .card-transition:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+        .pdf-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+
+    <!-- Navigation / Header -->
+    <header class="bg-uiuc-blue text-white py-8 shadow-md">
+        <div class="container mx-auto px-4 text-center">
+            <h1 class="text-4xl font-bold tracking-tight">SE 423: Mechatronics</h1>
+            <p class="mt-2 text-orange-200 text-lg uppercase tracking-widest font-semibold">University of Illinois Urbana-Champaign</p>
+            <div class="mt-6 flex justify-center space-x-4">
+                <input type="text" id="pdfSearch" placeholder="Search assignments or labs..." 
+                       class="px-4 py-2 w-full max-w-md rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-orange-500">
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            
+            <!-- Homework Section -->
+            <section class="assignment-category">
+                <div class="flex items-center space-x-2 mb-6 border-b-2 border-uiuc-orange pb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                    </svg>
+                    <h2 class="text-2xl font-bold uiuc-blue">Homework</h2>
+                </div>
+                <div id="hw-list" class="space-y-4">
+                    <!-- JS will populate or you can manually edit here -->
+                </div>
+            </section>
+
+            <!-- LabVIEW Assignments -->
+            <section class="assignment-category">
+                <div class="flex items-center space-x-2 mb-6 border-b-2 border-uiuc-orange pb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
+                    </svg>
+                    <h2 class="text-2xl font-bold uiuc-blue">LabVIEW</h2>
+                </div>
+                <div id="labview-list" class="space-y-4">
+                    <!-- LabVIEW content -->
+                </div>
+            </section>
+
+            <!-- Lab Assignments -->
+            <section class="assignment-category">
+                <div class="flex items-center space-x-2 mb-6 border-b-2 border-uiuc-orange pb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.288a2 2 0 01-1.18.158l-1.318-.216a2 2 0 00-1.18.158l-.628.288a6 6 0 00-3.86.517l-2.387.477a2 2 0 00-1.022.547V18a2 2 0 002 2h11a2 2 0 002-2v-2.572zM19 11V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2z" />
+                    </svg>
+                    <h2 class="text-2xl font-bold uiuc-blue">Laboratory</h2>
+                </div>
+                <div id="lab-list" class="space-y-4">
+                    <!-- Labs content -->
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer class="bg-gray-100 border-t mt-12 py-6">
+        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+            <p>&copy; 2026 UIUC Department of Industrial and Enterprise Systems Engineering</p>
+            <p class="mt-1 italic">Designed for educational access within SE 423.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mock data structure - Update the filenames to match your actual files
+        const data = {
+            hw: [
+                { id: 1, title: "Homework 1: Sensors & Feedback", file: "../build/Homeworks/HW1.pdf", date: "Jan 25" },
+                { id: 2, title: "Homework 2: Actuators & Motor Modeling", file: "../build/Homeworks/HW2.pdf", date: "Feb 08" },
+                { id: 3, title: "Homework 3: Frequency Response", file: "../build/Homeworks/HW3.pdf", date: "Feb 22" },
+                { id: 4, title: "Homework 4: Digital Filters", file: "../build/Homeworks/HW4.pdf", date: "Mar 10" },
+                { id: 5, title: "Homework 5: Digital Filters", file: "../build/Homeworks/HW5.pdf", date: "Mar 10" },
+                { id: 6, title: "Homework 6: Digital Filters", file: "../build/Homeworks/HW6.pdf", date: "Mar 10" },
+            ],
+            labview: [
+                { id: 1, title: "LabVIEW 1: Data Acquisition Basics", file: "../build/Homeworks/LabVIEW1.pdf", date: "Jan 30" },
+                { id: 2, title: "LabVIEW 2: Real-time Control Loops", file: "../build/Homeworks/LabVIEWW2.pdf", date: "Feb 15" },
+                { id: 3, title: "LabVIEW 3: Real-time Control Loops", file: "../build/Homeworks/LabVIEWW3.pdf", date: "Feb 15" },
+                { id: 4, title: "LabVIEW 4: Real-time Control Loops", file: "../build/Homeworks/LabVIEWW4.pdf", date: "Feb 15" },
+            ],
+            labs: [
+                { id: 1, title: "Lab 1: Introduction to Mechatronics Kit", file: "../build/Labs/Lab1.pdf", date: "Feb 01" },
+                { id: 2, title: "Lab 2: DC Motor Characterization", file: "../build/Labs/Lab2.pdf", date: "Feb 15" },
+                { id: 3, title: "Lab 3: PID Position Control", file: "../build/Labs/Lab3.pdf", date: "Mar 01" },
+            ]
+        };
+
+        function renderList(targetId, items) {
+            const container = document.getElementById(targetId);
+            container.innerHTML = items.map(item => `
+                <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()}">
+                    <div class="flex justify-between items-start mb-2">
+                        <span class="text-xs font-semibold text-gray-400 uppercase tracking-tighter">${item.date}</span>
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+                        </svg>
+                    </div>
+                    <h3 class="font-semibold text-gray-800 leading-tight mb-3">${item.title}</h3>
+                    <a href="pdfs/${item.file}" target="_blank" class="mt-auto inline-flex items-center text-sm font-medium uiuc-orange pdf-link">
+                        View PDF
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a>
+                </div>
+            `).join('');
+        }
+
+        // Initial Render
+        renderList('hw-list', data.hw);
+        renderList('labview-list', data.labview);
+        renderList('lab-list', data.labs);
+
+        // Simple Search Logic
+        document.getElementById('pdfSearch').addEventListener('input', (e) => {
+            const term = e.target.value.toLowerCase();
+            const items = document.querySelectorAll('.searchable-item');
+            items.forEach(item => {
+                const title = item.getAttribute('data-title');
+                if (title.includes(term)) {
+                    item.style.display = 'flex';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
