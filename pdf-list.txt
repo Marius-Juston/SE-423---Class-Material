@@ -1,3 +1,4 @@
+syllabus.tex
 Homeworks/HW1.tex
 Homeworks/HW2.tex
 Homeworks/HW3.tex
