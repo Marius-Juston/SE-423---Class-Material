@@ -161,7 +161,7 @@ jobs:
 
       - name: Convert PPTX to PDF (Vector-Preserving)
         env:
-          PPTX_OUTPUT_DIR: build/Lectures
+          PPTX_OUTPUT_DIR: build
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF
