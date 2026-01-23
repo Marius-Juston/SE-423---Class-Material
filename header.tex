@@ -16,7 +16,12 @@
 \usepackage{booktabs}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\usepackage{hyperref}
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+]{hyperref}
 \usepackage{lastpage}
 \usepackage{listings}
 \usepackage{minted}
@@ -33,6 +38,7 @@
 \usepackage{array,colortbl,xcolor}
 \usepackage{pdflscape}
 \usepackage{pgfplots}
+\usepackage{xurl}
 \usetikzlibrary{arrows.meta, angles, quotes, shapes.symbols, arrows.meta}
 
 
@@ -139,3 +145,5 @@
 
 
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
+
+\pgfplotsset{compat=1.18} 
