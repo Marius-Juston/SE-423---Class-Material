@@ -14,12 +14,6 @@ Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{5}{2}}.}
 \usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.17}
 
-\definecolor{mosired}{RGB}{219,85,72}
-\definecolor{misoblue}{RGB}{84,153,207}
-\definecolor{sckorange}{RGB}{242,196,95}
-\definecolor{sspurple}{RGB}{167,123,181}
-
-\pgfmathsetmacro{\bit}{1/30}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
@@ -411,142 +405,240 @@ Answer the following questions about the SPI timing diagram on the next page. Re
 \end{enumerate}
 %
 \begin{landscape}
-%
+
+% \begin{figure}
+%     \centering
+% \begin{tikzpicture}[scale=1.4]
+% \definecolor{mosired}{RGB}{219,85,72}
+% \definecolor{misoblue}{RGB}{84,153,207}
+% \definecolor{sckorange}{RGB}{242,196,95}
+% \definecolor{sspurple}{RGB}{167,123,181}
+
+% \pgfmathsetmacro{\bit}{1/30}
+
+% \begin{groupplot}[
+%     group style={
+%         group size=1 by 4, 
+%         vertical sep=0.4cm,
+%         x descriptions at=edge bottom
+%     },
+%     width=16cm,
+%     height=3.5cm,
+%     xmin=0, xmax=3.5,
+%     ymin=-0.2, ymax=1.2,
+%     % Use ytick for internal labels
+%     ytick={0,1},
+%     yticklabels={GND, 3.3V},
+%     yticklabel style={font=\tiny, anchor=east},
+%     % Grid settings
+%     grid=both,
+%     grid style={dotted, gray!60},
+%     minor x tick num=14, % 5 subdivisions per 0.5 unit
+%     xtick={0,0.5,1,1.5,2,2.5,3,3.5},
+%     xlabel style={font=\small},
+%     ylabel style={rotate=-90, font=\bfseries, anchor=south, xshift=-4ex}
+% ]
+
+% % --- MOSI Plot ---
+% \nextgroupplot[title={\textbf{SPI Timing Diagram Analysis}}, ylabel={MOSI}]
+% \addplot[const plot, no markers, mosired, very thick] coordinates {
+%   (0,1)
+%   (7*\bit,0)(9*\bit, 1)
+%   (13*\bit,0)(15*\bit, 1)
+%   (17*\bit,0)(19*\bit, 1)
+%   (23*\bit,0)(31*\bit, 1)
+%   (35*\bit,0)(37*\bit, 1)
+%   (51*\bit,0)(59*\bit, 1)
+%   (63*\bit,0)(71*\bit, 1)
+%   (75*\bit,0)(79*\bit, 1)
+%   (83*\bit,0)(85*\bit, 1)
+%   (89*\bit,0)(93*\bit, 1)
+%   (105*\bit, 1)
+% };
+
+% % --- MISO Plot ---
+% \nextgroupplot[ylabel={MISO}]
+% \addplot[const plot, no markers, misoblue, very thick] coordinates {
+%   (0,1)
+%   (2*\bit,0)(7*\bit, 1)
+%   (11*\bit,0)(19*\bit, 1)
+%   (22*\bit,0)(29*\bit, 1)
+%   (31*\bit,0)(33*\bit, 1)
+%   (48*\bit,0)(50*\bit, 1)
+%   (52*\bit,0)(56*\bit, 1)
+%   (63*\bit,0)(77*\bit, 1)
+%   (85*\bit,0)(90*\bit, 1)
+%   (94*\bit,0)(98*\bit, 1)
+%   (105*\bit, 1)
+% };
+
+% % --- SCK Plot (Clock Signal) ---
+% \nextgroupplot[ylabel={SCK}]
+% \addplot[const plot, no markers, sckorange, very thick] coordinates {
+%     (0,1) 
+%     (3*\bit,0) (4*\bit,1)
+%     (5*\bit,0) (6*\bit,1)
+%     (7*\bit,0) (8*\bit,1)
+%     (9*\bit,0) (10*\bit,1)
+%     (11*\bit,0) (12*\bit,1)
+%     (13*\bit,0) (14*\bit,1)
+%     (15*\bit,0) (16*\bit,1)
+%     (17*\bit,0) (18*\bit,1)
+
+%     (18*\bit,1) (23*\bit,1)
+%     (23*\bit,0) (24*\bit,1)
+%     (25*\bit,0) (26*\bit,1)
+%     (27*\bit,0) (28*\bit,1)
+%     (29*\bit,0) (30*\bit,1)
+%     (31*\bit,0) (32*\bit,1)
+%     (33*\bit,0) (34*\bit,1)
+%     (35*\bit,0) (36*\bit,1)
+%     (37*\bit,0) (38*\bit,1)
+
+%     (38*\bit,1) (43*\bit,1)
+%     (43*\bit,0) (44*\bit,1)
+%     (45*\bit,0) (46*\bit,1)
+%     (47*\bit,0) (48*\bit,1)
+%     (49*\bit,0) (50*\bit,1)
+%     (51*\bit,0) (52*\bit,1)
+%     (53*\bit,0) (54*\bit,1)
+%     (55*\bit,0) (56*\bit,1)
+%     (57*\bit,0) (58*\bit,1)
+
+%     (58*\bit,1) (63*\bit,1)
+%     (63*\bit,0) (64*\bit,1)
+%     (65*\bit,0) (66*\bit,1)
+%     (67*\bit,0) (68*\bit,1)
+%     (69*\bit,0) (70*\bit,1)
+%     (71*\bit,0) (72*\bit,1)
+%     (73*\bit,0) (74*\bit,1)
+%     (75*\bit,0) (76*\bit,1)
+%     (77*\bit,0) (78*\bit,1)
+
+%     (78*\bit,1) (83*\bit,1)
+%     (83*\bit,0) (84*\bit,1)
+%     (85*\bit,0) (86*\bit,1)
+%     (87*\bit,0) (88*\bit,1)
+%     (89*\bit,0) (90*\bit,1)
+%     (91*\bit,0) (92*\bit,1)
+%     (93*\bit,0) (94*\bit,1)
+%     (95*\bit,0) (96*\bit,1)
+%     (97*\bit,0) (98*\bit,1)
+
+%     (98*\bit,1) (103*\bit,1)
+%     (103*\bit,0) (104*\bit,1)
+%     (105*\bit,0) (106*\bit,1)
+%     (107*\bit,0) (108*\bit,1)
+% };
+
+% % --- SS Plot (Slave Select - Active Low) ---
+% \nextgroupplot[ylabel={SS}, xlabel={$t$ (seconds $\times 10^{-5}$)}]
+% \addplot[const plot, no markers, sspurple, very thick] coordinates {
+%     (0,1) 
+%     (2*\bit,0) (19*\bit,1)
+%     (22*\bit,0) (39*\bit,1)
+%     (42*\bit,0) (59*\bit,1)
+%     (62*\bit,0) (79*\bit,1)
+%     (82*\bit,0) (99*\bit,1)
+%     (102*\bit,0) (119*\bit,1)
+% };
+
+% \end{groupplot}
+% \end{tikzpicture}
+%     \caption{SPI Timing Diagram Analysis}
+%     \label{fig:spi}
+% \end{figure}
+
 \begin{figure}
     \centering
 \begin{tikzpicture}[scale=1.4]
-\begin{groupplot}[
-    group style={
-        group size=1 by 4, 
-        vertical sep=0.4cm,
-        x descriptions at=edge bottom
-    },
+% Custom color palette for high-contrast signal differentiation
+\definecolor{mosired}{RGB}{219,85,72}
+\definecolor{misoblue}{RGB}{84,153,207}
+\definecolor{sckorange}{RGB}{242,196,95}
+\definecolor{sspurple}{RGB}{167,123,181}
+
+\pgfmathsetmacro{\bit}{1/30}
+
+\begin{axis}[
     width=16cm,
-    height=3.5cm,
+    height=12cm,
     xmin=0, xmax=3.5,
-    ymin=-0.2, ymax=1.2,
-    % Use ytick for internal labels
-    ytick={0,1},
-    yticklabels={GND, 3.3V},
-    yticklabel style={font=\tiny, anchor=east},
-    % Grid settings
+    ymin=-0.5, ymax=7.5,
+    % Primary Y-axis: Voltage Levels for each tier
+    ytick={0, 1, 2, 3, 4, 5, 6, 7},
+    yticklabels={GND, 3.3V, GND, 3.3V, GND, 3.3V, GND, 3.3V},
+    yticklabel style={font=\tiny},
+    % Secondary Y-axis: Signal Names (shifted further left)
+    extra y ticks={0.5, 2.5, 4.5, 6.5},
+    extra y tick labels={\textbf{\large SS}, \textbf{\large SCK}, \textbf{\large MISO}, \textbf{\large MOSI}},
+    extra y tick style={
+        tick label style={xshift=-4em, font=\small, anchor=west}
+    },
+    % Grid settings for timing alignment
     grid=both,
     grid style={dotted, gray!60},
-    minor x tick num=14, % 5 subdivisions per 0.5 unit
+    minor x tick num=14, 
     xtick={0,0.5,1,1.5,2,2.5,3,3.5},
+    xlabel={$t$ (seconds $\times 10^{-5}$)},
     xlabel style={font=\small},
-    ylabel style={rotate=-90, font=\bfseries, anchor=south, xshift=-4ex}
+    title={\textbf{Unified SPI Timing Diagram: Multi-Channel Synchronization Analysis}},
+    % Ensure ticks don't protrude awkwardly
+    tick pos=left,
+    clip=false
 ]
 
-% --- MOSI Plot ---
-\nextgroupplot[title={\textbf{SPI Timing Diagram Analysis}}, ylabel={MOSI}]
+% --- MOSI Signal (Offset +6) ---
 \addplot[const plot, no markers, mosired, very thick] coordinates {
-  (0,1)
-  (7*\bit,0)(9*\bit, 1)
-  (13*\bit,0)(15*\bit, 1)
-  (17*\bit,0)(19*\bit, 1)
-  (23*\bit,0)(31*\bit, 1)
-  (35*\bit,0)(37*\bit, 1)
-  (51*\bit,0)(59*\bit, 1)
-  (63*\bit,0)(71*\bit, 1)
-  (75*\bit,0)(79*\bit, 1)
-  (83*\bit,0)(85*\bit, 1)
-  (89*\bit,0)(93*\bit, 1)
-  (105*\bit, 1)
+  (0, 1+6) (7*\bit, 0+6) (9*\bit, 1+6) (13*\bit, 0+6) (15*\bit, 1+6)
+  (17*\bit, 0+6) (19*\bit, 1+6) (23*\bit, 0+6) (31*\bit, 1+6)
+  (35*\bit, 0+6) (37*\bit, 1+6) (51*\bit, 0+6) (59*\bit, 1+6)
+  (63*\bit, 0+6) (71*\bit, 1+6) (75*\bit, 0+6) (79*\bit, 1+6)
+  (83*\bit, 0+6) (85*\bit, 1+6) (89*\bit, 0+6) (93*\bit, 1+6) (105*\bit, 1+6)
 };
 
-% --- MISO Plot ---
-\nextgroupplot[ylabel={MISO}]
+% --- MISO Signal (Offset +4) ---
 \addplot[const plot, no markers, misoblue, very thick] coordinates {
-  (0,1)
-  (2*\bit,0)(7*\bit, 1)
-  (11*\bit,0)(19*\bit, 1)
-  (22*\bit,0)(29*\bit, 1)
-  (31*\bit,0)(33*\bit, 1)
-  (48*\bit,0)(50*\bit, 1)
-  (52*\bit,0)(56*\bit, 1)
-  (63*\bit,0)(77*\bit, 1)
-  (85*\bit,0)(90*\bit, 1)
-  (94*\bit,0)(98*\bit, 1)
-  (105*\bit, 1)
+  (0, 1+4) (2*\bit, 0+4) (7*\bit, 1+4) (11*\bit, 0+4) (19*\bit, 1+4)
+  (22*\bit, 0+4) (29*\bit, 1+4) (31*\bit, 0+4) (33*\bit, 1+4)
+  (48*\bit, 0+4) (50*\bit, 1+4) (52*\bit, 0+4) (56*\bit, 1+4)
+  (63*\bit, 0+4) (77*\bit, 1+4) (85*\bit, 0+4) (90*\bit, 1+4)
+  (94*\bit, 0+4) (98*\bit, 1+4) (105*\bit, 1+4)
 };
 
-% --- SCK Plot (Clock Signal) ---
-\nextgroupplot[ylabel={SCK}]
+% --- SCK Signal (Offset +2) ---
 \addplot[const plot, no markers, sckorange, very thick] coordinates {
-    (0,1) 
-    (3*\bit,0) (4*\bit,1)
-    (5*\bit,0) (6*\bit,1)
-    (7*\bit,0) (8*\bit,1)
-    (9*\bit,0) (10*\bit,1)
-    (11*\bit,0) (12*\bit,1)
-    (13*\bit,0) (14*\bit,1)
-    (15*\bit,0) (16*\bit,1)
-    (17*\bit,0) (18*\bit,1)
-
-    (18*\bit,1) (23*\bit,1)
-    (23*\bit,0) (24*\bit,1)
-    (25*\bit,0) (26*\bit,1)
-    (27*\bit,0) (28*\bit,1)
-    (29*\bit,0) (30*\bit,1)
-    (31*\bit,0) (32*\bit,1)
-    (33*\bit,0) (34*\bit,1)
-    (35*\bit,0) (36*\bit,1)
-    (37*\bit,0) (38*\bit,1)
-
-    (38*\bit,1) (43*\bit,1)
-    (43*\bit,0) (44*\bit,1)
-    (45*\bit,0) (46*\bit,1)
-    (47*\bit,0) (48*\bit,1)
-    (49*\bit,0) (50*\bit,1)
-    (51*\bit,0) (52*\bit,1)
-    (53*\bit,0) (54*\bit,1)
-    (55*\bit,0) (56*\bit,1)
-    (57*\bit,0) (58*\bit,1)
-
-    (58*\bit,1) (63*\bit,1)
-    (63*\bit,0) (64*\bit,1)
-    (65*\bit,0) (66*\bit,1)
-    (67*\bit,0) (68*\bit,1)
-    (69*\bit,0) (70*\bit,1)
-    (71*\bit,0) (72*\bit,1)
-    (73*\bit,0) (74*\bit,1)
-    (75*\bit,0) (76*\bit,1)
-    (77*\bit,0) (78*\bit,1)
-
-    (78*\bit,1) (83*\bit,1)
-    (83*\bit,0) (84*\bit,1)
-    (85*\bit,0) (86*\bit,1)
-    (87*\bit,0) (88*\bit,1)
-    (89*\bit,0) (90*\bit,1)
-    (91*\bit,0) (92*\bit,1)
-    (93*\bit,0) (94*\bit,1)
-    (95*\bit,0) (96*\bit,1)
-    (97*\bit,0) (98*\bit,1)
-
-    (98*\bit,1) (103*\bit,1)
-    (103*\bit,0) (104*\bit,1)
-    (105*\bit,0) (106*\bit,1)
-    (107*\bit,0) (108*\bit,1)
+    (0, 1+2) (3*\bit, 0+2) (4*\bit, 1+2) (5*\bit, 0+2) (6*\bit, 1+2)
+    (7*\bit, 0+2) (8*\bit, 1+2) (9*\bit, 0+2) (10*\bit, 1+2) (11*\bit, 0+2)
+    (12*\bit, 1+2) (13*\bit, 0+2) (14*\bit, 1+2) (15*\bit, 0+2) (16*\bit, 1+2)
+    (17*\bit, 0+2) (18*\bit, 1+2) (23*\bit, 0+2) (24*\bit, 1+2) (25*\bit, 0+2)
+    (26*\bit, 1+2) (27*\bit, 0+2) (28*\bit, 1+2) (29*\bit, 0+2) (30*\bit, 1+2)
+    (31*\bit, 0+2) (32*\bit, 1+2) (33*\bit, 0+2) (34*\bit, 1+2) (35*\bit, 0+2)
+    (36*\bit, 1+2) (37*\bit, 0+2) (38*\bit, 1+2) (43*\bit, 0+2) (44*\bit, 1+2)
+    (45*\bit, 0+2) (46*\bit, 1+2) (47*\bit, 0+2) (48*\bit, 1+2) (49*\bit, 0+2)
+    (50*\bit, 1+2) (51*\bit, 0+2) (52*\bit, 1+2) (53*\bit, 0+2) (54*\bit, 1+2)
+    (55*\bit, 0+2) (56*\bit, 1+2) (57*\bit, 0+2) (58*\bit, 1+2) (63*\bit, 0+2)
+    (64*\bit, 1+2) (65*\bit, 0+2) (66*\bit, 1+2) (67*\bit, 0+2) (68*\bit, 1+2)
+    (69*\bit, 0+2) (70*\bit, 1+2) (71*\bit, 0+2) (72*\bit, 1+2) (73*\bit, 0+2)
+    (74*\bit, 1+2) (75*\bit, 0+2) (76*\bit, 1+2) (77*\bit, 0+2) (78*\bit, 1+2)
+    (83*\bit, 0+2) (84*\bit, 1+2) (85*\bit, 0+2) (86*\bit, 1+2) (87*\bit, 0+2)
+    (88*\bit, 1+2) (89*\bit, 0+2) (90*\bit, 1+2) (91*\bit, 0+2) (92*\bit, 1+2)
+    (93*\bit, 0+2) (94*\bit, 1+2) (95*\bit, 0+2) (96*\bit, 1+2) (97*\bit, 0+2)
+    (98*\bit, 1+2) (103*\bit, 0+2) (104*\bit, 1+2) (105*\bit, 0+2)
 };
 
-% --- SS Plot (Slave Select - Active Low) ---
-\nextgroupplot[ylabel={SS}, xlabel={$t$ (seconds $\times 10^{-5}$)}]
+% --- SS Signal (Offset +0) ---
 \addplot[const plot, no markers, sspurple, very thick] coordinates {
-    (0,1) 
-    (2*\bit,0) (19*\bit,1)
-    (22*\bit,0) (39*\bit,1)
-    (42*\bit,0) (59*\bit,1)
-    (62*\bit,0) (79*\bit,1)
-    (82*\bit,0) (99*\bit,1)
-    (102*\bit,0) (119*\bit,1)
+    (0, 1) (2*\bit, 0) (19*\bit, 1) (22*\bit, 0) (39*\bit, 1) (42*\bit, 0)
+    (59*\bit, 1) (62*\bit, 0) (79*\bit, 1) (82*\bit, 0) (99*\bit, 1) (102*\bit, 0) (105*\bit, 0)
 };
 
-\end{groupplot}
+\end{axis}
 \end{tikzpicture}
-    \caption{SPI Timing Diagram Analysis}
-    \label{fig:spi}
+\caption{Caption}
+\label{fig:placeholder}
 \end{figure}
+
 \end{landscape}
 %
 \end{document}
