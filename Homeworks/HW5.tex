@@ -1,82 +1,20 @@
 \documentclass[11pt]{article}
-% Required packages:
-\input{timline}
-\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
-\usepackage[most]{tcolorbox}
-\usepackage{booktabs}
-\usepackage{fancyhdr}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{lastpage}
-\usepackage{listings}
-\usepackage{minted}
-\usepackage{setspace}
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{xparse}
 
+% \textbf{
+% The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{13}{1}}. \\
+% Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{13}{2}}.
+% }
+
+\def\AssignmentMode{HW}     % HW | Lab | LabVIEW
 \def\HWNum{5}
+\def\AssignmentText{The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{13}{1}}. \\
+Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{13}{2}}.}
 
-\setmintedinline{breaklines, breakafter=_}
-\lstset{
-    basicstyle=\ttfamily,   % Typewriter font for code
-    breaklines=true,        % Allow breaking long lines
-    columns=flexible        % Makes spacing better for inline
-}
+% Course metadata
+\input{header}
 
-\newcounter{exercise}
-
-\NewDocumentCommand{\Ex}{o}{
-  \stepcounter{exercise}
-  \section*{Exercise \theexercise
-    \IfValueT{#1}{: #1} 
-  }
-  \addcontentsline{toc}{section}{Exercise \theexercise
-    \IfValueT{#1}{: #1}}
-}
-
-
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-
-% Footer
-\fancyfoot[L]{SE423, Mechatronic Systems}
-\fancyfoot[R]{HW\HWNum, Page \thepage\ of \pageref{LastPage}}
-
-% Optional: remove header rule
-\renewcommand{\headrulewidth}{0pt}
-%
 \begin{document}
-%
-\begin{tcolorbox}[
-    colback=gray!30!white,        % background color
-    % colframe=white,         % border color
-    width=\textwidth,
-    boxrule=0.8pt,
-    arc=2mm,
-    left=6mm,
-    right=6mm,
-    top=4mm,
-    bottom=4mm,
-    center,
-]
-\centering
-% \color{white}
-\setstretch{1.2}
-
-\textbf{\Large SE 423 Mechatronics \\ Homework Assignment \#\HWNum}
-
-\vspace{2mm}
-
-\textbf{
-The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{13}{1}}. \\
-Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{13}{2}}.
-}
-\end{tcolorbox}
-%
-\vspace{0.5cm}
+\MakeAssignmentTitle
 
 \Ex[State Machine Part 3]
 

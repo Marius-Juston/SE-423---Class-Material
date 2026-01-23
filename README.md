@@ -11,3 +11,4 @@ Useful regex for conversion
 |           `\\\\\s*\n\\end`           |     `\n\end`     |
 |     `\\end\{([\w*]+)\}\n(\n\s*)+`    |  `\end{$1}\n%\n` |
 | `([a-zA-Z.?!0-9]) {2,}([a-zA-Z0-9])` |      `$1 $2`     |
+| `\\begin\{minted\}\n\[(.*\n)+?\]\n+?`| `\begin{minted}` |

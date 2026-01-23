@@ -1,79 +1,21 @@
 \documentclass[11pt]{article}
-\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
 
-\input{timline}
-
-\usepackage[siunitx, american, RPvoltages]{circuitikz}
-\usetikzlibrary{shapes.symbols} % Required for the signal shape
-\usetikzlibrary{arrows.meta}
-
-\usepackage{hyperref}
 % Required packages:
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{xcolor}
-
-\usepackage[most]{tcolorbox}
-\usepackage[table]{xcolor}
-\usepackage{setspace}
-\usepackage{hyperref}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{array}
-\usepackage{array,colortbl,xcolor}
-
-\usepackage{minted}
-
-\usepackage{xparse}
-\usepackage{pdflscape}
-
-
-\usepackage{pgfplots}
-
+\def\AssignmentMode{HW}     % HW | Lab | LabVIEW
 \def\HWNum{2}
+\def\AssignmentText{The Demonstration Check-Offs For Exercises 1 And 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{4}{1}}. Check-Offs For Exercises 3 And 4 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{5}{1}}. \\
+Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{5}{2}}.}
+
+% Course metadata
+\input{header}
 
 \usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.18}
 
-
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
-
-\setmintedinline{breaklines, breakafter=_}
-\lstset{
-    basicstyle=\ttfamily,   % Typewriter font for code
-    breaklines=true,        % Allow breaking long lines
-    columns=flexible        % Makes spacing better for inline
-}
-
-\newcounter{exercise}
-
-\NewDocumentCommand{\Ex}{o}{
-  \stepcounter{exercise}
-  \section*{Exercise \theexercise
-    \IfValueT{#1}{: #1} 
-  }
-  \addcontentsline{toc}{section}{Exercise \theexercise
-    \IfValueT{#1}{: #1}}
-}
-
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-
-% Footer
-\fancyfoot[L]{SE423, Mechatronic Systems}
-\fancyfoot[R]{HW\HWNum, Page \thepage\ of \pageref{LastPage}}
-
-% Optional: remove header rule
-\renewcommand{\headrulewidth}{0pt}
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\usepackage{tikz}
-\usepackage{pgfplots}
 \usepgfplotslibrary{groupplots}
 \pgfplotsset{compat=1.17}
 
@@ -87,34 +29,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 \begin{document}
-%
-\begin{tcolorbox}[
-    colback=gray!30!white,        % background color
-    % colframe=white,         % border color
-    width=\textwidth,
-    boxrule=0.8pt,
-    arc=2mm,
-    left=6mm,
-    right=6mm,
-    top=4mm,
-    bottom=4mm,
-    center,
-]
-\centering
-% \color{white}
-\setstretch{1.2}
-
-\textbf{\Large SE 423 Mechatronics \\ Homework Assignment \#\HWNum}
-
-\vspace{2mm}
-
-\textbf{
-The Demonstration Check-Offs For Exercises 1 And 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{4}{1}}. Check-Offs For Exercises 3 And 4 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{5}{1}}. \\
-Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{5}{2}}.
-}
-\end{tcolorbox}
-%
-\vspace{0.5cm}
+\MakeAssignmentTitle
 
 \Ex[Solder photo resistor]
 
@@ -166,13 +81,7 @@ Create a new CCS project from the HWstarter project found in your repository and
 As discussed in the lecture, the EPWM peripheral has many more options than we will need for SE423 this semester. We only need to focus on the peripheral's basic features. I have created a condensed version of the EPWM chapter of the F28379D technical reference guide. The condensed version can be found here \url{http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf}. The complete technical reference guide can be found here \url{http://coecsl.ece.illinois.edu/SE423/tms320f28379D_TechRefi.pdf}.   
 To set up the PWM peripheral and its output channels, you will need to program the PWM peripheral registers through the “bit-field” unions TI defined. Let us look at the definition of the bit-fields for the registers \mintinline{c}{TBCTL} and \mintinline{c}{AQCTLA}.  (\textbf{Note}: you can find these definitions in Code Composer Studio also by typing in the text \mintinline{c}{EPwm12Regs}, somewhere in your \lstinline|main()| function, and then right clicking and selecting “Open Declaration.”  Then do that one more time on the \lstinline|TBCTL_REG| union. YOU DO NOT cut and paste the code below into your code. I am just showing you how to view variable definitions using “Open Declaration”. Make sure to delete this single line of code where you typed \mintinline{c}{EPwm12Regs}, otherwise you will receive a compiler error later.)
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 struct TBCTL_BITS {                     // bits description
     Uint16 CTRMODE:2;                   // 1:0 Counter Mode
     Uint16 PHSEN:1;                     // 2 Phase Load Enable
@@ -314,13 +223,7 @@ and
 %
 Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So, what bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits of the register. So you could code:
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EPwm12Regs.TBCTL.bit.CLKDIV = 3;
 \end{minted}
 %
@@ -342,37 +245,19 @@ With TBPHS set to zero, i.e., \mintinline{c}{EPwm12Regs.TBPHS.bit.TBPHS = 0;} I 
 
 You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the \href{http://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf}{PinMux table for the F28379D Launchpad} to help you here. Use the function \mintinline{c}{GPIO_SetupPinMux} to change the PinMux such that GPIO22 is instead set as EPWM12A output pin. For example, the below line of code sets GPIO158 as GPIO158: 
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index
 \end{minted}
 %
 Looking at the PinMux table, the line of code below sets GPIO40 to be instead the SDAB pin:
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index   
 \end{minted}
 %
 Finally, based on a number of TI examples, it is a good idea to disable the pull-up resistor when an I/O pin is set as a PWM output to reduce power consumption. Add these lines of code after your above initializations.  
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EALLOW;  // Below are protected registers
 GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A
 EDIS;
@@ -425,18 +310,13 @@ There are quite a few things to set up, so I am giving you most of the code. You
 
 We want to command the ADCA peripheral to sample ADCINA4. There are a few ways to accomplish this, but for this homework, we are going to use EPWM4 as a timer (no duty-cycle output) to trigger the ADCA conversion sequence. In \mintinline{c}{main()} after the \mintinline{c}{init_serial} functions, add the following code and fill in the ??? blanks by studying the EPWM reference. Do not forget to copy EALLOW and EDIS.   
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EALLOW;
 EPwm4Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group
 EPwm4Regs.TBCTL.bit.CTRMODE = 3; // freeze counter
 EPwm4Regs.ETSEL.bit.SOCASEL = ???; // Select event when counter equal to PRD
 EPwm4Regs.ETPS.bit.SOCAPRD = ???; // Generate pulse on 1st event (“pulse” is the same as “trigger”)
+
 EPwm4Regs.TBCTR = 0x0; // Clear counter
 EPwm4Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0
 EPwm4Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading
@@ -452,13 +332,7 @@ Next, we would like to set up ADCA so that it uses 1 of its 16 SOCs (Start of Co
 
 Some of the given code I found in an ADC example. It retrieves the default calibration values for the ADCA from the F28379D’s read-only memory (ROM). Add the following to \mintinline{c}{main()} after the \mintinline{c}{init_serial} functions, filling in the appropriate blanks (???). Note that the lines of C code that are commented out will be used in the next exercise when you also convert the Joystick channels.  
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EALLOW;
 //write configurations for ADCA
 AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
@@ -472,20 +346,20 @@ DELAY_US(1000);
 
 //Select the channels to convert and the end of conversion flag
 //ADCA
-AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???;//SOC0 will convert Channel you choose Does not have to be A0
+AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???; //SOC0 will convert Channel you choose Does not have to be A0
 AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
-AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???;// EPWM4 ADCSOCA 
+AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???;//SOC1 will conv Channel you choose Does not have to be A1
+//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1
 //AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
-//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???;// EPWM4 ADCSOCA 
+//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???;//SOC2 will conv Channel you choose Does not have to be A2
+//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2
 //AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
-//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???;// EPWM4 ADCSOCA 
+//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;//set to last or only SOC that is converted, and it will set INT1 flag ADCA1
-AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1;   //enable INT1 flag
+AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???; //set to last or only SOC that is converted, and it will set INT1 flag ADCA1
+AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag
 AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared	
 EDIS;
 \end{minted}
@@ -494,13 +368,7 @@ EDIS;
 
 Now add this ADCA1 hardware interrupt function. To get you started with this interrupt function, cut and paste this shell function somewhere in your code outside of your \mintinline{c}{main()} function.
 %
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 //adca1 pie interrupt
 __interrupt void ADCA_ISR (void)
 {

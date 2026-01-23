@@ -1,115 +1,21 @@
 \documentclass[11pt]{article}
-% Required packages:
-\input{timline}
-\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
-\usepackage[most]{tcolorbox}
-\usepackage{booktabs}
-\usepackage{fancyhdr}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{lastpage}
-\usepackage{listings}
-\usepackage{minted}
-\usepackage{setspace}
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{xparse}
-\usepackage{array,colortbl,xcolor}
 
-\usepackage{hyperref}
-% Required packages:
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{xcolor}
-\usepackage{listings}
-\usepackage{xcolor}
+% \textbf{
+% Introduction to Programming the Robot Car’s TMS320F28379D Processor. \\
+% One-Week Lab
+% }
 
-\usepackage[most]{tcolorbox}
-\usepackage[table]{xcolor}
-\usepackage{setspace}
-\usepackage{hyperref}
-\usepackage{fancyhdr}
-\usepackage{lastpage}
-\usepackage{array}
-\usepackage{array,colortbl,xcolor}
-
-\usepackage{minted}
-
-\usepackage{xparse}
-\usepackage{pdflscape}
-
-
-\usepackage{pgfplots}
-
-\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
-
-\setmintedinline{breaklines, breakafter=_}
-
+\def\AssignmentMode{Lab}     % HW | Lab | LabVIEW
 \def\HWNum{3}
+\def\AssignmentText{Introduction to Programming the Robot Car’s TMS320F28379D Processor. \\
+One-Week Lab}
 
-\lstset{
-    basicstyle=\ttfamily,   % Typewriter font for code
-    breaklines=true,        % Allow breaking long lines
-    columns=flexible        % Makes spacing better for inline
-}
-
-\newcounter{exercise}
-
-\NewDocumentCommand{\Ex}{o}{
-  \stepcounter{exercise}
-  \section*{Exercise \theexercise
-    \IfValueT{#1}{: #1} 
-  }
-  \addcontentsline{toc}{section}{Exercise \theexercise
-    \IfValueT{#1}{: #1}}
-}
-
-
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-
-% Footer
-\fancyfoot[L]{SE423, Mechatronic Systems}
-\fancyfoot[R]{Lab\HWNum, Page \thepage\ of \pageref{LastPage}}
-
-% Optional: remove header rule
-\renewcommand{\headrulewidth}{0pt}
-
+% Course metadata
+\input{header}
 
 \begin{document}
 
-
-\begin{tcolorbox}[
-    colback=gray!30!white,        % background color
-    % colframe=white,         % border color
-    width=\textwidth,
-    boxrule=0.8pt,
-    arc=2mm,
-    left=6mm,
-    right=6mm,
-    top=4mm,
-    bottom=4mm,
-    center,
-]
-\centering
-% \color{white}
-\setstretch{1.2}
-
-\textbf{\Large SE 423 Mechatronics \\ Laboratory Assignment \#\HWNum}
-
-\vspace{2mm}
-
-\textbf{
-Introduction to Programming the Robot Car’s TMS320F28379D Processor. \\
-One-Week Lab
-}
-\end{tcolorbox}
-
-
-\vspace{0.5cm}
+\MakeAssignmentTitle
 
 \section*{Goal for this Lab Assignment}
 
@@ -140,13 +46,7 @@ As discussed in the lecture, the EPWM peripheral has many more options than we w
 
 To set up the PWM peripheral and its output channels, you will need to program the PWM peripheral registers through the “bit-field” unions TI defined. Let us look at the bit-field definitions for the registers TBCTL and AQCTLA. (Note: you can find these definitions in Code Composer Studio also by typing in the text EPwm12Regs, somewhere in your \mintinline{c}{main()} function, and then right clicking and selecting “Open Declaration.”  Then do that one more time on the \mintinline{c}{TBCTL_REG} union. \textbf{YOU DO NOT} cut and paste the below code into your code. I am just showing you how to view variable definitions using the “Open Declaration” command. Make sure to delete this single line of code where you typed \mintinline{c}{EPwm12Regs}, otherwise you will receive a compiler error later.)
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 struct TBCTL_BITS {                     // bits description
     Uint16 CTRMODE:2;                   // 1:0 Counter Mode
     Uint16 PHSEN:1;                     // 2 Phase Load Enable
@@ -288,13 +188,7 @@ and
 %
 Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. What bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits of the register. So you could code:
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EPwm12Regs.TBCTL.bit.CLKDIV = 3;
 \end{minted}
 
@@ -316,13 +210,7 @@ With TBPHS set to zero, i.e., \mintinline{c}{EPwm12Regs.TBPHS.bit.TBPHS =0;}  I 
 
 You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the \href{http://coecsl.ece.illinois.edu/SE423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf}{PinMux table for the F28379D Launchpad} to help you here. Use the function \mintinline{c}{GPIO_SetupPinMux} to change the PinMux such that GPIO22 is instead set as EPWM12A output pin. For example, the below line of code sets GPIO158 as GPIO158: 
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index
 \end{minted}
 
@@ -330,25 +218,13 @@ GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index
 
 Looking at the PinMux table, the following line of code sets GPIO40 to be instead the SDAB pin:
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index  
 \end{minted}
 
 Finally, based on several TI examples, it seems a good idea to disable the pull-up resistor when an I/O pin is set as a PWM output to reduce power consumption. Add these five lines of code in the same area of your \mintinline{c}{main()} function. You will be setting up EPWM1A and EPWM2A later in this lab. I went ahead and added their code here to simplify the explanation of the later steps in the lab. 
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 EALLOW;  // Below are protected registers
 GpioCtrlRegs.GPAPUD.bit.GPIO0 = 1; // For EPWM1A
 GpioCtrlRegs.GPAPUD.bit.GPIO2 = 1; // For EPWMA2
@@ -409,13 +285,7 @@ The eQEP peripheral, right out of a “power on reset” of the F28379D processo
 
 Look at your robot’s motors. Notice that there is a gear head between the motor and the wheel’s shaft. This gear ratio is 20:1, meaning 20 rotations of the DC motor result in one rotation of the wheel. Also, look at the back end of the robot’s motor and see the enclosed optical encoder. This optical encoder has 500 slits for one rotation of the DC motor. So, one rotation of the motor produces 500 square-wave periods in both the A and B channels. Since the eQEP counts these pulses in quadrature count mode, the total number of counts per revolution of the motor is 4 × 500, or 2000 counts per revolution. \textit{See my current lectures if you are not familiar with the A and B channels and quadrature count mode.}  Then combining this with the gear ratio of the motor, you can calculate the multiplication factor that converts eQEP counts to the number of radians the wheel has turned. Add this to both the \mintinline{c}{ReadEncLeft()} and \mintinline{c}{ReadEncRight()} functions so that they return radians of the wheel. After adding this multiplication factor, paste the code below into your C file. Make sure to define these four functions in advance. Note that the “\mintinline{c}{readEncWheel}” function reads a third optical encoder that you will hold in your hand to command the robot to move forward and backward. I gave you the scale factor for that encoder.  
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 void init_eQEPs(void) {
 
     // setup eQEP1 pins for input
@@ -536,13 +406,7 @@ In this final exercise, you are going to implement a friction compensation algor
 \item Using two separate regression fits, one for positive velocities and one for negative velocities, find the two lines that best fit your measured data points in the positive and negative velocity regimes. Ask your instructor for help if you do not know how to do a regression in MATLAB quickly. From the best-fit lines, note the y-intercepts. These are your values for positive and negative coulomb friction. We will label these values \verb|Cpos| and \verb|Cneg| (note \verb|Cneg| will be a negative value). The slopes of the two lines are your values for positive and negative viscous friction. We will label these values \verb|Vpos| and \verb|Vneg|.  
 \item With these identified parameters, add the following friction compensation algorithm to your code (assuming your motor's one command variable is called “\verb|uLeft|”):
 
-\begin{minted}
-[
-frame=lines,
-fontsize=\footnotesize,
-breaklines
-]
-{c}
+\begin{minted}{c}
 if (velLeft> 0.0) {
     uLeft = uLeft + Vpos*velLeft + Cpos;
 } else {

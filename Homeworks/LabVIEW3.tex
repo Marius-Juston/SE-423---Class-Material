@@ -1,81 +1,19 @@
 \documentclass[11pt]{article}
 % Required packages:
-\input{timline}
-\usepackage[letterpaper, total={6in, 9.5in}]{geometry}
-\usepackage[most]{tcolorbox}
-\usepackage{booktabs}
-\usepackage{fancyhdr}
-\usepackage{graphicx}
-\usepackage{hyperref}
-\usepackage{lastpage}
-\usepackage{listings}
-\usepackage{minted}
-\usepackage{setspace}
-\usepackage{subcaption}
-\usepackage{tabularx}
-\usepackage{tikz}
-\usepackage{xcolor}
-\usepackage{xparse}
+% \textbf{
+% This Is An Optional Assignment If You Would Like To Learn More About Graphs And Plotting In LABVIEW.
+% }
 
-\def\HWNum{1}
+\def\AssignmentMode{LabVIEW}     % HW | Lab | LabVIEW
+\def\HWNum{3}
+\def\AssignmentText{This Is An Optional Assignment If You Would Like To Learn More About Graphs And Plotting In LABVIEW.}
 
-\setmintedinline{breaklines, breakafter=_}
-\lstset{
-    basicstyle=\ttfamily,   % Typewriter font for code
-    breaklines=true,        % Allow breaking long lines
-    columns=flexible        % Makes spacing better for inline
-}
+% Course metadata
+\input{header}
 
-\newcounter{exercise}
-
-\NewDocumentCommand{\Ex}{o}{
-  \stepcounter{exercise}
-  \section*{Exercise \theexercise
-    \IfValueT{#1}{: #1} 
-  }
-  \addcontentsline{toc}{section}{Exercise \theexercise
-    \IfValueT{#1}{: #1}}
-}
-
-
-\pagestyle{fancy}
-\fancyhf{} % clear all header and footer fields
-
-% Footer
-\fancyfoot[L]{SE423, Mechatronic Systems}
-\fancyfoot[R]{LabVIEW\HWNum, Page \thepage\ of \pageref{LastPage}}
-
-% Optional: remove header rule
-\renewcommand{\headrulewidth}{0pt}
-%
 \begin{document}
-%
-\begin{tcolorbox}[
-    colback=gray!30!white,        % background color
-    % colframe=white,         % border color
-    width=\textwidth,
-    boxrule=0.8pt,
-    arc=2mm,
-    left=6mm,
-    right=6mm,
-    top=4mm,
-    bottom=4mm,
-    center,
-]
-\centering
-% \color{white}
-\setstretch{1.2}
 
-\textbf{\Large SE 423 Mechatronics \\ LabVIEW Assignment \#\HWNum}
-
-\vspace{2mm}
-
-\textbf{
-This Is An Optional Assignment If You Would Like To Learn More About Graphs And Plotting In LABVIEW.
-}
-\end{tcolorbox}
-%
-\vspace{0.5cm}
+\MakeAssignmentTitle
 
 \Ex
 
