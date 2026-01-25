@@ -3,12 +3,14 @@
 Useful regex for conversion
 
 
-|                 Regex                |    Replacement   |
-|:------------------------------------:|:----------------:|
-|                 `->`                 | ` $rightarrow$ ` |
-|              `^\d+\.\s+`             |     `\item `     |
-|         `(\n\s*){2,}\\begin`         |   `\n%\n\begin`  |
-|           `\\\\\s*\n\\end`           |     `\n\end`     |
-|     `\\end\{([\w*]+)\}\n(\n\s*)+`    |  `\end{$1}\n%\n` |
-| `([a-zA-Z.?!0-9]) {2,}([a-zA-Z0-9])` |      `$1 $2`     |
-| `\\begin\{minted\}\n\[(.*\n)+?\]\n+?`| `\begin{minted}` |
+|                 Regex                |       Replacement   |
+|:------------------------------------:|:-------------------:|
+|                 `->`                 | ` $rightarrow$ `    |
+|              `^\d+\.\s+`             |     `\item `        |
+|         `(\n\s*){2,}\\begin`         |   `\n%\n\begin`     |
+|           `\\\\\s*\n\\end`           |     `\n\end`        |
+|     `\\end\{([\w*]+)\}\n(\n\s*)+`    |  `\end{$1}\n%\n`    |
+| `([a-zA-Z.?!0-9]) {2,}([a-zA-Z0-9])` |      `$1 $2`        |
+| `\\begin\{minted\}\n\[(.*\n)+?\]\n+?`| `\begin{minted}`    |
+| `\\begin\{figure\}(\[[a-zA-Z!]+\])?` | `\begin{figure}[H]` |
+| `\\begin\{subfigure\}(\[[a-zA-Z!]+\])?` | `\begin{subfigure}[b]` |
