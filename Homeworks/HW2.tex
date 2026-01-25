@@ -252,7 +252,7 @@ GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A
 EDIS;
 \end{minted}
 %
-Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s interrupt function and comment out the call to the \mintinline{c}{displayLEDletter()} function. When ready, download this code to your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50\% duty cycle, so the LED should be 50\% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in Code Composer Studio. In CCS, select the menu View -> Registers, and the Registers tab should appear. There are a bunch of registers, so you will have to scroll down until you see the “EPwm12Regs” register. Click the “$>$” to expand the register. Scroll down until you find the TBPRD and CMPA registers. Note the value in TBPRD. Expand the CMPA register and confirm that it is a 32-bit register with two 16-bit parts, CMPA and CMPAHR. Leave CMPAHR at 0 and change CMPA. First, try setting CMPA to 3/4 the value of TBPRD. What happens to the intensity of LED1? Change CMPA to the same value as TBPRD to see the maximum brightness (100\% duty cycle). Play with other values for CMPA to see the brightness change.  
+Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s interrupt function and comment out the call to the \mintinline{c}{displayLEDletter()} function. When ready, download this code to your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50\% duty cycle, so the LED should be 50\% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in Code Composer Studio. In CCS, select the menu View $rightarrow$ Registers, and the Registers tab should appear. There are a bunch of registers, so you will have to scroll down until you see the “EPwm12Regs” register. Click the “$>$” to expand the register. Scroll down until you find the TBPRD and CMPA registers. Note the value in TBPRD. Expand the CMPA register and confirm that it is a 32-bit register with two 16-bit parts, CMPA and CMPAHR. Leave CMPAHR at 0 and change CMPA. First, try setting CMPA to 3/4 the value of TBPRD. What happens to the intensity of LED1? Change CMPA to the same value as TBPRD to see the maximum brightness (100\% duty cycle). Play with other values for CMPA to see the brightness change.  
 
 \textbf{Note}: Code Composer Studio may not display your EPWM12 registers correctly due to very little code running on your F28379D processor, and also due to the large number of registers to display in the register view. Once you click the Registers tab, you will see two icons with yellow arrows pointing towards each other. These are Refresh and Continuous Refresh. When you enter a value for CMPA, try clicking Refresh and Continuous Refresh to see if CCS refreshes the value in CMPA. If the Refresh icons do not work, you can also pause your code with the pause icon, and your values should update. Then click the resume icon to continue running your code.  
 
@@ -548,7 +548,7 @@ Answer the following questions about the SPI timing diagram on the next page. Re
 %     \caption{SPI Timing Diagram Analysis}
 %     \label{fig:spi}
 % \end{figure}
-
+%
 \begin{figure}
     \centering
 \begin{tikzpicture}[scale=1.4]
@@ -559,7 +559,7 @@ Answer the following questions about the SPI timing diagram on the next page. Re
 \definecolor{sspurple}{RGB}{167,123,181}
 
 \pgfmathsetmacro{\bit}{1/30}
-
+%
 \begin{axis}[
     width=16cm,
     height=12cm,
@@ -638,7 +638,7 @@ Answer the following questions about the SPI timing diagram on the next page. Re
     \caption{SPI Timing Diagram Analysis}
     \label{fig:spi}
 \end{figure}
-
+%
 \end{landscape}
 %
 \end{document}
