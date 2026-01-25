@@ -1,18 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" id="html-root">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SE 423 | Mechatronics Resource Hub</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script>
+        // Set Tailwind configuration to support manual class-based dark mode
+        tailwind.config = {
+            darkMode: 'class'
+        }
+    </script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
             background-color: #f8fafc;
         }
+        
         .uiuc-orange { color: #FF5F05; }
         .uiuc-blue { color: #13294B; }
+
         .bg-uiuc-blue { background-color: #13294B; }
         .border-uiuc-orange { border-color: #FF5F05; }
         
@@ -62,6 +70,8 @@
             background-color: #e2e8f0;
             transition: background-color 0.2s;
         }
+        .dark .toggle-bg { background-color: #334155; }
+
         .toggle-dot {
             transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
@@ -71,18 +81,40 @@
         input:checked ~ .toggle-dot {
             transform: translateX(100%);
         }
+
+        .dark body { background-color: #020617; }
+        .dark .bg-white { background-color: #0f172a; }
+        .dark .text-gray-900 { color: #f1f5f9; }
+        .dark .text-gray-800 { color: #e2e8f0; }
+        .dark .border-gray-200 { border-color: #1e293b; }
+        .dark .text-gray-600 { color: #cbd5e1; }
+        .dark .bg-gray-100 { background-color: #1e293b; }
+        .dark .border-gray-100 { border-color: #334155; }
+
+        .dark .uiuc-orange { color: #FF5F05; }
+        .dark .uiuc-blue { color: #13294B; }
+
+        .dark .text-uiuc-orange { color: #FF5F05; }
+        .dark .text-uiuc-blue { color: #13294B; }
     </style>
 </head>
 <body class="min-h-screen">
 
     <!-- Navigation / Header -->
-    <header class="bg-uiuc-blue text-white py-10 shadow-md">
-        <div class="container mx-auto px-4 text-center">
+    <header class="bg-uiuc-blue text-white py-10 shadow-md relative overflow-hidden">
         <div class="absolute inset-0 opacity-10 pointer-events-none">
             <svg width="100%" height="100%"><defs><pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M 40 0 L 0 0 0 40" fill="none" stroke="white" stroke-width="1"/></pattern></defs><rect width="100%" height="100%" fill="url(#grid)" /></svg>
         </div>
 
+        <!-- Theme Toggle Positioned Absolutely -->
+        <div class="absolute top-6 right-6 z-20">
+            <button id="theme-toggle" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all">
+                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            </button>
+        </div>
 
+        <div class="container mx-auto px-4 text-center relative z-10">
             <h1 class="text-4xl font-bold tracking-tight">SE 423: Mechatronics</h1>
             <p class="mt-2 uiuc-orange text-lg uppercase tracking-widest font-semibold">University of Illinois Urbana-Champaign</p>
             
@@ -112,7 +144,7 @@
 
             <div class="mt-8 flex justify-center">
                 <input type="text" id="pdfSearch" placeholder="Search assignments, labs, lectures, or resources..." 
-                       class="px-4 py-3 w-full max-lg rounded-xl text-gray-900 shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-500 border-0">
+                       class="px-4 py-3 w-full max-w-2xl rounded-xl text-gray-900 dark:text-white dark:bg-slate-900 shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-500 border-0">
             </div>
         </div>
     </header>
@@ -126,7 +158,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
                     </svg>
-                    <h2 class="text-2xl font-bold uiuc-blue">Homework</h2>
+                    <h2 class="text-2xl font-bold uiuc-blue dark:text-slate-100">Homework</h2>
                 </div>
                 <div id="hw-list" class="space-y-4"></div>
             </section>
@@ -137,7 +169,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" />
                     </svg>
-                    <h2 class="text-2xl font-bold uiuc-blue">LabVIEW</h2>
+                    <h2 class="text-2xl font-bold uiuc-blue dark:text-slate-100">LabVIEW</h2>
                 </div>
                 <div id="labview-list" class="space-y-4"></div>
             </section>
@@ -148,7 +180,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 uiuc-orange" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.628.288a2 2 0 01-1.18.158l-1.318-.216a2 2 0 00-1.18.158l-.628.288a6 6 0 00-3.86.517l-2.387.477a2 2 0 00-1.022.547V18a2 2 0 002 2h11a2 2 0 002-2v-2.572zM19 11V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2a2 2 0 002 2h14a2 2 0 002-2z" />
                     </svg>
-                    <h2 class="text-2xl font-bold uiuc-blue">Laboratory</h2>
+                    <h2 class="text-2xl font-bold uiuc-blue dark:text-slate-100">Laboratory</h2>
                 </div>
                 <div id="lab-list" class="space-y-4"></div>
             </section>
@@ -158,43 +190,76 @@
             <div class="flex flex-col md:flex-row md:items-end justify-between mb-6 border-b-2 border-uiuc-orange pb-3 space-y-4 md:space-y-0">
                 <div class="flex items-center space-x-3">
                     <svg class="h-7 w-7 uiuc-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
-                    <h2 class="text-3xl font-bold uiuc-blue">Lecture Slides</h2>
+                    <h2 class="text-3xl font-bold uiuc-blue dark:text-slate-100">Lecture Slides</h2>
                 </div>
                 
                 <div class="flex items-center space-x-4">
                     <!-- Lecture Count Badge -->
-                    <div class="flex items-center space-x-2 bg-gray-100 px-3 py-2 rounded-xl border border-gray-200 shadow-sm">
-                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Total</span>
-                        <span class="text-sm font-bold uiuc-blue" id="lecture-count-display">0</span>
+                    <div class="flex items-center space-x-2 bg-slate-100 dark:bg-slate-800 px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                        <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Total</span>
+                        <span class="text-sm font-bold text-uiuc-orange dark:text-uiuc-orange" id="lecture-count-display">0</span>
                     </div>
 
                     <!-- Format Toggle -->
-                    <div class="flex items-center space-x-3 bg-white p-2 rounded-xl border border-gray-200 shadow-sm">
-                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter transition-colors" id="label-pdf">PDF</span>
+                    <div class="flex items-center space-x-3 bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-tighter" id="label-pdf">PDF</span>
                         <label class="relative inline-flex items-center cursor-pointer">
                             <input type="checkbox" id="formatToggle" class="sr-only">
                             <div class="w-10 h-5 toggle-bg rounded-full"></div>
                             <div class="absolute left-1 top-1 bg-white w-3 h-3 rounded-full toggle-dot shadow-sm"></div>
                         </label>
-                        <span class="text-xs font-bold text-gray-500 uppercase tracking-tighter transition-colors" id="label-pptx">PPTX</span>
+                        <span class="text-xs font-bold text-slate-500 uppercase tracking-tighter" id="label-pptx">PPTX</span>
                     </div>
                 </div>
             </div>
             
-            <div id="lecture-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-                <!-- Lectures dynamically injected here -->
-            </div>
+            <div id="lecture-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
         </div>
     </main>
 
-    <footer class="bg-gray-100 border-t mt-12 py-6">
-        <div class="container mx-auto px-4 text-center text-gray-600 text-sm">
+    <footer class="bg-slate-100 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-900 mt-12 py-6">
+        <div class="container mx-auto px-4 text-center text-slate-600 dark:text-slate-400 text-sm">
             <p>&copy; 2026 UIUC Department of Industrial and Enterprise Systems Engineering</p>
             <p class="mt-1 italic">Designed for educational access within SE 423.</p>
         </div>
     </footer>
 
     <script>
+        // --- THEME LOGIC ---
+        const themeToggleBtn = document.getElementById('theme-toggle');
+        const darkIcon = document.getElementById('theme-toggle-dark-icon');
+        const lightIcon = document.getElementById('theme-toggle-light-icon');
+        const htmlRoot = document.getElementById('html-root');
+
+        function setTheme(isDark) {
+            if (isDark) {
+                htmlRoot.classList.add('dark');
+                lightIcon.classList.remove('hidden');
+                darkIcon.classList.add('hidden');
+                localStorage.setItem('color-theme', 'dark');
+            } else {
+                htmlRoot.classList.remove('dark');
+                darkIcon.classList.remove('hidden');
+                lightIcon.classList.add('hidden');
+                localStorage.setItem('color-theme', 'light');
+            }
+        }
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('color-theme');
+        const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        
+        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
+            setTheme(true);
+        } else {
+            setTheme(false);
+        }
+
+        themeToggleBtn.addEventListener('click', () => {
+            setTheme(!htmlRoot.classList.contains('dark'));
+        });
+
+
         /**
          * Data Schema:
          * items: Array of objects
@@ -300,9 +365,8 @@
             const container = document.getElementById('lecture-list');
             const pdfLabel = document.getElementById('label-pdf');
             const pptxLabel = document.getElementById('label-pptx');
-            const countDisplay = document.getElementById('lecture-count-display');
 
-            countDisplay.textContent = data.lectures.length;
+            document.getElementById('lecture-count-display').textContent = data.lectures.length;
 
             // Update Labels
             if (currentFormat === 'pdf') {
@@ -318,14 +382,14 @@
                 const iconColor = currentFormat === 'pdf' ? 'text-red-500' : 'text-orange-500';
                 
                 return `
-                    <a href="${url}" target="_blank" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center" data-title="${item.title.toLowerCase()},${item.topic.toLowerCase()}">
+                    <a href="${url}" target="_blank" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${item.title.toLowerCase()},${item.topic.toLowerCase()}">
                         <div class="${iconColor} mb-2">
                             ${currentFormat === 'pdf' ? 
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" /><path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>` :
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" /><path d="M6 10h8v2H6v-2zm0 4h8v2H6v-2z" /></svg>`
                             }
                         </div>
-                        <span class="text-xs font-bold text-gray-800">${item.title}</span>
+                        <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${item.title}</span>
                         <span class="text-[10px] text-gray-400 mt-1 uppercase font-semibold">${currentFormat}</span>
                     </a>
                 `;
@@ -340,7 +404,7 @@
                 const extraLinksHtml = item.links ? `
                     <div class="mt-3 pt-3 border-t border-gray-100 flex flex-wrap gap-2">
                         ${item.links.map(link => `
-                            <a href="${link.url}" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 rounded hover:bg-gray-200 transition-colors flex items-center">
+                            <a href="${link.url}" class="text-xs px-2 py-1 bg-gray-100 text-gray-600 dark:text-gray-200 rounded hover:bg-gray-200 dark:hover:bg-gray-800 transition-colors flex items-center">
                                 <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20"><path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z"></path><path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z"></path></svg>
                                 ${link.label}
                             </a>
@@ -351,10 +415,10 @@
                 const linkValueList =  item.links? "," + item.links.map(link => link.label.toLowerCase()).join(', ') : '';
 
                 return `
-                    <div class="bg-white p-4 rounded-lg shadow-sm border border-gray-200 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()+linkValueList}">
+                    <div class="bg-white dark:bg-slate-900 p-4 rounded-lg shadow-sm border border-gray-200 dark:border-slate-800 card-transition flex flex-col searchable-item" data-title="${item.title.toLowerCase()+linkValueList}">
                         <div class="flex justify-between items-start mb-2">
-                            <h3 class="font-bold text-gray-800 leading-tight">${item.title}</h3>
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <h3 class="font-bold text-gray-800 dark:text-slate-100 leading-tight">${item.title}</h3>
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-300 dark:text-gray-600 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
                             </svg>
                         </div>
