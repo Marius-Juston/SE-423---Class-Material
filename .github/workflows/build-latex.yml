@@ -204,6 +204,9 @@ jobs:
             find . -type f -name "*.pdf" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           fi
           cd ..
+
+          # Stage PPTXs
+          find . -type f -name "L*.pptx" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           
           # Stage the Site assets
           if [ -d "site" ]; then
