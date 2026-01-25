@@ -1,6 +1,25 @@
+# UIUC SE 423: Introduction to Mechatronics (Spring 2026) 
 [![Build LaTeX PDFs (TeX Live 2025) and Deploy](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml/badge.svg)](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml)
 
-Useful regex for conversion
+This repository is meant to act as a place where all the course material will be stored, compiled and shown.
+
+While the work makes use of LaTeX, students are NOT required to use LaTeX to submit thier 
+
+## Resources
+
+### Template
+
+#### Color Scheme
+
+The color scheme follows [UIUC branding guidelines](https://brand.illinois.edu/visual-identity/color)
+
+#### Powerpoint 
+
+The powerpoint template was derived from [UIUC PowerPoint Template Library](https://brand.illinois.edu/resources/downloads) 
+
+### RegEx
+
+Useful regex for improve the LaTeX documents
 
 
 |                 Regex                |       Replacement   |
