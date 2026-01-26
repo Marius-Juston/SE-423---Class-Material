@@ -7,6 +7,10 @@ While the work makes use of LaTeX, students are NOT required to use LaTeX to sub
 
 ## Resources
 
+### Animations
+
+The animations creation is available in the following repo: https://github.com/Marius-Juston/SE423Animations 
+
 ### Template
 
 #### Color Scheme
