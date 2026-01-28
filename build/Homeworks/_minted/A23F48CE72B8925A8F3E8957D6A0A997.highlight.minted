@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{o}{?????}\PYG{+w}{  }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Clear GPIO66 Low to select MPU9250 chip}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFIL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Issue the SPIB\PYGZus{}RX\PYGZus{}INT when two values are in the RX FIFO}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPITXBUF}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{(}\PYG{l+m+mh}{0x8000}\PYG{+w}{ }\PYG{o}{|}\PYG{+w}{ }\PYG{l+m+mh}{0x4600}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// the 0x8000 set the read bit and 46 GYRO\PYGZus{}YOUT\PYGZus{}L}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPITXBUF}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0000}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Send 16 zeros in order that we receive the 16 GyroZ reading}
+\end{MintedVerbatim}

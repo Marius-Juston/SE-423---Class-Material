@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// Clear GPIO66 Low to act as a Slave Select. Right now, just to scope. Later, select the MPU9250 chip}
+\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{o}{?????}\PYG{+w}{  }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFIL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Issue the SPIB\PYGZus{}RX\PYGZus{}INT when two values are in the RX FIFO}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPITXBUF}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x4A3B}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// 0x4A3B and 0xB517 have no special meaning. Wanted to send}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPITXBUF}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xB517}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// something so you can see the pattern on the Oscilloscope}
+\end{MintedVerbatim}

@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n}{x1}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{6.0}\PYG{p}{;}
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n}{x2}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{2.3}\PYG{p}{;}
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n}{x3}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{7.3}\PYG{p}{;}
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n}{x4}\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mf}{7.1}\PYG{p}{;}
+\end{MintedVerbatim}

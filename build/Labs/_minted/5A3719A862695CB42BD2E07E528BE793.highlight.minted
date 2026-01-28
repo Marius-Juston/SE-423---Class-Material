@@ -1,0 +1,32 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{TBCTL\PYGZus{}BITS}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{                     }\PYG{c+c1}{// bits description}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CTRMODE}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                   }\PYG{c+c1}{// 1:0 Counter Mode}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{PHSEN}\PYG{o}{:}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                     }\PYG{c+c1}{// 2 Phase Load Enable}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{PRDLD}\PYG{o}{:}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                     }\PYG{c+c1}{// 3 Active Period Load}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{SYNCOSEL}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                  }\PYG{c+c1}{// 5:4 Sync Output Select}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{SWFSYNC}\PYG{o}{:}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                   }\PYG{c+c1}{// 6 Software Force Sync Pulse}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{HSPCLKDIV}\PYG{o}{:}\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{                 }\PYG{c+c1}{// 9:7 High Speed TBCLK Pre\PYGZhy{}scaler}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CLKDIV}\PYG{o}{:}\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{                    }\PYG{c+c1}{// 12:10 Time Base Clock Pre\PYGZhy{}scaler}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{PHSDIR}\PYG{o}{:}\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{                    }\PYG{c+c1}{// 13 Phase Direction Bit}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{FREE\PYGZus{}SOFT}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                 }\PYG{c+c1}{// 15:14 Emulation Mode Bits}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{TBCTL\PYGZus{}REG}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{all}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{TBCTL\PYGZus{}BITS}\PYG{+w}{ }\PYG{n}{bit}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{AQCTLA\PYGZus{}BITS}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{                    }\PYG{c+c1}{// bits description}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{ZRO}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 1:0 Action Counter = Zero}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{PRD}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 3:2 Action Counter = Period}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CAU}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 5:4 Action Counter = Compare A Up}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CAD}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 7:6 Action Counter = Compare A Down}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CBU}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 9:8 Action Counter = Compare B Up}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{CBD}\PYG{o}{:}\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{                       }\PYG{c+c1}{// 11:10 Action Counter = Compare B Down}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{rsvd1}\PYG{o}{:}\PYG{l+m+mi}{4}\PYG{p}{;}\PYG{+w}{                     }\PYG{c+c1}{// 15:12 Reserved}
+\PYG{p}{\PYGZcb{};}
+
+\PYG{k}{union}\PYG{+w}{ }\PYG{n+nc}{AQCTLA\PYGZus{}REG}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{Uint16}\PYG{+w}{ }\PYG{n}{all}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{struct}\PYG{+w}{ }\PYG{n+nc}{AQCTLA\PYGZus{}BITS}\PYG{+w}{ }\PYG{n}{bit}\PYG{p}{;}
+\PYG{p}{\PYGZcb{};}
+\end{MintedVerbatim}

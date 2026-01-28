@@ -1,0 +1,4 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{EPwm9Regs}\PYG{p}{.}\PYG{n}{AQCTLA}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CAU}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// What to do when CMPA is reached}
+\PYG{n}{EPwm9Regs}\PYG{p}{.}\PYG{n}{AQCTLA}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{ZRO}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// What to do when CNT set back to zero}
+\end{MintedVerbatim}

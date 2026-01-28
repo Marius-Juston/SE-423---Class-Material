@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }\PYG{n}{EALLOW}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// This is needed to write to EALLOW\PYGZhy{}protected registers}
+\PYG{+w}{    }\PYG{n}{PieVectTable}\PYG{p}{.}\PYG{n}{TIMER0\PYGZus{}INT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{cpu\PYGZus{}timer0\PYGZus{}isr}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{PieVectTable}\PYG{p}{.}\PYG{n}{TIMER1\PYGZus{}INT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{cpu\PYGZus{}timer1\PYGZus{}isr}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{PieVectTable}\PYG{p}{.}\PYG{n}{TIMER2\PYGZus{}INT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{\PYGZam{}}\PYG{n}{cpu\PYGZus{}timer2\PYGZus{}isr}\PYG{p}{;}
+\end{MintedVerbatim}
