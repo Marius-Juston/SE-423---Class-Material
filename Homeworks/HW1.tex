@@ -281,31 +281,39 @@ Answer this question after finishing Q5 above.  “\texttt{CpuTimer2.InterruptCo
 
 \Ex[Input saturation]
 
-Write a global function and name it “\texttt{saturate}”. Do not use any global variables in this function. This function should have two float parameters, “\texttt{input}” and “\texttt{saturation\_limit}”, and return a float. This return value is saturated by “\texttt{saturation\_limit}”. “\texttt{input}” is the input signal (or input value) that will be saturated if its value is greater than +\texttt{saturation\_limit} or less than –\texttt{saturation\_limit}. For example, if “\texttt{input}” is passed 3.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 3.4. If “\texttt{input}” is passed 9.5 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 5.5. If “\texttt{input}” is passed -7.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return -5.5. You will test this function in Exercise 8.  
+Write a global function and name it “\texttt{saturate}”. Do not use any global variables in this function. This function should have two \mintinline{c}{float} parameters, “\texttt{input}” and “\texttt{saturation\_limit}”, and return a \mintinline{c}{float}. This return value is saturated by “\texttt{saturation\_limit}”. “\texttt{input}” is the input signal (or input value) that will be saturated if its value is greater than +\texttt{saturation\_limit} or less than –\texttt{saturation\_limit}. For example, if “\texttt{input}” is passed 3.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 3.4. If “\texttt{input}” is passed 9.5 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 5.5. If “\texttt{input}” is passed -7.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return -5.5. You will test this function in Exercise 8.  
 
 \Ex[Sine wave saturation:]
 
 We are going to use the “\texttt{sin()}” function to generate a sine wave at the sample rate of 250ms. Create five global float variables and one global 32-bit integer: 
 %
-\begin{enumerate}
-    \item \mintinline{c}{float sinvalue = 0;}  
-\item \mintinline{c}{float time = 0;}
-\item \mintinline{c}{float ampl = 3.0;}
-\item \mintinline{c}{float frequency = 0.05;} 
-\item \mintinline{c}{float offset = 0.25;}.  
-\item \mintinline{c}{int32_t timeint = 0;}.
+\begin{enumerate} \item 
+\begin{minted}{c}
+float sinvalue = 0;
+float time = 0;
+float ampl = 3.0;
+float frequency = 0.05;
+float offset = 0.25;
+int32_t timeint = 0;
+\end{minted}
 \item Then inside the same if statement where “\texttt{serial\_printf}” is called and before “\texttt{serial\_printf}” write three lines of code: 
-\item \mintinline{c}{timeint = timeint+1;} 
-\item \mintinline{c}{time = timeint*0.25;}
-\item \mintinline{c}{sinvalue = ampl*sin(2*PI*frequency*time) + offset;}
+\item 
+\begin{minted}{c}
+timeint = timeint+1;
+time = timeint*0.25;
+sinvalue = ampl*sin(2*PI*frequency*time) + offset;
+\end{minted}
 \item Create one more global float variable, \mintinline{c}{float satvalue = 0;}
 \item In another line of C code, set “\verb|satvalue|” equal to your “\verb|saturate|” function that is passed “\verb|sinvalue|” to the “input” parameter and constant 2.65 passed to the "\verb|saturation_limit|” parameter.
 \item As a final step, modify the \texttt{serial\_printf} statement so that it prints on one line: timeint, time with 2 digits of precision, \verb|sinvalue| with 3 digits of precision, and \verb|sinvalue| with 2 digits of precision.  \%.3f is the formatter for printing a float with 3 digits of precision. \%ld is the formatter to print a 32-bit integer.   
-\item Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the prints. Demo this code to your TA in person / over video. The print out should look something like
-\item \mintinline{c}{Timeint = 30, Time = 7.50sec, Input = 2.371, SatOut = 2.37}
-\item \mintinline{c}{Timeint = 31, Time = 7.75sec, Input = 2.198, SatOut = 2.20}
-\item Etc. 
-\item A common mistake with \texttt{serial\_printf} is to use the \%d formatter for 32 bit integers. (\%d is for 16-bit integers only on the F28379D processor.)  In the \texttt{serial\_printf} statement, change the \%ld formatter to \%d and see what happens. Also, demo this to your TA in person/ over video. 
+\item Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the prints. \textbf{Demo this code to your TA in person / over video.} The print out should look something like
+\item 
+\begin{minted}{c}
+Timeint = 30, Time = 7.50sec, Input = 2.371, SatOut = 2.37
+Timeint = 31, Time = 7.75sec, Input = 2.198, SatOut = 2.20
+Etc...
+\end{minted} 
+\item A common mistake with \texttt{serial\_printf} is to use the \%d formatter for 32 bit integers. (\%d is for 16-bit integers only on the F28379D processor.)  In the \texttt{serial\_printf} statement, change the \%ld formatter to \%d and see what happens. \textbf{Also, demo this to your TA in person/ over video}. 
 \item On Gradescope, upload a PDF of your commented code file.
 \end{enumerate}
 %
