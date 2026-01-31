@@ -1,0 +1,9 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPADAT}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO19}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// Code executed when input pin}
+\PYG{+w}{    }\PYG{c+c1}{// GPIO19 is High (3.3V)}
+\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// Code executed when input pin}
+\PYG{+w}{    }\PYG{c+c1}{// GPIO19 is Low (0V/GND)}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

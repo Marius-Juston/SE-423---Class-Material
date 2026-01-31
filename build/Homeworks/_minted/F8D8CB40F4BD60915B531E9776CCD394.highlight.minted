@@ -1,0 +1,21 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{// cpu\PYGZus{}timer0\PYGZus{}isr \PYGZhy{} CPU Timer0 ISR}
+\PYG{n}{\PYGZus{}\PYGZus{}interrupt}\PYG{+w}{ }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{cpu\PYGZus{}timer0\PYGZus{}isr}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{CpuTimer0}\PYG{p}{.}\PYG{n}{InterruptCount}\PYG{o}{++}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{n}{numTimer0calls}\PYG{o}{++}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{((}\PYG{n}{numTimer0calls}\PYG{o}{\PYGZpc{}}\PYG{l+m+mi}{250}\PYG{p}{)}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{        }\PYG{n}{displayLEDletter}\PYG{p}{(}\PYG{n}{LEDdisplaynum}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{LEDdisplaynum}\PYG{o}{++}\PYG{p}{;}
+\PYG{+w}{        }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{LEDdisplaynum}\PYG{+w}{ }\PYG{o}{==}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFF}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}\PYG{+w}{  }\PYG{c+c1}{// prevent roll over exception}
+\PYG{+w}{            }\PYG{n}{LEDdisplaynum}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{        }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{c+c1}{// Blink LaunchPad Red LED}
+\PYG{+w}{    }\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPBTOGGLE}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO34}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// Acknowledge this interrupt to receive more interrupts from group 1}
+\PYG{+w}{    }\PYG{n}{PieCtrlRegs}\PYG{p}{.}\PYG{n}{PIEACK}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{PIEACK\PYGZus{}GROUP1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

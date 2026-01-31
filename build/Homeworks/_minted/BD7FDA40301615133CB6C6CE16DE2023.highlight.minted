@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{    }\PYG{c+c1}{// Configure CPU\PYGZhy{}Timer 0, 1, and 2 to interrupt every second:}
+\PYG{+w}{    }\PYG{c+c1}{// 200MHz CPU Freq, 1 second Period (in uSeconds)}
+\PYG{+w}{    }\PYG{n}{ConfigCpuTimer}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{CpuTimer0}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{10000}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{ConfigCpuTimer}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{CpuTimer1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{20000}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{ConfigCpuTimer}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{CpuTimer2}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{200}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{40000}\PYG{p}{);}
+
+\PYG{+w}{   }\PYG{c+c1}{// Enable CpuTimer Interrupt bit TIE}
+\PYG{+w}{    }\PYG{n}{CpuTimer0Regs}\PYG{p}{.}\PYG{n}{TCR}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x4000}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{CpuTimer1Regs}\PYG{p}{.}\PYG{n}{TCR}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x4000}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{CpuTimer2Regs}\PYG{p}{.}\PYG{n}{TCR}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x4000}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{n}{init\PYGZus{}serial}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{SerialA}\PYG{p}{,}\PYG{l+m+mi}{115200}\PYG{p}{);}
+\end{MintedVerbatim}

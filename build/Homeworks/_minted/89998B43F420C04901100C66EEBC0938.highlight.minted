@@ -1,0 +1,31 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{c+c1}{//write configurations for ADCA}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCCTL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{PRESCALE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{6}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//set ADCCLK divider to /4}
+\PYG{n}{AdcSetMode}\PYG{p}{(}\PYG{n}{ADC\PYGZus{}ADCA}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ADC\PYGZus{}RESOLUTION\PYGZus{}12BIT}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{ADC\PYGZus{}SIGNALMODE\PYGZus{}SINGLE}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{//read calibration settings}
+\PYG{c+c1}{//Set pulse positions to late}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCCTL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{INTPULSEPOS}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{c+c1}{//power up the ADCs}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCCTL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{ADCPWDNZ}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\PYG{c+c1}{//delay for 1ms to allow ADC time to power up}
+\PYG{n}{DELAY\PYGZus{}US}\PYG{p}{(}\PYG{l+m+mi}{1000}\PYG{p}{);}
+
+\PYG{c+c1}{//Select the channels to convert and the end of conversion flag}
+\PYG{c+c1}{//ADCA}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCSOC0CTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CHSEL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//SOC0 will convert Channel you choose Does not have to be A0}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCSOC0CTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{ACQPS}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{99}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//sample window is acqps + 1 SYSCLK cycles = 500ns}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCSOC0CTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TRIGSEL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// EPWM4 ADCSOCA}
+
+\PYG{c+c1}{//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1}
+\PYG{c+c1}{//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns}
+\PYG{c+c1}{//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA}
+
+\PYG{c+c1}{//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2}
+\PYG{c+c1}{//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns}
+\PYG{c+c1}{//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA}
+
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCINTSEL1N2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{INT1SEL}\PYG{o}{=???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//set to last or only SOC that is converted, and it will set INT1 flag ADCA1}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCINTSEL1N2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{INT1E}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//enable INT1 flag}
+\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCINTFLGCLR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{ADCINT1}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//make sure INT1 flag is cleared	}
+\PYG{n}{EDIS}\PYG{p}{;}
+\end{MintedVerbatim}

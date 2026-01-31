@@ -1,0 +1,73 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+cp}{\PYGZsh{}define C4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/261.63))}
+\PYG{c+cp}{\PYGZsh{}define D4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/293.66))}
+\PYG{c+cp}{\PYGZsh{}define E4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/329.63))}
+\PYG{c+cp}{\PYGZsh{}define F4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/349.23))}
+\PYG{c+cp}{\PYGZsh{}define G4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/392.00))}
+\PYG{c+cp}{\PYGZsh{}define A4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/440.00))}
+\PYG{c+cp}{\PYGZsh{}define B4NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/493.88))}
+\PYG{c+cp}{\PYGZsh{}define C5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/523.25))}
+\PYG{c+cp}{\PYGZsh{}define D5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/587.33))}
+\PYG{c+cp}{\PYGZsh{}define E5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/659.25))}
+\PYG{c+cp}{\PYGZsh{}define F5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/698.46))}
+\PYG{c+cp}{\PYGZsh{}define G5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/783.99))}
+\PYG{c+cp}{\PYGZsh{}define A5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/880.00))}
+\PYG{c+cp}{\PYGZsh{}define B5NOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/987.77))}
+\PYG{c+cp}{\PYGZsh{}define F4SHARPNOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/369.99))}
+\PYG{c+cp}{\PYGZsh{}define G4SHARPNOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/415.3))}
+\PYG{c+cp}{\PYGZsh{}define A4FLATNOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/415.3))}
+\PYG{c+cp}{\PYGZsh{}define C5SHARPNOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/554.37))}
+\PYG{c+cp}{\PYGZsh{}define A5FLATNOTE ((uint16\PYGZus{}t)(((50000000/2)/2)/830.61))}
+\PYG{c+cp}{\PYGZsh{}define OFFNOTE 0}
+
+\PYG{c+cp}{\PYGZsh{}define SONG\PYGZus{}LENGTH 48}
+\PYG{k+kt}{uint16\PYGZus{}t}\PYG{+w}{ }\PYG{n}{songarray}\PYG{p}{[}\PYG{n}{SONG\PYGZus{}LENGTH}\PYG{p}{]}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{OFFNOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{OFFNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{G4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{OFFNOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{OFFNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{F4SHARPNOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{E4NOTE}\PYG{p}{,}
+\PYG{n}{B4NOTE}\PYG{p}{,}
+\PYG{n}{B4NOTE}\PYG{p}{,}
+\PYG{n}{B4NOTE}\PYG{p}{,}
+\PYG{n}{B4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{,}
+\PYG{n}{A4NOTE}\PYG{p}{\PYGZcb{};}
+\end{MintedVerbatim}

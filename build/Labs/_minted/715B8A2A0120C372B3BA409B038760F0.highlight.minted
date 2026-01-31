@@ -1,0 +1,8 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{velLeft}\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mf}{0.0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{uLeft}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{uLeft}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Vpos}\PYG{o}{*}\PYG{n}{velLeft}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Cpos}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{uLeft}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{uLeft}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Vneg}\PYG{o}{*}\PYG{n}{velLeft}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Cneg}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\PYG{c+c1}{// And perform similar instructions for uRight}
+\end{MintedVerbatim}

@@ -1,0 +1,91 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{init\PYGZus{}eQEPs}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+
+\PYG{+w}{    }\PYG{c+c1}{// setup eQEP1 pins for input}
+\PYG{+w}{    }\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{//Disable internal pull\PYGZhy{}up for the selected output pins for reduced power consumption}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO20}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO20 (EQEP1A)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO21}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO21 (EQEP1B)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAQSEL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO20}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAQSEL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO21}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{EDIS}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// This specifies which of the possible GPIO pins will be EQEP1 functional pins.}
+\PYG{+w}{    }\PYG{c+c1}{// Comment out other unwanted lines.}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{20}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{21}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// make sure eqep in reset}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QDECCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QSRC}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Quadrature count mode}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QPOSCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{      }\PYG{c+c1}{// Disable eQep Position Compare}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QCAPCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{      }\PYG{c+c1}{// Disable eQep Capture}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QEINT}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{        }\PYG{c+c1}{// Disable all eQep interrupts}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QPOSMAX}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFF}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// use full range of the 32\PYGZhy{}bit count}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{FREE\PYGZus{}SOFT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// EQep uneffected by emulation suspend in Code Composer}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Enable EQep}
+
+\PYG{+w}{    }\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// setup QEP2 pins for input}
+\PYG{+w}{    }\PYG{c+c1}{//Disable internal pull\PYGZhy{}up for the selected output pinsfor reduced power consumption}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO54}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO54 (EQEP2A)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO55}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO55 (EQEP2B)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBQSEL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO54}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBQSEL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO55}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{EDIS}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{54}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// set GPIO54 and eQep2A}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{55}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// set GPIO55 and eQep2B}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// make sure qep reset}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QDECCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QSRC}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Quadrature count mode}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QPOSCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{     }\PYG{c+c1}{// Disable eQep Position Compare}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QCAPCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{     }\PYG{c+c1}{// Disable eQep Capture}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QEINT}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{       }\PYG{c+c1}{// Disable all eQep interrupts}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QPOSMAX}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFF}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// use full range of the 32\PYGZhy{}bit count.}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{FREE\PYGZus{}SOFT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// EQep uneffected by emulation suspend}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Enable EQep}
+
+\PYG{+w}{    }\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{+w}{    }\PYG{c+c1}{// setup QEP3 pins for input}
+\PYG{+w}{    }\PYG{c+c1}{//Disable internal pull\PYGZhy{}up for the selected output pins for reduced power consumption}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO6}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO54 (EQEP3A)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO7}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Disable pull\PYGZhy{}up on GPIO55 (EQEP3B)}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAQSEL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO6}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAQSEL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO7}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Qual every 6 samples}
+\PYG{+w}{    }\PYG{n}{EDIS}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{6}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// set GPIO6 and eQep2A}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{7}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{5}\PYG{p}{);}\PYG{+w}{ }\PYG{c+c1}{// set GPIO7 and eQep2B}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// make sure qep reset}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QDECCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QSRC}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Quadrature count mode}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QPOSCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{     }\PYG{c+c1}{// Disable eQep Position Compare}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QCAPCTL}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{     }\PYG{c+c1}{// Disable eQep Capture}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QEINT}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{       }\PYG{c+c1}{// Disable all eQep interrupts}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QPOSMAX}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFF}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// use full range of the 32\PYGZhy{}bit count.}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{FREE\PYGZus{}SOFT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{2}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// EQep uneffected by emulation suspend}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QEPCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{QPEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Enable EQep}
+
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n+nf}{readEncLeft}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFFU}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//4294967295U}
+\PYG{+w}{    }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{EQep1Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// I don\PYGZsq{}t think this is needed and never true}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{o}{*}\PYG{p}{(}\PYG{o}{???}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n+nf}{readEncRight}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFFU}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//4294967295U  \PYGZhy{}1 32\PYGZhy{}bit signed int}
+\PYG{+w}{    }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{EQep2Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// I don\PYGZsq{}t think this is needed and never true}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{o}{*}\PYG{p}{(}\PYG{o}{???}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+
+\PYG{k+kt}{float}\PYG{+w}{ }\PYG{n+nf}{readEncWheel}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{k+kt}{int32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k+kt}{uint32\PYGZus{}t}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0xFFFFFFFFU}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//4294967295U  \PYGZhy{}1 32\PYGZhy{}bit signed int}
+\PYG{+w}{    }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{EQep3Regs}\PYG{p}{.}\PYG{n}{QPOSCNT}\PYG{p}{;}
+\PYG{+w}{    }\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZgt{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{o}{/}\PYG{l+m+mi}{2}\PYG{p}{)}\PYG{+w}{ }\PYG{n}{raw}\PYG{+w}{ }\PYG{o}{\PYGZhy{}=}\PYG{+w}{ }\PYG{n}{QEP\PYGZus{}maxvalue}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// I don\PYGZsq{}t think this is needed and never true}
+\PYG{+w}{    }\PYG{k}{return}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{raw}\PYG{o}{*}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{o}{*}\PYG{n}{PI}\PYG{o}{/}\PYG{l+m+mf}{4000.0}\PYG{p}{));}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

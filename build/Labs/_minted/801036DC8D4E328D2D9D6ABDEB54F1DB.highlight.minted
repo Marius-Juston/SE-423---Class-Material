@@ -1,0 +1,6 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPASET}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x00000800}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//You have to think a little with this code}
+\PYG{+w}{                                       }\PYG{c+c1}{// to know that bit 11 is being set.}
+\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPASET}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO11}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//This line of code is somewhat easier to understand,}
+\PYG{+w}{                                     }\PYG{c+c1}{// as we are setting the 11th bit.}
+\end{MintedVerbatim}

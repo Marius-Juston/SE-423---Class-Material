@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{ETSEL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SOCAEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Disable SOC on A group}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CTRMODE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// freeze counter}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{ETSEL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SOCASEL}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Select event when counter equal to PRD}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{ETPS}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SOCAPRD}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Generate pulse on 1st event (“pulse” is the same as “trigger”)}
+
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBCTR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Clear counter}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBPHS}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TBPHS}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0000}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Phase is 0}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{PHSEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Disable phase loading}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CLKDIV}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// divide by 1 50Mhz Clock}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBPRD}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set Period to 1ms sample. The input clock is 50MHz.}
+\PYG{c+c1}{// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{ETSEL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SOCAEN}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//enable SOCA}
+\PYG{n}{EPwm4Regs}\PYG{p}{.}\PYG{n}{TBCTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CTRMODE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{//unfreeze, and enter up count mode}
+\PYG{n}{EDIS}\PYG{p}{;}
+\end{MintedVerbatim}

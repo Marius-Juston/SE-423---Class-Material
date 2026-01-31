@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k}{if}\PYG{+w}{ }\PYG{p}{(}\PYG{n}{velocity}\PYG{+w}{ }\PYG{o}{\PYGZgt{}}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{)}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{FricComp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Vpos}\PYG{o}{*}\PYG{n}{velocity}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Cpos}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// viscous friction*velocity + static friction}
+\PYG{p}{\PYGZcb{}}\PYG{+w}{ }\PYG{k}{else}\PYG{+w}{ }\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{FricComp}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{Vneg}\PYG{o}{*}\PYG{n}{velocity}\PYG{+w}{ }\PYG{o}{+}\PYG{+w}{ }\PYG{n}{Cneg}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

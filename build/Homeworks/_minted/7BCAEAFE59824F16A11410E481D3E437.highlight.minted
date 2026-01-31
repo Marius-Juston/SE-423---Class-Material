@@ -1,0 +1,56 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{66}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// Set as GPIO66 and used as MPU\PYGZhy{}9250 SS}
+\PYG{n}{GPIO\PYGZus{}SetupPinOptions}\PYG{p}{(}\PYG{l+m+mi}{66}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}OUTPUT}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}PUSHPULL}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{// Make GPIO66 an Output Pin}
+\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPCSET}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO66}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//Initially Set GPIO66/SS High so MPU\PYGZhy{}9250 is not selected}
+
+\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{63}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{//Set GPIO63 pin to SPISIMOB}
+\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{64}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{//Set GPIO64 pin to SPISOMIB}
+\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{65}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{);}\PYG{+w}{  }\PYG{c+c1}{//Set GPIO65 pin to SPICLKB}
+
+\PYG{n}{EALLOW}\PYG{p}{;}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO63}\PYG{+w}{   }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Enable Pull\PYGZhy{}ups on SPI PINs Recommended by TI for SPI Pins}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPCPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO64}\PYG{+w}{   }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPCPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO65}\PYG{+w}{   }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPBQSEL2}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO63}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set I/O pin to asynchronous mode recommended for SPI}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPCQSEL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO64}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set I/O pin to asynchronous mode recommended for SPI}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPCQSEL1}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO65}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{3}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set I/O pin to asynchronous mode recommended for SPI}
+\PYG{n}{EDIS}\PYG{p}{;}
+
+\PYG{c+c1}{// \PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}\PYGZhy{}}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICCR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPISWRESET}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Put SPI in Reset}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CLK\PYGZus{}PHASE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//This happens to be the mode for both the DAN28027 and}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICCR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{CLKPOLARITY}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//The MPU\PYGZhy{}9250,  Mode 01.}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{MASTER\PYGZus{}SLAVE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set to SPI Master}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICCR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPICHAR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Set to transmit and receive 16 bits each write to SPITXBUF}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TALK}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Enable transmission}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIPRI}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{FREE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Free run, continue SPI operation}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPIINTENA}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Disables the SPI interrupt}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIBRR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPI\PYGZus{}BIT\PYGZus{}RATE}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Set SCLK bit rate to 1 MHz so 1us period. SPI base clock is}
+\PYG{+w}{                                        }\PYG{c+c1}{// 50MHZ. And this setting divides that base clock}
+\PYG{+w}{                                        }\PYG{c+c1}{// to create SCLK’s period}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPISTS}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mh}{0x0000}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Clear status flags just in case they are set for some reason}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFTX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPIRST}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Pull SPI FIFO out of reset,}
+\PYG{+w}{                                   }\PYG{c+c1}{//SPI FIFO can resume transmitting or receiving.}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFTX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPIFFENA}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Enable SPI FIFO enhancements}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFTX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TXFIFO}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{  }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Write 0 to reset the FIFO pointer to zero, and hold in reset}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFTX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TXFFINTCLR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Write 1 to clear SPIFFTX[TXFFINT] flag just in case it is set}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFIFORESET}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Write 0 to reset the FIFO pointer to zero, and hold in reset}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFOVFCLR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Write 1 to clear SPIFFRX[RXFFOVF] just in case it is set}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFINTCLR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Write 1 to clear SPIFFRX[RXFFINT] flag just in case it is set}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFIENA}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{   }\PYG{c+c1}{// Enable the RX FIFO Interrupt. RXFFST \PYGZgt{}= RXFFIL}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFCT}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TXDLY}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Set the delay between transmits to 0 spi clocks.}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICCR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPISWRESET}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Pull the SPI out of reset}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFTX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{TXFIFO}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Release transmit FIFO from reset.}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFIFORESET}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{    }\PYG{c+c1}{// Re\PYGZhy{}enable receive FIFO operation}
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPICTL}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{SPIINTENA}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Enables SPI interrupt. !! I do not think this is needed. Need to Test}
+
+\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFIL}\PYG{+w}{ }\PYG{o}{=???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Interrupt Level to 16 words or more received into FIFO causes}
+\PYG{+w}{                                  }\PYG{c+c1}{//an interrupt. This is just the initial setting for the register. Will be changed below}
+\end{MintedVerbatim}

@@ -1,0 +1,8 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{	}\PYG{n}{serial\PYGZus{}printf}\PYG{p}{(}\PYG{o}{\PYGZam{}}\PYG{n}{SerialA}\PYG{p}{,}\PYG{+w}{ }\PYG{l+s}{\PYGZdq{}Num Timer2:\PYGZpc{}ld Num SerialRX: \PYGZpc{}ld}\PYG{l+s+se}{\PYGZbs{}r\PYGZbs{}n}\PYG{l+s}{\PYGZdq{}}\PYG{p}{,}
+\PYG{+w}{            }\PYG{n}{CpuTimer2}\PYG{p}{.}\PYG{n}{InterruptCount}\PYG{p}{,}\PYG{n}{numRXA}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{UARTPrint}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{      }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

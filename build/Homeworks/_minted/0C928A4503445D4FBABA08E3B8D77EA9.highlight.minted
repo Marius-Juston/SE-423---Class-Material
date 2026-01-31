@@ -1,0 +1,17 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{int16\PYGZus{}t}\PYG{+w}{ }\PYG{n}{spivalue1}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{k+kt}{int16\PYGZus{}t}\PYG{+w}{ }\PYG{n}{spivalue2}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{n}{\PYGZus{}\PYGZus{}interrupt}\PYG{+w}{ }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{SPIB\PYGZus{}isr}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{spivalue1}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Read first 16\PYGZhy{}bit value off RX FIFO. Probably is zero since no chip}
+\PYG{+w}{    }\PYG{n}{spivalue2}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Read second 16\PYGZhy{}bit value off RX FIFO. Again probably zero}
+
+\PYG{+w}{    }\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{o}{????}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{o}{???}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// Set GPIO 66 high to end Slave Select. Now to Scope.}
+\PYG{+w}{                             }\PYG{c+c1}{//Later, deselect the MPU9250.}
+\PYG{+w}{    }\PYG{c+c1}{// Later, when actually communicating with the MPU9250, do something with the data. Now do nothing.}
+
+\PYG{+w}{    }\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFOVFCLR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{      }\PYG{c+c1}{// Clear Overflow flag just in case of an overflow}
+\PYG{+w}{    }\PYG{n}{SpibRegs}\PYG{p}{.}\PYG{n}{SPIFFRX}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{RXFFINTCLR}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{      }\PYG{c+c1}{// Clear RX FIFO Interrupt flag so next interrupt will happen}
+
+\PYG{+w}{    }\PYG{n}{PieCtrlRegs}\PYG{p}{.}\PYG{n}{PIEACK}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{PIEACK\PYGZus{}GROUP6}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Acknowledge INT6 PIE interrupt}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

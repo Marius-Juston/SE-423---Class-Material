@@ -1,0 +1,4 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//CpuTimer0Regs.TCR.all = 0x4000;}
+\PYG{c+c1}{//CpuTimer1Regs.TCR.all = 0x4000;}
+\end{MintedVerbatim}

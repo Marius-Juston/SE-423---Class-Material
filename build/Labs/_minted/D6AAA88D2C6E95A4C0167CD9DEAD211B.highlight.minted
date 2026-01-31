@@ -1,0 +1,14 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{+w}{	}\PYG{c+c1}{// Normally, on the Robot Car, we only use the below UART\PYGZus{}printfLine functions to write to the}
+\PYG{+w}{	}\PYG{c+c1}{// on board LCD screen. The serial\PYGZus{}printf below is only used in lab 1 to print to a serial port.}
+\PYG{+w}{	}\PYG{c+c1}{// terminal over a USB cable, as you will for your homework.}
+\PYG{+w}{	}\PYG{c+c1}{//serial\PYGZus{}printf(\PYGZam{}SerialA,\PYGZdq{}Num Timer2:\PYGZpc{}ld Num SerialRX: \PYGZpc{}ld\PYGZbs{}r\PYGZbs{}n\PYGZdq{},CpuTimer2.InterruptCount,numRXA);}
+\PYG{+w}{			}
+\PYG{+w}{	}\PYG{c+c1}{//IMPORTANT!! \PYGZpc{}ld is for an int32\PYGZus{}t. To print an int16\PYGZus{}t, use \PYGZpc{}d}
+\PYG{+w}{        }\PYG{n}{UART\PYGZus{}printfLine}\PYG{p}{(}\PYG{l+m+mi}{1}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}Timer2 Calls \PYGZpc{}ld\PYGZdq{}}\PYG{p}{,}\PYG{n}{CpuTimer2}\PYG{p}{.}\PYG{n}{InterruptCount}\PYG{p}{);}
+\PYG{+w}{	}\PYG{n}{UART\PYGZus{}printfLine}\PYG{p}{(}\PYG{l+m+mi}{2}\PYG{p}{,}\PYG{l+s}{\PYGZdq{}T0 \PYGZpc{}ld,T1 \PYGZpc{}ld\PYGZdq{}}\PYG{p}{,}\PYG{n}{CpuTimer0}\PYG{p}{.}\PYG{n}{InterruptCount}\PYG{p}{,}\PYG{n}{CpuTimer1}\PYG{p}{.}\PYG{n}{InterruptCount}\PYG{p}{);}
+\PYG{+w}{        }\PYG{n}{UARTPrint}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{;}
+\PYG{+w}{      }\PYG{p}{\PYGZcb{}}
+\PYG{+w}{    }\PYG{p}{\PYGZcb{}}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

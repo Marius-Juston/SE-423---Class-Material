@@ -1,0 +1,7 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{n}{EALLOW}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{// Below are protected registers}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO0}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// For EPWM1A}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO2}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// For EPWMA2}
+\PYG{n}{GpioCtrlRegs}\PYG{p}{.}\PYG{n}{GPAPUD}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO22}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{ }\PYG{c+c1}{// For EPWM12A}
+\PYG{n}{EDIS}\PYG{p}{;}
+\end{MintedVerbatim}

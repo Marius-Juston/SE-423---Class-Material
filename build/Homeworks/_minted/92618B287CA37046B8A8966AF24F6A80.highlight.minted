@@ -1,0 +1,15 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{//adca1 pie interrupt}
+\PYG{n}{\PYGZus{}\PYGZus{}interrupt}\PYG{+w}{ }\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n}{ADCA\PYGZus{}ISR}\PYG{+w}{ }\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{n}{Adca4result}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{AdcaResultRegs}\PYG{p}{.}\PYG{n}{ADCRESULT0}\PYG{p}{;}
+
+\PYG{+w}{    }\PYG{c+c1}{// Here covert ADCINA4 to volts}
+
+\PYG{+w}{    }\PYG{c+c1}{// Print ADCINA4’s voltage value to TeraTerm every 100ms by setting UARTPrint to one every 100th}
+\PYG{+w}{    }\PYG{c+c1}{//time in this function.}
+
+\PYG{+w}{    }\PYG{n}{AdcaRegs}\PYG{p}{.}\PYG{n}{ADCINTFLGCLR}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{ADCINT1}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}\PYG{+w}{  }\PYG{c+c1}{//clear interrupt flag}
+\PYG{+w}{    }\PYG{n}{PieCtrlRegs}\PYG{p}{.}\PYG{n}{PIEACK}\PYG{p}{.}\PYG{n}{all}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{n}{PIEACK\PYGZus{}GROUP1}\PYG{p}{;}
+\PYG{p}{\PYGZcb{}}
+\end{MintedVerbatim}

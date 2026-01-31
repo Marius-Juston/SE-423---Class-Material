@@ -1,0 +1,19 @@
+\begin{MintedVerbatim}[commandchars=\\\{\}]
+\PYG{k+kt}{void}\PYG{+w}{ }\PYG{n+nf}{main}\PYG{p}{(}\PYG{k+kt}{void}\PYG{p}{)}
+\PYG{p}{\PYGZob{}}
+\PYG{+w}{    }\PYG{c+c1}{// PLL, WatchDog, enable Peripheral Clocks}
+\PYG{+w}{    }\PYG{c+c1}{// This example function is found in the F2837xD\PYGZus{}SysCtrl.c file.}
+\PYG{+w}{    }\PYG{n}{InitSysCtrl}\PYG{p}{();}
+
+\PYG{+w}{    }\PYG{n}{InitGpio}\PYG{p}{();}
+\PYG{+w}{	}
+\PYG{+w}{	}\PYG{c+c1}{// Blue LED on LaunchPad}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinOptions}\PYG{p}{(}\PYG{l+m+mi}{31}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}OUTPUT}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}PUSHPULL}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPASET}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO31}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+
+\PYG{+w}{	}\PYG{c+c1}{// Red LED on LaunchPad}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinMux}\PYG{p}{(}\PYG{l+m+mi}{34}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}MUX\PYGZus{}CPU1}\PYG{p}{,}\PYG{+w}{ }\PYG{l+m+mi}{0}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{GPIO\PYGZus{}SetupPinOptions}\PYG{p}{(}\PYG{l+m+mi}{34}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}OUTPUT}\PYG{p}{,}\PYG{+w}{ }\PYG{n}{GPIO\PYGZus{}PUSHPULL}\PYG{p}{);}
+\PYG{+w}{    }\PYG{n}{GpioDataRegs}\PYG{p}{.}\PYG{n}{GPBSET}\PYG{p}{.}\PYG{n}{bit}\PYG{p}{.}\PYG{n}{GPIO34}\PYG{+w}{ }\PYG{o}{=}\PYG{+w}{ }\PYG{l+m+mi}{1}\PYG{p}{;}
+\end{MintedVerbatim}
