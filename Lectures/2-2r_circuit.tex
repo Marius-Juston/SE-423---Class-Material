@@ -1,0 +1,51 @@
+\documentclass[border=10pt]{standalone}
+
+\usepackage[american,siunitx]{circuitikz}
+\usetikzlibrary{decorations.shapes}
+
+\begin{document}
+
+\begin{circuitikz}[scale=0.9]
+    \def\n{2}
+
+    \node (ground) at (-2, 0) {};
+    \node (Vcc) at (0, 3) {};
+
+    \foreach \contact in {0,...,\n}
+    {
+        % Define contacts for each bits
+        \node (up contact \contact)    at ($({2*\contact}, 2)$) {};
+        \node (down contact \contact)  at ($({2*\contact}, 0)$) {};
+
+        % Draw R resistors and manage the a_{n-0} case
+        \ifnum \contact>0
+
+            \node (up contact -\contact)   at ($({2+4*\n-2*\contact}, 2)$) {};
+            \node (down contact -\contact) at ($({2+4*\n-2*\contact}, 0)$) {};
+
+            \draw (down contact \contact) to [R=R, *-*] ($(down contact \contact)-(2, 0)$);
+            \draw (up contact -\contact) node[anchor=south] {$a_{n-\contact}$};
+            \draw (down contact -\contact)   to [R=2R, *-o]  (up contact -\contact);
+        \fi
+        \ifnum \contact>1
+            \draw ($(down contact -\contact)+(2, 0)$) to [R=R, *-*] (down contact -\contact);
+        \fi
+
+        % Draw 2R resistors
+        \draw (down contact \contact)    to [R=2R, *-o]  (up contact \contact)
+                                         node[anchor=south] {$a_{\contact}$};
+    }
+    
+    % Draw ground and Vout
+    \draw (down contact 0)  to [R=2R, *-*] (ground) node[ground] {}
+          (down contact -1) to [short, *-o] ($(down contact -1)+(1,0)$)
+                            node[anchor=west]  {$V_{out}$};
+
+    % Draw ldots
+    \draw[fill=black,decorate,decoration={shape backgrounds,shape=circle,shape size=1mm}]
+                    ($0.67*(down contact \n)+0.33*(down contact -\n)$) -- ($0.33*(down contact \n)+0.67*(down contact -\n)$);
+    \draw[fill=black,decorate,decoration={shape backgrounds,shape=circle,shape size=1mm}]
+                    ($0.67*(up contact \n)+0.33*(up contact -\n)$) -- ($0.33*(up contact \n)+0.67*(up contact -\n)$);
+\end{circuitikz}
+
+\end{document}
