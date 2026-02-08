@@ -13,6 +13,8 @@ You can always do a pull request to eithe repo if you want to enhance the conten
 
 **If not stated any picture / video is taken / recreated from Wikipedia**
 
+**Unless stated otherwise any circuit diagram is taken the [F28379D Full Reference](https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf)**
+
 ## Resources
 
 ### Animations
