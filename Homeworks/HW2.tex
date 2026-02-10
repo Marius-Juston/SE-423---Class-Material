@@ -388,13 +388,15 @@ Furthermore, perform the following steps (\textit{some of these steps have alrea
 %
 Place your hand over the photo resistor and use a flashlight to observe the voltage output of your photo resistor circuit change. In addition, write code set EPWM12A’s CMPA register to a scaled value of the photo resistor’s reading. When the photoresistor is not receiving much light, LED1 should be dim. As the photoresistor sees more light, LED1 should get brighter due to the change in duty cycle.
 
-Demonstrate these items working for your check off.  
+\textbf{Demonstrate these items working for your check off.} 
 
 \Ex[Also sample the Joystick voltages]
 
 In this exercise, I would like you to add to the ADCA sequence of conversions by sampling the X- and Y-axis voltages of the Joystick. The Joystick X axis is connected to ADCINA2, and the Y axis is connected to ADCINA3. You will only have to make a few changes to Exercise 3’s code to make these additional samples occur. Leave SOC0 setup to sample ADCINA4 and triggered by EPWM4. Set up SOC1 to sample ADCINA2 and triggered by EPWM4, and SOC2 to sample ADCINA3 and triggered by EPWM4. Also, make sure to set the interrupt select so that SOC2 is the last sampled conversion and triggers the ADCA1 interrupt function. Then, inside the ADCA1 interrupt function, sample all three results, convert each to a voltage value between 0V and 3V, and print these three values to Tera Term every 100ms.  
 
-Using the readings of the Joystick X and Y, write code to update LEDs to point in the direction you have moved the Joystick. If Joystick X is in the center position, turn on only LED8. If Joystick X is moved past a threshold and pointing towards the buzzer, then turn on only LED6. If Joystick X is moved past another threshold and pointing away from the buzzer, then turn on only LED10. Similarly, if Joystick Y is in the center position, turn on only LED8 if Joystick Y is moved past a threshold, and, pointing down, turn on only LED13. Suppose Joystick Y is moved past a threshold and pointing up, then only LED3 turns on. Demonstrate these items working for your check off.
+Using the readings of the Joystick X and Y, write code to update LEDs to point in the direction you have moved the Joystick. If Joystick X is in the center position, turn on only LED8. If Joystick X is moved past a threshold and pointing towards the buzzer, then turn on only LED6. If Joystick X is moved past another threshold and pointing away from the buzzer, then turn on only LED10. Similarly, if Joystick Y is in the center position, turn on only LED8 if Joystick Y is moved past a threshold, and, pointing down, turn on only LED13. Suppose Joystick Y is moved past a threshold and pointing up, then only LED3 turns on.
+
+\textbf{Demonstrate these items working for your check off.}
 
 \Ex[SPI timing diagram]
 
