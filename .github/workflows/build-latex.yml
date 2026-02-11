@@ -217,6 +217,9 @@ jobs:
           # Now it is safe to wipe everything because our 'good' files are in /tmp
           git checkout --orphan artifacts
           git rm -rf .
+
+          # Force remove all untracked files (build/, etc.) and directories
+          git clean -fdx
           
           # 3. RESTORE FROM STAGING
           cp -r ${{env.TMP_ARTIFACT_FOLDER}}/* .
