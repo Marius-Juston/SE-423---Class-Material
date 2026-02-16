@@ -147,3 +147,23 @@
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
 \pgfplotsset{compat=1.18} 
+
+
+\newcommand{\MakeFooter}{
+\begin{tcolorbox}[
+    colback=gray!30!white,
+    width=\textwidth,
+    boxrule=0.8pt,
+    arc=2mm,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    center
+]
+\centering
+\setstretch{1.2}
+
+\textbf{Make sure that you comment you code and put your initials! See \url{} for the style guide!}
+\end{tcolorbox}
+}
