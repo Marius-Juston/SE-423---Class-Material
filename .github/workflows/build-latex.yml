@@ -232,7 +232,7 @@ jobs:
           
           # Map build directory structure over to target (rsync acts as a spatial integration function)
           if [ -d "build" ]; then
-            rsync -a --include="*/" --include="*.pdf" --exclude="*" build/ deploy_target/
+            rsync -a --include="*/" --include="*.pdf" --include="*.pptx" --exclude="*" build/ deploy_target/
           fi
           
           # Update Site Assets if modified
