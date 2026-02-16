@@ -37,8 +37,8 @@ jobs:
         uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         with:
           files: |
-            **.tex
-            L*.pptx
+            **/*.tex
+            **/L*.pptx
 
       - name: List all changed files
         env:
