@@ -32,7 +32,31 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        with:
+          files: |
+            **.tex
+            L*.pptx
+
+      - name: List all changed files
+        env:
+          ALL_CHANGED_FILES: ${{ steps.changed-files.outputs.all_changed_files }}
+        run: |
+          for file in ${ALL_CHANGED_FILES}; do
+            echo "$file was changed"
+          done
+
+      - name: Checkout Artifacts Branch
+        uses: actions/checkout@v4
+        with:
+          ref: artifacts
+          path: deploy_target
+        continue-on-error: true
+
       - name: Install LibreOffice (High-Quality PDF Export)
+        if: contains(steps.changed-files.outputs.all_changed_files, '.pptx')
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -44,6 +68,7 @@ jobs:
 
       - name: Cache TeX Live
         id: cache-texlive
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
         uses: actions/cache@v4
         with:
           path: |
@@ -52,7 +77,7 @@ jobs:
           key: texlive-2025-${{ runner.os }}-v4 # Bumped version key due to layout change
 
       - name: Install TeX Live 2025
-        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
@@ -86,12 +111,12 @@ jobs:
           ./install-tl --profile=texlive.profile
 
       - name: Normalize TeX Live permissions
-        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           chmod -R u+rwX ${{ env.TL_DIR }} || true
 
       - name: Configuration and Package Installation
-        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
           
@@ -126,7 +151,7 @@ jobs:
           mktexlsr
 
       - name: Save TeX Live Cache
-        if: steps.cache-texlive.outputs.cache-hit != 'true'
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         uses: actions/cache/save@v4
         with:
           path: |
@@ -135,9 +160,11 @@ jobs:
           key: texlive-2025-${{ runner.os }}-v4
 
       - name: Add TeX to Path
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
 
       - name: Compile LaTeX Documents
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
         env:
           # We only re-introduce TEXMFOUTPUT here if strictly necessary for minted/etc.
           # However, usually latexmk -outdir handles this better.
@@ -148,88 +175,81 @@ jobs:
           mkdir -p ${{ github.workspace }}/texmf-output
           mkdir -p "${HOME}/.config/latexminted"
           
-          grep -v '^#' pdf-list.txt | while IFS= read -r texfile || [ -n "$texfile" ]; do
-            [ -z "$texfile" ] && continue
-            echo "Compiling $texfile..."
-            out_dir="build/$(dirname "$texfile")"
-            mkdir -p "$out_dir"
-            
-            # Using -shell-escape is required for minted
-            latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
-              -shell-escape -outdir="$out_dir" "$texfile"
+          # Intersect changed files with pdf-list.txt
+          for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
+              echo "State change detected: Compiling $texfile..."
+              out_dir="build/$(dirname "$texfile")"
+              mkdir -p "$out_dir"
+              
+              latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
+                -shell-escape -outdir="$out_dir" "$texfile"
+            fi
           done
 
       - name: Convert PPTX to PDF (Vector-Preserving)
+        if: contains(steps.changed-files.outputs.all_changed_files, '.pptx')
         env:
           PPTX_OUTPUT_DIR: build
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
-          # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF
-          find . -name "L*.pptx" | while read -r pptx; do
-            out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
-            mkdir -p "$out_dir"
 
-            libreoffice \
-              --headless \
-              --invisible \
-              --nodefault \
-              --nolockcheck \
-              --nologo \
-              --nofirststartwizard \
-              --convert-to pdf:impress_pdf_Export:\
-                ReduceImageResolution=false,\
-                UseLosslessCompression=true,\
-                EmbedStandardFonts=true \
-              --outdir "$out_dir" \
-              "$pptx"
+          # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF
+          for pptx in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $pptx == L*.pptx ]]; then
+              echo "State change detected: Converting $pptx..."
+              out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
+              mkdir -p "$out_dir"
+
+              libreoffice \
+                --headless \
+                --invisible \
+                --nodefault \
+                --nolockcheck \
+                --nologo \
+                --nofirststartwizard \
+                --convert-to pdf:impress_pdf_Export:\
+                  ReduceImageResolution=false,\
+                  UseLosslessCompression=true,\
+                  EmbedStandardFonts=true \
+                --outdir "$out_dir" \
+                "$pptx"
+            fi
           done
 
-      - name: Deploy to Artifacts Branch
-        env:
-          SAVE_LOGS: false 
-          TMP_ARTIFACT_FOLDER: /tmp/deployment_staging
+      - name: Deploy Incremental Updates
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          
-          # 1. TEMPORARY STAGING
-          # Move everything we want to KEEP into a location outside the git-managed tree
-          mkdir -p ${{env.TMP_ARTIFACT_FOLDER}}
-          
-          # Stage the PDFs (Flattening 'build' here)
-          cd build
-          if [ "$SAVE_LOGS" = "true" ]; then
-            find . -type f \( -name "*.pdf" -o -name "*.log" -o -name "*.aux" \) -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
-          else
-            find . -type f -name "*.pdf" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
+          # Create target repository if it didn't exist
+          if [ ! -d "deploy_target/.git" ]; then
+            echo "Initializing new artifacts branch..."
+            # Clone with authentication to map the 'origin' remote perfectly
+            git clone --no-checkout https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git deploy_target
+            cd deploy_target
+            git checkout --orphan artifacts
+            git rm -rf .
+            cd ..
           fi
-          cd ..
-
-          # Stage PPTXs
-          find . -type f -name "L*.pptx" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           
-          # Stage the Site assets
+          # Map build directory structure over to target (rsync acts as a spatial integration function)
+          if [ -d "build" ]; then
+            rsync -a --include="*/" --include="*.pdf" --exclude="*" build/ deploy_target/
+          fi
+          
+          # Update Site Assets if modified
           if [ -d "site" ]; then
-            cp -r site/* ${{env.TMP_ARTIFACT_FOLDER}}/
+            cp -r site/* deploy_target/
           fi
           
-          # 2. BRANCH MANIPULATION
-          # Now it is safe to wipe everything because our 'good' files are in /tmp
-          git checkout --orphan artifacts
-          git rm -rf .
-
-          # Force remove all untracked files (build/, etc.) and directories
-          git clean -fdx
+          cd deploy_target
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          # 3. RESTORE FROM STAGING
-          cp -r ${{env.TMP_ARTIFACT_FOLDER}}/* .
-          
-          # 4. COMMIT AND PUSH
           git add .
-          # Verify files exist before committing to avoid empty commits
+          
           if git diff --cached --quiet; then
-            echo "No changes to commit"
+            echo "No output state divergence detected. Bypassing commit."
           else
-            git commit -m "Build: $(date +'%Y-%m-%d %H:%M:%S') - Clean Production"
-            git push --force origin artifacts
+            git commit -m "Incremental Build at $(date +'%Y-%m-%d %H:%M:%S')"
+            # Standard push preserves the temporal artifact history
+            git push origin artifacts || git push --set-upstream origin artifacts
           fi
