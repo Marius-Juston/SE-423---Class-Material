@@ -214,6 +214,9 @@ jobs:
                   EmbedStandardFonts=true \
                 --outdir "$out_dir" \
                 "$pptx"
+
+              echo "Propagating source artifact ($pptx) to $out_dir..."
+              cp "$pptx" "$out_dir/"
             fi
           done
 
