@@ -1,4 +1,4 @@
-name: Build LaTeX PDFs (TeX Live 2025) and Deploy
+name: Manual Build LaTeX PDFs (TeX Live 2025) and Deploy
 
 on:
   workflow_dispatch:
