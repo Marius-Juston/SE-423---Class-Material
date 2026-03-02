@@ -13,6 +13,13 @@ on:
 permissions:
   contents: write
 
+# Ensures that if a new commit arrives it does not cancel the in-progress build, but instead queues it to run immediately after. 
+# This way we guarantee that every commit gets built and deployed, even if multiple commits arrive in quick succession.
+# Ensuring that the artifact history is preserved and that no state changes are skipped.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
