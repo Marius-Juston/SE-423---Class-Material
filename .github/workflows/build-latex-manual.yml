@@ -2,13 +2,6 @@ name: Manual Build LaTeX PDFs (TeX Live 2025) and Deploy
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ main ]
-    paths:
-      - '**.tex'
-      - '**.pptx'
-      - 'pdf-list.txt'
-      - 'site/**'
 
 permissions:
   contents: write
