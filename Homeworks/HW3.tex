@@ -43,6 +43,8 @@ When you have the PWM peripheral set up this way, you can change the TBPRD regis
 
 \textbf{Note}:  Below, I am asking you to play the short “Happy Birthday” song. A longer song that also defines the array “\mintinline{c}{songarray}” is defined in the include file “\mintinline{c}{song.h}”. You are welcome to play the longer song, but if you want to cut and paste the below shorter song into your code, you will need to go to the top of your C file and comment out the line \mintinline{c}{#include "song.h”;}.  
 
+Below is code that defines notes and an array of notes that play “Happy Birthday”.  To play this song change CPU Timer 1 so that it is called every 125 milliseconds (\mintinline{c}{1.0/8.0} of a second).  Then inside CPU Timer 1’s ISR every time it is called, set EPWM9A’s \mintinline{c}{TBPRD} to the value stored at the current index in the song array.  Before you exit CPU Timer 1’s ISR make sure to increment a global index variable that keeps track of where you are in the song.  When you reach the length of the song (length of the array), change the mux of pin \mintinline{c}{GPIO16} so that it is no longer \mintinline{c}{EPWM9A} and instead \mintinline{c}{GPIO16}.  Then Set \mintinline{c}{GPIO16} to low so that the buzzer does not make any random noise. 
+
 As a final step, find a simple song that you create and play it, instead of Happy Birthday. This new song needs to have at least 10 different notes.     
 
 \textbf{Show this working to your TA. Also, pick a note from the }\mintinline{c}{#define}\textbf{s below and explain to your TA, with a square wave drawing, why TBPRD is set to that value to produce that note’s frequency.}
