@@ -49,3 +49,12 @@ Useful regex for improve the LaTeX documents
 | `\\begin\{subfigure\}(\[[a-zA-Z!]+\])?` | `\begin{subfigure}[b]` |
 
 
+## Notes to professors
+
+## L5
+
+- Lecture on ADCs could be increased and spent more time on since it is short and students have a lot of confusion on this. 
+- It was not planned but the lecture as it currently stand is only 30 minutes long. It should definitively be increased in length!
+- Ideally would be good to have additional process flow diagram or something to explain the relationship between ADC SOC trigger, ADC SOC Chanel, the actual ADC Chip, and then the process of a trigger happening with the ePWM. 
+- Students get confused on this and is important for them to understand properlly. 
+
