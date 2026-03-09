@@ -55,16 +55,9 @@
             border-color: white;
         }
 
-        .lecture-grid::-webkit-scrollbar {
-            width: 6px;
-        }
-        .lecture-grid::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        .lecture-grid::-webkit-scrollbar-thumb {
-            background: #cbd5e1;
-            border-radius: 10px;
-        }
+        .lecture-grid::-webkit-scrollbar { width: 6px; }
+        .lecture-grid::-webkit-scrollbar-track { background: #f1f1f1; }
+        .lecture-grid::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; }
 
         .toggle-bg {
             background-color: #e2e8f0;
@@ -96,9 +89,16 @@
 
         .dark .text-uiuc-orange { color: #FF5F05; }
         .dark .text-uiuc-blue { color: #13294B; }
+        
+        /* Modal Transitions */
+        .modal-active { overflow: hidden; } /* Prevents body scroll when modal is open */
+        
+        /* Ensure TikZ SVGs (usually black lines) invert to white in dark mode */
+        .svg-preview { filter: none; }
+        .dark .svg-preview { filter: invert(0.9) hue-rotate(180deg); }
     </style>
 </head>
-<body class="min-h-screen">
+<body class="min-h-screen relative">
 
     <!-- Navigation / Header -->
     <header class="bg-uiuc-blue text-white py-10 shadow-md relative overflow-hidden">
@@ -120,6 +120,14 @@
             
             <!-- Navigation Links -->
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
+                
+                <button onclick="toggleGallery(true)" class="btn-outline px-6 py-2.5 rounded-full font-bold text-sm flex items-center bg-white/20 border-white text-white">
+                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    Figure Gallery
+                </button>
+
                 <a href="syllabus.pdf" target="_blank" class="btn-outline px-6 py-2.5 rounded-full font-bold text-sm flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -148,6 +156,29 @@
             </div>
         </div>
     </header>
+
+    <div id="gallery-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div class="absolute inset-0 bg-slate-900/80 backdrop-blur-sm cursor-pointer" onclick="toggleGallery(false)"></div>
+        
+        <div class="absolute inset-4 md:inset-10 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="gallery-content">
+            <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center bg-gray-50 dark:bg-slate-800/50">
+                <div class="flex items-center space-x-3">
+                    <svg class="h-7 w-7 uiuc-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <h2 class="text-2xl font-bold uiuc-blue dark:text-slate-100">Course Figures & Vectors</h2>
+                </div>
+                <button onclick="toggleGallery(false)" class="p-2 rounded-xl bg-slate-200/50 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-slate-600 dark:text-slate-300">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                </button>
+            </div>
+            
+            <div class="p-6 overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-950/50">
+                <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                    </div>
+            </div>
+        </div>
+    </div>
 
     <main class="container mx-auto px-4 py-12 flex-grow">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
@@ -282,6 +313,10 @@
          * - links: Optional array of { label: string, url: string }
          */
         const data = {
+            figures: [
+                /* INJECT_FIGURES_START */
+                /* INJECT_FIGURES_END */
+            ],
             hw: [
                 { 
                     title: "Homework 1: Setup & Soldering", 
@@ -554,11 +589,54 @@
             }).join('');
         }
 
-        // Initial Render
+        // NEW: Render Gallery Logic
+        function renderGallery() {
+            const container = document.getElementById('gallery-grid');
+            container.innerHTML = data.figures.map(fig => `
+                <a href="${fig.file}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
+                    <div class="h-48 p-4 bg-slate-100 dark:bg-slate-900 flex items-center justify-center relative overflow-hidden">
+                        <img src="${fig.file}" alt="${fig.title}" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                    </div>
+                    <div class="p-4 border-t border-gray-100 dark:border-slate-700">
+                        <h4 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${fig.title}</h4>
+                        <p class="text-[10px] text-gray-400 uppercase mt-1 tracking-wider text-uiuc-orange font-semibold">SVG Vector</p>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        // NEW: Toggle Gallery Modal
+        function toggleGallery(show) {
+            const modal = document.getElementById('gallery-modal');
+            const content = document.getElementById('gallery-content');
+            
+            if(show) {
+                modal.classList.remove('hidden');
+                document.body.classList.add('modal-active'); // Prevent background scroll
+                
+                // Small timeout to allow display:block to apply before animating opacity
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    content.classList.remove('scale-95');
+                }, 10);
+            } else {
+                modal.classList.add('opacity-0');
+                content.classList.add('scale-95');
+                document.body.classList.remove('modal-active');
+                
+                // Wait for transition to finish before hiding
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
+        }
+
+        // Initialize Everything
         updateLectureUI();
         renderList('hw-list', data.hw);
         renderList('labview-list', data.labview);
         renderList('lab-list', data.labs);
+        renderGallery();
 
         // Toggle Event Listener
         document.getElementById('formatToggle').addEventListener('change', (e) => {

@@ -255,7 +255,7 @@ jobs:
             fi
           done
 
-      - name: Deploy Incremental Updates
+      - name: Move files to Deployment Target
         run: |
           # Create target repository if it didn't exist
           if [ ! -d "deploy_target/.git" ]; then
@@ -277,7 +277,42 @@ jobs:
           if [ -d "site" ]; then
             cp -r site/* deploy_target/
           fi
+      
+      - name: Inject Dynamic SVG Gallery into HTML
+        run: |
+          # Navigate into the deployment staging area
+          cd deploy_target
           
+          FIGURES_ARRAY=""
+          
+          # Check if the Figures directory exists and contains SVGs
+          if ls Lectures/Figures/*.svg 1> /dev/null 2>&1; then
+            echo "Generating gallery data from SVGs..."
+            
+            for svg_path in Lectures/Figures/*.svg; do
+              # Extract the raw filename without the extension
+              filename=$(basename "$svg_path" .svg)
+              
+              # Format Title: Replace underscores/dashes with spaces and Capitalize Each Word
+              title=$(echo "$filename" | tr '_-' ' ' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
+              
+              # Append the JS object to our payload string
+              FIGURES_ARRAY+="                { title: \"$title\", file: \"$svg_path\" },\n"
+            done
+          else
+            echo "No SVGs found in Lectures/Figures/. Proceeding with empty gallery."
+          fi
+          
+          # Use Perl to safely inject the multiline payload between the target comment blocks
+          if [ -f "index.html" ]; then
+            perl -0777 -pi -e "s|/\* INJECT_FIGURES_START \*/.*?/\* INJECT_FIGURES_END \*/|/* INJECT_FIGURES_START */\n$FIGURES_ARRAY                /* INJECT_FIGURES_END */|s" index.html
+            echo "Injection complete."
+          else
+            echo "Warning: index.html not found. Skipping injection."
+          fi
+          
+      - name: Deploy Incremental Updates
+        run: |
           cd deploy_target
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
