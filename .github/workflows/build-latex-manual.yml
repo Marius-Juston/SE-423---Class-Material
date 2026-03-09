@@ -211,6 +211,9 @@ jobs:
           cd ..
           # Stage PPTXs
           find . -type f -name "L*.pptx" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
+
+          # Stage SVGs
+          find . -type f -name "*.svg" -exec cp --parents {} ${{env.TMP_ARTIFACT_FOLDER}} \;
           
           # Stage the Site assets
           if [ -d "site" ]; then
