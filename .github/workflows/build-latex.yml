@@ -194,6 +194,29 @@ jobs:
             fi
           done
 
+      - name: Convert TikZ Figures to SVG
+        if: contains(steps.changed-files.outputs.all_changed_files, 'Lectures/Figures/')
+        run: |
+          mkdir -p build/Lectures/Figures
+          
+          for texfile in Lectures/Figures/*.tex; do
+            # Only process if the file actually changed
+            if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "$texfile"; then
+              echo "Converting TikZ figure: $texfile"
+              
+              # 1. Compile to PDF (standalone handles the cropping)
+              latexmk -pdf -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
+              
+              # 2. Convert PDF to SVG
+              # --no-fonts: converts text to paths (prevents font rendering issues on the web)
+              # --pdf: tells dvisvgm to process a PDF input
+              pdf_file="build/Lectures/Figures/$(basename "${texfile%.tex}.pdf")"
+              svg_file="build/Lectures/Figures/$(basename "${texfile%.tex}.svg")"
+              
+              dvisvgm --pdf --no-fonts --output="$svg_file" "$pdf_file"
+            fi
+          done
+
       - name: Convert PPTX to PDF (Vector-Preserving)
         if: contains(steps.changed-files.outputs.all_changed_files, '.pptx')
         env:

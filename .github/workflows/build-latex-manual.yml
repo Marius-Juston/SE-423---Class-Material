@@ -143,6 +143,25 @@ jobs:
             latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
               -shell-escape -outdir="$out_dir" "$texfile"
           done
+      - name: Convert TikZ Figures to SVG
+        run: |
+          mkdir -p build/Lectures/Figures
+          
+          for texfile in Lectures/Figures/*.tex; do
+            echo "Converting TikZ figure: $texfile"
+            
+            # 1. Compile to PDF (standalone handles the cropping)
+            latexmk -pdf -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
+            
+            # 2. Convert PDF to SVG
+            # --no-fonts: converts text to paths (prevents font rendering issues on the web)
+            # --pdf: tells dvisvgm to process a PDF input
+            pdf_file="build/Lectures/Figures/$(basename "${texfile%.tex}.pdf")"
+            svg_file="build/Lectures/Figures/$(basename "${texfile%.tex}.svg")"
+            
+            dvisvgm --pdf --no-fonts --output="$svg_file" "$pdf_file"
+          done
+
       - name: Convert PPTX to PDF (Vector-Preserving)
         env:
           PPTX_OUTPUT_DIR: build
