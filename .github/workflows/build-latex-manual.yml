@@ -17,6 +17,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
+      CACHE_VERSION: v5 # Increment this to invalidate TeX Live cache when needed
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
     steps:
@@ -41,7 +42,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v5 # Bumped version key due to dvisvgm addition
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
@@ -118,7 +119,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v4
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
 
       - name: Add TeX to Path
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH

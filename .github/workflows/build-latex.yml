@@ -31,6 +31,8 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
+      CACHE_VERSION: v5 # Bumped version key due to dvisvgm addition
+
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
     steps:
@@ -81,7 +83,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v4 # Bumped version key due to layout change
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
 
       - name: Install TeX Live 2025
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
@@ -165,7 +167,7 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v5 # Bumped version key due to dvisvgm addition
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
 
       - name: Add TeX to Path
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
