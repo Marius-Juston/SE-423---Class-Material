@@ -48,7 +48,7 @@ jobs:
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
-          sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments ghostscript
+          sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
           # 2. Download Installer
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
@@ -147,6 +147,8 @@ jobs:
           done
       - name: Convert TikZ Figures to SVG
         run: |
+          sudo apt-get update && sudo apt-get install -y ghostscript==9.56.0
+          
           mkdir -p build/Lectures/Figures
           
           for texfile in Lectures/Figures/*.tex; do
