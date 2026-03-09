@@ -41,13 +41,13 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-v4 # Bumped version key due to layout change
+          key: texlive-2025-${{ runner.os }}-v5 # Bumped version key due to dvisvgm addition
 
       - name: Install TeX Live 2025
         if: steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
-          sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
+          sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments ghostscript
           # 2. Download Installer
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
@@ -102,7 +102,8 @@ jobs:
             catchfile \
             xcolor \
             etoolbox \
-            lineno
+            lineno \
+            dvisvgm
           # 3. Manually Generate STABLE formats only
           # This will now write correctly to TEXMFVAR because TEXMFOUTPUT is unset
           fmtutil-sys --byfmt pdflatex
