@@ -286,10 +286,10 @@ jobs:
           FIGURES_ARRAY=""
           
           # Check if the Figures directory exists and contains SVGs
-          if ls Lectures/Figures/*.svg 1> /dev/null 2>&1; then
+          if ls Lectures/Figures/**/*.svg 1> /dev/null 2>&1; then
             echo "Generating gallery data from SVGs..."
             
-            for svg_path in Lectures/Figures/*.svg; do
+            for svg_path in Lectures/Figures/**/*.svg; do
               # Extract the raw filename without the extension
               filename=$(basename "$svg_path" .svg)
               
