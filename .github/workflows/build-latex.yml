@@ -256,6 +256,8 @@ jobs:
           done
 
       - name: Move files to Deployment Target
+        env:
+          SVG_INCLUDE_DIR: Lectures/Figures/svg
         run: |
           # Create target repository if it didn't exist
           if [ ! -d "deploy_target/.git" ]; then
@@ -270,7 +272,18 @@ jobs:
           
           # Map build directory structure over to target (rsync acts as a spatial integration function)
           if [ -d "build" ]; then
-            rsync -a --include="*/" --include="*.pdf" --include="*.pptx"  --include="*.svg" --exclude="*" build/ deploy_target/
+            rsync -av --prune-empty-dirs --include="*/" --include="*.pdf" --include="*.pptx"  --include="*.svg" --exclude="*" build/ deploy_target/
+          fi
+
+          # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
+          if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then
+            mkdir -p deploy_target/${{ env.SVG_INCLUDE_DIR }}
+            rsync -av \
+              --prune-empty-dirs \
+              --include="*/" \
+              --include="*.svg" \
+              --exclude="*" \
+              ${{ env.SVG_INCLUDE_DIR }}/ deploy_target/${{ env.SVG_INCLUDE_DIR }}/
           fi
           
           # Update Site Assets if modified
