@@ -17,7 +17,7 @@
 % -------------------------
 % STATES
 % -------------------------
-\node[state, initial, initial text={RXC Interrupt}] (WaitG) {
+\node[state, initial, initial text={\textbf{RXC Interrupt}}, initial where=above] (WaitG) {
     \textbf{State 0: Wait for 'G'}\\ 
     \texttt{buf\_index = 0}
 };
@@ -73,7 +73,7 @@
 % State 2 Line Feed Handling (Shifted to upper shoulders to avoid crossing lines)
 \path[->, thick]
 (DataHi) edge [out=150, in=105, loop, looseness=5] node [transition, above left=0.1cm and -0.7cm] {\texttt{RXC == 0x0a}\\ \texttt{LF\_count += 1}} (DataHi)
-(DataLo) edge [out=30, in=75, loop, looseness=5] node [transition, above right=0.1cm and -0.7cm] {\texttt{RXC == 0x0a}\\ \texttt{LF\_count += 1}} (DataLo);
+(DataLo) edge [loop above, looseness=5] node [transition, above]  {\texttt{RXC == 0x0a}\\ \texttt{LF\_count += 1}} (DataLo);
 
 % End Stream Transitions
 \path[->, thick]
