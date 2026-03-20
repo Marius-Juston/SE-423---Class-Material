@@ -1,0 +1,266 @@
+\documentclass[tikz,border=0pt]{standalone}
+\usepackage{tikz}
+\usepackage{circuitikz}
+\usetikzlibrary{calc, positioning, fit, shapes, arrows.meta, backgrounds}
+
+\begin{document}
+
+% Define colors matching the original figure's visual style
+\definecolor{bgGreen}{RGB}{220, 235, 215}
+\definecolor{boxOrange}{RGB}{253, 226, 171}
+\definecolor{blockBlue}{RGB}{124, 166, 223}
+\definecolor{pixelGreen}{RGB}{165, 215, 165}
+\definecolor{arrowPurple}{RGB}{112, 48, 160}
+\definecolor{busRow}{RGB}{80, 110, 180}
+\definecolor{busCol}{RGB}{180, 80, 80}
+
+\definecolor{mBlue}{HTML}{1E88E5}
+\definecolor{mLightBlue}{HTML}{BBDEFB}
+\definecolor{mDarkBlue}{HTML}{0D47A1}
+
+\definecolor{mGreen}{HTML}{43A047}
+\definecolor{mLightGreen}{HTML}{C8E6C9}
+
+\definecolor{mOrange}{HTML}{FB8C00}
+\definecolor{mLightOrange}{HTML}{FFE0B2}
+
+\definecolor{mGray}{HTML}{ECEFF1}
+
+\begin{tikzpicture}[
+    font=\sffamily,
+    block/.style={draw=black, fill=blockBlue, thick, align=center},
+    dashedbox/.style={draw=black, dashed, thick, fill=boxOrange},
+    line/.style={draw=black, thick, -Latex},
+    background rectangle/.style={fill=bgGreen},
+    signalLine/.style={thick, -{Latex[length=2mm]}},
+    connector/.style={circ, scale=0.25},
+    show background rectangle,
+    inner frame sep=20pt
+]
+
+    % Adjusted circuitikz scaling for perfect 1.4x1.4 fits
+    \ctikzset{
+        bipoles/thickness=1.5,
+        nodes width=0.08,
+        diodes/scale=0.4,
+        grounds/scale=0.4,
+        transistors/scale=0.35,
+        capacitors/scale=0.4
+    }
+
+    % ==========================================
+    % FLEXIBLE PARAMETERS
+    % ==========================================
+    \def\Ncols{5}          % Number of columns in pixel array
+    \def\Nrows{5}          % Number of rows in pixel array
+    \def\dx{1.4}           % Width of a single pixel cell
+    \def\dy{1.4}           % Height of a single pixel cell
+    \def\gap{0.3}          % Standard gap between blocks
+    \def\blkW{1.2}         % Standard width for vertical blocks 
+    \def\blkH{0.8}         % Standard height for horizontal blocks 
+    \def\sPad{0.5}         % Padding for the outer dashed boxes
+
+    \def\nmosOffset{0.95}
+
+    % Derived Dimensions for the Grid
+    \pgfmathsetmacro{\Warray}{\Ncols*\dx}
+    \pgfmathsetmacro{\Harray}{\Nrows*\dy}
+
+    % % Y-Coordinates mapping relative to the grid
+    % \pgfmathsetmacro{\colAmpsY}{-\gap} 
+    % \pgfmathsetmacro{\colMuxY}{-\gap - \blkH - \gap} 
+    % \pgfmathsetmacro{\sensorBottom}{\colMuxY - \blkH}
+
+    % X-Coordinates mapping relative to the grid
+    \pgfmathsetmacro{\rowAccX}{-\gap}
+    \pgfmathsetmacro{\rowDrvX}{\rowAccX - \blkW - \gap}
+    
+    \def\clockW{3.2} % Width for Clock & Timing / Oscillator
+    \pgfmathsetmacro{\clockX}{\rowDrvX - \blkW - \gap}
+    
+    \def\biasW{1.8} % Width for Bias Generation
+    \pgfmathsetmacro{\biasGenX}{\clockX - \clockW - \gap}
+    \pgfmathsetmacro{\sensorLeft}{\biasGenX - \biasW}
+
+
+    % Y-Coordinates mapping relative to the grid
+    \pgfmathsetmacro{\colAmpsY}{-\gap} 
+    \def\colAmpH{1.7}      % Height of the new column amp circuitry section
+    \def\colAmpB{-0.2}
+    \pgfmathsetmacro{\colMuxY}{\colAmpsY - \colAmpH - \gap} 
+    \pgfmathsetmacro{\sensorBottom}{\colMuxY - \blkH}
+
+    % ==========================================
+    % 1. BACKGROUND DASHED BOXES
+    % ==========================================
+    \draw[dashedbox] (\sensorLeft-\sPad, \sensorBottom-\sPad) rectangle (\Warray+\sPad, \Harray+\sPad);
+    \node[anchor=south, align=center, font=\bfseries] at ( {(\sensorLeft+\Warray)/2}, \Harray+\sPad ) 
+        {Complementary Metal Oxide Semiconductor\\Image Sensor};
+
+    \def\pcbW{1.2}
+    \def\pcbGap{1.5}
+    \pgfmathsetmacro{\pcbRight}{\sensorLeft - \sPad - \pcbGap}
+    \pgfmathsetmacro{\pcbLeft}{\pcbRight - 2*\pcbW - \gap}
+    
+    \draw[dashedbox] (\pcbLeft-\sPad, \sensorBottom-\sPad) rectangle (\pcbRight+\sPad, \Harray+\sPad);
+    \node[anchor=south, align=center, font=\bfseries] at ( {(\pcbLeft+\pcbRight)/2}, \Harray+\sPad ) 
+        {Camera\\(Printed Circuit Board)};
+
+    % ==========================================
+    % 2. THE PIXEL ARRAY
+    % ==========================================
+
+    % Layer A: Array Background & Cell Borders
+    \draw[thick, fill=white, rounded corners=2pt] (0,0) rectangle (\Warray, \Harray);
+    
+    \foreach \x in {1,...,\Ncols} {
+        \foreach \y in {1,...,\Nrows} {
+            \pgfmathsetmacro{\px}{(\x-1)*\dx}
+            \pgfmathsetmacro{\py}{(\y-1)*\dy}
+            
+            \ifnum\x=4
+                \ifnum\y=3
+                    \draw[fill=mLightGreen, rounded corners=1pt] (\px+0.05, \py+0.05) rectangle (\px+\dx-0.05, \py+\dy-0.05);
+                \else
+                    \draw (\px, \py) rectangle (\px+\dx, \py+\dy);
+                \fi
+            \else
+                \draw(\px, \py) rectangle (\px+\dx, \py+\dy);
+            \fi
+        }
+    }
+
+    % Layer B: Modern Bus Routing
+    \foreach \y in {1,...,\Nrows} {
+        \pgfmathsetmacro{\py}{(\y-1)*\dy}
+        % Reset Bus Line (Shifted to clear transistor bodies)
+        \draw[busRow] (\rowAccX, \py+1.1) -- (\Warray-0.1, \py+1.1);
+        % Select Bus Line
+        \draw[busRow] (\rowAccX, \py+0.15) -- (\Warray-0.1, \py+0.15);
+    }
+    \foreach \x in {1,...,\Ncols} {
+        \pgfmathsetmacro{\px}{(\x-1)*\dx}
+        % Column Bus extending out of the array into the amp section
+        \draw[busCol] (\px+1.2, \colAmpsY) -- (\px+1.2, \Harray-0.1);
+    }
+
+    % Layer C: Circuit Components (Strict Anchor Binding)
+    \foreach \x in {1,...,\Ncols} {
+        \foreach \y in {1,...,\Nrows} {
+            \pgfmathsetmacro{\px}{(\x-1)*\dx}
+            \pgfmathsetmacro{\py}{(\y-1)*\dy}
+            
+            % 1. Component Instantiation
+            \node[nmos] (RST_\x_\y) at (\px+0.55, \py+0.95) {};
+            \node[nmos] (SF_\x_\y)  at (\px+\nmosOffset, \py+0.65) {};
+            \node[nmos] (SEL_\x_\y) at (\px+\nmosOffset, \py+0.3) {};
+
+            % 2. Photodiode & Ground
+            \draw (\px+0.3, \py+0.25) node[ground, line width=0.1]{} 
+                to[full photodiode] (\px+0.3, \py+0.65) coordinate (PD_\x_\y);
+
+            % 3. Floating Diffusion Node (FD)
+            \draw (PD_\x_\y) -- (SF_\x_\y.G);
+            \draw (RST_\x_\y.S) -- (\px+0.55, \py+0.65) node[connector]{};
+
+            % 4. VDD Power Delivery Network
+            \draw (\px+\nmosOffset, \py+1.3) node[vcc, scale=0.5] (VDD_\x_\y) {};
+            \draw (SF_\x_\y.D) -- (VDD_\x_\y);
+            \draw (RST_\x_\y.D) |- (\px+\nmosOffset, \py+1.25) node[connector]{};
+
+            % 5. Amplifier Interconnects
+            \draw (SF_\x_\y.S) -- (SEL_\x_\y.D);
+
+            % 6. Gate Tap Routing (to Buses)
+            \draw (RST_\x_\y.G) -- (\px+0.15, \py+0.95) -- (\px+0.15, \py+1.1) node[connector]{};
+            \draw (SEL_\x_\y.G) -- (\px+0.5, \py+0.3) -- (\px+0.5, \py+0.15) node[connector]{};
+
+            % 7. Readout Trace
+            \draw (SEL_\x_\y.S) |- (\px+1.2, \py+0.05) node[connector]{};
+        }
+    }
+
+    % ==========================================
+    % 3. COLUMN BIAS & SAMPLING (Layer D)
+    % ==========================================
+    \draw[dashedbox, fill=mLightBlue!30] (0, \colAmpsY) rectangle (\Warray, \colAmpsY-\colAmpH);
+    
+
+    % Global Vbias line
+    \draw[mDarkBlue] (0, \colAmpsY-0.9+ \colAmpB) node[left] {$v_{bias}$} -- (\Warray-0.1, \colAmpsY-0.9+ \colAmpB);
+
+    \foreach \x in {1,...,\Ncols} {
+        \pgfmathsetmacro{\px}{(\x-1)*\dx}
+
+                % Routing to Column Mux (Bypassing the bias transistor)
+        \draw[busCol] (\px+1.2, \colAmpsY-0.3+ \colAmpB) -- (\px+1.35, \colAmpsY-0.3+ \colAmpB) -- (\px+1.35, \colMuxY+ \colAmpB);
+        
+        % Bias Transistor (Active Load)
+        \node[nmos] (Bias_\x) at (\px+1.2, \colAmpsY-0.9+ \colAmpB) {};
+        \draw[busCol] (\px+1.2, \colAmpsY+ \colAmpB+0.2) -- (Bias_\x.D); 
+        \draw (Bias_\x.S) -- (\px+1.2, \colAmpsY-1.1+ \colAmpB) node[ground, line width=0.1]{};
+        \draw (Bias_\x.G) node[connector]{}; % Tap into Vbias
+        
+        % Column Bus Capacitor (C_b)
+        \draw (\px+1.2, \colAmpsY-0.3+ \colAmpB) node[connector]{} -- (\px+0.45, \colAmpsY-0.3+ \colAmpB) 
+              to[C] (\px+0.45, \colAmpsY-0.6+ \colAmpB) node[ground, line width=0.1]{};
+              
+    }
+    \node[anchor=north west, font=\bfseries] at (0, \colAmpsY) {Column Bias \& Sampling};
+
+
+    \draw[block] (0, \colMuxY) rectangle (\Warray, \sensorBottom) node[midway] {Column Mux};
+
+    \draw[block] (\rowAccX, 0) rectangle (\rowAccX-\blkW, \Harray) node[midway, rotate=90] {Row Access};
+    \draw[block] (\rowDrvX, 0) rectangle (\rowDrvX-\blkW, \Harray) node[midway, rotate=90] {Row Drivers};
+
+    \draw[block] (\clockX, \Harray) rectangle (\clockX-\clockW, \Harray*0.55) node[midway] {Clock \& Timing\\Generation};
+    \draw[block] (\clockX, 0) rectangle (\clockX-\clockW, \Harray*0.45) node[midway] {Oscillator};
+
+    \draw[block] (\biasGenX, 0) rectangle (\biasGenX-\biasW, \Harray) node[midway, rotate=90] {Bias Generation};
+
+    \draw[block] (\rowDrvX-\blkW, \colMuxY) rectangle (\rowAccX, \sensorBottom) node[midway] {Gain};
+    
+    \pgfmathsetmacro{\adcCenter}{ (\biasGenX + \rowDrvX-\blkW)/2 }
+    \def\adcW{1.2}
+    \draw[block] (\adcCenter-0.5*\adcW, \colMuxY) rectangle (\adcCenter+0.5*\adcW, \sensorBottom) coordinate[midway] (ADC_mid);
+    
+    \draw[block] (\biasGenX-\biasW, \colMuxY) rectangle (\biasGenX, \sensorBottom) node[midway] {Line\\Driver};
+
+    % ==========================================
+    % 4. CAMERA PCB BLOCKS
+    % ==========================================
+    \draw[block] (\pcbRight, \sensorBottom) rectangle (\pcbRight-\pcbW, \Harray) node[midway, rotate=90] {Bias Decoupling};
+    \draw[block] (\pcbLeft+\pcbW, \sensorBottom) rectangle (\pcbLeft, \Harray) node[midway, rotate=90] {Connector};
+
+    % ==========================================
+    % 5. SIGNAL LINES & DATA FLOW ARROWS
+    % ==========================================
+    \draw[line] (\pcbRight, \Harray/2) -- (\sensorLeft, \Harray/2);
+
+    \draw[line] (0, \colMuxY-0.5*\blkH) -- (\rowAccX, \colMuxY-0.5*\blkH);
+    \draw[line] (\rowDrvX-\blkW, \colMuxY-0.5*\blkH) -- (\adcCenter+0.5*\adcW, \colMuxY-0.5*\blkH);
+    \draw[line] (\adcCenter-0.5*\adcW, \colMuxY-0.5*\blkH) -- (\biasGenX, \colMuxY-0.5*\blkH);
+
+    \draw[line] (\biasGenX-0.5*\biasW, \sensorBottom) -- ++(0, -1.2) node[below, align=center] {To Frame\\Grabber};
+
+    \node[align=center] (ADC_text) at (\adcCenter, \sensorBottom - \sPad - 1.2) {Analog-to-Digital\\Conversion};
+    \draw[-Latex, thick] (ADC_text) -- (\adcCenter, \sensorBottom);
+
+    % ==========================================
+    % 6. ANNOTATIONS
+    % ==========================================
+    \pgfmathsetmacro{\annoX}{\Warray + 2.0}
+    
+    \node[rotate=90, align=center] (Photon) at (\annoX, \Harray*0.75) {Photon-to-Electron\\Conversion};
+    \node[rotate=90, align=center] (Electron) at (\annoX, \Harray*0.25) {Electron-to-Voltage\\Conversion};
+
+    \pgfmathsetmacro{\tarX}{(4-1)*\dx + 0.5*\dx}
+    \pgfmathsetmacro{\tarY}{(3-1)*\dy + 0.5*\dy}
+    \coordinate (GreenPix) at (\tarX, \tarY);
+
+    \draw[-Latex, thick, arrowPurple] (Photon.north) -- (GreenPix);
+    \draw[-Latex, thick, arrowPurple] (Electron.north) -- (GreenPix);
+
+\end{tikzpicture}
+\end{document}
