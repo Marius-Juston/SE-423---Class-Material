@@ -553,19 +553,22 @@
             }
 
             container.innerHTML = data.lectures.map(item => {
-                const url = `${item.basePath}.${currentFormat}`;
-                const iconColor = currentFormat === 'pdf' ? 'text-red-500' : 'text-orange-500';
+                const isHtmlFormat = item.basePath.endsWith("html");
+
+                const formatToUse = isHtmlFormat ? "html" : currentFormat;  
+                const url = isHtmlFormat? item.basePath: `${item.basePath}.${formatToUse}`;
+                const iconColor = formatToUse === 'pdf' ? 'text-red-500' : (formatToUse === 'pptx')? 'text-orange-500' : 'text-blue-500';
                 
                 return `
                     <a href="${url}" target="_blank" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${item.title.toLowerCase()},${item.topic.toLowerCase()}">
                         <div class="${iconColor} mb-2">
-                            ${currentFormat === 'pdf' ? 
+                            ${formatToUse === 'pdf' ? 
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" /><path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>` :
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" /><path d="M6 10h8v2H6v-2zm0 4h8v2H6v-2z" /></svg>`
                             }
                         </div>
                         <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${item.title}</span>
-                        <span class="text-[10px] text-gray-400 mt-1 uppercase font-semibold">${currentFormat}</span>
+                        <span class="text-[10px] text-gray-400 mt-1 uppercase font-semibold">${formatToUse}</span>
                     </a>
                 `;
             }).join('');
