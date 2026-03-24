@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pathfinding Visualizer</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0c0e14;
+    --surface: #14171f;
+    --surface2: #1a1e28;
+    --border: #252a36;
+    --border-hi: #353b4a;
+    --text: #d8dbe6;
+    --text-dim: #636980;
+    --text-mid: #8b91a5;
+    --accent: #4d9de0;
+    --accent-dim: rgba(77,157,224,0.12);
+    --green: #44c472;
+    --green-dim: rgba(68,196,114,0.15);
+    --red: #e8564a;
+    --red-dim: rgba(232,86,74,0.12);
+    --yellow: #e8b84a;
+    --yellow-dim: rgba(232,184,74,0.2);
+    --purple: #9b6de0;
+    --purple-dim: rgba(155,109,224,0.2);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    font-family:'DM Sans',sans-serif;
+    background:var(--bg); color:var(--text);
+    height:100vh; display:flex; flex-direction:column;
+    overflow:hidden; user-select:none; -webkit-user-select:none;
+  }
+
+  /* ── HEADER ─────────────────────────────────────── */
+  .header {
+    display:flex; align-items:center; gap:12px;
+    padding:8px 14px; background:var(--surface);
+    border-bottom:1px solid var(--border);
+    flex-shrink:0; flex-wrap:wrap;
+  }
+  .logo {
+    font-weight:700; font-size:13px; letter-spacing:.3px;
+    white-space:nowrap; display:flex; align-items:center; gap:6px;
+  }
+  .logo .ic {
+    width:20px;height:20px;
+    background:linear-gradient(135deg,var(--accent),var(--purple));
+    border-radius:5px; display:flex; align-items:center; justify-content:center;
+    font-size:11px; font-weight:700; color:#fff;
+  }
+  .sep { width:1px; height:22px; background:var(--border); flex-shrink:0; }
+
+  .cg {
+    display:flex; gap:2px; background:var(--bg);
+    border-radius:7px; padding:2px; border:1px solid var(--border);
+  }
+  .b {
+    font-family:'DM Sans',sans-serif; font-size:10.5px; font-weight:500;
+    padding:3px 8px; border:none; border-radius:5px; cursor:pointer;
+    background:transparent; color:var(--text-dim); transition:all .12s;
+    white-space:nowrap; line-height:1.4;
+  }
+  .b:hover { color:var(--text); background:var(--border); }
+  .b.on { background:var(--accent); color:#fff; }
+  .b.go { color:var(--green); font-weight:600; }
+  .b.go:hover { background:var(--green-dim); }
+  .b.go.running { color:var(--yellow); animation:blink 1.2s infinite; }
+  .b.danger { color:var(--red); }
+  .b.danger:hover { background:var(--red-dim); }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .tgl {
+    display:flex; align-items:center; gap:5px;
+    font-size:10.5px; color:var(--text-dim); cursor:pointer;
+    padding:3px 7px; border-radius:5px; transition:all .12s;
+  }
+  .tgl:hover { color:var(--text-mid); background:var(--border); }
+  .tgl-t {
+    width:26px;height:13px; background:var(--border-hi);
+    border-radius:7px; position:relative; transition:background .2s; flex-shrink:0;
+  }
+  .tgl-t::after {
+    content:''; position:absolute; width:9px;height:9px;
+    background:var(--text-dim); border-radius:50%;
+    top:2px; left:2px; transition:all .2s;
+  }
+  .tgl.on .tgl-t { background:var(--accent); }
+  .tgl.on .tgl-t::after { left:15px; background:#fff; }
+  .tgl.on { color:var(--text); }
+
+  select.sel {
+    font-family:'IBM Plex Mono',monospace; font-size:10.5px;
+    background:var(--bg); color:var(--text);
+    border:1px solid var(--border); border-radius:7px;
+    padding:4px 22px 4px 7px; cursor:pointer; outline:none;
+    appearance:none; -webkit-appearance:none;
+    background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23636980' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat; background-position:right 7px center;
+  }
+
+  .spd {
+    display:flex; align-items:center; gap:5px;
+    font-size:10px; color:var(--text-dim);
+    font-family:'IBM Plex Mono',monospace;
+  }
+  input[type=range] {
+    -webkit-appearance:none; width:50px; height:3px;
+    background:var(--border-hi); border-radius:2px; outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance:none; width:10px;height:10px;
+    background:var(--accent); border-radius:50%; cursor:pointer;
+  }
+
+  /* ── INFO ────────────────────────────────────────── */
+  .info {
+    padding:5px 14px; background:var(--surface2);
+    border-bottom:1px solid var(--border);
+    font-size:10.5px; color:var(--text-mid); flex-shrink:0;
+    font-family:'IBM Plex Mono',monospace; line-height:1.5;
+  }
+  .info strong { color:var(--text); font-weight:600; }
+  .tag {
+    display:inline-block; padding:1px 5px; border-radius:3px;
+    font-size:9px; font-weight:600; margin:0 2px;
+  }
+  .tag-b { background:var(--green-dim); color:var(--green); }
+  .tag-d { background:var(--accent-dim); color:var(--accent); }
+  .tag-g { background:var(--purple-dim); color:var(--purple); }
+  .tag-a { background:var(--yellow-dim); color:var(--yellow); }
+
+  /* ── MAIN ────────────────────────────────────────── */
+  .main {
+    flex:1; display:flex; align-items:center; justify-content:center;
+    padding:10px; min-height:0;
+  }
+  .gw {
+    border:2px solid var(--border); border-radius:9px; overflow:hidden;
+    box-shadow:0 4px 40px rgba(0,0,0,.5); background:var(--bg);
+    position:relative;
+  }
+  canvas { display:block; }
+  .tip {
+    position:absolute; background:var(--surface2);
+    border:1px solid var(--border-hi); border-radius:5px;
+    padding:5px 8px; font-family:'IBM Plex Mono',monospace;
+    font-size:9.5px; color:var(--text); pointer-events:none;
+    z-index:100; display:none; box-shadow:0 4px 16px rgba(0,0,0,.5);
+    line-height:1.5; max-width:170px;
+  }
+
+  /* ── FOOTER ──────────────────────────────────────── */
+  .footer {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:6px 14px; background:var(--surface);
+    border-top:1px solid var(--border);
+    font-family:'IBM Plex Mono',monospace; font-size:9.5px;
+    color:var(--text-dim); flex-shrink:0; flex-wrap:wrap; gap:6px;
+  }
+  .legend { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
+  .legend-i { display:flex; align-items:center; gap:3px; }
+  .sw { width:9px;height:9px; border-radius:2px; flex-shrink:0; }
+  .stats { display:flex; gap:12px; flex-wrap:wrap; }
+  .sv { color:var(--accent); font-weight:600; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo"><div class="ic">P</div>Pathfinding</div>
+  <div class="sep"></div>
+
+  <select class="sel" id="algoSel" onchange="onAlgo()">
+    <option value="bfs">Breadth-First Search</option>
+    <option value="dijkstra">Dijkstra's Algorithm</option>
+    <option value="greedy">Greedy Best-First</option>
+    <option value="astar" selected>A* Search</option>
+  </select>
+  <div class="sep"></div>
+
+  <div class="cg" id="tg">
+    <button class="b on" data-t="wall" onclick="setT('wall')">▪ Wall</button>
+    <button class="b" data-t="forest" onclick="setT('forest')">⚘ Forest&thinsp;×5</button>
+    <button class="b" data-t="water" onclick="setT('water')">〜 Water&thinsp;×10</button>
+    <button class="b" data-t="start" onclick="setT('start')">● Start</button>
+    <button class="b" data-t="end" onclick="setT('end')">◆ End</button>
+    <button class="b" data-t="erase" onclick="setT('erase')">✕ Erase</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="cg">
+    <button class="b" onclick="genMaze()">Maze</button>
+    <button class="b" onclick="genRand()">Random</button>
+    <button class="b" onclick="genTerrain()">Terrain</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="cg">
+    <button class="b go" id="btnR" onclick="doRun()">▶ Run</button>
+    <button class="b" onclick="doStep()">⏭ Step</button>
+    <button class="b danger" onclick="doClear()">Clear</button>
+    <button class="b danger" onclick="doReset()">Reset</button>
+  </div>
+  <div class="sep"></div>
+
+  <div class="tgl on" id="tEE" onclick="tglEE()"><div class="tgl-t"></div>Early Exit</div>
+  <div class="tgl on" id="tDG" onclick="tglDG()"><div class="tgl-t"></div>Diagonals</div>
+  <div class="tgl" id="tSC" onclick="tglSC()"><div class="tgl-t"></div>Costs</div>
+  <div class="sep"></div>
+  <div class="spd">SPD<input type="range" id="spd" min="1" max="100" value="60"></div>
+</div>
+
+<div class="info" id="infoBar"></div>
+
+<div class="main">
+  <div class="gw" id="gw">
+    <canvas id="cv"></canvas>
+    <div class="tip" id="tip"></div>
+  </div>
+</div>
+
+<div class="footer">
+  <div class="legend">
+    <div class="legend-i"><div class="sw" style="background:#44c472"></div>Start</div>
+    <div class="legend-i"><div class="sw" style="background:#e8564a"></div>End</div>
+    <div class="legend-i"><div class="sw" style="background:#3d424f"></div>Wall</div>
+    <div class="legend-i"><div class="sw" style="background:#2d5a3a"></div>Forest&thinsp;×5</div>
+    <div class="legend-i"><div class="sw" style="background:#1a3a5c"></div>Water&thinsp;×10</div>
+    <div class="legend-i"><div class="sw" style="background:rgba(77,157,224,.4)"></div>Frontier</div>
+    <div class="legend-i"><div class="sw" style="background:rgba(155,109,224,.3)"></div>Visited</div>
+    <div class="legend-i"><div class="sw" style="background:#e8b84a"></div>Path</div>
+  </div>
+  <div class="stats">
+    <span>Algo: <span class="sv" id="sA">A*</span></span>
+    <span>Visited: <span class="sv" id="sV">0</span></span>
+    <span>Path: <span class="sv" id="sP">—</span></span>
+    <span>Cost: <span class="sv" id="sC">—</span></span>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════
+const COLS=40, ROWS=25, SZ=22, G=1;
+const cv=document.getElementById('cv');
+const cx=cv.getContext('2d');
+const TW=COLS*(SZ+G)+G, TH=ROWS*(SZ+G)+G;
+cv.width=TW; cv.height=TH;
+const gw=document.getElementById('gw');
+gw.style.width=TW+'px'; gw.style.height=TH+'px';
+
+const E=0,WL=1,ST=2,EN=3,FR=4,WA=5;
+const COST={[E]:1,[ST]:1,[EN]:1,[FR]:5,[WA]:10};
+
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
+let grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
+let sp={r:Math.floor(ROWS/2),c:4};
+let ep={r:Math.floor(ROWS/2),c:COLS-5};
+grid[sp.r][sp.c]=ST; grid[ep.r][ep.c]=EN;
+
+let tool='wall', algo='astar';
+let earlyExit=true, allowDiag=true, showCost=false;
+let drawing=false, running=false;
+
+let cameFrom={}, costSoFar={}, visited=new Set();
+let aOpen=new Set(), aClosed=new Set(), aPath=new Set();
+let timer=null, steps=0;
+let pq=null, bfsQ=[];
+
+// ═══════════════════════════════════════════════════════
+// COLORS
+// ═══════════════════════════════════════════════════════
+const CC={
+  bg:'#0c0e14', cell:'#181c26', wall:'#3d424f',
+  start:'#44c472', end:'#e8564a',
+  forest:'#2d5a3a', water:'#1a3a5c',
+  open:'rgba(77,157,224,.4)', closed:'rgba(155,109,224,.28)',
+  path:'#e8b84a', pathG:'rgba(232,184,74,.2)',
+  arrw:'#0c0e14', ftxt:'rgba(255,255,255,.35)',
+};
+
+// ═══════════════════════════════════════════════════════
+// DRAW
+// ═══════════════════════════════════════════════════════
+function xy(c,r){return[G+c*(SZ+G),G+r*(SZ+G)];}
+function k(r,c){return r+','+c;}
+function fk(s){return s.split(',').map(Number);}
+
+function draw(){
+  cx.fillStyle=CC.bg; cx.fillRect(0,0,TW,TH);
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    const[x,y]=xy(c,r); const K=k(r,c); const v=grid[r][c];
+    let col=CC.cell;
+    if(v===WL) col=CC.wall;
+    else if(v===FR) col=CC.forest;
+    else if(v===WA) col=CC.water;
+
+    if(aPath.has(K)&&v!==ST&&v!==EN){
+      cx.fillStyle=CC.pathG;
+      cx.beginPath(); cx.roundRect(x-2,y-2,SZ+4,SZ+4,4); cx.fill();
+      col=CC.path;
+    } else if(aOpen.has(K)&&v!==ST&&v!==EN&&v!==WL){
+      // blend with terrain
+      col = v===FR?'rgba(60,140,180,.4)':v===WA?'rgba(60,130,200,.45)':CC.open;
+    } else if(aClosed.has(K)&&v!==ST&&v!==EN&&v!==WL){
+      col = v===FR?'rgba(105,80,180,.35)':v===WA?'rgba(100,75,185,.35)':CC.closed;
+    }
+    if(v===ST) col=CC.start;
+    if(v===EN) col=CC.end;
+
+    cx.fillStyle=col;
+    cx.beginPath(); cx.roundRect(x,y,SZ,SZ,3); cx.fill();
+
+    // terrain icons (only if not path)
+    if(v===FR&&!aPath.has(K)){
+      cx.fillStyle='rgba(80,180,100,.22)';
+      cx.font='9px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText('⚘',x+SZ/2,y+SZ/2);
+    }
+    if(v===WA&&!aPath.has(K)){
+      cx.fillStyle='rgba(80,160,220,.22)';
+      cx.font='8px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText('〜',x+SZ/2,y+SZ/2);
+    }
+
+    // cost text
+    if(showCost&&(aOpen.has(K)||aClosed.has(K))&&v!==ST&&v!==EN&&v!==WL){
+      const g=costSoFar[K];
+      if(g!==undefined){
+        cx.fillStyle=CC.ftxt;
+        cx.font='7px IBM Plex Mono,monospace';
+        cx.textAlign='center'; cx.textBaseline='middle';
+        cx.fillText(g<1000?Math.round(g):'++',x+SZ/2,y+SZ/2);
+      }
+    }
+
+    // path arrows
+    if(aPath.has(K)&&v!==ST&&v!==EN&&cameFrom[K]){
+      const[fr,fc]=fk(cameFrom[K]);
+      const dr=r-fr,dc=c-fc;
+      const A={'-1,0':'↑','1,0':'↓','0,-1':'←','0,1':'→',
+        '-1,-1':'↖','-1,1':'↗','1,-1':'↙','1,1':'↘'};
+      cx.fillStyle=CC.arrw;
+      cx.font='bold 9px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText(A[dr+','+dc]||'·',x+SZ/2,y+SZ/2);
+    }
+
+    // S / E
+    if(v===ST||v===EN){
+      cx.fillStyle='#fff';
+      cx.font='bold 10px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.fillText(v===ST?'S':'E',x+SZ/2,y+SZ/2);
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════════
+// PRIORITY QUEUE
+// ═══════════════════════════════════════════════════════
+class PQ{
+  constructor(){this.d=[];}
+  get length(){return this.d.length;}
+  push(it,p){this.d.push({it,p});this._u(this.d.length-1);}
+  pop(){const t=this.d[0];const l=this.d.pop();if(this.d.length>0){this.d[0]=l;this._d(0);}return t;}
+  _u(i){while(i>0){const p=(i-1)>>1;if(this.d[p].p<=this.d[i].p)break;[this.d[p],this.d[i]]=[this.d[i],this.d[p]];i=p;}}
+  _d(i){const n=this.d.length;while(true){let s=i,l=2*i+1,r=2*i+2;if(l<n&&this.d[l].p<this.d[s].p)s=l;if(r<n&&this.d[r].p<this.d[s].p)s=r;if(s===i)break;[this.d[s],this.d[i]]=[this.d[i],this.d[s]];i=s;}}
+}
+
+// ═══════════════════════════════════════════════════════
+// PATHFINDING
+// ═══════════════════════════════════════════════════════
+function heur(r1,c1,r2,c2){
+  if(allowDiag){const dr=Math.abs(r1-r2),dc=Math.abs(c1-c2);return Math.max(dr,dc)+(Math.SQRT2-1)*Math.min(dr,dc);}
+  return Math.abs(r1-r2)+Math.abs(c1-c2);
+}
+
+function nbs(r,c){
+  const res=[];
+  const dirs=[[0,1],[0,-1],[1,0],[-1,0]];
+  if(allowDiag) dirs.push([-1,-1],[-1,1],[1,-1],[1,1]);
+  for(const[dr,dc] of dirs){
+    const nr=r+dr,nc=c+dc;
+    if(nr<0||nr>=ROWS||nc<0||nc>=COLS) continue;
+    if(grid[nr][nc]===WL) continue;
+    if(dr!==0&&dc!==0){if(grid[r+dr][c]===WL||grid[r][c+dc]===WL) continue;}
+    const mc=COST[grid[nr][nc]]||1;
+    const d=(dr!==0&&dc!==0)?Math.SQRT2:1;
+    res.push({r:nr,c:nc,cost:d*mc});
+  }
+  return res;
+}
+
+function initSearch(){
+  clrViz();
+  if(!sp||!ep) return false;
+  const sk=k(sp.r,sp.c);
+  cameFrom[sk]=null; costSoFar[sk]=0; steps=0;
+  if(algo==='bfs'){bfsQ=[sk];}
+  else{pq=new PQ();const p=algo==='greedy'?heur(sp.r,sp.c,ep.r,ep.c):0;pq.push(sk,p);}
+  running=true;
+  document.getElementById('btnR').classList.add('running');
+  document.getElementById('btnR').textContent='⏸ Pause';
+  return true;
+}
+
+function step1(){
+  let cur;
+  if(algo==='bfs'){
+    if(bfsQ.length===0) return 'fail';
+    cur=bfsQ.shift();
+  } else {
+    if(!pq||pq.length===0) return 'fail';
+    cur=pq.pop().it;
+  }
+  const[cr,cc]=fk(cur);
+
+  if(visited.has(cur)&&algo!=='bfs') return 'skip';
+  visited.add(cur);
+  aOpen.delete(cur);
+  if(grid[cr][cc]!==ST) aClosed.add(cur);
+  steps++;
+
+  if(earlyExit&&cr===ep.r&&cc===ep.c){reconPath(cur);return 'done';}
+
+  for(const nb of nbs(cr,cc)){
+    const nk=k(nb.r,nb.c);
+
+    if(algo==='bfs'){
+      if(!(nk in cameFrom)){
+        cameFrom[nk]=cur; costSoFar[nk]=(costSoFar[cur]||0)+1;
+        bfsQ.push(nk);
+        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
+        if(earlyExit&&nb.r===ep.r&&nb.c===ep.c){reconPath(nk);return 'done';}
+      }
+    } else if(algo==='greedy'){
+      if(!(nk in cameFrom)&&!visited.has(nk)){
+        cameFrom[nk]=cur; costSoFar[nk]=(costSoFar[cur]||0)+nb.cost;
+        pq.push(nk,heur(nb.r,nb.c,ep.r,ep.c));
+        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
+      }
+    } else {
+      const nc2=(costSoFar[cur]||0)+nb.cost;
+      if(!(nk in costSoFar)||nc2<costSoFar[nk]){
+        costSoFar[nk]=nc2; cameFrom[nk]=cur;
+        let pri=nc2;
+        if(algo==='astar') pri+=heur(nb.r,nb.c,ep.r,ep.c);
+        pq.push(nk,pri);
+        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
+      }
+    }
+  }
+  updS(); draw(); return 'running';
+}
+
+function reconPath(gk){
+  let n=gk,pl=0;
+  while(n){aPath.add(n);pl++;n=cameFrom[n];}
+  const tc=costSoFar[k(ep.r,ep.c)];
+  stopRun(); updS(pl,tc); draw();
+}
+
+// ═══════════════════════════════════════════════════════
+// CONTROLS
+// ═══════════════════════════════════════════════════════
+function getDelay(){const v=+document.getElementById('spd').value;return Math.max(2,180-v*1.75);}
+
+function doRun(){
+  if(timer){stopRun();return;}
+  if(!running){if(!initSearch())return;}
+  running=true;
+  document.getElementById('btnR').classList.add('running');
+  document.getElementById('btnR').textContent='⏸ Pause';
+  function tick(){
+    const sp2=+document.getElementById('spd').value;
+    const batch=sp2>85?8:sp2>65?4:sp2>40?2:1;
+    for(let i=0;i<batch;i++){
+      let r2;
+      do { r2=step1(); } while(r2==='skip');
+      if(r2!=='running'){
+        if(r2==='fail'){stopRun();updS(0,null,true);draw();}
+        return;
+      }
+    }
+    draw(); timer=setTimeout(tick,getDelay());
+  }
+  tick();
+}
+
+function doStep(){
+  if(!running){if(!initSearch())return;}
+  stopTimer();
+  let r2; do{r2=step1();}while(r2==='skip');
+  if(r2==='fail'){stopRun();updS(0,null,true);}
+  draw();
+}
+
+function stopRun(){stopTimer();running=false;document.getElementById('btnR').classList.remove('running');document.getElementById('btnR').textContent='▶ Run';}
+function stopTimer(){if(timer){clearTimeout(timer);timer=null;}}
+
+function clrViz(){aOpen=new Set();aClosed=new Set();aPath=new Set();cameFrom={};costSoFar={};visited=new Set();pq=null;bfsQ=[];steps=0;}
+function doClear(){stopRun();clrViz();updS();draw();}
+function doReset(){
+  stopRun();
+  grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
+  sp={r:Math.floor(ROWS/2),c:4};ep={r:Math.floor(ROWS/2),c:COLS-5};
+  grid[sp.r][sp.c]=ST;grid[ep.r][ep.c]=EN;
+  clrViz();updS();draw();
+}
+
+// ═══════════════════════════════════════════════════════
+// STATS / INFO
+// ═══════════════════════════════════════════════════════
+const AN={bfs:'BFS',dijkstra:'Dijkstra',greedy:'Greedy BFS',astar:'A*'};
+const AD={
+  bfs:'<strong>Breadth-First Search</strong> — explores equally in all directions with a FIFO queue. All edges cost 1; ignores terrain weights. <span class="tag tag-b">OPTIMAL (uniform cost)</span>',
+  dijkstra:'<strong>Dijkstra\'s Algorithm</strong> — expands cheapest-total-cost node first. Respects terrain weights. Priority = g (cost from start). <span class="tag tag-d">OPTIMAL</span>',
+  greedy:'<strong>Greedy Best-First Search</strong> — expands node estimated closest to goal. Priority = h (heuristic). Fast but can find suboptimal paths. <span class="tag tag-g">FAST · NOT OPTIMAL</span>',
+  astar:'<strong>A* Search</strong> — combines actual cost g with heuristic h. Priority = f = g + h. Optimal if heuristic is admissible. <span class="tag tag-a">OPTIMAL + FAST</span>',
+};
+
+function updS(pl,tc,fail){
+  document.getElementById('sA').textContent=AN[algo];
+  document.getElementById('sV').textContent=steps;
+  document.getElementById('sP').textContent=fail?'None':(pl||'—');
+  document.getElementById('sC').textContent=fail?'∞':(tc!=null?tc.toFixed(1):'—');
+}
+
+function onAlgo(){algo=document.getElementById('algoSel').value;document.getElementById('infoBar').innerHTML=AD[algo];doClear();}
+
+function tglEE(){earlyExit=!earlyExit;document.getElementById('tEE').classList.toggle('on',earlyExit);doClear();}
+function tglDG(){allowDiag=!allowDiag;document.getElementById('tDG').classList.toggle('on',allowDiag);doClear();}
+function tglSC(){showCost=!showCost;document.getElementById('tSC').classList.toggle('on',showCost);draw();}
+
+// ═══════════════════════════════════════════════════════
+// TOOLS / INTERACTION
+// ═══════════════════════════════════════════════════════
+function setT(t){
+  tool=t;
+  document.querySelectorAll('#tg .b').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+}
+
+function cell(e){
+  const r2=cv.getBoundingClientRect();
+  const sx=cv.width/r2.width,sy=cv.height/r2.height;
+  const mx=(e.clientX-r2.left)*sx,my=(e.clientY-r2.top)*sy;
+  const c2=Math.floor((mx-G)/(SZ+G)),r3=Math.floor((my-G)/(SZ+G));
+  if(r3>=0&&r3<ROWS&&c2>=0&&c2<COLS) return {r:r3,c:c2};
+  return null;
+}
+
+function applyT(r,c){
+  if(running) return;
+  clrViz(); updS();
+  const v=grid[r][c];
+  switch(tool){
+    case 'wall': if(v===E||v===FR||v===WA) grid[r][c]=WL; break;
+    case 'forest': if(v===E||v===WL||v===WA) grid[r][c]=FR; break;
+    case 'water': if(v===E||v===WL||v===FR) grid[r][c]=WA; break;
+    case 'erase': if(v===ST) sp=null; if(v===EN) ep=null; grid[r][c]=E; break;
+    case 'start': if(sp) grid[sp.r][sp.c]=E; grid[r][c]=ST; sp={r,c}; break;
+    case 'end': if(ep) grid[ep.r][ep.c]=E; grid[r][c]=EN; ep={r,c}; break;
+  }
+  draw();
+}
+
+cv.addEventListener('mousedown',e=>{const c2=cell(e);if(c2){drawing=true;applyT(c2.r,c2.c);}});
+cv.addEventListener('mousemove',e=>{
+  const c2=cell(e); const tip=document.getElementById('tip');
+  if(c2){
+    const K=k(c2.r,c2.c);
+    if(aOpen.has(K)||aClosed.has(K)||aPath.has(K)){
+      const g2=costSoFar[K];
+      const h2=ep?heur(c2.r,c2.c,ep.r,ep.c):0;
+      let ht=`<b>[${c2.r},${c2.c}]</b> ${grid[c2.r][c2.c]===FR?'Forest':grid[c2.r][c2.c]===WA?'Water':''}`;
+      ht+=`<br>g = ${g2!=null?g2.toFixed(1):'?'}`;
+      ht+=`<br>h = ${h2.toFixed(1)}`;
+      ht+=`<br>f = ${g2!=null?(g2+h2).toFixed(1):'?'}`;
+      tip.innerHTML=ht; tip.style.display='block';
+      const wr=gw.getBoundingClientRect();
+      tip.style.left=(e.clientX-wr.left+12)+'px';
+      tip.style.top=(e.clientY-wr.top-8)+'px';
+    } else { tip.style.display='none'; }
+  } else { tip.style.display='none'; }
+  if(!drawing) return;
+  if(c2) applyT(c2.r,c2.c);
+});
+cv.addEventListener('mouseup',()=>drawing=false);
+cv.addEventListener('mouseleave',()=>{drawing=false;document.getElementById('tip').style.display='none';});
+
+// Touch support
+cv.addEventListener('touchstart',e=>{e.preventDefault();const t2=e.touches[0];const c2=cell(t2);if(c2){drawing=true;applyT(c2.r,c2.c);}},{passive:false});
+cv.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const t2=e.touches[0];const c2=cell(t2);if(c2)applyT(c2.r,c2.c);},{passive:false});
+cv.addEventListener('touchend',()=>drawing=false);
+
+// ═══════════════════════════════════════════════════════
+// GENERATORS
+// ═══════════════════════════════════════════════════════
+function genMaze(){
+  stopRun(); clrViz();
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) grid[r][c]=WL;
+  const vs=new Set();
+  function carve(r,c){
+    vs.add(k(r,c)); grid[r][c]=E;
+    const ds=[[0,2],[0,-2],[2,0],[-2,0]].sort(()=>Math.random()-.5);
+    for(const[dr,dc] of ds){
+      const nr=r+dr,nc=c+dc;
+      if(nr>0&&nr<ROWS-1&&nc>0&&nc<COLS-1&&!vs.has(k(nr,nc))){
+        grid[r+dr/2][c+dc/2]=E; carve(nr,nc);
+      }
+    }
+  }
+  carve(1,1);
+  sp={r:1,c:1}; ep={r:ROWS-2,c:COLS-2};
+  grid[1][1]=ST; grid[ROWS-2][COLS-2]=EN;
+  updS(); draw();
+}
+
+function genRand(){
+  stopRun(); clrViz();
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++)
+    if(grid[r][c]===E) grid[r][c]=Math.random()<.25?WL:E;
+  updS(); draw();
+}
+
+function genTerrain(){
+  stopRun(); clrViz();
+  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
+    if(grid[r][c]===ST||grid[r][c]===EN) continue;
+    const n1=vn(c*.15,r*.15), n2=vn(c*.08+50,r*.08+50);
+    if(n1>.72) grid[r][c]=WL;
+    else if(n2>.55) grid[r][c]=WA;
+    else if(n1>.32) grid[r][c]=FR;
+    else grid[r][c]=E;
+  }
+  if(sp) grid[sp.r][sp.c]=ST;
+  if(ep) grid[ep.r][ep.c]=EN;
+  updS(); draw();
+}
+
+function vn(x,y){
+  const ix=Math.floor(x),iy=Math.floor(y);
+  const fx=x-ix,fy=y-iy;
+  const sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);
+  function h(a,b){let v=(a*374761393+b*668265263+1234567)&0x7fffffff;v=((v>>13)^v)*1274126177;return((v>>13)^v&0x7fffffff)/0x7fffffff;}
+  const a=h(ix,iy)+sx*(h(ix+1,iy)-h(ix,iy));
+  const b=h(ix,iy+1)+sx*(h(ix+1,iy+1)-h(ix,iy+1));
+  return a+sy*(b-a);
+}
+
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
+updS(); onAlgo(); draw();
+</script>
+</body>
+</html>
