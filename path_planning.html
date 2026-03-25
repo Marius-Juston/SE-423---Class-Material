@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Pathfinding Visualizer</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -30,14 +30,15 @@
   body {
     font-family:'DM Sans',sans-serif;
     background:var(--bg); color:var(--text);
-    height:100vh; display:flex; flex-direction:column;
+    height:100vh; height:100dvh;
+    display:flex; flex-direction:column;
     overflow:hidden; user-select:none; -webkit-user-select:none;
   }
 
   /* ── HEADER ─────────────────────────────────────── */
   .header {
-    display:flex; align-items:center; gap:12px;
-    padding:8px 14px; background:var(--surface);
+    display:flex; align-items:center; gap:8px;
+    padding:6px 10px; background:var(--surface);
     border-bottom:1px solid var(--border);
     flex-shrink:0; flex-wrap:wrap;
   }
@@ -135,7 +136,7 @@
   /* ── MAIN ────────────────────────────────────────── */
   .main {
     flex:1; display:flex; align-items:center; justify-content:center;
-    padding:10px; min-height:0;
+    padding:6px; min-height:0; overflow:hidden;
   }
   .gw {
     border:2px solid var(--border); border-radius:9px; overflow:hidden;
@@ -165,6 +166,31 @@
   .sw { width:9px;height:9px; border-radius:2px; flex-shrink:0; }
   .stats { display:flex; gap:12px; flex-wrap:wrap; }
   .sv { color:var(--accent); font-weight:600; }
+
+  /* ── RESPONSIVE ──────────────────────────────────── */
+  @media (max-width: 900px) {
+    .header { gap:5px; padding:5px 8px; }
+    .sep { display:none; }
+    .b { font-size:9.5px; padding:3px 6px; }
+    .tgl { font-size:9.5px; padding:2px 5px; }
+    select.sel { font-size:9.5px; padding:3px 16px 3px 5px; }
+    .info { font-size:9.5px; padding:4px 10px; }
+    .footer { font-size:8.5px; padding:4px 10px; }
+  }
+  @media (max-width: 600px) {
+    .header { gap:4px; padding:4px 6px; }
+    .logo { font-size:11px; }
+    .b { font-size:8.5px; padding:2px 5px; }
+    .tgl { font-size:8.5px; }
+    .cg { padding:1px; gap:1px; }
+    .info { font-size:8.5px; padding:3px 8px; }
+    .footer { font-size:7.5px; padding:3px 8px; gap:4px; }
+    .legend { gap:5px; }
+    .stats { gap:6px; }
+    .spd { font-size:8.5px; }
+    input[type=range] { width:36px; }
+    .main { padding:4px; }
+  }
 </style>
 </head>
 <body>
@@ -250,7 +276,7 @@ let SZ = 22;
 const cv=document.getElementById('cv'); 
 const cx=cv.getContext('2d');
 const gw=document.getElementById('gw');
-let TW=COLS*(SZ+G)+G, TH=ROWS*(SZ+G)+G;
+let TW, TH;
 
 const E=0,WL=1,ST=2,EN=3,FR=4,WA=5;
 const COST={[E]:1,[ST]:1,[EN]:1,[FR]:5,[WA]:10};
@@ -293,6 +319,14 @@ function fk(s){return s.split(',').map(Number);}
 
 function draw(){
   cx.fillStyle=CC.bg; cx.fillRect(0,0,cv.width,cv.height);
+
+  // Adaptive font sizes based on cell size
+  const iconSize = Math.max(6, Math.round(SZ * 0.42)) + 'px';
+  const costSize = Math.max(5, Math.round(SZ * 0.32)) + 'px';
+  const arrowSize = Math.max(6, Math.round(SZ * 0.42)) + 'px';
+  const labelSize = Math.max(7, Math.round(SZ * 0.48)) + 'px';
+  const cornerR = Math.max(1, Math.round(SZ * 0.14));
+
   for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
     const[x,y]=xy(c,r); const K=k(r,c); const v=grid[r][c];
     let col=CC.cell;
@@ -302,10 +336,9 @@ function draw(){
 
     if(aPath.has(K)&&v!==ST&&v!==EN){
       cx.fillStyle=CC.pathG;
-      cx.beginPath(); cx.roundRect(x-2,y-2,SZ+4,SZ+4,4); cx.fill();
+      cx.beginPath(); cx.roundRect(x-2,y-2,SZ+4,SZ+4,cornerR+1); cx.fill();
       col=CC.path;
     } else if(aOpen.has(K)&&v!==ST&&v!==EN&&v!==WL){
-      // blend with terrain
       col = v===FR?'rgba(60,140,180,.4)':v===WA?'rgba(60,130,200,.45)':CC.open;
     } else if(aClosed.has(K)&&v!==ST&&v!==EN&&v!==WL){
       col = v===FR?'rgba(105,80,180,.35)':v===WA?'rgba(100,75,185,.35)':CC.closed;
@@ -314,17 +347,17 @@ function draw(){
     if(v===EN) col=CC.end;
 
     cx.fillStyle=col;
-    cx.beginPath(); cx.roundRect(x,y,SZ,SZ,3); cx.fill();
+    cx.beginPath(); cx.roundRect(x,y,SZ,SZ,cornerR); cx.fill();
 
     // terrain icons (only if not path)
     if(v===FR&&!aPath.has(K)){
       cx.fillStyle='rgba(80,180,100,.22)';
-      cx.font='9px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.font=iconSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText('⚘',x+SZ/2,y+SZ/2);
     }
     if(v===WA&&!aPath.has(K)){
       cx.fillStyle='rgba(80,160,220,.22)';
-      cx.font='8px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.font=iconSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText('〜',x+SZ/2,y+SZ/2);
     }
 
@@ -333,7 +366,7 @@ function draw(){
       const g=costSoFar[K];
       if(g!==undefined){
         cx.fillStyle=CC.ftxt;
-        cx.font='7px IBM Plex Mono,monospace';
+        cx.font=costSize+' IBM Plex Mono,monospace';
         cx.textAlign='center'; cx.textBaseline='middle';
         cx.fillText(g<1000?Math.round(g):'++',x+SZ/2,y+SZ/2);
       }
@@ -346,39 +379,40 @@ function draw(){
       const A={'-1,0':'↑','1,0':'↓','0,-1':'←','0,1':'→',
         '-1,-1':'↖','-1,1':'↗','1,-1':'↙','1,1':'↘'};
       cx.fillStyle=CC.arrw;
-      cx.font='bold 9px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.font='bold '+arrowSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText(A[dr+','+dc]||'·',x+SZ/2,y+SZ/2);
     }
 
     // S / E
     if(v===ST||v===EN){
       cx.fillStyle='#fff';
-      cx.font='bold 10px DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
+      cx.font='bold '+labelSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
       cx.fillText(v===ST?'S':'E',x+SZ/2,y+SZ/2);
     }
   }
 }
 
 function resizeCanvas() {
-  const padding = 20;
+  const mainEl = document.querySelector('.main');
+  const availableWidth = mainEl.clientWidth - 12;  // 6px padding each side
+  const availableHeight = mainEl.clientHeight - 12;
 
-  const headerH = document.querySelector('.header').offsetHeight;
-  const infoH = document.querySelector('.info').offsetHeight;
-  const footerH = document.querySelector('.footer').offsetHeight;
+  // Calculate cell size to fit both dimensions, maintaining aspect ratio
+  const maxCellW = Math.floor((availableWidth - G) / COLS) - G;
+  const maxCellH = Math.floor((availableHeight - G) / ROWS) - G;
 
-  const availableWidth = window.innerWidth - padding;
-  const availableHeight = window.innerHeight - headerH - infoH - footerH - padding;
-
-  const cellW = Math.floor(availableWidth / COLS);
-  const cellH = Math.floor(availableHeight / ROWS);
-
-  SZ = Math.max(10, Math.min(cellW, cellH) - G);
+  SZ = Math.max(6, Math.min(maxCellW, maxCellH));
 
   TW = COLS * (SZ + G) + G;
   TH = ROWS * (SZ + G) + G;
 
-  cv.width = TW ;
-  cv.height = TH;
+  // Use devicePixelRatio for crisp rendering on HiDPI screens
+  const dpr = window.devicePixelRatio || 1;
+  cv.width = TW * dpr;
+  cv.height = TH * dpr;
+  cv.style.width = TW + 'px';
+  cv.style.height = TH + 'px';
+  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
   gw.style.width = TW + 'px';
   gw.style.height = TH + 'px';
@@ -452,6 +486,7 @@ function step1(){
   if(grid[cr][cc]!==ST) aClosed.add(cur);
   steps++;
 
+  // Early exit: reconstruct as soon as we pop the goal
   if(earlyExit&&cr===ep.r&&cc===ep.c){reconPath(cur);return 'done';}
 
   for(const nb of nbs(cr,cc)){
@@ -509,7 +544,16 @@ function doRun(){
       let r2;
       do { r2=step1(); } while(r2==='skip');
       if(r2!=='running'){
-        if(r2==='fail'){stopRun();updS(0,null,true);draw();}
+        if(r2==='fail'){
+          // ── FIX: when early exit is OFF and the queue empties,
+          //    try to reconstruct the path to the end node.
+          const ek=k(ep.r,ep.c);
+          if(!earlyExit && ek in cameFrom){
+            reconPath(ek);
+          } else {
+            stopRun(); updS(0,null,true); draw();
+          }
+        }
         return;
       }
     }
@@ -522,7 +566,15 @@ function doStep(){
   if(!running){if(!initSearch())return;}
   stopTimer();
   let r2; do{r2=step1();}while(r2==='skip');
-  if(r2==='fail'){stopRun();updS(0,null,true);}
+  if(r2==='fail'){
+    // ── FIX: same exhaustive-search path reconstruction for stepping
+    const ek=k(ep.r,ep.c);
+    if(!earlyExit && ek in cameFrom){
+      reconPath(ek);
+    } else {
+      stopRun(); updS(0,null,true);
+    }
+  }
   draw();
 }
 
@@ -573,7 +625,8 @@ function setT(t){
 
 function cell(e){
   const r2=cv.getBoundingClientRect();
-  const sx=cv.width/r2.width,sy=cv.height/r2.height;
+  const sx=(cv.width/(window.devicePixelRatio||1))/r2.width;
+  const sy=(cv.height/(window.devicePixelRatio||1))/r2.height;
   const mx=(e.clientX-r2.left)*sx,my=(e.clientY-r2.top)*sy;
   const c2=Math.floor((mx-G)/(SZ+G)),r3=Math.floor((my-G)/(SZ+G));
   if(r3>=0&&r3<ROWS&&c2>=0&&c2<COLS) return {r:r3,c:c2};
@@ -682,7 +735,11 @@ function vn(x,y){
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
-window.addEventListener('resize', resizeCanvas);
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(resizeCanvas, 60);
+});
 updS(); onAlgo(); resizeCanvas();
 </script>
 </body>
