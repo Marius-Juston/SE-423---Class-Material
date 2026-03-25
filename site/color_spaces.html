@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chromascape — Color Space Explorer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --bg: #0a0a0f; --bg-card: #111119; --bg-elevated: #1a1a26;
+  --border: #252535; --text: #e8e6f0; --text-dim: #7878a0;
+  --accent: #7c6aef; --accent-glow: rgba(124,106,239,0.2);
+  --mono: 'JetBrains Mono', monospace; --serif: 'Instrument Serif', serif; --sans: 'DM Sans', sans-serif;
+  --radius: 12px; --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+.header-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
+.logo { font-family: var(--serif); font-size: 1.4rem; font-style: italic; display: flex; align-items: center; gap: 0.7rem; }
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#ef4444,#eab308,#22c55e,#3b82f6,#a855f7,#ef4444); animation: spin 6s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+nav { display: flex; gap: 0.2rem; }
+nav a { color: var(--text-dim); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 0.35rem 0.75rem; border-radius: 6px; transition: var(--transition); }
+nav a:hover, nav a.active { color: var(--text); background: var(--bg-elevated); }
+
+.hero { max-width: 1440px; margin: 0 auto; padding: 4rem 2rem 2.5rem; text-align: center; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2.2rem,5vw,4rem); font-weight: 400; font-style: italic; line-height: 1.1; margin-bottom: 0.8rem; background: linear-gradient(135deg,#e8e6f0 0%,#7c6aef 50%,#e8e6f0 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 5s ease-in-out infinite; }
+@keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+.hero p { color: var(--text-dim); font-size: 1.05rem; max-width: 620px; margin: 0 auto; }
+
+section { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 3.5rem; }
+.section-header { margin-bottom: 1.8rem; }
+.section-header h2 { font-family: var(--serif); font-size: 1.9rem; font-style: italic; font-weight: 400; margin-bottom: 0.3rem; }
+.section-header p { color: var(--text-dim); font-size: 0.92rem; }
+.section-tag { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; display: block; }
+
+.viewer-grid { display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; }
+.space-selector { display: flex; flex-direction: column; gap: 0.4rem; }
+.space-btn { display: flex; align-items: center; gap: 0.7rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-dim); font-family: var(--sans); font-size: 0.82rem; cursor: pointer; transition: var(--transition); text-align: left; }
+.space-btn:hover { border-color: var(--accent); color: var(--text); }
+.space-btn.active { border-color: var(--accent); background: rgba(124,106,239,0.07); color: var(--text); box-shadow: 0 0 20px var(--accent-glow); }
+.space-btn .badge { font-family: var(--mono); font-size: 0.58rem; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--bg-elevated); color: var(--accent); margin-left: auto; white-space: nowrap; }
+.space-btn.active .badge { background: var(--accent); color: #fff; }
+
+.viewer-main { display: flex; flex-direction: column; gap: 1.2rem; }
+.viewer-3d-wrap { position: relative; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/10; }
+.viewer-3d-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
+.viewer-overlay { position: absolute; top: 0; left: 0; right: 0; padding: 0.7rem 1rem; display: flex; justify-content: space-between; align-items: flex-start; pointer-events: none; z-index: 2; }
+.viewer-label { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--accent); background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
+.viewer-hint { font-family: var(--mono); font-size: 0.62rem; color: var(--text-dim); background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
+.viewer-axes-info { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.5rem 1rem; display: flex; gap: 1.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); z-index: 2; }
+.ax-x { color: #ef6060; font-weight: 600; } .ax-y { color: #60ef60; font-weight: 600; } .ax-z { color: #6090ef; font-weight: 600; }
+
+.slice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.slice-canvas-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; position: relative; }
+.slice-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+.sliders-and-preview { display: flex; flex-direction: column; gap: 0.6rem; }
+.slider-group { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; }
+.slider-label { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
+.slider-label .val { color: var(--text); }
+.slider-group input[type="range"] { -webkit-appearance: none; width: 100%; height: 5px; border-radius: 3px; outline: none; cursor: pointer; }
+.slider-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); box-shadow: 0 0 6px var(--accent-glow); cursor: pointer; }
+.color-swatch-row { display: flex; gap: 0.7rem; align-items: stretch; margin-top: 0.3rem; }
+.swatch-large { width: 60px; min-height: 60px; border-radius: 10px; border: 1px solid var(--border); flex-shrink: 0; position: relative; overflow: hidden; }
+.swatch-large::before { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 0 0/14px 14px; }
+.swatch-large .fill { position: absolute; inset: 0; z-index: 1; }
+.color-vals { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
+.cv-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.55rem; font-family: var(--mono); font-size: 0.62rem; }
+.cv-item .cv-l { color: var(--text-dim); font-size: 0.55rem; text-transform: uppercase; letter-spacing: 0.08em; }
+.cv-item .cv-v { color: var(--text); font-weight: 500; margin-top: 1px; }
+
+.interp-grid { display: flex; flex-direction: column; gap: 1.2rem; }
+.interp-controls { display: flex; gap: 0.8rem; align-items: center; flex-wrap: wrap; }
+.interp-controls label { font-size: 0.82rem; color: var(--text-dim); }
+.color-input-wrap { display: flex; align-items: center; gap: 0.4rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; padding: 0.3rem 0.55rem; }
+.color-input-wrap input[type="color"] { -webkit-appearance: none; width: 24px; height: 24px; border: none; border-radius: 5px; cursor: pointer; background: none; }
+.color-input-wrap input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.color-input-wrap input[type="color"]::-webkit-color-swatch { border: none; border-radius: 4px; }
+.color-input-wrap span { font-family: var(--mono); font-size: 0.72rem; }
+.interp-row { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.interp-row-inner { padding: 0.9rem 1.1rem; }
+.interp-row-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; flex-wrap: wrap; gap: 0.3rem; }
+.interp-row-title { font-family: var(--mono); font-size: 0.75rem; font-weight: 600; }
+.interp-row-desc { font-size: 0.7rem; color: var(--text-dim); }
+.interp-strip { height: 48px; border-radius: 8px; overflow: hidden; }
+.interp-strip canvas { width: 100%; height: 100%; display: block; }
+
+.interp-3d-section { display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.2rem; margin-top: 1.2rem; }
+.interp-3d-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.interp-3d-card .three-wrap { aspect-ratio: 4/3; position: relative; }
+.interp-3d-card .three-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
+.interp-3d-card .card-info { padding: 0.7rem 1rem; }
+.interp-3d-card .card-info h4 { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; }
+.interp-3d-card .card-info p { font-size: 0.68rem; color: var(--text-dim); margin-top: 0.1rem; }
+
+.transition-section { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.transition-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.transition-card canvas { width: 100%; aspect-ratio: 5/1; display: block; }
+.transition-card-info { padding: 0.65rem 1rem; }
+.transition-card-info h4 { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; }
+.transition-card-info p { font-size: 0.68rem; color: var(--text-dim); margin-top: 0.1rem; }
+
+.grayscale-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.2rem; }
+.grayscale-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.grayscale-card canvas { width: 100%; aspect-ratio: 4/3; display: block; }
+.grayscale-card-info { padding: 0.65rem 1rem; }
+.grayscale-card-info h4 { font-family: var(--mono); font-size: 0.72rem; font-weight: 600; margin-bottom: 0.1rem; }
+.grayscale-card-info p { font-size: 0.68rem; color: var(--text-dim); line-height: 1.45; }
+
+.sep { max-width: 1440px; margin: 0 auto; padding: 0 2rem; }
+.sep hr { border: none; border-top: 1px solid var(--border); }
+.steps-counter { font-family: var(--mono); font-size: 0.72rem; display: flex; align-items: center; gap: 0.4rem; color: var(--text-dim); }
+.steps-counter input { width: 52px; background: var(--bg-elevated); border: 1px solid var(--border); border-radius: 6px; padding: 0.2rem 0.35rem; color: var(--text); font-family: var(--mono); font-size: 0.7rem; text-align: center; }
+footer { max-width: 1440px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--text-dim); font-size: 0.78rem; }
+footer .logo-small { font-family: var(--serif); font-style: italic; color: var(--text); }
+@media (max-width: 960px) { .viewer-grid { grid-template-columns: 1fr; } .slice-row { grid-template-columns: 1fr; } .interp-3d-section { grid-template-columns: 1fr; } .transition-section { grid-template-columns: 1fr; } nav { display: none; } }
+</style>
+</head>
+<body>
+<header><div class="header-inner"><div class="logo"><span class="logo-dot"></span> Chromascape</div><nav><a href="#spaces" class="active">3D Spaces</a><a href="#interpolation">Interpolation</a><a href="#transitions">Transitions</a><a href="#grayscale">Grayscale</a></nav></div></header>
+
+<div class="hero"><h1>Explore the Geometry of Color</h1><p>Rotate the 3D shape of each color space. Watch interpolation paths carve through their volumes. See how different spaces shape perception.</p></div>
+
+<section id="spaces">
+  <div class="section-header"><span class="section-tag">01 — 3D Color Spaces</span><h2>Shape of Color</h2><p>Each color model sculpts sRGB into a unique 3D form. Drag to rotate, scroll to zoom. The 2D slice tracks the fixed axis.</p></div>
+  <div class="viewer-grid">
+    <div class="space-selector" id="spaceSelector"></div>
+    <div class="viewer-main">
+      <div class="viewer-3d-wrap" id="viewer3dWrap">
+        <div class="viewer-overlay"><span class="viewer-label" id="viewerLabel">RGB</span><span class="viewer-hint">drag · scroll to zoom</span></div>
+        <div class="viewer-axes-info" id="viewerAxes"></div>
+      </div>
+      <div class="slice-row">
+        <div class="slice-canvas-wrap"><canvas id="sliceCanvas"></canvas></div>
+        <div class="sliders-and-preview">
+          <div id="slidersPanel"></div>
+          <div class="color-swatch-row"><div class="swatch-large"><div class="fill" id="previewSwatch"></div></div><div class="color-vals" id="colorValues"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="sep"><hr></div>
+
+<section id="interpolation">
+  <div class="section-header"><span class="section-tag">02 — Hue Interpolation &amp; 3D Paths</span><h2>The Path Between Colors</h2><p>The gradient strips show the 2D result. Below, 3D viewers reveal the actual path each method takes through the gamut.</p></div>
+  <div class="interp-grid">
+    <div class="interp-controls">
+      <label>From:</label><div class="color-input-wrap"><input type="color" id="interpColorA" value="#ef4444"><span id="interpColorALabel">#ef4444</span></div>
+      <label>To:</label><div class="color-input-wrap"><input type="color" id="interpColorB" value="#3b82f6"><span id="interpColorBLabel">#3b82f6</span></div>
+      <div class="steps-counter">Steps: <input type="number" id="interpSteps" value="16" min="2" max="256"></div>
+    </div>
+    <div id="interpRows"></div>
+    <div class="section-header" style="margin-top:1.2rem;"><h2 style="font-size:1.3rem;">3D Path Visualization</h2><p>Ghosted surface shows the sRGB gamut. Bright lines are interpolation paths. Dashed = sRGB reference.</p></div>
+    <div class="interp-3d-section" id="interp3dGrid"></div>
+  </div>
+</section>
+<div class="sep"><hr></div>
+
+<section id="transitions">
+  <div class="section-header"><span class="section-tag">03 — Space Transitions</span><h2>Morphing Between Worlds</h2><p>Rainbow sweeps through each color space, showing how they distribute hues and brightness.</p></div>
+  <div class="transition-section" id="transitionGrid"></div>
+</section>
+<div class="sep"><hr></div>
+
+<section id="grayscale">
+  <div class="section-header"><span class="section-tag">04 — Grayscale Conversion</span><h2>Losing Color, Keeping Meaning</h2><p>Different formulas for extracting luminance. Perceptually uniform spaces better preserve apparent brightness.</p></div>
+  <div class="grayscale-grid" id="grayscaleGrid"></div>
+</section>
+<footer><span class="logo-small">Chromascape</span><span>Color Science Explorer — 2026</span></footer>
+
+<script>
+// ═══════ COLOR MATH ═══════
+const CM={
+  clamp:(v,lo,hi)=>Math.max(lo,Math.min(hi,v)),
+  srgbToLin(c){return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4);},
+  linToSrgb(c){return c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055;},
+  rgbToHsl(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=0,l=(mx+mn)/2;if(mx!==mn){const d=mx-mn;s=l>0.5?d/(2-mx-mn):d/(mx+mn);if(mx===r)h=((g-b)/d+(g<b?6:0))/6;else if(mx===g)h=((b-r)/d+2)/6;else h=((r-g)/d+4)/6;}return[h*360,s,l];},
+  hslToRgb(h,s,l){h=((h%360)+360)%360/360;if(s===0)return[l,l,l];const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;const hr=(pp,qq,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return pp+(qq-pp)*6*t;if(t<1/2)return qq;if(t<2/3)return pp+(qq-pp)*(2/3-t)*6;return pp;};return[hr(p,q,h+1/3),hr(p,q,h),hr(p,q,h-1/3)];},
+  rgbToHsv(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=mx===0?0:(mx-mn)/mx;if(mx!==mn){const d=mx-mn;if(mx===r)h=((g-b)/d+(g<b?6:0))/6;else if(mx===g)h=((b-r)/d+2)/6;else h=((r-g)/d+4)/6;}return[h*360,s,mx];},
+  hsvToRgb(h,s,v){h=((h%360)+360)%360/60;const i=Math.floor(h),f=h-i,p=v*(1-s),q=v*(1-s*f),t=v*(1-s*(1-f));return[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];},
+  rgbToXyz(r,g,b){r=this.srgbToLin(r);g=this.srgbToLin(g);b=this.srgbToLin(b);return[0.4124564*r+0.3575761*g+0.1804375*b,0.2126729*r+0.7151522*g+0.0721750*b,0.0193339*r+0.1191920*g+0.9503041*b];},
+  xyzToRgb(x,y,z){return[this.linToSrgb(3.2404542*x-1.5371385*y-0.4985314*z),this.linToSrgb(-0.9692660*x+1.8760108*y+0.0415560*z),this.linToSrgb(0.0556434*x-0.2040259*y+1.0572252*z)];},
+  xyzToLab(x,y,z){const xn=0.95047,yn=1,zn=1.08883,f=t=>t>0.008856?Math.cbrt(t):(903.3*t+16)/116;const fx=f(x/xn),fy=f(y/yn),fz=f(z/zn);return[116*fy-16,500*(fx-fy),200*(fy-fz)];},
+  labToXyz(l,a,b){const xn=0.95047,yn=1,zn=1.08883,fy=(l+16)/116,fx=a/500+fy,fz=fy-b/200;const fi=t=>t>0.206897?t*t*t:(t-16/116)/7.787;return[fi(fx)*xn,fi(fy)*yn,fi(fz)*zn];},
+  rgbToLab(r,g,b){return this.xyzToLab(...this.rgbToXyz(r,g,b));},
+  labToRgb(l,a,b){return this.xyzToRgb(...this.labToXyz(l,a,b));},
+  rgbToOklab(r,g,b){r=this.srgbToLin(r);g=this.srgbToLin(g);b=this.srgbToLin(b);let l_=0.4122214708*r+0.5363325363*g+0.0514459929*b,m_=0.2119034982*r+0.6806995451*g+0.1073969566*b,s_=0.0883024619*r+0.2817188376*g+0.6299787005*b;l_=Math.cbrt(l_);m_=Math.cbrt(m_);s_=Math.cbrt(s_);return[0.2104542553*l_+0.7936177850*m_-0.0040720468*s_,1.9779984951*l_-2.4285922050*m_+0.4505937099*s_,0.0259040371*l_+0.7827717662*m_-0.8086757660*s_];},
+  oklabToRgb(L,a,b){let l_=L+0.3963377774*a+0.2158037573*b,m_=L-0.1055613458*a-0.0638541728*b,s_=L-0.0894841775*a-1.2914855480*b;l_=l_*l_*l_;m_=m_*m_*m_;s_=s_*s_*s_;return[this.linToSrgb(4.0767416621*l_-3.3077115913*m_+0.2309699292*s_),this.linToSrgb(-1.2684380046*l_+2.6097574011*m_-0.3413193965*s_),this.linToSrgb(-0.0041960863*l_-0.7034186147*m_+1.7076147010*s_)];},
+  rgbToOklch(r,g,b){const[L,a,bl]=this.rgbToOklab(r,g,b);let h=Math.atan2(bl,a)*180/Math.PI;if(h<0)h+=360;return[L,Math.sqrt(a*a+bl*bl),h];},
+  oklchToRgb(L,Ch,h){const hr=h*Math.PI/180;return this.oklabToRgb(L,Ch*Math.cos(hr),Ch*Math.sin(hr));},
+  hexToRgb(hex){hex=hex.replace('#','');return[parseInt(hex.slice(0,2),16)/255,parseInt(hex.slice(2,4),16)/255,parseInt(hex.slice(4,6),16)/255];},
+  rgbToHex(r,g,b){const c=v=>Math.round(this.clamp(v,0,1)*255).toString(16).padStart(2,'0');return`#${c(r)}${c(g)}${c(b)}`;},
+  rgbToCss(r,g,b){return`rgb(${Math.round(this.clamp(r,0,1)*255)},${Math.round(this.clamp(g,0,1)*255)},${Math.round(this.clamp(b,0,1)*255)})`;},
+  luminance(r,g,b){return 0.2126*this.srgbToLin(r)+0.7152*this.srgbToLin(g)+0.0722*this.srgbToLin(b);},
+  inGamut(r,g,b){return r>=-0.005&&r<=1.005&&g>=-0.005&&g<=1.005&&b>=-0.005&&b<=1.005;}
+};
+
+// ═══════ SPACES ═══════
+const SPACES=[
+  {id:'rgb',name:'RGB',badge:'Additive',desc:'Red-Green-Blue cube',
+    channels:[{name:'Red',min:0,max:1,step:0.01,def:0.5},{name:'Green',min:0,max:1,step:0.01,def:0.5},{name:'Blue',min:0,max:1,step:0.01,def:0.5}],
+    toRgb:ch=>[ch[0],ch[1],ch[2]],fromRgb:(r,g,b)=>[r,g,b],sliceAxes:[0,1],sliceFixed:2,
+    axLabels:['Red','Green','Blue'],
+    to3d:ch=>[(ch[0]-0.5)*2,(ch[2]-0.5)*2,(ch[1]-0.5)*2]},
+  {id:'hsv',name:'HSV',badge:'Cylindrical',desc:'Hue-Saturation-Value',
+    channels:[{name:'Hue',min:0,max:360,step:1,def:180,unit:'°'},{name:'Saturation',min:0,max:1,step:0.01,def:1},{name:'Value',min:0,max:1,step:0.01,def:1}],
+    toRgb:ch=>CM.hsvToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToHsv(r,g,b),sliceAxes:[0,1],sliceFixed:2,
+    axLabels:['Hue (angle)','Value (height)','Saturation (radius)'],
+    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,ch[1]*Math.sin(a)];}},
+  {id:'hsl',name:'HSL',badge:'Cylindrical',desc:'Hue-Saturation-Lightness',
+    channels:[{name:'Hue',min:0,max:360,step:1,def:180,unit:'°'},{name:'Saturation',min:0,max:1,step:0.01,def:1},{name:'Lightness',min:0,max:1,step:0.01,def:0.5}],
+    toRgb:ch=>CM.hslToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToHsl(r,g,b),sliceAxes:[0,1],sliceFixed:2,
+    axLabels:['Hue (angle)','Lightness (height)','Saturation (radius)'],
+    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,ch[1]*Math.sin(a)];}},
+  {id:'cielab',name:'CIELAB',badge:'Perceptual',desc:'CIE 1976 L*a*b*',
+    channels:[{name:'L*',min:0,max:100,step:1,def:65},{name:'a*',min:-128,max:127,step:1,def:20},{name:'b*',min:-128,max:127,step:1,def:20}],
+    toRgb:ch=>CM.labToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToLab(r,g,b),sliceAxes:[1,2],sliceFixed:0,
+    axLabels:['a* (Green→Red)','L* (Lightness)','b* (Blue→Yellow)'],
+    to3d:ch=>[ch[1]/128,(ch[0]-50)/50,ch[2]/128]},
+  {id:'oklab',name:'OKLAB',badge:'Perceptual',desc:'Modern perceptual space',
+    channels:[{name:'L',min:0,max:1,step:0.01,def:0.7},{name:'a',min:-0.4,max:0.4,step:0.005,def:0.05},{name:'b',min:-0.4,max:0.4,step:0.005,def:0.05}],
+    toRgb:ch=>CM.oklabToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToOklab(r,g,b),sliceAxes:[1,2],sliceFixed:0,
+    axLabels:['a (Green→Red)','L (Lightness)','b (Blue→Yellow)'],
+    to3d:ch=>[ch[1]/0.4,(ch[0]-0.5)*2,ch[2]/0.4]},
+  {id:'oklch',name:'OKLCH',badge:'CSS 4',desc:'Polar OKLAB — CSS standard',
+    channels:[{name:'L',min:0,max:1,step:0.01,def:0.7},{name:'C (Chroma)',min:0,max:0.4,step:0.005,def:0.15},{name:'H (Hue)',min:0,max:360,step:1,def:150,unit:'°'}],
+    toRgb:ch=>CM.oklchToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToOklch(r,g,b),sliceAxes:[2,1],sliceFixed:0,
+    axLabels:['Hue (angle)','L (height)','Chroma (radius)'],
+    to3d:ch=>{const a=ch[2]*Math.PI/180;return[(ch[1]/0.2)*Math.cos(a),(ch[0]-0.5)*2,(ch[1]/0.2)*Math.sin(a)];}},
+];
+
+// ═══════ BUILD GAMUT SURFACE MESH ═══════
+// Only surface faces of RGB cube, mapped through space — proper triangulated mesh with vertex colors
+function buildGamutMesh(space, res=32) {
+  const positions=[], colors=[], indices=[];
+  const step=1/res;
+
+  // Helper: add a face grid (one face of the RGB cube)
+  function addFace(fixedAxis, fixedVal) {
+    const baseIdx = positions.length / 3;
+    const axes = [0,1,2].filter(a=>a!==fixedAxis);
+    for(let j=0; j<=res; j++) {
+      for(let i=0; i<=res; i++) {
+        const rgb=[0,0,0];
+        rgb[fixedAxis]=fixedVal;
+        rgb[axes[0]]=i*step;
+        rgb[axes[1]]=j*step;
+        const ch=space.fromRgb(rgb[0],rgb[1],rgb[2]);
+        const p=space.to3d(ch);
+        if(!isFinite(p[0])||!isFinite(p[1])||!isFinite(p[2])) {
+          positions.push(0,0,0); colors.push(rgb[0],rgb[1],rgb[2]);
+        } else {
+          positions.push(p[0],p[1],p[2]); colors.push(rgb[0],rgb[1],rgb[2]);
+        }
+      }
+    }
+    // Triangulate grid
+    for(let j=0;j<res;j++) {
+      for(let i=0;i<res;i++) {
+        const a=baseIdx+j*(res+1)+i, b=a+1, c=a+(res+1), d=c+1;
+        indices.push(a,b,c, b,d,c);
+      }
+    }
+  }
+
+  // 6 faces of the RGB cube
+  addFace(0,0); addFace(0,1); addFace(1,0); addFace(1,1); addFace(2,0); addFace(2,1);
+
+  const geo=new THREE.BufferGeometry();
+  geo.setAttribute('position',new THREE.Float32BufferAttribute(positions,3));
+  geo.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));
+  geo.setIndex(indices);
+  geo.computeVertexNormals();
+  return geo;
+}
+
+// Lighter point cloud for ghost in interp viewers
+function genCloudSurface(space, density=22) {
+  const pos=[],col=[],s=1/density;
+  for(let i=0;i<=density;i++) for(let j=0;j<=density;j++){
+    const u=i*s,v=j*s;
+    [[0,u,v],[1,u,v],[u,0,v],[u,1,v],[u,v,0],[u,v,1]].forEach(([r,g,b])=>{
+      const ch=space.fromRgb(r,g,b),p=space.to3d(ch);
+      if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pos.push(p[0],p[1],p[2]);col.push(r,g,b);}
+    });
+  }
+  return{positions:new Float32Array(pos),colors:new Float32Array(col)};
+}
+
+// ═══════ ORBIT CONTROLS ═══════
+class Orbit {
+  constructor(cam,el){
+    this.cam=cam;this.el=el;this.sph={r:3.8,phi:Math.PI/3,theta:Math.PI/4};
+    this.dragging=false;this.prev={x:0,y:0};this.autoRot=true;
+    el.addEventListener('pointerdown',e=>{this.dragging=true;this.prev={x:e.clientX,y:e.clientY};this.autoRot=false;});
+    window.addEventListener('pointerup',()=>this.dragging=false);
+    el.addEventListener('pointermove',e=>{if(!this.dragging)return;this.sph.theta-=(e.clientX-this.prev.x)*0.008;this.sph.phi=Math.max(0.1,Math.min(Math.PI-0.1,this.sph.phi-(e.clientY-this.prev.y)*0.008));this.prev={x:e.clientX,y:e.clientY};});
+    el.addEventListener('wheel',e=>{e.preventDefault();this.sph.r=Math.max(1.5,Math.min(10,this.sph.r+e.deltaY*0.005));},{passive:false});
+    el.addEventListener('touchstart',e=>{if(e.touches.length===1){this.dragging=true;this.prev={x:e.touches[0].clientX,y:e.touches[0].clientY};this.autoRot=false;}},{passive:true});
+    el.addEventListener('touchmove',e=>{if(!this.dragging||e.touches.length!==1)return;e.preventDefault();this.sph.theta-=(e.touches[0].clientX-this.prev.x)*0.008;this.sph.phi=Math.max(0.1,Math.min(Math.PI-0.1,this.sph.phi-(e.touches[0].clientY-this.prev.y)*0.008));this.prev={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:false});
+    el.addEventListener('touchend',()=>this.dragging=false);
+  }
+  update(dt){
+    if(this.autoRot)this.sph.theta+=dt*0.25;
+    const{r,phi,theta}=this.sph;
+    this.cam.position.set(r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
+    this.cam.lookAt(0,0,0);
+  }
+}
+
+function makeAxes(scene){
+  const g=new THREE.Group();
+  [[1.3,0,0,0xef6060],[0,1.3,0,0x60ef60],[0,0,1.3,0x6090ef]].forEach(([x,y,z,c])=>{
+    const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(x,y,z)]);
+    g.add(new THREE.Line(geo,new THREE.LineBasicMaterial({color:c,transparent:true,opacity:0.5})));
+  });
+  const gp=[];for(let i=-1;i<=1;i+=0.5){gp.push(-1,0,i,1,0,i,i,0,-1,i,0,1);}
+  const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(gp,3));
+  g.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0x252540,transparent:true,opacity:0.3})));
+  scene.add(g);
+}
+
+// ═══════ MAIN 3D VIEWER ═══════
+let V3=null;
+
+function init3DViewer(){
+  const wrap=document.getElementById('viewer3dWrap');
+  const w=wrap.clientWidth,h=wrap.clientHeight;
+  const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+  renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x111119,1);
+  // Enable proper depth sorting
+  renderer.sortObjects=true;
+  wrap.insertBefore(renderer.domElement,wrap.firstChild);
+  const scene=new THREE.Scene();
+  const camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
+  const orbit=new Orbit(camera,renderer.domElement);
+  makeAxes(scene);
+
+  // Gamut surface mesh — solid with transparency
+  const surfaceGroup=new THREE.Group();
+  scene.add(surfaceGroup);
+
+  // Indicator: large sphere + outer glow ring + pulsing halo
+  const indGroup=new THREE.Group();
+  // Core sphere
+  const indCore=new THREE.Mesh(
+    new THREE.SphereGeometry(0.06,20,20),
+    new THREE.MeshBasicMaterial({color:0xffffff,depthTest:true})
+  );
+  indGroup.add(indCore);
+  // White outline ring (always faces camera)
+  const indRing=new THREE.Mesh(
+    new THREE.RingGeometry(0.075,0.095,32),
+    new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,transparent:true,opacity:0.9,depthTest:false})
+  );
+  indGroup.add(indRing);
+  // Glow halo
+  const indGlow=new THREE.Mesh(
+    new THREE.RingGeometry(0.095,0.16,32),
+    new THREE.MeshBasicMaterial({color:0x7c6aef,side:THREE.DoubleSide,transparent:true,opacity:0.4,depthTest:false})
+  );
+  indGroup.add(indGlow);
+  // Crosshair lines through the point
+  const crossLen=0.12;
+  [[crossLen,0,0],[-crossLen,0,0],[0,crossLen,0],[0,-crossLen,0],[0,0,crossLen],[0,0,-crossLen]].forEach(([x1,y1,z1])=>{
+    const cg=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(x1,y1,z1)]);
+    indGroup.add(new THREE.Line(cg,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.6,depthTest:false})));
+  });
+  scene.add(indGroup);
+
+  let lt=performance.now();
+  let pulsePhase=0;
+  (function anim(){
+    requestAnimationFrame(anim);
+    const now=performance.now(),dt=(now-lt)/1000;lt=now;
+    orbit.update(dt);
+    indRing.lookAt(camera.position);
+    indGlow.lookAt(camera.position);
+    // Pulsing glow
+    pulsePhase+=dt*3;
+    const ps=0.85+0.15*Math.sin(pulsePhase);
+    indGlow.scale.set(ps,ps,ps);
+    indGlow.material.opacity=0.25+0.15*Math.sin(pulsePhase);
+    renderer.render(scene,camera);
+  })();
+
+  V3={renderer,scene,camera,orbit,surfaceGroup,indGroup,indCore,indRing,indGlow,wrap};
+  window.addEventListener('resize',()=>{const ww=wrap.clientWidth,hh=wrap.clientHeight;camera.aspect=ww/hh;camera.updateProjectionMatrix();renderer.setSize(ww,hh);});
+}
+
+function updateCloud(sp){
+  const sg=V3.surfaceGroup;
+  while(sg.children.length)sg.remove(sg.children[0]);
+
+  const geo=buildGamutMesh(sp,30);
+
+  // Solid surface with vertex colors, slight transparency
+  const solidMat=new THREE.MeshBasicMaterial({
+    vertexColors:true,transparent:true,opacity:0.65,
+    side:THREE.DoubleSide,depthWrite:true
+  });
+  sg.add(new THREE.Mesh(geo,solidMat));
+
+  // Wireframe overlay for depth perception
+  const wireMat=new THREE.MeshBasicMaterial({
+    vertexColors:true,wireframe:true,transparent:true,opacity:0.15
+  });
+  sg.add(new THREE.Mesh(geo,wireMat));
+
+  const al=sp.axLabels;
+  document.getElementById('viewerAxes').innerHTML=`<span><span class="ax-x">X</span> ${al[0]}</span><span><span class="ax-y">Y</span> ${al[1]}</span><span><span class="ax-z">Z</span> ${al[2]}</span>`;
+}
+
+function updateIndicator(sp,cv){
+  const p=sp.to3d(cv);
+  if(!isFinite(p[0])||!isFinite(p[1])||!isFinite(p[2]))return;
+  V3.indGroup.position.set(p[0],p[1],p[2]);
+  // Set the core sphere to the actual selected color
+  const rgb=sp.toRgb(cv);
+  const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
+  V3.indCore.material.color.setRGB(r,g,b);
+  // Make the ring contrast: white on dark colors, dark on light
+  const lum=CM.luminance(r,g,b);
+  V3.indRing.material.color.setHex(lum>0.3?0x000000:0xffffff);
+}
+
+// ═══════ 2D SLICE WITH CROSSHAIR ═══════
+function renderSlice(){
+  const canvas=document.getElementById('sliceCanvas');
+  const dpr=Math.min(window.devicePixelRatio,2);
+  const w=canvas.width=canvas.clientWidth*dpr,h=canvas.height=canvas.clientHeight*dpr;
+  const ctx=canvas.getContext('2d'),img=ctx.createImageData(w,h),d=img.data;
+  const sp=activeSp,axX=sp.sliceAxes[0],axY=sp.sliceAxes[1],chX=sp.channels[axX],chY=sp.channels[axY];
+  for(let py=0;py<h;py++)for(let px=0;px<w;px++){
+    const tx=px/(w-1),ty=1-py/(h-1),vals=[...chVals];
+    vals[axX]=chX.min+tx*(chX.max-chX.min);vals[axY]=chY.min+ty*(chY.max-chY.min);
+    const rgb=sp.toRgb(vals),idx=(py*w+px)*4;
+    if(CM.inGamut(rgb[0],rgb[1],rgb[2])){d[idx]=Math.round(CM.clamp(rgb[0],0,1)*255);d[idx+1]=Math.round(CM.clamp(rgb[1],0,1)*255);d[idx+2]=Math.round(CM.clamp(rgb[2],0,1)*255);d[idx+3]=255;}
+    else{const ck=((Math.floor(px/6)+Math.floor(py/6))%2)===0;const v=ck?15:19;d[idx]=v;d[idx+1]=v;d[idx+2]=v;d[idx+3]=255;}
+  }
+  ctx.putImageData(img,0,0);
+
+  // ── Draw crosshair at current position ──
+  const curX=(chVals[axX]-chX.min)/(chX.max-chX.min)*w;
+  const curY=(1-(chVals[axY]-chY.min)/(chY.max-chY.min))*h;
+
+  // Determine crosshair color from pixel brightness
+  const rgb=sp.toRgb(chVals);
+  const lum=CM.luminance(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
+  const crossColor=lum>0.3?'rgba(0,0,0,0.85)':'rgba(255,255,255,0.9)';
+  const crossShadow=lum>0.3?'rgba(255,255,255,0.5)':'rgba(0,0,0,0.5)';
+
+  ctx.save();
+  // Shadow for contrast
+  ctx.strokeStyle=crossShadow;
+  ctx.lineWidth=3*dpr;
+  ctx.beginPath();
+  ctx.moveTo(curX-14*dpr,curY);ctx.lineTo(curX-5*dpr,curY);
+  ctx.moveTo(curX+5*dpr,curY);ctx.lineTo(curX+14*dpr,curY);
+  ctx.moveTo(curX,curY-14*dpr);ctx.lineTo(curX,curY-5*dpr);
+  ctx.moveTo(curX,curY+5*dpr);ctx.lineTo(curX,curY+14*dpr);
+  ctx.stroke();
+
+  // Main crosshair
+  ctx.strokeStyle=crossColor;
+  ctx.lineWidth=1.5*dpr;
+  ctx.beginPath();
+  ctx.moveTo(curX-14*dpr,curY);ctx.lineTo(curX-5*dpr,curY);
+  ctx.moveTo(curX+5*dpr,curY);ctx.lineTo(curX+14*dpr,curY);
+  ctx.moveTo(curX,curY-14*dpr);ctx.lineTo(curX,curY-5*dpr);
+  ctx.moveTo(curX,curY+5*dpr);ctx.lineTo(curX,curY+14*dpr);
+  ctx.stroke();
+
+  // Center circle
+  ctx.beginPath();
+  ctx.arc(curX,curY,4*dpr,0,Math.PI*2);
+  ctx.strokeStyle=crossColor;ctx.lineWidth=1.5*dpr;
+  ctx.stroke();
+
+  // Fill center with actual color
+  ctx.beginPath();
+  ctx.arc(curX,curY,3*dpr,0,Math.PI*2);
+  ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
+  ctx.fill();
+  ctx.restore();
+}
+
+// ═══════ STATE ═══════
+let activeSp=SPACES[0],chVals=[];
+let sliceDragging=false;
+
+function initSliceInteraction(){
+  const canvas=document.getElementById('sliceCanvas');
+  const wrap=canvas.parentElement;
+
+  function handleSlicePointer(e){
+    const rect=canvas.getBoundingClientRect();
+    const x=CM.clamp((e.clientX-rect.left)/rect.width,0,1);
+    const y=CM.clamp(1-(e.clientY-rect.top)/rect.height,0,1);
+    const sp=activeSp;
+    const axX=sp.sliceAxes[0],axY=sp.sliceAxes[1];
+    const chX=sp.channels[axX],chY=sp.channels[axY];
+    chVals[axX]=chX.min+x*(chX.max-chX.min);
+    chVals[axY]=chY.min+y*(chY.max-chY.min);
+    // Sync sliders
+    const slX=document.getElementById(`sl${axX}`);
+    const slY=document.getElementById(`sl${axY}`);
+    if(slX){slX.value=chVals[axX];document.getElementById(`sv${axX}`).textContent=chVals[axX].toFixed(chX.max>10?0:2)+(chX.unit||'');}
+    if(slY){slY.value=chVals[axY];document.getElementById(`sv${axY}`).textContent=chVals[axY].toFixed(chY.max>10?0:2)+(chY.unit||'');}
+    updateIndicator(activeSp,chVals);
+    renderSlice();
+    updatePreview();
+  }
+
+  canvas.addEventListener('pointerdown',e=>{
+    sliceDragging=true;
+    canvas.setPointerCapture(e.pointerId);
+    handleSlicePointer(e);
+  });
+  canvas.addEventListener('pointermove',e=>{
+    if(sliceDragging)handleSlicePointer(e);
+  });
+  canvas.addEventListener('pointerup',e=>{
+    sliceDragging=false;
+    canvas.releasePointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointercancel',()=>sliceDragging=false);
+  canvas.style.cursor='crosshair';
+}
+
+function initSpaces(){
+  const sel=document.getElementById('spaceSelector');
+  sel.innerHTML=SPACES.map(sp=>`<button class="space-btn ${sp.id===activeSp.id?'active':''}" data-id="${sp.id}">${sp.name}<span class="badge">${sp.badge}</span></button>`).join('');
+  sel.querySelectorAll('.space-btn').forEach(b=>b.addEventListener('click',()=>{const sp=SPACES.find(s=>s.id===b.dataset.id);if(sp)selectSpace(sp);}));
+}
+
+function selectSpace(sp){
+  activeSp=sp;chVals=sp.channels.map(c=>c.def);
+  document.querySelectorAll('.space-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===sp.id));
+  document.getElementById('viewerLabel').textContent=sp.name+' — '+sp.desc;
+  buildSliders();updateCloud(sp);updateIndicator(sp,chVals);renderSlice();updatePreview();
+}
+
+function buildSliders(){
+  const panel=document.getElementById('slidersPanel');
+  panel.innerHTML=activeSp.channels.map((ch,i)=>{
+    const gc=buildSlGrad(i);
+    return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${chVals[i].toFixed(ch.max>10?0:2)}${ch.unit||''}</span></div><input type="range" id="sl${i}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
+  }).join('');
+  activeSp.channels.forEach((ch,i)=>{document.getElementById(`sl${i}`).addEventListener('input',e=>{chVals[i]=parseFloat(e.target.value);document.getElementById(`sv${i}`).textContent=chVals[i].toFixed(ch.max>10?0:2)+(ch.unit||'');updateIndicator(activeSp,chVals);renderSlice();updatePreview();});});
+}
+
+function buildSlGrad(ci){const stops=10,cols=[];for(let i=0;i<=stops;i++){const t=i/stops,vals=[...chVals],ch=activeSp.channels[ci];vals[ci]=ch.min+t*(ch.max-ch.min);const rgb=activeSp.toRgb(vals);cols.push(CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1)));}return cols.join(',');}
+
+function updatePreview(){
+  const rgb=activeSp.toRgb(chVals);const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
+  const cssCol=CM.rgbToCss(r,g,b);
+  const swEl=document.getElementById('previewSwatch');
+  swEl.style.backgroundColor=cssCol;
+  swEl.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,0.1)';
+  const hex=CM.rgbToHex(r,g,b),hsl=CM.rgbToHsl(r,g,b),oklab=CM.rgbToOklab(r,g,b),oklch=CM.rgbToOklch(r,g,b);
+  document.getElementById('colorValues').innerHTML=[
+    {l:'HEX',v:hex.toUpperCase()},{l:'RGB',v:`${Math.round(r*255)}, ${Math.round(g*255)}, ${Math.round(b*255)}`},
+    {l:'HSL',v:`${hsl[0].toFixed(0)}° ${(hsl[1]*100).toFixed(0)}% ${(hsl[2]*100).toFixed(0)}%`},
+    {l:'OKLCH',v:`${oklch[0].toFixed(3)} ${oklch[1].toFixed(3)} ${oklch[2].toFixed(0)}°`},
+  ].map(x=>`<div class="cv-item"><div class="cv-l">${x.l}</div><div class="cv-v">${x.v}</div></div>`).join('');
+}
+
+// ═══════ INTERPOLATION ═══════
+const INTERPS=[
+  {name:'sRGB',desc:'Direct lerp in sRGB',space:'rgb',fn:(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]},
+  {name:'Linear RGB',desc:'Lerp in linearized RGB',space:'rgb',fn:(a,b,t)=>{const la=[CM.srgbToLin(a[0]),CM.srgbToLin(a[1]),CM.srgbToLin(a[2])],lb=[CM.srgbToLin(b[0]),CM.srgbToLin(b[1]),CM.srgbToLin(b[2])];return[CM.linToSrgb(la[0]+(lb[0]-la[0])*t),CM.linToSrgb(la[1]+(lb[1]-la[1])*t),CM.linToSrgb(la[2]+(lb[2]-la[2])*t)];}},
+  {name:'HSL Short',desc:'Shortest hue arc in HSL',space:'hsl',fn:(a,b,t)=>{const ha=CM.rgbToHsl(...a),hb=CM.rgbToHsl(...b);let dh=hb[0]-ha[0];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.hslToRgb(ha[0]+dh*t,ha[1]+(hb[1]-ha[1])*t,ha[2]+(hb[2]-ha[2])*t);}},
+  {name:'HSV Short',desc:'Shortest hue arc in HSV',space:'hsv',fn:(a,b,t)=>{const ha=CM.rgbToHsv(...a),hb=CM.rgbToHsv(...b);let dh=hb[0]-ha[0];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.hsvToRgb(ha[0]+dh*t,ha[1]+(hb[1]-ha[1])*t,ha[2]+(hb[2]-ha[2])*t);}},
+  {name:'CIELAB',desc:'Perceptually uniform lerp',space:'cielab',fn:(a,b,t)=>{const la=CM.rgbToLab(...a),lb=CM.rgbToLab(...b);return CM.labToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+(lb[2]-la[2])*t);}},
+  {name:'OKLAB',desc:'Modern perceptual gradient',space:'oklab',fn:(a,b,t)=>{const la=CM.rgbToOklab(...a),lb=CM.rgbToOklab(...b);return CM.oklabToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+(lb[2]-la[2])*t);}},
+  {name:'OKLCH Short',desc:'Polar OKLAB, short hue arc',space:'oklch',fn:(a,b,t)=>{const la=CM.rgbToOklch(...a),lb=CM.rgbToOklch(...b);let dh=lb[2]-la[2];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.oklchToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+dh*t);}},
+  {name:'OKLCH Long',desc:'OKLCH long arc — more hues',space:'oklch',fn:(a,b,t)=>{const la=CM.rgbToOklch(...a),lb=CM.rgbToOklch(...b);let dh=lb[2]-la[2];if(dh>0&&dh<=180)dh-=360;else if(dh<0&&dh>=-180)dh+=360;return CM.oklchToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+dh*t);}},
+];
+
+function getSp(id){return SPACES.find(s=>s.id===id);}
+let i3v=[];
+
+function renderInterpolation(){
+  const colA=CM.hexToRgb(document.getElementById('interpColorA').value);
+  const colB=CM.hexToRgb(document.getElementById('interpColorB').value);
+  const steps=Math.max(2,Math.min(256,parseInt(document.getElementById('interpSteps').value)||16));
+  const rows=document.getElementById('interpRows');
+  if(!rows.children.length){
+    rows.innerHTML=INTERPS.map((sp,i)=>`<div class="interp-row"><div class="interp-row-inner"><div class="interp-row-header"><span class="interp-row-title">${sp.name}</span><span class="interp-row-desc">${sp.desc}</span></div><div class="interp-strip"><canvas id="ic${i}"></canvas></div></div></div>`).join('');
+  }
+  // Render gradient strips using the STEPS count
+  INTERPS.forEach((sp,i)=>{
+    const canvas=document.getElementById(`ic${i}`);
+    const dpr=Math.min(window.devicePixelRatio,2);
+    const cw=canvas.clientWidth*dpr,ch=canvas.clientHeight*dpr;
+    canvas.width=cw;canvas.height=ch;
+    const ctx=canvas.getContext('2d');
+
+    // Draw discrete color blocks based on steps
+    const blockW=cw/steps;
+    for(let s=0;s<steps;s++){
+      const t=(s+0.5)/steps; // sample from center of each block
+      const rgb=sp.fn(colA,colB,t);
+      ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
+      ctx.fillRect(Math.floor(s*blockW),0,Math.ceil(blockW)+1,ch);
+    }
+  });
+  renderInterp3D(colA,colB);
+}
+
+function renderInterp3D(colA,colB){
+  const grid=document.getElementById('interp3dGrid');
+  const uSpaces=['rgb','hsv','hsl','cielab','oklab','oklch'];
+  const pathCols=[0xff6666,0x66ff99,0x6699ff,0xffcc44,0xff66ff,0x66ffff,0xffaa66,0xaaff66];
+
+  if(!i3v.length){
+    grid.innerHTML='';
+    uSpaces.forEach((spId,idx)=>{
+      const sp=getSp(spId);
+      const div=document.createElement('div');div.className='interp-3d-card';
+      div.innerHTML=`<div class="three-wrap" id="i3w${idx}"></div><div class="card-info"><h4>${sp.name} — Interpolation Paths</h4><p>Lines show interpolation paths through the ${sp.name} gamut</p></div>`;
+      grid.appendChild(div);
+    });
+    uSpaces.forEach((spId,idx)=>{
+      const wrap=document.getElementById(`i3w${idx}`);
+      const w=wrap.clientWidth,h=wrap.clientHeight||260;
+      const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
+      renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x111119,1);
+      renderer.sortObjects=true;
+      wrap.appendChild(renderer.domElement);
+      const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
+      const orbit=new Orbit(camera,renderer.domElement);orbit.autoRot=true;orbit.sph.theta=Math.PI/4+idx*0.5;
+      makeAxes(scene);
+      // Ghost surface mesh (very transparent)
+      const sp=getSp(spId);
+      const ghostGeo=buildGamutMesh(sp,18);
+      scene.add(new THREE.Mesh(ghostGeo,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:0.08,side:THREE.DoubleSide,depthWrite:false})));
+      scene.add(new THREE.Mesh(ghostGeo,new THREE.MeshBasicMaterial({vertexColors:true,wireframe:true,transparent:true,opacity:0.06})));
+      const pg=new THREE.Group();scene.add(pg);
+      let lt=performance.now();
+      (function anim(){requestAnimationFrame(anim);const now=performance.now();orbit.update((now-lt)/1000);lt=now;renderer.render(scene,camera);})();
+      i3v.push({renderer,scene,camera,orbit,pg,spId,wrap});
+    });
+    window.addEventListener('resize',()=>{i3v.forEach(v=>{const w=v.wrap.clientWidth,h=v.wrap.clientHeight||260;v.camera.aspect=w/h;v.camera.updateProjectionMatrix();v.renderer.setSize(w,h);});});
+  }
+
+  // Update paths
+  i3v.forEach(v=>{
+    const sp=getSp(v.spId);
+    while(v.pg.children.length)v.pg.remove(v.pg.children[0]);
+    const relevant=INTERPS.filter(ip=>ip.space===v.spId);
+
+    relevant.forEach((ip,pi)=>{
+      const pts=[],vc=[];
+      for(let i=0;i<=100;i++){const t=i/100;const rgb=ip.fn(colA,colB,t);
+        const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
+        const ch=sp.fromRgb(r,g,b),p=sp.to3d(ch);
+        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pts.push(new THREE.Vector3(p[0],p[1],p[2]));vc.push(r,g,b);}
+      }
+      if(pts.length>1){
+        const geo=new THREE.BufferGeometry().setFromPoints(pts);
+        geo.setAttribute('color',new THREE.Float32BufferAttribute(vc,3));
+        v.pg.add(new THREE.Line(geo,new THREE.LineBasicMaterial({vertexColors:true,linewidth:2})));
+        // Color-coded glow
+        v.pg.add(new THREE.Line(geo.clone(),new THREE.LineBasicMaterial({color:pathCols[pi%pathCols.length],transparent:true,opacity:0.35})));
+        // Start/end markers
+        const sg=new THREE.SphereGeometry(0.055,12,12);
+        const ms=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({color:new THREE.Color(colA[0],colA[1],colA[2])}));ms.position.copy(pts[0]);v.pg.add(ms);
+        const me=new THREE.Mesh(sg.clone(),new THREE.MeshBasicMaterial({color:new THREE.Color(colB[0],colB[1],colB[2])}));me.position.copy(pts[pts.length-1]);v.pg.add(me);
+        // White rings on endpoints (depth-independent)
+        const rg=new THREE.RingGeometry(0.065,0.08,20);
+        const rm=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,transparent:true,opacity:0.6,depthTest:false});
+        const r1=new THREE.Mesh(rg,rm);r1.position.copy(pts[0]);v.pg.add(r1);
+        const r2=new THREE.Mesh(rg.clone(),rm.clone());r2.position.copy(pts[pts.length-1]);v.pg.add(r2);
+      }
+    });
+    // sRGB reference as dashed
+    if(v.spId!=='rgb'){
+      const rp=[],rc=[];for(let i=0;i<=100;i++){const t=i/100;
+        const r=CM.clamp(colA[0]+(colB[0]-colA[0])*t,0,1),g=CM.clamp(colA[1]+(colB[1]-colA[1])*t,0,1),b=CM.clamp(colA[2]+(colB[2]-colA[2])*t,0,1);
+        const ch=sp.fromRgb(r,g,b),p=sp.to3d(ch);
+        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){rp.push(new THREE.Vector3(p[0],p[1],p[2]));rc.push(r,g,b);}
+      }
+      if(rp.length>1){const geo=new THREE.BufferGeometry().setFromPoints(rp);geo.setAttribute('color',new THREE.Float32BufferAttribute(rc,3));
+        const line=new THREE.Line(geo,new THREE.LineDashedMaterial({vertexColors:true,transparent:true,opacity:0.35,dashSize:0.05,gapSize:0.03}));
+        line.computeLineDistances();v.pg.add(line);}
+    }
+  });
+}
+
+function initInterpolation(){
+  ['interpColorA','interpColorB','interpSteps'].forEach(id=>{
+    const el=document.getElementById(id);
+    // Listen to both 'input' and 'change' for number inputs
+    el.addEventListener('input',handleInterpChange);
+    el.addEventListener('change',handleInterpChange);
+  });
+  renderInterpolation();
+}
+
+function handleInterpChange(){
+  document.getElementById('interpColorALabel').textContent=document.getElementById('interpColorA').value;
+  document.getElementById('interpColorBLabel').textContent=document.getElementById('interpColorB').value;
+  renderInterpolation();
+}
+
+// ═══════ TRANSITIONS ═══════
+function initTransitions(){
+  const grid=document.getElementById('transitionGrid');
+  const spaces=[
+    {name:'HSL Hue Sweep',desc:'Full hue rotation, S=1 L=0.5',gen:t=>CM.hslToRgb(t*360,1,0.5)},
+    {name:'HSV Hue Sweep',desc:'Full hue rotation, S=1 V=1',gen:t=>CM.hsvToRgb(t*360,1,1)},
+    {name:'OKLCH Hue Sweep',desc:'Constant L=0.75 C=0.15 — uniform brightness',gen:t=>CM.oklchToRgb(0.75,0.15,t*360)},
+    {name:'CIELAB Hue Ring',desc:'a*b* circle, L*=65 r=80',gen:t=>{const a=t*2*Math.PI;return CM.labToRgb(65,80*Math.cos(a),80*Math.sin(a));}},
+    {name:'OKLAB a-b Ring',desc:'a,b circle, L=0.7 r=0.15',gen:t=>{const a=t*2*Math.PI;return CM.oklabToRgb(0.7,0.15*Math.cos(a),0.15*Math.sin(a));}},
+    {name:'OKLCH Lightness',desc:'L 0→1, hue=264 C=0.12',gen:t=>CM.oklchToRgb(t,0.12,264)},
+  ];
+  grid.innerHTML=spaces.map((sp,i)=>`<div class="transition-card"><canvas id="tc${i}"></canvas><div class="transition-card-info"><h4>${sp.name}</h4><p>${sp.desc}</p></div></div>`).join('');
+  spaces.forEach((sp,i)=>{const canvas=document.getElementById(`tc${i}`);const dpr=Math.min(window.devicePixelRatio,2);const w=canvas.clientWidth*dpr,h=canvas.clientHeight*dpr;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');for(let px=0;px<w;px++){const t=px/(w-1);const rgb=sp.gen(t);ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));ctx.fillRect(px,0,1,h);}});
+}
+
+// ═══════ GRAYSCALE ═══════
+function initGrayscale(){
+  const grid=document.getElementById('grayscaleGrid');
+  const methods=[
+    {name:'Original',desc:'Color test image with hue ramps, bars, saturation and temperature gradients.',isO:true},
+    {name:'Average',desc:'(R+G+B)/3 — naive, equal weight.',gray:(r,g,b)=>(r+g+b)/3},
+    {name:'Rec. 709',desc:'0.2126R+0.7152G+0.0722B — HDTV standard.',gray:(r,g,b)=>CM.luminance(r,g,b),linOut:true},
+    {name:'Rec. 601',desc:'0.299R+0.587G+0.114B — classic NTSC.',gray:(r,g,b)=>0.299*r+0.587*g+0.114*b},
+    {name:'CIELAB L*',desc:'L* from CIELAB, normalized.',gray:(r,g,b)=>CM.rgbToLab(r,g,b)[0]/100},
+    {name:'OKLAB L',desc:'L from OKLAB — modern perceptual.',gray:(r,g,b)=>CM.rgbToOklab(r,g,b)[0]},
+    {name:'HSL L',desc:'(max+min)/2 — simple, not perceptual.',gray:(r,g,b)=>(Math.max(r,g,b)+Math.min(r,g,b))/2},
+    {name:'HSV V',desc:'max(R,G,B) — brightest channel.',gray:(r,g,b)=>Math.max(r,g,b)},
+  ];
+  grid.innerHTML=methods.map((m,i)=>`<div class="grayscale-card"><canvas id="gc${i}"></canvas><div class="grayscale-card-info"><h4>${m.name}</h4><p>${m.desc}</p></div></div>`).join('');
+  const W=400,H=300,test=new Float32Array(W*H*3);
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){const idx=(y*W+x)*3,nx=x/W,ny=y/H;
+    if(ny<0.3){const rgb=CM.hslToRgb(nx*360,1,0.5);test[idx]=rgb[0];test[idx+1]=rgb[1];test[idx+2]=rgb[2];}
+    else if(ny<0.5){const s=Math.floor(nx*8),cols=[[1,0,0],[0,1,0],[0,0,1],[1,1,0],[1,0,1],[0,1,1],[1,.5,0],[.5,0,1]],c=cols[s%8];test[idx]=c[0];test[idx+1]=c[1];test[idx+2]=c[2];}
+    else if(ny<0.65){const rgb=CM.hslToRgb(210,nx,0.5);test[idx]=rgb[0];test[idx+1]=rgb[1];test[idx+2]=rgb[2];}
+    else if(ny<0.8){test[idx]=.95+(.1-.95)*nx;test[idx+1]=.3;test[idx+2]=.15+(.85-.15)*nx;}
+    else{test[idx]=nx;test[idx+1]=nx;test[idx+2]=nx;}}
+  methods.forEach((m,i)=>{const canvas=document.getElementById(`gc${i}`);canvas.width=W;canvas.height=H;const ctx=canvas.getContext('2d'),img=ctx.createImageData(W,H);
+    for(let y=0;y<H;y++)for(let x=0;x<W;x++){const si=(y*W+x)*3,di=(y*W+x)*4,r=test[si],g=test[si+1],b=test[si+2];
+      if(m.isO){img.data[di]=Math.round(r*255);img.data[di+1]=Math.round(g*255);img.data[di+2]=Math.round(b*255);}
+      else{let v=m.gray(r,g,b);if(m.linOut)v=CM.linToSrgb(v);v=CM.clamp(v,0,1);img.data[di]=img.data[di+1]=img.data[di+2]=Math.round(v*255);}
+      img.data[di+3]=255;}
+    ctx.putImageData(img,0,0);});
+}
+
+// ═══════ NAV ═══════
+function initNav(){
+  const ids=['spaces','interpolation','transitions','grayscale'],links=document.querySelectorAll('nav a');
+  const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){links.forEach(l=>l.classList.remove('active'));const link=document.querySelector(`nav a[href="#${e.target.id}"]`);if(link)link.classList.add('active');}});},{threshold:0.15});
+  ids.forEach(id=>obs.observe(document.getElementById(id)));
+}
+
+// ═══════ BOOT ═══════
+document.addEventListener('DOMContentLoaded',()=>{
+  init3DViewer();initSpaces();selectSpace(SPACES[0]);
+  initSliceInteraction();
+  initInterpolation();
+  setTimeout(()=>{initTransitions();initGrayscale();initNav();},200);
+});
+</script>
+</body>
+</html>
