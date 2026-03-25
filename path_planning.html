@@ -7,223 +7,163 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0c0e14;
-    --surface: #14171f;
-    --surface2: #1a1e28;
-    --border: #252a36;
-    --border-hi: #353b4a;
-    --text: #d8dbe6;
-    --text-dim: #636980;
-    --text-mid: #8b91a5;
-    --accent: #4d9de0;
-    --accent-dim: rgba(77,157,224,0.12);
-    --green: #44c472;
-    --green-dim: rgba(68,196,114,0.15);
-    --red: #e8564a;
-    --red-dim: rgba(232,86,74,0.12);
-    --yellow: #e8b84a;
-    --yellow-dim: rgba(232,184,74,0.2);
-    --purple: #9b6de0;
-    --purple-dim: rgba(155,109,224,0.2);
+    --bg: #0c0e14; --surface: #14171f; --surface2: #1a1e28;
+    --border: #252a36; --border-hi: #353b4a;
+    --text: #d8dbe6; --text-dim: #636980; --text-mid: #8b91a5;
+    --accent: #4d9de0; --accent-dim: rgba(77,157,224,0.12);
+    --green: #44c472; --green-dim: rgba(68,196,114,0.15);
+    --red: #e8564a; --red-dim: rgba(232,86,74,0.12);
+    --yellow: #e8b84a; --yellow-dim: rgba(232,184,74,0.2);
+    --purple: #9b6de0; --purple-dim: rgba(155,109,224,0.2);
   }
   * { margin:0; padding:0; box-sizing:border-box; }
-  body {
-    font-family:'DM Sans',sans-serif;
-    background:var(--bg); color:var(--text);
-    height:100vh; height:100dvh;
-    display:flex; flex-direction:column;
-    overflow:hidden; user-select:none; -webkit-user-select:none;
-  }
-
-  /* ── HEADER ─────────────────────────────────────── */
-  .header {
-    display:flex; align-items:center; gap:8px;
-    padding:6px 10px; background:var(--surface);
-    border-bottom:1px solid var(--border);
-    flex-shrink:0; flex-wrap:wrap;
-  }
-  .logo {
-    font-weight:700; font-size:13px; letter-spacing:.3px;
-    white-space:nowrap; display:flex; align-items:center; gap:6px;
-  }
-  .logo .ic {
-    width:20px;height:20px;
-    background:linear-gradient(135deg,var(--accent),var(--purple));
-    border-radius:5px; display:flex; align-items:center; justify-content:center;
-    font-size:11px; font-weight:700; color:#fff;
-  }
+  body { font-family:'DM Sans',sans-serif; background:var(--bg); color:var(--text); height:100vh; height:100dvh; display:flex; flex-direction:column; overflow:hidden; user-select:none; -webkit-user-select:none; }
+  .header { display:flex; align-items:center; gap:8px; padding:6px 10px; background:var(--surface); border-bottom:1px solid var(--border); flex-shrink:0; flex-wrap:wrap; }
+  .logo { font-weight:700; font-size:13px; letter-spacing:.3px; white-space:nowrap; display:flex; align-items:center; gap:6px; }
+  .logo .ic { width:20px;height:20px; background:linear-gradient(135deg,var(--accent),var(--purple)); border-radius:5px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#fff; }
   .sep { width:1px; height:22px; background:var(--border); flex-shrink:0; }
-
-  .cg {
-    display:flex; gap:2px; background:var(--bg);
-    border-radius:7px; padding:2px; border:1px solid var(--border);
-  }
-  .b {
-    font-family:'DM Sans',sans-serif; font-size:10.5px; font-weight:500;
-    padding:3px 8px; border:none; border-radius:5px; cursor:pointer;
-    background:transparent; color:var(--text-dim); transition:all .12s;
-    white-space:nowrap; line-height:1.4;
-  }
+  .cg { display:flex; gap:2px; background:var(--bg); border-radius:7px; padding:2px; border:1px solid var(--border); }
+  .b { font-family:'DM Sans',sans-serif; font-size:10.5px; font-weight:500; padding:3px 8px; border:none; border-radius:5px; cursor:pointer; background:transparent; color:var(--text-dim); transition:all .12s; white-space:nowrap; line-height:1.4; }
   .b:hover { color:var(--text); background:var(--border); }
   .b.on { background:var(--accent); color:#fff; }
   .b.go { color:var(--green); font-weight:600; }
   .b.go:hover { background:var(--green-dim); }
   .b.go.running { color:var(--yellow); animation:blink 1.2s infinite; }
-  .b.danger { color:var(--red); }
-  .b.danger:hover { background:var(--red-dim); }
+  .b.danger { color:var(--red); } .b.danger:hover { background:var(--red-dim); }
+  .b.compare { color:var(--purple); font-weight:600; } .b.compare:hover { background:var(--purple-dim); } .b.compare.on { background:var(--purple); color:#fff; }
+  .b.explain { color:var(--yellow); } .b.explain:hover { background:var(--yellow-dim); } .b.explain.on { background:var(--yellow); color:var(--bg); }
+  .b.import-b { color:var(--accent); } .b.import-b:hover { background:var(--accent-dim); }
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-  .tgl {
-    display:flex; align-items:center; gap:5px;
-    font-size:10.5px; color:var(--text-dim); cursor:pointer;
-    padding:3px 7px; border-radius:5px; transition:all .12s;
-  }
+  .tgl { display:flex; align-items:center; gap:5px; font-size:10.5px; color:var(--text-dim); cursor:pointer; padding:3px 7px; border-radius:5px; transition:all .12s; }
   .tgl:hover { color:var(--text-mid); background:var(--border); }
-  .tgl-t {
-    width:26px;height:13px; background:var(--border-hi);
-    border-radius:7px; position:relative; transition:background .2s; flex-shrink:0;
-  }
-  .tgl-t::after {
-    content:''; position:absolute; width:9px;height:9px;
-    background:var(--text-dim); border-radius:50%;
-    top:2px; left:2px; transition:all .2s;
-  }
-  .tgl.on .tgl-t { background:var(--accent); }
-  .tgl.on .tgl-t::after { left:15px; background:#fff; }
-  .tgl.on { color:var(--text); }
+  .tgl-t { width:26px;height:13px; background:var(--border-hi); border-radius:7px; position:relative; transition:background .2s; flex-shrink:0; }
+  .tgl-t::after { content:''; position:absolute; width:9px;height:9px; background:var(--text-dim); border-radius:50%; top:2px; left:2px; transition:all .2s; }
+  .tgl.on .tgl-t { background:var(--accent); } .tgl.on .tgl-t::after { left:15px; background:#fff; } .tgl.on { color:var(--text); }
+  select.sel { font-family:'IBM Plex Mono',monospace; font-size:10.5px; background:var(--bg); color:var(--text); border:1px solid var(--border); border-radius:7px; padding:4px 22px 4px 7px; cursor:pointer; outline:none; appearance:none; -webkit-appearance:none; background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23636980' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 7px center; }
+  .algo-label { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; padding:1px 4px; border-radius:3px; }
+  .algo-label.l-label { background:var(--accent-dim); color:var(--accent); }
+  .algo-label.r-label { background:var(--purple-dim); color:var(--purple); }
+  .compare-sels { display:none; align-items:center; gap:4px; } .compare-sels.visible { display:flex; }
+  .spd { display:flex; align-items:center; gap:5px; font-size:10px; color:var(--text-dim); font-family:'IBM Plex Mono',monospace; }
+  input[type=range] { -webkit-appearance:none; width:50px; height:3px; background:var(--border-hi); border-radius:2px; outline:none; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; width:10px;height:10px; background:var(--accent); border-radius:50%; cursor:pointer; }
 
-  select.sel {
-    font-family:'IBM Plex Mono',monospace; font-size:10.5px;
-    background:var(--bg); color:var(--text);
-    border:1px solid var(--border); border-radius:7px;
-    padding:4px 22px 4px 7px; cursor:pointer; outline:none;
-    appearance:none; -webkit-appearance:none;
-    background-image:url("data:image/svg+xml,%3Csvg width='8' height='5' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l3 3 3-3' stroke='%23636980' stroke-width='1.3' stroke-linecap='round'/%3E%3C/svg%3E");
-    background-repeat:no-repeat; background-position:right 7px center;
-  }
+  /* Info icon */
+  .info-btn { width:20px; height:20px; border-radius:50%; border:1.5px solid var(--text-dim); background:transparent; color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; transition:all .12s; flex-shrink:0; line-height:1; }
+  .info-btn:hover { border-color:var(--accent); color:var(--accent); background:var(--accent-dim); }
 
-  .spd {
-    display:flex; align-items:center; gap:5px;
-    font-size:10px; color:var(--text-dim);
-    font-family:'IBM Plex Mono',monospace;
-  }
-  input[type=range] {
-    -webkit-appearance:none; width:50px; height:3px;
-    background:var(--border-hi); border-radius:2px; outline:none;
-  }
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance:none; width:10px;height:10px;
-    background:var(--accent); border-radius:50%; cursor:pointer;
-  }
+  /* Modal overlay */
+  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.65); z-index:500; align-items:center; justify-content:center; }
+  .modal-overlay.open { display:flex; }
+  .modal { background:var(--surface); border:1px solid var(--border-hi); border-radius:12px; max-width:560px; width:calc(100% - 32px); max-height:calc(100vh - 60px); overflow-y:auto; box-shadow:0 16px 64px rgba(0,0,0,.7); }
+  .modal-hdr { display:flex; align-items:center; justify-content:space-between; padding:14px 18px; border-bottom:1px solid var(--border); }
+  .modal-hdr h2 { font-family:'IBM Plex Mono',monospace; font-size:13px; font-weight:600; display:flex; align-items:center; gap:8px; }
+  .modal-hdr h2 .dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
+  .modal-close { background:none; border:none; color:var(--text-dim); font-size:18px; cursor:pointer; padding:2px 6px; border-radius:4px; } .modal-close:hover { color:var(--text); background:var(--border); }
+  .modal-body { padding:16px 18px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--text-mid); line-height:1.7; }
+  .modal-body h3 { font-size:11px; color:var(--text); margin:12px 0 6px; font-weight:600; }
+  .modal-body h3:first-child { margin-top:0; }
+  .modal-body code { background:var(--bg); padding:1px 5px; border-radius:3px; font-size:10px; color:var(--accent); border:1px solid var(--border); }
+  .modal-body pre { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:10px 12px; font-size:9.5px; line-height:1.6; color:var(--text); overflow-x:auto; margin:6px 0 10px; white-space:pre; }
+  .modal-body .fmt-row { display:flex; gap:8px; align-items:baseline; margin:3px 0; }
+  .modal-body .fmt-val { color:var(--yellow); font-weight:600; min-width:36px; }
+  .modal-body .fmt-desc { color:var(--text-mid); }
+  .modal-body .note { background:var(--yellow-dim); border:1px solid rgba(232,184,74,.25); border-radius:6px; padding:8px 10px; margin:8px 0; color:var(--yellow); font-size:9.5px; }
+  .weight-grad { display:flex; height:14px; border-radius:3px; overflow:hidden; margin:6px 0; border:1px solid var(--border); }
+  .weight-grad div { flex:1; }
 
-  /* ── INFO ────────────────────────────────────────── */
-  .info {
-    padding:5px 14px; background:var(--surface2);
-    border-bottom:1px solid var(--border);
-    font-size:10.5px; color:var(--text-mid); flex-shrink:0;
-    font-family:'IBM Plex Mono',monospace; line-height:1.5;
-  }
+  .info { padding:5px 14px; background:var(--surface2); border-bottom:1px solid var(--border); font-size:10.5px; color:var(--text-mid); flex-shrink:0; font-family:'IBM Plex Mono',monospace; line-height:1.5; }
   .info strong { color:var(--text); font-weight:600; }
-  .tag {
-    display:inline-block; padding:1px 5px; border-radius:3px;
-    font-size:9px; font-weight:600; margin:0 2px;
-  }
+  .tag { display:inline-block; padding:1px 5px; border-radius:3px; font-size:9px; font-weight:600; margin:0 2px; }
   .tag-b { background:var(--green-dim); color:var(--green); }
   .tag-d { background:var(--accent-dim); color:var(--accent); }
   .tag-g { background:var(--purple-dim); color:var(--purple); }
   .tag-a { background:var(--yellow-dim); color:var(--yellow); }
 
-  /* ── MAIN ────────────────────────────────────────── */
-  .main {
-    flex:1; display:flex; align-items:center; justify-content:center;
-    padding:6px; min-height:0; overflow:hidden;
-  }
-  .gw {
-    border:2px solid var(--border); border-radius:9px; overflow:hidden;
-    box-shadow:0 4px 40px rgba(0,0,0,.5); background:var(--bg);
-    position:relative;
-  }
+  .main { flex:1; display:flex; min-height:0; overflow:hidden; }
+  .grid-area { flex:1; display:flex; align-items:center; justify-content:center; gap:8px; padding:6px; min-width:0; }
+  .grid-panel { display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .panel-hdr { font-family:'IBM Plex Mono',monospace; font-size:10px; font-weight:600; padding:2px 8px; border-radius:4px; }
+  .panel-hdr.l-hdr { background:var(--accent-dim); color:var(--accent); }
+  .panel-hdr.r-hdr { background:var(--purple-dim); color:var(--purple); }
+  .panel-stats { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); display:flex; gap:8px; }
+  .panel-stats .sv { font-weight:600; } .panel-stats.l-stats .sv { color:var(--accent); } .panel-stats.r-stats .sv { color:var(--purple); }
+  .gw { border:2px solid var(--border); border-radius:9px; overflow:hidden; box-shadow:0 4px 40px rgba(0,0,0,.5); background:var(--bg); position:relative; }
   canvas { display:block; }
-  .tip {
-    position:absolute; background:var(--surface2);
-    border:1px solid var(--border-hi); border-radius:5px;
-    padding:5px 8px; font-family:'IBM Plex Mono',monospace;
-    font-size:9.5px; color:var(--text); pointer-events:none;
-    z-index:100; display:none; box-shadow:0 4px 16px rgba(0,0,0,.5);
-    line-height:1.5; max-width:170px;
-  }
+  .tip { position:absolute; background:var(--surface2); border:1px solid var(--border-hi); border-radius:5px; padding:5px 8px; font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--text); pointer-events:none; z-index:100; display:none; box-shadow:0 4px 16px rgba(0,0,0,.5); line-height:1.5; max-width:170px; }
 
-  /* ── FOOTER ──────────────────────────────────────── */
-  .footer {
-    display:flex; align-items:center; justify-content:space-between;
-    padding:6px 14px; background:var(--surface);
-    border-top:1px solid var(--border);
-    font-family:'IBM Plex Mono',monospace; font-size:9.5px;
-    color:var(--text-dim); flex-shrink:0; flex-wrap:wrap; gap:6px;
-  }
+  .explain { width:0; overflow:hidden; background:var(--surface); border-left:1px solid var(--border); flex-shrink:0; transition:width .2s ease; display:flex; flex-direction:column; }
+  .explain.open { width:272px; }
+  .explain-inner { width:272px; padding:10px; overflow-y:auto; flex:1; }
+  .ex-title { font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600; color:var(--text); margin-bottom:8px; display:flex; align-items:center; gap:6px; }
+  .ex-title .dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+  .ex-tabs { display:flex; gap:2px; margin-bottom:10px; background:var(--bg); border-radius:6px; padding:2px; border:1px solid var(--border); }
+  .ex-tab { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:600; padding:3px 10px; border:none; border-radius:4px; cursor:pointer; background:transparent; color:var(--text-dim); transition:all .12s; flex:1; text-align:center; }
+  .ex-tab:hover { color:var(--text); } .ex-tab.on { background:var(--border-hi); color:var(--text); }
+  .ex-section { margin-bottom:10px; }
+  .ex-label { font-family:'IBM Plex Mono',monospace; font-size:8.5px; font-weight:600; color:var(--text-dim); text-transform:uppercase; letter-spacing:.8px; margin-bottom:4px; }
+  .ex-card { background:var(--bg); border:1px solid var(--border); border-radius:6px; padding:7px 9px; font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--text-mid); line-height:1.6; }
+  .ex-card b { color:var(--text); font-weight:600; }
+  .val-g { color:var(--accent); } .val-h { color:var(--purple); } .val-f { color:var(--yellow); }
+  .ex-nb { display:flex; flex-direction:column; gap:3px; }
+  .ex-nb-row { display:flex; align-items:center; gap:5px; font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); padding:3px 6px; background:var(--bg); border:1px solid var(--border); border-radius:4px; }
+  .nb-coord { color:var(--text); font-weight:500; min-width:38px; } .nb-action { font-weight:600; margin-left:auto; }
+  .nb-added { color:var(--green); } .nb-updated { color:var(--yellow); } .nb-skipped { color:var(--text-dim); }
+  .ex-queue-list { display:flex; flex-direction:column; gap:2px; }
+  .ex-q-item { display:flex; justify-content:space-between; align-items:center; font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); padding:2px 6px; background:var(--bg); border:1px solid var(--border); border-radius:3px; }
+  .q-rank { color:var(--text-dim); min-width:16px; } .q-coord { color:var(--text); } .q-pri { color:var(--yellow); font-weight:500; }
+  .ex-idle { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-dim); text-align:center; padding:20px 10px; line-height:1.6; }
+
+  /* Import status toast */
+  .toast { position:fixed; bottom:20px; left:50%; transform:translateX(-50%); background:var(--surface); border:1px solid var(--border-hi); border-radius:8px; padding:8px 16px; font-family:'IBM Plex Mono',monospace; font-size:10.5px; color:var(--text); box-shadow:0 8px 32px rgba(0,0,0,.6); z-index:600; display:none; max-width:90vw; text-align:center; }
+  .toast.show { display:block; animation:toastIn .3s ease; }
+  .toast.err { border-color:var(--red); color:var(--red); }
+  .toast.ok { border-color:var(--green); color:var(--green); }
+  @keyframes toastIn { from{opacity:0;transform:translateX(-50%) translateY(12px)} to{opacity:1;transform:translateX(-50%) translateY(0)} }
+
+  .footer { display:flex; align-items:center; justify-content:space-between; padding:6px 14px; background:var(--surface); border-top:1px solid var(--border); font-family:'IBM Plex Mono',monospace; font-size:9.5px; color:var(--text-dim); flex-shrink:0; flex-wrap:wrap; gap:6px; }
   .legend { display:flex; gap:9px; align-items:center; flex-wrap:wrap; }
   .legend-i { display:flex; align-items:center; gap:3px; }
   .sw { width:9px;height:9px; border-radius:2px; flex-shrink:0; }
-  .stats { display:flex; gap:12px; flex-wrap:wrap; }
-  .sv { color:var(--accent); font-weight:600; }
+  .stats { display:flex; gap:12px; flex-wrap:wrap; } .stats .sv { color:var(--accent); font-weight:600; }
+  .footer .stats { display:none; } .footer .stats.visible { display:flex; }
+  .legend-cw { display:none; align-items:center; gap:3px; }
+  .legend-cw.visible { display:flex; }
+  .cw-grad { display:flex; width:50px; height:9px; border-radius:2px; overflow:hidden; }
+  .cw-grad div { flex:1; }
 
-  /* ── RESPONSIVE ──────────────────────────────────── */
-  @media (max-width: 900px) {
-    .header { gap:5px; padding:5px 8px; }
-    .sep { display:none; }
-    .b { font-size:9.5px; padding:3px 6px; }
-    .tgl { font-size:9.5px; padding:2px 5px; }
-    select.sel { font-size:9.5px; padding:3px 16px 3px 5px; }
-    .info { font-size:9.5px; padding:4px 10px; }
-    .footer { font-size:8.5px; padding:4px 10px; }
-  }
-  @media (max-width: 600px) {
-    .header { gap:4px; padding:4px 6px; }
-    .logo { font-size:11px; }
-    .b { font-size:8.5px; padding:2px 5px; }
-    .tgl { font-size:8.5px; }
-    .cg { padding:1px; gap:1px; }
-    .info { font-size:8.5px; padding:3px 8px; }
-    .footer { font-size:7.5px; padding:3px 8px; gap:4px; }
-    .legend { gap:5px; }
-    .stats { gap:6px; }
-    .spd { font-size:8.5px; }
-    input[type=range] { width:36px; }
-    .main { padding:4px; }
-  }
+  @media (max-width:900px) { .header{gap:5px;padding:5px 8px;} .sep{display:none;} .b{font-size:9.5px;padding:3px 6px;} .tgl{font-size:9.5px;padding:2px 5px;} select.sel{font-size:9.5px;padding:3px 16px 3px 5px;} .info{font-size:9.5px;padding:4px 10px;} .footer{font-size:8.5px;padding:4px 10px;} .explain.open{width:230px;} .explain-inner{width:230px;} }
+  @media (max-width:600px) { .header{gap:4px;padding:4px 6px;} .logo{font-size:11px;} .b{font-size:8.5px;padding:2px 5px;} .tgl{font-size:8.5px;} .cg{padding:1px;gap:1px;} .info{font-size:8.5px;padding:3px 8px;} .footer{font-size:7.5px;padding:3px 8px;gap:4px;} .legend{gap:5px;} .spd{font-size:8.5px;} input[type=range]{width:36px;} .grid-area{padding:4px;gap:4px;} .explain.open{width:190px;} .explain-inner{width:190px;padding:8px;} }
 </style>
 </head>
 <body>
-
 <div class="header">
   <div class="logo"><div class="ic">P</div>Pathfinding</div>
   <div class="sep"></div>
-
   <select class="sel" id="algoSel" onchange="onAlgo()">
     <option value="bfs">Breadth-First Search</option>
     <option value="dijkstra">Dijkstra's Algorithm</option>
     <option value="greedy">Greedy Best-First</option>
     <option value="astar" selected>A* Search</option>
   </select>
+  <div class="compare-sels" id="compareSels">
+    <span class="algo-label l-label">L</span>
+    <select class="sel" id="algoL" onchange="onAlgoCompare()"><option value="bfs">BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar" selected>A*</option></select>
+    <span class="algo-label r-label">R</span>
+    <select class="sel" id="algoR" onchange="onAlgoCompare()"><option value="bfs" selected>BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar">A*</option></select>
+  </div>
   <div class="sep"></div>
-
   <div class="cg" id="tg">
     <button class="b on" data-t="wall" onclick="setT('wall')">▪ Wall</button>
-    <button class="b" data-t="forest" onclick="setT('forest')">⚘ Forest&thinsp;×5</button>
-    <button class="b" data-t="water" onclick="setT('water')">〜 Water&thinsp;×10</button>
+    <button class="b" data-t="forest" onclick="setT('forest')">⚘ Forest</button>
+    <button class="b" data-t="water" onclick="setT('water')">〜 Water</button>
     <button class="b" data-t="start" onclick="setT('start')">● Start</button>
     <button class="b" data-t="end" onclick="setT('end')">◆ End</button>
     <button class="b" data-t="erase" onclick="setT('erase')">✕ Erase</button>
   </div>
   <div class="sep"></div>
-
-  <div class="cg">
-    <button class="b" onclick="genMaze()">Maze</button>
-    <button class="b" onclick="genRand()">Random</button>
-    <button class="b" onclick="genTerrain()">Terrain</button>
-  </div>
+  <div class="cg"><button class="b" onclick="genMaze()">Maze</button><button class="b" onclick="genRand()">Random</button><button class="b" onclick="genTerrain()">Terrain</button></div>
   <div class="sep"></div>
-
   <div class="cg">
     <button class="b go" id="btnR" onclick="doRun()">▶ Run</button>
     <button class="b" onclick="doStep()">⏭ Step</button>
@@ -231,198 +171,247 @@
     <button class="b danger" onclick="doReset()">Reset</button>
   </div>
   <div class="sep"></div>
-
+  <div class="cg">
+    <button class="b compare" id="btnCmp" onclick="toggleCompare()">⧉ Compare</button>
+    <button class="b explain" id="btnExp" onclick="toggleExplain()">⟐ Explain</button>
+  </div>
+  <div class="sep"></div>
+  <div class="cg">
+    <button class="b import-b" onclick="document.getElementById('fileIn').click()">⬆ Import Grid</button>
+    <button class="info-btn" onclick="openInfoModal()" title="Import format info">?</button>
+  </div>
+  <input type="file" id="fileIn" accept=".json,.txt,.csv" style="display:none" onchange="handleFileImport(event)">
+  <div class="sep"></div>
   <div class="tgl on" id="tEE" onclick="tglEE()"><div class="tgl-t"></div>Early Exit</div>
   <div class="tgl on" id="tDG" onclick="tglDG()"><div class="tgl-t"></div>Diagonals</div>
   <div class="tgl on" id="tSC" onclick="tglSC()"><div class="tgl-t"></div>Costs</div>
   <div class="sep"></div>
   <div class="spd">SPD<input type="range" id="spd" min="1" max="100" value="60"></div>
 </div>
-
 <div class="info" id="infoBar"></div>
 
-<div class="main">
-  <div class="gw" id="gw">
-    <canvas id="cv"></canvas>
-    <div class="tip" id="tip"></div>
+<!-- Info Modal -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal">
+    <div class="modal-hdr">
+      <h2><span class="dot"></span>Grid Import Format</h2>
+      <button class="modal-close" onclick="closeInfoModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3>Supported files</h3>
+      <code>.json</code> and <code>.txt</code> / <code>.csv</code> (whitespace or comma-separated)
+      <h3>JSON format</h3>
+<pre>{
+  "grid": [
+    [ 1, 1, -1, 3.5, 1, 1 ],
+    [ 1, 8, -1,  1,  1, 1 ],
+    [ 1, 1,  1,  1, 12, 1 ]
+  ],
+  "start": [0, 0],
+  "end":   [2, 5]
+}</pre>
+      <h3>TXT / CSV format</h3>
+<pre>S  1  1 -1  1  1
+1  8 -1  1  1  1
+1  1  1  1 12  E</pre>
+      Values separated by spaces, tabs, or commas. One row per line.
+      <h3>Cell values</h3>
+      <div class="fmt-row"><span class="fmt-val">1</span><span class="fmt-desc">Normal traversable cell (cost = 1)</span></div>
+      <div class="fmt-row"><span class="fmt-val">-1</span><span class="fmt-desc">Wall (impassable)</span></div>
+      <div class="fmt-row"><span class="fmt-val">N > 1</span><span class="fmt-desc">Custom weight (cost = N). Decimals OK.</span></div>
+      <div class="fmt-row"><span class="fmt-val">0</span><span class="fmt-desc">Same as 1 (empty, cost = 1)</span></div>
+      <div class="fmt-row"><span class="fmt-val">S</span><span class="fmt-desc">Start node (TXT only; in JSON use "start")</span></div>
+      <div class="fmt-row"><span class="fmt-val">E</span><span class="fmt-desc">End node (TXT only; in JSON use "end")</span></div>
+
+      <h3>Custom weight coloring</h3>
+      When any cell has a weight &gt; 1, the grid enters <b>custom weight mode</b>. Cells are colored on a gradient by their weight:
+      <div class="weight-grad">
+        <div style="background:#2a6e3f"></div><div style="background:#4a8a30"></div>
+        <div style="background:#7ea825"></div><div style="background:#b8a830"></div>
+        <div style="background:#d4943a"></div><div style="background:#d06840"></div>
+        <div style="background:#c44040"></div>
+      </div>
+      <span style="font-size:9px; color:var(--text-dim)">low cost → high cost</span>
+
+      <div class="note">Grid will be resized to match your file dimensions (max 80×50). Forest and Water tools still work — they override the custom weight of a cell.</div>
+
+      <h3>JSON: auto-detect start/end</h3>
+      If you omit <code>"start"</code> and <code>"end"</code>, they default to top-left and bottom-right corners.
+    </div>
   </div>
 </div>
 
+<div class="toast" id="toast"></div>
+
+<div class="main">
+  <div class="grid-area" id="gridArea">
+    <div class="grid-panel" id="panelL">
+      <div class="panel-hdr l-hdr" id="panelLHdr" style="display:none">A*</div>
+      <div class="gw" id="gwL"><canvas id="cvL"></canvas><div class="tip" id="tipL"></div></div>
+      <div class="panel-stats l-stats" id="panelLStats" style="display:none"><span>V:<span class="sv" id="sVL">0</span></span><span>Path:<span class="sv" id="sPL">—</span></span><span>Cost:<span class="sv" id="sCL">—</span></span></div>
+    </div>
+    <div class="grid-panel" id="panelR" style="display:none">
+      <div class="panel-hdr r-hdr" id="panelRHdr">BFS</div>
+      <div class="gw" id="gwR"><canvas id="cvR"></canvas><div class="tip" id="tipR"></div></div>
+      <div class="panel-stats r-stats" id="panelRStats"><span>V:<span class="sv" id="sVR">0</span></span><span>Path:<span class="sv" id="sPR">—</span></span><span>Cost:<span class="sv" id="sCR">—</span></span></div>
+    </div>
+  </div>
+  <div class="explain" id="explainPanel">
+    <div class="explain-inner" id="explainInner">
+      <div class="ex-title"><div class="dot" style="background:var(--yellow)"></div>Algorithm Inspector</div>
+      <div class="ex-tabs" id="exTabs" style="display:none"><button class="ex-tab on" id="exTabL" onclick="setExTab('L')">Left</button><button class="ex-tab" id="exTabR" onclick="setExTab('R')">Right</button></div>
+      <div id="exContent"><div class="ex-idle">Press <b>▶ Run</b> or <b>⏭ Step</b> to begin.<br>The inspector shows each step in detail.</div></div>
+    </div>
+  </div>
+</div>
 <div class="footer">
   <div class="legend">
     <div class="legend-i"><div class="sw" style="background:#44c472"></div>Start</div>
     <div class="legend-i"><div class="sw" style="background:#e8564a"></div>End</div>
     <div class="legend-i"><div class="sw" style="background:#3d424f"></div>Wall</div>
-    <div class="legend-i"><div class="sw" style="background:#2d5a3a"></div>Forest&thinsp;×5</div>
-    <div class="legend-i"><div class="sw" style="background:#1a3a5c"></div>Water&thinsp;×10</div>
+    <div class="legend-i"><div class="sw" style="background:#2d5a3a"></div>Forest×5</div>
+    <div class="legend-i"><div class="sw" style="background:#1a3a5c"></div>Water×10</div>
     <div class="legend-i"><div class="sw" style="background:rgba(77,157,224,.4)"></div>Frontier</div>
     <div class="legend-i"><div class="sw" style="background:rgba(155,109,224,.3)"></div>Visited</div>
     <div class="legend-i"><div class="sw" style="background:#e8b84a"></div>Path</div>
+    <div class="legend-cw" id="legendCW">
+      <div class="cw-grad"><div style="background:#2a6e3f"></div><div style="background:#7ea825"></div><div style="background:#d4943a"></div><div style="background:#c44040"></div></div>
+      <span>Weights</span>
+    </div>
   </div>
-  <div class="stats">
-    <span>Algo: <span class="sv" id="sA">A*</span></span>
-    <span>Visited: <span class="sv" id="sV">0</span></span>
-    <span>Path: <span class="sv" id="sP">—</span></span>
-    <span>Cost: <span class="sv" id="sC">—</span></span>
-  </div>
+  <div class="stats visible" id="singleStats"><span>Algo: <span class="sv" id="sA">A*</span></span><span>Visited: <span class="sv" id="sV">0</span></span><span>Path: <span class="sv" id="sP">—</span></span><span>Cost: <span class="sv" id="sC">—</span></span></div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
-const COLS=40, ROWS=25, G=1;
-let SZ = 22;
-const cv=document.getElementById('cv'); 
-const cx=cv.getContext('2d');
-const gw=document.getElementById('gw');
-let TW, TH;
-
+/* ═══════════ CONSTANTS ═══════════ */
+let COLS=40, ROWS=25;
+const GAP=1;
 const E=0,WL=1,ST=2,EN=3,FR=4,WA=5;
-const COST={[E]:1,[ST]:1,[EN]:1,[FR]:5,[WA]:10};
-
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-let grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
-let sp={r:Math.floor(ROWS/2),c:4};
-let ep={r:Math.floor(ROWS/2),c:COLS-5};
-grid[sp.r][sp.c]=ST; grid[ep.r][ep.c]=EN;
-
-let tool='wall', algo='astar';
-let earlyExit=true, allowDiag=true, showCost=true;
-let drawing=false, running=false;
-
-let cameFrom={}, costSoFar={}, visited=new Set();
-let aOpen=new Set(), aClosed=new Set(), aPath=new Set();
-let timer=null, steps=0;
-let pq=null, bfsQ=[];
-
-// ═══════════════════════════════════════════════════════
-// COLORS
-// ═══════════════════════════════════════════════════════
-const CC={
-  bg:'#0c0e14', cell:'#181c26', wall:'#3d424f',
-  start:'#44c472', end:'#e8564a',
-  forest:'#2d5a3a', water:'#1a3a5c',
-  open:'rgba(77,157,224,.4)', closed:'rgba(155,109,224,.28)',
-  path:'#e8b84a', pathG:'rgba(232,184,74,.2)',
-  arrw:'#0c0e14', ftxt:'rgba(255,255,255,.35)',
+const COST_MAP={[E]:1,[ST]:1,[EN]:1,[FR]:5,[WA]:10};
+const AN={bfs:'BFS',dijkstra:'Dijkstra',greedy:'Greedy BFS',astar:'A*'};
+const AD={
+  bfs:'<strong>BFS</strong> — FIFO queue, uniform cost. Ignores terrain weights. <span class="tag tag-b">OPTIMAL (uniform)</span>',
+  dijkstra:'<strong>Dijkstra</strong> — cheapest-total-cost first. Respects weights. Priority=g. <span class="tag tag-d">OPTIMAL</span>',
+  greedy:'<strong>Greedy BFS</strong> — closest-to-goal first. Priority=h. Fast but suboptimal. <span class="tag tag-g">FAST · NOT OPTIMAL</span>',
+  astar:'<strong>A*</strong> — combines g+h. Optimal with admissible heuristic. <span class="tag tag-a">OPTIMAL + FAST</span>',
 };
+const CC={bg:'#0c0e14',cell:'#181c26',wall:'#3d424f',start:'#44c472',end:'#e8564a',forest:'#2d5a3a',water:'#1a3a5c',open:'rgba(77,157,224,.4)',closed:'rgba(155,109,224,.28)',path:'#e8b84a',pathG:'rgba(232,184,74,.2)',arrw:'#0c0e14',ftxt:'rgba(255,255,255,.35)'};
 
-// ═══════════════════════════════════════════════════════
-// DRAW
-// ═══════════════════════════════════════════════════════
-function xy(c,r){return[G+c*(SZ+G),G+r*(SZ+G)];}
+/* ═══════════ GRID STATE ═══════════ */
+let grid, customW, hasCustom=false, cwMin=1, cwMax=1;
+let sp, ep;
+
+function initGrid(){
+  grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
+  customW=Array.from({length:ROWS},()=>new Float32Array(COLS));
+  hasCustom=false; cwMin=1; cwMax=1;
+  sp={r:Math.floor(ROWS/2),c:4};
+  ep={r:Math.floor(ROWS/2),c:COLS-5};
+  if(sp.c>=COLS) sp.c=0; if(ep.c>=COLS) ep.c=COLS-1;
+  if(sp.r>=ROWS) sp.r=0; if(ep.r>=ROWS) ep.r=ROWS-1;
+  grid[sp.r][sp.c]=ST; grid[ep.r][ep.c]=EN;
+}
+initGrid();
+
+let tool='wall',earlyExit=true,allowDiag=true,showCost=true;
+let drawing=false,timer=null,compareMode=false,explainOpen=false,exTab='L';
+let SZL=22,SZR=22,running=false;
+
 function k(r,c){return r+','+c;}
 function fk(s){return s.split(',').map(Number);}
 
-function draw(){
-  cx.fillStyle=CC.bg; cx.fillRect(0,0,cv.width,cv.height);
+function getCost(r,c){
+  const v=grid[r][c];
+  if(v===WL) return Infinity;
+  if(v===FR) return 5;
+  if(v===WA) return 10;
+  if(hasCustom && customW[r][c]>0) return customW[r][c];
+  return COST_MAP[v]||1;
+}
 
-  // Adaptive font sizes based on cell size
-  const iconSize = Math.max(6, Math.round(SZ * 0.42)) + 'px';
-  const costSize = Math.max(5, Math.round(SZ * 0.32)) + 'px';
-  const arrowSize = Math.max(6, Math.round(SZ * 0.42)) + 'px';
-  const labelSize = Math.max(7, Math.round(SZ * 0.48)) + 'px';
-  const cornerR = Math.max(1, Math.round(SZ * 0.14));
+function terrName(r,c){
+  const v=grid[r][c];
+  if(v===FR) return 'Forest';
+  if(v===WA) return 'Water';
+  if(v===WL) return 'Wall';
+  if(hasCustom && customW[r][c]>1) return 'W:'+customW[r][c].toFixed(1);
+  return 'Empty';
+}
 
+/* ═══════════ CUSTOM WEIGHT COLORING ═══════════ */
+function weightColor(w){
+  // Normalize w between cwMin and cwMax, map to a green→yellow→red gradient
+  if(cwMax<=cwMin) return CC.cell;
+  let t=(w-cwMin)/(cwMax-cwMin); // 0..1
+  t=Math.max(0,Math.min(1,t));
+  // 5-stop gradient: dark green → green → yellow → orange → red
+  const stops=[
+    {t:0,   r:42,  g:110, b:63},
+    {t:.25, r:74,  g:138, b:48},
+    {t:.5,  r:126, g:168, b:37},
+    {t:.7,  r:184, g:168, b:48},
+    {t:.85, r:212, g:148, b:58},
+    {t:1,   r:196, g:64,  b:64},
+  ];
+  let s0=stops[0], s1=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){
+    if(t>=stops[i].t && t<=stops[i+1].t){ s0=stops[i]; s1=stops[i+1]; break; }
+  }
+  const lt=(t-s0.t)/(s1.t-s0.t||1);
+  const rr=Math.round(s0.r+(s1.r-s0.r)*lt);
+  const gg=Math.round(s0.g+(s1.g-s0.g)*lt);
+  const bb=Math.round(s0.b+(s1.b-s0.b)*lt);
+  return 'rgb('+rr+','+gg+','+bb+')';
+}
+function weightColorAlpha(w,a){
+  if(cwMax<=cwMin) return CC.cell;
+  let t=Math.max(0,Math.min(1,(w-cwMin)/(cwMax-cwMin)));
+  const stops=[
+    {t:0,r:42,g:110,b:63},{t:.25,r:74,g:138,b:48},{t:.5,r:126,g:168,b:37},
+    {t:.7,r:184,g:168,b:48},{t:.85,r:212,g:148,b:58},{t:1,r:196,g:64,b:64},
+  ];
+  let s0=stops[0],s1=stops[stops.length-1];
+  for(let i=0;i<stops.length-1;i++){if(t>=stops[i].t&&t<=stops[i+1].t){s0=stops[i];s1=stops[i+1];break;}}
+  const lt=(t-s0.t)/(s1.t-s0.t||1);
+  const rr=Math.round(s0.r+(s1.r-s0.r)*lt);
+  const gg=Math.round(s0.g+(s1.g-s0.g)*lt);
+  const bb=Math.round(s0.b+(s1.b-s0.b)*lt);
+  return 'rgba('+rr+','+gg+','+bb+','+a+')';
+}
+
+function recalcCWRange(){
+  cwMin=Infinity; cwMax=-Infinity; hasCustom=false;
   for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
-    const[x,y]=xy(c,r); const K=k(r,c); const v=grid[r][c];
-    let col=CC.cell;
-    if(v===WL) col=CC.wall;
-    else if(v===FR) col=CC.forest;
-    else if(v===WA) col=CC.water;
-
-    if(aPath.has(K)&&v!==ST&&v!==EN){
-      cx.fillStyle=CC.pathG;
-      cx.beginPath(); cx.roundRect(x-2,y-2,SZ+4,SZ+4,cornerR+1); cx.fill();
-      col=CC.path;
-    } else if(aOpen.has(K)&&v!==ST&&v!==EN&&v!==WL){
-      col = v===FR?'rgba(60,140,180,.4)':v===WA?'rgba(60,130,200,.45)':CC.open;
-    } else if(aClosed.has(K)&&v!==ST&&v!==EN&&v!==WL){
-      col = v===FR?'rgba(105,80,180,.35)':v===WA?'rgba(100,75,185,.35)':CC.closed;
-    }
-    if(v===ST) col=CC.start;
-    if(v===EN) col=CC.end;
-
-    cx.fillStyle=col;
-    cx.beginPath(); cx.roundRect(x,y,SZ,SZ,cornerR); cx.fill();
-
-    // terrain icons (only if not path)
-    if(v===FR&&!aPath.has(K)){
-      cx.fillStyle='rgba(80,180,100,.22)';
-      cx.font=iconSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
-      cx.fillText('⚘',x+SZ/2,y+SZ/2);
-    }
-    if(v===WA&&!aPath.has(K)){
-      cx.fillStyle='rgba(80,160,220,.22)';
-      cx.font=iconSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
-      cx.fillText('〜',x+SZ/2,y+SZ/2);
-    }
-
-    // cost text
-    if(showCost&&(aOpen.has(K)||aClosed.has(K))&&v!==ST&&v!==EN&&v!==WL){
-      const g=costSoFar[K];
-      if(g!==undefined){
-        cx.fillStyle=CC.ftxt;
-        cx.font=costSize+' IBM Plex Mono,monospace';
-        cx.textAlign='center'; cx.textBaseline='middle';
-        cx.fillText(g<1000?Math.round(g):'++',x+SZ/2,y+SZ/2);
-      }
-    }
-
-    // path arrows
-    if(aPath.has(K)&&v!==ST&&v!==EN&&cameFrom[K]){
-      const[fr,fc]=fk(cameFrom[K]);
-      const dr=r-fr,dc=c-fc;
-      const A={'-1,0':'↑','1,0':'↓','0,-1':'←','0,1':'→',
-        '-1,-1':'↖','-1,1':'↗','1,-1':'↙','1,1':'↘'};
-      cx.fillStyle=CC.arrw;
-      cx.font='bold '+arrowSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
-      cx.fillText(A[dr+','+dc]||'·',x+SZ/2,y+SZ/2);
-    }
-
-    // S / E
-    if(v===ST||v===EN){
-      cx.fillStyle='#fff';
-      cx.font='bold '+labelSize+' DM Sans'; cx.textAlign='center'; cx.textBaseline='middle';
-      cx.fillText(v===ST?'S':'E',x+SZ/2,y+SZ/2);
+    const w=customW[r][c];
+    if(w>0 && grid[r][c]!==WL && grid[r][c]!==FR && grid[r][c]!==WA && grid[r][c]!==ST && grid[r][c]!==EN){
+      if(w>1) hasCustom=true;
+      if(w<cwMin) cwMin=w;
+      if(w>cwMax) cwMax=w;
     }
   }
+  if(!hasCustom){cwMin=1;cwMax=1;}
+  document.getElementById('legendCW').classList.toggle('visible',hasCustom);
 }
 
-function resizeCanvas() {
-  const mainEl = document.querySelector('.main');
-  const availableWidth = mainEl.clientWidth - 12;  // 6px padding each side
-  const availableHeight = mainEl.clientHeight - 12;
-
-  // Calculate cell size to fit both dimensions, maintaining aspect ratio
-  const maxCellW = Math.floor((availableWidth - G) / COLS) - G;
-  const maxCellH = Math.floor((availableHeight - G) / ROWS) - G;
-
-  SZ = Math.max(6, Math.min(maxCellW, maxCellH));
-
-  TW = COLS * (SZ + G) + G;
-  TH = ROWS * (SZ + G) + G;
-
-  // Use devicePixelRatio for crisp rendering on HiDPI screens
-  const dpr = window.devicePixelRatio || 1;
-  cv.width = TW * dpr;
-  cv.height = TH * dpr;
-  cv.style.width = TW + 'px';
-  cv.style.height = TH + 'px';
-  cx.setTransform(dpr, 0, 0, dpr, 0, 0);
-
-  gw.style.width = TW + 'px';
-  gw.style.height = TH + 'px';
-
-  draw();
+/* ═══════════ PATHFINDING ═══════════ */
+function heur(r1,c1,r2,c2){
+  if(allowDiag){const dr=Math.abs(r1-r2),dc=Math.abs(c1-c2);return Math.max(dr,dc)+(Math.SQRT2-1)*Math.min(dr,dc);}
+  return Math.abs(r1-r2)+Math.abs(c1-c2);
+}
+function nbs(r,c){
+  const res=[],dirs=[[0,1],[0,-1],[1,0],[-1,0]];
+  if(allowDiag) dirs.push([-1,-1],[-1,1],[1,-1],[1,1]);
+  for(const[dr,dc] of dirs){
+    const nr=r+dr,nc=c+dc;
+    if(nr<0||nr>=ROWS||nc<0||nc>=COLS||grid[nr][nc]===WL) continue;
+    if(dr!==0&&dc!==0&&(grid[r+dr][c]===WL||grid[r][c+dc]===WL)) continue;
+    const mc=getCost(nr,nc);
+    const d=(dr!==0&&dc!==0)?Math.SQRT2:1;
+    res.push({r:nr,c:nc,cost:d*mc});
+  }
+  return res;
 }
 
-// ═══════════════════════════════════════════════════════
-// PRIORITY QUEUE
-// ═══════════════════════════════════════════════════════
 class PQ{
   constructor(){this.d=[];}
   get length(){return this.d.length;}
@@ -432,315 +421,408 @@ class PQ{
   _d(i){const n=this.d.length;while(true){let s=i,l=2*i+1,r=2*i+2;if(l<n&&this.d[l].p<this.d[s].p)s=l;if(r<n&&this.d[r].p<this.d[s].p)s=r;if(s===i)break;[this.d[s],this.d[i]]=[this.d[i],this.d[s]];i=s;}}
 }
 
-// ═══════════════════════════════════════════════════════
-// PATHFINDING
-// ═══════════════════════════════════════════════════════
-function heur(r1,c1,r2,c2){
-  if(allowDiag){const dr=Math.abs(r1-r2),dc=Math.abs(c1-c2);return Math.max(dr,dc)+(Math.SQRT2-1)*Math.min(dr,dc);}
-  return Math.abs(r1-r2)+Math.abs(c1-c2);
-}
-
-function nbs(r,c){
-  const res=[];
-  const dirs=[[0,1],[0,-1],[1,0],[-1,0]];
-  if(allowDiag) dirs.push([-1,-1],[-1,1],[1,-1],[1,1]);
-  for(const[dr,dc] of dirs){
-    const nr=r+dr,nc=c+dc;
-    if(nr<0||nr>=ROWS||nc<0||nc>=COLS) continue;
-    if(grid[nr][nc]===WL) continue;
-    if(dr!==0&&dc!==0){if(grid[r+dr][c]===WL||grid[r][c+dc]===WL) continue;}
-    const mc=COST[grid[nr][nc]]||1;
-    const d=(dr!==0&&dc!==0)?Math.SQRT2:1;
-    res.push({r:nr,c:nc,cost:d*mc});
+class SearchState{
+  constructor(algo){this.algo=algo;this.reset();}
+  reset(){this.cameFrom={};this.costSoFar={};this.visited=new Set();this.open=new Set();this.closed=new Set();this.path=new Set();this.pq=null;this.bfsQ=[];this.steps=0;this.done=false;this.failed=false;this.pathLen=0;this.pathCost=null;this.lastNode=null;this.lastNodeG=null;this.lastNodeH=null;this.lastNodeF=null;this.lastNbEvals=[];this.queueSize=0;this.queuePeek=[];this.stepDesc='';}
+  init(){
+    this.reset();if(!sp||!ep)return false;
+    const sk=k(sp.r,sp.c);this.cameFrom[sk]=null;this.costSoFar[sk]=0;
+    if(this.algo==='bfs'){this.bfsQ=[sk];}
+    else{this.pq=new PQ();const p=this.algo==='greedy'?heur(sp.r,sp.c,ep.r,ep.c):0;this.pq.push(sk,p);}
+    this.stepDesc='Search initialized. Start added to frontier.';this._updQ();return true;
   }
-  return res;
-}
-
-function initSearch(){
-  clrViz();
-  if(!sp||!ep) return false;
-  const sk=k(sp.r,sp.c);
-  cameFrom[sk]=null; costSoFar[sk]=0; steps=0;
-  if(algo==='bfs'){bfsQ=[sk];}
-  else{pq=new PQ();const p=algo==='greedy'?heur(sp.r,sp.c,ep.r,ep.c):0;pq.push(sk,p);}
-  running=true;
-  document.getElementById('btnR').classList.add('running');
-  document.getElementById('btnR').textContent='⏸ Pause';
-  return true;
-}
-
-function step1(){
-  let cur;
-  if(algo==='bfs'){
-    if(bfsQ.length===0) return 'fail';
-    cur=bfsQ.shift();
-  } else {
-    if(!pq||pq.length===0) return 'fail';
-    cur=pq.pop().it;
-  }
-  const[cr,cc]=fk(cur);
-
-  if(visited.has(cur)&&algo!=='bfs') return 'skip';
-  visited.add(cur);
-  aOpen.delete(cur);
-  if(grid[cr][cc]!==ST) aClosed.add(cur);
-  steps++;
-
-  // Early exit: reconstruct as soon as we pop the goal
-  if(earlyExit&&cr===ep.r&&cc===ep.c){reconPath(cur);return 'done';}
-
-  for(const nb of nbs(cr,cc)){
-    const nk=k(nb.r,nb.c);
-
-    if(algo==='bfs'){
-      if(!(nk in cameFrom)){
-        cameFrom[nk]=cur; costSoFar[nk]=(costSoFar[cur]||0)+1;
-        bfsQ.push(nk);
-        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
-        if(earlyExit&&nb.r===ep.r&&nb.c===ep.c){reconPath(nk);return 'done';}
+  step(){
+    if(this.done||this.failed)return this.done?'done':'fail';
+    let cur;
+    if(this.algo==='bfs'){if(this.bfsQ.length===0){this._exhaust();return this.done?'done':'fail';}cur=this.bfsQ.shift();}
+    else{if(!this.pq||this.pq.length===0){this._exhaust();return this.done?'done':'fail';}cur=this.pq.pop().it;}
+    const[cr,cc]=fk(cur);
+    if(this.visited.has(cur)&&this.algo!=='bfs')return'skip';
+    this.visited.add(cur);this.open.delete(cur);if(grid[cr][cc]!==ST)this.closed.add(cur);this.steps++;
+    const g=this.costSoFar[cur]||0,h=ep?heur(cr,cc,ep.r,ep.c):0;
+    this.lastNode=[cr,cc];this.lastNodeG=g;this.lastNodeH=h;this.lastNodeF=g+h;this.lastNbEvals=[];
+    if(earlyExit&&cr===ep.r&&cc===ep.c){this.reconPath(cur);this.stepDesc='Goal reached! Path reconstructed.';return'done';}
+    for(const nb of nbs(cr,cc)){
+      const nk=k(nb.r,nb.c);
+      const ev={r:nb.r,c:nb.c,terrain:terrName(nb.r,nb.c),cost:nb.cost,action:'',newG:0};
+      if(this.algo==='bfs'){
+        if(!(nk in this.cameFrom)){this.cameFrom[nk]=cur;this.costSoFar[nk]=(this.costSoFar[cur]||0)+1;this.bfsQ.push(nk);if(grid[nb.r][nb.c]!==EN)this.open.add(nk);ev.action='added';ev.newG=this.costSoFar[nk];
+          if(earlyExit&&nb.r===ep.r&&nb.c===ep.c){this.lastNbEvals.push(ev);this.reconPath(nk);this.stepDesc='Goal found as neighbor!';return'done';}
+        }else{ev.action='skipped';ev.newG=this.costSoFar[nk]||0;}
+      }else if(this.algo==='greedy'){
+        if(!(nk in this.cameFrom)&&!this.visited.has(nk)){this.cameFrom[nk]=cur;this.costSoFar[nk]=(this.costSoFar[cur]||0)+nb.cost;this.pq.push(nk,heur(nb.r,nb.c,ep.r,ep.c));if(grid[nb.r][nb.c]!==EN)this.open.add(nk);ev.action='added';ev.newG=this.costSoFar[nk];}
+        else{ev.action='skipped';ev.newG=this.costSoFar[nk]||0;}
+      }else{
+        const nc2=(this.costSoFar[cur]||0)+nb.cost;ev.newG=nc2;
+        if(!(nk in this.costSoFar)||nc2<this.costSoFar[nk]){const wasNew=!(nk in this.costSoFar);this.costSoFar[nk]=nc2;this.cameFrom[nk]=cur;let pri=nc2;if(this.algo==='astar')pri+=heur(nb.r,nb.c,ep.r,ep.c);this.pq.push(nk,pri);if(grid[nb.r][nb.c]!==EN)this.open.add(nk);ev.action=wasNew?'added':'updated';}
+        else{ev.action='skipped';}
       }
-    } else if(algo==='greedy'){
-      if(!(nk in cameFrom)&&!visited.has(nk)){
-        cameFrom[nk]=cur; costSoFar[nk]=(costSoFar[cur]||0)+nb.cost;
-        pq.push(nk,heur(nb.r,nb.c,ep.r,ep.c));
-        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
-      }
-    } else {
-      const nc2=(costSoFar[cur]||0)+nb.cost;
-      if(!(nk in costSoFar)||nc2<costSoFar[nk]){
-        costSoFar[nk]=nc2; cameFrom[nk]=cur;
-        let pri=nc2;
-        if(algo==='astar') pri+=heur(nb.r,nb.c,ep.r,ep.c);
-        pq.push(nk,pri);
-        if(grid[nb.r][nb.c]!==EN) aOpen.add(nk);
-      }
+      this.lastNbEvals.push(ev);
     }
+    this.stepDesc='Step '+this.steps+': Expanded ['+cr+','+cc+'] (g='+g.toFixed(1)+')';this._updQ();return'running';
   }
-  updS(); draw(); return 'running';
+  _exhaust(){const ek=k(ep.r,ep.c);if(!earlyExit&&ek in this.cameFrom){this.reconPath(ek);this.stepDesc='Full exploration done — path found.';}else{this.failed=true;this.stepDesc='No path to goal.';}}
+  reconPath(gk){let n=gk,pl=0;while(n){this.path.add(n);pl++;n=this.cameFrom[n];}this.pathLen=pl;this.pathCost=this.costSoFar[k(ep.r,ep.c)];this.done=true;}
+  _updQ(){if(this.algo==='bfs'){this.queueSize=this.bfsQ.length;this.queuePeek=this.bfsQ.slice(0,5).map(kk=>{const[r,c]=fk(kk);return{r,c,pri:this.costSoFar[kk]||0};});}else if(this.pq){this.queueSize=this.pq.length;const tmp=[...this.pq.d].sort((a,b)=>a.p-b.p).slice(0,5);this.queuePeek=tmp.map(x=>{const[r,c]=fk(x.it);return{r,c,pri:x.p};});}}
+  get isActive(){return!this.done&&!this.failed;}
 }
 
-function reconPath(gk){
-  let n=gk,pl=0;
-  while(n){aPath.add(n);pl++;n=cameFrom[n];}
-  const tc=costSoFar[k(ep.r,ep.c)];
-  stopRun(); updS(pl,tc); draw();
+let stL=new SearchState('astar'), stR=new SearchState('bfs');
+
+/* ═══════════ DRAWING ═══════════ */
+function xy(c,r,sz){return[GAP+c*(sz+GAP),GAP+r*(sz+GAP)];}
+function drawGrid(cvEl,gwEl,st,sz){
+  const cx=cvEl.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const tw=COLS*(sz+GAP)+GAP,th=ROWS*(sz+GAP)+GAP;
+  cvEl.width=tw*dpr;cvEl.height=th*dpr;
+  cvEl.style.width=tw+'px';cvEl.style.height=th+'px';
+  gwEl.style.width=tw+'px';gwEl.style.height=th+'px';
+  cx.setTransform(dpr,0,0,dpr,0,0);
+  cx.fillStyle=CC.bg;cx.fillRect(0,0,tw,th);
+  const iSz=Math.max(6,Math.round(sz*.42))+'px';
+  const cSz=Math.max(5,Math.round(sz*.32))+'px';
+  const aSz=Math.max(6,Math.round(sz*.42))+'px';
+  const lSz=Math.max(7,Math.round(sz*.48))+'px';
+  const cr=Math.max(1,Math.round(sz*.14));
+
+  for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){
+    const[x,y]=xy(c,r,sz);const K=k(r,c);const v=grid[r][c];
+    let col=CC.cell;
+    if(v===WL) col=CC.wall;
+    else if(v===FR) col=CC.forest;
+    else if(v===WA) col=CC.water;
+    else if(hasCustom && customW[r][c]>0 && v!==ST && v!==EN) col=weightColor(customW[r][c]);
+
+    // Search overlays
+    if(st.path.has(K)&&v!==ST&&v!==EN){cx.fillStyle=CC.pathG;cx.beginPath();cx.roundRect(x-2,y-2,sz+4,sz+4,cr+1);cx.fill();col=CC.path;}
+    else if(st.open.has(K)&&v!==ST&&v!==EN&&v!==WL){
+      if(v===FR) col='rgba(60,140,180,.4)';
+      else if(v===WA) col='rgba(60,130,200,.45)';
+      else if(hasCustom&&customW[r][c]>1) col=weightColorAlpha(customW[r][c],.5);
+      else col=CC.open;
+    }
+    else if(st.closed.has(K)&&v!==ST&&v!==EN&&v!==WL){
+      if(v===FR) col='rgba(105,80,180,.35)';
+      else if(v===WA) col='rgba(100,75,185,.35)';
+      else if(hasCustom&&customW[r][c]>1) col=weightColorAlpha(customW[r][c],.35);
+      else col=CC.closed;
+    }
+    if(v===ST) col=CC.start;
+    if(v===EN) col=CC.end;
+
+    cx.fillStyle=col;cx.beginPath();cx.roundRect(x,y,sz,sz,cr);cx.fill();
+
+    if(v===FR&&!st.path.has(K)){cx.fillStyle='rgba(80,180,100,.22)';cx.font=iSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u2698',x+sz/2,y+sz/2);}
+    if(v===WA&&!st.path.has(K)){cx.fillStyle='rgba(80,160,220,.22)';cx.font=iSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u301C',x+sz/2,y+sz/2);}
+    if(showCost&&(st.open.has(K)||st.closed.has(K))&&v!==ST&&v!==EN&&v!==WL){const g2=st.costSoFar[K];if(g2!==undefined){cx.fillStyle=CC.ftxt;cx.font=cSz+' IBM Plex Mono,monospace';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(g2<1000?Math.round(g2):'++',x+sz/2,y+sz/2);}}
+    if(st.path.has(K)&&v!==ST&&v!==EN&&st.cameFrom[K]){const[fr,fc]=fk(st.cameFrom[K]);const dr2=r-fr,dc2=c-fc;const A={'-1,0':'\u2191','1,0':'\u2193','0,-1':'\u2190','0,1':'\u2192','-1,-1':'\u2196','-1,1':'\u2197','1,-1':'\u2199','1,1':'\u2198'};cx.fillStyle=CC.arrw;cx.font='bold '+aSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(A[dr2+','+dc2]||'\u00B7',x+sz/2,y+sz/2);}
+    if(v===ST||v===EN){cx.fillStyle='#fff';cx.font='bold '+lSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(v===ST?'S':'E',x+sz/2,y+sz/2);}
+  }
+}
+function draw(){
+  drawGrid(document.getElementById('cvL'),document.getElementById('gwL'),stL,SZL);
+  if(compareMode) drawGrid(document.getElementById('cvR'),document.getElementById('gwR'),stR,SZR);
 }
 
-// ═══════════════════════════════════════════════════════
-// CONTROLS
-// ═══════════════════════════════════════════════════════
+/* ═══════════ RESIZE ═══════════ */
+function resizeCanvas(){
+  const area=document.getElementById('gridArea');
+  const aw=area.clientWidth-12, ah=area.clientHeight-(compareMode?40:12);
+  const panels=compareMode?2:1, gapBtw=compareMode?8:0;
+  const perPanel=(aw-gapBtw)/panels;
+  const maxW=Math.floor((perPanel-GAP)/COLS)-GAP;
+  const maxH=Math.floor((ah-GAP)/ROWS)-GAP;
+  const sz=Math.max(4,Math.min(maxW,maxH));
+  SZL=sz;if(compareMode)SZR=sz; draw();
+}
+let resizeTimer;
+window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(resizeCanvas,60);});
+
+/* ═══════════ CONTROLS ═══════════ */
 function getDelay(){const v=+document.getElementById('spd').value;return Math.max(2,180-v*1.75);}
-
 function doRun(){
   if(timer){stopRun();return;}
-  if(!running){if(!initSearch())return;}
-  running=true;
-  document.getElementById('btnR').classList.add('running');
-  document.getElementById('btnR').textContent='⏸ Pause';
+  if(!running){
+    stL.algo=compareMode?document.getElementById('algoL').value:document.getElementById('algoSel').value;
+    if(compareMode)stR.algo=document.getElementById('algoR').value;
+    if(!stL.init())return;if(compareMode)stR.init();running=true;
+  }
+  document.getElementById('btnR').classList.add('running');document.getElementById('btnR').textContent='\u23F8 Pause';
   function tick(){
     const sp2=+document.getElementById('spd').value;
     const batch=sp2>85?8:sp2>65?4:sp2>40?2:1;
     for(let i=0;i<batch;i++){
-      let r2;
-      do { r2=step1(); } while(r2==='skip');
-      if(r2!=='running'){
-        if(r2==='fail'){
-          // ── FIX: when early exit is OFF and the queue empties,
-          //    try to reconstruct the path to the end node.
-          const ek=k(ep.r,ep.c);
-          if(!earlyExit && ek in cameFrom){
-            reconPath(ek);
-          } else {
-            stopRun(); updS(0,null,true); draw();
-          }
-        }
-        return;
-      }
+      let rL='done',rR='done';
+      if(stL.isActive){do{rL=stL.step();}while(rL==='skip');}
+      if(compareMode&&stR.isActive){do{rR=stR.step();}while(rR==='skip');}
+      if(!stL.isActive&&(!compareMode||!stR.isActive)){draw();updStats();updateExplain();stopRun();return;}
     }
-    draw(); timer=setTimeout(tick,getDelay());
+    draw();updStats();updateExplain();timer=setTimeout(tick,getDelay());
   }
   tick();
 }
-
 function doStep(){
-  if(!running){if(!initSearch())return;}
-  stopTimer();
-  let r2; do{r2=step1();}while(r2==='skip');
-  if(r2==='fail'){
-    // ── FIX: same exhaustive-search path reconstruction for stepping
-    const ek=k(ep.r,ep.c);
-    if(!earlyExit && ek in cameFrom){
-      reconPath(ek);
-    } else {
-      stopRun(); updS(0,null,true);
-    }
+  if(!running){
+    stL.algo=compareMode?document.getElementById('algoL').value:document.getElementById('algoSel').value;
+    if(compareMode)stR.algo=document.getElementById('algoR').value;
+    if(!stL.init())return;if(compareMode)stR.init();running=true;
   }
-  draw();
+  stopTimer();
+  if(stL.isActive){let r;do{r=stL.step();}while(r==='skip');}
+  if(compareMode&&stR.isActive){let r;do{r=stR.step();}while(r==='skip');}
+  if(!stL.isActive&&(!compareMode||!stR.isActive))stopRun();
+  draw();updStats();updateExplain();
 }
-
-function stopRun(){stopTimer();running=false;document.getElementById('btnR').classList.remove('running');document.getElementById('btnR').textContent='▶ Run';}
+function stopRun(){stopTimer();running=false;document.getElementById('btnR').classList.remove('running');document.getElementById('btnR').textContent='\u25B6 Run';}
 function stopTimer(){if(timer){clearTimeout(timer);timer=null;}}
+function clrAll(){stL.reset();stR.reset();running=false;}
+function doClear(){stopRun();clrAll();updStats();updateExplain();draw();}
+function doReset(){stopRun();clrAll();COLS=40;ROWS=25;initGrid();recalcCWRange();updStats();updateExplain();setTimeout(resizeCanvas,10);}
 
-function clrViz(){aOpen=new Set();aClosed=new Set();aPath=new Set();cameFrom={};costSoFar={};visited=new Set();pq=null;bfsQ=[];steps=0;}
-function doClear(){stopRun();clrViz();updS();draw();}
-function doReset(){
-  stopRun();
-  grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
-  sp={r:Math.floor(ROWS/2),c:4};ep={r:Math.floor(ROWS/2),c:COLS-5};
-  grid[sp.r][sp.c]=ST;grid[ep.r][ep.c]=EN;
-  clrViz();updS();draw();
+function updStats(){
+  if(!compareMode){document.getElementById('sA').textContent=AN[stL.algo]||stL.algo;document.getElementById('sV').textContent=stL.steps;document.getElementById('sP').textContent=stL.failed?'None':(stL.pathLen||'\u2014');document.getElementById('sC').textContent=stL.failed?'\u221E':(stL.pathCost!=null?stL.pathCost.toFixed(1):'\u2014');}
+  else{document.getElementById('panelLHdr').textContent=AN[stL.algo];document.getElementById('sVL').textContent=stL.steps;document.getElementById('sPL').textContent=stL.failed?'None':(stL.pathLen||'\u2014');document.getElementById('sCL').textContent=stL.failed?'\u221E':(stL.pathCost!=null?stL.pathCost.toFixed(1):'\u2014');document.getElementById('panelRHdr').textContent=AN[stR.algo];document.getElementById('sVR').textContent=stR.steps;document.getElementById('sPR').textContent=stR.failed?'None':(stR.pathLen||'\u2014');document.getElementById('sCR').textContent=stR.failed?'\u221E':(stR.pathCost!=null?stR.pathCost.toFixed(1):'\u2014');}
 }
-
-// ═══════════════════════════════════════════════════════
-// STATS / INFO
-// ═══════════════════════════════════════════════════════
-const AN={bfs:'BFS',dijkstra:'Dijkstra',greedy:'Greedy BFS',astar:'A*'};
-const AD={
-  bfs:'<strong>Breadth-First Search</strong> — explores equally in all directions with a FIFO queue. All edges cost 1; ignores terrain weights. <span class="tag tag-b">OPTIMAL (uniform cost)</span>',
-  dijkstra:'<strong>Dijkstra\'s Algorithm</strong> — expands cheapest-total-cost node first. Respects terrain weights. Priority = g (cost from start). <span class="tag tag-d">OPTIMAL</span>',
-  greedy:'<strong>Greedy Best-First Search</strong> — expands node estimated closest to goal. Priority = h (heuristic). Fast but can find suboptimal paths. <span class="tag tag-g">FAST · NOT OPTIMAL</span>',
-  astar:'<strong>A* Search</strong> — combines actual cost g with heuristic h. Priority = f = g + h. Optimal if heuristic is admissible. <span class="tag tag-a">OPTIMAL + FAST</span>',
-};
-
-function updS(pl,tc,fail){
-  document.getElementById('sA').textContent=AN[algo];
-  document.getElementById('sV').textContent=steps;
-  document.getElementById('sP').textContent=fail?'None':(pl||'—');
-  document.getElementById('sC').textContent=fail?'∞':(tc!=null?tc.toFixed(1):'—');
-}
-
-function onAlgo(){algo=document.getElementById('algoSel').value;document.getElementById('infoBar').innerHTML=AD[algo];doClear();}
-
+function onAlgo(){stL.algo=document.getElementById('algoSel').value;document.getElementById('infoBar').innerHTML=AD[stL.algo];doClear();}
+function onAlgoCompare(){stL.algo=document.getElementById('algoL').value;stR.algo=document.getElementById('algoR').value;document.getElementById('infoBar').innerHTML=AD[stL.algo]+' <b>vs</b> '+AD[stR.algo];doClear();}
 function tglEE(){earlyExit=!earlyExit;document.getElementById('tEE').classList.toggle('on',earlyExit);doClear();}
 function tglDG(){allowDiag=!allowDiag;document.getElementById('tDG').classList.toggle('on',allowDiag);doClear();}
 function tglSC(){showCost=!showCost;document.getElementById('tSC').classList.toggle('on',showCost);draw();}
 
-// ═══════════════════════════════════════════════════════
-// TOOLS / INTERACTION
-// ═══════════════════════════════════════════════════════
-function setT(t){
-  tool=t;
-  document.querySelectorAll('#tg .b').forEach(b=>b.classList.toggle('on',b.dataset.t===t));
+/* ═══════════ COMPARE ═══════════ */
+function toggleCompare(){
+  stopRun();clrAll();compareMode=!compareMode;
+  document.getElementById('btnCmp').classList.toggle('on',compareMode);
+  document.getElementById('panelR').style.display=compareMode?'':'none';
+  document.getElementById('panelLHdr').style.display=compareMode?'':'none';
+  document.getElementById('panelLStats').style.display=compareMode?'':'none';
+  document.getElementById('panelRStats').style.display=compareMode?'':'none';
+  document.getElementById('algoSel').style.display=compareMode?'none':'';
+  document.getElementById('compareSels').classList.toggle('visible',compareMode);
+  document.getElementById('singleStats').classList.toggle('visible',!compareMode);
+  document.getElementById('exTabs').style.display=compareMode?'':'none';
+  if(compareMode){stL.algo=document.getElementById('algoL').value;stR.algo=document.getElementById('algoR').value;document.getElementById('infoBar').innerHTML=AD[stL.algo]+' <b>vs</b> '+AD[stR.algo];}
+  else{document.getElementById('infoBar').innerHTML=AD[document.getElementById('algoSel').value];}
+  updStats();updateExplain();setTimeout(resizeCanvas,30);
 }
 
-function cell(e){
-  const r2=cv.getBoundingClientRect();
-  const sx=(cv.width/(window.devicePixelRatio||1))/r2.width;
-  const sy=(cv.height/(window.devicePixelRatio||1))/r2.height;
+/* ═══════════ EXPLAIN ═══════════ */
+function toggleExplain(){explainOpen=!explainOpen;document.getElementById('btnExp').classList.toggle('on',explainOpen);document.getElementById('explainPanel').classList.toggle('open',explainOpen);setTimeout(resizeCanvas,220);}
+function setExTab(t){exTab=t;document.getElementById('exTabL').classList.toggle('on',t==='L');document.getElementById('exTabR').classList.toggle('on',t==='R');updateExplain();}
+function updateExplain(){
+  if(!explainOpen)return;
+  const st=(compareMode&&exTab==='R')?stR:stL;
+  const el=document.getElementById('exContent');
+  if(st.steps===0&&!st.done&&!st.failed){el.innerHTML='<div class="ex-idle">Press <b>\u25B6 Run</b> or <b>\u23ED Step</b> to begin.<br>The inspector shows each step in detail.</div>';return;}
+  let h='<div class="ex-section"><div class="ex-label">Status</div><div class="ex-card">'+st.stepDesc+'</div></div>';
+  if(st.lastNode){const[r,c]=st.lastNode;h+='<div class="ex-section"><div class="ex-label">Last Expanded</div><div class="ex-card"><b>['+r+','+c+']</b> '+terrName(r,c)+'<br>g=<span class="val-g">'+st.lastNodeG.toFixed(1)+'</span>';if(st.algo!=='bfs')h+=' h=<span class="val-h">'+st.lastNodeH.toFixed(1)+'</span>';if(st.algo==='astar')h+=' f=<span class="val-f">'+st.lastNodeF.toFixed(1)+'</span>';h+='</div></div>';}
+  if(st.lastNbEvals.length>0){h+='<div class="ex-section"><div class="ex-label">Neighbors ('+st.lastNbEvals.length+')</div><div class="ex-nb">';for(const ev of st.lastNbEvals){const ac=ev.action==='added'?'nb-added':ev.action==='updated'?'nb-updated':'nb-skipped';h+='<div class="ex-nb-row"><span class="nb-coord">['+ev.r+','+ev.c+']</span><span style="color:var(--text-dim)">'+(ev.terrain==='Empty'?'':ev.terrain)+'</span><span style="color:var(--text-dim)">g='+ev.newG.toFixed(1)+'</span><span class="nb-action '+ac+'">'+ev.action+'</span></div>';}h+='</div></div>';}
+  if(!st.done&&!st.failed){h+='<div class="ex-section"><div class="ex-label">Frontier ('+st.queueSize+')</div>';if(st.queuePeek.length>0){h+='<div class="ex-queue-list">';st.queuePeek.forEach((q,i)=>{h+='<div class="ex-q-item"><span class="q-rank">'+(i+1)+'.</span><span class="q-coord">['+q.r+','+q.c+']</span><span class="q-pri">pri='+q.pri.toFixed(1)+'</span></div>';});h+='</div>';}else h+='<div class="ex-card" style="text-align:center;color:var(--text-dim)">Empty</div>';h+='</div>';}
+  if(st.done){h+='<div class="ex-section"><div class="ex-label">Result</div><div class="ex-card">Path: <b>'+st.pathLen+'</b><br>Cost: <span class="val-f">'+(st.pathCost!=null?st.pathCost.toFixed(1):'\u2014')+'</span><br>Visited: <span class="val-g">'+st.steps+'</span></div></div>';}
+  if(st.failed){h+='<div class="ex-section"><div class="ex-label">Result</div><div class="ex-card" style="color:var(--red)">No path after '+st.steps+' nodes.</div></div>';}
+  el.innerHTML=h;
+}
+
+/* ═══════════ TOOLS ═══════════ */
+function setT(t){tool=t;document.querySelectorAll('#tg .b').forEach(b=>b.classList.toggle('on',b.dataset.t===t));}
+function cellFromEvent(e,cvEl,sz){
+  const r2=cvEl.getBoundingClientRect();const dpr=window.devicePixelRatio||1;
+  const logW=cvEl.width/dpr,logH=cvEl.height/dpr;
+  const sx=logW/r2.width,sy=logH/r2.height;
   const mx=(e.clientX-r2.left)*sx,my=(e.clientY-r2.top)*sy;
-  const c2=Math.floor((mx-G)/(SZ+G)),r3=Math.floor((my-G)/(SZ+G));
-  if(r3>=0&&r3<ROWS&&c2>=0&&c2<COLS) return {r:r3,c:c2};
-  return null;
+  const c2=Math.floor((mx-GAP)/(sz+GAP)),r3=Math.floor((my-GAP)/(sz+GAP));
+  if(r3>=0&&r3<ROWS&&c2>=0&&c2<COLS)return{r:r3,c:c2};return null;
 }
-
 function applyT(r,c){
-  if(running) return;
-  clrViz(); updS();
+  if(running)return;clrAll();updStats();
   const v=grid[r][c];
   switch(tool){
-    case 'wall': if(v===E||v===FR||v===WA) grid[r][c]=WL; break;
-    case 'forest': if(v===E||v===WL||v===WA) grid[r][c]=FR; break;
-    case 'water': if(v===E||v===WL||v===FR) grid[r][c]=WA; break;
-    case 'erase': if(v===ST) sp=null; if(v===EN) ep=null; grid[r][c]=E; break;
-    case 'start': if(sp) grid[sp.r][sp.c]=E; grid[r][c]=ST; sp={r,c}; break;
-    case 'end': if(ep) grid[ep.r][ep.c]=E; grid[r][c]=EN; ep={r,c}; break;
+    case'wall':if(v!==ST&&v!==EN){grid[r][c]=WL;customW[r][c]=0;}break;
+    case'forest':if(v!==ST&&v!==EN){grid[r][c]=FR;customW[r][c]=0;}break;
+    case'water':if(v!==ST&&v!==EN){grid[r][c]=WA;customW[r][c]=0;}break;
+    case'erase':if(v===ST)sp=null;if(v===EN)ep=null;grid[r][c]=E;customW[r][c]=0;break;
+    case'start':if(sp)grid[sp.r][sp.c]=E;grid[r][c]=ST;sp={r,c};break;
+    case'end':if(ep)grid[ep.r][ep.c]=E;grid[r][c]=EN;ep={r,c};break;
   }
-  draw();
+  recalcCWRange();draw();
+}
+function setupCanvas(cvEl,gwEl,tipEl,szFn){
+  cvEl.addEventListener('mousedown',e=>{const c2=cellFromEvent(e,cvEl,szFn());if(c2){drawing=true;applyT(c2.r,c2.c);}});
+  cvEl.addEventListener('mousemove',e=>{
+    const sz=szFn();const c2=cellFromEvent(e,cvEl,sz);
+    if(c2){const st=cvEl.id==='cvR'?stR:stL;const K=k(c2.r,c2.c);
+      if(st.open.has(K)||st.closed.has(K)||st.path.has(K)){const g2=st.costSoFar[K];const h2=ep?heur(c2.r,c2.c,ep.r,ep.c):0;let ht='<b>['+c2.r+','+c2.c+']</b> '+terrName(c2.r,c2.c);ht+='<br>g='+(g2!=null?g2.toFixed(1):'?');ht+='<br>h='+h2.toFixed(1);ht+='<br>f='+(g2!=null?(g2+h2).toFixed(1):'?');tipEl.innerHTML=ht;tipEl.style.display='block';const wr=gwEl.getBoundingClientRect();tipEl.style.left=(e.clientX-wr.left+12)+'px';tipEl.style.top=(e.clientY-wr.top-8)+'px';}else{tipEl.style.display='none';}
+    }else{tipEl.style.display='none';}
+    if(!drawing)return;if(c2)applyT(c2.r,c2.c);
+  });
+  cvEl.addEventListener('mouseup',()=>drawing=false);
+  cvEl.addEventListener('mouseleave',()=>{drawing=false;tipEl.style.display='none';});
+  cvEl.addEventListener('touchstart',e=>{e.preventDefault();const t2=e.touches[0];const c2=cellFromEvent(t2,cvEl,szFn());if(c2){drawing=true;applyT(c2.r,c2.c);}},{passive:false});
+  cvEl.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const t2=e.touches[0];const c2=cellFromEvent(t2,cvEl,szFn());if(c2)applyT(c2.r,c2.c);},{passive:false});
+  cvEl.addEventListener('touchend',()=>drawing=false);
+}
+setupCanvas(document.getElementById('cvL'),document.getElementById('gwL'),document.getElementById('tipL'),()=>SZL);
+setupCanvas(document.getElementById('cvR'),document.getElementById('gwR'),document.getElementById('tipR'),()=>SZR);
+
+/* ═══════════ GENERATORS ═══════════ */
+function genMaze(){stopRun();clrAll();for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){grid[r][c]=WL;customW[r][c]=0;}hasCustom=false;const vs=new Set();function carve(r,c){vs.add(k(r,c));grid[r][c]=E;const ds=[[0,2],[0,-2],[2,0],[-2,0]].sort(()=>Math.random()-.5);for(const[dr,dc] of ds){const nr=r+dr,nc=c+dc;if(nr>0&&nr<ROWS-1&&nc>0&&nc<COLS-1&&!vs.has(k(nr,nc))){grid[r+dr/2][c+dc/2]=E;carve(nr,nc);}}}carve(1,1);sp={r:1,c:1};ep={r:ROWS-2,c:COLS-2};grid[1][1]=ST;grid[ROWS-2][COLS-2]=EN;recalcCWRange();updStats();updateExplain();draw();}
+function genRand(){stopRun();clrAll();for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){if(grid[r][c]===E){grid[r][c]=Math.random()<.25?WL:E;customW[r][c]=0;}}recalcCWRange();updStats();updateExplain();draw();}
+function genTerrain(){stopRun();clrAll();for(let r=0;r<ROWS;r++)for(let c=0;c<COLS;c++){if(grid[r][c]===ST||grid[r][c]===EN)continue;customW[r][c]=0;const n1=vn(c*.15,r*.15),n2=vn(c*.08+50,r*.08+50);if(n1>.72)grid[r][c]=WL;else if(n2>.55)grid[r][c]=WA;else if(n1>.32)grid[r][c]=FR;else grid[r][c]=E;}if(sp)grid[sp.r][sp.c]=ST;if(ep)grid[ep.r][ep.c]=EN;recalcCWRange();updStats();updateExplain();draw();}
+function vn(x,y){const ix=Math.floor(x),iy=Math.floor(y);const fx=x-ix,fy=y-iy;const sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);function h(a,b){let v=(a*374761393+b*668265263+1234567)&0x7fffffff;v=((v>>13)^v)*1274126177;return((v>>13)^v&0x7fffffff)/0x7fffffff;}const a=h(ix,iy)+sx*(h(ix+1,iy)-h(ix,iy));const b=h(ix,iy+1)+sx*(h(ix+1,iy+1)-h(ix,iy+1));return a+sy*(b-a);}
+
+/* ═══════════ FILE IMPORT ═══════════ */
+function showToast(msg,type){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+(type||'');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),3500);
+}
+function openInfoModal(){document.getElementById('infoModal').classList.add('open');}
+function closeInfoModal(){document.getElementById('infoModal').classList.remove('open');}
+document.getElementById('infoModal').addEventListener('click',e=>{if(e.target===document.getElementById('infoModal'))closeInfoModal();});
+
+function handleFileImport(ev){
+  const file=ev.target.files[0];
+  if(!file){return;}
+  const reader=new FileReader();
+  reader.onload=function(e2){
+    try{
+      const txt=e2.target.result;
+      let data;
+      if(file.name.endsWith('.json')){
+        data=parseJSON(txt);
+      } else {
+        data=parseTXT(txt);
+      }
+      applyImport(data);
+      showToast('Loaded '+data.rows+'×'+data.cols+' grid'+(data.hasCustom?' with custom weights':''),'ok');
+    }catch(err){
+      showToast('Import error: '+err.message,'err');
+    }
+    ev.target.value='';
+  };
+  reader.readAsText(file);
 }
 
-cv.addEventListener('mousedown',e=>{const c2=cell(e);if(c2){drawing=true;applyT(c2.r,c2.c);}});
-cv.addEventListener('mousemove',e=>{
-  const c2=cell(e); const tip=document.getElementById('tip');
-  if(c2){
-    const K=k(c2.r,c2.c);
-    if(aOpen.has(K)||aClosed.has(K)||aPath.has(K)){
-      const g2=costSoFar[K];
-      const h2=ep?heur(c2.r,c2.c,ep.r,ep.c):0;
-      let ht=`<b>[${c2.r},${c2.c}]</b> ${grid[c2.r][c2.c]===FR?'Forest':grid[c2.r][c2.c]===WA?'Water':''}`;
-      ht+=`<br>g = ${g2!=null?g2.toFixed(1):'?'}`;
-      ht+=`<br>h = ${h2.toFixed(1)}`;
-      ht+=`<br>f = ${g2!=null?(g2+h2).toFixed(1):'?'}`;
-      tip.innerHTML=ht; tip.style.display='block';
-      const wr=gw.getBoundingClientRect();
-      tip.style.left=(e.clientX-wr.left+12)+'px';
-      tip.style.top=(e.clientY-wr.top-8)+'px';
-    } else { tip.style.display='none'; }
-  } else { tip.style.display='none'; }
-  if(!drawing) return;
-  if(c2) applyT(c2.r,c2.c);
-});
-cv.addEventListener('mouseup',()=>drawing=false);
-cv.addEventListener('mouseleave',()=>{drawing=false;document.getElementById('tip').style.display='none';});
+function parseJSON(txt){
+  const obj=JSON.parse(txt);
+  if(!obj.grid||!Array.isArray(obj.grid)) throw new Error('Missing "grid" array');
+  const rows=obj.grid.length;
+  if(rows===0) throw new Error('Grid is empty');
+  if(rows>50) throw new Error('Max 50 rows');
+  const cols=Math.max(...obj.grid.map(r=>r.length));
+  if(cols>80) throw new Error('Max 80 columns');
+  if(cols===0) throw new Error('Grid rows are empty');
 
-// Touch support
-cv.addEventListener('touchstart',e=>{e.preventDefault();const t2=e.touches[0];const c2=cell(t2);if(c2){drawing=true;applyT(c2.r,c2.c);}},{passive:false});
-cv.addEventListener('touchmove',e=>{e.preventDefault();if(!drawing)return;const t2=e.touches[0];const c2=cell(t2);if(c2)applyT(c2.r,c2.c);},{passive:false});
-cv.addEventListener('touchend',()=>drawing=false);
+  const cells=[];let hc=false;
+  let startR=-1,startC=-1,endR=-1,endC=-1;
+  for(let r=0;r<rows;r++){
+    const row=[];
+    for(let c=0;c<cols;c++){
+      const raw=obj.grid[r]?.[c];
+      const v=(raw===undefined||raw===null)?0:Number(raw);
+      if(isNaN(v)) throw new Error('Invalid value at ['+r+','+c+']: '+raw);
+      if(v===-1) row.push({type:WL,w:0});
+      else if(v<=0) row.push({type:E,w:0});
+      else if(v===1) row.push({type:E,w:1});
+      else { row.push({type:E,w:v}); hc=true; }
+      cells.push(null); // placeholder
+    }
+    cells[cells.length-cols]=row; // fix: store rows properly
+  }
 
-// ═══════════════════════════════════════════════════════
-// GENERATORS
-// ═══════════════════════════════════════════════════════
-function genMaze(){
-  stopRun(); clrViz();
-  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++) grid[r][c]=WL;
-  const vs=new Set();
-  function carve(r,c){
-    vs.add(k(r,c)); grid[r][c]=E;
-    const ds=[[0,2],[0,-2],[2,0],[-2,0]].sort(()=>Math.random()-.5);
-    for(const[dr,dc] of ds){
-      const nr=r+dr,nc=c+dc;
-      if(nr>0&&nr<ROWS-1&&nc>0&&nc<COLS-1&&!vs.has(k(nr,nc))){
-        grid[r+dr/2][c+dc/2]=E; carve(nr,nc);
+  // Rebuild cells properly
+  const cellGrid=[];
+  for(let r=0;r<rows;r++){
+    const row=[];
+    for(let c=0;c<cols;c++){
+      const raw=obj.grid[r]?.[c];
+      const v=(raw===undefined||raw===null)?0:Number(raw);
+      if(isNaN(v)) throw new Error('Invalid value at ['+r+','+c+']');
+      if(v===-1) row.push({type:WL,w:0});
+      else if(v<=0) row.push({type:E,w:0});
+      else if(v===1) row.push({type:E,w:1});
+      else { row.push({type:E,w:v}); hc=true; }
+    }
+    cellGrid.push(row);
+  }
+
+  if(obj.start&&Array.isArray(obj.start)){startR=obj.start[0];startC=obj.start[1];}
+  if(obj.end&&Array.isArray(obj.end)){endR=obj.end[0];endC=obj.end[1];}
+  if(startR<0){startR=0;startC=0;}
+  if(endR<0){endR=rows-1;endC=cols-1;}
+  // Make sure start/end are in bounds
+  startR=Math.min(startR,rows-1);startC=Math.min(startC,cols-1);
+  endR=Math.min(endR,rows-1);endC=Math.min(endC,cols-1);
+
+  return{rows,cols,cells:cellGrid,startR,startC,endR,endC,hasCustom:hc};
+}
+
+function parseTXT(txt){
+  const lines=txt.split(/\r?\n/).filter(l=>l.trim().length>0);
+  if(lines.length===0) throw new Error('File is empty');
+  if(lines.length>50) throw new Error('Max 50 rows');
+
+  const cellGrid=[];let hc=false;
+  let startR=-1,startC=-1,endR=-1,endC=-1;
+  let maxCols=0;
+
+  for(let r=0;r<lines.length;r++){
+    const tokens=lines[r].trim().split(/[\s,]+/);
+    const row=[];
+    for(let c=0;c<tokens.length;c++){
+      const t=tokens[c].toUpperCase();
+      if(t==='S'){row.push({type:E,w:0});startR=r;startC=c;}
+      else if(t==='E'){row.push({type:E,w:0});endR=r;endC=c;}
+      else{
+        const v=Number(t);
+        if(isNaN(v)) throw new Error('Invalid value "'+tokens[c]+'" at row '+r);
+        if(v===-1) row.push({type:WL,w:0});
+        else if(v<=0) row.push({type:E,w:0});
+        else if(v===1) row.push({type:E,w:1});
+        else { row.push({type:E,w:v}); hc=true; }
       }
     }
+    if(row.length>maxCols) maxCols=row.length;
+    cellGrid.push(row);
   }
-  carve(1,1);
-  sp={r:1,c:1}; ep={r:ROWS-2,c:COLS-2};
-  grid[1][1]=ST; grid[ROWS-2][COLS-2]=EN;
-  updS(); draw();
+  if(maxCols>80) throw new Error('Max 80 columns');
+  // Pad short rows
+  for(const row of cellGrid) while(row.length<maxCols) row.push({type:E,w:0});
+
+  if(startR<0){startR=0;startC=0;}
+  if(endR<0){endR=cellGrid.length-1;endC=maxCols-1;}
+
+  return{rows:cellGrid.length,cols:maxCols,cells:cellGrid,startR,startC,endR,endC,hasCustom:hc};
 }
 
-function genRand(){
-  stopRun(); clrViz();
-  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++)
-    if(grid[r][c]===E) grid[r][c]=Math.random()<.25?WL:E;
-  updS(); draw();
-}
+function applyImport(data){
+  stopRun();clrAll();
+  ROWS=data.rows;COLS=data.cols;
+  grid=Array.from({length:ROWS},()=>new Uint8Array(COLS));
+  customW=Array.from({length:ROWS},()=>new Float32Array(COLS));
 
-function genTerrain(){
-  stopRun(); clrViz();
-  for(let r=0;r<ROWS;r++) for(let c=0;c<COLS;c++){
-    if(grid[r][c]===ST||grid[r][c]===EN) continue;
-    const n1=vn(c*.15,r*.15), n2=vn(c*.08+50,r*.08+50);
-    if(n1>.72) grid[r][c]=WL;
-    else if(n2>.55) grid[r][c]=WA;
-    else if(n1>.32) grid[r][c]=FR;
-    else grid[r][c]=E;
+  for(let r=0;r<ROWS;r++){
+    for(let c=0;c<COLS;c++){
+      const cell=data.cells[r][c];
+      grid[r][c]=cell.type;
+      customW[r][c]=cell.w;
+    }
   }
-  if(sp) grid[sp.r][sp.c]=ST;
-  if(ep) grid[ep.r][ep.c]=EN;
-  updS(); draw();
+  // Place start and end
+  sp={r:data.startR,c:data.startC};
+  ep={r:data.endR,c:data.endC};
+  // Clear any walls/weights on start/end
+  grid[sp.r][sp.c]=ST; customW[sp.r][sp.c]=0;
+  grid[ep.r][ep.c]=EN; customW[ep.r][ep.c]=0;
+
+  recalcCWRange();
+  updStats();updateExplain();
+  setTimeout(resizeCanvas,10);
 }
 
-function vn(x,y){
-  const ix=Math.floor(x),iy=Math.floor(y);
-  const fx=x-ix,fy=y-iy;
-  const sx=fx*fx*(3-2*fx),sy=fy*fy*(3-2*fy);
-  function h(a,b){let v=(a*374761393+b*668265263+1234567)&0x7fffffff;v=((v>>13)^v)*1274126177;return((v>>13)^v&0x7fffffff)/0x7fffffff;}
-  const a=h(ix,iy)+sx*(h(ix+1,iy)-h(ix,iy));
-  const b=h(ix,iy+1)+sx*(h(ix+1,iy+1)-h(ix,iy+1));
-  return a+sy*(b-a);
-}
-
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-let resizeTimeout;
-window.addEventListener('resize', () => {
-  clearTimeout(resizeTimeout);
-  resizeTimeout = setTimeout(resizeCanvas, 60);
-});
-updS(); onAlgo(); resizeCanvas();
+/* ═══════════ INIT ═══════════ */
+updStats();onAlgo();resizeCanvas();
 </script>
 </body>
 </html>
