@@ -58,3 +58,10 @@ Useful regex for improve the LaTeX documents
 - Ideally would be good to have additional process flow diagram or something to explain the relationship between ADC SOC trigger, ADC SOC Chanel, the actual ADC Chip, and then the process of a trigger happening with the ePWM. 
 - Students get confused on this and is important for them to understand properlly. 
 
+
+## L17
+
+- Talk about HSL instead of HSV (don't know why I didn't do that in the first place, )
+- You can show the [Color Space](https://marius-juston.github.io/SE-423---Class-Material/color_spaces.html) website that "I" made 
+- You can also add details for blob filter, shape filtering, area filtering, etc.
+- Be careful since you run out of time, be sure to show the blob detection algorithm a little earlier
