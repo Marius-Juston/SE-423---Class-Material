@@ -61,6 +61,7 @@ section { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 3.5rem; }
 .slice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 .slice-canvas-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; position: relative; }
 .slice-canvas-wrap canvas { width: 100%; height: 100%; display: block; }
+#sliceCrosshair { position: absolute; top: 0; left: 0; pointer-events: none; }
 .sliders-and-preview { display: flex; flex-direction: column; gap: 0.6rem; }
 .slider-group { background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.6rem 0.9rem; }
 .slider-label { font-family: var(--mono); font-size: 0.65rem; font-weight: 600; color: var(--text-dim); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.3rem; display: flex; justify-content: space-between; }
@@ -138,7 +139,7 @@ footer .logo-small { font-family: var(--serif); font-style: italic; color: var(-
         <div class="viewer-axes-info" id="viewerAxes"></div>
       </div>
       <div class="slice-row">
-        <div class="slice-canvas-wrap"><canvas id="sliceCanvas"></canvas></div>
+        <div class="slice-canvas-wrap"><canvas id="sliceCanvas"></canvas><canvas id="sliceCrosshair"></canvas></div>
         <div class="sliders-and-preview">
           <div id="slidersPanel"></div>
           <div class="color-swatch-row"><div class="swatch-large"><div class="fill" id="previewSwatch"></div></div><div class="color-vals" id="colorValues"></div></div>
@@ -432,73 +433,124 @@ function updateIndicator(sp,cv){
   V3.indRing.material.color.setHex(lum>0.3?0x000000:0xffffff);
 }
 
-// ═══════ 2D SLICE WITH CROSSHAIR ═══════
-function renderSlice(){
+// ═══════ 2D SLICE — OPTIMIZED ═══════
+// The pixel data only changes when the FIXED axis value changes.
+// Dragging on the canvas only moves X/Y — so we cache the pixel ImageData
+// and only redraw the crosshair overlay (which is on a separate canvas).
+let sliceCache=null; // cached ImageData
+let sliceCacheKey=''; // key = spaceId + fixedAxisValue
+
+function renderSlicePixels(){
   const canvas=document.getElementById('sliceCanvas');
   const dpr=Math.min(window.devicePixelRatio,2);
   const w=canvas.width=canvas.clientWidth*dpr,h=canvas.height=canvas.clientHeight*dpr;
-  const ctx=canvas.getContext('2d'),img=ctx.createImageData(w,h),d=img.data;
+  const ctx=canvas.getContext('2d');
   const sp=activeSp,axX=sp.sliceAxes[0],axY=sp.sliceAxes[1],chX=sp.channels[axX],chY=sp.channels[axY];
-  for(let py=0;py<h;py++)for(let px=0;px<w;px++){
-    const tx=px/(w-1),ty=1-py/(h-1),vals=[...chVals];
-    vals[axX]=chX.min+tx*(chX.max-chX.min);vals[axY]=chY.min+ty*(chY.max-chY.min);
-    const rgb=sp.toRgb(vals),idx=(py*w+px)*4;
-    if(CM.inGamut(rgb[0],rgb[1],rgb[2])){d[idx]=Math.round(CM.clamp(rgb[0],0,1)*255);d[idx+1]=Math.round(CM.clamp(rgb[1],0,1)*255);d[idx+2]=Math.round(CM.clamp(rgb[2],0,1)*255);d[idx+3]=255;}
-    else{const ck=((Math.floor(px/6)+Math.floor(py/6))%2)===0;const v=ck?15:19;d[idx]=v;d[idx+1]=v;d[idx+2]=v;d[idx+3]=255;}
+  const fixedVal=chVals[sp.sliceFixed];
+  const newKey=sp.id+'|'+fixedVal;
+
+  // Skip pixel recomputation if nothing changed
+  if(sliceCache && sliceCacheKey===newKey && sliceCache.width===w && sliceCache.height===h){
+    ctx.putImageData(sliceCache,0,0);
+    drawCrosshair();
+    return;
+  }
+
+  const img=ctx.createImageData(w,h),d=img.data;
+  // Pre-compute ranges
+  const xRange=chX.max-chX.min, yRange=chY.max-chY.min;
+  const wm1=1/(w-1), hm1=1/(h-1);
+  // Build a template vals array once
+  const vals=[0,0,0];
+  vals[sp.sliceFixed]=fixedVal;
+
+  for(let py=0;py<h;py++){
+    const ty=(1-py*hm1);
+    const yVal=chY.min+ty*yRange;
+    vals[axY]=yVal;
+    const rowOff=py*w*4;
+    for(let px=0;px<w;px++){
+      vals[axX]=chX.min+px*wm1*xRange;
+      const rgb=sp.toRgb(vals);
+      const idx=rowOff+px*4;
+      const r0=rgb[0],g0=rgb[1],b0=rgb[2];
+      if(r0>=-0.005&&r0<=1.005&&g0>=-0.005&&g0<=1.005&&b0>=-0.005&&b0<=1.005){
+        d[idx]=(r0<=0?0:r0>=1?255:r0*255+0.5)|0;
+        d[idx+1]=(g0<=0?0:g0>=1?255:g0*255+0.5)|0;
+        d[idx+2]=(b0<=0?0:b0>=1?255:b0*255+0.5)|0;
+        d[idx+3]=255;
+      } else {
+        const ck=((px/6|0)+(py/6|0))&1;
+        const v=ck?19:15;
+        d[idx]=v;d[idx+1]=v;d[idx+2]=v;d[idx+3]=255;
+      }
+    }
   }
   ctx.putImageData(img,0,0);
+  sliceCache=img;
+  sliceCacheKey=newKey;
+  drawCrosshair();
+}
 
-  // ── Draw crosshair at current position ──
+function drawCrosshair(){
+  const overlay=document.getElementById('sliceCrosshair');
+  const base=document.getElementById('sliceCanvas');
+  const dpr=Math.min(window.devicePixelRatio,2);
+  const w=overlay.width=base.width;
+  const h=overlay.height=base.height;
+  overlay.style.width=base.style.width;
+  overlay.style.height=base.style.height;
+  const ctx=overlay.getContext('2d');
+  ctx.clearRect(0,0,w,h);
+
+  const sp=activeSp,axX=sp.sliceAxes[0],axY=sp.sliceAxes[1],chX=sp.channels[axX],chY=sp.channels[axY];
   const curX=(chVals[axX]-chX.min)/(chX.max-chX.min)*w;
   const curY=(1-(chVals[axY]-chY.min)/(chY.max-chY.min))*h;
 
-  // Determine crosshair color from pixel brightness
   const rgb=sp.toRgb(chVals);
-  const lum=CM.luminance(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
-  const crossColor=lum>0.3?'rgba(0,0,0,0.85)':'rgba(255,255,255,0.9)';
-  const crossShadow=lum>0.3?'rgba(255,255,255,0.5)':'rgba(0,0,0,0.5)';
+  const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
+  const lum=0.2126*r+0.7152*g+0.0722*b; // fast approx (skip linearize for perf)
+  const crossColor=lum>0.35?'rgba(0,0,0,0.85)':'rgba(255,255,255,0.9)';
+  const crossShadow=lum>0.35?'rgba(255,255,255,0.5)':'rgba(0,0,0,0.5)';
+  const s=dpr; // scale factor
 
   ctx.save();
-  // Shadow for contrast
-  ctx.strokeStyle=crossShadow;
-  ctx.lineWidth=3*dpr;
+  // Shadow
+  ctx.strokeStyle=crossShadow; ctx.lineWidth=3*s;
   ctx.beginPath();
-  ctx.moveTo(curX-14*dpr,curY);ctx.lineTo(curX-5*dpr,curY);
-  ctx.moveTo(curX+5*dpr,curY);ctx.lineTo(curX+14*dpr,curY);
-  ctx.moveTo(curX,curY-14*dpr);ctx.lineTo(curX,curY-5*dpr);
-  ctx.moveTo(curX,curY+5*dpr);ctx.lineTo(curX,curY+14*dpr);
+  ctx.moveTo(curX-14*s,curY);ctx.lineTo(curX-5*s,curY);
+  ctx.moveTo(curX+5*s,curY);ctx.lineTo(curX+14*s,curY);
+  ctx.moveTo(curX,curY-14*s);ctx.lineTo(curX,curY-5*s);
+  ctx.moveTo(curX,curY+5*s);ctx.lineTo(curX,curY+14*s);
   ctx.stroke();
-
-  // Main crosshair
-  ctx.strokeStyle=crossColor;
-  ctx.lineWidth=1.5*dpr;
+  // Main
+  ctx.strokeStyle=crossColor; ctx.lineWidth=1.5*s;
   ctx.beginPath();
-  ctx.moveTo(curX-14*dpr,curY);ctx.lineTo(curX-5*dpr,curY);
-  ctx.moveTo(curX+5*dpr,curY);ctx.lineTo(curX+14*dpr,curY);
-  ctx.moveTo(curX,curY-14*dpr);ctx.lineTo(curX,curY-5*dpr);
-  ctx.moveTo(curX,curY+5*dpr);ctx.lineTo(curX,curY+14*dpr);
+  ctx.moveTo(curX-14*s,curY);ctx.lineTo(curX-5*s,curY);
+  ctx.moveTo(curX+5*s,curY);ctx.lineTo(curX+14*s,curY);
+  ctx.moveTo(curX,curY-14*s);ctx.lineTo(curX,curY-5*s);
+  ctx.moveTo(curX,curY+5*s);ctx.lineTo(curX,curY+14*s);
   ctx.stroke();
-
-  // Center circle
-  ctx.beginPath();
-  ctx.arc(curX,curY,4*dpr,0,Math.PI*2);
-  ctx.strokeStyle=crossColor;ctx.lineWidth=1.5*dpr;
-  ctx.stroke();
-
-  // Fill center with actual color
-  ctx.beginPath();
-  ctx.arc(curX,curY,3*dpr,0,Math.PI*2);
-  ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
+  // Circle
+  ctx.beginPath();ctx.arc(curX,curY,4*s,0,Math.PI*2);ctx.stroke();
+  // Color fill
+  ctx.beginPath();ctx.arc(curX,curY,3*s,0,Math.PI*2);
+  ctx.fillStyle=`rgb(${r*255+0.5|0},${g*255+0.5|0},${b*255+0.5|0})`;
   ctx.fill();
   ctx.restore();
 }
 
+// Alias for compatibility — called from selectSpace/buildSliders when fixed axis changes
+function renderSlice(){ renderSlicePixels(); }
+
 // ═══════ STATE ═══════
 let activeSp=SPACES[0],chVals=[];
 let sliceDragging=false;
+let sliceRafId=0;
 
 function initSliceInteraction(){
   const canvas=document.getElementById('sliceCanvas');
+  // Pointer events go on the wrapper (since overlay canvas has pointer-events:none)
   const wrap=canvas.parentElement;
 
   function handleSlicePointer(e){
@@ -510,30 +562,37 @@ function initSliceInteraction(){
     const chX=sp.channels[axX],chY=sp.channels[axY];
     chVals[axX]=chX.min+x*(chX.max-chX.min);
     chVals[axY]=chY.min+y*(chY.max-chY.min);
-    // Sync sliders
+    // Sync sliders (direct property set — no DOM query overhead in loop)
     const slX=document.getElementById(`sl${axX}`);
     const slY=document.getElementById(`sl${axY}`);
     if(slX){slX.value=chVals[axX];document.getElementById(`sv${axX}`).textContent=chVals[axX].toFixed(chX.max>10?0:2)+(chX.unit||'');}
     if(slY){slY.value=chVals[axY];document.getElementById(`sv${axY}`).textContent=chVals[axY].toFixed(chY.max>10?0:2)+(chY.unit||'');}
-    updateIndicator(activeSp,chVals);
-    renderSlice();
-    updatePreview();
+
+    // Schedule ONE update per animation frame
+    if(!sliceRafId){
+      sliceRafId=requestAnimationFrame(()=>{
+        sliceRafId=0;
+        drawCrosshair(); // cheap — just redraws overlay
+        updateIndicator(activeSp,chVals);
+        updatePreview();
+      });
+    }
   }
 
-  canvas.addEventListener('pointerdown',e=>{
+  wrap.addEventListener('pointerdown',e=>{
     sliceDragging=true;
-    canvas.setPointerCapture(e.pointerId);
+    wrap.setPointerCapture(e.pointerId);
     handleSlicePointer(e);
   });
-  canvas.addEventListener('pointermove',e=>{
+  wrap.addEventListener('pointermove',e=>{
     if(sliceDragging)handleSlicePointer(e);
   });
-  canvas.addEventListener('pointerup',e=>{
+  wrap.addEventListener('pointerup',e=>{
     sliceDragging=false;
-    canvas.releasePointerCapture(e.pointerId);
+    wrap.releasePointerCapture(e.pointerId);
   });
-  canvas.addEventListener('pointercancel',()=>sliceDragging=false);
-  canvas.style.cursor='crosshair';
+  wrap.addEventListener('pointercancel',()=>sliceDragging=false);
+  wrap.style.cursor='crosshair';
 }
 
 function initSpaces(){
@@ -544,6 +603,7 @@ function initSpaces(){
 
 function selectSpace(sp){
   activeSp=sp;chVals=sp.channels.map(c=>c.def);
+  sliceCacheKey=''; // invalidate pixel cache
   document.querySelectorAll('.space-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===sp.id));
   document.getElementById('viewerLabel').textContent=sp.name+' — '+sp.desc;
   buildSliders();updateCloud(sp);updateIndicator(sp,chVals);renderSlice();updatePreview();
@@ -555,7 +615,21 @@ function buildSliders(){
     const gc=buildSlGrad(i);
     return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${chVals[i].toFixed(ch.max>10?0:2)}${ch.unit||''}</span></div><input type="range" id="sl${i}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
   }).join('');
-  activeSp.channels.forEach((ch,i)=>{document.getElementById(`sl${i}`).addEventListener('input',e=>{chVals[i]=parseFloat(e.target.value);document.getElementById(`sv${i}`).textContent=chVals[i].toFixed(ch.max>10?0:2)+(ch.unit||'');updateIndicator(activeSp,chVals);renderSlice();updatePreview();});});
+  const fixedIdx=activeSp.sliceFixed;
+  activeSp.channels.forEach((ch,i)=>{document.getElementById(`sl${i}`).addEventListener('input',e=>{
+    chVals[i]=parseFloat(e.target.value);
+    document.getElementById(`sv${i}`).textContent=chVals[i].toFixed(ch.max>10?0:2)+(ch.unit||'');
+    updateIndicator(activeSp,chVals);
+    if(i===fixedIdx){
+      // Fixed axis changed — must recompute all pixels
+      sliceCacheKey=''; // invalidate cache
+      renderSlicePixels();
+    } else {
+      // X or Y axis — just move the crosshair
+      drawCrosshair();
+    }
+    updatePreview();
+  });});
 }
 
 function buildSlGrad(ci){const stops=10,cols=[];for(let i=0;i<=stops;i++){const t=i/stops,vals=[...chVals],ch=activeSp.channels[ci];vals[ci]=ch.min+t*(ch.max-ch.min);const rgb=activeSp.toRgb(vals);cols.push(CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1)));}return cols.join(',');}
