@@ -58,10 +58,14 @@ Useful regex for improve the LaTeX documents
 - Ideally would be good to have additional process flow diagram or something to explain the relationship between ADC SOC trigger, ADC SOC Chanel, the actual ADC Chip, and then the process of a trigger happening with the ePWM. 
 - Students get confused on this and is important for them to understand properlly. 
 
+## L6-7
+
+- Students get confused with the SPI Polarity and Phase, the best way is not necessarily to look at the giure provided in slide 49
+- the best way is to looking at an actual diagram and noticing where for the bits where the data is transmitted so that that you know if you clock if reading / writing on the rising edge or the falling edge
 
 ## L17
 
-- Talk about HSL instead of HSV (don't know why I didn't do that in the first place, )
+- Talk about HSL instead of HSV (don't know why I didn't do that in the first place)
 - You can show the [Color Space](https://marius-juston.github.io/SE-423---Class-Material/color_spaces.html) website that "I" made 
-- You can also add details for blob filter, shape filtering, area filtering, etc.
+- You can also add details for blob filter, shape filtering, area filtering, etc. since I forgot to add those
 - Be careful since you run out of time, be sure to show the blob detection algorithm a little earlier
