@@ -37,7 +37,7 @@ jobs:
             fonts-noto
       - name: Cache TeX Live
         id: cache-texlive
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: |
             ${{ env.TL_DIR }}
@@ -114,7 +114,7 @@ jobs:
           mktexlsr
       - name: Save TeX Live Cache
         if: steps.cache-texlive.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v5
         with:
           path: |
             ${{ env.TL_DIR }}
