@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -58,7 +58,7 @@ jobs:
           done
 
       - name: Checkout Artifacts Branch
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: artifacts
           path: deploy_target
