@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Differential Drive: Path Planning &amp; Control — Interactive Lecture</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Crimson+Pro:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0e14;--surface:#141820;--surface2:#1a1f2b;--border:#2a3040;--text:#d4dce8;--dim:#6b7a90;--accent:#4da6ff;--green:#45c878;--orange:#e8924a;--red:#e85454;--purple:#a87bef;--yellow:#e8d44a;--cyan:#4ae8d4;--fm:'IBM Plex Mono',monospace;--fb:'Crimson Pro',Georgia,serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.55;overflow-x:hidden}
+h1,h2,h3,h4{font-family:var(--fm);font-weight:700}
+
+.topnav{display:flex;align-items:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#10141c,var(--bg));position:sticky;top:0;z-index:100}
+.topnav .brand{padding:0.6rem 1.2rem;font-family:var(--fm);font-size:0.82rem;font-weight:700;color:var(--accent);white-space:nowrap;border-right:1px solid var(--border)}
+.topnav .nb{font-family:var(--fm);font-size:0.7rem;padding:0.7rem 1rem;background:none;border:none;border-right:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all .15s}
+.topnav .nb:hover{color:var(--text);background:var(--surface)}
+.topnav .nb.active{color:var(--accent);background:var(--surface);box-shadow:inset 0 -2px 0 var(--accent)}
+
+.section{display:none}.section.active{display:block}
+.layout{display:grid;grid-template-columns:300px 1fr 280px;gap:0;min-height:calc(100vh - 42px)}
+.panel{padding:0.8rem;overflow-y:auto;max-height:calc(100vh - 42px);border-right:1px solid var(--border)}
+.panel:last-child{border-right:none;border-left:1px solid var(--border)}
+.cc{display:flex;flex-direction:column;align-items:center;padding:0.8rem;gap:0.6rem;overflow-y:auto;max-height:calc(100vh - 42px)}
+
+.ps{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.65rem;margin-bottom:0.6rem}
+.ps h3{font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--accent);margin-bottom:0.5rem;padding-bottom:0.35rem;border-bottom:1px solid var(--border)}
+
+.sr{display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem}
+.sr label{font-family:var(--fm);font-size:0.65rem;color:var(--dim);min-width:48px}
+.sr input[type=range]{flex:1;height:3px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
+.sr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg)}
+.sv{font-family:var(--fm);font-size:0.65rem;color:var(--accent);min-width:30px;text-align:right}
+
+.btn{font-family:var(--fm);font-size:0.68rem;padding:0.35rem 0.6rem;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);cursor:pointer;transition:all .12s}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
+.btn-go{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
+.btn-go:hover{background:#79c0ff}
+.btn-r{border-color:var(--red);color:var(--red)}.btn-r:hover{background:var(--red);color:#fff}
+.bg{display:flex;gap:0.25rem;flex-wrap:wrap;margin-bottom:0.4rem}
+select{font-family:var(--fm);font-size:0.68rem;padding:0.3rem 0.4rem;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);width:100%;margin-bottom:0.4rem}
+.ck{display:flex;align-items:center;gap:0.35rem;margin-bottom:0.3rem;font-family:var(--fm);font-size:0.68rem;color:var(--dim)}
+.ck input{accent-color:var(--accent)}
+
+canvas{border:1px solid var(--border);border-radius:6px;background:#080c12;cursor:crosshair}
+.cl{font-family:var(--fm);font-size:0.6rem;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;align-self:flex-start}
+
+.ic{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.6rem;margin-bottom:0.5rem;font-size:0.82rem}
+.ic h4{font-size:0.65rem;color:var(--purple);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:.05em}
+.ic p{color:var(--dim);font-size:0.8rem;line-height:1.5;margin-bottom:0.3rem}.ic p:last-child{margin-bottom:0}
+.ma{font-family:var(--fm);font-size:0.68rem;color:var(--orange);background:var(--surface2);padding:0.3rem 0.5rem;border-radius:4px;display:block;margin:0.25rem 0;white-space:pre;overflow-x:auto;border-left:2px solid var(--orange)}
+
+.sb{font-family:var(--fm);font-size:0.65rem;color:var(--dim);padding:0.3rem 0.6rem;background:var(--surface);border-radius:4px;align-self:stretch;text-align:center;min-height:1.6rem}
+.lb{font-family:var(--fm);font-size:0.62rem;color:var(--dim);background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.4rem;max-height:130px;overflow-y:auto;margin-bottom:0.4rem;line-height:1.6}
+.lb .sa{color:var(--accent);font-weight:600}.lb .sd{color:var(--dim)}
+
+.mt{display:grid;grid-template-columns:1fr 1fr;gap:0.3rem;margin-bottom:0.4rem}
+.mb{background:var(--surface2);border-radius:4px;padding:0.3rem;text-align:center}
+.mb .v{font-family:var(--fm);font-size:0.9rem;font-weight:700;color:var(--accent)}
+.mb .l{font-family:var(--fm);font-size:0.55rem;color:var(--dim);text-transform:uppercase}
+
+.lg{display:flex;gap:0.8rem;flex-wrap:wrap;align-items:center;margin-bottom:0.3rem}
+.li{display:flex;align-items:center;gap:0.25rem;font-size:0.65rem;font-family:var(--fm)}
+.ld{width:8px;height:8px;border-radius:50%}
+
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--bg)}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+@media(max-width:1100px){.layout{grid-template-columns:260px 1fr}.panel:last-child{display:none}}
+@media(max-width:700px){.layout{grid-template-columns:1fr}.panel{max-height:none;border:none}.cc{max-height:none}}
+</style>
+</head>
+<body>
+<nav class="topnav">
+<div class="brand">⚙ DiffDrive Lab</div>
+<button class="nb active" onclick="showSec('sec-pp',this)">Path Planning</button>
+<button class="nb" onclick="showSec('sec-cv',this)">Dubins &amp; Reeds-Shepp</button>
+<button class="nb" onclick="showSec('sec-tr',this)">Trajectory Planning</button>
+<button class="nb" onclick="showSec('sec-tb',this)">TEB</button>
+</nav>
+
+<!-- ============ PATH PLANNING ============ -->
+<div class="section active" id="sec-pp"><div class="layout">
+<div class="panel">
+  <div class="ps"><h3>Map Editor</h3>
+    <div class="bg"><button class="btn active" id="btn-obs" onclick="PP.setTool('obstacle');actBtn(this)">◼ Wall</button><button class="btn" id="btn-era" onclick="PP.setTool('erase');actBtn(this)">◻ Erase</button><button class="btn" id="btn-sta" onclick="PP.setTool('start');actBtn(this)">● Start</button><button class="btn" id="btn-goa" onclick="PP.setTool('goal');actBtn(this)">◎ Goal</button></div>
+    <div class="bg"><button class="btn btn-r" onclick="PP.clear()">Clear</button><button class="btn" onclick="PP.preset()">Preset</button></div>
+    <div class="sr"><label>Grid</label><input type=range id=pp-gs min=10 max=40 value=20 onchange="PP.resize(+this.value);U(this)"><span class="sv" id=pp-gs-v>20</span></div>
+  </div>
+  <div class="ps"><h3>Start / Goal Orientation</h3>
+    <div class="sr"><label>θ start</label><input type=range id=pp-st min=-3.14 max=3.14 value=0 step=0.05 oninput="U(this);PP.draw()"><span class="sv" id=pp-st-v>0.00</span></div>
+    <div class="sr"><label>θ goal</label><input type=range id=pp-gt min=-3.14 max=3.14 value=0 step=0.05 oninput="U(this);PP.draw()"><span class="sv" id=pp-gt-v>0.00</span></div>
+    <p style="font-size:.62rem;color:var(--dim);font-family:var(--fm)">θ=0→right  π/2→down  ±π→left</p>
+  </div>
+  <div class="ps"><h3>Algorithm</h3>
+    <select id=pp-al onchange="PP.algoUI()">
+      <option value=a4>A* — 4-Connectivity</option>
+      <option value=a8 selected>A* — 8-Connectivity</option>
+      <option value=td>A* Turn-and-Drive (x,y,θ)</option>
+      <option value=hy>Hybrid A*</option>
+      <option value=ha>Hybrid A* + Analytic Expansion</option>
+    </select>
+    <div id=pp-ho style="display:none">
+      <div class="sr"><label>Steers</label><input type=range id=pp-ns min=3 max=11 value=5 step=2 oninput="U(this)"><span class="sv" id=pp-ns-v>5</span></div>
+      <div class="sr"><label>Arc L</label><input type=range id=pp-al2 min=0.3 max=3 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-al2-v>1.5</span></div>
+      <div class="sr"><label>ω max</label><input type=range id=pp-hw min=0.3 max=3 value=1.2 step=.1 oninput="U(this)"><span class="sv" id=pp-hw-v>1.2</span></div>
+    </div>
+    <div id=pp-to style="display:none">
+      <div class="sr"><label>θ pen.</label><input type=range id=pp-tp min=0 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=pp-tp-v>0.5</span></div>
+    </div>
+    <div class="bg" style="margin-top:.3rem">
+      <button class="btn btn-go" onclick="PP.plan()" style="flex:1">▶ Plan</button>
+      <button class="btn" onclick="PP.stepP()">⏭ Step</button>
+      <button class="btn btn-r" onclick="PP.resetP()">⏹</button>
+    </div>
+    <div class="sr"><label>Speed</label><input type=range id=pp-ps min=1 max=80 value=15 oninput="U(this)"><span class="sv" id=pp-ps-v>15</span></div>
+  </div>
+  <div class="ps"><h3>Lyapunov Controller</h3>
+    <div class="sr"><label>Kx</label><input type=range id=pp-kx min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-kx-v>1.5</span></div>
+    <div class="sr"><label>Ky</label><input type=range id=pp-ky min=0.1 max=10 value=5 step=.1 oninput="U(this)"><span class="sv" id=pp-ky-v>5.0</span></div>
+    <div class="sr"><label>Kθ</label><input type=range id=pp-kt min=0.1 max=8 value=3 step=.1 oninput="U(this)"><span class="sv" id=pp-kt-v>3.0</span></div>
+    <div class="sr"><label>v max</label><input type=range id=pp-vm min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=pp-vm-v>2.0</span></div>
+    <div class="sr"><label>ω max</label><input type=range id=pp-om min=0.3 max=4 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-om-v>1.5</span></div>
+    <div class="sr"><label>v ref</label><input type=range id=pp-vr min=0.1 max=3 value=0.8 step=.1 oninput="U(this)"><span class="sv" id=pp-vr-v>0.8</span></div>
+    <div class="sr"><label>dt</label><input type=range id=pp-dt min=0.01 max=0.15 value=0.05 step=.01 oninput="U(this)"><span class="sv" id=pp-dt-v>0.05</span></div>
+    <div class="sr"><label>WP tol</label><input type=range id=pp-wt min=0.1 max=1.5 value=0.5 step=.05 oninput="U(this)"><span class="sv" id=pp-wt-v>0.50</span></div>
+  </div>
+  <div class="ps"><h3>Simulation</h3>
+    <div class="bg"><button class="btn btn-go" onclick="PP.sim()" id=pp-sb style="flex:1">▶ Simulate</button><button class="btn" onclick="PP.stepS()">⏭</button><button class="btn btn-r" onclick="PP.resetS()">⏹</button></div>
+    <div class="sr"><label>Speed</label><input type=range id=pp-ss min=1 max=30 value=5 oninput="U(this)"><span class="sv" id=pp-ss-v>5</span></div>
+    <div class="ck"><input type=checkbox id=pp-se checked> Explored</div>
+    <div class="ck"><input type=checkbox id=pp-sh checked> Heading</div>
+    <div class="ck"><input type=checkbox id=pp-sp checked> Error plots</div>
+  </div>
+</div>
+
+<div class="cc">
+  <div class="lg">
+    <div class="li"><div class="ld" style="background:var(--red)"></div>Planned</div>
+    <div class="li"><div class="ld" style="background:var(--accent)"></div>Trajectory</div>
+    <div class="li"><div class="ld" style="background:var(--green)"></div>Robot</div>
+    <div class="li"><div class="ld" style="background:var(--orange)"></div>Target</div>
+    <div class="li"><div class="ld" style="background:var(--purple);opacity:.4"></div>Explored</div>
+    <div class="li"><div class="ld" style="background:var(--yellow)"></div>Expanding</div>
+  </div>
+  <canvas id=ppC width=600 height=600></canvas>
+  <div class="sb" id=pp-stat>Draw obstacles → Set orientations → Plan → Simulate</div>
+  <div class="lb" id=pp-log>Algorithm log appears here during step-by-step execution...</div>
+  <div id=pp-ea style="width:100%;max-width:620px">
+    <span class="cl">Tracking Errors (eₓ eᵧ eθ)</span>
+    <canvas id=ppEC width=600 height=155></canvas>
+    <span class="cl" style="margin-top:.4rem">Commands (v, ω)</span>
+    <canvas id=ppCC width=600 height=155></canvas>
+  </div>
+</div>
+
+<div class="panel">
+  <div class="ps"><h3>Metrics</h3>
+    <div class="mt"><div class="mb"><div class="v" id=m-pl>—</div><div class="l">Path Len</div></div><div class="mb"><div class="v" id=m-ne>—</div><div class="l">Explored</div></div><div class="mb"><div class="v" id=m-tl>—</div><div class="l">Traj Len</div></div><div class="mb"><div class="v" id=m-me>—</div><div class="l">Max |e|</div></div></div>
+  </div>
+  <div class="ic" id=pp-ia><h4>A* Search</h4>
+    <p>Finds shortest path using f(n)=g(n)+h(n).</p>
+    <span class="ma">f(n) = g(n) + h(n)
+g = cost-so-far, h = heuristic</span>
+    <p><b>4-conn:</b> Cardinal moves. Axis-aligned.</p>
+    <p><b>8-conn:</b> +Diagonals (√2 cost).</p>
+    <p><b>Turn-and-Drive:</b> State=(x,y,θ). Penalizes heading changes — better for diff-drive.</p>
+  </div>
+  <div class="ic" id=pp-ih style="display:none"><h4>Hybrid A*</h4>
+    <p>Expands via <em>kinematically feasible arcs</em> from pose (x,y,θ).</p>
+    <span class="ma">x' = x + v·cos(θ)·Δt
+y' = y + v·sin(θ)·Δt
+θ' = θ + ω·Δt</span>
+    <p>Multiple ω ∈ [-ω_max, ω_max]. Grid-binned closed set.</p>
+    <p><b>Analytic Expansion:</b> Every N nodes, try Reeds-Shepp to goal. If collision-free → done instantly!</p>
+  </div>
+  <div class="ic"><h4>Lyapunov Controller</h4>
+    <span class="ma">eₓ =  cos(θ)·Δx + sin(θ)·Δy
+eᵧ = -sin(θ)·Δx + cos(θ)·Δy</span>
+    <span class="ma">v = v_ref·cos(eθ) + Kx·eₓ
+ω = v_ref·(Ky·eᵧ + Kθ·sin(eθ))</span>
+    <p><b>Kx</b>→longitudinal <b>Ky</b>→lateral <b>Kθ</b>→heading</p>
+  </div>
+  <div class="ic"><h4>Diff-Drive Kinematics</h4>
+    <span class="ma">ẋ = v·cos(θ)   ẏ = v·sin(θ)   θ̇ = ω</span>
+    <p>Nonholonomic: cannot move sideways. Can spin in place or drive straight.</p>
+  </div>
+</div>
+</div></div>
+
+<!-- ============ DUBINS & REEDS-SHEPP ============ -->
+<div class="section" id="sec-cv"><div class="layout">
+<div class="panel">
+  <div class="ps"><h3>Curve Type</h3><select id=cv-tp onchange="CV.draw()"><option value=dubins>Dubins (forward only)</option><option value=reeds>Reeds-Shepp (fwd + reverse)</option></select></div>
+  <div class="ps"><h3>Start Pose</h3>
+    <div class="sr"><label>x₁</label><input type=range id=cv-sx min=1 max=18 value=3 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sx-v>3.0</span></div>
+    <div class="sr"><label>y₁</label><input type=range id=cv-sy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sy-v>10.0</span></div>
+    <div class="sr"><label>θ₁</label><input type=range id=cv-sa min=-3.14 max=3.14 value=0 step=.05 oninput="U(this);CV.draw()"><span class="sv" id=cv-sa-v>0.00</span></div>
+  </div>
+  <div class="ps"><h3>Goal Pose</h3>
+    <div class="sr"><label>x₂</label><input type=range id=cv-gx min=1 max=18 value=16 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gx-v>16.0</span></div>
+    <div class="sr"><label>y₂</label><input type=range id=cv-gy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gy-v>10.0</span></div>
+    <div class="sr"><label>θ₂</label><input type=range id=cv-ga min=-3.14 max=3.14 value=1.57 step=.05 oninput="U(this);CV.draw()"><span class="sv" id=cv-ga-v>1.57</span></div>
+  </div>
+  <div class="ps"><h3>Parameters</h3>
+    <div class="sr"><label>Radius</label><input type=range id=cv-r min=0.5 max=5 value=2 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-r-v>2.0</span></div>
+    <div class="ck"><input type=checkbox id=cv-sc checked onchange="CV.draw()"> Turning circles</div>
+    <div class="ck"><input type=checkbox id=cv-sa2 onchange="CV.draw()"> Show all types</div>
+  </div>
+</div>
+<div class="cc">
+  <canvas id=cvC width=600 height=600></canvas>
+  <div class="sb" id=cv-stat>Adjust poses and radius to explore curves</div>
+</div>
+<div class="panel">
+  <div class="ic"><h4>Dubins Curves</h4>
+    <p>Shortest path for a forward-only vehicle with bounded turning radius. Exactly 6 types:</p>
+    <span class="ma">LSL  LSR  RSL  RSR  RLR  LRL
+L=Left arc  R=Right arc  S=Straight</span>
+    <p>We compute all 6 and pick the shortest valid one.</p>
+  </div>
+  <div class="ic"><h4>Reeds-Shepp Curves</h4>
+    <p>Extends Dubins by allowing <b>reverse driving</b>. Produces shorter paths.</p>
+    <span class="ma">Example: Lf-Rb-Lf
+(fwd-Left, back-Right, fwd-Left)</span>
+    <p><span style="color:var(--green)">Green=forward</span> <span style="color:var(--red)">Red=reverse</span></p>
+    <p>Used for <b>analytic expansion</b> in Hybrid A*.</p>
+  </div>
+  <div class="ic"><h4>Turning Circles</h4>
+    <p>At any pose, the robot can turn left or right with minimum radius r. This creates two tangent circles per pose — the building blocks of all Dubins/RS paths.</p>
+  </div>
+</div>
+</div></div>
+
+<!-- ============ TRAJECTORY PLANNING ============ -->
+<div class="section" id="sec-tr"><div class="layout">
+<div class="panel">
+  <div class="ps"><h3>Polynomial Order</h3><select id=tr-or onchange="TR.go()"><option value=cubic>Cubic (4 constraints)</option><option value=quintic selected>Quintic (6 constraints)</option></select></div>
+  <div class="ps"><h3>Start Conditions</h3>
+    <div class="sr"><label>x₀</label><input type=range id=tr-x0 min=0 max=10 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-x0-v>0.0</span></div>
+    <div class="sr"><label>ẋ₀</label><input type=range id=tr-v0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-v0-v>0.0</span></div>
+    <div class="sr"><label>ẍ₀</label><input type=range id=tr-a0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-a0-v>0.0</span></div>
+  </div>
+  <div class="ps"><h3>End Conditions</h3>
+    <div class="sr"><label>xf</label><input type=range id=tr-xf min=0 max=10 value=8 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-xf-v>8.0</span></div>
+    <div class="sr"><label>ẋf</label><input type=range id=tr-vf min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vf-v>0.0</span></div>
+    <div class="sr"><label>ẍf</label><input type=range id=tr-af min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-af-v>0.0</span></div>
+  </div>
+  <div class="ps"><h3>Parameters</h3>
+    <div class="sr"><label>T</label><input type=range id=tr-T min=0.5 max=10 value=4 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-T-v>4.0</span></div>
+    <div class="sr"><label>v max</label><input type=range id=tr-vl min=0.5 max=10 value=3 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vl-v>3.0</span></div>
+    <div class="sr"><label>a max</label><input type=range id=tr-al min=0.5 max=10 value=2 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-al-v>2.0</span></div>
+    <div class="ck"><input type=checkbox id=tr-sl checked onchange="TR.go()"> Show limit violations</div>
+  </div>
+</div>
+<div class="cc">
+  <span class="cl">Position x(t)</span><canvas id=trP width=600 height=140></canvas>
+  <span class="cl">Velocity ẋ(t)</span><canvas id=trV width=600 height=140></canvas>
+  <span class="cl">Acceleration ẍ(t)</span><canvas id=trA width=600 height=140></canvas>
+  <span class="cl">Jerk x⃛(t)</span><canvas id=trJ width=600 height=140></canvas>
+  <div class="sb" id=tr-stat>Quintic polynomial — smooth acceleration profile</div>
+</div>
+<div class="panel">
+  <div class="ic"><h4>Why Polynomials?</h4><p>Represent trajectories as continuous functions. Motors need smooth profiles — no instantaneous jumps in velocity or torque.</p></div>
+  <div class="ic"><h4>Cubic (3rd order)</h4><span class="ma">x(t) = c₀ + c₁t + c₂t² + c₃t³</span><p>4 coefficients → constrains position &amp; velocity at endpoints. <b>Cannot</b> constrain acceleration.</p></div>
+  <div class="ic"><h4>Quintic (5th order)</h4><span class="ma">x(t) = c₀+c₁t+c₂t²+c₃t³+c₄t⁴+c₅t⁵</span><p>6 coefficients → constrains position, velocity, <em>and acceleration</em>. Guarantees smooth acceleration.</p></div>
+  <div class="ic"><h4>Motor Limits</h4><p>Max RPM → <b>v_max</b>. Limited torque → <b>a_max</b>.</p><p style="color:var(--red)">Red shading = limit violations. Try increasing T or reducing endpoint constraints.</p></div>
+  <div class="ic"><h4>Jerk Minimization (QP)</h4><span class="ma">min J = ∫₀ᵀ ‖x⃛(t)‖² dt</span><p>Minimizing jerk → smoothest trajectories. Solvable as QP in milliseconds on MCUs.</p></div>
+</div>
+</div></div>
+
+<!-- ============ TEB ============ -->
+<div class="section" id="sec-tb"><div class="layout">
+<div class="panel">
+  <div class="ps"><h3>Time-Elastic Band</h3>
+    <button class="btn btn-go" onclick="TB.reset();TB.run()" style="width:100%">▶ Run TEB</button>
+    <button class="btn" onclick="TB.step()" style="width:100%;margin-top:.3rem">⏭ Step</button>
+    <button class="btn btn-r" onclick="TB.reset()" style="width:100%;margin-top:.3rem">⏹ Reset</button>
+  </div>
+  <div class="ps"><h3>Parameters</h3>
+    <div class="sr"><label>k obs</label><input type=range id=tb-ko min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=tb-ko-v>1.5</span></div>
+    <div class="sr"><label>k smooth</label><input type=range id=tb-ks min=0.1 max=5 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-ks-v>1.0</span></div>
+    <div class="sr"><label>k vel</label><input type=range id=tb-kv min=0.1 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=tb-kv-v>0.5</span></div>
+    <div class="sr"><label>v max</label><input type=range id=tb-vx min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=tb-vx-v>2.0</span></div>
+    <div class="sr"><label>r min</label><input type=range id=tb-rm min=0.3 max=3 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-rm-v>1.0</span></div>
+    <div class="sr"><label>iters</label><input type=range id=tb-it min=10 max=500 value=150 step=10 oninput="U(this)"><span class="sv" id=tb-it-v>150</span></div>
+    <div class="sr"><label>α (lr)</label><input type=range id=tb-lr min=.001 max=.1 value=.02 step=.001 oninput="U(this)"><span class="sv" id=tb-lr-v>0.020</span></div>
+  </div>
+  <div class="ps"><h3>Obstacles</h3><p style="font-size:.62rem;color:var(--dim);font-family:var(--fm)">Click canvas to add/remove</p>
+    <button class="btn btn-r" onclick="TB.clrObs()" style="width:100%">Clear Obstacles</button>
+  </div>
+</div>
+<div class="cc">
+  <canvas id=tbC width=600 height=600></canvas>
+  <div class="sb" id=tb-stat>Click to place obstacles, then run TEB optimization</div>
+</div>
+<div class="panel">
+  <div class="ic"><h4>Time-Elastic Bands</h4><p>TEB treats the path as a <b>rubber band</b> between start and goal, optimized by gradient descent.</p></div>
+  <div class="ic"><h4>Obstacle Repulsion</h4><span class="ma">F_obs ∝ 1/d² (repulsive)</span><p>Pushes band away from obstacles. Force ∝ inverse square distance.</p></div>
+  <div class="ic"><h4>Smoothness</h4><span class="ma">F_sm ∝ -(pᵢ₋₁ - 2pᵢ + pᵢ₊₁)</span><p>Minimizes curvature — internal rubber band tension.</p></div>
+  <div class="ic"><h4>Kinematic Limits</h4><p><b>Max velocity:</b> limits spacing.</p><p><b>Min turn radius:</b> prevents infeasible curvature.</p><p>These keep the band physically viable for the diff-drive robot.</p></div>
+</div>
+</div></div>
+
+<script>
+// ====== UTILS ======
+function U(el){const dp=el.step&&el.step.includes('.')?el.step.split('.')[1].length:0;document.getElementById(el.id+'-v').textContent=parseFloat(el.value).toFixed(dp)}
+function $(id){return document.getElementById(id)}
+function V(id){return parseFloat($(id).value)}
+function nA(a){while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a}
+function showSec(id,b){document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));document.querySelectorAll('.nb').forEach(x=>x.classList.remove('active'));$(id).classList.add('active');b.classList.add('active');if(id==='sec-cv')CV.draw();if(id==='sec-tr')TR.go();if(id==='sec-tb')TB.draw()}
+function actBtn(b){b.parentElement.querySelectorAll('.btn').forEach(x=>x.classList.remove('active'));b.classList.add('active')}
+class MH{constructor(){this.d=[]}size(){return this.d.length}push(x){this.d.push(x);this._u(this.d.length-1)}pop(){const t=this.d[0];const l=this.d.pop();if(this.d.length>0){this.d[0]=l;this._d(0)}return t}_u(i){while(i>0){const p=(i-1)>>1;if(this.d[i].f<this.d[p].f){[this.d[i],this.d[p]]=[this.d[p],this.d[i]];i=p}else break}}_d(i){const n=this.d.length;while(true){let s=i;const l=2*i+1,r=2*i+2;if(l<n&&this.d[l].f<this.d[s].f)s=l;if(r<n&&this.d[r].f<this.d[s].f)s=r;if(s!==i){[this.d[i],this.d[s]]=[this.d[s],this.d[i]];i=s}else break}}}
+
+// ============================================================
+// PATH PLANNING
+// ============================================================
+const PP=(function(){
+let GS=20,grid=[],S={r:2,c:2},G={r:17,c:17},tool='obstacle',md=false;
+let path=[],exp=[],arcs=[],isH=false;
+let gen=null,stepping=false,pAnim=null;
+let sR=false,sAnim=null,sS=null,sT=[],sE=[],sC=[],sTI=0,sWP=[];
+const cv=$('ppC'),cx=cv.getContext('2d');
+
+function iG(){grid=[];for(let r=0;r<GS;r++){grid[r]=[];for(let c=0;c<GS;c++)grid[r][c]=0}}
+iG();
+
+function cell(e){const rc=cv.getBoundingClientRect();const px=(e.clientX-rc.left)*(cv.width/rc.width);const py=(e.clientY-rc.top)*(cv.height/rc.height);const cs=cv.width/GS;const c=Math.floor(px/cs),r=Math.floor(py/cs);return(r>=0&&r<GS&&c>=0&&c<GS)?{r,c}:null}
+cv.addEventListener('mousedown',e=>{md=true;click(e)});
+cv.addEventListener('mousemove',e=>{if(md&&(tool==='obstacle'||tool==='erase'))click(e)});
+cv.addEventListener('mouseup',()=>md=false);cv.addEventListener('mouseleave',()=>md=false);
+cv.addEventListener('touchstart',e=>{e.preventDefault();md=true;click(e.touches[0])});
+cv.addEventListener('touchmove',e=>{e.preventDefault();if(md)click(e.touches[0])});
+cv.addEventListener('touchend',()=>md=false);
+function click(e){const cl=cell(e);if(!cl)return;if(tool==='obstacle')grid[cl.r][cl.c]=1;else if(tool==='erase')grid[cl.r][cl.c]=0;else if(tool==='start'){S=cl;grid[cl.r][cl.c]=0}else if(tool==='goal'){G=cl;grid[cl.r][cl.c]=0}draw()}
+
+function h(x1,y1,x2,y2){return Math.sqrt((x1-x2)**2+(y1-y2)**2)}
+
+// A* generators
+function* aG(conn){
+  const n4=[[0,1],[1,0],[0,-1],[-1,0]],n8=[...n4,[1,1],[-1,-1],[1,-1],[-1,1]];
+  const nb=conn===4?n4:n8,op=new MH(),sk=S.r+','+S.c;
+  op.push({k:sk,r:S.r,c:S.c,f:0});const gS={};gS[sk]=0;const cf={},ex=[];
+  while(op.size()>0){
+    const cu=op.pop();ex.push({r:cu.r,c:cu.c});
+    yield{t:'e',n:cu,ex,op:op.d.length};
+    if(cu.r===G.r&&cu.c===G.c){const p=[];let k=cu.k;while(k){const[rr,cc]=k.split(',').map(Number);p.push({r:rr,c:cc});k=cf[k]}yield{t:'d',p:p.reverse(),ex};return}
+    for(const[dr,dc]of nb){const nr=cu.r+dr,nc=cu.c+dc;if(nr<0||nr>=GS||nc<0||nc>=GS||grid[nr][nc])continue;const nk=nr+','+nc,mc=Math.sqrt(dr*dr+dc*dc),tg=gS[cu.k]+mc;if(!(nk in gS)||tg<gS[nk]){gS[nk]=tg;op.push({k:nk,r:nr,c:nc,f:tg+h(nr,nc,G.r,G.c)});cf[nk]=cu.k}}
+  }
+  yield{t:'d',p:[],ex};
+}
+
+function* aTD(){
+  const tp=V('pp-tp'),nb=[[0,1],[1,0],[0,-1],[-1,0],[1,1],[-1,-1],[1,-1],[-1,1]];
+  const op=new MH(),sk=S.r+','+S.c+',0.00';
+  op.push({k:sk,r:S.r,c:S.c,th:0,f:0});const gS={};gS[sk]=0;const cf={},ex=[];
+  while(op.size()>0){
+    const cu=op.pop();ex.push({r:cu.r,c:cu.c});
+    yield{t:'e',n:cu,ex};
+    if(cu.r===G.r&&cu.c===G.c){const p=[];let k=cu.k;while(k){const pts=k.split(',').map(Number);p.push({r:pts[0],c:pts[1],theta:pts[2]});k=cf[k]}yield{t:'d',p:p.reverse(),ex};return}
+    for(const[dr,dc]of nb){const nr=cu.r+dr,nc=cu.c+dc;if(nr<0||nr>=GS||nc<0||nc>=GS||grid[nr][nc])continue;const ma=Math.atan2(dc,dr),tc=Math.abs(nA(ma-cu.th))*tp,mc=Math.sqrt(dr*dr+dc*dc),tg=gS[cu.k]+mc+tc,nk=nr+','+nc+','+ma.toFixed(2);if(!(nk in gS)||tg<gS[nk]){gS[nk]=tg;op.push({k:nk,r:nr,c:nc,th:ma,f:tg+h(nr,nc,G.r,G.c)});cf[nk]=cu.k}}
+  }
+  yield{t:'d',p:[],ex};
+}
+
+function* hG(analytic){
+  const nS=+V('pp-ns'),aL=V('pp-al2'),oM=V('pp-hw'),v=1,dt=0.1,steps=Math.round(aL/(v*dt));
+  const strs=[];for(let i=0;i<nS;i++)strs.push(-oM+(2*oM*i)/(nS-1));
+  const op=new MH(),sx=S.c+.5,sy=S.r+.5,sth=V('pp-st'),gx=G.c+.5,gy=G.r+.5,gth=V('pp-gt');
+  function gk(x,y,t){return Math.floor(x)+','+Math.floor(y)+','+Math.round(nA(t)/(Math.PI/12))}
+  const sk=gk(sx,sy,sth);op.push({k:sk,x:sx,y:sy,th:sth,f:0});
+  const gS={};gS[sk]=0;const cf={},ex=[],aA=[];
+  let it=0;
+  while(op.size()>0&&it<60000){
+    it++;const cu=op.pop();const cr=Math.floor(cu.y),cc=Math.floor(cu.x);
+    ex.push({r:cr,c:cc});
+    yield{t:'e',n:{r:cr,c:cc,x:cu.x,y:cu.y,theta:cu.th},ex,arcs:aA};
+    if(Math.abs(cu.x-gx)<.8&&Math.abs(cu.y-gy)<.8){
+      const p=[{x:cu.x,y:cu.y,theta:cu.th}];let k=cu.k;while(cf[k]){if(cf[k].a)for(let i=cf[k].a.length-1;i>=0;i--)p.push(cf[k].a[i]);k=cf[k].pk}
+      yield{t:'d',p:p.reverse(),ex,arcs:aA,isH:true};return;
+    }
+    // Analytic expansion
+    if(analytic&&it%15===0){
+      const rs=rsConnect(cu.x,cu.y,cu.th,gx,gy,gth,1.5);
+      if(rs){let ok=true;for(const pt of rs){const gr=Math.floor(pt.y),gc=Math.floor(pt.x);if(gr<0||gr>=GS||gc<0||gc>=GS||grid[gr][gc]){ok=false;break}}
+      if(ok){const bp=[{x:cu.x,y:cu.y,theta:cu.th}];let k=cu.k;while(cf[k]){if(cf[k].a)for(let i=cf[k].a.length-1;i>=0;i--)bp.push(cf[k].a[i]);k=cf[k].pk}bp.reverse();yield{t:'d',p:[...bp,...rs],ex,arcs:aA,isH:true,an:true};return}}
+    }
+    for(const om of strs){
+      let nx=cu.x,ny=cu.y,nt=cu.th;const arc=[];let ok=true;
+      for(let s=0;s<steps;s++){nx+=v*Math.cos(nt)*dt;ny+=v*Math.sin(nt)*dt;nt+=om*dt;const gr=Math.floor(ny),gc=Math.floor(nx);if(gr<0||gr>=GS||gc<0||gc>=GS||grid[gr][gc]){ok=false;break}arc.push({x:nx,y:ny,theta:nt})}
+      if(!ok||!arc.length)continue;const ep=arc[arc.length-1];aA.push(arc);
+      const nk=gk(ep.x,ep.y,ep.theta),mc=aL+Math.abs(om)*.3,tg=gS[cu.k]+mc;
+      if(!(nk in gS)||tg<gS[nk]){gS[nk]=tg;op.push({k:nk,x:ep.x,y:ep.y,th:ep.theta,f:tg+h(ep.x,ep.y,gx,gy)});cf[nk]={pk:cu.k,a:arc}}
+    }
+  }
+  yield{t:'d',p:[],ex,arcs:aA,isH:true};
+}
+
+function rsConnect(x1,y1,t1,x2,y2,t2,r){
+  const d=Math.sqrt((x2-x1)**2+(y2-y1)**2);if(d<.3)return[{x:x2,y:y2,theta:t2}];
+  const pts=[],N=Math.max(15,Math.round(d*4)),tL=d*.5;
+  for(let i=1;i<=N;i++){const s=i/N;const h00=(1+2*s)*(1-s)*(1-s),h10=s*(1-s)*(1-s),h01=s*s*(3-2*s),h11=s*s*(s-1);
+    pts.push({x:h00*x1+h10*Math.cos(t1)*tL+h01*x2+h11*Math.cos(t2)*tL,y:h00*y1+h10*Math.sin(t1)*tL+h01*y2+h11*Math.sin(t2)*tL,theta:t1+nA(t2-t1)*s})}
+  return pts;
+}
+
+function algoUI(){const v=$('pp-al').value;$('pp-ho').style.display=(v==='hy'||v==='ha')?'block':'none';$('pp-to').style.display=v==='td'?'block':'none';$('pp-ia').style.display=v.startsWith('a')?'block':'none';$('pp-ih').style.display=v.startsWith('h')?'block':'none'}
+
+function resetP(){if(pAnim)cancelAnimationFrame(pAnim);pAnim=null;stepping=false;gen=null;path=[];exp=[];arcs=[];isH=false;$('pp-log').innerHTML='Ready...';$('m-pl').textContent=$('m-ne').textContent='—';draw()}
+function getGen(){const a=$('pp-al').value;if(a==='a4')return aG(4);if(a==='a8')return aG(8);if(a==='td')return aTD();if(a==='hy')return hG(false);if(a==='ha')return hG(true)}
+
+function proc(s){
+  if(s.t==='e'){
+    exp=s.ex;if(s.arcs)arcs=s.arcs;$('m-ne').textContent=exp.length;
+    const n=s.n,log=$('pp-log'),ln=document.createElement('div');ln.className='sa';
+    const ps=n.x!==undefined?`(${n.x.toFixed(1)},${n.y.toFixed(1)},θ=${(n.theta||0).toFixed(2)})`:`(${n.r},${n.c})`;
+    ln.textContent=`[${exp.length}] Expand ${ps}`;
+    const prev=log.querySelectorAll('.sa');if(prev.length>0)prev[prev.length-1].className='sd';
+    log.appendChild(ln);log.scrollTop=log.scrollHeight;if(log.children.length>300)log.removeChild(log.firstChild);
+    $('pp-stat').textContent=`Exploring #${exp.length}: ${ps}`;
+  }
+  if(s.t==='d'){
+    path=s.p;exp=s.ex;if(s.arcs)arcs=s.arcs;isH=!!s.isH;
+    $('m-pl').textContent=path.length;$('m-ne').textContent=exp.length;
+    let msg=path.length?`✓ Path: ${path.length} WP, ${exp.length} explored`:`✗ No path (${exp.length} explored)`;
+    if(s.an)msg+=' [Analytic expansion!]';
+    $('pp-stat').textContent=msg;const log=$('pp-log'),ln=document.createElement('div');ln.className='sa';ln.textContent=msg;log.appendChild(ln);
+    if(isH)sWP=path.map(p=>({x:p.x,y:p.y,theta:p.theta}));else sWP=path.map(p=>({x:p.c+.5,y:p.r+.5}));
+    draw();
+  }
+}
+
+function stepP(){if(!gen){gen=getGen();$('pp-log').innerHTML=''}const r=gen.next();if(!r.done)proc(r.value);draw()}
+
+function plan(){resetP();resetS();gen=getGen();$('pp-log').innerHTML='';stepping=true;const sp=+V('pp-ps');
+  function tick(){if(!stepping)return;for(let i=0;i<sp;i++){const r=gen.next();if(r.done){stepping=false;return}proc(r.value);if(r.value.t==='d'){stepping=false;return}}draw();pAnim=requestAnimationFrame(tick)}tick()}
+
+// Simulation
+function resetS(){sR=false;if(sAnim)cancelAnimationFrame(sAnim);sAnim=null;sS=null;sT=[];sE=[];sC=[];sTI=1;$('m-tl').textContent=$('m-me').textContent='—';$('pp-sb').textContent='▶ Simulate';drawE();drawC();draw()}
+function iS(){if(sWP.length<2){$('pp-stat').textContent='Plan a path first!';return false}const p0=sWP[0],p1=sWP[1];sS={x:p0.x,y:p0.y,theta:p0.theta!==undefined?p0.theta:Math.atan2(p1.y-p0.y,p1.x-p0.x)};sT=[{...sS}];sE=[];sC=[];sTI=1;return true}
+
+function dSS(){
+  if(sTI>=sWP.length)return false;
+  const dt=V('pp-dt'),vR=V('pp-vr'),wt=V('pp-wt'),Kx=V('pp-kx'),Ky=V('pp-ky'),Kt=V('pp-kt'),vM=V('pp-vm'),oM=V('pp-om');
+  const tg=sWP[sTI],pv=sWP[sTI-1],dx=tg.x-sS.x,dy=tg.y-sS.y;
+  let tTh=tg.theta!==undefined?tg.theta:Math.atan2(tg.y-pv.y,tg.x-pv.x);
+  const dth=nA(tTh-sS.theta),ex=Math.cos(sS.theta)*dx+Math.sin(sS.theta)*dy,ey=-Math.sin(sS.theta)*dx+Math.cos(sS.theta)*dy,eth=dth;
+  let vc=vR*Math.cos(eth)+Kx*ex,oc=vR*(Ky*ey+Kt*Math.sin(eth));
+  vc=Math.max(-vM,Math.min(vc,vM));oc=Math.max(-oM,Math.min(oc,oM));
+  sS.x+=vc*Math.cos(sS.theta)*dt;sS.y+=vc*Math.sin(sS.theta)*dt;sS.theta=nA(sS.theta+oc*dt);
+  sT.push({...sS});sE.push({ex,ey,etheta:eth});sC.push({v:vc,omega:oc});
+  if(Math.sqrt(dx*dx+dy*dy)<wt)sTI++;
+  let tl=0;for(let i=1;i<sT.length;i++)tl+=Math.sqrt((sT[i].x-sT[i-1].x)**2+(sT[i].y-sT[i-1].y)**2);
+  $('m-tl').textContent=tl.toFixed(1);$('m-me').textContent=sE.reduce((m,e)=>Math.max(m,Math.sqrt(e.ex*e.ex+e.ey*e.ey)),0).toFixed(2);
+  $('pp-stat').textContent=`WP ${sTI}/${sWP.length} | v=${vc.toFixed(2)} ω=${oc.toFixed(2)}`;
+  return sTI<sWP.length;
+}
+function stepS(){if(!sS&&!iS())return;dSS();draw();drawE();drawC()}
+function sim(){if(sR){sR=false;$('pp-sb').textContent='▶ Simulate';return}if(!sS&&!iS())return;sR=true;$('pp-sb').textContent='⏸ Pause';
+  function tick(){if(!sR)return;const sp=+V('pp-ss');for(let i=0;i<sp;i++){if(!dSS()){sR=false;$('pp-sb').textContent='▶ Simulate';$('pp-stat').textContent='Simulation complete!';break}}draw();drawE();drawC();if(sR)sAnim=requestAnimationFrame(tick)}tick()}
+
+// Drawing
+function draw(){
+  const W=cv.width,H=cv.height,cs=W/GS;cx.clearRect(0,0,W,H);
+  for(let r=0;r<GS;r++)for(let c=0;c<GS;c++){cx.fillStyle=grid[r][c]?'#3a2535':'#0f1520';cx.fillRect(c*cs,r*cs,cs,cs)}
+  cx.strokeStyle='#1a2535';cx.lineWidth=.5;for(let i=0;i<=GS;i++){cx.beginPath();cx.moveTo(i*cs,0);cx.lineTo(i*cs,H);cx.stroke();cx.beginPath();cx.moveTo(0,i*cs);cx.lineTo(W,i*cs);cx.stroke()}
+  if($('pp-se').checked&&exp.length){cx.fillStyle='rgba(168,123,239,0.1)';const seen=new Set();for(const n of exp){const k=n.r*1e4+n.c;if(!seen.has(k)){seen.add(k);cx.fillRect(n.c*cs,n.r*cs,cs,cs)}}}
+  if(stepping&&exp.length){const la=exp[exp.length-1];cx.fillStyle='rgba(232,210,74,0.25)';cx.fillRect(la.c*cs,la.r*cs,cs,cs);cx.strokeStyle='#e8d44a';cx.lineWidth=2;cx.strokeRect(la.c*cs,la.r*cs,cs,cs)}
+  if(arcs.length){cx.strokeStyle='rgba(168,123,239,0.05)';cx.lineWidth=1;for(const a of arcs){if(a.length<2)continue;cx.beginPath();cx.moveTo(a[0].x*cs,a[0].y*cs);for(let i=1;i<a.length;i++)cx.lineTo(a[i].x*cs,a[i].y*cs);cx.stroke()}}
+  if(path.length>1){cx.strokeStyle='#e85454';cx.lineWidth=2.5;cx.setLineDash([5,4]);cx.beginPath();if(isH){cx.moveTo(path[0].x*cs,path[0].y*cs);for(let i=1;i<path.length;i++)cx.lineTo(path[i].x*cs,path[i].y*cs)}else{cx.moveTo((path[0].c+.5)*cs,(path[0].r+.5)*cs);for(let i=1;i<path.length;i++)cx.lineTo((path[i].c+.5)*cs,(path[i].r+.5)*cs)}cx.stroke();cx.setLineDash([]);
+    if(isH||path[0].theta!==undefined){cx.strokeStyle='rgba(232,84,84,0.5)';cx.lineWidth=1.5;const step=Math.max(1,Math.floor(path.length/25));for(let i=0;i<path.length;i+=step){const p=path[i],px=isH?p.x*cs:(p.c+.5)*cs,py=isH?p.y*cs:(p.r+.5)*cs,th=p.theta||0,al=cs*.45;cx.beginPath();cx.moveTo(px,py);cx.lineTo(px+Math.cos(th)*al,py+Math.sin(th)*al);cx.stroke()}}}
+  if(sT.length>1){cx.strokeStyle='#4da6ff';cx.lineWidth=2;cx.beginPath();cx.moveTo(sT[0].x*cs,sT[0].y*cs);for(let i=1;i<sT.length;i++)cx.lineTo(sT[i].x*cs,sT[i].y*cs);cx.stroke()}
+  dPose(S.c+.5,S.r+.5,V('pp-st'),cs,'#45c878','S');dPose(G.c+.5,G.r+.5,V('pp-gt'),cs,'#e8924a','G');
+  if(sS&&sTI<sWP.length){const t=sWP[sTI];cx.strokeStyle='#e8924a';cx.lineWidth=2;cx.beginPath();cx.arc(t.x*cs,t.y*cs,cs*.25,0,Math.PI*2);cx.stroke()}
+  if(sS){const rx=sS.x*cs,ry=sS.y*cs;cx.fillStyle='#45c878';cx.beginPath();cx.arc(rx,ry,cs*.28,0,Math.PI*2);cx.fill();
+    if($('pp-sh').checked){const hl=cs*.6;cx.strokeStyle='#45c878';cx.lineWidth=2.5;cx.beginPath();cx.moveTo(rx,ry);cx.lineTo(rx+Math.cos(sS.theta)*hl,ry+Math.sin(sS.theta)*hl);cx.stroke();
+    const ax=rx+Math.cos(sS.theta)*hl,ay=ry+Math.sin(sS.theta)*hl;cx.fillStyle='#45c878';cx.beginPath();cx.moveTo(ax,ay);cx.lineTo(ax-Math.cos(sS.theta-.4)*cs*.18,ay-Math.sin(sS.theta-.4)*cs*.18);cx.lineTo(ax-Math.cos(sS.theta+.4)*cs*.18,ay-Math.sin(sS.theta+.4)*cs*.18);cx.closePath();cx.fill()}}
+}
+function dPose(x,y,th,cs,col,lbl){
+  cx.fillStyle=col;cx.beginPath();cx.arc(x*cs,y*cs,cs*.3,0,Math.PI*2);cx.fill();
+  cx.fillStyle='#0b0e14';cx.font=`bold ${Math.round(cs*.32)}px ${getComputedStyle(document.body).getPropertyValue('--fm')}`;cx.textAlign='center';cx.textBaseline='middle';cx.fillText(lbl,x*cs,y*cs);
+  const al=cs*.7;cx.strokeStyle=col;cx.lineWidth=2;cx.beginPath();cx.moveTo(x*cs,y*cs);cx.lineTo(x*cs+Math.cos(th)*al,y*cs+Math.sin(th)*al);cx.stroke();
+  const ax=x*cs+Math.cos(th)*al,ay=y*cs+Math.sin(th)*al;cx.fillStyle=col;cx.beginPath();cx.moveTo(ax,ay);cx.lineTo(ax-Math.cos(th-.5)*cs*.15,ay-Math.sin(th-.5)*cs*.15);cx.lineTo(ax-Math.cos(th+.5)*cs*.15,ay-Math.sin(th+.5)*cs*.15);cx.closePath();cx.fill();
+}
+
+function drawE(){pTS($('ppEC'),sE,[{k:'ex',c:'#4da6ff'},{k:'ey',c:'#45c878'},{k:'etheta',c:'#e8924a'}],['eₓ','eᵧ','eθ'])}
+function drawC(){pTS($('ppCC'),sC,[{k:'v',c:'#a87bef'},{k:'omega',c:'#e85454'}],['v','ω'])}
+function pTS(cv,data,sr,lb){
+  const cx=cv.getContext('2d'),W=cv.width,H=cv.height;cx.clearRect(0,0,W,H);cx.fillStyle='#080c12';cx.fillRect(0,0,W,H);
+  if(!$('pp-sp').checked)return;
+  if(data.length<2){cx.fillStyle='#6b7a90';cx.font='11px IBM Plex Mono';cx.textAlign='center';cx.fillText('Run simulation to see data',W/2,H/2);return}
+  cx.strokeStyle='#2a3040';cx.lineWidth=1;cx.beginPath();cx.moveTo(35,8);cx.lineTo(35,H-15);cx.lineTo(W-5,H-15);cx.stroke();
+  const my=H/2;cx.strokeStyle='#2a3040';cx.setLineDash([3,3]);cx.beginPath();cx.moveTo(35,my);cx.lineTo(W-5,my);cx.stroke();cx.setLineDash([]);
+  let mx=.1;for(const d of data)for(const s of sr)mx=Math.max(mx,Math.abs(d[s.k]||0));mx*=1.15;
+  const pW=W-40,pH=H-23,n=data.length;
+  for(const s of sr){cx.strokeStyle=s.c;cx.lineWidth=1.5;cx.beginPath();for(let i=0;i<n;i++){const px=35+(i/(n-1))*pW,py=my-(data[i][s.k]/mx)*(pH/2);if(!i)cx.moveTo(px,py);else cx.lineTo(px,py)}cx.stroke()}
+  cx.font='9px IBM Plex Mono';cx.textAlign='left';lb.forEach((l,i)=>{cx.fillStyle=sr[i].c;cx.fillText(l,W-15-lb.length*25+i*25,12)});
+  cx.fillStyle='#6b7a90';cx.textAlign='right';cx.fillText(mx.toFixed(1),33,12);cx.fillText((-mx).toFixed(1),33,H-16);cx.fillText('0',33,my+3);
+}
+
+draw();drawE();drawC();
+return{setTool(v){tool=v},clear(){iG();resetP();resetS();draw()},preset(){iG();for(let r=3;r<GS-5;r++)grid[r][Math.floor(GS/2)]=1;for(let c=Math.floor(GS/3);c<GS-2;c++)grid[Math.floor(GS*.7)][c]=1;for(let r=2;r<5;r++)for(let c=GS-5;c<GS-2;c++)grid[r][c]=1;S={r:1,c:1};G={r:GS-2,c:GS-2};resetP();resetS();draw()},resize(v){GS=v;iG();S={r:1,c:1};G={r:GS-2,c:GS-2};resetP();resetS();draw()},algoUI,plan,stepP,resetP,sim,stepS,resetS,draw}
+})();
+
+// ============================================================
+// DUBINS & REEDS-SHEPP
+// ============================================================
+const CV=(function(){
+const cv=$('cvC'),cx=cv.getContext('2d'),SC=30;
+
+function draw(){
+  const W=cv.width,H=cv.height;cx.clearRect(0,0,W,H);cx.fillStyle='#080c12';cx.fillRect(0,0,W,H);
+  cx.strokeStyle='#151f2a';cx.lineWidth=.5;for(let i=0;i<=20;i++){const p=i*SC;cx.beginPath();cx.moveTo(p,0);cx.lineTo(p,H);cx.stroke();cx.beginPath();cx.moveTo(0,p);cx.lineTo(W,p);cx.stroke()}
+
+  const sx=V('cv-sx'),sy=V('cv-sy'),sa=V('cv-sa'),gx=V('cv-gx'),gy=V('cv-gy'),ga=V('cv-ga'),R=V('cv-r');
+  const tp=$('cv-tp').value,sc=$('cv-sc').checked,sa2=$('cv-sa2').checked;
+
+  if(sc){cx.setLineDash([4,4]);cx.lineWidth=1;
+    [{x:sx,y:sy,a:sa,c:'rgba(69,200,120,'},{x:gx,y:gy,a:ga,c:'rgba(232,146,74,'}].forEach(p=>{
+      const lx=p.x-Math.sin(p.a)*R,ly=p.y+Math.cos(p.a)*R,rx=p.x+Math.sin(p.a)*R,ry=p.y-Math.cos(p.a)*R;
+      cx.strokeStyle=p.c+'0.25)';cx.beginPath();cx.arc(lx*SC,ly*SC,R*SC,0,Math.PI*2);cx.stroke();
+      cx.strokeStyle=p.c+'0.15)';cx.beginPath();cx.arc(rx*SC,ry*SC,R*SC,0,Math.PI*2);cx.stroke();
+    });cx.setLineDash([])}
+
+  // Generate all path samples via simulation
+  const paths=genPaths(sx,sy,sa,gx,gy,ga,R,tp==='reeds');
+  const names=tp==='dubins'?['LSL','RSR','LSR','RSL','RLR','LRL']:['LSL','RSR','LSR','RSL','RLR','LRL','Lb-Sb-Lb','Rb-Sb-Rb'];
+  const cols=['#e85454','#4da6ff','#45c878','#e8924a','#a87bef','#e8d44a','#4ae8d4','#ff69b4'];
+
+  if(sa2){paths.forEach((p,i)=>{if(!p||p.length<2)return;cx.strokeStyle=cols[i%cols.length];cx.globalAlpha=.3;cx.lineWidth=1.5;cx.beginPath();cx.moveTo(p[0].x*SC,p[0].y*SC);for(let j=1;j<p.length;j++)cx.lineTo(p[j].x*SC,p[j].y*SC);cx.stroke();cx.globalAlpha=1})}
+
+  let bi=-1,bl=1e9;paths.forEach((p,i)=>{if(!p||p.length<2)return;let l=0;for(let j=1;j<p.length;j++)l+=Math.sqrt((p[j].x-p[j-1].x)**2+(p[j].y-p[j-1].y)**2);if(l<bl){bl=l;bi=i}});
+  if(bi>=0){const bp=paths[bi];for(let j=1;j<bp.length;j++){cx.strokeStyle=bp[j].fwd!==false?'#45c878':'#e85454';cx.lineWidth=3;cx.beginPath();cx.moveTo(bp[j-1].x*SC,bp[j-1].y*SC);cx.lineTo(bp[j].x*SC,bp[j].y*SC);cx.stroke()}
+    $('cv-stat').textContent=`Best: ${names[bi]||bi} | Length: ${bl.toFixed(2)} | Radius: ${R}`}
+  else $('cv-stat').textContent='No valid path — try adjusting poses or radius';
+
+  // Poses
+  [{x:sx,y:sy,a:sa,c:'#45c878',l:'S'},{x:gx,y:gy,a:ga,c:'#e8924a',l:'G'}].forEach(p=>{
+    cx.fillStyle=p.c;cx.beginPath();cx.arc(p.x*SC,p.y*SC,8,0,Math.PI*2);cx.fill();
+    cx.fillStyle='#0b0e14';cx.font='bold 9px IBM Plex Mono';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(p.l,p.x*SC,p.y*SC);
+    const al=25;cx.strokeStyle=p.c;cx.lineWidth=2.5;cx.beginPath();cx.moveTo(p.x*SC,p.y*SC);cx.lineTo(p.x*SC+Math.cos(p.a)*al,p.y*SC+Math.sin(p.a)*al);cx.stroke()});
+}
+
+function genPaths(sx,sy,sa,gx,gy,ga,R,includeReverse){
+  const paths=[];
+  // For each of 6 Dubins types, simulate the arcs
+  const dirs=[[1,1],[-1,-1],[1,-1],[-1,1]]; // LSL,RSR,LSR,RSL
+
+  // Use a sampling approach: for each combo of (start-circle-side, goal-circle-side), find tangent
+  // L = turn left (center at x-Rsin(θ), y+Rcos(θ)), dir=+1 (CCW)
+  // R = turn right (center at x+Rsin(θ), y-Rcos(θ)), dir=-1 (CW)
+
+  const centers=[
+    {x:sx-Math.sin(sa)*R,y:sy+Math.cos(sa)*R}, // start-L
+    {x:sx+Math.sin(sa)*R,y:sy-Math.cos(sa)*R}, // start-R
+    {x:gx-Math.sin(ga)*R,y:gy+Math.cos(ga)*R}, // goal-L
+    {x:gx+Math.sin(ga)*R,y:gy-Math.cos(ga)*R}, // goal-R
+  ];
+
+  // CSC paths: LSL(0,2,+,+), RSR(1,3,-,-), LSR(0,3,+,-), RSL(1,2,-,+)
+  const csc=[[0,2,1,1],[1,3,-1,-1],[0,3,1,-1],[1,2,-1,1]];
+  for(const[ci,cj,d1,d2]of csc){
+    paths.push(makeCSC(sx,sy,sa,gx,gy,ga,centers[ci],centers[cj],R,d1,d2));
+  }
+  // CCC: RLR(1,3,-1), LRL(0,2,1)
+  paths.push(makeCCC(sx,sy,sa,gx,gy,ga,centers[1],centers[3],R,-1));
+  paths.push(makeCCC(sx,sy,sa,gx,gy,ga,centers[0],centers[2],R,1));
+
+  if(includeReverse){
+    // Add reverse paths: compute Dubins from goal→start reversed, then flip
+    const rc=[
+      {x:gx-Math.sin(ga+Math.PI)*R,y:gy+Math.cos(ga+Math.PI)*R},
+      {x:gx+Math.sin(ga+Math.PI)*R,y:gy-Math.cos(ga+Math.PI)*R},
+      {x:sx-Math.sin(sa+Math.PI)*R,y:sy+Math.cos(sa+Math.PI)*R},
+      {x:sx+Math.sin(sa+Math.PI)*R,y:sy-Math.cos(sa+Math.PI)*R},
+    ];
+    for(const[ci,cj,d1,d2]of csc){
+      const rp=makeCSC(gx,gy,ga+Math.PI,sx,sy,sa+Math.PI,rc[ci],rc[cj],R,d1,d2);
+      if(rp){const rev=rp.reverse().map(pt=>({...pt,fwd:false}));paths.push(rev)}
+    }
+  }
+  return paths;
+}
+
+function makeCSC(sx,sy,sa,gx,gy,ga,c1,c2,R,d1,d2){
+  const dx=c2.x-c1.x,dy=c2.y-c1.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d<1e-6)return null;
+  let tAngle;
+  if(d1===d2){tAngle=Math.atan2(dy,dx)}
+  else{const ratio=2*R/d;if(Math.abs(ratio)>1)return null;tAngle=Math.atan2(dy,dx)+(d1===1?Math.acos(ratio):-Math.acos(ratio))}
+
+  const pts=[],N=30;
+  const sAng=Math.atan2(sy-c1.y,sx-c1.x);
+  const eAng1=d1===d2?tAngle+(d1===1?-Math.PI/2:Math.PI/2):tAngle+(d1===1?-Math.PI/2:Math.PI/2);
+  let sw1=nA((eAng1-sAng)*d1);if(sw1<0)sw1+=2*Math.PI;
+  for(let i=0;i<=N;i++){const a=sAng+d1*sw1*(i/N);pts.push({x:c1.x+R*Math.cos(a),y:c1.y+R*Math.sin(a),fwd:true})}
+
+  const tp1=pts[pts.length-1];
+  let tp2;
+  if(d1===d2){tp2={x:tp1.x+(c2.x-c1.x),y:tp1.y+(c2.y-c1.y)}}
+  else{const ea=eAng1+Math.PI;tp2={x:c2.x+R*Math.cos(ea),y:c2.y+R*Math.sin(ea)}}
+  for(let i=1;i<=8;i++){const s=i/8;pts.push({x:tp1.x+(tp2.x-tp1.x)*s,y:tp1.y+(tp2.y-tp1.y)*s,fwd:true})}
+
+  const sAng2=Math.atan2(tp2.y-c2.y,tp2.x-c2.x),gAng=Math.atan2(gy-c2.y,gx-c2.x);
+  let sw2=nA((gAng-sAng2)*d2);if(sw2<0)sw2+=2*Math.PI;
+  for(let i=1;i<=N;i++){const a=sAng2+d2*sw2*(i/N);pts.push({x:c2.x+R*Math.cos(a),y:c2.y+R*Math.sin(a),fwd:true})}
+  return pts;
+}
+
+function makeCCC(sx,sy,sa,gx,gy,ga,c1,c2,R,dir){
+  const dx=c2.x-c1.x,dy=c2.y-c1.y,d=Math.sqrt(dx*dx+dy*dy);
+  if(d>4*R||d<1e-6)return null;
+  const mAng=Math.atan2(dy,dx),hA=Math.acos(Math.min(1,d/(4*R)));
+  const cm={x:(c1.x+c2.x)/2+dir*Math.sin(mAng)*Math.sqrt(Math.max(0,4*R*R-d*d/4))*0,y:(c1.y+c2.y)/2};
+  // Simplified: use midpoint offset
+  const offX=-dir*dy/d*Math.sqrt(Math.max(0,4*R*R-d*d/4)),offY=dir*dx/d*Math.sqrt(Math.max(0,4*R*R-d*d/4));
+  cm.x=(c1.x+c2.x)/2+offX;cm.y=(c1.y+c2.y)/2+offY;
+
+  const pts=[],N=25;
+  const sa1=Math.atan2(sy-c1.y,sx-c1.x),ta1=Math.atan2(cm.y-c1.y,cm.x-c1.x);
+  let sw1=nA((ta1-sa1)*dir);if(sw1<0)sw1+=2*Math.PI;
+  for(let i=0;i<=N;i++)pts.push({x:c1.x+R*Math.cos(sa1+dir*sw1*i/N),y:c1.y+R*Math.sin(sa1+dir*sw1*i/N),fwd:true});
+
+  const sa2=Math.atan2(pts[pts.length-1].y-cm.y,pts[pts.length-1].x-cm.x),ta2=Math.atan2(c2.y-cm.y,c2.x-cm.x);
+  // Mid arc is opposite direction
+  const ea2=Math.atan2(c2.y+R*Math.cos(ta2+Math.PI)-cm.y, c2.x+R*Math.sin(ta2+Math.PI)-cm.x);
+  let sw2=nA((ta2+Math.PI-sa2)*(-dir));if(sw2<0)sw2+=2*Math.PI;if(sw2>2*Math.PI)sw2-=2*Math.PI;
+  for(let i=1;i<=N;i++)pts.push({x:cm.x+R*Math.cos(sa2+(-dir)*sw2*i/N),y:cm.y+R*Math.sin(sa2+(-dir)*sw2*i/N),fwd:true});
+
+  const lp=pts[pts.length-1];const sa3=Math.atan2(lp.y-c2.y,lp.x-c2.x),ga3=Math.atan2(gy-c2.y,gx-c2.x);
+  let sw3=nA((ga3-sa3)*dir);if(sw3<0)sw3+=2*Math.PI;
+  for(let i=1;i<=N;i++)pts.push({x:c2.x+R*Math.cos(sa3+dir*sw3*i/N),y:c2.y+R*Math.sin(sa3+dir*sw3*i/N),fwd:true});
+  return pts;
+}
+
+draw();
+return{draw};
+})();
+
+// ============================================================
+// TRAJECTORY PLANNING
+// ============================================================
+const TR=(function(){
+function go(){
+  const ord=$('tr-or').value,x0=V('tr-x0'),v0=V('tr-v0'),a0=V('tr-a0'),xf=V('tr-xf'),vf=V('tr-vf'),af=V('tr-af'),T=V('tr-T'),vm=V('tr-vl'),am=V('tr-al');
+  let co;
+  if(ord==='cubic'){co=[x0,v0,(3*(xf-x0)/T/T)-(2*v0/T)-(vf/T),(-2*(xf-x0)/T/T/T)+(v0/T/T)+(vf/T/T),0,0]}
+  else{const c0=x0,c1=v0,c2=a0/2,T2=T*T,T3=T2*T,T4=T3*T,T5=T4*T;const b1=xf-c0-c1*T-c2*T2,b2=vf-c1-2*c2*T,b3=af-2*c2;co=[c0,c1,c2,(20*b1-8*T*b2+T2*b3)/(2*T3),(-30*b1+14*T*b2-2*T2*b3)/(2*T4),(12*b1-6*T*b2+T2*b3)/(2*T5)]}
+
+  const N=300,dt=T/N,pos=[],vel=[],acc=[],jrk=[];
+  for(let i=0;i<=N;i++){const t=i*dt,t2=t*t,t3=t2*t,t4=t3*t,t5=t4*t;
+    pos.push({t,v:co[0]+co[1]*t+co[2]*t2+co[3]*t3+co[4]*t4+co[5]*t5});
+    vel.push({t,v:co[1]+2*co[2]*t+3*co[3]*t2+4*co[4]*t3+5*co[5]*t4});
+    acc.push({t,v:2*co[2]+6*co[3]*t+12*co[4]*t2+20*co[5]*t3});
+    jrk.push({t,v:6*co[3]+24*co[4]*t+60*co[5]*t2})}
+
+  const sl=$('tr-sl').checked;
+  pP($('trP'),pos,T,'#4da6ff',null,null,'x(t)');
+  pP($('trV'),vel,T,'#45c878',sl?vm:null,sl?-vm:null,'ẋ(t)');
+  pP($('trA'),acc,T,'#e8924a',sl?am:null,sl?-am:null,'ẍ(t)');
+  pP($('trJ'),jrk,T,'#a87bef',null,null,'x⃛(t)');
+
+  const mv=vel.reduce((m,d)=>Math.max(m,Math.abs(d.v)),0),ma=acc.reduce((m,d)=>Math.max(m,Math.abs(d.v)),0);
+  let st=ord==='quintic'?'Quintic — smooth acceleration':'Cubic — accel may be discontinuous';
+  if(sl&&mv>vm)st+=' | ⚠ Vel exceeded!';if(sl&&ma>am)st+=' | ⚠ Accel exceeded!';
+  $('tr-stat').textContent=st;
+}
+
+function pP(cv,data,T,col,lH,lL,lbl){
+  const cx=cv.getContext('2d'),W=cv.width,H=cv.height;cx.clearRect(0,0,W,H);cx.fillStyle='#080c12';cx.fillRect(0,0,W,H);
+  const L=40,R=10,Tp=12,Bt=18,pW=W-L-R,pH=H-Tp-Bt;
+  cx.strokeStyle='#2a3040';cx.lineWidth=1;cx.beginPath();cx.moveTo(L,Tp);cx.lineTo(L,H-Bt);cx.lineTo(W-R,H-Bt);cx.stroke();
+  let mx=.1;for(const d of data)mx=Math.max(mx,Math.abs(d.v));if(lH!==null)mx=Math.max(mx,Math.abs(lH));mx*=1.15;
+  const zy=Tp+pH/2;cx.strokeStyle='#2a3040';cx.setLineDash([3,3]);cx.beginPath();cx.moveTo(L,zy);cx.lineTo(W-R,zy);cx.stroke();cx.setLineDash([]);
+  if(lH!==null){const hY=zy-(lH/mx)*(pH/2),loY=zy-(lL/mx)*(pH/2);cx.fillStyle='rgba(232,84,84,0.08)';cx.fillRect(L,Tp,pW,hY-Tp);cx.fillRect(L,loY,pW,H-Bt-loY);cx.strokeStyle='rgba(232,84,84,0.4)';cx.lineWidth=1;cx.setLineDash([5,3]);cx.beginPath();cx.moveTo(L,hY);cx.lineTo(W-R,hY);cx.stroke();cx.beginPath();cx.moveTo(L,loY);cx.lineTo(W-R,loY);cx.stroke();cx.setLineDash([])}
+  cx.strokeStyle=col;cx.lineWidth=2;cx.beginPath();for(let i=0;i<data.length;i++){const px=L+(data[i].t/T)*pW,py=zy-(data[i].v/mx)*(pH/2);if(!i)cx.moveTo(px,py);else cx.lineTo(px,py)}cx.stroke();
+  cx.fillStyle='#6b7a90';cx.font='9px IBM Plex Mono';cx.textAlign='right';cx.fillText(mx.toFixed(1),L-3,Tp+6);cx.fillText((-mx).toFixed(1),L-3,H-Bt-2);cx.fillText('0',L-3,zy+3);
+  cx.textAlign='center';cx.fillText('0',L,H-Bt+12);cx.fillText('T',W-R,H-Bt+12);
+  cx.fillStyle=col;cx.textAlign='left';cx.fillText(lbl,L+5,Tp+8);
+}
+
+go();return{go};
+})();
+
+// ============================================================
+// TEB
+// ============================================================
+const TB=(function(){
+const cv=$('tbC'),cx=cv.getContext('2d'),SC=30;
+let obs=[{x:8,y:6,r:1.5},{x:12,y:14,r:2},{x:6,y:13,r:1.2}],band=[],it=0,running=false,aId=null;
+
+cv.addEventListener('click',e=>{const rc=cv.getBoundingClientRect();const px=(e.clientX-rc.left)*(cv.width/rc.width)/SC,py=(e.clientY-rc.top)*(cv.height/rc.height)/SC;
+  let rm=false;for(let i=obs.length-1;i>=0;i--){if(Math.sqrt((px-obs[i].x)**2+(py-obs[i].y)**2)<obs[i].r){obs.splice(i,1);rm=true;break}}
+  if(!rm)obs.push({x:px,y:py,r:.8+Math.random()*.8});iB();draw()});
+
+function iB(){band=[];const N=30;for(let i=0;i<=N;i++){const s=i/N;band.push({x:2+s*16,y:3+s*14})}it=0}
+iB();
+
+function step(){
+  const ko=V('tb-ko'),ks=V('tb-ks'),kv=V('tb-kv'),vx=V('tb-vx'),rm=V('tb-rm'),lr=V('tb-lr');
+  for(let i=1;i<band.length-1;i++){
+    let fx=0,fy=0;
+    for(const o of obs){const dx=band[i].x-o.x,dy=band[i].y-o.y,d=Math.sqrt(dx*dx+dy*dy),mg=o.r+.5;if(d<mg+2){const f=ko*Math.max(0,mg+2-d)/Math.max(d,.1);fx+=f*dx/Math.max(d,.1);fy+=f*dy/Math.max(d,.1)}}
+    fx+=ks*(band[i-1].x-2*band[i].x+band[i+1].x);fy+=ks*(band[i-1].y-2*band[i].y+band[i+1].y);
+    const dxp=band[i+1].x-band[i].x,dyp=band[i+1].y-band[i].y,sl=Math.sqrt(dxp*dxp+dyp*dyp);
+    if(sl>vx){const e=kv*(sl-vx)/sl;fx+=e*dxp;fy+=e*dyp}
+    const dxm=band[i-1].x-band[i].x,dym=band[i-1].y-band[i].y,sm=Math.sqrt(dxm*dxm+dym*dym);
+    if(sm>vx){const e=kv*(sm-vx)/sm;fx+=e*dxm;fy+=e*dym}
+    band[i].x+=lr*fx;band[i].y+=lr*fy;
+  }
+  it++;$('tb-stat').textContent=`Iteration ${it}`;
+}
+
+function run(){if(running){running=false;return}running=true;const mx=+V('tb-it');let c=0;
+  function tick(){if(!running||c>=mx){running=false;return}step();c++;draw();aId=requestAnimationFrame(tick)}tick()}
+
+function reset(){running=false;if(aId)cancelAnimationFrame(aId);iB();draw();$('tb-stat').textContent='Ready'}
+
+function draw(){
+  const W=cv.width,H=cv.height;cx.clearRect(0,0,W,H);cx.fillStyle='#080c12';cx.fillRect(0,0,W,H);
+  cx.strokeStyle='#151f2a';cx.lineWidth=.5;for(let i=0;i<=20;i++){const p=i*SC;cx.beginPath();cx.moveTo(p,0);cx.lineTo(p,H);cx.stroke();cx.beginPath();cx.moveTo(0,p);cx.lineTo(W,p);cx.stroke()}
+  for(const o of obs){const g=cx.createRadialGradient(o.x*SC,o.y*SC,0,o.x*SC,o.y*SC,(o.r+1.5)*SC);g.addColorStop(0,'rgba(232,84,84,0.4)');g.addColorStop(1,'rgba(232,84,84,0.02)');cx.fillStyle=g;cx.beginPath();cx.arc(o.x*SC,o.y*SC,(o.r+1.5)*SC,0,Math.PI*2);cx.fill();cx.fillStyle='rgba(232,84,84,0.3)';cx.beginPath();cx.arc(o.x*SC,o.y*SC,o.r*SC,0,Math.PI*2);cx.fill();cx.strokeStyle='rgba(232,84,84,0.5)';cx.lineWidth=1.5;cx.stroke()}
+  if(band.length>1){for(let i=1;i<band.length;i++){let cv2=0;if(i>0&&i<band.length-1){const v1x=band[i].x-band[i-1].x,v1y=band[i].y-band[i-1].y,v2x=band[i+1].x-band[i].x,v2y=band[i+1].y-band[i].y;const cr=Math.abs(v1x*v2y-v1y*v2x)/Math.max(.01,Math.sqrt(v1x*v1x+v1y*v1y)*Math.sqrt(v2x*v2x+v2y*v2y));cv2=cr}const r=Math.min(255,Math.round(cv2*600));cx.strokeStyle=`rgb(${77+r},${Math.max(0,166-r)},255)`;cx.lineWidth=3;cx.beginPath();cx.moveTo(band[i-1].x*SC,band[i-1].y*SC);cx.lineTo(band[i].x*SC,band[i].y*SC);cx.stroke()}
+    for(const p of band){cx.fillStyle='#4da6ff';cx.beginPath();cx.arc(p.x*SC,p.y*SC,3,0,Math.PI*2);cx.fill()}}
+  if(band.length){cx.fillStyle='#45c878';cx.beginPath();cx.arc(band[0].x*SC,band[0].y*SC,8,0,Math.PI*2);cx.fill();cx.fillStyle='#0b0e14';cx.font='bold 9px IBM Plex Mono';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('S',band[0].x*SC,band[0].y*SC);
+    const la=band[band.length-1];cx.fillStyle='#e8924a';cx.beginPath();cx.arc(la.x*SC,la.y*SC,8,0,Math.PI*2);cx.fill();cx.fillStyle='#0b0e14';cx.fillText('G',la.x*SC,la.y*SC)}
+  cx.fillStyle='rgba(77,166,255,0.4)';cx.font='10px IBM Plex Mono';cx.textAlign='left';cx.textBaseline='top';cx.fillText(`iter: ${it}`,10,10);
+}
+
+draw();return{run,step,reset,clrObs(){obs=[];iB();draw()},draw};
+})();
+</script>
+</body>
+</html>
