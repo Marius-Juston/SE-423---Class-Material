@@ -1,0 +1,136 @@
+\documentclass[tikz,border=5pt]{standalone}
+\usepackage{amsmath}
+\usetikzlibrary{calc,arrows.meta,angles,quotes,backgrounds}
+
+\begin{document}
+
+\tikzset{
+    >={Stealth[scale=1.2]},
+    grid/.style={very thin, gray!20},
+    axis/.style={->, thin, black!50},
+    path/.style={thick, black!70},
+    robot/.style={draw, fill=gray!15, thin},
+    robot outline/.style={thin, black!80},
+    vec/.style={thick, blue, ->},
+    proj/.style={thin, dashed, blue!70},
+    labelstyle/.style={font=\small},
+    ref axis/.style={thin, dashed, gray!60} % Style for horizontal reference lines
+}
+
+\begin{tikzpicture}
+
+% =========================
+% BACKGROUND GRID
+% =========================
+\begin{scope}[on background layer]
+    \draw[grid, step=1] (-1,-1) grid (8,6);
+    \draw[axis] (-1,0) -- (8,0) node[right] {$X$};
+    \draw[axis] (0,-1) -- (0,6) node[above] {$Y$};
+\end{scope}
+
+% =========================
+% WAYPOINTS
+% =========================
+\coordinate (Pk) at (1.5,1);
+\coordinate (Pk1) at (6,5.2);
+
+\fill (Pk) circle (2pt)
+node[below left,labelstyle] {$\mathbf{p}_k(x_k,y_k)$};
+
+\fill (Pk1) circle (2pt)
+node[above right,labelstyle] {$\mathbf{p}_{k+1}(x_{k+1},y_{k+1})$};
+
+\draw[path] (Pk) -- (Pk1)
+node[midway, above left, sloped,labelstyle] {Path segment};
+
+% =========================
+% ROBOT STATE
+% =========================
+\coordinate (R) at (4,1.7);
+\def\thetaA{15} % Robot heading angle
+
+% robot body
+\begin{scope}[shift={(R)}, rotate=\thetaA]
+    \draw[robot outline, fill=lightgray!20] (0, 0) ellipse (0.5cm and 0.3cm); 
+    \draw[robot outline, fill=black!60] (0.1, 0.3) -- (0.1, 0.45) -- (-0.1, 0.45) -- (-0.1, 0.3) -- cycle; 
+    \draw[robot outline, fill=black!60] (0.1, -0.3) -- (0.1, -0.45) -- (-0.1, -0.45) -- (-0.1, -0.3) -- cycle;
+\end{scope}
+
+\fill (R) circle (1.5pt)
+node[below left,labelstyle] {$(x,y)$};
+
+% =========================
+% LOCAL FRAME
+% =========================
+\draw[->, thick, gray!80] (R) -- ++(\thetaA:1.6)
+node[below right,labelstyle] {$x_{robot}$};
+
+\draw[->, thick, gray!80] (R) -- ++(\thetaA+90:1.6)
+node[above left,labelstyle] {$y_{robot}$};
+
+% =========================
+% REFERENCE POINT
+% =========================
+\coordinate (Pr) at ($(Pk)!1!(Pk1)$);
+
+\fill (Pr) circle (2pt)
+node[right,labelstyle] {$(x_r,y_r, v_r, \omega_r)$};
+
+% =========================
+% POSITION ERROR VECTOR
+% =========================
+\draw[vec] (R) -- (Pr)
+node[midway, right,labelstyle]
+{$\mathbf{d}=\begin{bmatrix}x_r-x\\y_r-y\end{bmatrix}$};
+
+% =========================
+% PROJECTIONS (e_x, e_y)
+% =========================
+\coordinate (Xdir) at ($(R)+(\thetaA:1)$);
+\coordinate (Ydir) at ($(R)+(\thetaA+90:1)$);
+
+\coordinate (Px) at ($(R)!(Pr)!(Xdir)$);
+\coordinate (Py) at ($(R)!(Pr)!(Ydir)$);
+
+\draw[proj] (Pr) -- (Px);
+\draw[proj] (Pr) -- (Py);
+
+\draw[vec] (R) -- (Px)
+node[midway, below, sloped,labelstyle] {$e_x$};
+
+\draw[vec] (R) -- (Py)
+node[midway, below right,labelstyle] {$e_y$};
+
+% =========================
+% HEADING ANGLES & REFERENCES
+% =========================
+% 1. Horizontal Reference Lines
+\coordinate (R_Xref)  at ($(R)+(2,0)$);
+\coordinate (Pk_Xref) at ($(Pk)+(2,0)$);
+
+\draw[ref axis] (R) -- (R_Xref);
+\draw[ref axis] (Pk) -- (Pk_Xref);
+
+% 2. Direction Coordinates
+\coordinate (Rdir) at ($(R)+(\thetaA:1.5)$); % Robot heading vector
+\coordinate (RefdirAtR) at ($(R)+($(Pk1)-(Pk)$)$); % Path heading vector translated to R
+
+% 3. Draw a faint parallel path line at the robot to anchor the e_theta arc clearly
+\draw[ref axis] (R) -- (RefdirAtR);
+
+% 4. Angle Arcs (using quotes library for clean labeling)
+% theta_r at Pk
+\pic[draw, ->, angle radius=1.2cm, "$\theta_r$"{angle eccentricity=1.3, labelstyle}] 
+{angle = Pk_Xref--Pk--Pk1};
+
+% theta at Robot
+\pic[draw, ->, angle radius=1.0cm, "$\theta$"{angle eccentricity=1.3, labelstyle}] 
+{angle = R_Xref--R--Rdir};
+
+% e_theta (Error between robot heading and reference heading at Robot)
+\pic[draw, <->, blue, angle radius=1.3cm, "$e_\theta$"{blue, angle eccentricity=1.2, labelstyle}] 
+{angle = Rdir--R--RefdirAtR};
+
+\end{tikzpicture}
+
+\end{document}
