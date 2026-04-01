@@ -69,3 +69,7 @@ Useful regex for improve the LaTeX documents
 - You can show the [Color Space](https://marius-juston.github.io/SE-423---Class-Material/color_spaces.html) website that "I" made 
 - You can also add details for blob filter, shape filtering, area filtering, etc. since I forgot to add those
 - Be careful since you run out of time, be sure to show the blob detection algorithm a little earlier
+
+## L19 Extra
+
+- the Dubins & Reeds-Sheep vizualization is not correct
