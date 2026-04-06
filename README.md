@@ -73,3 +73,8 @@ Useful regex for improve the LaTeX documents
 ## L19 Extra
 
 - the Dubins & Reeds-Sheep vizualization is not correct
+
+## L20-21
+
+- The spacing for the lecture I made is horrible, making it very confusing.
+- A complete rewrite to show the flow better could be a good idea The pictures are good though.
