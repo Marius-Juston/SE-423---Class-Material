@@ -76,5 +76,11 @@ Useful regex for improve the LaTeX documents
 
 ## L20-21
 
+### L20
 - The spacing for the lecture I made is horrible, making it very confusing.
 - A complete rewrite to show the flow better could be a good idea The pictures are good though.
+
+### L21
+- The lecture ended up short about 20 minutes, you can increase the length of the lecture
+- you could add Lie Algebra Kalman filters
+- you could go into the homework? You could implement different sensor math? Questions?  
