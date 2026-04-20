@@ -81,8 +81,8 @@
 \draw[red, thin, dashed] (axis cs:0.66, -0.5) -- (axis cs:0.66, 0.5) -- (axis cs:-1.33, 0) -- cycle;
 \node[red, font=\large] at (axis cs:0.2, 0.2) {Q'};
 
-\node[font=\small] at (axis cs: 1.5, -1.5) {H = \(\sum_i (p_i-\bar{p})(q_i-\bar{q})^T\)};
-\node[font=\small] at (axis cs: 1.5, -1.8) {(Conceptual centering shown)};
+\node[font=\small] at (axis cs: 1.1, -1.4) {H = \(\sum_i (p_i-\bar{p})(q_i-\bar{q})^T\)};
+\node[font=\small] at (axis cs: 1.1, -1.7) {(Conceptual centering shown)};
 
 \end{axis}
 \end{tikzpicture}
@@ -222,7 +222,7 @@
 % Shift rotated, centered shape P'' (Fig 4, cyan) by q_bar to q_bar position.
 \addplot[mark=*, cyan, only marks, mark size=2.5pt, fill=green!30!cyan] coordinates {(3.666,3.5) (3.666,4.5) (1.666,4)};
 \draw[cyan, thick, fill=green!10!cyan, fill opacity=0.5] (axis cs:3.666,3.5) -- (axis cs:3.666,4.5) -- (axis cs:1.666,4) -- cycle;
-\node[cyan, font=\large] at (axis cs: 3, 3) {\(P_{aligned} = R(P-\bar{p}) + \bar{q}\)};
+\node[cyan, font=\large] at (axis cs: 3, 5) {\(P_{aligned} = R(P-\bar{p}) + \bar{q}\)};
 
 % original Q for comparison (faint dashed red)
 \draw[red!20!white, thin, dashed] (axis cs:3.66,3.5) -- (axis cs:3.66,4.5) -- (axis cs:1.66,4) -- cycle;
