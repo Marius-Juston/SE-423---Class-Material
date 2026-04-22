@@ -84,3 +84,7 @@ Useful regex for improve the LaTeX documents
 - The lecture ended up short about 20 minutes, you can increase the length of the lecture
 - you could add Lie Algebra Kalman filters
 - you could go into the homework? You could implement different sensor math? Questions?  
+
+### L22-23 & L24-25
+- Instead of doing L22-23 focus instead instead for the SLAM lectures (L24-25) since there is a LOT of content to be covered
+- The SLAM will be more applicable than the Computer Vision stuff anyways
