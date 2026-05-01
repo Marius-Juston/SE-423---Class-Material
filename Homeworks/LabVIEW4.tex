@@ -1,3 +1,10 @@
+% This MUST be the very first command, before \documentclass
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en                             % Sets the document language
+}
+
 \documentclass[11pt]{article}
 % \textbf{
 % This is an optional assignment if you would like to learn about how LABVIEW can be used like MATLAB/Simulink to simulate system equations.
@@ -5,10 +12,10 @@
 
 \def\AssignmentMode{LabVIEW}     % HW | Lab | LabVIEW
 \def\HWNum{4}
-\def\AssignmentText{This is an optional assignment if you would like to learn about how LABVIEW can be used like MATLAB/Simulink to simulate system equations.}
 
 % Course metadata
 \input{header}
+\def\AssignmentText{This is an optional assignment if you would like to learn about how LABVIEW can be used like MATLAB/Simulink to simulate system equations.}
 %
 \begin{document}
 

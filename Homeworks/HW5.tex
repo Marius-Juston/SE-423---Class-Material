@@ -1,3 +1,10 @@
+% This MUST be the very first command, before \documentclass
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en                             % Sets the document language
+}
+
 \documentclass[11pt]{article}
 
 % \textbf{
@@ -7,11 +14,13 @@
 
 \def\AssignmentMode{HW}     % HW | Lab | LabVIEW
 \def\HWNum{5}
-\def\AssignmentText{The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{13}{1}}. \\
-Remainder Due On GradeScope, by \textcolor{red}{\HWSubmitTime~\GetDate{13}{2}}.}
 
 % Course metadata
 \input{header}
+
+\def\AssignmentText{The Demonstration Check-Offs For Exercises 2 Are Due By \textcolor{highlight}{\HWCheckOffTime~\GetDate{13}{1}}. \\
+Remainder Due On GradeScope, by \textcolor{highlight}{\HWSubmitTime~\GetDate{13}{2}}.}
+
 %
 \begin{document}
 \MakeAssignmentTitle

@@ -1,3 +1,10 @@
+% This MUST be the very first command, before \documentclass
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en                             % Sets the document language
+}
+
 \documentclass[11pt]{article}
 
 % \textbf{
@@ -7,10 +14,11 @@
 % Required packages:
 \def\AssignmentMode{LabVIEW}     % HW | Lab | LabVIEW
 \def\HWNum{1}
-\def\AssignmentText{Due before \textcolor{red}{\LabVIEWSubmitTime~\GetDate{2}{3}}. Demonstrate your five LABVIEW programs working. Grading for this assignment is simply full credit if you did the assignment and no credit if you did not complete the assignment. Make sure to ask questions if you get stuck.}
 
 % Course metadata
 \input{header}
+\def\AssignmentText{Due before \textcolor{highlight}{\LabVIEWSubmitTime~\GetDate{2}{3}}. Demonstrate your five LABVIEW programs working. Grading for this assignment is simply full credit if you did the assignment and no credit if you did not complete the assignment. Make sure to ask questions if you get stuck.}
+
 %
 \begin{document}
 

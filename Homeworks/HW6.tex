@@ -1,3 +1,10 @@
+% This MUST be the very first command, before \documentclass
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en                             % Sets the document language
+}
+
 \documentclass[11pt]{article}
 
 % \textbf{
@@ -6,10 +13,11 @@
 
 \def\AssignmentMode{HW}     % HW | Lab | LabVIEW
 \def\HWNum{6}
-\def\AssignmentText{Due On Gradescope, by \textcolor{red}{\HWSubmitTime~\GetDate{15}{4}}.}
 
 % Course metadata
 \input{header}
+\def\AssignmentText{Due On Gradescope, by \textcolor{highlight}{\HWSubmitTime~\GetDate{15}{4}}.}
+
 %
 \begin{document}
 \MakeAssignmentTitle
