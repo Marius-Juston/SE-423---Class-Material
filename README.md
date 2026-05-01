@@ -53,6 +53,9 @@ Useful regex for improve the LaTeX documents
 
 To ensure compliance with UIUC's new accessibility initiaitive, please make sure that you follow the guide and instructions from https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr
 
+Especially look at this now: https://aelira.ai/us/blog/how-to-make-latex-accessible
+And for the website: https://wave.webaim.org/report#/https://marius-juston.github.io/SE-423---Class-Material/
+
 ## Notes to professors
 
 ## L5
