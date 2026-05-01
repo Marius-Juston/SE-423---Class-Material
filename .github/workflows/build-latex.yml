@@ -31,7 +31,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
-      CACHE_VERSION: v6 # Bumped version key due to dvisvgm addition
+      CACHE_VERSION: v7 # Bumped version key due to dvisvgm addition
 
       LUA_CACHE_DIR: ~/.texlive2025/texmf-var/luatex-cache
 
@@ -155,7 +155,9 @@ jobs:
             lineno \
             dvisvgm \
             fontspec \
-            luaotfload
+            luaotfload \
+            make4ht \
+            tex4ht
 
           # 3. Manually Generate STABLE formats only
           # This will now write correctly to TEXMFVAR because TEXMFOUTPUT is unset
@@ -203,6 +205,26 @@ jobs:
               
               latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
                 -shell-escape -outdir="$out_dir" "$texfile"
+            fi
+          done
+
+      - name: Compile HTML Versions (Accessibility)
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        run: |
+          # Ensure build directory exists
+          mkdir -p build
+          
+          for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
+              echo "Generating accessible HTML for $texfile..."
+              out_dir="build/$(dirname "$texfile")"
+              mkdir -p "$out_dir"
+              
+              # -l: uses LuaLaTeX
+              # -u: uses UTF-8
+              # -d: specifies output directory
+              # "mathml,mathjax": Generates MathML tags natively, and adds MathJax script for fallback rendering
+              make4ht -l -u -d "$out_dir" "$texfile" "mathml,mathjax"
             fi
           done
 
@@ -281,7 +303,16 @@ jobs:
           
           # Map build directory structure over to target (rsync acts as a spatial integration function)
           if [ -d "build" ]; then
-            rsync -av --prune-empty-dirs --include="*/" --include="*.pdf" --include="*.pptx"  --include="*.svg" --exclude="*" build/ deploy_target/
+            rsync -av --prune-empty-dirs \
+              --include="*/" \
+              --include="*.pdf" \
+              --include="*.pptx" \
+              --include="*.svg" \
+              --include="*.html" \
+              --include="*.css" \
+              --include="*.png" \
+              --include="*.jpg" \
+              --exclude="*" build/ deploy_target/
           fi
 
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
