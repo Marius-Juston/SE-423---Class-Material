@@ -31,7 +31,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
-      CACHE_VERSION: v5 # Bumped version key due to dvisvgm addition
+      CACHE_VERSION: v6 # Bumped version key due to dvisvgm addition
 
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
@@ -150,7 +150,9 @@ jobs:
             xcolor \
             etoolbox \
             lineno \
-            dvisvgm
+            dvisvgm \
+            fontspec \
+            luaotfload
 
           # 3. Manually Generate STABLE formats only
           # This will now write correctly to TEXMFVAR because TEXMFOUTPUT is unset
@@ -192,7 +194,7 @@ jobs:
               out_dir="build/$(dirname "$texfile")"
               mkdir -p "$out_dir"
               
-              latexmk -pdf -interaction=nonstopmode -file-line-error -halt-on-error \
+              latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
                 -shell-escape -outdir="$out_dir" "$texfile"
             fi
           done
@@ -210,7 +212,7 @@ jobs:
               echo "Converting TikZ figure: $texfile"
               
               # 1. Compile to PDF (standalone handles the cropping)
-              latexmk -pdf -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
+              latexmk -pdflua -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
               
               # 2. Convert PDF to SVG
               # --no-fonts: converts text to paths (prevents font rendering issues on the web)
