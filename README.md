@@ -49,6 +49,10 @@ Useful regex for improve the LaTeX documents
 | `\\begin\{subfigure\}(\[[a-zA-Z!]+\])?` | `\begin{subfigure}[b]` |
 
 
+## Accessibility
+
+To ensure compliance with UIUC's new accessibility initiaitive, please make sure that you follow the guide and instructions from https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr
+
 ## Notes to professors
 
 ## L5
