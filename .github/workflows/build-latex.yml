@@ -33,6 +33,8 @@ jobs:
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
       CACHE_VERSION: v6 # Bumped version key due to dvisvgm addition
 
+      LUA_CACHE_DIR: ~/.texlive2025/texmf-var/luatex-cache
+
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
     steps:
@@ -83,8 +85,9 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
-
+            ~/.cache/fontconfig
+            ${{ env.LUA_CACHE_DIR }}
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }}
       - name: Install TeX Live 2025
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
@@ -162,6 +165,8 @@ jobs:
           # 4. Refresh filename database
           mktexlsr
 
+          # 5. Pre-seed LuaLaTeX font database
+          luaotfload-tool --update
       - name: Save TeX Live Cache
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
@@ -169,7 +174,9 @@ jobs:
           path: |
             ${{ env.TL_DIR }}
             ~/.texlive2025
-          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }} # Bumped version key due to dvisvgm addition
+            ~/.cache/fontconfig
+            ${{ env.LUA_CACHE_DIR }}
+          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }}
 
       - name: Add TeX to Path
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
