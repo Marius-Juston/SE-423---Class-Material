@@ -256,6 +256,59 @@
 }
 
 % ============================
+% Accessibility helpers
+% ----------------------------
+% \AltStart{alt} ... \AltEnd opens a tagpdf Figure structure so
+% screen readers / assistive tech read the description in PDF/UA-2
+% conformant PDFs (lualatex + tagpdf only — a no-op elsewhere).
+% In tex4ht/HTML mode it emits an aria-label wrapper so the same
+% description is announced by web screen readers.
+%
+% Usage pairs:
+%   \AltStart{Description...}
+%     \includegraphics{...}                 % or any visual content
+%   \AltEnd
+%
+% Convenience wrappers \AltImg, \AltTikz, \AltMath are defined below
+% for the most common cases.
+\ifSEhtml
+  \NewDocumentCommand{\AltStart}{m}{\HCode{<span role="img" aria-label="#1">}}
+  \NewDocumentCommand{\AltEnd}{}{\HCode{</span>}}
+\else
+  % accsupp's \BeginAccSupp{Alt={text}} ... \EndAccSupp{} writes a
+  % real /Alt entry into the PDF marked-content sequence. This works
+  % under PDF/UA-2 with tagpdf active, nests cleanly inside the
+  % auto-tagged figure / subfigure / formula structures, and is the
+  % recipe the LaTeX accessibility documentation recommends for
+  % attaching alt text to figures and equations.
+  \usepackage{accsupp}
+  \NewDocumentCommand{\AltStart}{m}{%
+    \BeginAccSupp{method=plain,Alt={#1}}%
+  }
+  \NewDocumentCommand{\AltEnd}{}{%
+    \EndAccSupp{}%
+  }
+\fi
+
+% \AltImg[opts]{path}{alt} — \includegraphics with an alt description
+% suitable for PDF/UA-2 (Figure structure) and HTML (aria-label).
+\NewDocumentCommand{\AltImg}{O{} m m}{%
+  \AltStart{#3}\includegraphics[#1]{#2}\AltEnd
+}
+
+% \AltMath{alt}{math} — display equation tagged as a Formula with an
+% English-prose alt description. The math is typeset via \[ ... \].
+\ifSEhtml
+  \NewDocumentCommand{\AltMath}{m +m}{%
+    \HCode{<span role="math" aria-label="#1">}\[#2\]\HCode{</span>}%
+  }
+\else
+  \NewDocumentCommand{\AltMath}{m +m}{%
+    \BeginAccSupp{method=plain,Alt={#1}}\[#2\]\EndAccSupp{}%
+  }
+\fi
+
+% ============================
 % Annotated photo macro
 % ----------------------------
 % Wraps an \includegraphics in a tikzpicture so callers can draw
@@ -263,24 +316,25 @@
 % In tex4ht/HTML mode the whole tikzpicture is rendered as a single
 % SVG by dvisvgm, which silently drops embedded raster images, so we
 % fall back to a plain \includegraphics. The overlay annotations are
-% lost in HTML — describe them in alt text or surrounding prose if
-% they carry meaning, since this fallback exists purely so the photo
-% is visible at all in the accessible HTML build.
+% lost in HTML — describe them in the mandatory alt argument so the
+% information is preserved for assistive tech.
 % Usage:
-%   \Annotated[width=\linewidth]{path/to/photo.jpg}{%
+%   \Annotated[width=\linewidth]{path/to/photo.jpg}{Alt description}{%
 %       \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
 %   }
-\NewDocumentCommand{\Annotated}{O{} m +m}{%
+\NewDocumentCommand{\Annotated}{O{} m m +m}{%
+  \AltStart{#3}%
   \ifSEhtml
     \includegraphics[#1]{#2}%
   \else
     \begin{tikzpicture}
       \node[anchor=south west, inner sep=0] (img) {\includegraphics[#1]{#2}};
       \begin{scope}[x={(img.south east)}, y={(img.north west)}]
-        #3
+        #4
       \end{scope}
     \end{tikzpicture}%
   \fi
+  \AltEnd
 }
 
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}

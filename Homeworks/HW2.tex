@@ -40,6 +40,12 @@ Solder your breakout board to add the photo resistor circuit, connected to ADCIN
 %
 \begin{figure}[H]
 \centering
+\AltStart{%
+    Voltage-divider schematic. A light-dependent resistor (LDR) sits
+    between VCC at the top and a junction node in the middle; a
+    fixed 2.2 kilohm resistor sits between that junction and GND at
+    the bottom. The junction connects to an ADC pin on the left.%
+}
 \begin{tikzpicture}
 
 % Ground and VCC
@@ -75,6 +81,7 @@ Solder your breakout board to add the photo resistor circuit, connected to ADCIN
 ] at (-1.5,2.5) {ADC pin};
 
 \end{tikzpicture}
+\AltEnd
 \caption{Photo resistor circuit}
 \end{figure}
 %
@@ -210,6 +217,13 @@ Now that you see CMPA changes the brightness of LED1, initialize CPU Timer 2 so 
 %
 \begin{figure}[H]
     \centering
+\AltStart{%
+    Triangular brightness waveform: PWM duty cycle plotted against
+    time. The signal ramps linearly from 0 percent up to 100 percent
+    over the first half of the period, then back down to 0 percent
+    over the second half, repeating to produce a continuous breathe
+    effect on the LED.%
+}
 \begin{tikzpicture}[scale=1.1]
 
     % Axes
@@ -229,6 +243,7 @@ Now that you see CMPA changes the brightness of LED1, initialize CPU Timer 2 so 
         (7.5,4) --
         (10,0);
 \end{tikzpicture}
+\AltEnd
     \caption{Ramped LED1 Brightness Pattern}
 \end{figure}
 %
@@ -367,11 +382,19 @@ Answer the following questions about the SPI timing diagram on the next page. Re
     % vector PDFs; ship a sibling SVG (regenerated in CI from SPI.pdf)
     % and use it in HTML mode so the timing diagram renders without
     % losing vector fidelity.
+    \AltStart{%
+        Four-channel SPI timing diagram showing MOSI, MISO, SCK and
+        Slave Select waveforms over roughly 35 microseconds. SS is
+        active-low and pulses low for each of the six byte transfers;
+        SCK toggles eight times within each SS-low window. MOSI and
+        MISO each carry six bytes of data, transmitted MSB-first.%
+    }%
     \ifSEhtml
       \includegraphics[width=1\linewidth]{Homeworks/Figures/HW2/SPI.svg}%
     \else
       \includegraphics[width=1\linewidth]{Homeworks/Figures/HW2/SPI.pdf}%
     \fi
+    \AltEnd
     \caption{SPI Timing Diagram Analysis}
 \end{figure}
 

@@ -65,6 +65,10 @@ Give yourself a small introduction to working in Linux, especially at the comman
 \begin{subfigure}[b]{0.395\textwidth}
 \centering
 \Annotated[width=\linewidth]{Homeworks/Figures/HW4/Solder1.jpg}{%
+    Close-up of the breakout board's right edge, with a thick red
+    ellipse highlighting the pair of through-holes where the AA
+    battery pack's positive and negative leads must be soldered.%
+}{%
     \draw[red, ultra thick] (0.8,0.45) ellipse (0.15 and 0.075);%
 }
 % \caption{First image}
@@ -73,6 +77,11 @@ Give yourself a small introduction to working in Linux, especially at the comman
 \begin{subfigure}[b]{0.595\textwidth}
 \centering
 \Annotated[width=\linewidth]{Homeworks/Figures/HW4/Solder2.jpg}{%
+    Wider view of the demo breakout board after the battery pack
+    leads have been soldered, with a thick red ellipse around the
+    central solder joints to indicate the finished battery
+    connection.%
+}{%
     \draw[red, ultra thick] (0.6,0.5) ellipse (0.2 and 0.15);%
 }
 % \caption{Second image}
@@ -108,11 +117,18 @@ Obtain the rotation matrix, which converts base Jâ€™s coordinates into base $I$â
 \centering
 \begin{subfigure}[b]{0.45\textwidth}
 \centering
+\AltStart{%
+    Two coordinate frames in the plane. Inertial frame I has its
+    origin in the lower-left, x pointing right and y pointing up.
+    Body frame J is a rectangle placed above and to the right of I,
+    with its x-axis pointing down and its y-axis pointing right â€”
+    so frame J is rotated minus ninety degrees relative to I.%
+}
 \begin{tikzpicture}[>=Stealth, scale=1.2]
     % Inertial Frame I
     \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
     \draw[->, thick] (0,0) -- (0,2) node[above] {$I_y$};
-    
+
     % Body Frame J
     \begin{scope}[shift={(1.5,1.5)}]
         \draw (0,0) rectangle (0.6,0.8);
@@ -121,17 +137,24 @@ Obtain the rotation matrix, which converts base Jâ€™s coordinates into base $I$â
         \draw[->] (0.3,0.4) -- (1.3,0.4) node[right] {$J_y$};
     \end{scope}
 \end{tikzpicture}
+\AltEnd
 \caption{First Rotation}
 \label{fig:first_rotation}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.45\textwidth}
 \centering
+\AltStart{%
+    Inertial frame I in the upper-right with its standard x-right,
+    y-up axes. Body frame J is a rectangle in the lower-left whose
+    x-axis points left and y-axis points down â€” frame J is rotated
+    one hundred eighty degrees relative to I.%
+}
 \begin{tikzpicture}[>=Stealth, scale=1.2]
     % Inertial Frame I
     \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
     \draw[->, thick] (0,0) -- (0,2) node[above] {$I_y$};
-    
+
     % Body Frame J
     \begin{scope}[shift={(-1.5, -0.5)}]
         \draw (0,0) rectangle (0.8,0.6);
@@ -140,11 +163,19 @@ Obtain the rotation matrix, which converts base Jâ€™s coordinates into base $I$â
         \draw[->] (0.4,0.3) -- (0.4,-0.6) node[below] {$J_y$};
     \end{scope}
 \end{tikzpicture}
+\AltEnd
 \caption{Second Rotation}
 \label{fig:second_rotation}
 \end{subfigure}
 \begin{subfigure}[b]{0.45\textwidth}
 \centering
+\AltStart{%
+    Body frame J at an arbitrary angle theta from inertial frame I.
+    A dashed reference line and a dashed arc labelled theta indicate
+    the rotation angle measured from frame I's x-axis to frame J's
+    x-axis, with the body shown rotated counter-clockwise by roughly
+    two hundred twenty-five degrees in the example diagram.%
+}
 \begin{tikzpicture}[>=Stealth, scale=1.2]
     % Inertial Frame I
     \draw[->, thick] (0,0) node[below left] {$I_o$} -- (2,0) node[right] {$I_x$};
@@ -173,6 +204,7 @@ Obtain the rotation matrix, which converts base Jâ€™s coordinates into base $I$â
         \node at (5.2,2.9) {\large $\theta$};
     \end{scope}
 \end{tikzpicture}
+\AltEnd
 \caption{Third Rotation}
 \label{fig:third_rotation}
 \end{subfigure}
@@ -216,6 +248,13 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 % Figures/HW4/TransistorCircuit.json
 \begin{figure}[H]
     \centering
+\AltStart{%
+    Schematic of a TIP122 NPN transistor wired as a low-side switch.
+    The GPIO drives the transistor base through a base resistor RB.
+    The collector connects to an ultra-bright LED in series with a
+    47-ohm current-limit resistor, both powered from the +6V rail.
+    The emitter ties to ground (routed for the student).%
+}
 \begin{tikzpicture}
 	% Paths, nodes, and wires:
 	\draw (6.75, 8.25) to[american resistor, l={$RB$}] (9.16, 8.25);
@@ -233,6 +272,7 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 	\draw (6.75, 8.25) -- (5.5, 8.25);
 	\node[circ](N6) at (5.5, 8.25){} node[anchor=east] at (N6.text){$GPIO$};
 \end{tikzpicture}
+\AltEnd
     \caption{Transistors}
     \label{fig:transistor}
 \end{figure}
@@ -240,6 +280,15 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 % Figures/HW4/Circuit.json
 \begin{figure}[H]
     \centering
+\AltStart{%
+    Schematic of the TIP122 transistor driving a DIP05-1A57 reed
+    relay in parallel with a fly-back diode (1N4003). The relay's
+    coil is energised when the GPIO turns the transistor on; the
+    relay's normally-open contacts then close, completing a +6V
+    circuit through a standard LED in series with a 47-ohm
+    resistor. Pin numbers 1 through 14 of the DIP package are
+    labelled around the relay symbol.%
+}
 \begin{tikzpicture}
 	% Paths, nodes, and wires:
 	\draw (3.25, 5.48) to[american resistor, l={$RB$}] (5.66, 5.48);
@@ -286,6 +335,7 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 	\node[ocirc](N21) at (9.75, 10.25){} node[anchor=east] at (N21.text){$13$};
 	\node[ocirc](N22) at (9.75, 10.75){} node[anchor=south east] at (N22.text){$14$};
 \end{tikzpicture}
+\AltEnd
     \caption{Circuit}
     \label{fig:circuit}
 \end{figure}
@@ -304,6 +354,15 @@ For this assignment, I would like you to expand on the state machine and pseudoc
 %
 \begin{figure}[H]
     \centering
+    \AltStart{%
+        Top-down diagram of the robot's LIDAR field of view: a fan
+        of sixteen radial wedges spanning two hundred forty degrees
+        in front of a small central LiDAR unit, from minus one
+        hundred twenty degrees on the robot's right to plus one
+        hundred twenty degrees on its left. Dashed lines mark the
+        forward and side axes; an arrow labelled "LiDAR (small
+        circle)" points to the sensor at the centre.%
+    }
     \begin{tikzpicture}
 
     % Define parameters for easy adjustment
@@ -336,6 +395,7 @@ For this assignment, I would like you to expand on the state machine and pseudoc
     \draw[line width=1.5pt, -{Latex[length=3mm, width=4mm]}] (-2.5,0) -- (-0.5,0);
     \node[anchor=south, align=center, font=\sffamily\bfseries] at (-2.8,0) {LiDAR (small circle)};
 \end{tikzpicture}
+\AltEnd
     \caption{LIDAR Viewpoint}
     \label{fig:placeholder}
 \end{figure}

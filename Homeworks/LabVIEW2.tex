@@ -66,17 +66,31 @@ Location of the blocks that may be new to you for this assignment:
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture1.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture1.png}{%
+        Reference VI front panel: an array of numeric controls and
+        indicators wired through Boolean comparators that map raw
+        I16 ADC counts to engineering units and assemble the result
+        into a cluster.%
+    }
 \end{figure}
 %
 \begin{landscape}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture2.png}
+        \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture2.png}{%
+            Block diagram (true case) of the I16-conversion VI: the
+            true branch of a Case structure unbundles the input
+            cluster, applies scaling math, and re-bundles the
+            converted values for output.%
+        }
     \end{figure}
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.2\linewidth]{Homeworks/Figures/LabVIEW2/Picture3.png}
+        \AltImg[width=0.2\linewidth]{Homeworks/Figures/LabVIEW2/Picture3.png}{%
+            Block diagram, false case: the input cluster is passed
+            through to the output unchanged when the case selector
+            is false.%
+        }
         \caption{False Case}
     \end{figure}
 \end{landscape}
@@ -100,7 +114,12 @@ Then, before running the LabVIEW application, open MATLAB and type the command â
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture4.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture4.png}{%
+        TCP echo VI front panel: numeric controls for two values to
+        send, indicators for the two values received back, an IP
+        address text box, SEND and STOP buttons, and a connection-
+        status indicator.%
+    }
 \end{figure}
 %
 \begin{landscape}
@@ -108,20 +127,35 @@ Then, before running the LabVIEW application, open MATLAB and type the command â
 \centering
 \begin{subfigure}[b]{0.95\linewidth}
 \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture5.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture5.png}{%
+        TCP echo VI block diagram: TCP Open Connection, an Event
+        structure inside a While loop with cases for SEND, Timeout,
+        and STOP, formatting the two numbers into a string,
+        TCP Write, TCP Read, Scan From String to recover the two
+        numbers, and TCP Close Connection on exit.%
+    }
 % \caption{First image}
 \end{subfigure}
 \begin{subfigure}[b]{0.485\linewidth}
 \centering
 \caption{Showing the Timeout Event}
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture6.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture6.png}{%
+        Detail of the Event structure's Timeout frame: when no
+        front-panel event fires within the timeout interval, the VI
+        polls connection state and updates a heartbeat indicator.%
+    }
 % \caption{First image}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.485\linewidth}
 \centering
 \caption{Stop: Value Change Event}
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture7.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture7.png}{%
+        Detail of the Event structure's "Stop: Value Change" frame:
+        when the Stop button is pressed, the loop's continue input
+        is wired false, terminating the While loop after closing the
+        TCP connection.%
+    }
 % 
 \end{subfigure}
 \end{figure}

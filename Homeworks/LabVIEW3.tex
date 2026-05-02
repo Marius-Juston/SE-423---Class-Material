@@ -41,12 +41,22 @@ For this next exercise, I would like you to reproduce the VI shown in the pictur
 %
 \begin{figure}[H] 
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture1.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture1.png}{%
+        Front panel of the Control and Simulation example VI: a
+        waveform chart plotting simulation output y over time, with
+        gain and time-constant numeric controls, and a Stop button.%
+    }
 \end{figure}
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture2.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture2.png}{%
+        Block diagram of the Control and Simulation example VI: two
+        Control and Simulation Loops run in parallel — the first
+        runs the dynamic simulation and writes y to a Shared
+        Variable named SaveData (orange node) with Real-Time FIFO,
+        the second reads SaveData and feeds the chart.%
+    }
 \end{figure}
 %
 Pointers/Instructions
@@ -58,12 +68,20 @@ Pointers/Instructions
 \centering
 \begin{subfigure}[b]{0.485\linewidth}
 \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture3.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture3.png}{%
+        Configure Simulation Parameters dialog for the first loop:
+        ODE solver, fixed timestep, final time, and Processor
+        Assignment set to 0.%
+    }
 % \caption{First image}
 \end{subfigure}
 \begin{subfigure}[b]{0.485\linewidth}
 \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture4.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW3/Picture4.png}{%
+        Configure Simulation Parameters dialog for the second loop:
+        same settings as the first, except Processor Assignment is
+        set to 1 so the two loops run on different cores.%
+    }
 % \caption{First image}
 \end{subfigure}
 \end{figure}

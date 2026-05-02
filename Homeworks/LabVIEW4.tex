@@ -55,22 +55,42 @@ if (velocity > 0) {
 \item More steps continue below.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture1.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture1.png}{%
+        Reference VI front panel: a SimTime Waveform graph plots two
+        signals (the system response and the friction-compensated
+        response) over time, with numeric controls for gain, friction
+        deadband, and a stop button.%
+    }
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture2.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture2.png}{%
+        Block diagram of the reference VI inside a Control and
+        Simulation Loop: a transfer-function block, a derivative
+        approximation 100s over (s+100), the Friction Compensation
+        sub-network, and a Build Array feeding the SimTime Waveform
+        graph.%
+    }
 \end{figure}
 \item Now, as a final task for this VI, change the Friction Compensation part of the VI into a SubVI. See the following tutorial to help you create this SubVI from the blocks already in your simulation. \url{https://www.youtube.com/watch?v=zr2qqv1F4kk}   
 \item Make a simple Icon for your VI and connect the inputs and outputs to the pattern shown in the picture below. There is also another picture below of the simulation with the SubVI.  
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{Homeworks/Figures/LabVIEW4/Picture3.png}
+    \AltImg[width=0.5\linewidth]{Homeworks/Figures/LabVIEW4/Picture3.png}{%
+        SubVI icon and connector pane layout: a small custom icon,
+        with the connector pane wired so the simulation input is on
+        the left terminal and the friction-compensated output is on
+        the right terminal.%
+    }
     \caption{Picture of Icon and Pattern to use}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture4.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture4.png}{%
+        Block diagram with the friction-compensation logic factored
+        out into a single SubVI tile, leaving the rest of the
+        simulation unchanged.%
+    }
     \caption{Picture with SubVI}
 \end{figure}
 \item Now, either create a new VI, or you can copy the Simulation Loop and all of its contents and run two simulation loops in one VI.  
@@ -78,7 +98,12 @@ if (velocity > 0) {
 \item To add a variable to a formula node, right-click on an edge of the formula node and select “Add Input.”  To add an output for the formula, right-click on an edge and select “Add Output.”
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture5.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW4/Picture5.png}{%
+        Block diagram variant where the friction-compensation SubVI
+        has been replaced by a Formula Node containing equivalent C
+        code; inputs and an output are added on the node's left and
+        right edges respectively.%
+    }
 \end{figure}
 \end{enumerate}
 %

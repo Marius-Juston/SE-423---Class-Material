@@ -38,7 +38,13 @@ Reproduce (does not have to be exactly the same) the Fahrenheit to Celsius LABVI
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture1.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture1.png}{%
+        Reference LabVIEW VI for the Fahrenheit-to-Celsius converter:
+        a front panel with a numeric Fahrenheit input control, a
+        Celsius output indicator, and a Stop boolean button; the
+        block diagram wraps the conversion math in a While loop that
+        runs until the Stop button is pressed.%
+    }
 \end{figure}
 %
 \Ex[Sequence Structures]
@@ -59,7 +65,12 @@ To give you an introduction to sequence structures, reproduce the VI demonstrate
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture2.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture2.png}{%
+        LabVIEW block diagram demonstrating a flat sequence
+        structure: a multi-frame sequence orchestrates a series of
+        steps in a fixed order, with a Case structure embedded inside
+        one frame to branch behaviour based on a boolean input.%
+    }
 \end{figure}
 %
 \Ex[Event Structures]
@@ -68,7 +79,13 @@ To give you an introduction to event structures, reproduce the VI demonstrated i
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture3.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture3.png}{%
+        LabVIEW block diagram showing an Event structure inside a
+        While loop. The Event structure registers cases for front
+        panel events (button clicks, value changes) and only
+        executes work when one of those events fires, replacing the
+        prior polling implementation.%
+    }
 \end{figure}
 %
 \Ex[Multi-dimensional array]
@@ -78,7 +95,12 @@ Read through the Array and Clusters Tutorial at \url{https://www.youtube.com/wat
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture4.png}
+    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW1/Picture4.png}{%
+        LabVIEW block diagram building a 2-D array with nested For
+        loops that fill each element with a sine value, then using
+        Index Array nodes to extract a single row, a single column,
+        and a single element from the resulting matrix.%
+    }
 \end{figure}
 %
 \Ex[Cluster]
@@ -87,7 +109,12 @@ Create a Cluster and then produce two Clusters similar to the first.
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.7\linewidth]{Homeworks/Figures/LabVIEW1/Picture5.png}
+    \AltImg[width=0.7\linewidth]{Homeworks/Figures/LabVIEW1/Picture5.png}{%
+        LabVIEW front panel and block diagram showing three Cluster
+        controls: one source cluster bundling several heterogeneous
+        controls, and two derived clusters built by unbundling and
+        re-bundling fields from the original.%
+    }
 \end{figure}
 %
 \end{document}
