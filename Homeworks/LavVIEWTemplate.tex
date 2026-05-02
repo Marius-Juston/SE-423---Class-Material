@@ -1,9 +1,15 @@
-% This MUST be the very first command, before \documentclass
+% This MUST be the very first command, before \documentclass.
+% We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
+% (testphase = phase-III) is incompatible with the htlatex DVI pipeline
+% and would error with "Generic hooks cannot be added to '\addcontentsline'".
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
+\ifdefined\HCode\else
 \DocumentMetadata{
   testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
   pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
   lang = en                             % Sets the document language
 }
+\fi
 
 \documentclass[11pt]{article}
 % Required packages:
