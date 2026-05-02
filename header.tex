@@ -73,6 +73,11 @@
 \ifSEhtml
   % \Css{body { background-color: white; color: black; }}
 
+  % --- FIX FOR LISTINGS (lstinline and lstlisting) IN DARK MODE ---
+  % \Css{code.lstinline { color: inherit !important; background: transparent !important; }}
+  % \Css{pre.lstlisting { color: inherit !important; background: transparent !important; }}
+  % \Css{pre.lstinputlisting { color: inherit !important; background: transparent !important; }}
+
 
   \usepackage{fvextra}
   % minted is NOT loaded in HTML mode. We provide a verbatim stand-in so
