@@ -57,7 +57,8 @@ void main(void)
     ....
     // Configure CPU-Timer 0, 1, and 2 to interrupt every second:
     // 200MHz CPU Freq, 1 second Period (in uSeconds)
-    ConfigCpuTimer(&CpuTimer0, 200, 5000); //|\textcolor{red}{\textbf{AAJ}}| Set CPU Timer 0 to call its interrupt function every 5ms. This is the specified sample rate for the control loop calculations.
+    ConfigCpuTimer(&CpuTimer0, 200, 5000); //|\textcolor{red}{\textbf{AAJ}}| Set CPU Timer 0 to call its interrupt function every 5ms. 
+                                           // This is the specified sample rate for the control loop calculations.
     ConfigCpuTimer(&CpuTimer1, 200, 20000);
     ConfigCpuTimer(&CpuTimer2, 200, 40000);
     .... Omitted Code
@@ -72,20 +73,21 @@ void main(void)
     while(1)
     {
         if (UARTPrint == 1 ) {
-            // |\textcolor{red}{\textbf{AAJ}}| Here I am using GPIO67 to see how much time the serial_printf function takes to run. In lab I will connect the Oscilloscope
-            // to GPIO67's pin and measure the width of the pulse created by setting GPIO67 high (3.3Volts) before the function is called and then
-            // setting GPIO67 low (0Volts) after the function is completed. GPIO67 is controlled by the GPC registers. GPIO67 is the 4th bit
-            // in the GPC registers. Bit 0 is for GPIO64 Bit 1 is for GPIO65, Bit 2 is for GPIO66, Bit 3 is for GPIO67, Bit 4 is for GPIO68 and so on.
-            // The below bitfield C statement hides the bit number from me and allows me to just set the associated bit pertaining to GPIO67.
-            // Setting a bit to 1 in the GPCSET register causes that associated output pin to be high (3.3 Volts).
-            // Setting a bit to 0 in the GPCSET register does nothing.
+            // |\textcolor{red}{\textbf{AAJ}}| Here I am using GPIO67 to see how much time the serial_printf function takes to run. 
+            // In lab I will connect the Oscilloscope to GPIO67's pin and measure the width of the pulse created by setting GPIO67
+            // high (3.3Volts) before the function is called and then setting GPIO67 low (0Volts) after the function is completed. 
+            // GPIO67 is controlled by the GPC registers. GPIO67 is the 4th bit in the GPC registers. Bit 0 is for GPIO64 Bit 1 
+            // is for GPIO65, Bit 2 is for GPIO66, Bit 3 is for GPIO67, Bit 4 is for GPIO68 and so on. The below bitfield C 
+            // statement hides the bit number from me and allows me to just set the associated bit pertaining to GPIO67. Setting 
+            // a bit to 1 in the GPCSET register causes that associated output pin to be high (3.3 Volts). Setting a bit to 0 
+            //in the GPCSET register does nothing.
             GpioDataRegs.GPCSET.bit.GPIO67 = 1;
             //|\textcolor{red}{\textbf{AAJ}}| Printing Desired and Actual Speed %.3f tells printf to print 3 decimal places of float variable
             serial_printf(&SerialA,"%.3f Desired Speed, %.3f Actual Speed\r\n",Vref,Vactual);
             UARTPrint = 0;
             // |\textcolor{red}{\textbf{AAJ}}| Set GPIO67 to low (0Volts) so Oscilloscope and see when serial_printf function is complete
-            // Setting a bit to 1 in the GPCCLEAR register causes that associated output pin to be low (0 Volts). Setting a bit
-            // to 0 in the GPCCLEAR register does nothing.
+            // Setting a bit to 1 in the GPCCLEAR register causes that associated output pin to be low (0 Volts). 
+            //Setting a bit to 0 in the GPCCLEAR register does nothing.
             GpioDataRegs.GPCCLEAR.bit.GPIO67 = 1
         }
     }
