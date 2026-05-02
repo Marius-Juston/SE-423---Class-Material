@@ -65,42 +65,30 @@ Solder your breakout board. (When in doubt, view the demo board in the lab.)  In
 %
 \begin{subfigure}[b]{0.245\textwidth}
 \centering
-\begin{tikzpicture}
-\node[anchor=south west, inner sep=0] (img)
-    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board2.jpg}};
-\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board2.jpg}{%
     \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
-    \draw[red, thick] (0.225,0.28) ellipse (0.1 and 0.1);
-\end{scope}
-\end{tikzpicture}
+    \draw[red, thick] (0.225,0.28) ellipse (0.1 and 0.1);%
+}
 % \caption{First image}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.495\textwidth}
 \centering
-\begin{tikzpicture}
-\node[anchor=south west, inner sep=0] (img)
-    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board1.jpg}};
-\begin{scope}[x={(img.south east)}, y={(img.north west)}]
+\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board1.jpg}{%
     \draw[red, thick] (0.3,0.765) ellipse (0.075 and 0.075);
     \draw[red, thick] (0.575,0.765) ellipse (0.075 and 0.075);
     \draw[red, thick] (0.31,0.46) ellipse (0.075 and 0.075);
     \draw[red, thick] (0.575,0.46) ellipse (0.075 and 0.075);
-    \draw[red, thick] (0.076,0.575) ellipse (0.075 and 0.075);
-\end{scope}
-\end{tikzpicture}
+    \draw[red, thick] (0.076,0.575) ellipse (0.075 and 0.075);%
+}
 % \caption{Second image}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.245\textwidth}
 \centering
-\begin{tikzpicture}
-\node[anchor=south west, inner sep=0] (img)
-    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW1/Board3.jpg}};
-\begin{scope}[x={(img.south east)}, y={(img.north west)}]
-    \draw[red, thick] (0.2,0.36) ellipse (0.15 and 0.2);
-\end{scope}
-\end{tikzpicture}
+\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board3.jpg}{%
+    \draw[red, thick] (0.2,0.36) ellipse (0.15 and 0.2);%
+}
 % \caption{Third image}
 \end{subfigure}
 %

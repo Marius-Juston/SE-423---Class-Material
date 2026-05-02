@@ -363,7 +363,15 @@ Answer the following questions about the SPI timing diagram on the next page. Re
 
 \begin{figure}
     \centering
-    \includegraphics[width=1\linewidth]{Homeworks/Figures/HW2/SPI.pdf}
+    % tex4ht's PDF-to-PNG fallback misnames the output for single-page
+    % vector PDFs; ship a sibling SVG (regenerated in CI from SPI.pdf)
+    % and use it in HTML mode so the timing diagram renders without
+    % losing vector fidelity.
+    \ifSEhtml
+      \includegraphics[width=1\linewidth]{Homeworks/Figures/HW2/SPI.svg}%
+    \else
+      \includegraphics[width=1\linewidth]{Homeworks/Figures/HW2/SPI.pdf}%
+    \fi
     \caption{SPI Timing Diagram Analysis}
 \end{figure}
 

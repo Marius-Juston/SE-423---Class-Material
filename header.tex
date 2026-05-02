@@ -71,13 +71,9 @@
 % compiles. The PDF build keeps full minted (with -shell-escape).
 % ============================
 \ifSEhtml
-  % \Css{body { background-color: white; color: black; }}
-
-  % --- FIX FOR LISTINGS (lstinline and lstlisting) IN DARK MODE ---
-  % \Css{code.lstinline { color: inherit !important; background: transparent !important; }}
-  % \Css{pre.lstlisting { color: inherit !important; background: transparent !important; }}
-  % \Css{pre.lstinputlisting { color: inherit !important; background: transparent !important; }}
-
+  % WCAG-compliant contrast for inline and block code is configured in
+  % se423.cfg, which make4ht is invoked with via "-c se423". \Css{...}
+  % is only valid inside a tex4ht config (.cfg) preamble.
 
   \usepackage{fvextra}
   % minted is NOT loaded in HTML mode. We provide a verbatim stand-in so
@@ -101,11 +97,19 @@
   \usepackage{minted}
 \fi
 
+% tagpdf must be skipped in tex4ht/HTML mode: it requires the LaTeX
+% PDF resource manager activated via \DocumentMetadata, which we
+% deliberately skip under \HCode. Loading tagpdf without that setup
+% triggers "PDF resource management is no active" and a cascade of
+% \tag_mc_begin:n already defined errors. Only enable for the PDF
+% (lualatex, no-tex4ht) build path.
 \ifLuaTeX
-  \usepackage{tagpdf}
-  \tagpdfsetup{activate-all}
-  \AtBeginEnvironment{tcolorbox}{\tagpdfparaOff}
-  \AtEndEnvironment{tcolorbox}{\tagpdfparaOn}
+  \ifSEhtml\else
+    \usepackage{tagpdf}
+    \tagpdfsetup{activate-all}
+    \AtBeginEnvironment{tcolorbox}{\tagpdfparaOff}
+    \AtEndEnvironment{tcolorbox}{\tagpdfparaOn}
+  \fi
 \fi
 
 % ============================
@@ -249,6 +253,34 @@
   }
   \addcontentsline{toc}{section}{Exercise \theexercise
     \IfValueT{#1}{: #1}}
+}
+
+% ============================
+% Annotated photo macro
+% ----------------------------
+% Wraps an \includegraphics in a tikzpicture so callers can draw
+% overlays (red ellipses, arrows, etc.) on normalised image coords.
+% In tex4ht/HTML mode the whole tikzpicture is rendered as a single
+% SVG by dvisvgm, which silently drops embedded raster images, so we
+% fall back to a plain \includegraphics. The overlay annotations are
+% lost in HTML — describe them in alt text or surrounding prose if
+% they carry meaning, since this fallback exists purely so the photo
+% is visible at all in the accessible HTML build.
+% Usage:
+%   \Annotated[width=\linewidth]{path/to/photo.jpg}{%
+%       \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
+%   }
+\NewDocumentCommand{\Annotated}{O{} m +m}{%
+  \ifSEhtml
+    \includegraphics[#1]{#2}%
+  \else
+    \begin{tikzpicture}
+      \node[anchor=south west, inner sep=0] (img) {\includegraphics[#1]{#2}};
+      \begin{scope}[x={(img.south east)}, y={(img.north west)}]
+        #3
+      \end{scope}
+    \end{tikzpicture}%
+  \fi
 }
 
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}

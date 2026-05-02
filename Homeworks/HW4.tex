@@ -64,25 +64,17 @@ Give yourself a small introduction to working in Linux, especially at the comman
 \centering
 \begin{subfigure}[b]{0.395\textwidth}
 \centering
-\begin{tikzpicture}
-\node[anchor=south west, inner sep=0] (img)
-    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW4/Solder1.jpg}};
-\begin{scope}[x={(img.south east)}, y={(img.north west)}]
-    \draw[red, ultra thick] (0.8,0.45) ellipse (0.15 and 0.075);
-\end{scope}
-\end{tikzpicture}
+\Annotated[width=\linewidth]{Homeworks/Figures/HW4/Solder1.jpg}{%
+    \draw[red, ultra thick] (0.8,0.45) ellipse (0.15 and 0.075);%
+}
 % \caption{First image}
 \end{subfigure}
 \hfill
 \begin{subfigure}[b]{0.595\textwidth}
 \centering
-\begin{tikzpicture}
-\node[anchor=south west, inner sep=0] (img)
-    {\includegraphics[width=\linewidth]{Homeworks/Figures/HW4/Solder2.jpg}};
-\begin{scope}[x={(img.south east)}, y={(img.north west)}]
-    \draw[red, ultra thick] (0.6,0.5) ellipse (0.2 and 0.15);
-\end{scope}
-\end{tikzpicture}
+\Annotated[width=\linewidth]{Homeworks/Figures/HW4/Solder2.jpg}{%
+    \draw[red, ultra thick] (0.6,0.5) ellipse (0.2 and 0.15);%
+}
 % \caption{Second image}
 \end{subfigure}
 \caption{Demo board soldering battery pack solder}

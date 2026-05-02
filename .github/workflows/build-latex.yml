@@ -31,7 +31,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
-      CACHE_VERSION: v11 # Bumped version key due to dvisvgm addition
+      CACHE_VERSION: v12 # Bumped due to kastrup (binhex) addition for HTML lualatex build
 
       LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
@@ -200,6 +200,7 @@ jobs:
             luaotfload \
             make4ht \
             tex4ht \
+            kastrup \
             luamml \
             unicode-math \
             microtype \
@@ -268,6 +269,23 @@ jobs:
             [ -f "$out" ] || extractbb "$img"
           done
 
+      # tex4ht has no working PDF-to-raster path for vector figures
+      # included via \includegraphics{*.pdf}: it tries to fall back to
+      # a PNG with a malformed name (e.g. "SPI-.png"). For each PDF
+      # figure under Homeworks/Figures, generate a sibling SVG up
+      # front; the .tex sources select the SVG via \ifSEhtml.
+      - name: Convert PDF figures to SVG (for HTML mode)
+        if: steps.resolve.outputs.has_tex == 'true'
+        run: |
+          find Homeworks/Figures -type f -name "*.pdf" 2>/dev/null | while read pdf; do
+            svg="${pdf%.pdf}.svg"
+            if [ ! -f "$svg" ] || [ "$pdf" -nt "$svg" ]; then
+              echo "Converting $pdf -> $svg"
+              dvisvgm --pdf --no-fonts --output="$svg" "$pdf" || \
+                echo "::warning::dvisvgm failed for $pdf (HTML may miss this figure)"
+            fi
+          done
+
       - name: Compile HTML versions (accessible)
         if: steps.resolve.outputs.has_tex == 'true'
         env:
@@ -290,7 +308,8 @@ jobs:
               # - .xbb sidecar files are found at their generated locations
               # TeX's kpathsea already searches the source file's own directory
               # for \input{header} etc., so no cd needed.
-              make4ht -s -l -d "$GITHUB_WORKSPACE/$out_dir" \
+              # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
+              make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" \
                 "$texfile" \
                 || echo "::warning::HTML build failed for $texfile (continuing)"
             fi
