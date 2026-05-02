@@ -31,7 +31,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
-      CACHE_VERSION: v9 # Bumped version key due to dvisvgm addition
+      CACHE_VERSION: v10 # Bumped version key due to dvisvgm addition
 
       LUA_CACHE_DIR: ~/.texlive2025/texmf-var/luatex-cache
 
@@ -165,7 +165,8 @@ jobs:
             selnolig \
             luacolor \
             luacode \
-            luatexbase
+            luatexbase \
+            l3packages
  
 
           # 3. Manually Generate STABLE formats only
@@ -217,23 +218,35 @@ jobs:
             fi
           done
 
-      - name: Compile HTML Versions (Accessibility)
+      - name: Generate XBB sidecars for raster images
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
         run: |
-          # Ensure build directory exists
+          find Homeworks Lectures -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | while read img; do
+            out="${img%.*}.xbb"
+            [ -f "$out" ] || extractbb "$img"
+          done
+
+      - name: Compile HTML versions (accessible)
+        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        env:
+          TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
+        run: |
           mkdir -p build
-          
+          mkdir -p ${{ github.workspace }}/texmf-output
+          mkdir -p "${HOME}/.config/latexminted"
+
           for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
-              echo "Generating accessible HTML for $texfile..."
+              echo "Building HTML for $texfile..."
               out_dir="build/$(dirname "$texfile")"
               mkdir -p "$out_dir"
-              
-              # -l: uses LuaLaTeX
-              # -u: uses UTF-8
-              # -d: specifies output directory
-              # "mathml,mathjax": Generates MathML tags natively, and adds MathJax script for fallback rendering
-              make4ht -s -l -u -d "$out_dir" "$texfile" "mathml,mathjax" -f html5+dvisvgm
+
+              # make4ht must run from the source directory so relative \input{header}
+              # resolves correctly. -d places outputs in the absolute build dir.
+              ( cd "$(dirname "$texfile")" \
+                && make4ht -s -d "$GITHUB_WORKSPACE/$out_dir" \
+                    "$(basename "$texfile")" 'shell-escape' \
+              ) || echo "::warning::HTML build failed for $texfile (continuing)"
             fi
           done
 

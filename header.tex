@@ -1,8 +1,35 @@
 % ============================
-% Required packages
+% Pre-load options
+% ----------------------------
+% xcolor must receive [table] BEFORE any package (tcolorbox, tikz, ...)
+% pulls it in without options. Otherwise, "\usepackage[table]{xcolor}"
+% later is a silent no-op under pdflatex but triggers an option-clash
+% cascade under tex4ht ("Paragraph ended before \@reset@ptions").
 % ============================
+\PassOptionsToPackage{table}{xcolor}
 
-% \usepackage[letterpaper, total={6in, 9.5in}]{geometry}
+% ============================
+% Engine / output mode detection
+% ----------------------------
+% \ifPDFTeX  - true under pdflatex (also under tex4ht's htlatex driver)
+% \ifLuaTeX  - true under lualatex
+% \ifXeTeX   - true under xelatex
+% \ifSEhtml  - true when being processed by tex4ht / make4ht
+%             (named "SEhtml" to avoid clashing with package internals
+%              in the @-letter namespace; the @ form was being reset
+%              somewhere downstream, silently flipping the flag back.)
+% ============================
+\usepackage{iftex}
+
+\newif\ifSEhtml
+\SEhtmlfalse
+\makeatletter
+\@ifundefined{HCode}{}{\SEhtmltrue}
+\makeatother
+
+% ============================
+% Geometry
+% ============================
 \usepackage[
   letterpaper,
   left=0.5in,
@@ -11,74 +38,94 @@
   bottom=1.0in
 ]{geometry}
 
-% \usepackage[activate-all]{tagpdf}
-% \tagpdfsetup{
-%   role/new-tag = {Formula} {math},
-%   interwordspace = true,
-%   paratagging = true,
-%   tabsorder = structure
-% }
-
-
+% ============================
+% Required packages (always)
+% ============================
 \usepackage[most]{tcolorbox}
-\usepackage[table]{xcolor}
 \usepackage{booktabs}
 \usepackage{fancyhdr}
 \usepackage{graphicx}
-\usepackage[
-  colorlinks=true,
-  linkcolor=blue,
-  urlcolor=blue,
-  citecolor=blue
-]{hyperref}
 \usepackage{lastpage}
 \usepackage{listings}
 \usepackage{setspace}
 \usepackage{subcaption}
 \usepackage{tabularx}
 \usepackage{tikz}
+\usepackage{xcolor}             % [table] is set via PassOptionsToPackage above
 \usepackage{xparse}
 \usepackage[siunitx, american, RPvoltages]{circuitikz}
-% Required packages:
 \usepackage{array}
-\usepackage{array,colortbl}
+\usepackage{colortbl}
 \usepackage{pdflscape}
 \usepackage{pgfplots}
 \usepackage{xurl}
 \usetikzlibrary{arrows.meta, angles, quotes, shapes.symbols, arrows.meta}
-\usepackage{hyperref}
-\hypersetup{
-  pdftitle={SE 423 Assignment},
-  pdfauthor={Marius Juston},
-}
-\usepackage{pgfcalendar}
 
-
-\usepackage{iftex}
-\makeatletter
-\newif\if@in@html%
-\@ifundefined{HCode}{}{\@in@htmltrue}
-\makeatother
-
-% unicode-math: only when supported
-\if@in@html\else
-  \ifLuaTeX\usepackage{unicode-math}\else
-  \ifXeTeX\usepackage{unicode-math}\fi\fi
-\fi
-
-% minted: stubbed in HTML, real in PDF
-\if@in@html
-  \usepackage{fancyvrb}
-  \RenewDocumentEnvironment{minted}{O{} m +b}{\begin{Verbatim}[fontsize=\footnotesize]#3\end{Verbatim}}{}
-  \RenewDocumentCommand{\mintinline}{O{} m m}{\texttt{#3}}
+% ============================
+% minted
+% ----------------------------
+% In HTML mode, tex4ht has no robust support for minted: it relies on
+% Pygments output that does not survive the htlatex DVI pipeline cleanly.
+% We replace minted with verbatim-style fallbacks so the document still
+% compiles. The PDF build keeps full minted (with -shell-escape).
+% ============================
+\ifSEhtml
+  \usepackage{fvextra}
+  % minted is NOT loaded in HTML mode. We provide a verbatim stand-in so
+  % \begin{minted}[opts]{lang} ... \end{minted} still compiles. We use
+  % fancyvrb's VerbatimEnvironment trick so the body is read verbatim
+  % rather than tokenised by LaTeX (a +b body argument does NOT preserve
+  % verbatim and breaks on '#', '%', '{', etc.).
+  \newenvironment{minted}[2][]{%
+    \VerbatimEnvironment
+    \begin{Verbatim}[fontsize=\footnotesize]%
+  }{%
+    \end{Verbatim}%
+  }
+  % Inline replacement: \mintinline[opts]{lang}{code}
+  % Note: \mintinline must accept verbatim-style content as its third arg.
+  \NewDocumentCommand{\mintinline}{O{} m v}{\texttt{#3}}
+  % Setting commands become no-ops in HTML mode
   \providecommand{\setminted}[2][]{}
   \providecommand{\setmintedinline}[2][]{}
 \else
   \usepackage{minted}
 \fi
 
+% ============================
+% Hyperref (load once, after most packages)
+% ============================
+\usepackage[
+  colorlinks=true,
+  linkcolor=blue,
+  urlcolor=blue,
+  citecolor=blue
+]{hyperref}
+\hypersetup{
+  pdftitle={SE 423 Assignment},
+  pdfauthor={Marius Juston},
+}
+
+% ============================
+% unicode-math
+% ----------------------------
+% Only available on LuaTeX / XeTeX. NOT on pdfLaTeX. NOT on tex4ht.
+% On tex4ht, attempting to load it triggers the luatexbase.sty error.
+% ============================
+\ifSEhtml\else
+  \ifLuaTeX
+    \usepackage{unicode-math}
+  \else\ifXeTeX
+    \usepackage{unicode-math}
+  \fi\fi
+\fi
 
 \definecolor{highlight}{rgb}{101, 0, 184}
+
+% pgfcalendar must be loaded in the preamble (here, in header.tex) rather
+% than inside timline.tex. Loading \usepackage from within \input{...} is
+% fragile under tex4ht (it triggers "Paragraph ended before \@reset@ptions").
+\usepackage{pgfcalendar}
 
 \input{timline}
 \input{icons}
@@ -86,7 +133,6 @@
 % ============================
 % Assignment mode resolution
 % ============================
-
 \def\CourseCode{SE 423}
 \def\CourseName{Mechatronics}
 
@@ -115,7 +161,6 @@
 % ============================
 % Header / footer
 % ============================
-
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot[L]{// \CourseCode, \CourseName}
@@ -125,7 +170,6 @@
 % ============================
 % Title box
 % ============================
-
 \newcommand{\MakeAssignmentTitle}{
 \begin{tcolorbox}[
     colback=gray!25!white,
@@ -141,17 +185,21 @@
 \centering
 \setstretch{1.2}
 
-\textbf{\Large \CourseCode\ \CourseName \\ \AssignmentType\ \#\HWNum}
+{\bfseries\Large \CourseCode\ \CourseName \\ \AssignmentType\ \#\HWNum\par}
 
 \vspace{2mm}
 
-{\bfseries\AssignmentText\par}
+{\bfseries
+\AssignmentText\par
+}
 \end{tcolorbox}
 \vspace{0.5cm}
 }
 
+% ============================
+% minted styling (PDF mode only - stubs above are no-ops in HTML)
+% ============================
 \setmintedinline{breaklines, breakafter=_}
-
 
 \setminted{
   breaklines,
@@ -160,7 +208,6 @@
   frame=lines,
   fontsize=\footnotesize,
 }
-
 
 \lstset{
     basicstyle=\ttfamily,   % Typewriter font for code
@@ -179,11 +226,9 @@
     \IfValueT{#1}{: #1}}
 }
 
-
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
-\pgfplotsset{compat=1.18} 
-
+\pgfplotsset{compat=1.18}
 
 \newcommand{\MakeFooter}{
 \begin{tcolorbox}[
@@ -200,6 +245,6 @@
 \centering
 \setstretch{1.2}
 
-\textbf{Make sure that you \textcolor{highlight}{comment} you code and put your \textcolor{highlight}{initials} in your Gradescope submission! See \url{https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf} for how we expect the code to be commented like!}
+{\bfseries Make sure that you \textcolor{highlight}{comment} you code and put your \textcolor{highlight}{initials} in your Gradescope submission! See \url{https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf} for how we expect the code to be commented like!\par}
 \end{tcolorbox}
 }
