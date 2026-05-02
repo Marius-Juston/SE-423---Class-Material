@@ -235,10 +235,12 @@ jobs:
           mkdir -p ${{ github.workspace }}/texmf-output
           mkdir -p "${HOME}/.config/latexminted"
 
+          # HTML artifacts are kept under build/site/<path> so they land in
+          # deploy_target/site/<path> after rsync, keeping the PDF tree clean.
           for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
             if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
               echo "Building HTML for $texfile..."
-              out_dir="build/$(dirname "$texfile")"
+              out_dir="build/site/$(dirname "$texfile")"
               mkdir -p "$out_dir"
 
               # Run from workspace root (not the source subdir) so that:
