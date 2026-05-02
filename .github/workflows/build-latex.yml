@@ -157,7 +157,15 @@ jobs:
             fontspec \
             luaotfload \
             make4ht \
-            tex4ht
+            tex4ht \
+            luamml \
+            unicode-math \
+            microtype \
+            polyglossia \
+            selnoilg \
+            luacolor \
+             luacode
+ 
 
           # 3. Manually Generate STABLE formats only
           # This will now write correctly to TEXMFVAR because TEXMFOUTPUT is unset
