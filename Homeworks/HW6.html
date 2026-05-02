@@ -1,0 +1,193 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title></title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='HW6.css' rel='stylesheet' type='text/css' /> 
+<meta content='HW6.tex' name='src' /> 
+</head><body>
+   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='cmbx-12x-x-120'>Homework Assignment #6</span>
+</p><!-- l. 29 --><p class='noindent'><span class='cmbx-10x-x-109'>Due On Gradescope, by </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>9AM Friday, May 08</span></span><span class='cmbx-10x-x-109'>.</span>
+</p>
+ 
+</div> 
+</div>
+   
+   <h3 class='likesectionHead' id='exercise-1-path-planning-'> <a id='x1-1000'></a>Exercise 1: Path Planning </h3>
+<p id='exercise-1-path-planning'><a id='Q1-1-2'></a>
+<!-- l. 33 --></p><p class='noindent'>The goal of this problem is to have you read through the given code and implement the A* path-planning method. Most of
+the code has been given to you. Your job is either to fill in the blank with some code or add some comments indicating
+that you understand the algorithm. I suggest you perform this homework exercise in the lab. The lab PCs have the correct
+version of Microsoft Visual Studio 2022 installed. All the code and project files you need for this problem are posted at the
+course website <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip</span></a>. Download this zip file and unzip it into a
+folder.
+</p><!-- l. 35 --><p class='indent'>   Perform the following:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>In this project’s directory, you will find the executable file “<span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>.” This is given to you to see
+     how the program should run when you fill in the required code. Run “astarDemo.exe” and play around with
+     the different maps that are created for you to test the algorithm. Use <span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span> in the below items to
+     double-check that your code is running correctly.
+     </li>
+<li class='enumerate' id='x1-1004x2'>Load the Visual Studio 2022 project by double clicking on the <span class='obeylines-h'><code class='verb'>astar.sln</code></span> file. Suppose Windows asks to
+     select Visual Studio 2022. This will load Visual Studio 2022. It may take longer to load the project the
+     first time it is opened. Under “source files,” find and open <span class='obeylines-h'><code class='verb'>astar.cpp</code></span>. Take some time to run through the
+     code in this file. There are many helpful comments in the file that will help you with this exercise. Also,
+     the pseudocode for the A* algorithm we went through in class and posted here could be helpful for this
+     exercise. 12 items are numbered in the A* function of <span class='obeylines-h'><code class='verb'>astar.cpp</code></span>. Some of the items have you add a line or
+     two of source code. Other items ask you to write comments explaining what certain lines of code accomplish.
+     Complete these 12 items. Then compile (use menu item “Rebuild Solution”) and run your project by pressing
+     the arrow/play button. Once your program is compiled, it should run identically to <span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>. For
+     your homework submission, print out the changes and comments you made for these twelve items.
+     </li>
+<li class='enumerate' id='x1-1006x3'>Change  the  location  of  at  least  three  obstacles  in  the  course  map  defined  by  the  array  “<span class='cmtt-10x-x-109'>char
+     mapCourseStart[176]</span>”. This is also the map used when item 7 is selected in the application. For your
+     homework submission, print the output of your compiled program when you have selected a start and finish
+                                                                                                       
+                                                                                                       
+     point with several obstacles between them.
+     </li>
+<li class='enumerate' id='x1-1008x4'>As a final exercise, add enough obstacles so that there is no path A* can find from the starting point to the
+     ending point. Verify that A* returns an error when it cannot find a path.</li></ol>
+   
+   <h3 class='likesectionHead' id='exercise-2-kalman-filtering-'>  <a id='x1-2000'></a>Exercise 2: Kalman filtering </h3>
+<p id='exercise-2-kalman-filtering'><a id='Q1-1-4'></a>
+<!-- l. 46 --></p><p class='noindent'>The goal of this problem is to give you experience with the Kalman filter and to help you understand how it is helping
+with the robot’s navigation. Given a set of actual data collected during a run of the robot car, your goal is to find a Q and
+R matrix that makes the Kalman filter fuse the dead-reckoning data from the wheel encoders and rate gyro with the
+OptiTrack data. The “ideal” merge of this data is not to track precisely the OptiTrack data. It should definitely be close to
+the OptiTrack data, but filter it so that significant errors are not precisely followed. The OptiTrack’s resolution is <span class='cmsy-10x-x-109'>± </span>2cm,
+and it is possible (but not very often) for the OptiTrack to send incorrect measurements. I purposely added a 1-tile error
+to one of the OptiTrack data points so you can see how your Kalman filter reacts to such a significant
+error.
+</p><!-- l. 48 --><p class='indent'>   What have you given:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>The                        data                        file                        <span class='obeylines-h'><code class='verb'>data_forKalman_Filter_HWProblem.mat</code></span>
+     found at <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/HW6.htm'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/HW6.htm</span></a>. It has 6 columns: index, average wheel
+     velocity, gyro reading in rad/s, x OptiTrack position, y OptiTrack position, theta OptiTrack. After you load
+     the file, you will see a lot of zeros in the OptiTrack columns. The OptiTrack only samples at 100 Hz, while
+     the dead-reckoning data (wheel velocity, gyro) is updated at 1000 Hz. Your code will not use the OptiTrack
+     data when it is 0.0. Load the “<span class='obeylines-h'><code class='verb'>data</code></span>” variable by loading the <span class='obeylines-h'><code class='verb'>data_forKalman_Filter_HWProblem.mat</code></span> file.
+     This can be done using the “<span class='obeylines-h'><code class='verb'>load</code></span>” command or double-clicking the file in the “current directory” window
+     of the MATLAB window.
+     </li>
+<li class='enumerate' id='x1-2004x2'>
+     <!-- l. 52 --><p class='noindent'>A  Matlab  script  file  that  gives  you  most  of  what  you  need  for  the  code  for  this  problem,
+     <span class='obeylines-h'><code class='verb'>KalmanFilterHWProblem.m</code></span> located <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/HW6.htm'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/HW6.htm</span></a>. You will
+     need to make two modifications to this file: (1) adding the Kalman equations to the large for loop, and (2)
+     assigning values to the <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>matrices used in the filter.
+     </p><!-- l. 54 --><p class='noindent'>In the m-file’s for loop, there are comments to guide you through adding the code. Within the for loop, you
+     need to implement the prediction and correction steps. Referring to the given equations at the end of this
+     homework might be helpful during this coding.
+     </p><!-- l. 56 --><p class='noindent'>After adding the Kalman filter code to the for loop, you need to choose values for the <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>matrices. The
+     following form works well for the robot car.
+                                                                                                       
+                                                                                                       
+     </p><table class='align-star'>
+                            <tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub></td>                             <td class='align-even'> = Process (Dead Reckoning) Uncertainty</td>                            <td class='align-label'></td>                            <td class='align-label'>
+                            </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>Q</span></td>                              <td class='align-even'> = <img align='middle' alt='⌊            ⌋
+ UP    0   U1P0-
+|| 0   UP   U1P0||
+⌈UP-  UP-  0 ⌉
+  10   10' class='left' src='HW60x.svg' /></td>                                                <td class='align-label'></td>                            <td class='align-label'>
+                            </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub></td>                            <td class='align-even'> = Measurement (OptiTrack) Uncertainty</td>                            <td class='align-label'></td>                            <td class='align-label'>
+                            </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>R</span></td>                              <td class='align-even'> = <img align='middle' alt='⌊UM    0    UM-⌋
+| 0   U     1U0M-|
+|⌈UM-   UMP-  10 |⌉
+  10   10  UM' class='left' src='HW61x.svg' /></td>                                               <td class='align-label'></td>                            <td class='align-label'></td></tr></table>
+     <!-- l. 72 --><p class='noindent'>Start with <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub> and <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub> 1.0 and run the M-file. (<span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub> and <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub> are named “<span class='obeylines-h'><code class='verb'>MeasUncert</code></span>” and “<span class='obeylines-h'><code class='verb'>ProcUncert</code></span>” in the
+     code.) Zoom in on the third plot that plots both data sets on top of each other. Does it look like the Kalman filtered
+     data is following the OptiTrack data too closely and jumping around? OptiTrack data is the dots. Also, make sure to
+     see what happens at the one error point that is off by one tile in the y direction. Then tune <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub> and <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub> values by
+     changing them by a positive or negative power of 10 relative to each other. Come up with 3 <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>matrices pairs
+     that show three cases:
+          </p><ol class='enumerate2'>
+<li class='enumerate' id='x1-2006x1'>Kalman output data follows the OptiTrack data too closely.
+          </li>
+<li class='enumerate' id='x1-2008x2'>Kalman output is filtered too much and converges slowly to the OptiTrack data.
+          </li>
+<li class='enumerate' id='x1-2010x3'>Kalman output is just right, converges pretty quickly, but does not jump immediately to every OptiTrack
+          data point.</li></ol>
+     <!-- l. 78 --><p class='noindent'>Make sure to produce a plot for each of these cases showing how the Kalman filter is working. In your plots, zoom in
+     on the behavior of your fused data near the discontinuity in the OptiTrack data. Be sure to show how quickly the
+     fused data converges to the OptiTrack data.</p></li></ol>
+<!-- l. 81 --><p class='noindent'>What to turn in: </p>
+     <ul class='itemize1'>
+     <li class='itemize'>A printout of your edited M-file
+                                                                                                       
+                                                                                                       
+     </li>
+     <li class='itemize'>Three plots for the three <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>pairs that you chose, and somewhere in the plot, the value of the <span class='cmmi-10x-x-109'>Q </span>and
+     <span class='cmmi-10x-x-109'>R </span>matrices.</li></ul>
+
+   <h4 class='subsectionHead' id='kalman-equations'><span class='titlemark'>0.1   </span>   <a id='x1-30000.1'></a>Kalman Equations</h4>
+<!-- l. 89 --><p class='noindent'>For the robot car:
+</p><table class='align-star'>
+       <tr><td class='align-odd'><span class='cmmi-10x-x-109'>F </span>= <img align='middle' alt='⌊       ⌋
+ 1  0  0
+⌈0  1  0⌉
+ 0  0  1' class='left' src='HW62x.svg' /><span class='cmmi-10x-x-109'>,B </span>= <img align='middle' alt='⌊              ⌋
+ cos(𝜃k)Δt   0
+⌈sin(𝜃k)Δt   0 ⌉
+     0      Δt' class='left' src='HW63x.svg' /><span class='cmmi-10x-x-109'>,H </span>= <img align='middle' alt='⌊        ⌋
+  1  0  0
+⌈ 0  1  0⌉
+  0  0  1' class='left' src='HW64x.svg' /><span class='cmmi-10x-x-109'>,</span> and start P as identity <span class='cmmi-10x-x-109'>P </span>= <img align='middle' alt='⌊       ⌋
+ 1  0  0
+⌈0  1  0⌉
+ 0  0  1' class='left' src='HW65x.svg' /></td>       <td class='align-even'></td>       <td class='align-label'></td></tr></table>
+<!-- l. 98 --><p class='indent'>   <span class='cmmi-10x-x-109'>K </span>is 3 <span class='cmsy-10x-x-109'>× </span>3 and <span class='cmmi-10x-x-109'>S </span>is 3 <span class='cmsy-10x-x-109'>× </span>3
+                                                                                                       
+                                                                                                       
+</p><table class='align-star'>
+                                 <tr><td class='align-odd'><img align='middle' alt='⌊ ˆx1⌋
+| ˆx |
+|⌈  2|⌉
+  ˆx3' class='left' src='HW66x.svg' /></td>                                 <td class='align-even'> = <img align='middle' alt='⌊                 ⌋
+ x position of robot
+⌈y position of robot⌉
+     𝜃 of robot' class='left' src='HW67x.svg' /><span class='cmmi-10x-x-109'>,</span></td>                                          <td class='align-label'></td>                                 <td class='align-label'>
+                                 </td></tr><tr><td class='align-odd'><img align='middle' alt='⌊   ⌋
+  u1
+⌈ u2⌉' class='left' src='HW68x.svg' /></td>                                 <td class='align-even'> = <img align='middle' alt='⌊                        ⌋
+ average velocity of wheels
+⌈ rate gyro measurement  ⌉' class='left' src='HW69x.svg' /><span class='cmmi-10x-x-109'>,</span></td>                                    <td class='align-label'></td>                                 <td class='align-label'>
+                                 </td></tr><tr><td class='align-odd'><img align='middle' alt='⌊   ⌋
+  z1
+|| z2||
+⌈ z3⌉' class='left' src='HW610x.svg' /></td>                                 <td class='align-even'> = <img align='middle' alt='⌊                           ⌋
+ OptiTrack x position of robot
+||OptiTrack y position of robot||
+⌈    OptiTrack 𝜃 of robot   ⌉' class='left' src='HW611x.svg' /></td>                                 <td class='align-label'></td>                                 <td class='align-label'></td></tr></table>
+<!-- l. 109 --><p class='indent'>   <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>are 3 <span class='cmsy-10x-x-109'>× </span>3 matrices that you need to tune
+</p><!-- l. 111 --><p class='indent'>   Prediction Steps
+</p><table class='align-star'>
+                                         <tr><td class='align-odd'><img alt='ˆx' class='hat' src='HW612x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                         <td class='align-even'> = <span class='cmmi-10x-x-109'>F</span><img alt='ˆx' class='hat' src='HW613x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub> + <span class='cmmi-10x-x-109'>Bu</span><sub><span class='cmmi-8'>k</span></sub></td>                                           <td class='align-label'></td>                                         <td class='align-label'>
+                                         </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>P</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                         <td class='align-even'> = <span class='cmmi-10x-x-109'>FP</span><sub><span class='cmmi-8'>k</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub><span class='cmmi-10x-x-109'>F</span><sup><span class='cmsy-8'>⊤</span></sup> + <span class='cmmi-10x-x-109'>Q</span><sub>
+<span class='cmmi-8'>k</span></sub></td>                                         <td class='align-label'></td>                                         <td class='align-label'></td></tr></table>
+<!-- l. 117 --><p class='indent'>   Correction Steps
+                                                                                                       
+                                                                                                       
+</p><table class='align-star'>
+                                       <tr><td class='align-odd'><img alt='ˆx' class='hat' src='HW614x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span></sub></td>                                       <td class='align-even'> = <img alt='ˆx' class='hat' src='HW615x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub> + <span class='cmmi-10x-x-109'>K</span><img alt='～y' class='widetilde' src='HW616x.svg' /> </td>                                           <td class='align-label'></td>                                       <td class='align-label'>
+                                       </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>P</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span></sub></td>                                       <td class='align-even'> = (<span class='cmmi-10x-x-109'>I </span><span class='cmsy-10x-x-109'>− </span><span class='cmmi-10x-x-109'>KH</span>)<span class='cmmi-10x-x-109'>P</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                       <td class='align-label'></td>                                       <td class='align-label'></td></tr></table>
+<!-- l. 124 --><p class='indent'>   where
+</p><table class='align-star'>
+                                        <tr><td class='align-odd'><img alt='～y' class='widetilde' src='HW617x.svg' /> </td>                                         <td class='align-even'> = <span class='cmmi-10x-x-109'>z</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span></sub> <span class='cmsy-10x-x-109'>− </span><span class='cmmi-10x-x-109'>H</span><img alt='ˆx' class='hat' src='HW618x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                            <td class='align-label'></td>                                        <td class='align-label'>
+                                        </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>S</span></td>                                         <td class='align-even'> = <span class='cmmi-10x-x-109'>HP</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub><span class='cmmi-10x-x-109'>H</span><sup><span class='cmmi-8'>T</span> </sup> + <span class='cmmi-10x-x-109'>R</span><sub>
+<span class='cmmi-8'>k</span><span class='cmr-8'>+1</span></sub></td>                                        <td class='align-label'></td>                                        <td class='align-label'>
+                                        </td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>K</span></td>                                        <td class='align-even'> = <span class='cmmi-10x-x-109'>P</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub><span class='cmmi-10x-x-109'>H</span><sup><span class='cmmi-8'>T</span> </sup>(<span class='cmmi-10x-x-109'>S</span>)<sup><span class='cmsy-8'>−</span><span class='cmr-8'>1</span></sup></td>                                            <td class='align-label'></td>                                        <td class='align-label'></td></tr></table>
+   <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 133 --><p class='noindent'><span class='cmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>comment</span></span> <span class='cmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>initials</span></span> <span class='cmbx-10x-x-109'>in your Gradescope
+submission! See </span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='cmtt-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='cmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+    
+</body> 
+</html>
