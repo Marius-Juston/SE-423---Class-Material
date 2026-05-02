@@ -1,4 +1,4 @@
-name: Build LaTeX PDFs (TeX Live 2025) and Deploy
+name: Build LaTeX PDFs (TeX Live 2026) and Deploy
 
 on:
   workflow_dispatch:
@@ -25,15 +25,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       # TL_DIR: Installation target
-      TL_DIR: /home/runner/texlive/2025
+      TL_DIR: /home/runner/texlive/2026
       # TEXMFVAR: Where configuration and formats live. MUST be consistent.
-      TEXMFVAR: /home/runner/texlive/2025/texmf-var
-      TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
-      TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
-      TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
+      TEXMFVAR: /home/runner/texlive/2026/texmf-var
+      TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
+      TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
+      TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
       CACHE_VERSION: v10 # Bumped version key due to dvisvgm addition
 
-      LUA_CACHE_DIR: ~/.texlive2025/texmf-var/luatex-cache
+      LUA_CACHE_DIR: ~/.texlive2026/texmf-var/luatex-cache
 
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
@@ -84,11 +84,11 @@ jobs:
         with:
           path: |
             ${{ env.TL_DIR }}
-            ~/.texlive2025
+            ~/.texlive2026
             ~/.cache/fontconfig
             ${{ env.LUA_CACHE_DIR }}
-          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }}
-      - name: Install TeX Live 2025
+          key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
+      - name: Install TeX Live 2026
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
@@ -185,10 +185,10 @@ jobs:
         with:
           path: |
             ${{ env.TL_DIR }}
-            ~/.texlive2025
+            ~/.texlive2026
             ~/.cache/fontconfig
             ${{ env.LUA_CACHE_DIR }}
-          key: texlive-2025-${{ runner.os }}-${{ env.CACHE_VERSION }}
+          key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
 
       - name: Add TeX to Path
         if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
