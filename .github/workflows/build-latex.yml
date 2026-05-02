@@ -33,7 +33,7 @@ jobs:
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
       CACHE_VERSION: v11 # Bumped version key due to dvisvgm addition
 
-      LUA_CACHE_DIR: ~/.texlive2026/texmf-var/luatex-cache
+      LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
@@ -97,7 +97,7 @@ jobs:
           # 2. Download Installer
           wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
           tar -xzf install-tl-unx.tar.gz
-          TL_SRC_DIR=$(tar -tzf install-tl-unx.tar.gz | head -1 | cut -d/ -f1)
+          TL_SRC_DIR=$(find . -maxdepth 1 -name "install-tl-*" -type d | head -1)
 
           # 3. Directory Prep
           mkdir -p ${{ env.TL_DIR }}
@@ -241,12 +241,14 @@ jobs:
               out_dir="build/$(dirname "$texfile")"
               mkdir -p "$out_dir"
 
-              # make4ht must run from the source directory so relative \input{header}
-              # resolves correctly. -d places outputs in the absolute build dir.
-              ( cd "$(dirname "$texfile")" \
-                && make4ht -s -d "$GITHUB_WORKSPACE/$out_dir" \
-                    "$(basename "$texfile")" 'shell-escape' \
-              ) || echo "::warning::HTML build failed for $texfile (continuing)"
+              # Run from workspace root (not the source subdir) so that:
+              # - repo-root-relative image paths resolve correctly
+              # - .xbb sidecar files are found at their generated locations
+              # TeX's kpathsea already searches the source file's own directory
+              # for \input{header} etc., so no cd needed.
+              make4ht -s -d "$GITHUB_WORKSPACE/$out_dir" \
+                "$texfile" 'shell-escape' \
+                || echo "::warning::HTML build failed for $texfile (continuing)"
             fi
           done
 
