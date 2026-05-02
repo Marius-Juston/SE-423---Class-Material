@@ -59,6 +59,48 @@ jobs:
             echo "$file was changed"
           done
 
+      # Resolve the set of files to (re)build. On push, that's just the
+      # files git reports as changed. On manual workflow_dispatch, no
+      # files appear changed, so we fall back to the full inventory:
+      # every .tex in pdf-list.txt and every L*.pptx in the tree. This
+      # lets a manual run force-rebuild the entire site.
+      - name: Resolve files to build
+        id: resolve
+        env:
+          CHANGED: ${{ steps.changed-files.outputs.all_changed_files }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          if [ "$EVENT" = "workflow_dispatch" ]; then
+            echo "Manual dispatch detected — rebuilding all files."
+            FILES=$(grep -v '^[[:space:]]*$' pdf-list.txt | tr '\n' ' ')
+            PPTX=$(find . -type f -name 'L*.pptx' -not -path './deploy_target/*' | sed 's|^\./||' | tr '\n' ' ')
+          else
+            FILES="$CHANGED"
+            PPTX="$CHANGED"
+          fi
+          # Single space-joined string for downstream loops.
+          ALL="$FILES $PPTX"
+          echo "tex_files=$FILES" >> "$GITHUB_OUTPUT"
+          echo "pptx_files=$PPTX" >> "$GITHUB_OUTPUT"
+          echo "all_files=$ALL"   >> "$GITHUB_OUTPUT"
+          # Booleans for step gating.
+          if echo "$ALL" | grep -q '\.tex\b'; then
+            echo "has_tex=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_tex=false" >> "$GITHUB_OUTPUT"
+          fi
+          if echo "$ALL" | grep -q '\.pptx\b'; then
+            echo "has_pptx=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_pptx=false" >> "$GITHUB_OUTPUT"
+          fi
+          if echo "$ALL" | grep -q 'Lectures/Figures/'; then
+            echo "has_lecture_figures=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "has_lecture_figures=false" >> "$GITHUB_OUTPUT"
+          fi
+          echo "Resolved files: $ALL"
+
       - name: Checkout Artifacts Branch
         uses: actions/checkout@v6
         with:
@@ -67,7 +109,7 @@ jobs:
         continue-on-error: true
 
       - name: Install LibreOffice (High-Quality PDF Export)
-        if: contains(steps.changed-files.outputs.all_changed_files, '.pptx')
+        if: steps.resolve.outputs.has_pptx == 'true'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
@@ -79,7 +121,7 @@ jobs:
 
       - name: Cache TeX Live
         id: cache-texlive
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        if: steps.resolve.outputs.has_tex == 'true'
         uses: actions/cache@v5
         with:
           path: |
@@ -89,7 +131,7 @@ jobs:
             ${{ env.LUA_CACHE_DIR }}
           key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
       - name: Install TeX Live 2026
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
+        if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
@@ -123,12 +165,12 @@ jobs:
           ./install-tl --profile=texlive.profile
 
       - name: Normalize TeX Live permissions
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
+        if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           chmod -R u+rwX ${{ env.TL_DIR }} || true
 
       - name: Configuration and Package Installation
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
+        if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           export PATH="${{ env.TL_DIR }}/bin/x86_64-linux:$PATH"
           
@@ -180,7 +222,7 @@ jobs:
           # 5. Pre-seed LuaLaTeX font database
           luaotfload-tool --update
       - name: Save TeX Live Cache
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex') && steps.cache-texlive.outputs.cache-hit != 'true'
+        if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
         uses: actions/cache/save@v5
         with:
           path: |
@@ -191,11 +233,11 @@ jobs:
           key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
 
       - name: Add TeX to Path
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        if: steps.resolve.outputs.has_tex == 'true'
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
 
       - name: Compile LaTeX Documents
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        if: steps.resolve.outputs.has_tex == 'true'
         env:
           # We only re-introduce TEXMFOUTPUT here if strictly necessary for minted/etc.
           # However, usually latexmk -outdir handles this better.
@@ -206,20 +248,20 @@ jobs:
           mkdir -p ${{ github.workspace }}/texmf-output
           mkdir -p "${HOME}/.config/latexminted"
           
-          # Intersect changed files with pdf-list.txt
-          for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          # Intersect resolved files with pdf-list.txt
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
             if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
               echo "State change detected: Compiling $texfile..."
               out_dir="build/$(dirname "$texfile")"
               mkdir -p "$out_dir"
-              
+
               latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
                 -shell-escape -outdir="$out_dir" "$texfile"
             fi
           done
 
       - name: Generate XBB sidecars for raster images
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        if: steps.resolve.outputs.has_tex == 'true'
         run: |
           find Homeworks Lectures -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | while read img; do
             out="${img%.*}.xbb"
@@ -227,7 +269,7 @@ jobs:
           done
 
       - name: Compile HTML versions (accessible)
-        if: contains(steps.changed-files.outputs.all_changed_files, '.tex')
+        if: steps.resolve.outputs.has_tex == 'true'
         env:
           TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
         run: |
@@ -237,7 +279,7 @@ jobs:
 
           # HTML artifacts are kept under build/site/<path> so they land in
           # deploy_target/site/<path> after rsync, keeping the PDF tree clean.
-          for texfile in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
             if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
               echo "Building HTML for $texfile..."
               out_dir="build/site/$(dirname "$texfile")"
@@ -255,15 +297,16 @@ jobs:
           done
 
       - name: Convert TikZ Figures to SVG
-        if: contains(steps.changed-files.outputs.all_changed_files, 'Lectures/Figures/')
+        if: contains(steps.changed-files.outputs.all_changed_files, 'Lectures/Figures/') || github.event_name == 'workflow_dispatch'
         run: |
-          sudo apt-get update && sudo apt-get install -y mupdf-tools 
+          sudo apt-get update && sudo apt-get install -y mupdf-tools
 
           mkdir -p build/Lectures/Figures
-          
+
           for texfile in Lectures/Figures/*.tex; do
-            # Only process if the file actually changed
-            if echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "$texfile"; then
+            # On manual dispatch, rebuild every figure; otherwise only the changed ones.
+            if [ "${{ github.event_name }}" = "workflow_dispatch" ] \
+               || echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "$texfile"; then
               echo "Converting TikZ figure: $texfile"
               
               # 1. Compile to PDF (standalone handles the cropping)
@@ -280,15 +323,16 @@ jobs:
           done
 
       - name: Convert PPTX to PDF (Vector-Preserving)
-        if: contains(steps.changed-files.outputs.all_changed_files, '.pptx')
+        if: steps.resolve.outputs.has_pptx == 'true'
         env:
           PPTX_OUTPUT_DIR: build
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
 
-          # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF
-          for pptx in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            if [[ $pptx == L*.pptx ]]; then
+          # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
+          # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.
+          for pptx in ${{ steps.resolve.outputs.pptx_files }}; do
+            if [[ $(basename "$pptx") == L*.pptx ]]; then
               echo "State change detected: Converting $pptx..."
               out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
               mkdir -p "$out_dir"
