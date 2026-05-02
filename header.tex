@@ -178,7 +178,8 @@
 % ============================
 % Title box
 % ============================
-\newcommand{\MakeAssignmentTitle}{
+\newcommand{\MakeAssignmentTitle}{%
+\par
 \begin{tcolorbox}[
     colback=gray!25!white,
     width=\textwidth,
@@ -209,10 +210,15 @@
 % ============================
 \setmintedinline{breaklines, breakafter=_}
 
+% Note: breaklines is intentionally OFF here. fvextra (which minted
+% builds on) implements line wrapping via \everypar, and tagpdf's
+% phase-III paragraph-hook counter desynchronises when a wrapped
+% logical line crosses a page break — manifesting as a fatal
+% "automatic begin/end text-unit para hooks differ" at \end{document}.
+% Until tagpdf+fvextra cooperate cleanly under PDF/UA-2, leave wrapping
+% off; long lines flow off the right margin rather than wrapping.
 \setminted{
-  breaklines,
-  breakanywhere=false,
-  breakafter=\space,
+  breaklines=false,
   frame=lines,
   fontsize=\footnotesize,
 }
@@ -225,10 +231,11 @@
 
 \newcounter{exercise}
 
-\NewDocumentCommand{\Ex}{o}{
+\NewDocumentCommand{\Ex}{o}{%
+  \par
   \stepcounter{exercise}
   \section*{Exercise \theexercise
-    \IfValueT{#1}{: #1} 
+    \IfValueT{#1}{: #1}
   }
   \addcontentsline{toc}{section}{Exercise \theexercise
     \IfValueT{#1}{: #1}}
@@ -238,7 +245,8 @@
 
 \pgfplotsset{compat=1.18}
 
-\newcommand{\MakeFooter}{
+\newcommand{\MakeFooter}{%
+\par
 \begin{tcolorbox}[
     colback=gray!25!white,
     width=\textwidth,

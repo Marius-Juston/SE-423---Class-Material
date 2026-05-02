@@ -198,7 +198,8 @@ SpibRegs.SPIFFRX.bit.RXFIFORESET = 1;    // Re-enable receive FIFO operation
 SpibRegs.SPICTL.bit.SPIINTENA = 1;  // Enables SPI interrupt. !! I do not think this is needed. Need to Test
 
 SpibRegs.SPIFFRX.bit.RXFFIL =???; // Interrupt Level to 16 words or more received into FIFO causes
-                                  //an interrupt. This is just the initial setting for the register. Will be changed below
+                                  // an interrupt. This is just the initial setting for the register. 
+                                  // Will be changed below
 \end{minted}
 \item Setup CPU Timer 0’s interrupt function to be called every 1ms. Then, inside CPU Timer 0’s interrupt function, call these three lines of code to tell the SPI to transmit two 16-bit values, and because this is an SPI serial port, two 16-bit values will be received. Whenever you transmit data in a SPI serial port, you also receive. Once two 16-bit values are received into the FIFO, the \mintinline{c}{SPIB_RX_INT} hardware interrupt function will be called.
 \begin{minted}{c}
@@ -438,7 +439,6 @@ So, to start, I want you to create a state transition diagram and pseudocode (wi
 %
 The pseudocode does not include all the programming details for making the robot go to an X, Y point, follow the right wall, or follow a bright pink color. When you are coming up with the pseudocode, think of a function that needs to be called every 1 millisecond to drive the robot to an X, Y point, or to follow the right wall or the pink. Every millisecond, your pseudocode should call this function, and every millisecond, there should be if statements that make the decision what state should be run the next millisecond, whether it should be the same state currently being performed or if a new state should be performed the next millisecond. In other words, the pseudocode is at a high level, focusing on the decisions that need to be made rather than the details of how to make the robot perform tasks.  
 As you are thinking about this state transition diagram and pseudocode, if any senses are missing or issues you think will arise, note them in the notes section. In the next homework assignment, I added some sensing and other features to address those issues. Also, it will be essential for you to keep the solution you hand in, because you will be adding to this diagram and pseudocode in the upcoming homework sets.
-%
+
 \MakeFooter
-%
 \end{document}

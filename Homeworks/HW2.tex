@@ -296,7 +296,8 @@ AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA
 //AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
 //AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???; //set to last or only SOC that is converted, and it will set INT1 flag ADCA1
+//set to last or only SOC that is converted, and it will set INT1 flag ADCA1
+AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;
 AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag
 AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared	
 EDIS;
