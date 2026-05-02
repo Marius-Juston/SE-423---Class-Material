@@ -71,6 +71,9 @@
 % compiles. The PDF build keeps full minted (with -shell-escape).
 % ============================
 \ifSEhtml
+  \Css{body { background-color: white; color: black; }}
+
+
   \usepackage{fvextra}
   % minted is NOT loaded in HTML mode. We provide a verbatim stand-in so
   % \begin{minted}[opts]{lang} ... \end{minted} still compiles. We use
