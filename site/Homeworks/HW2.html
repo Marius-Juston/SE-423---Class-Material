@@ -1,0 +1,464 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title></title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='HW2.css' rel='stylesheet' type='text/css' /> 
+<meta content='HW2.tex' name='src' /> 
+</head><body>
+   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 35 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='cmbx-12x-x-120'>Homework Assignment #2</span>
+</p><!-- l. 35 --><p class='noindent'><span class='cmbx-10x-x-109'>The Demonstration Check-Offs For Exercises 1 And 2 Are Due By </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>5PM Tuesday,
+February 17</span></span><span class='cmbx-10x-x-109'>. Check-Offs For Exercises 3 And 4 Are Due By </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>5PM Tuesday, February 24</span></span><span class='cmbx-10x-x-109'>.</span>
+</p><!-- l. 35 --><p class='noindent'><span class='cmbx-10x-x-109'>Remainder Due On GradeScope, by </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>9AM Wednesday, February 25</span></span><span class='cmbx-10x-x-109'>.</span>
+</p>
+ 
+</div> 
+</div>
+   
+   <h3 class='likesectionHead' id='exercise-1-solder-photo-resistor-'> <a id='x1-1000'></a>Exercise 1: Solder photo resistor </h3>
+<p id='exercise-1-solder-photo-resistor'><a id='Q1-1-2'></a>
+<!-- l. 39 --></p><p class='noindent'>Solder your breakout board to add the photo resistor circuit, connected to ADCINA4 (Pin 69) on the red board. Also,
+solder the 5-pin female header connector for your Joystick. See the Demo Board in the lab as a guide on what to solder to
+your board. </p><figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 43 --><p class='noindent' id='photo-resistor-circuit'><img alt='[Picture]' src='HW20x.svg' /> <a id='x1-1001r1'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Photo resistor circuit
+</span></figcaption><!-- tex4ht:label?: x111001r1  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   
+   <h3 class='likesectionHead' id='exercise-2-vary-the-intensity-of-an-led-connected-to-a-pwm-output-'>  <a id='x1-2000'></a>Exercise 2: Vary the intensity of an LED connected to a PWM output </h3>
+<p id='exercise-2-vary-the-intensity-of-an-led-connected-to-a-pwm-output'><a id='Q1-1-5'></a>
+<!-- l. 83 --></p><p class='noindent'>Create a new CCS project from the HWstarter project found in your repository and rename it <code class='lstinline'><span style='color:#000000'>HW2/span&gt;<span style='color:#000000'>yourinitials/span&gt;</span>. Use
+this same project for all the exercises below. Each exercise builds on the next one. As discussed in the lecture, the EPWM
+peripheral has many more options than we will need for SE423 this semester. We only need to focus on the peripheral’s
+basic features. I have created a condensed version of the EPWM chapter of the F28379D technical reference guide. The
+condensed version can be found here <a class='url' href='http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf</span></a>. The complete
+technical reference guide can be found here <a class='url' href='http://coecsl.ece.illinois.edu/SE423/tms320f28379D_TechRefi.pdf'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/SE423/tms320f28379D_TechRefi.pdf</span></a>.
+To set up the PWM peripheral and its output channels, you will need to program the PWM peripheral registers
+through the “bit-field” unions TI defined. Let us look at the definition of the bit-fields for the registers <span class='cmtt-10x-x-109'>TBCTL</span>
+and <span class='cmtt-10x-x-109'>AQCTLA</span>. (<span class='cmbx-10x-x-109'>Note</span>: you can find these definitions in Code Composer Studio also by typing in the text
+<span class='cmtt-10x-x-109'>EPwm12Regs</span>, somewhere in your <code class='lstinline'><span style='color:#000000'>main()</span></code> function, and then right clicking and selecting “Open Declaration.”
+Then do that one more time on the <code class='lstinline'><span style='color:#000000'>TBCTL_REG</span></code> union. YOU DO NOT cut and paste the code below into
+your code. I am just showing you how to view variable definitions using “Open Declaration”. Make sure to
+delete this single line of code where you typed <span class='cmtt-10x-x-109'>EPwm12Regs</span>, otherwise you will receive a compiler error
+later.)
+</span></code></p>
+   <pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>struct TBCTL_BITS {                     // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-2004r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CTRMODE:2;                   // 1:0 Counter Mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-2006r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 PHSEN:1;                     // 2 Phase Load Enable</span></span> 
+<span class='fancyvrblineno'><a id='x1-2008r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 PRDLD:1;                     // 3 Active Period Load</span></span> 
+<span class='fancyvrblineno'><a id='x1-2010r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 SYNCOSEL:2;                  // 5:4 Sync Output Select</span></span> 
+<span class='fancyvrblineno'><a id='x1-2012r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 SWFSYNC:1;                   // 6 Software Force Sync Pulse</span></span> 
+<span class='fancyvrblineno'><a id='x1-2014r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 HSPCLKDIV:3;                 // 9:7 High Speed TBCLK Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-2016r8'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CLKDIV:3;                    // 12:10 Time Base Clock Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-2018r9'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 PHSDIR:1;                    // 13 Phase Direction Bit</span></span> 
+<span class='fancyvrblineno'><a id='x1-2020r10'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 FREE_SOFT:2;                 // 15:14 Emulation Mode Bits</span></span> 
+<span class='fancyvrblineno'><a id='x1-2022r11'></a></span><span class='fancyvrbline'><span class='cmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-2024r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>union TBCTL_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-2026r13'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2028r14'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>struct TBCTL_BITS bit;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2030r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-2032r16'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-2034r17'></a></span><span class='fancyvrbline'><span class='cmtt-9'>struct AQCTLA_BITS {                    // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-2036r18'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 ZRO:2;                       // 1:0 Action Counter = Zero</span></span> 
+<span class='fancyvrblineno'><a id='x1-2038r19'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 PRD:2;                       // 3:2 Action Counter = Period</span></span> 
+<span class='fancyvrblineno'><a id='x1-2040r20'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CAU:2;                       // 5:4 Action Counter = Compare A Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-2042r21'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CAD:2;                       // 7:6 Action Counter = Compare A Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-2044r22'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CBU:2;                       // 9:8 Action Counter = Compare B Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-2046r23'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 CBD:2;                       // 11:10 Action Counter = Compare B Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-2048r24'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 rsvd1:4;                     // 15:12 Reserved</span></span> 
+<span class='fancyvrblineno'><a id='x1-2050r25'></a></span><span class='fancyvrbline'><span class='cmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-2052r26'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-2054r27'></a></span><span class='fancyvrbline'><span class='cmtt-9'>union AQCTLA_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-2056r28'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Uint16 all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2058r29'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>struct AQCTLA_BITS bit;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2060r30'></a></span><span class='fancyvrbline'><span class='cmtt-9'>};</span></span></pre>
+<!-- l. 120 --><p class='noindent'>Looking at these bit-fields notice the <span class='cmtt-10x-x-109'>:1</span>, <span class='cmtt-10x-x-109'>:2 </span>or <span class='cmtt-10x-x-109'>:3 </span>after <span class='cmtt-10x-x-109'>PHSEN</span>, <span class='cmtt-10x-x-109'>CTRMODE</span>, <span class='cmtt-10x-x-109'>CLKDIV </span>respectively. This indicates how many bits
+this portion of the bit field uses. If you add up all the numbers after the colons, you see that it adds to 16, which
+is the size of both the <span class='cmtt-10x-x-109'>TBCTL </span>and <span class='cmtt-10x-x-109'>AQCTLA </span>registers. So each bit of the register can be assigned to this bit
+field. To make this clearer, look at the definition of <span class='cmtt-10x-x-109'>TBCTL </span>and <span class='cmtt-10x-x-109'>AQCTLA </span>from TI’s technical reference guide:
+</p><div class='table'>
+<!-- l. 122 --><p class='indent'>   </p><figure class='float' id='x1-2061r1'><span id='tbctl-register-figure-1593'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 1: </span><span class='content'>TBCTL Register: Figure 15-93
+</span></figcaption><!-- tex4ht:label?: x122061r1  -->
+<table class='tabularray tblr' id='tbl-1'> <tr id='row-1-1-'><td id='cell1-1-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>15</span></td> <td id='cell1-1-2' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>14</span></td> <td id='cell1-1-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>13</span></td> <td id='cell1-1-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>12</span></td> <td id='cell1-1-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>11</span></td> <td id='cell1-1-6' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>10</span></td> <td id='cell1-1-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>9</span></td> <td id='cell1-1-8' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>8</span></td>       </tr>
+ <tr id='row-1-2-'><td colspan='2' id='cell1-2-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>             <span class='cmr-9'>FREE_SOFT</span> </td> <!--  ignored cell: &lt;td id="cell12222" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;             &lt;/td&gt;  --><td id='cell1-2-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>PHSDIR</span>        </td><td colspan='3' id='cell1-2-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                           <span class='cmr-9'>CLKDIV</span> </td> <!--  ignored cell: &lt;td id="cell12255" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;     &lt;/td&gt;  --><!--  ignored cell: &lt;td id="cell12266" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                      &lt;/td&gt;  --><td colspan='2' id='cell1-2-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>             <span class='cmr-9'>HSPCLKDIV</span> </td> <!--  ignored cell: &lt;td id="cell12288" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;             &lt;/td&gt;  -->   </tr>
+ <tr id='row-1-3-'><td colspan='2' id='cell1-3-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell13322" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td id='cell1-3-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>R/W-0h</span>         </td><td colspan='3' id='cell1-3-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                           <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell13355" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;     &lt;/td&gt;  --><!--  ignored cell: &lt;td id="cell13366" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                      &lt;/td&gt;  --><td colspan='2' id='cell1-3-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                <span class='cmr-9'>R/W-1h</span> </td> <!--  ignored cell: &lt;td id="cell13388" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                &lt;/td&gt;  -->   </tr>
+ <tr id='row-1-4-'><td id='cell1-4-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>7</span></td> <td id='cell1-4-2' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>6</span></td> <td id='cell1-4-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>5</span></td> <td id='cell1-4-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>4</span></td> <td id='cell1-4-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>3</span></td> <td id='cell1-4-6' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>2</span></td> <td id='cell1-4-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>1</span></td> <td id='cell1-4-8' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>0</span></td>       </tr>
+ <tr id='row-1-5-'><td id='cell1-5-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>HSPCLKDIV</span>  </td><td id='cell1-5-2' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>SWFSYNC</span>     </td><td colspan='2' id='cell1-5-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>              <span class='cmr-9'>SYNCOSEL</span> </td> <!--  ignored cell: &lt;td id="cell15544" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;              &lt;/td&gt;  --><td id='cell1-5-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>PRDLD</span>         </td><td id='cell1-5-6' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>PHSEN</span>          </td><td colspan='2' id='cell1-5-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>              <span class='cmr-9'>CTRMODE</span> </td> <!--  ignored cell: &lt;td id="cell15588" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;              &lt;/td&gt;  -->     </tr>
+ <tr id='row-1-6-'><td id='cell1-6-1' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>R/W-1h</span>         </td><td id='cell1-6-2' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>R-0/W1S-0h</span>   </td><td colspan='2' id='cell1-6-3' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell16644" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td id='cell1-6-5' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>R/W-0h</span>         </td><td id='cell1-6-6' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>  <span class='cmr-9'>R/W-0h</span>         </td><td colspan='2' id='cell1-6-7' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                <span class='cmr-9'>R/W-3h</span> </td> <!--  ignored cell: &lt;td id="cell16688" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                &lt;/td&gt;  -->     </tr>
+ 
+ 
+ 
+ 
+ 
+ </table>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+<!-- l. 140 --><p class='indent'>   and </p><div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 142 --><p class='indent'>   </p><figure class='float' id='x1-2062r2'><span id='aqctla-register-figure-15115'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 2: </span><span class='content'>AQCTLA Register: Figure 15-115
+</span></figcaption><!-- tex4ht:label?: x122062r2  -->
+<table class='tabularray tblr' id='tbl-2'> <tr id='row-2-1-'><td id='cell2-1-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>15</span></td> <td id='cell2-1-2' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>14</span></td> <td id='cell2-1-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>13</span></td> <td id='cell2-1-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>12</span></td> <td id='cell2-1-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>11</span></td> <td id='cell2-1-6' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>10</span></td> <td id='cell2-1-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>9</span></td> <td id='cell2-1-8' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>8</span></td>       </tr>
+ <tr id='row-2-2-'><td colspan='4' id='cell2-2-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#D9D9D9;'> <span class='cmr-9'>RESERVED</span> </td> <!--  ignored cell: &lt;td id="cell22222" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt; &lt;/td&gt;  --> <!--  ignored cell: &lt;td id="cell22233" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt; &lt;/td&gt;  --> <!--  ignored cell: &lt;td id="cell22244" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;&lt;/td&gt;  --><td colspan='2' id='cell2-2-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                   <span class='cmr-9'>CBD</span> </td> <!--  ignored cell: &lt;td id="cell22266" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                   &lt;/td&gt;  --><td colspan='2' id='cell2-2-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                   <span class='cmr-9'>CBU</span> </td> <!--  ignored cell: &lt;td id="cell22288" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                   &lt;/td&gt;  -->  </tr>
+ <tr id='row-2-3-'><td colspan='4' id='cell2-3-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                                       <span class='cmr-9'>R-0-0h</span> </td> <!--  ignored cell: &lt;td id="cell23322" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt; &lt;/td&gt;  --> <!--  ignored cell: &lt;td id="cell23333" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                 &lt;/td&gt;  --><!--  ignored cell: &lt;td id="cell23344" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                      &lt;/td&gt;  --><td colspan='2' id='cell2-3-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell23366" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td colspan='2' id='cell2-3-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell23388" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                &lt;/td&gt;  -->  </tr>
+ <tr id='row-2-4-'><td id='cell2-4-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>7</span></td> <td id='cell2-4-2' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>6</span></td> <td id='cell2-4-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>5</span></td> <td id='cell2-4-4' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>4</span></td> <td id='cell2-4-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>3</span></td> <td id='cell2-4-6' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>2</span></td> <td id='cell2-4-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>1</span></td> <td id='cell2-4-8' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;background-color:#FFFFD2;'> <span class='cmr-9'>0</span></td>       </tr>
+ <tr id='row-2-5-'><td colspan='2' id='cell2-5-1' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                   <span class='cmr-9'>CAD</span> </td> <!--  ignored cell: &lt;td id="cell25522" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                   &lt;/td&gt;  --><td colspan='2' id='cell2-5-3' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                   <span class='cmr-9'>CAU</span> </td> <!--  ignored cell: &lt;td id="cell25544" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                   &lt;/td&gt;  --><td colspan='2' id='cell2-5-5' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;'>                   <span class='cmr-9'>PRD</span> </td> <!--  ignored cell: &lt;td id="cell25566" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                   &lt;/td&gt;  --><td colspan='2' id='cell2-5-7' style='text-align:center;border-top:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                   <span class='cmr-9'>ZRO</span> </td> <!--  ignored cell: &lt;td id="cell25588" style="textaalign:center;borderttop:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                   &lt;/td&gt;  -->   </tr>
+ <tr id='row-2-6-'><td colspan='2' id='cell2-6-1' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell26622" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td colspan='2' id='cell2-6-3' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell26644" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td colspan='2' id='cell2-6-5' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell26666" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;" &gt;                &lt;/td&gt;  --><td colspan='2' id='cell2-6-7' style='text-align:center;border-top:0.797px solid #000000;border-bottom:0.797px solid #000000;border-left:0.797px solid #000000;border-right:0.797px solid #000000;'>                <span class='cmr-9'>R/W-0h</span> </td> <!--  ignored cell: &lt;td id="cell26688" style="textaalign:center;borderttop:0.797px solid #000000;borderbbottom:0.797px solid #000000;borderlleft:0.797px solid #000000;borderrright:0.797px solid #000000;" &gt;                &lt;/td&gt;  -->   </tr>
+ 
+ 
+ 
+ 
+ 
+ </table>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+<!-- l. 161 --><p class='indent'>   Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So, what
+bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits
+of the register. So you could code:
+</p>
+   <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2064r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm12Regs.TBCTL.bit.CLKDIV = 3;</span></span></pre>
+<!-- l. 167 --><p class='noindent'>Moreover, that would set bit 10 to 1, bit 11 to 1, and bit 12 to 0 in the TBCTL register, leaving all the other
+bits unchanged. Since CLKDIV uses 3 bits, the smallest value you can set it to is 0. What is the largest
+number you could set it to? <span class='cmti-10x-x-109'>(Technically, you could set it to any number in your code, but only the bottom 3
+bits of the number are looked at in the assignment.) </span>The answer is 7 or binary 111, all three bits set to
+1.
+</p><!-- l. 169 --><p class='indent'>   Given the introduction to register bit-field assignments, write some code in the <span class='cmtt-10x-x-109'>main() </span>function to set up EPWM12A
+to drive LED1. <span class='cmti-10x-x-109'>If I do not list an option that you see defined in a register, then that means you should not set
+that option, and it will be kept as the default. I may suggest an option that is already the default, but to
+make it clear to the reader of your code that this option is set, I would like you to assign it the default
+value, even though that line of code is not necessary. </span>Set the following options in the EPWM registers for
+EPWM12A:
+</p><!-- l. 171 --><p class='indent'>   With TBCTL set all these options using four lines of C code: (1) Count up Mode, (2) Free Soft emulation mode to
+Free Run so that the PWM continues when you set a break point in your code, (3) Do not load the time-base counter from
+the time-base phase register, (4) set clock divide to divide by 1.
+</p><!-- l. 173 --><p class='indent'>   With TBCTR: Start the timer at zero.
+</p><!-- l. 175 --><p class='indent'>   With TBPRD: Set the period (carrier frequency) of the PWM signal to 5KHz, which is a period of 200 microseconds.
+Remember, the clock source the TBCTR register is counting has a frequency of 50 MHz, or a period of 1/50000000
+seconds.
+</p><!-- l. 177 --><p class='indent'>   With CMPA, initially start the duty cycle at 50
+</p><!-- l. 179 --><p class='indent'>   With AQCTLA set, set the PWM12A output pin low when CMPA is reached. Set the pin high when the TBCTR
+register is zero.
+</p><!-- l. 181 --><p class='indent'>   With TBPHS set to zero, i.e., <span class='cmtt-10x-x-109'>EPwm12Regs.TBPHS.bit.TBPHS = 0; </span>I do not know if this setting is necessary, but I
+have seen it in several TI examples, so I am just being safe here.
+</p><!-- l. 183 --><p class='indent'>   You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the <a href='http://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf'>PinMux table for the
+F28379D Launchpad</a> to help you here. Use the function <span class='cmtt-10x-x-109'>GPIO_SetupPinMux </span>to change the PinMux such that
+GPIO22 is instead set as EPWM12A output pin. For example, the below line of code sets GPIO158 as
+GPIO158:
+</p>
+   <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2066r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<!-- l. 189 --><p class='noindent'>Looking at the PinMux table, the line of code below sets GPIO40 to be instead the SDAB pin:
+</p>
+   <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-2068r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<!-- l. 195 --><p class='noindent'>Finally, based on a number of TI examples, it is a good idea to disable the pull-up resistor when an I/O pin is set as a PWM
+output to reduce power consumption. Add these lines of code after your above initializations.
+</p>
+   <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-2070r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EALLOW;  // Below are protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-2072r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A</span></span> 
+<span class='fancyvrblineno'><a id='x1-2074r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EDIS;</span></span></pre>
+<!-- l. 203 --><p class='noindent'>Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s
+interrupt function and comment out the call to the <span class='cmtt-10x-x-109'>displayLEDletter() </span>function. When ready, download this code to
+your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50% duty cycle, so the LED should be
+50% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in Code
+                                                                                                       
+                                                                                                       
+Composer Studio. In CCS, select the menu View <span class='cmmi-10x-x-109'>rightarrow </span>Registers, and the Registers tab should appear.
+There are a bunch of registers, so you will have to scroll down until you see the “EPwm12Regs” register.
+Click the “<span class='cmmi-10x-x-109'>/span&gt;” to expand the register. Scroll down until you find the TBPRD and CMPA registers. Note
+the value in TBPRD. Expand the CMPA register and confirm that it is a 32-bit register with two 16-bit
+parts, CMPA and CMPAHR. Leave CMPAHR at 0 and change CMPA. First, try setting CMPA to 3/4 the
+value of TBPRD. What happens to the intensity of LED1? Change CMPA to the same value as TBPRD to
+see the maximum brightness (100% duty cycle). Play with other values for CMPA to see the brightness
+change.
+</span></p><!-- l. 205 --><p class='indent'>   <span class='cmbx-10x-x-109'>Note</span>: Code Composer Studio may not display your EPWM12 registers correctly due to very little code running on
+your F28379D processor, and also due to the large number of registers to display in the register view. Once you click the
+Registers tab, you will see two icons with yellow arrows pointing towards each other. These are Refresh and
+Continuous Refresh. When you enter a value for CMPA, try clicking Refresh and Continuous Refresh to
+see if CCS refreshes the value in CMPA. If the Refresh icons do not work, you can also pause your code
+with the pause icon, and your values should update. Then click the resume icon to continue running your
+code.
+</p><!-- l. 207 --><p class='indent'>   Now that you see CMPA changes the brightness of LED1, initialize CPU Timer 2 so that its interrupt
+function is called every 1ms. Then write code in CPU Timer2’s interrupt function to increase, by one, the
+value of EPWM12’s CMPA register every one millisecond. Then, when CMPA’s value reaches the value
+in TBPRD, change the state of your code to decrease CMPA by 1 each millisecond; then, when CMPA
+reaches 0, start increasing CMPA by 1 again each millisecond. This way, your code will change the duty
+cycle of the PWM driving LED1, making it brighter, then dimmer, and repeating this process. The easiest
+way to code this is to create a global variable of type <span class='cmtt-10x-x-109'>int16_t </span>named updown. When updown is equal
+to 1, count up; when updown is 0, count down. When counting, check for CMPA to reach the value of
+TBPRD and switch to down counting. While down-counting, check if CMPA equals zero to switch back to
+up-counting.
+</p><!-- l. 209 --><p class='indent'>   <span class='cmbx-10x-x-109'>Show the TAs on the oscilloscope that the LED1 is going up and down every 200 us.</span> </p><figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 213 --><p class='noindent' id='ramped-led1-brightness-pattern'><img alt='[Picture]' src='HW21x.svg' /> <a id='x1-2075r2'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Ramped LED1 Brightness Pattern
+</span></figcaption><!-- tex4ht:label?: x122075r2  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   
+   <h3 class='likesectionHead' id='exercise-3-using-adca-to-read-the-voltage-drop-across-a-photo-resistor-'>  <a id='x1-3000'></a>Exercise 3: Using ADCA to read the voltage drop across a photo resistor </h3>
+<p id='exercise-3-using-adca-to-read-the-voltage-drop-across-a-photo-resistor'><a id='Q1-1-10'></a>
+<!-- l. 237 --></p><p class='noindent'>These documents will help you understand how to use the ADC peripheral. Find the whole chapter 11 discussing
+the F28379D’s ADC peripheral in the <a href='http://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf'>TMS320F28379D Technical Reference Guide</a> just in case you need
+some extra detail. Also, read through sections 3.4 through 3.4.5, which discuss Hardware Interrupt events
+on the F28379D. <a href='http://coecsl.ece.illinois.edu/se423/PeripheralInterruptChannelMapTable.pdf'>Table 3-2</a> is important when setting up Hardware Interrupts (HWI), so I have created a
+separate file with that table only. I have created a condensed version of the ADC peripheral that should cover
+most of the topics we need for this homework. <a href='http://coecsl.ece.illinois.edu/se423/ADC_Peripheral.pdf'>ADC Condensed Technical Reference Guide</a>. These included
+sections and register descriptions, which should give you an introduction to the ADC peripheral. The EPWM4
+peripheral will be used to signal the ADC when to convert, rather than driving a duty-cycle-varying square
+wave, so I am including another link to the EPWM reference here. <a href='http://coecsl.ece.illinois.edu/se423/EPWM_Peripheral.pdf'>EPWM Condensed Technical Reference
+Guide</a>.
+</p><!-- l. 240 --><p class='indent'>   Each of the TMS320F28379D processor’s ADC peripherals can generate an interrupt when its sequence of samples has
+been converted and stored in the results registers of the ADC peripheral. When the ADC conversion is complete, the
+F28379D will automatically stop the code it is currently processing and jump to the interrupt service routine (ISR)
+specified for the ADC. Upon completion of the ISR code, the program counter (PC) will automatically jump back to the
+interrupted code and resume processing.
+</p><!-- l. 242 --><p class='indent'>   There are four ADC peripherals in the F28379D: ADCA, ADCB, ADCC, and ADCD. For this first exercise with
+the ADC, we will use ADCA and its channel ADCINA4, which you have soldered to the photo resistor’s
+output.
+</p><!-- l. 244 --><p class='indent'>   The input pins, or channels, ADCINA0, ADCINA1, ADCINA2, ADCINA3, ADCINA4, and ADCINA5 are
+multiplexed into the ADCA peripheral on the F28379D processor. The ADCA peripheral can only sample
+one of these voltage input pins at a time. So the multiplexer allows the ADCA sequencer to sample one
+channel, and then, when finished, the sequencer can change the multiplexer so that the next channel can be
+converted. The sequencer can schedule up to 16 conversions for each trigger. At first, you will only set up one
+conversion, ADCINA4. However, in the next exercise, you will add channels to sample the voltage from
+your attached Joystick. We will initialize ADCA to perform 12-bit ADC conversions. The input voltage
+range for this ADC is 0 to 3.0 volts. So, a 12-bit result of 0 (decimal) indicates that 0.0 volts is on the
+ADC input pin. The maximum value of a 12-bit ADC result, 4095, indicates that almost 3.0 volts is on the
+ADC input pin. Hence, there is a linear interpolation between 0 and 4095, covering all voltages from 0.0 to
+almost 3.0 volts with steps of 3.0V/4096 = 0.73 mV. (The reason for 4096 here is due to how a SAR ADC is
+constructed.) We will command ADCA to sample channel ADCINA4, which will be a one-channel sequence.
+(As I stated above, in the next exercise, you will also sample the two voltages of the Joystick and use a
+three-channel sequence.) We will set up Start of Conversion 0 (SOC0) to convert ADCINA4. When SOC0
+finishes converting the input voltage to its corresponding 12-bit value, the ADCA1 hardware interrupt will
+be flagged for execution. You will write the hardware interrupt function that is called when ADCA1 is
+flagged. The conversion results will be stored in the AdcaResultRegs registers.ADCRESULT0. There are
+quite a few things to set up, so I am giving you most of the code. You will need to refer to the register
+descriptions to fill in the blanks. I also include some commented-out code that will help you with the next
+exercise.
+</p><!-- l. 249 --><p class='indent'>   We want to command the ADCA peripheral to sample ADCINA4. There are a few ways to accomplish this, but for
+this homework, we are going to use EPWM4 as a timer (no duty-cycle output) to trigger the ADCA conversion sequence.
+In <span class='cmtt-10x-x-109'>main() </span>after the <span class='cmtt-10x-x-109'>init_serial </span>functions, add the following code and fill in the ??? blanks by studying the EPWM
+reference. Do not forget to copy EALLOW and EDIS.
+</p>
+   <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-3002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3004r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group</span></span> 
+<span class='fancyvrblineno'><a id='x1-3006r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = 3; // freeze counter</span></span> 
+<span class='fancyvrblineno'><a id='x1-3008r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.ETSEL.bit.SOCASEL = ???; // Select event when counter equal to PRD</span></span> 
+<span class='fancyvrblineno'><a id='x1-3010r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.ETPS.bit.SOCAPRD = ???; // Generate pulse on 1st event (\pulse"is the same as \trigger"</span></span> 
+<span class='fancyvrblineno'><a id='x1-3012r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3014r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBCTR = 0x0; // Clear counter</span></span> 
+<span class='fancyvrblineno'><a id='x1-3016r8'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-3018r9'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading</span></span> 
+<span class='fancyvrblineno'><a id='x1-3020r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBCTL.bit.CLKDIV = 0; // divide by 1 50Mhz Clock</span></span> 
+<span class='fancyvrblineno'><a id='x1-3022r11'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBPRD = ???;  // Set Period to 1ms sample. The input clock is 50MHz.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3024r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal</span></span> 
+<span class='fancyvrblineno'><a id='x1-3026r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 1; //enable SOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3028r14'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = ???; //unfreeze, and enter up count mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-3030r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EDIS;</span></span></pre>
+                                                                                                       
+                                                                                                       
+<!-- l. 269 --><p class='noindent'>Next, we would like to set up ADCA so that it uses 1 of its 16 SOCs (Start of Conversions). The ADC sequencer uses these
+SOCs to sample the ADC channels in any desired order and, if necessary, assign priority to certain SOCs. It may not be
+very clear for the first-time user of this peripheral, but if we stick to the basics, it is pretty straightforward. We will trigger
+SOC0 using the EPWM PRD time event. When triggered, SOC0 will sample/convert its assigned channel. Assign
+channel ADCINA4 to SOC0. The initializations below set up ADCA to flag an interrupt when SOC0 finishes
+converting.
+</p><!-- l. 271 --><p class='indent'>   Some of the given code I found in an ADC example. It retrieves the default calibration values for the ADCA from the
+F28379D’s read-only memory (ROM). Add the following to <span class='cmtt-10x-x-109'>main() </span>after the <span class='cmtt-10x-x-109'>init_serial </span>functions, filling in the
+appropriate blanks (???). Note that the lines of C code that are commented out will be used in the next exercise when you
+also convert the Joystick channels.
+</p>
+   <pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-3032r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3034r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//write configurations for ADCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3036r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</span></span> 
+<span class='fancyvrblineno'><a id='x1-3038r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);  //read calibration settings</span></span> 
+<span class='fancyvrblineno'><a id='x1-3040r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//Set pulse positions to late</span></span> 
+<span class='fancyvrblineno'><a id='x1-3042r6'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3044r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//power up the ADCs</span></span> 
+<span class='fancyvrblineno'><a id='x1-3046r8'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3048r9'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//delay for 1ms to allow ADC time to power up</span></span> 
+<span class='fancyvrblineno'><a id='x1-3050r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>DELAY_US(1000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-3052r11'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3054r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//Select the channels to convert and the end of conversion flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-3056r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//ADCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3058r14'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???; //SOC0 will convert Channel you choose Does not have to be A0</span></span> 
+<span class='fancyvrblineno'><a id='x1-3060r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3062r16'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3064r17'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3066r18'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1</span></span> 
+<span class='fancyvrblineno'><a id='x1-3068r19'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3070r20'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3072r21'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3074r22'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2</span></span> 
+<span class='fancyvrblineno'><a id='x1-3076r23'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3078r24'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3080r25'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3082r26'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//set to last or only SOC that is converted, and it will set INT1 flag ADCA1</span></span> 
+<span class='fancyvrblineno'><a id='x1-3084r27'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3086r28'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-3088r29'></a></span><span class='fancyvrbline'><span class='cmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared        </span></span> 
+<span class='fancyvrblineno'><a id='x1-3090r30'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EDIS;</span></span></pre>
+<!-- l. 306 --><p class='noindent'><span class='cmbx-10x-x-109'>Note</span>: <span class='cmti-10x-x-109'>The naming can get confusing here. There are ADCA inputs channels labeled ADCINA0, ADCINA1, ADCINA2,
+ADCINA3, ADCINA4, ADCINA5 and there are also four ADCA interrupts labeled ADCA1, ADCA2, ADCA3 and
+ADCA4. In the above code, the ADCA1 interrupt is configured to trigger when channel ADCINA4 finishes conversion. </span>You
+will be adding most of the remainder of your code for this exercise inside this ADCA1 hardware interrupt
+function.
+</p><!-- l. 308 --><p class='indent'>   Now add this ADCA1 hardware interrupt function. To get you started with this interrupt function, cut and paste this
+shell function somewhere in your code outside of your <span class='cmtt-10x-x-109'>main() </span>function.
+</p>
+   <pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-3092r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//adca1 pie interrupt</span></span> 
+<span class='fancyvrblineno'><a id='x1-3094r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void ADCA_ISR (void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-3096r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-3098r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Adca4result = AdcaResultRegs.ADCRESULT0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3100r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3102r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Here covert ADCINA4 to volts</span></span> 
+<span class='fancyvrblineno'><a id='x1-3104r7'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3106r8'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Print ADCINA4’s voltage value to TeraTerm every 100ms by setting UARTPrint to one every 100th</span></span> 
+<span class='fancyvrblineno'><a id='x1-3108r9'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//time in this function.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3110r10'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3112r11'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //clear interrupt flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-3114r12'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3116r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+<!-- l. 326 --><p class='noindent'>Furthermore, perform the following steps (<span class='cmti-10x-x-109'>some of these steps have already been done for you by the shell code</span>):
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-3118x1'>Create your interrupt function as a global function with “<span class='cmtt-10x-x-109'>void</span>” parameters and of type “<span class='cmtt-10x-x-109'>__interrupt
+     void</span>”, for example <span class='cmtt-10x-x-109'>__interrupt void ADCA_ISR(void)</span>
+     </li>
+<li class='enumerate' id='x1-3120x2'>Put a predefinition of your ISR function at the top of your C file in the same area as the predefinitions of
+     the CPU Timer ISRs.
+     </li>
+<li class='enumerate' id='x1-3122x3'>Now inside <span class='cmtt-10x-x-109'>main() </span>find the <span class='cmtt-10x-x-109'>PieVectTable </span>assignments. This is how you tell the F28379D processor to
+     call  your  defined  functions  when  certain  interrupt  events  occur.  Looking  at  Table  3-2  in  the  <a href='http://coecsl.ece.illinois.edu/se423/PeripheralInterruptChannelMapTable.pdf'>F28379d
+     Technical Reference</a>, find ADCA1. You should see that it is PIE interrupt 1.1. Since TI labels this interrupt
+     <span class='cmtt-10x-x-109'>ADCA1</span>, there is a <span class='cmtt-10x-x-109'>PieVectTable </span>field named <span class='cmtt-10x-x-109'>ADCA1_INT</span>. So inside the <span class='cmtt-10x-x-109'>EALLOW </span>and <span class='cmtt-10x-x-109'>EDIS </span>statement assign
+     <span class='cmtt-10x-x-109'>PieVectTable.ADCA1_INT </span>to the memory address location of your ISR function. For example <span class='cmtt-10x-x-109'>DCA_ISR</span>.
+     </li>
+<li class='enumerate' id='x1-3124x4'>Next step is to enable the PIE interrupt 1.1 that the F28379D associated with ADCA1. Further down in
+     the <span class='cmtt-10x-x-109'>main() </span>code, find the section of code of “<span class='cmtt-10x-x-109'>IER |=</span>” statements. This code enables the base interrupt for
+     multiple PIE interrupts. Since ADCA1 is part of interrupt INT1, INT1 must be enabled. Timer 0’s interrupt
+     is also a part of interrupt 1. So, the code we need is already there “<span class='cmtt-10x-x-109'>IER |= M_INT1;</span>”. You do, though, need
+     to enable the 1st interrupt source of interrupt 1. Below the “<span class='cmtt-10x-x-109'>IER |=</span>” statements you should see the enabling
+     of <span class='cmtt-10x-x-109'>TINT0 </span>which is <span class='cmtt-10x-x-109'>PIEIER1.bit.INTx7</span>. Do the same line of code, but enable PIE interrupt 1.1.
+     </li>
+<li class='enumerate' id='x1-3126x5'>Now with everything set up to generate the ADCA1 interrupt, put code in your ADCA1 interrupt function
+     to read the value of the ADCINA4. ADCINA4 is set up to convert the input voltage on its corresponding pin
+     to a 12-bit integer. The ADC input range is 0.0V to almost 3.0V. The 12-bit conversion value, which ranges
+     from 0 to 4095, linearly represents the input voltage from 0.0V to almost 3.0V. The 12-bit conversion value
+     is stored in the results register, see the given code below. Create a global <span class='cmtt-10x-x-109'>int16_t </span>result variable to store
+     ADCINA4’s “raw” reading. Create one global <span class='cmtt-10x-x-109'>float </span>variable to store the scaled (0V-3V) voltage value of
+     ADCINA4. Write code to convert the ADCINA4 12-bit integer result value to voltage using the scale factor
+     3.0/4096.0 and store it in this global float variable. (The reason for 4096 here is due to how a SAR ADC is
+     constructed.)
+     </li>
+<li class='enumerate' id='x1-3128x6'>Set <span class='cmtt-10x-x-109'>UARTPrint = 1 </span>every 100ms and change the code in the <span class='cmtt-10x-x-109'>main() </span>while loop so that your ADC voltage
+     value is printed to TeraTerm. Make sure to create your own <span class='cmtt-10x-x-109'>int32_t </span>count variable for this ADA1 interrupt
+     function. It is not a good idea to use a count variable from a different timer function.
+     </li>
+<li class='enumerate' id='x1-3130x7'>As a final step, clear the interrupt source flag and the PIE peripheral so that the processor will wait for the
+     next interrupt flag before the ADC ISR is called again. The code below has many of these steps.</li></ol>
+<!-- l. 338 --><p class='noindent'>Place your hand over the photo resistor and use a flashlight to observe the voltage output of your photo resistor circuit
+change. In addition, write code set EPWM12A’s CMPA register to a scaled value of the photo resistor’s reading. When the
+photoresistor is not receiving much light, LED1 should be dim. As the photoresistor sees more light, LED1 should get
+brighter due to the change in duty cycle.
+</p><!-- l. 340 --><p class='indent'>   <span class='cmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-4-also-sample-the-joystick-voltages-'> <a id='x1-4000'></a>Exercise 4: Also sample the Joystick voltages </h3>
+<p id='exercise-4-also-sample-the-joystick-voltages'><a id='Q1-1-12'></a>
+<!-- l. 344 --></p><p class='noindent'>In this exercise, I would like you to add to the ADCA sequence of conversions by sampling the X- and Y-axis voltages of
+the Joystick. The Joystick X axis is connected to ADCINA2, and the Y axis is connected to ADCINA3. You will only have
+to make a few changes to Exercise 3’s code to make these additional samples occur. Leave SOC0 setup to sample
+ADCINA4 and triggered by EPWM4. Set up SOC1 to sample ADCINA2 and triggered by EPWM4, and SOC2 to sample
+ADCINA3 and triggered by EPWM4. Also, make sure to set the interrupt select so that SOC2 is the last sampled
+conversion and triggers the ADCA1 interrupt function. Then, inside the ADCA1 interrupt function, sample all three
+                                                                                                       
+                                                                                                       
+results, convert each to a voltage value between 0V and 3V, and print these three values to Tera Term every
+100ms.
+</p><!-- l. 346 --><p class='indent'>   Using the readings of the Joystick X and Y, write code to update LEDs to point in the direction you
+have moved the Joystick. If Joystick Y is in the center position, turn on only LED8. If Joystick Y is moved
+past a threshold and pointing towards the buzzer, then turn on only LED6. If Joystick Y is moved past
+another threshold and pointing away from the buzzer, then turn on only LED10. Similarly, if Joystick X is in
+the center position, turn on only LED8 if Joystick X is moved past a threshold, and, pointing down, turn
+on only LED13. Suppose Joystick X is moved past a threshold and pointing up, then only LED3 turns
+on.
+</p><!-- l. 348 --><p class='indent'>   <span class='cmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-5-spi-timing-diagram-'> <a id='x1-5000'></a>Exercise 5: SPI timing diagram </h3>
+<p id='exercise-5-spi-timing-diagram'><a id='Q1-1-14'></a>
+<!-- l. 352 --></p><p class='noindent'>Answer the following questions about the SPI timing diagram on the next page. Remember that SPI both sends and
+receives data simultaneously.
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-5002x1'>How many bytes are sent? How many bytes are received? What are the values of the bytes sent from the
+     master to the slave? What are the values of the bytes received into the master from the slave?
+     </li>
+<li class='enumerate' id='x1-5004x2'>Approximate the bit rate (baud rate) by looking at the X-axis time divisions.
+     </li>
+<li class='enumerate' id='x1-5006x3'>Look at Figure 18-7 and Figure 18-11 in the <a href='http://coecsl.ece.illinois.edu/se423/SPICondensed_TechRef.pdf'>SPI Condensed Reference</a>. What SPI mode is being used in
+     the below timing diagram: <span class='cmtt-10x-x-109'>CLOCK_POLARITY = ?</span>, <span class='cmtt-10x-x-109'>CLOCK_PHASE = ?</span>. So this means that the master reads in
+     each bit on the rising edge of the clock (SCK) or the falling edge of SCK?</li></ol>
+   <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 360 --><p class='noindent'><span class='cmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>comment</span></span> <span class='cmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>initials</span></span> <span class='cmbx-10x-x-109'>in your Gradescope
+submission! See </span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='cmtt-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='cmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+                                                                                                       
+                                                                                                       
+<p><span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                           <figure class='figure'> 
+
+                                                                                                                                                                    </figure>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                           </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 366 --><p class='noindent' id='spi-timing-diagram-analysis'> <img alt='PIC' height='686' src='Homeworks/Figures/HW2/SPI-.png' width='686' /> <a id='x1-5007r3'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>SPI Timing Diagram Analysis                                                                                                                                       </span></figcaption><!-- tex4ht:label?: x155007r3  -->
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+    
+</span> 
+</p></body>
+                                                                                                       
+
+
+</html>

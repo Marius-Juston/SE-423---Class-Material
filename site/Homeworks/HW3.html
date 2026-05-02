@@ -1,0 +1,560 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title></title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='HW3.css' rel='stylesheet' type='text/css' /> 
+<meta content='HW3.tex' name='src' /> 
+</head><body>
+   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 35 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='cmbx-12x-x-120'>Homework Assignment #3</span>
+</p><!-- l. 35 --><p class='noindent'><span class='cmbx-10x-x-109'>The Demonstration Check-Offs For Exercises 1, 2, 3, and 4 Are Due By </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>5PM Tuesday,
+March 10</span></span><span class='cmbx-10x-x-109'>.</span>
+</p><!-- l. 35 --><p class='noindent'><span class='cmbx-10x-x-109'>The Demo Check-Offs For Exercises 5 Is Due By </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>5PM Tuesday, March 24</span></span><span class='cmbx-10x-x-109'>.</span>
+</p><!-- l. 35 --><p class='noindent'><span class='cmbx-10x-x-109'>Remainder Due On Gradescope, by </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>9AM Wednesday, March 25</span></span><span class='cmbx-10x-x-109'>.</span>
+</p>
+ 
+</div> 
+</div>
+   
+   <h3 class='likesectionHead' id='exercise-1-solder-imu-'> <a id='x1-1000'></a>Exercise 1: Solder IMU </h3>
+<p id='exercise-1-solder-imu'><a id='Q1-1-2'></a>
+<!-- l. 39 --></p><p class='noindent'>Using the “Demo” board as the example, solder the needed headers for your MPU-9250 IMU connections to your breakout
+board. As you will see on the demo board, you need a single-row ten-pin female header, a 2x2-pin male header, and two
+1x2 male headers. Once you finish exercise 3 below, I will give you your MPU-9250 IMU along with the ten-pin male
+header that needs to be soldered to the IMU board. At that time, I will also give you the four jumpers that are shown in
+the picture below. </p><figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 43 --><p class='noindent' id='imu-placement'><img alt='PIC' height='281' src='Homeworks/Figures/HW3/Picture1.png' width='271' /> <a id='x1-1001r1'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>IMU Placement                                                                                </span></figcaption><!-- tex4ht:label?: x1-1001r1  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   
+   <h3 class='likesectionHead' id='exercise-2-buzzer-epwm-'>  <a id='x1-2000'></a>Exercise 2: Buzzer ePWM </h3>
+<p id='exercise-2-buzzer-epwm'><a id='Q1-1-5'></a>
+<!-- l. 50 --></p><p class='noindent'><span class='cmti-10x-x-109'>This exercise is a continuation of the EPWM exercises in both HW2 and Lab3. Make sure to look at the code you developed
+for both those assignments to help you with the assignment. </span>Use EPWM9A to play a song using the piezo buzzer on your
+board. In HW2 and Lab 3, we used the EPWM channels to drive a signal with a varying duty cycle and a constant carrier
+frequency. In this exercise, to create different notes, we will drive the buzzer with a signal that always has a 50% duty
+cycle, but the square wave frequency will change. <span class='cmbx-10x-x-109'>Don’t forget to move the buzzer’s jumper, otherwise
+you won’t hear any sounds! </span>For that reason, you will need to slightly change the default initializations
+of EPWM9 compared to those for EPWM12, EPWM1, and EPWM2. To produce this varying-frequency
+signal, we will no longer use the CMPA register. So, after you copy the initialization code for EPWM12 from
+HW2, change all the 12s to 9s, and then comment out your CMPA register initialization in the EPWM9
+initializations. For the musical note <span class='cmtt-10x-x-109'>#define</span>s frequencies I am giving you below, CLKDIV needs to be set to 1
+for a divide-by-2. Also, AQCTLA’s CAU and ZRO bits need to be changed so that CMPA is not used
+and a square wave is produced. <span class='cmbx-10x-x-109'>What values should you set CAU and ZRO to create this square
+wave?</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm9Regs.AQCTLA.bit.CAU = ???; // What to do when CMPA is reached</span></span> 
+<span class='fancyvrblineno'><a id='x1-2004r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EPwm9Regs.AQCTLA.bit.ZRO = ???; // What to do when CNT set back to zero</span></span></pre>
+<!-- l. 57 --><p class='noindent'>When you have the PWM peripheral set up this way, you can change the TBPRD register to change the square wave
+frequency.
+</p><!-- l. 59 --><p class='indent'>   <span class='cmbx-10x-x-109'>Note</span>: Below, I am asking you to play the short “Happy Birthday” song. A longer song that also defines the array
+“<span class='cmtt-10x-x-109'>songarray</span>” is defined in the include file “<span class='cmtt-10x-x-109'>song.h</span>”. You are welcome to play the longer song, but if you want to cut and
+paste the below shorter song into your code, you will need to go to the top of your C file and comment out the line
+<span class='cmtt-10x-x-109'>#include "song.h";</span>.
+</p><!-- l. 61 --><p class='indent'>   Below is code that defines notes and an array of notes that play “Happy Birthday”. To play this song change CPU
+Timer 1 so that it is called every 125 milliseconds (<span class='cmtt-10x-x-109'>1.0/8.0 </span>of a second). Then inside CPU Timer 1’s ISR every time it is
+called, set EPWM9A’s <span class='cmtt-10x-x-109'>TBPRD </span>to the value stored at the current index in the song array. Before you exit CPU
+Timer 1’s ISR make sure to increment a global index variable that keeps track of where you are in the song.
+When you reach the length of the song (length of the array), change the mux of pin <span class='cmtt-10x-x-109'>GPIO16 </span>so that it is no
+longer <span class='cmtt-10x-x-109'>EPWM9A </span>and instead <span class='cmtt-10x-x-109'>GPIO16</span>. Then Set <span class='cmtt-10x-x-109'>GPIO16 </span>to low so that the buzzer does not make any random
+noise.
+</p><!-- l. 63 --><p class='indent'>   As a final step, find a simple song that you create and play it, instead of Happy Birthday. This new song needs to have
+at least 10 different notes.
+</p><!-- l. 65 --><p class='indent'>   <span class='cmbx-10x-x-109'>Show this working to your TA. Also, pick a note from the </span><span class='cmtt-10x-x-109'>#define</span><span class='cmbx-10x-x-109'>s below and explain to your
+TA, with a square wave drawing, why TBPRD is set to that value to produce that note’s
+frequency.</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2006r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define C4NOTE ((uint16_t)(((50000000/2)/2)/261.63))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2008r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define D4NOTE ((uint16_t)(((50000000/2)/2)/293.66))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2010r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define E4NOTE ((uint16_t)(((50000000/2)/2)/329.63))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2012r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define F4NOTE ((uint16_t)(((50000000/2)/2)/349.23))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2014r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define G4NOTE ((uint16_t)(((50000000/2)/2)/392.00))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2016r6'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define A4NOTE ((uint16_t)(((50000000/2)/2)/440.00))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2018r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define B4NOTE ((uint16_t)(((50000000/2)/2)/493.88))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2020r8'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define C5NOTE ((uint16_t)(((50000000/2)/2)/523.25))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2022r9'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define D5NOTE ((uint16_t)(((50000000/2)/2)/587.33))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2024r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define E5NOTE ((uint16_t)(((50000000/2)/2)/659.25))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2026r11'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define F5NOTE ((uint16_t)(((50000000/2)/2)/698.46))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2028r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define G5NOTE ((uint16_t)(((50000000/2)/2)/783.99))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2030r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define A5NOTE ((uint16_t)(((50000000/2)/2)/880.00))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2032r14'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define B5NOTE ((uint16_t)(((50000000/2)/2)/987.77))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2034r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define F4SHARPNOTE ((uint16_t)(((50000000/2)/2)/369.99))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2036r16'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define G4SHARPNOTE ((uint16_t)(((50000000/2)/2)/415.3))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2038r17'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define A4FLATNOTE ((uint16_t)(((50000000/2)/2)/415.3))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2040r18'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define C5SHARPNOTE ((uint16_t)(((50000000/2)/2)/554.37))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2042r19'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define A5FLATNOTE ((uint16_t)(((50000000/2)/2)/830.61))</span></span> 
+<span class='fancyvrblineno'><a id='x1-2044r20'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define OFFNOTE 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-2046r21'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-2048r22'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define SONG_LENGTH 48</span></span> 
+<span class='fancyvrblineno'><a id='x1-2050r23'></a></span><span class='fancyvrbline'><span class='cmtt-9'>uint16_t songarray[SONG_LENGTH] = {</span></span> 
+<span class='fancyvrblineno'><a id='x1-2052r24'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2054r25'></a></span><span class='fancyvrbline'><span class='cmtt-9'>OFFNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2056r26'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2058r27'></a></span><span class='fancyvrbline'><span class='cmtt-9'>OFFNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2060r28'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2062r29'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2064r30'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2066r31'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2068r32'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2070r33'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2072r34'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2074r35'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2076r36'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2078r37'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2080r38'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2082r39'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2084r40'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2086r41'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2088r42'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2090r43'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2092r44'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2094r45'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2096r46'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2098r47'></a></span><span class='fancyvrbline'><span class='cmtt-9'>G4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2100r48'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2102r49'></a></span><span class='fancyvrbline'><span class='cmtt-9'>OFFNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2104r50'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2106r51'></a></span><span class='fancyvrbline'><span class='cmtt-9'>OFFNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2108r52'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2110r53'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2112r54'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2114r55'></a></span><span class='fancyvrbline'><span class='cmtt-9'>F4SHARPNOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2116r56'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2118r57'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2120r58'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2122r59'></a></span><span class='fancyvrbline'><span class='cmtt-9'>E4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2124r60'></a></span><span class='fancyvrbline'><span class='cmtt-9'>B4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2126r61'></a></span><span class='fancyvrbline'><span class='cmtt-9'>B4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2128r62'></a></span><span class='fancyvrbline'><span class='cmtt-9'>B4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2130r63'></a></span><span class='fancyvrbline'><span class='cmtt-9'>B4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2132r64'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2134r65'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2136r66'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2138r67'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2140r68'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2142r69'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2144r70'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE,</span></span> 
+<span class='fancyvrblineno'><a id='x1-2146r71'></a></span><span class='fancyvrbline'><span class='cmtt-9'>A4NOTE};</span></span></pre>
+   
+   <h3 class='likesectionHead' id='exercise-3-spi-oscilloscope-reading-'> <a id='x1-3000'></a>Exercise 3: SPI oscilloscope reading </h3>
+<p id='exercise-3-spi-oscilloscope-reading'><a id='Q1-1-7'></a>
+                                                                                                       
+                                                                                                       
+<!-- l. 143 --></p><p class='noindent'>For this exercise, I would like you to set up the SPI port for sending and receiving, but you will not communicate with an
+actual chip. I want you to set up the SPI and then, every 1ms, in CPU timer 0’s interrupt, transmit two 16-bit words of
+data. Since the SPI pins will not select any chip, the transmitted data does not do anything, but it allows you to scope the
+four SPI pins and verify that SPIB is set up correctly. Modify the following code after cutting and pasting it into the
+specified locations.
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-3002x1'>
+     <!-- l. 146 --><p class='noindent'>Copy and Paste this shell code in to your <span class='cmtt-10x-x-109'>main() </span>function below the <span class='cmtt-10x-x-109'>init_serial </span>function calls. Fill in the ??? with
+     the correct value by reading the <a href='http://coecsl.ece.illinois.edu/se423/SPICondensed_TechRef.pdf'>SPI Condensed TechRef</a> and its register descriptions.
+</p>
+     <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-3004r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(66, GPIO_MUX_CPU1, 0);  // Set as GPIO66 and used as MPU-9250 SS</span></span> 
+<span class='fancyvrblineno'><a id='x1-3006r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinOptions(66, GPIO_OUTPUT, GPIO_PUSHPULL);  // Make GPIO66 an Output Pin</span></span> 
+<span class='fancyvrblineno'><a id='x1-3008r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;  //Initially Set GPIO66/SS High so MPU-9250 is not selected</span></span> 
+<span class='fancyvrblineno'><a id='x1-3010r4'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3012r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(63, GPIO_MUX_CPU1, ???);  //Set GPIO63 pin to SPISIMOB</span></span> 
+<span class='fancyvrblineno'><a id='x1-3014r6'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(64, GPIO_MUX_CPU1, ???);  //Set GPIO64 pin to SPISOMIB</span></span> 
+<span class='fancyvrblineno'><a id='x1-3016r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GPIO_SetupPinMux(65, GPIO_MUX_CPU1, ???);  //Set GPIO65 pin to SPICLKB</span></span> 
+<span class='fancyvrblineno'><a id='x1-3018r8'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3020r9'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3022r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPBPUD.bit.GPIO63   = 0;  // Enable Pull-ups on SPI PINs Recommended by TI for SPI Pins</span></span> 
+<span class='fancyvrblineno'><a id='x1-3024r11'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPCPUD.bit.GPIO64   = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3026r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPCPUD.bit.GPIO65   = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3028r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPBQSEL2.bit.GPIO63 = 3;  // Set I/O pin to asynchronous mode recommended for SPI</span></span> 
+<span class='fancyvrblineno'><a id='x1-3030r14'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPCQSEL1.bit.GPIO64 = 3;  // Set I/O pin to asynchronous mode recommended for SPI</span></span> 
+<span class='fancyvrblineno'><a id='x1-3032r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioCtrlRegs.GPCQSEL1.bit.GPIO65 = 3;  // Set I/O pin to asynchronous mode recommended for SPI</span></span> 
+<span class='fancyvrblineno'><a id='x1-3034r16'></a></span><span class='fancyvrbline'><span class='cmtt-9'>EDIS;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3036r17'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3038r18'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// ---------------------------------------------------------------------------</span></span> 
+<span class='fancyvrblineno'><a id='x1-3040r19'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICCR.bit.SPISWRESET = ???;  // Put SPI in Reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-3042r20'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3044r21'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICTL.bit.CLK_PHASE = 1;  //This happens to be the mode for both the DAN28027 and</span></span> 
+<span class='fancyvrblineno'><a id='x1-3046r22'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICCR.bit.CLKPOLARITY = 0;  //The MPU-9250,  Mode 01.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3048r23'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICTL.bit.MASTER_SLAVE = ???;  // Set to SPI Master</span></span> 
+<span class='fancyvrblineno'><a id='x1-3050r24'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICCR.bit.SPICHAR = ???;  // Set to transmit and receive 16 bits each write to SPITXBUF</span></span> 
+<span class='fancyvrblineno'><a id='x1-3052r25'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICTL.bit.TALK = ???;  // Enable transmission</span></span> 
+<span class='fancyvrblineno'><a id='x1-3054r26'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIPRI.bit.FREE = 1;  // Free run, continue SPI operation</span></span> 
+<span class='fancyvrblineno'><a id='x1-3056r27'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICTL.bit.SPIINTENA = ???;  // Disables the SPI interrupt</span></span> 
+<span class='fancyvrblineno'><a id='x1-3058r28'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3060r29'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIBRR.bit.SPI_BIT_RATE = ???; // Set SCLK bit rate to 1 MHz so 1us period. SPI base clock is</span></span> 
+<span class='fancyvrblineno'><a id='x1-3062r30'></a></span><span class='fancyvrbline'>                                        <span class='cmtt-9'>// 50MHZ. And this setting divides that base clock</span></span> 
+<span class='fancyvrblineno'><a id='x1-3064r31'></a></span><span class='fancyvrbline'>                                        <span class='cmtt-9'>// to create SCLK’s period</span></span> 
+<span class='fancyvrblineno'><a id='x1-3066r32'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPISTS.all = 0x0000; // Clear status flags just in case they are set for some reason</span></span> 
+<span class='fancyvrblineno'><a id='x1-3068r33'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3070r34'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFTX.bit.SPIRST = ???; // Pull SPI FIFO out of reset,</span></span> 
+<span class='fancyvrblineno'><a id='x1-3072r35'></a></span><span class='fancyvrbline'>                                   <span class='cmtt-9'>//SPI FIFO can resume transmitting or receiving.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3074r36'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFTX.bit.SPIFFENA = ???;    // Enable SPI FIFO enhancements</span></span> 
+<span class='fancyvrblineno'><a id='x1-3076r37'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFTX.bit.TXFIFO =  0;    // Write 0 to reset the FIFO pointer to zero, and hold in reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-3078r38'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFTX.bit.TXFFINTCLR = 1;    // Write 1 to clear SPIFFTX[TXFFINT] flag just in case it is set</span></span> 
+<span class='fancyvrblineno'><a id='x1-3080r39'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3082r40'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFIFORESET = 0;    // Write 0 to reset the FIFO pointer to zero, and hold in reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-3084r41'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;    // Write 1 to clear SPIFFRX[RXFFOVF] just in case it is set</span></span> 
+<span class='fancyvrblineno'><a id='x1-3086r42'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFINTCLR = ???;    // Write 1 to clear SPIFFRX[RXFFINT] flag just in case it is set</span></span> 
+<span class='fancyvrblineno'><a id='x1-3088r43'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFIENA = ???;   // Enable the RX FIFO Interrupt. RXFFST &gt;= RXFFIL</span></span> 
+<span class='fancyvrblineno'><a id='x1-3090r44'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3092r45'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFCT.bit.TXDLY = ???; // Set the delay between transmits to 0 spi clocks.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3094r46'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3096r47'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICCR.bit.SPISWRESET = ???;    // Pull the SPI out of reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-3098r48'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3100r49'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFTX.bit.TXFIFO = ???;    // Release transmit FIFO from reset.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3102r50'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFIFORESET = 1;    // Re-enable receive FIFO operation</span></span> 
+<span class='fancyvrblineno'><a id='x1-3104r51'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPICTL.bit.SPIINTENA = 1;  // Enables SPI interrupt. !! I do not think this is needed. Need to Test</span></span> 
+<span class='fancyvrblineno'><a id='x1-3106r52'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3108r53'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFIL =???; // Interrupt Level to 16 words or more received into FIFO causes</span></span> 
+<span class='fancyvrblineno'><a id='x1-3110r54'></a></span><span class='fancyvrbline'>                                  <span class='cmtt-9'>// an interrupt. This is just the initial setting for the register.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3112r55'></a></span><span class='fancyvrbline'>                                  <span class='cmtt-9'>// Will be changed below</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-3114x2'>
+     <!-- l. 204 --><p class='noindent'>Setup CPU Timer 0’s interrupt function to be called every 1ms. Then, inside CPU Timer 0’s interrupt function, call
+     these three lines of code to tell the SPI to transmit two 16-bit values, and because this is an SPI serial port, two
+     16-bit values will be received. Whenever you transmit data in a SPI serial port, you also receive. Once
+     two 16-bit values are received into the FIFO, the <span class='cmtt-10x-x-109'>SPIB_RX_INT </span>hardware interrupt function will be
+     called.
+</p>
+     <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-3116r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// Clear GPIO66 Low to act as a Slave Select. Right now, just to scope. Later, select the MPU9250 chip</span></span> 
+<span class='fancyvrblineno'><a id='x1-3118r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioDataRegs.?????  = ???;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3120r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFIL = 2;  // Issue the SPIB_RX_INT when two values are in the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-3122r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPITXBUF = 0x4A3B;  // 0x4A3B and 0xB517 have no special meaning. Wanted to send</span></span> 
+<span class='fancyvrblineno'><a id='x1-3124r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPITXBUF = 0xB517;  // something so you can see the pattern on the Oscilloscope</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-3126x3'>
+     <!-- l. 212 --><p class='noindent'>
+          </p><ol class='enumerate2'>
+<li class='enumerate' id='x1-3128x1'>At the top of your C file, add a predefinition of <span class='cmtt-10x-x-109'>__interrupt void SPIB_isr(void)</span>.
+          </li>
+<li class='enumerate' id='x1-3130x2'>Then add this function to the <span class='cmtt-10x-x-109'>PieVectTable </span>like you did in Lab 4 for <span class='cmtt-10x-x-109'>ADCD_ISR</span>, <span class='cmtt-10x-x-109'>ADCC_ISR</span>, <span class='cmtt-10x-x-109'>ADCB_ISR</span>.
+          </li>
+<li class='enumerate' id='x1-3132x3'>Look  up  in  the  PIE  Channel  Mapping  Table  the  interrupt  number  for  <span class='cmtt-10x-x-109'>SPIB_RX </span>and  enable  this
+          interrupt by both enabling the major interrupt in the IER: <span class='cmtt-10x-x-109'>IER |= M_INT?; </span>and enabling the correct
+          <span class='cmtt-10x-x-109'>PIEIER?.bit.???</span>.
+          </li>
+<li class='enumerate' id='x1-3134x4'>Finally insert the <span class='cmtt-10x-x-109'>SPIB_isr </span>function below and correct the ???</li></ol>
+                                                                                                       
+                                                                                                       
+     <!-- l. 218 --><p class='noindent'>
+</p>
+     <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-3136r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>int16_t spivalue1 = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3138r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>int16_t spivalue2 = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3140r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void SPIB_isr(void){</span></span> 
+<span class='fancyvrblineno'><a id='x1-3142r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>spivalue1 = SpibRegs.???; // Read first 16-bit value off RX FIFO. Probably is zero since no chip</span></span> 
+<span class='fancyvrblineno'><a id='x1-3144r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>spivalue2 = SpibRegs.???; // Read second 16-bit value off RX FIFO. Again probably zero</span></span> 
+<span class='fancyvrblineno'><a id='x1-3146r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3148r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.???? = ???; // Set GPIO 66 high to end Slave Select. Now to Scope.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3150r8'></a></span><span class='fancyvrbline'>                             <span class='cmtt-9'>//Later, deselect the MPU9250.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3152r9'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Later, when actually communicating with the MPU9250, do something with the data. Now do nothing.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3154r10'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3156r11'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;      // Clear Overflow flag just in case of an overflow</span></span> 
+<span class='fancyvrblineno'><a id='x1-3158r12'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFINTCLR = 1;      // Clear RX FIFO Interrupt flag so next interrupt will happen</span></span> 
+<span class='fancyvrblineno'><a id='x1-3160r13'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3162r14'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;  // Acknowledge INT6 PIE interrupt</span></span> 
+<span class='fancyvrblineno'><a id='x1-3164r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-3166x4'>Compile and run this code. Use the oscilloscope’s logic analyzer channel to scope SS, SCLK, MOSI, and MISO.
+     Trigger on SS. Verify that the correct clock rate and clock mode are being used. Verify that 0x4A3B and 0xB517 are
+     being transmitted, and probably zero is being received.</li></ol>
+   
+   <h3 class='likesectionHead' id='exercise-4-spi-z-gyro-reading-'>  <a id='x1-4000'></a>Exercise 4: SPI z gyro reading </h3>
+<p id='exercise-4-spi-z-gyro-reading'><a id='Q1-1-9'></a>
+<!-- l. 240 --></p><p class='noindent'>Before you start the more prolonged Exercise 5, which has you study the registers of the MPU-9250 and write both
+initialization code and code that reads the gyros and accelerometers every 1ms, I want to start you out with a simpler
+exercise that reads only one 16-bit gyro reading. This will both verify that your MPU-9250 is working and give you a more
+straightforward introduction to it, rather than jumping right into the initialization of this complex IMU. Upon power-up,
+the MPU-9250 is ready to be read from the F28379D’s SPI serial port. In Exercise 5, we will write an initialization
+function that changes some of the MPU-9250’s default settings, but for this exercise, we will use the default power-on
+settings. So, change the following code to read the MPU-9250’s Gyro Z-axis every 1 ms. Print its value to Tera
+Term every 100ms. Also, make sure you scope your SPI signals SS, SCLK, MOSI, and MISO as in exercise
+3.
+</p><!-- l. 242 --><p class='indent'>   In the exercise 3 code that you wrote, change the values being sent through the SPITXBUF register to the following:
+<span class='cmti-10x-x-109'>All these lines are the same, you are just changing the number being sent</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-4002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>GpioDataRegs.?????  = ???;  // Clear GPIO66 Low to select MPU9250 chip</span></span> 
+<span class='fancyvrblineno'><a id='x1-4004r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFIL = 2;  // Issue the SPIB_RX_INT when two values are in the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-4006r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPITXBUF = (0x8000 | 0x4600);  // the 0x8000 set the read bit and 46 GYRO_YOUT_L</span></span> 
+<span class='fancyvrblineno'><a id='x1-4008r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>SpibRegs.SPITXBUF = 0x0000;  // Send 16 zeros in order that we receive the 16 GyroZ reading</span></span></pre>
+<!-- l. 251 --><p class='noindent'>You will understand this code better after several lectures on the MPU-9250, studying its datasheet, and working through
+exercise 5. This code tells the MPU-9250 to start reading from the GyroY’s Low byte. The reason we start reading at
+the Gyro Y’s Low byte is that it is the register before both the Gyro Z’s high byte and then the Gyro
+Z’s low byte. The goal is to read the full 16-bit value of Gyro Z in the second 16 bits received from the
+MPU-9250.
+</p><!-- l. 253 --><p class='indent'>   Inside the <span class='cmtt-10x-x-109'>SPIB_isr() </span>function you wrote for Exercise 3 you are reading <span class='cmtt-10x-x-109'>spivalue1 </span>and <span class='cmtt-10x-x-109'>spivalue2</span>. <span class='cmtt-10x-x-109'>spivalue1</span>
+contains no important information, but <span class='cmtt-10x-x-109'>spivalue2 </span>now contains the “raw” gyroZ reading, which is a number between
+-32768 and 32767. (In exercise 5, you will see how to convert this raw reading to units of degrees per second.) Create a
+global <span class='cmtt-10x-x-109'>int16_t </span>variable and call it something like “<span class='cmtt-10x-x-109'>gyroz_raw</span>.” Each time in <span class='cmtt-10x-x-109'>SPIB_isr() </span>set your <span class='cmtt-10x-x-109'>gyroz_raw</span>
+variable to <span class='cmtt-10x-x-109'>spivalue2</span>. Also, create a global <span class='cmtt-10x-x-109'>int32_t count </span>variable that is incremented by one each time
+into <span class='cmtt-10x-x-109'>SPIB_isr()</span>. Use this count variable to set <span class='cmtt-10x-x-109'>UARTPrint = 1 </span>every 100ms. Print your <span class='cmtt-10x-x-109'>gyroz_raw </span>value
+to Tera Term every 100 ms. With your code running and printing to Tera Term, rotate your board and
+notice that the <span class='cmtt-10x-x-109'>gyroz_raw </span>value changes as you rotate it back and forth. Demo this and your code for check
+off.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-5-initializing-the-mpu9250-and-reading-its-3-gyro-and-3-accelerometer-axes-'>  <a id='x1-5000'></a>Exercise 5: Initializing the MPU-9250 and reading its 3 gyro and 3 accelerometer axes </h3>
+                                                                                                       
+                                                                                                       
+<p id='exercise-5-initializing-the-mpu9250-and-reading-its-3-gyro-and-3-accelerometer-axes'><a id='Q1-1-11'></a>
+<!-- l. 257 --></p><p class='noindent'>For this exercise, you are going to initialize the MPU-9250 and then every 1 ms. Read its three accelerometer readings and
+its three gyro readings. Use the <a href='http://coecsl.ece.illinois.edu/se423/PS-MPU-9250A-01-v1.1.pdf'>MPU-9250 Datasheet</a>, <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Register-Map.pdf'>MPU-9250 Register Reference</a>, and especially my <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf'>MPU-9250 SPI
+Programming Tips</a> for the explanation on how to fill in the needed code below. You should also continue scoping the SPI
+signals to see if your code is working correctly.
+</p><!-- l. 259 --><p class='indent'>   First, finish the <span class='cmtt-10x-x-109'>setupSpib() </span>function given below by filling in the ???. Much of the code is provided to you, but you
+will need to add the parts described to this function. Copy this function to the bottom of your project’s C file and create a
+predefinition of the function at the top of your C file. Then make sure to call <span class='cmtt-10x-x-109'>setupSpib() </span>in <span class='cmtt-10x-x-109'>main() </span>after the
+“<span class='cmtt-10x-x-109'>init_serial()</span>” statement and before interrupts are enabled.
+</p>
+   <pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-5002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>void setupSpib(void) //Call this function in main() somewhere after the DINT; line of code.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5004r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-5006r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>int16_t temp = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5008r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Step 1.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5010r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// cut and paste all the SpibRegs initializations you found for part 3 here.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5012r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Also, do not forget to cut and paste the GPIO settings for</span></span> 
+<span class='fancyvrblineno'><a id='x1-5014r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// GPIO63, 64, 65, and 66, which are part of the SPIB setup.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5016r8'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//--------------------------------------------------------------------------</span></span> 
+<span class='fancyvrblineno'><a id='x1-5018r9'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5020r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Step 2.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5022r11'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// perform a multiple 16-bit transfer to initialize MPU-9250 registers 0x13,0x14,0x15,0x16</span></span> 
+<span class='fancyvrblineno'><a id='x1-5024r12'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C 0x1D, 0x1E, 0x1F. Use only one SS low to high for all these writes</span></span> 
+<span class='fancyvrblineno'><a id='x1-5026r13'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//Some code is given, most you have to fill yourself.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5028r14'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;  // Slave Select Low</span></span> 
+<span class='fancyvrblineno'><a id='x1-5030r15'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5032r16'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Perform the number of needed writes to SPITXBUF to write to all 13 registers.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5034r17'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Remember, we are sending 16-bit transfers, so two registers at a time after the first 16-bit transfer.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5036r18'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x13 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5038r19'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x14 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5040r20'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x15 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5042r21'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x16 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5044r22'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x17 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5046r23'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x18 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5048r24'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x19 write 0x13</span></span> 
+<span class='fancyvrblineno'><a id='x1-5050r25'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1A write 0x02</span></span> 
+<span class='fancyvrblineno'><a id='x1-5052r26'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1B write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5054r27'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1C write 0x08</span></span> 
+<span class='fancyvrblineno'><a id='x1-5056r28'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1D write 0x06</span></span> 
+<span class='fancyvrblineno'><a id='x1-5058r29'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1E write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5060r30'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x1F write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5062r31'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5064r32'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// wait for the correct number of 16-bit values to be received into the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-5066r33'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=???);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5068r34'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1; // Slave Select High</span></span> 
+<span class='fancyvrblineno'><a id='x1-5070r35'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5072r36'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//  read the additional number of garbage receive values off the RX FIFO to clear out the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-5074r37'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);  // Delay 10us to allow time for the MPU-2950</span></span> 
+<span class='fancyvrblineno'><a id='x1-5076r38'></a></span><span class='fancyvrbline'>                   <span class='cmtt-9'>// to get ready for the next transfer.                </span></span> 
+<span class='fancyvrblineno'><a id='x1-5078r39'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5080r40'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Step 3.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5082r41'></a></span><span class='fancyvrbline'>     <span class='cmtt-9'>// perform a multiple 16-bit transfer to initialize MPU-9250 registers 0x23,0x24,0x25,0x26</span></span> 
+<span class='fancyvrblineno'><a id='x1-5084r42'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// 0x27, 0x28, 0x29. Use only one SS low to high for all these writes</span></span> 
+<span class='fancyvrblineno'><a id='x1-5086r43'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//Some code is given, most you have to fill yourself.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5088r44'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;  // Slave Select Low</span></span> 
+<span class='fancyvrblineno'><a id='x1-5090r45'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5092r46'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Perform the number of needed writes to SPITXBUF to write to all 7 registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-5094r47'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x23 write 0x00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5096r48'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x24 write 0x40</span></span> 
+<span class='fancyvrblineno'><a id='x1-5098r49'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x25 write 0x8C</span></span> 
+<span class='fancyvrblineno'><a id='x1-5100r50'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x26 write 0x02</span></span> 
+<span class='fancyvrblineno'><a id='x1-5102r51'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x27 write 0x88</span></span> 
+<span class='fancyvrblineno'><a id='x1-5104r52'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x28 write 0x0C</span></span> 
+<span class='fancyvrblineno'><a id='x1-5106r53'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// To address 00x29 write 0x0A</span></span> 
+<span class='fancyvrblineno'><a id='x1-5108r54'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5110r55'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// wait for the correct number of 16-bit values to be received into the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-5112r56'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=???);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5114r57'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1; // Slave Select High</span></span> 
+<span class='fancyvrblineno'><a id='x1-5116r58'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5118r59'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>//  read the additional number of garbage receive values off the RX FIFO to clear out the RX FIFO</span></span> 
+<span class='fancyvrblineno'><a id='x1-5120r60'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);  // Delay 10us to allow time for the MPU-2950 to get ready for the next transfer.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5122r61'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5124r62'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Step 4.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5126r63'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// perform a single 16-bit transfer to initialize MPU-9250 register 0x2A</span></span> 
+<span class='fancyvrblineno'><a id='x1-5128r64'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5130r65'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Write to address 0x2A the value 0x81</span></span> 
+<span class='fancyvrblineno'><a id='x1-5132r66'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5134r67'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// wait for one byte to be received</span></span> 
+<span class='fancyvrblineno'><a id='x1-5136r68'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5138r69'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5140r70'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;        </span></span> 
+<span class='fancyvrblineno'><a id='x1-5142r71'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5144r72'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5146r73'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// The Remainder of this code is given to you.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5148r74'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5150r75'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x3800 | 0x0001);  // 0x3800</span></span> 
+<span class='fancyvrblineno'><a id='x1-5152r76'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5154r77'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5156r78'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5158r79'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5160r80'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5162r81'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x3A00 | 0x0001);  // 0x3A00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5164r82'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5166r83'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5168r84'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5170r85'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5172r86'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5174r87'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x6400 | 0x0001);  // 0x6400</span></span> 
+<span class='fancyvrblineno'><a id='x1-5176r88'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5178r89'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5180r90'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5182r91'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5184r92'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5186r93'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x6700 | 0x0003); // 0x6700</span></span> 
+<span class='fancyvrblineno'><a id='x1-5188r94'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5190r95'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5192r96'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5194r97'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5196r98'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5198r99'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x6A00 | 0x0020);  // 0x6A00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5200r100'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5202r101'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5204r102'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5206r103'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5208r104'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5210r105'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x6B00 | 0x0001); // 0x6B00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5212r106'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5214r107'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5216r108'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5218r109'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5220r110'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5222r111'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7500 | 0x0071);  // 0x7500</span></span> 
+<span class='fancyvrblineno'><a id='x1-5224r112'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5226r113'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5228r114'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5230r115'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5232r116'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5234r117'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7700 | 0x00EB); // 0x7700</span></span> 
+<span class='fancyvrblineno'><a id='x1-5236r118'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5238r119'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5240r120'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5242r121'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5244r122'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5246r123'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7800 | 0x0012); // 0x7800</span></span> 
+<span class='fancyvrblineno'><a id='x1-5248r124'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5250r125'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5252r126'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5254r127'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5256r128'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5258r129'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7A00 | 0x0010); // 0x7A00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5260r130'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5262r131'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5264r132'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5266r133'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5268r134'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5270r135'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7B00 | 0x00FA); // 0x7B00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5272r136'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5274r137'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5276r138'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5278r139'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5280r140'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5282r141'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7D00 | 0x0021); // 0x7D00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5284r142'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5286r143'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5288r144'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5290r145'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(10);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5292r146'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5294r147'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPITXBUF = (0x7E00 | 0x0050); // 0x7E00</span></span> 
+<span class='fancyvrblineno'><a id='x1-5296r148'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5298r149'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5300r150'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>temp = SpibRegs.SPIRXBUF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5302r151'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>DELAY_US(50);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5304r152'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5306r153'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Clear the SPIB interrupt source, just in case any of the above initializations triggered it.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5308r154'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFOVFCLR=1;  // Clear Overflow flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-5310r155'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>SpibRegs.SPIFFRX.bit.RXFFINTCLR=1;  // Clear Interrupt flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-5312r156'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5314r157'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+<!-- l. 421 --><p class='noindent'><span class='cmbx-10x-x-109'>At Check off for Ex 5, answer this question</span>. In the above initialization of the MPU-9250, you were given the values to
+write to certain registers. I would like you to read the <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Register-Map.pdf'>Register Map document</a> and explain how the following register
+assignments set up the MPU-9250. Setting <span class='cmtt-10x-x-109'>CONFIG </span>(address 0x1A) to 0x2, <span class='cmtt-10x-x-109'>GYRO_CONFIG </span>(0x1B) to 0x0, <span class='cmtt-10x-x-109'>ACCEL_CONFIG</span>
+(0x1C) to 0x8 and <span class='cmtt-10x-x-109'>ACCEL_CONFIG2 </span>(0x1D) to 0x6.
+</p><!-- l. 423 --><p class='indent'>   After studying the <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf'>MPU-9250 SPI Programming Tips</a> and its example code, write the following code to read the
+MPU9250. Every 1ms inside your CPU Timer 0 interrupt function, transmit the correct 16-bit values and the correct
+number of 16-bit values to the MPU-9250 so that it will transmit back the three accelerometer readings and the three gyro
+readings. <span class='cmti-10x-x-109'>I am going to leave reading and processing the magnetometer readings as a possible final project for the class, so
+we will not worry about them for this lab. </span>Make sure to set <span class='cmtt-10x-x-109'>SpibRegs.SPIFFRX.bit.RXFFIL </span>to the correct value so
+that the SPIB interrupt function will be called when the SPI transmission from the master to the slave
+and also from the slave to the master is complete. Remember, these transmissions happen at the same
+time.
+</p><!-- l. 425 --><p class='indent'>   Inside the SPIB interrupt function, make sure to pull Slave Select high. Then read the three accelerometer and three
+gyro integer readings. <span class='cmti-10x-x-109'>To read these three 16-bit accelerometer readings and the three 16-bit gyro readings in one chip select
+cycle, you should notice that you also have to read the 16-bit temperature reading, which falls in between. </span>Scale the
+accelerometer readings to units of g. Remember that the initialization sets the accelerometer range to -4 g to 4 g. Also,
+scale the gyro readings to degrees per second. The initialization chose the range of -250 to 250 degrees per second. Print
+these six sensor readings to Tera Term every 200ms. <span class='cmbx-10x-x-109'>Demo to your TA. </span>With your IMU readings, you will probably see
+that the resting values of the accelerometer are not at zero and possibly saturated at 4g or -4g. The initial offset value
+needs to be adjusted to bring the accelerometer axis out of saturation and into operational range. Look at the
+register map for <span class='cmtt-10x-x-109'>XA_OFFS</span>, <span class='cmtt-10x-x-109'>YA_OFFS</span>, and <span class='cmtt-10x-x-109'>ZA_OFFS </span>and notice that these are 15-bit offsets that allow for an
+integer offset between -16384 and 16383. As a first exercise, show your TA that the default offsets set to the
+IMU in the given <span class='cmtt-10x-x-109'>setupSpib() </span>function are <span class='cmtt-10x-x-109'>XA </span>offset equal to -2679, <span class='cmtt-10x-x-109'>YA </span>offset equal to 2173, and <span class='cmtt-10x-x-109'>ZA </span>offset
+equal to 4264. These offsets were for an MPU-9250 sensor I worked with. Each sensor board has different
+offsets, more than likely due to how these cheap boards were soldered. So as a first step, zero all three of
+these offsets in your <span class='cmtt-10x-x-109'>setupSpib() </span>settings. Run your code and see what offsets your sensor board shows.
+Then adjust these offsets so that each accelerometer axis’s resting value is close to zero. Looking at the
+description of these offset registers, note that each step of this 15-bit offset value is 0.00098g. <span class='cmbx-10x-x-109'>Demo to your
+TA.</span>
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-6-state-machine-part-1-'> <a id='x1-6000'></a>Exercise 6: State machine part 1 </h3>
+<p id='exercise-6-state-machine-part-1'><a id='Q1-1-13'></a>
+<!-- l. 429 --></p><p class='noindent'>This homework problem is the start of a homework problem that will continue to build in the remaining homework sets.
+The goal of this homework problem and the continuing homework problems is to start you early thinking about the states
+the robot will have when autonomously navigating the final project course at the end of the semester. There is
+                                                                                                       
+                                                                                                       
+definitely not one answer for these state transition diagrams. In addition, the answer you come up with in these
+homework assignments may not work when you start implementing the code on the actual robot. Issues
+with the real robot may lead you to change your ideas about how to define the system’s states. Your state
+transitions look very good, but then you find out they do not work too well on the actual robot. That is
+ok, because you will be ahead of the game in your thoughts on how to program the robot for the desired
+tasks.
+</p><!-- l. 431 --><p class='indent'>   Grading of these homework problems will be more lenient, but I am looking for some good thought. I want your answers
+written out very neatly so I can read all parts of the diagram and code. Do not give me garbage! Also study the State Machine
+lecture handout at <a class='url' href='http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf'><span class='cmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf</span></a>
+</p><!-- l. 433 --><p class='indent'>   So, to start, I want you to create a state transition diagram and pseudocode (with switch case structure) with only
+three (you can use more if you wish) states:
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-6002x1'>Robot moving from one X, Y coordinate to another X, Y coordinate waypoint as if there are no obstacles in
+     its way. If the robot reaches the waypoint, it is finished and stops.
+     </li>
+<li class='enumerate' id='x1-6004x2'>Using only the LIDAR’s front distance and one of the proper distance measurements, if an obstacle is
+     detected, right wall follow around the obstacle until it is safe to break away from the right wall following
+     and continue to the X, Y waypoint.
+     </li>
+<li class='enumerate' id='x1-6006x3'>While either moving to an X, Y position or avoiding an obstacle by following the right wall, if a bright pink
+     color is seen, stop the robot and turn so that the color is directly in front of the car. Then drive forward
+     until the color disappears below the camera’s view. Once the color disappears, resume moving to the desired
+     X, Y waypoint.</li></ol>
+<!-- l. 440 --><p class='noindent'>The pseudocode does not include all the programming details for making the robot go to an X, Y point, follow the right wall,
+or follow a bright pink color. When you are coming up with the pseudocode, think of a function that needs to be called
+every 1 millisecond to drive the robot to an X, Y point, or to follow the right wall or the pink. Every millisecond, your
+pseudocode should call this function, and every millisecond, there should be if statements that make the decision what
+state should be run the next millisecond, whether it should be the same state currently being performed
+or if a new state should be performed the next millisecond. In other words, the pseudocode is at a high
+level, focusing on the decisions that need to be made rather than the details of how to make the robot
+perform tasks. As you are thinking about this state transition diagram and pseudocode, if any senses are
+missing or issues you think will arise, note them in the notes section. In the next homework assignment, I
+added some sensing and other features to address those issues. Also, it will be essential for you to keep the
+solution you hand in, because you will be adding to this diagram and pseudocode in the upcoming homework
+sets.
+</p>
+                                                                                                       
+                                                                                                       
+   <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 443 --><p class='noindent'><span class='cmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>comment</span></span> <span class='cmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>initials</span></span> <span class='cmbx-10x-x-109'>in your Gradescope
+submission! See </span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='cmtt-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='cmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+    
+</body> 
+</html>

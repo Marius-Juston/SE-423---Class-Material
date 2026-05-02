@@ -1,0 +1,171 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title></title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='LabVIEW2.css' rel='stylesheet' type='text/css' /> 
+<meta content='LabVIEW2.tex' name='src' /> 
+</head><body>
+   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 31 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='cmbx-12x-x-120'>LabVIEW Assignment #2</span>
+</p><!-- l. 31 --><p class='noindent'><span class='cmbx-10x-x-109'>Due By </span><span style='color:#6500B8;'><span class='cmbx-10x-x-109'>5PM Thursday, February 26</span></span>
+</p>
+ 
+</div> 
+</div>
+<!-- l. 35 --><p class='noindent'><span class='cmti-10x-x-109'>Note: There are a lot of small blocks in the LabVIEW code I give you below for Exercises 1 and 2. I have
+found that if you open the Word document, you can zoom in on the code pictures better than in the PDF
+file.</span>
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-1-shift-registry-'> <a id='x1-1000'></a>Exercise 1: Shift Registry </h3>
+<p id='exercise-1-shift-registry'><a id='Q1-1-2'></a>
+<!-- l. 38 --></p><p class='noindent'>First, watch these two YouTube videos about shift registers (or find other tutorials online). </p>
+     <ul class='itemize1'>
+     <li class='itemize'><a class='url' href='https://www.youtube.com/watch?v=wRvpb9jtRlE'><span class='cmtt-10x-x-109'>https://www.youtube.com/watch?v=wRvpb9jtRlE</span></a>
+     </li>
+     <li class='itemize'><a class='url' href='https://www.youtube.com/watch?v=4ivYARn2fy8'><span class='cmtt-10x-x-109'>https://www.youtube.com/watch?v=4ivYARn2fy8</span></a></li></ul>
+<!-- l. 44 --><p class='noindent'>For this assignment, we will start working with the 2D Picture block in LabVIEW. After performing this exercise, you could,
+for example, use what you learn to create a 2D pictured environment for your robot and draw where the robot is located
+in this environment. Below is the LabVIEW program I would like you to reproduce for this assignment. It shows you how
+to draw lines in a 2D Picture. Each time through the while loop, it generates a random number between 0 and 1 and
+draws a 25-pixel-by-30-pixel rectangle (of course, this could have been done more easily by using the Draw
+Rectangle block, but I wanted to show how to combine multiple draw commands). Then a shift register is used
+to keep track of all the lines printed in the 2D Picture as long as the Boolean LED is true. If you click
+the Boolean LED to make it false, the lines drawn in the previous loops should not be printed to the 2D
+Picture.
+</p><!-- l. 46 --><p class='indent'>   If your screen is large enough, set the 2D Picture to 800 <span class='cmsy-10x-x-109'>× </span>800 pixels.
+</p><!-- l. 48 --><p class='indent'>   Location of the blocks that may be new to you for this assignment: </p>
+     <ul class='itemize1'>
+     <li class='itemize'>
+     <!-- l. 51 --><p class='noindent'><span class='cmbx-10x-x-109'>From the Front Panel:</span>
+          </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>Modern<span class='cmsy-10x-x-109'>→</span>Graph<span class='cmsy-10x-x-109'>→</span>Controls<span class='cmsy-10x-x-109'>→</span>2D Picture
+                                                                                                       
+                                                                                                       
+          </li>
+<li class='enumerate' id='x1-1004x2'>Modern<span class='cmsy-10x-x-109'>→</span>Boolean<span class='cmsy-10x-x-109'>→</span>Round LED</li></ol>
+     </li>
+     <li class='itemize'>
+     <!-- l. 56 --><p class='noindent'><span class='cmbx-10x-x-109'>From the block diagram:</span>
+          </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-1006x1'>Programming<span class='cmsy-10x-x-109'>→</span>Graphics &amp;Sound<span class='cmsy-10x-x-109'>→</span>Picture Functions<span class='cmsy-10x-x-109'>→</span>Move Pen
+          </li>
+<li class='enumerate' id='x1-1008x2'>Programming<span class='cmsy-10x-x-109'>→</span>Graphics &amp;Sound<span class='cmsy-10x-x-109'>→</span>Picture Functions<span class='cmsy-10x-x-109'>→</span>Draw Line
+          </li>
+<li class='enumerate' id='x1-1010x3'>Programming<span class='cmsy-10x-x-109'>→</span>Graphics &amp;Sound<span class='cmsy-10x-x-109'>→</span>Picture Functions<span class='cmsy-10x-x-109'>→</span>Empty Picture
+          </li>
+<li class='enumerate' id='x1-1012x4'>Programming<span class='cmsy-10x-x-109'>→</span>Numeric<span class='cmsy-10x-x-109'>→</span>Random Number (0-1)
+          </li>
+<li class='enumerate' id='x1-1014x5'>Programming<span class='cmsy-10x-x-109'>→</span>Numeric<span class='cmsy-10x-x-109'>→</span>Conversion<span class='cmsy-10x-x-109'>→</span>I16
+          </li>
+<li class='enumerate' id='x1-1016x6'>Programming<span class='cmsy-10x-x-109'>→</span>Cluster, Class &amp;Variant<span class='cmsy-10x-x-109'>→</span>Unbundle and Bundle</li></ol>
+     </li></ul>
+<figure class='figure'> 
+ <img alt='PIC' height='481' src='Homeworks/Figures/LabVIEW2/Picture1.png' width='542' /> </figure>
+                                                                                                       
+                                                                                                       
+<p><span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            <figure class='figure'> 
+
+                                                                                                                                                                                            </figure>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                                                   </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 75 --><p class='noindent'><img alt='PIC' height='184' src='Homeworks/Figures/LabVIEW2/Picture2.png' width='686' />
+                                                                                                                                                                                            </p>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' id='exercise-2-tcp-ethernet-protocol' style='transform: rotate(-90deg);'>                                                                                                       <p></p>
+     
+     <figure class='figure'> 
+
+                                                                                                                                                                                            </figure>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                                                   </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 79 --><p class='noindent' id='false-case'><img alt='PIC' height='132' src='Homeworks/Figures/LabVIEW2/Picture3.png' width='137' /> <a id='x1-1017r1'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>False Case                                                                                                                                                                 </span></figcaption><!-- tex4ht:label?: x111017r1  -->
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+   
+   <h3 class='likesectionHead' id='exercise-2-tcp-ethernet-protocol-'>  <a id='x1-2000'></a>Exercise 2: TCP Ethernet protocol </h3>
+<a id='Q1-1-5'></a>
+<!-- l. 87 --><p class='noindent'>For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP
+Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a
+single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a
+nice, simple Echo Server that we are going to use.) Then the Echo Server echoes the exact string back. We
+receive this string with the “TCP Read” command and assume it is different information from what we just
+sent. We use the “Scan From String” command to pull the two real numbers out of the string and display
+them.
+</p><!-- l. 89 --><p class='indent'>   Copy this VI and demonstrate it working. <span class='cmti-10x-x-109'>The first time you try to write data across a TCP socket from an</span>
+<span class='cmti-10x-x-109'>application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in</span>
+<span class='cmti-10x-x-109'>those pop-up windows, allowing public and private networks</span>. Because we are using this echo server, you may
+find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you
+have MATLAB installed on your laptop. If you have things to do on your laptop, give the lab PCs a try.
+You will need to find your computer’s IP address. The easiest way is to run “<span class='obeylines-h'><code class='verb'>ipconfig</code></span>” from a command
+prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first
+one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection”
+block.
+</p><!-- l. 91 --><p class='indent'>   Then, before running the LabVIEW application, open MATLAB and type the command “<span class='obeylines-h'><code class='verb'>echotcpip("n"12321)</code></span>”.
+12321 is the port the echo server will listen on. Later, if you want to turn off the echo server, type the command
+“<span class='obeylines-h'><code class='verb'>echotcpip("ff"</code></span>” to turn off the server. Once the echo server is running in MATLAB, you can run your LabVIEW
+application. Type in some real numbers into the two Send Values and then click “SEND”. Play with different
+numbers and see that you get the exact numbers back. When you are done, you can click the “STOP”
+button.
+</p><!-- l. 93 --><p class='indent'>   <span class='cmbx-10x-x-109'>Location of blocks you may not have used for the Block Diagram view:</span> </p>
+     <ul class='itemize1'>
+     <li class='itemize'>String<span class='cmsy-10x-x-109'>→</span>Carriage Return Constant and String<span class='cmsy-10x-x-109'>→</span>Line Feed Constant and String<span class='cmsy-10x-x-109'>→</span>Scan From String
+     </li>
+     <li class='itemize'>String<span class='cmsy-10x-x-109'>→</span>Number/String Conversion<span class='cmsy-10x-x-109'>→</span>Number To Fractional String
+     </li>
+     <li class='itemize'>Structures<span class='cmsy-10x-x-109'>→</span>Local Variable
+     </li>
+     <li class='itemize'>Data Communication<span class='cmsy-10x-x-109'>→</span>Protocols<span class='cmsy-10x-x-109'>→</span>TCP<span class='cmsy-10x-x-109'>→</span>“TCP Open Connection” and “TCP Read” and “TCP Write” and
+     “TCP Close Connection.”</li></ul>
+<figure class='figure'> 
+ <img alt='PIC' height='345' src='Homeworks/Figures/LabVIEW2/Picture4.png' width='542' /> </figure>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            <figure class='figure'> 
+
+                                                                                                                                                                                            </figure>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                                                   </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <div class='subfigure'>
+<!-- l. 109 --><p class='noindent'></p><!-- l. 111 --><p class='noindent'><img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW2/Picture5.png' width='652' />                                                                                                                                                                             </p></div>
+<div class='subfigure'>
+<!-- l. 114 --><p class='noindent'><a id='x1-2001r1'></a></p>
+<div class='caption'><span class='id'><span class='cmr-10'>(a) </span></span><span class='content'><span class='cmr-10'>Showing the Timeout Event</span>                                                          </span></div>
+<!-- l. 117 --><p class='noindent'><img alt='PIC' height='136' src='Homeworks/Figures/LabVIEW2/Picture6.png' width='332' />                                                                                      </p></div>                                                                                                 <div class='subfigure'>
+<!-- l. 121 --><p class='noindent'><a id='x1-2002r2'></a></p>
+<div class='caption'><span class='id'><span class='cmr-10'>(b) </span></span><span class='content'><span class='cmr-10'>Stop: Value Change Event</span>                                                            </span></div>
+<!-- l. 124 --><p class='noindent'><img alt='PIC' height='137' src='Homeworks/Figures/LabVIEW2/Picture7.png' width='332' />                                                                                      </p></div>
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            
+                                                                                                                                                                                            </span>
+                                                                                                       
+                                                                                                       
+    
+</span> 
+</span>
+                                                                                                       
+
+
+</span></span></p></body></html>
