@@ -86,16 +86,16 @@ orientation before soldering</span>
 are clearer on the demo board. This is illustrated in Figure <a href='#demo-board-soldering-options'>1<!-- tex4ht:ref: fig:demo_board  --></a>.</li></ol>
 <figure class='figure' id='x1-3017r1'><span id='demo-board-soldering-options'></span> 
  <div class='subfigure'>
-<!-- l. 66 --><p class='noindent'></p><!-- l. 71 --><p class='noindent'><img alt='PIC' height='149' src='Homeworks/Figures/HW1/Board2.jpg' width='132' />                      </p></div>                                                                              <div class='subfigure'>
-<!-- l. 75 --><p class='noindent'></p><!-- l. 83 --><p class='noindent'><img alt='PIC' height='348' src='Homeworks/Figures/HW1/Board1.jpg' width='268' />                                               </p></div>                                                    <div class='subfigure'>
-<!-- l. 87 --><p class='noindent'></p><!-- l. 91 --><p class='noindent'><img alt='PIC' height='182' src='Homeworks/Figures/HW1/Board3.jpg' width='132' />                      </p></div> 
+<!-- l. 66 --><p class='noindent'></p><!-- l. 75 --><p class='noindent'><span aria-label='Soldered breakout board, top-left view. Two red ellipses highlight the locations where a long wire (upper) and a short wire (lower) bridge between header pins on the left edge of the board.' role='img'><img alt='PIC' height='149' src='Homeworks/Figures/HW1/Board2.jpg' width='132' /></span>                      </p></div>                                                                              <div class='subfigure'>
+<!-- l. 79 --><p class='noindent'></p><!-- l. 92 --><p class='noindent'><span aria-label='Top-down view of the centre region of the soldered breakout board. Five red circles mark the soldering points: four around the chip and surface-mount components in the middle, and one on the left near the buzzer header.' role='img'><img alt='PIC' height='348' src='Homeworks/Figures/HW1/Board1.jpg' width='268' /></span>                                               </p></div>                                                    <div class='subfigure'>
+<!-- l. 96 --><p class='noindent'></p><!-- l. 104 --><p class='noindent'><span aria-label='Top-right view of the soldered breakout board. A single red ellipse marks the placement of a short jumper wire on the right edge of the board.' role='img'><img alt='PIC' height='182' src='Homeworks/Figures/HW1/Board3.jpg' width='132' /></span>                      </p></div> 
 <div class='caption'><span class='id'>Figure 1: </span><span class='content'>Demo board soldering options
 </span></div>   
 </figure>
    
 <h3 class='likesectionHead' id='exercise-3-create-you-homework-repository-'>  <a id='x1-4000'></a>Exercise 3: Create you homework repository </h3>
 <p id='exercise-3-create-you-homework-repository'><a id='Q1-1-8'></a>
-<!-- l. 101 --></p><p class='noindent'>     
+<!-- l. 114 --></p><p class='noindent'>     
 </p>
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-4002x1'>Follow the document <a href='http://coecsl.ece.illinois.edu/se423/Using the SE423 Repository.pdf'>Using the SE423 Repository</a> and its first section “Create your Repository” to check
@@ -145,7 +145,7 @@ processor.</li></ol>
    
 <h3 class='likesectionHead' id='exercise-4-code-review-and-commenting-'>  <a id='x1-5000'></a>Exercise 4: Code review and commenting </h3>
 <p id='exercise-4-code-review-and-commenting'><a id='Q1-1-10'></a>
-<!-- l. 111 --></p><p class='noindent'>Below is an introduction to the starter code given to you for this semester’s homework assignments. I used green for the
+<!-- l. 124 --></p><p class='noindent'>Below is an introduction to the starter code given to you for this semester’s homework assignments. I used green for the
 code and black for my commentary. This listing omits a significant amount of the initialization starter code to keep it
 shorter. Read through the code and commentary below and find the same sections of code in your project you created
 above. You will have many questions, of course, as this is the first time you are reading through this code. We will
@@ -193,7 +193,7 @@ be going over this code many times in lecture and lab sessions. Study this code 
 <span class='fancyvrblineno'><a id='x1-5078r39'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t LEDdisplaynum = 0;</span></span></pre>
                                                                                                        
                                                                                                        
-<!-- l. 155 --><p class='noindent'>For these C exercises, I would like you to create any global variables or functions. Actually, the only functions we will create
+<!-- l. 168 --><p class='noindent'>For these C exercises, I would like you to create any global variables or functions. Actually, the only functions we will create
 this semester will be global. We will never need to create a function inside another function, including not creating
 functions inside your <span class='rm-lmtt-10x-x-109'>main() </span>function. You can, of course, put your global functions anywhere outside of other functions.
 It is just nice to have all your functions defined in one spot of your code so they are easier for you to find. The same goes
@@ -216,14 +216,14 @@ for global variables.
 <span class='fancyvrblineno'><a id='x1-5108r15'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</span></span> 
 <span class='fancyvrblineno'><a id='x1-5110r16'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
 <span class='fancyvrblineno'><a id='x1-5112r17'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO34 = 1;</span></span></pre>
-<!-- l. 177 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
+<!-- l. 190 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
 here …</span>
 </p>   
 <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-5114r1'></a></span><span class='fancyvrbline'>     <span class='rm-lmtt-9'>EALLOW;  // This is needed to write to EALLOW-protected registers</span></span> 
 <span class='fancyvrblineno'><a id='x1-5116r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5118r3'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5120r4'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</span></span></pre>
-<!-- l. 186 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+<!-- l. 199 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
 </p>   
 <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-5122r1'></a></span><span class='fancyvrbline'>     <span class='rm-lmtt-9'>// Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
 <span class='fancyvrblineno'><a id='x1-5124r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
@@ -237,7 +237,7 @@ here …</span>
 <span class='fancyvrblineno'><a id='x1-5140r10'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>CpuTimer2Regs.TCR.all = 0x4000;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5142r11'></a></span><span class='fancyvrbline'> 
 </span><span class='fancyvrblineno'><a id='x1-5144r12'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>init_serial(&amp;SerialA,115200);</span></span></pre>
-<!-- l. 203 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+<!-- l. 216 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
 </p>   
 <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-5146r1'></a></span><span class='fancyvrbline'>     <span class='rm-lmtt-9'>// Enable global Interrupts and higher-priority real-time debug events</span></span> 
 <span class='fancyvrblineno'><a id='x1-5148r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>EINT;  // Enable Global interrupt INTM</span></span> 
@@ -246,7 +246,7 @@ here …</span>
 </span><span class='fancyvrblineno'><a id='x1-5154r5'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// IDLE loop. Just sit and loop forever (optional):</span></span> 
 <span class='fancyvrblineno'><a id='x1-5156r6'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>while(1)</span></span> 
 <span class='fancyvrblineno'><a id='x1-5158r7'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>{</span></span></pre>
-<!-- l. 215 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
+<!-- l. 228 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
 time the timer 2’s function is entered. So both the rate at which timer 2’s function is called and this modulus 50
 determine the rate at which the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function is called. <span class='rm-lmtt-10x-x-109'>serial_printf </span>prints text to Tera Term or some other
 serial terminal program. Also note that after the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function call, <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is reset to 0. Think about why
@@ -255,7 +255,7 @@ zero here to make this code work correctly. </span>(Correctly means that the <sp
 periodic rate.)
 </p>   
 <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-5160r1'></a></span><span class='fancyvrbline'>        <span class='rm-lmtt-9'>if (UARTPrint == 1 ) {</span></span></pre>
-<!-- l. 221 --><p class='noindent'>For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this
+<!-- l. 234 --><p class='noindent'>For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this
 continuous while loop “<span class='rm-lmtt-10x-x-109'>while(1)</span>”, is less important code. It will be your lower-priority code, which does not have as strict
 timing requirements. Also, this is the only place in your code that you should call <span class='rm-lmtt-10x-x-109'>serial_printf</span>. <span class='rm-lmtt-10x-x-109'>serial_printf </span>is a
 reasonably large function, and depending on how many variables you print, it can take some time and is not
@@ -267,7 +267,7 @@ deterministic.
 <span class='fancyvrblineno'><a id='x1-5168r4'></a></span><span class='fancyvrbline'>      <span class='rm-lmtt-9'>}</span></span> 
 <span class='fancyvrblineno'><a id='x1-5170r5'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>}</span></span> 
 <span class='fancyvrblineno'><a id='x1-5172r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 232 --><p class='noindent'>Right now, consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
+<!-- l. 245 --><p class='noindent'>Right now, consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
 soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>is called every 10ms, without fail, in this starter code. (It actually
 “interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 10000
 (microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span>” to have it be called at a
@@ -293,7 +293,7 @@ different rate. For example, if you change the 10000 to 25000, the interrupt fun
 <span class='fancyvrblineno'><a id='x1-5206r17'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
 <span class='fancyvrblineno'><a id='x1-5208r18'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5210r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 256 --><p class='noindent'>Right now, consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
+<!-- l. 269 --><p class='noindent'>Right now, consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
 soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>is called every 40ms, without fail, in this starter code. (It actually
 “interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 40000
 (microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span>” to have it be called at a different
@@ -309,7 +309,7 @@ rate.
 <span class='fancyvrblineno'><a id='x1-5222r6'></a></span><span class='fancyvrbline'> 
 </span><span class='fancyvrblineno'><a id='x1-5224r7'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>CpuTimer2.InterruptCount++;</span></span></pre>
 
-<!-- l. 268 --><p class='noindent'>Since “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, the following if statement sets <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to
+<!-- l. 281 --><p class='noindent'>Since “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, the following if statement sets <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to
 1 every 50th time in this function “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>”. The % in C is modulus. Modulus returns the remainder of the
 division operation. So 23 % 50 equals 23, 67 % 50 equals 17, etc.
 </p>   
@@ -320,14 +320,14 @@ division operation. So 23 % 50 equals 23, 67 % 50 equals 17, etc.
    
 <h3 class='likesectionHead' id='exercise-5-interrupt-period-'> <a id='x1-6000'></a>Exercise 5: Interrupt Period </h3>
 <p id='exercise-5-interrupt-period'><a id='Q1-1-12'></a>
-<!-- l. 279 --></p><p class='noindent'>First, change either the periodic rate at which Timer 2’s interrupt function is called or the 50 modulus in Timer 2’s
+<!-- l. 292 --></p><p class='noindent'>First, change either the periodic rate at which Timer 2’s interrupt function is called or the 50 modulus in Timer 2’s
 interrupt function to make the default <span class='rm-lmtt-10x-x-109'>serial_printf </span>function be called every 250ms. Debug your code and verify that
 the default text is printed to the TeraTerm Windows application 4 times a second.
 
 </p>   
 <h3 class='likesectionHead' id='exercise-6-time-after-n-interrupts-'>  <a id='x1-7000'></a>Exercise 6: Time after n interrupts </h3>
 <p id='exercise-6-time-after-n-interrupts'><a id='Q1-1-14'></a>
-<!-- l. 283 --></p><p class='noindent'>Answer this question after finishing Q5 above. “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” is incremented by 1 each time
+<!-- l. 296 --></p><p class='noindent'>Answer this question after finishing Q5 above. “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” is incremented by 1 each time
 <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>function is run. (Remember the processor, “by magic”, runs this function at the periodic rate you set
 in “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer</span>”.) <span class='rm-lmbx-10x-x-109'>If </span><span class='rm-lmtk-10x-x-109'>CpuTimer2.InterruptCount </span><span class='rm-lmbx-10x-x-109'>has incremented to 4823. How much time has gone by?</span>
 This answer could be different from another student depending on what you changed to make <span class='rm-lmtt-10x-x-109'>serial_printf </span>print every
@@ -336,7 +336,7 @@ This answer could be different from another student depending on what you change
 </p>   
 <h3 class='likesectionHead' id='exercise-7-input-saturation-'> <a id='x1-8000'></a>Exercise 7: Input saturation </h3>
 <p id='exercise-7-input-saturation'><a id='Q1-1-16'></a>
-<!-- l. 287 --></p><p class='noindent'>Write a global function and name it “<span class='rm-lmtt-10x-x-109'>saturate</span>”. Do not use any global variables in this function. This function should
+<!-- l. 300 --></p><p class='noindent'>Write a global function and name it “<span class='rm-lmtt-10x-x-109'>saturate</span>”. Do not use any global variables in this function. This function should
 have two <span class='rm-lmtt-10x-x-109'>float </span>parameters, “<span class='rm-lmtt-10x-x-109'>input</span>” and “<span class='rm-lmtt-10x-x-109'>saturation_limit</span>”, and return a <span class='rm-lmtt-10x-x-109'>float</span>. This return value is
 saturated by “<span class='rm-lmtt-10x-x-109'>saturation_limit</span>”. “<span class='rm-lmtt-10x-x-109'>input</span>” is the input signal (or input value) that will be saturated if its
 value is greater than +<span class='rm-lmtt-10x-x-109'>saturation_limit </span>or less than –<span class='rm-lmtt-10x-x-109'>saturation_limit</span>. For example, if “<span class='rm-lmtt-10x-x-109'>input</span>” is
@@ -348,14 +348,14 @@ and “<span class='rm-lmtt-10x-x-109'>saturation_limit</span>” is passed 5.5,
 </p>   
 <h3 class='likesectionHead' id='exercise-8-sine-wave-saturation-'>  <a id='x1-9000'></a>Exercise 8: Sine wave saturation: </h3>
 <p id='exercise-8-sine-wave-saturation'><a id='Q1-1-18'></a>
-<!-- l. 291 --></p><p class='noindent'>We are going to use the “<span class='rm-lmtt-10x-x-109'>sin()</span>” function to generate a sine wave at the sample rate of 250ms. Create five global float
+<!-- l. 304 --></p><p class='noindent'>We are going to use the “<span class='rm-lmtt-10x-x-109'>sin()</span>” function to generate a sine wave at the sample rate of 250ms. Create five global float
 variables and one global 32-bit integer:
                                                                                                        
                                                                                                        
      </p>
      <ol class='enumerate1'>
 <li class='enumerate' id='x1-9002x1'>     
-<!-- l. 294 --><p class='noindent'>
+<!-- l. 307 --><p class='noindent'>
 </p>     
 <pre class='fancyvrb' id='fancyvrb11'><span class='fancyvrblineno'><a id='x1-9004r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float sinvalue = 0;</span></span> 
 <span class='fancyvrblineno'><a id='x1-9006r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float time = 0;</span></span> 
@@ -368,7 +368,7 @@ variables and one global 32-bit integer:
 code:
 </li>
 <li class='enumerate' id='x1-9018x3'>     
-<!-- l. 304 --><p class='noindent'>
+<!-- l. 317 --><p class='noindent'>
 </p>     
 <pre class='fancyvrb' id='fancyvrb12'><span class='fancyvrblineno'><a id='x1-9020r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>timeint = timeint+1;</span></span> 
 <span class='fancyvrblineno'><a id='x1-9022r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>time = timeint*0.25;</span></span> 
@@ -388,7 +388,7 @@ integer.
 prints. <span class='rm-lmbx-10x-x-109'>Demo this code to your TA in person. </span>The print out should look something like
 </li>
 <li class='enumerate' id='x1-9034x8'>     
-<!-- l. 314 --><p class='noindent'>
+<!-- l. 327 --><p class='noindent'>
                                                                                                        
                                                                                                        
 </p>
@@ -407,7 +407,7 @@ happens. <span class='rm-lmbx-10x-x-109'>Also, demo this to your TA in person</s
 <div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 325 --><p class='indent'>   </p><figure class='float' id='x1-10001r1'><span id='led-gpio-mapping-and-control-registers'></span>
+<!-- l. 338 --><p class='indent'>   </p><figure class='float' id='x1-10001r1'><span id='led-gpio-mapping-and-control-registers'></span>
                                                                                                        
                                                                                                        
 
@@ -415,122 +415,122 @@ happens. <span class='rm-lmbx-10x-x-109'>Also, demo this to your TA in person</s
 <table class='tabular' id='TBL-3'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /><col id='TBL-3-2' /><col id='TBL-3-3' /><col id='TBL-3-4' /><col id='TBL-3-5' /><col id='TBL-3-6' /><col id='TBL-3-7' /></colgroup><tr id='TBL-3-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-1-1' style='white-space:normal; text-align:center;'> <span class='rm-lmbx-10x-x-109'>LED  </span></td>
 <td class='td11' id='TBL-3-1-2' style='white-space:normal; text-align:center;'> <span class='rm-lmbx-10x-x-109'>GPIO </span></td>
 <td class='td11' id='TBL-3-1-3' style='white-space:normal; text-align:center;'> <span class='rm-lmbx-10x-x-109'>Bank </span></td>
-<td class='td11' id='TBL-3-1-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>DAT</span>            </p></td>
-<td class='td11' id='TBL-3-1-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>SET</span>             </p></td>
-<td class='td11' id='TBL-3-1-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>CLEAR</span>        </p></td>
-<td class='td11' id='TBL-3-1-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>TOGGLE</span>     </p></td>
+<td class='td11' id='TBL-3-1-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>DAT</span>            </p></td>
+<td class='td11' id='TBL-3-1-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>SET</span>             </p></td>
+<td class='td11' id='TBL-3-1-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>CLEAR</span>        </p></td>
+<td class='td11' id='TBL-3-1-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>TOGGLE</span>     </p></td>
 </tr><tr id='TBL-3-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-2-1' style='white-space:normal; text-align:center;'>  LED1  </td>
 <td class='td11' id='TBL-3-2-2' style='white-space:normal; text-align:center;'>   22     </td>
 <td class='td11' id='TBL-3-2-3' style='white-space:normal; text-align:center;'>  GPA  </td>
-<td class='td11' id='TBL-3-2-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPADAT        </p></td>
-<td class='td11' id='TBL-3-2-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPASET         </p></td>
-<td class='td11' id='TBL-3-2-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPACLEAR    </p></td>
-<td class='td11' id='TBL-3-2-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPATOGGLE  </p></td>
+<td class='td11' id='TBL-3-2-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPADAT        </p></td>
+<td class='td11' id='TBL-3-2-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPASET         </p></td>
+<td class='td11' id='TBL-3-2-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPACLEAR    </p></td>
+<td class='td11' id='TBL-3-2-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPATOGGLE  </p></td>
 </tr><tr id='TBL-3-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-3-1' style='white-space:normal; text-align:center;'>  LED2  </td>
 <td class='td11' id='TBL-3-3-2' style='white-space:normal; text-align:center;'>   94     </td>
 <td class='td11' id='TBL-3-3-3' style='white-space:normal; text-align:center;'> GPC  </td>
-<td class='td11' id='TBL-3-3-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCDAT        </p></td>
-<td class='td11' id='TBL-3-3-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCSET         </p></td>
-<td class='td11' id='TBL-3-3-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCCLEAR    </p></td>
-<td class='td11' id='TBL-3-3-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCTOGGLE </p></td>
+<td class='td11' id='TBL-3-3-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCDAT        </p></td>
+<td class='td11' id='TBL-3-3-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCSET         </p></td>
+<td class='td11' id='TBL-3-3-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCCLEAR    </p></td>
+<td class='td11' id='TBL-3-3-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCTOGGLE </p></td>
 </tr><tr id='TBL-3-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-4-1' style='white-space:normal; text-align:center;'>  LED3  </td>
 <td class='td11' id='TBL-3-4-2' style='white-space:normal; text-align:center;'>   95     </td>
 <td class='td11' id='TBL-3-4-3' style='white-space:normal; text-align:center;'> GPC  </td>
-<td class='td11' id='TBL-3-4-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCDAT        </p></td>
-<td class='td11' id='TBL-3-4-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCSET         </p></td>
-<td class='td11' id='TBL-3-4-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCCLEAR    </p></td>
-<td class='td11' id='TBL-3-4-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPCTOGGLE </p></td>
+<td class='td11' id='TBL-3-4-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCDAT        </p></td>
+<td class='td11' id='TBL-3-4-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCSET         </p></td>
+<td class='td11' id='TBL-3-4-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCCLEAR    </p></td>
+<td class='td11' id='TBL-3-4-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPCTOGGLE </p></td>
 </tr><tr id='TBL-3-5-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-5-1' style='white-space:normal; text-align:center;'>  LED4  </td>
 <td class='td11' id='TBL-3-5-2' style='white-space:normal; text-align:center;'>   97     </td>
 <td class='td11' id='TBL-3-5-3' style='white-space:normal; text-align:center;'> GPD  </td>
-<td class='td11' id='TBL-3-5-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDDAT        </p></td>
-<td class='td11' id='TBL-3-5-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDSET        </p></td>
-<td class='td11' id='TBL-3-5-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDCLEAR    </p></td>
-<td class='td11' id='TBL-3-5-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDTOGGLE </p></td>
+<td class='td11' id='TBL-3-5-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDDAT        </p></td>
+<td class='td11' id='TBL-3-5-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDSET        </p></td>
+<td class='td11' id='TBL-3-5-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDCLEAR    </p></td>
+<td class='td11' id='TBL-3-5-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDTOGGLE </p></td>
 </tr><tr id='TBL-3-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-6-1' style='white-space:normal; text-align:center;'>  LED5  </td>
 <td class='td11' id='TBL-3-6-2' style='white-space:normal; text-align:center;'>  111    </td>
 <td class='td11' id='TBL-3-6-3' style='white-space:normal; text-align:center;'> GPD  </td>
-<td class='td11' id='TBL-3-6-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDDAT        </p></td>
-<td class='td11' id='TBL-3-6-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDSET        </p></td>
-<td class='td11' id='TBL-3-6-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDCLEAR    </p></td>
-<td class='td11' id='TBL-3-6-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPDTOGGLE </p></td>
+<td class='td11' id='TBL-3-6-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDDAT        </p></td>
+<td class='td11' id='TBL-3-6-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDSET        </p></td>
+<td class='td11' id='TBL-3-6-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDCLEAR    </p></td>
+<td class='td11' id='TBL-3-6-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPDTOGGLE </p></td>
 </tr><tr id='TBL-3-7-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-7-1' style='white-space:normal; text-align:center;'>  LED6  </td>
 <td class='td11' id='TBL-3-7-2' style='white-space:normal; text-align:center;'>  130    </td>
 <td class='td11' id='TBL-3-7-3' style='white-space:normal; text-align:center;'>  GPE  </td>
-<td class='td11' id='TBL-3-7-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPEDAT        </p></td>
-<td class='td11' id='TBL-3-7-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPESET         </p></td>
-<td class='td11' id='TBL-3-7-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPECLEAR    </p></td>
-<td class='td11' id='TBL-3-7-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPETOGGLE </p></td>
+<td class='td11' id='TBL-3-7-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPEDAT        </p></td>
+<td class='td11' id='TBL-3-7-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPESET         </p></td>
+<td class='td11' id='TBL-3-7-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPECLEAR    </p></td>
+<td class='td11' id='TBL-3-7-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPETOGGLE </p></td>
 </tr><tr id='TBL-3-8-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-8-1' style='white-space:normal; text-align:center;'>  LED7  </td>
 <td class='td11' id='TBL-3-8-2' style='white-space:normal; text-align:center;'>  131    </td>
 <td class='td11' id='TBL-3-8-3' style='white-space:normal; text-align:center;'>  GPE  </td>
-<td class='td11' id='TBL-3-8-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPEDAT        </p></td>
-<td class='td11' id='TBL-3-8-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPESET         </p></td>
-<td class='td11' id='TBL-3-8-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPECLEAR    </p></td>
-<td class='td11' id='TBL-3-8-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPETOGGLE </p></td>
+<td class='td11' id='TBL-3-8-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPEDAT        </p></td>
+<td class='td11' id='TBL-3-8-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPESET         </p></td>
+<td class='td11' id='TBL-3-8-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPECLEAR    </p></td>
+<td class='td11' id='TBL-3-8-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPETOGGLE </p></td>
 </tr><tr id='TBL-3-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-9-1' style='white-space:normal; text-align:center;'>  LED8  </td>
 <td class='td11' id='TBL-3-9-2' style='white-space:normal; text-align:center;'>   25     </td>
 <td class='td11' id='TBL-3-9-3' style='white-space:normal; text-align:center;'>  GPA  </td>
-<td class='td11' id='TBL-3-9-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPADAT        </p></td>
-<td class='td11' id='TBL-3-9-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPASET         </p></td>
-<td class='td11' id='TBL-3-9-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPACLEAR    </p></td>
-<td class='td11' id='TBL-3-9-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPATOGGLE  </p></td>
+<td class='td11' id='TBL-3-9-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPADAT        </p></td>
+<td class='td11' id='TBL-3-9-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPASET         </p></td>
+<td class='td11' id='TBL-3-9-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPACLEAR    </p></td>
+<td class='td11' id='TBL-3-9-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPATOGGLE  </p></td>
 </tr><tr id='TBL-3-10-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-10-1' style='white-space:normal; text-align:center;'>  LED9  </td>
 <td class='td11' id='TBL-3-10-2' style='white-space:normal; text-align:center;'>   26     </td>
 <td class='td11' id='TBL-3-10-3' style='white-space:normal; text-align:center;'>  GPA  </td>
-<td class='td11' id='TBL-3-10-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPADAT        </p></td>
-<td class='td11' id='TBL-3-10-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPASET         </p></td>
-<td class='td11' id='TBL-3-10-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPACLEAR    </p></td>
-<td class='td11' id='TBL-3-10-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPATOGGLE  </p></td>
+<td class='td11' id='TBL-3-10-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPADAT        </p></td>
+<td class='td11' id='TBL-3-10-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPASET         </p></td>
+<td class='td11' id='TBL-3-10-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPACLEAR    </p></td>
+<td class='td11' id='TBL-3-10-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPATOGGLE  </p></td>
 </tr><tr id='TBL-3-11-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-11-1' style='white-space:normal; text-align:center;'> LED10  </td>
 <td class='td11' id='TBL-3-11-2' style='white-space:normal; text-align:center;'>   27     </td>
 <td class='td11' id='TBL-3-11-3' style='white-space:normal; text-align:center;'>  GPA  </td>
-<td class='td11' id='TBL-3-11-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPADAT        </p></td>
-<td class='td11' id='TBL-3-11-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPASET         </p></td>
-<td class='td11' id='TBL-3-11-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPACLEAR    </p></td>
-<td class='td11' id='TBL-3-11-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPATOGGLE  </p></td>
+<td class='td11' id='TBL-3-11-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPADAT        </p></td>
+<td class='td11' id='TBL-3-11-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPASET         </p></td>
+<td class='td11' id='TBL-3-11-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPACLEAR    </p></td>
+<td class='td11' id='TBL-3-11-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPATOGGLE  </p></td>
 </tr><tr id='TBL-3-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-12-1' style='white-space:normal; text-align:center;'> LED11  </td>
 <td class='td11' id='TBL-3-12-2' style='white-space:normal; text-align:center;'>   60     </td>
 <td class='td11' id='TBL-3-12-3' style='white-space:normal; text-align:center;'> GPB  </td>
-<td class='td11' id='TBL-3-12-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBDAT        </p></td>
-<td class='td11' id='TBL-3-12-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBSET         </p></td>
-<td class='td11' id='TBL-3-12-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBCLEAR    </p></td>
-<td class='td11' id='TBL-3-12-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBTOGGLE </p></td>
+<td class='td11' id='TBL-3-12-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBDAT        </p></td>
+<td class='td11' id='TBL-3-12-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBSET         </p></td>
+<td class='td11' id='TBL-3-12-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBCLEAR    </p></td>
+<td class='td11' id='TBL-3-12-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBTOGGLE </p></td>
 </tr><tr id='TBL-3-13-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-13-1' style='white-space:normal; text-align:center;'> LED12  </td>
 <td class='td11' id='TBL-3-13-2' style='white-space:normal; text-align:center;'>   61     </td>
 <td class='td11' id='TBL-3-13-3' style='white-space:normal; text-align:center;'> GPB  </td>
-<td class='td11' id='TBL-3-13-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBDAT        </p></td>
-<td class='td11' id='TBL-3-13-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBSET         </p></td>
-<td class='td11' id='TBL-3-13-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBCLEAR    </p></td>
-<td class='td11' id='TBL-3-13-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPBTOGGLE </p></td>
+<td class='td11' id='TBL-3-13-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBDAT        </p></td>
+<td class='td11' id='TBL-3-13-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBSET         </p></td>
+<td class='td11' id='TBL-3-13-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBCLEAR    </p></td>
+<td class='td11' id='TBL-3-13-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPBTOGGLE </p></td>
 </tr><tr id='TBL-3-14-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-14-1' style='white-space:normal; text-align:center;'> LED13  </td>
 <td class='td11' id='TBL-3-14-2' style='white-space:normal; text-align:center;'>  157    </td>
 <td class='td11' id='TBL-3-14-3' style='white-space:normal; text-align:center;'>  GPE  </td>
-<td class='td11' id='TBL-3-14-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPEDAT        </p></td>
-<td class='td11' id='TBL-3-14-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPESET         </p></td>
-<td class='td11' id='TBL-3-14-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPECLEAR    </p></td>
-<td class='td11' id='TBL-3-14-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPETOGGLE </p></td>
+<td class='td11' id='TBL-3-14-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPEDAT        </p></td>
+<td class='td11' id='TBL-3-14-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPESET         </p></td>
+<td class='td11' id='TBL-3-14-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPECLEAR    </p></td>
+<td class='td11' id='TBL-3-14-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPETOGGLE </p></td>
 </tr><tr id='TBL-3-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-15-1' style='white-space:normal; text-align:center;'> LED14  </td>
 <td class='td11' id='TBL-3-15-2' style='white-space:normal; text-align:center;'>  158    </td>
 <td class='td11' id='TBL-3-15-3' style='white-space:normal; text-align:center;'>  GPE  </td>
-<td class='td11' id='TBL-3-15-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPEDAT        </p></td>
-<td class='td11' id='TBL-3-15-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPESET         </p></td>
-<td class='td11' id='TBL-3-15-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPECLEAR    </p></td>
-<td class='td11' id='TBL-3-15-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPETOGGLE </p></td>
+<td class='td11' id='TBL-3-15-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPEDAT        </p></td>
+<td class='td11' id='TBL-3-15-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPESET         </p></td>
+<td class='td11' id='TBL-3-15-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPECLEAR    </p></td>
+<td class='td11' id='TBL-3-15-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPETOGGLE </p></td>
 </tr><tr id='TBL-3-16-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-16-1' style='white-space:normal; text-align:center;'> LED15  </td>
 <td class='td11' id='TBL-3-16-2' style='white-space:normal; text-align:center;'>  159    </td>
 <td class='td11' id='TBL-3-16-3' style='white-space:normal; text-align:center;'>  GPE  </td>
-<td class='td11' id='TBL-3-16-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPEDAT        </p></td>
-<td class='td11' id='TBL-3-16-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPESET         </p></td>
-<td class='td11' id='TBL-3-16-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPECLEAR    </p></td>
-<td class='td11' id='TBL-3-16-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPETOGGLE </p></td>
+<td class='td11' id='TBL-3-16-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPEDAT        </p></td>
+<td class='td11' id='TBL-3-16-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPESET         </p></td>
+<td class='td11' id='TBL-3-16-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPECLEAR    </p></td>
+<td class='td11' id='TBL-3-16-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPETOGGLE </p></td>
 </tr><tr id='TBL-3-17-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-17-1' style='white-space:normal; text-align:center;'> LED16  </td>
 <td class='td11' id='TBL-3-17-2' style='white-space:normal; text-align:center;'>  160    </td>
 <td class='td11' id='TBL-3-17-3' style='white-space:normal; text-align:center;'>  GPF  </td>
-<td class='td11' id='TBL-3-17-4' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPFDAT        </p></td>
-<td class='td11' id='TBL-3-17-5' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPFSET         </p></td>
-<td class='td11' id='TBL-3-17-6' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPFCLEAR    </p></td>
-<td class='td11' id='TBL-3-17-7' style='white-space:normal; text-align:left;'> <!-- l. 351 --><p class='noindent'>GPFTOGGLE  </p></td>
+<td class='td11' id='TBL-3-17-4' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPFDAT        </p></td>
+<td class='td11' id='TBL-3-17-5' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPFSET         </p></td>
+<td class='td11' id='TBL-3-17-6' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPFCLEAR    </p></td>
+<td class='td11' id='TBL-3-17-7' style='white-space:normal; text-align:left;'> <!-- l. 364 --><p class='noindent'>GPFTOGGLE  </p></td>
 </tr></table>
                                                                                                        
                                                                                                        
@@ -541,7 +541,7 @@ happens. <span class='rm-lmbx-10x-x-109'>Also, demo this to your TA in person</s
 <div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 356 --><p class='indent'>   </p><figure class='float' id='x1-11001r2'><span id='push-buttons-gpio-mapping-and-control-registers'></span>
+<!-- l. 369 --><p class='indent'>   </p><figure class='float' id='x1-11001r2'><span id='push-buttons-gpio-mapping-and-control-registers'></span>
                                                                                                        
                                                                                                        
 
@@ -573,42 +573,42 @@ happens. <span class='rm-lmbx-10x-x-109'>Also, demo this to your TA in person</s
    </div>
    
 <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-output'> <a id='x1-12000'></a>GPIO Register Use when GPIO pin set as Output:</h5>
-<!-- l. 375 --><p class='noindent'>The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register
+<!-- l. 388 --><p class='noindent'>The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register
 at a time. The “<span class='obeylines-h'><code class='verb'>.all</code></span>” part of the C/C++ union is the entire 32-bit register. The “<span class='obeylines-h'><code class='verb'>.bit.GPIO19</code></span>” is just one bit in the
 32-bit register. So these two lines of C code perform the same operation: </p><div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 377 --><p class='indent'>   </p><figure class='float' id='x1-12001r3'><span id='gpio-register-functional-definitions-and-usage-constraints'></span>
+<!-- l. 390 --><p class='indent'>   </p><figure class='float' id='x1-12001r3'><span id='gpio-register-functional-definitions-and-usage-constraints'></span>
                                                                                                        
                                                                                                        
 
 <figcaption class='caption'><span class='id'>Table 3: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-12001r3  -->
-<div class='tabular'> <table class='tabular' id='TBL-5'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-1-1' style='white-space:normal; text-align:left;'> <!-- l. 385 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>           </p></td>
-                  <td class='td11' id='TBL-5-1-2' style='white-space:normal; text-align:left;'> <!-- l. 385 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                           </p></td>
-                                                       <td class='td11' id='TBL-5-1-3' style='white-space:normal; text-align:left;'> <!-- l. 385 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                      </p></td>
+<div class='tabular'> <table class='tabular' id='TBL-5'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-1-1' style='white-space:normal; text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>           </p></td>
+                  <td class='td11' id='TBL-5-1-2' style='white-space:normal; text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                           </p></td>
+                                                       <td class='td11' id='TBL-5-1-3' style='white-space:normal; text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                      </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-2-1' style='white-space:normal; text-align:left;'>
- <!-- l. 386 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
+ <!-- l. 399 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
                             </p></td>
-                  <td class='td11' id='TBL-5-2-2' style='white-space:normal; text-align:left;'> <!-- l. 387 --><p class='noindent'><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' />                                                          </p></td>
-                                                       <td class='td11' id='TBL-5-2-3' style='white-space:normal; text-align:left;'> <!-- l. 389 --><p class='noindent'><span class='rm-lmbx-9'>FOR TECHNICAL REASONS, DO NOT USE 
+                  <td class='td11' id='TBL-5-2-2' style='white-space:normal; text-align:left;'> <!-- l. 400 --><p class='noindent'><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' />                                                          </p></td>
+                                                       <td class='td11' id='TBL-5-2-3' style='white-space:normal; text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmbx-9'>FOR TECHNICAL REASONS, DO NOT USE 
 DAT  FOR  TURNING  ON  AND  OFF  LEDS. 
 JUST USE IT TO READ THE STATE OF THE 
 PUSHBUTTONS BELOW.</span>                              </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-3-1' style='white-space:normal; text-align:left;'>
- <!-- l. 391 --><p class='noindent'><span class='rm-lmr-9'>GP?SET</span>
+ <!-- l. 404 --><p class='noindent'><span class='rm-lmr-9'>GP?SET</span>
                             </p></td>
-                  <td class='td11' id='TBL-5-3-2' style='white-space:normal; text-align:left;'> <!-- l. 392 --><p class='noindent'><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-                                                       <td class='td11' id='TBL-5-3-3' style='white-space:normal; text-align:left;'> <!-- l. 394 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO37 High/3.3V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
+                  <td class='td11' id='TBL-5-3-2' style='white-space:normal; text-align:left;'> <!-- l. 405 --><p class='noindent'><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+                                                       <td class='td11' id='TBL-5-3-3' style='white-space:normal; text-align:left;'> <!-- l. 407 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO37 High/3.3V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-4-1' style='white-space:normal; text-align:left;'>
- <!-- l. 395 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR</span>
+ <!-- l. 408 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR</span>
                             </p></td>
-<td class='td11' id='TBL-5-4-2' style='white-space:normal; text-align:left;'> <!-- l. 396 --><p class='noindent'><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-<td class='td11' id='TBL-5-4-3' style='white-space:normal; text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO70 Low/0V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
+<td class='td11' id='TBL-5-4-2' style='white-space:normal; text-align:left;'> <!-- l. 409 --><p class='noindent'><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+<td class='td11' id='TBL-5-4-3' style='white-space:normal; text-align:left;'> <!-- l. 411 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO70 Low/0V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-5-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-5-1' style='white-space:normal; text-align:left;'>
- <!-- l. 399 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE</span>
+ <!-- l. 412 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE</span>
                             </p></td>
-<td class='td11' id='TBL-5-5-2' style='white-space:normal; text-align:left;'> <!-- l. 400 --><p class='noindent'><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin opposite of its current state </span><br class='newline' /><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-<td class='td11' id='TBL-5-5-3' style='white-space:normal; text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; </span><br class='newline' /><span class='rm-lmr-9'>State toggles (3.3V </span><span class='cmsy-9'>↔ </span><span class='rm-lmr-9'>0V) </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;</span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                                          </p></td>
+<td class='td11' id='TBL-5-5-2' style='white-space:normal; text-align:left;'> <!-- l. 413 --><p class='noindent'><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin opposite of its current state </span><br class='newline' /><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+<td class='td11' id='TBL-5-5-3' style='white-space:normal; text-align:left;'> <!-- l. 415 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; </span><br class='newline' /><span class='rm-lmr-9'>State toggles (3.3V </span><span class='cmsy-9'>↔ </span><span class='rm-lmr-9'>0V) </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;</span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                                          </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                     </div>
                                                                                                        
                                                                                                        
@@ -616,23 +616,23 @@ PUSHBUTTONS BELOW.</span>                              </p></td>
    </div>
    
 <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-input'> <a id='x1-13000'></a>GPIO Register Use When GPIO Pin Set as Input:</h5>
-<!-- l. 407 --><p class='noindent'>Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for
+<!-- l. 420 --><p class='noindent'>Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for
 that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.
 </p><div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 409 --><p class='indent'>   </p><figure class='float' id='x1-13001r4'><span id='gpio-register-functional-definitions-and-usage-constraints1'></span>
+<!-- l. 422 --><p class='indent'>   </p><figure class='float' id='x1-13001r4'><span id='gpio-register-functional-definitions-and-usage-constraints1'></span>
                                                                                                        
                                                                                                        
 
 <figcaption class='caption'><span class='id'>Table 4: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-13001r4  -->
-<div class='tabular'> <table class='tabular' id='TBL-6'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-6-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-6-1-1' style='white-space:normal; text-align:left;'> <!-- l. 417 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>     </p></td>
-              <td class='td11' id='TBL-6-1-2' style='white-space:normal; text-align:left;'> <!-- l. 417 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                                       </p></td>
-                                                            <td class='td11' id='TBL-6-1-3' style='white-space:normal; text-align:left;'> <!-- l. 417 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                   </p></td>
+<div class='tabular'> <table class='tabular' id='TBL-6'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-6-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-6-1-1' style='white-space:normal; text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>     </p></td>
+              <td class='td11' id='TBL-6-1-2' style='white-space:normal; text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                                       </p></td>
+                                                            <td class='td11' id='TBL-6-1-3' style='white-space:normal; text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                   </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-6-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-6-2-1' style='white-space:normal; text-align:left;'>
- <!-- l. 418 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
+ <!-- l. 431 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
                      </p></td>
-              <td class='td11' id='TBL-6-2-2' style='white-space:normal; text-align:left;'> <!-- l. 419 --><p class='noindent'><span class='rm-lmr-9'>If </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1</span><span class='rm-lmr-9'>, the pin is logic high (3.3 V).</span><br class='newline' /><span class='rm-lmr-9'>If   </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0</span><span class='rm-lmr-9'>,   the   pin   is   logic   low 
+              <td class='td11' id='TBL-6-2-2' style='white-space:normal; text-align:left;'> <!-- l. 432 --><p class='noindent'><span class='rm-lmr-9'>If </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1</span><span class='rm-lmr-9'>, the pin is logic high (3.3 V).</span><br class='newline' /><span class='rm-lmr-9'>If   </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0</span><span class='rm-lmr-9'>,   the   pin   is   logic   low 
 (0 V/GND).</span>                                                        </p></td>
                                                             <td class='td11' id='TBL-6-2-3' style='white-space:normal; text-align:left;'> <div class='minipage'><pre class='fancyvrb' id='fancyvrb14'><span class='fancyvrblineno'><a id='x1-13003r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {</span></span> 
 <span class='fancyvrblineno'><a id='x1-13005r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// Code executed when input pin</span></span> 
@@ -649,7 +649,7 @@ that pin. With the passive push button on our breakout board, we will need to en
    
 <h3 class='likesectionHead' id='exercise-9-led-toggles-'> <a id='x1-14000'></a>Exercise 9: LED toggles </h3>
 <p id='exercise-9-led-toggles'><a id='Q1-1-28'></a>
-<!-- l. 438 --></p><p class='noindent'>Using the GPIO reference tables above <span class='rm-lmbx-10x-x-109'>(note the example code in the table)</span>, add code to your CPU Timer2
+<!-- l. 451 --></p><p class='noindent'>Using the GPIO reference tables above <span class='rm-lmbx-10x-x-109'>(note the example code in the table)</span>, add code to your CPU Timer2
 interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed,
 toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and
 off. 
@@ -657,7 +657,7 @@ off.
 </p>   
 <h3 class='likesectionHead' id='exercise-10-led-patterns-'>  <a id='x1-15000'></a>Exercise 10: LED patterns </h3>
 <p id='exercise-10-led-patterns'><a id='Q1-1-30'></a>
-<!-- l. 442 --></p><p class='noindent'>Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these
+<!-- l. 455 --></p><p class='noindent'>Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these
 different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each
 other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate
 within one of the CPU timer interrupt functions.
@@ -665,7 +665,7 @@ within one of the CPU timer interrupt functions.
 </p>   
 <h3 class='likesectionHead' id='exercise-11-binary-operations-'>  <a id='x1-16000'></a>Exercise 11: Binary operations </h3>
 <p id='exercise-11-binary-operations'><a id='Q1-1-32'></a>
-<!-- l. 446 --></p><p class='noindent'>Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these
+<!-- l. 459 --></p><p class='noindent'>Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these
 calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value
 over the serial port using the “<span class='obeylines-h'><code class='verb'>serial_printf</code></span>” function.
 </p>     
@@ -689,21 +689,21 @@ is 9600 bits per second when using the <span class='obeylines-h'><code class='ve
    
 <h3 class='likesectionHead' id='exercise-12-type-bit-sizes-'> <a id='x1-17000'></a>Exercise 12: Type bit sizes </h3>
 <p id='exercise-12-type-bit-sizes'><a id='Q1-1-34'></a>
-<!-- l. 460 --></p><p class='noindent'>Read section 6.3 of the F28379D C reference guide (<a class='url' href='https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf'><span class='rm-lmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf</span></a>).
+<!-- l. 473 --></p><p class='noindent'>Read section 6.3 of the F28379D C reference guide (<a class='url' href='https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf'><span class='rm-lmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf</span></a>).
 How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: <span class='rm-lmtt-10x-x-109'>int</span>,
 <span class='rm-lmtt-10x-x-109'>long int</span>, <span class='rm-lmtt-10x-x-109'>unsigned int</span>, <span class='rm-lmtt-10x-x-109'>short int</span>, <span class='rm-lmtt-10x-x-109'>char</span>, <span class='rm-lmtt-10x-x-109'>double</span>, <span class='rm-lmtt-10x-x-109'>float</span>?
 
 </p>   
 <h3 class='likesectionHead' id='exercise-13-uart-signal-display-'>  <a id='x1-18000'></a>Exercise 13: UART signal display </h3>
 <p id='exercise-13-uart-signal-display'><a id='Q1-1-36'></a>
-<!-- l. 465 --></p><p class='noindent'>To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope
+<!-- l. 478 --></p><p class='noindent'>To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope
 was connected to the transmit line (TXD) of your TMS320F28379D processor, what would be displayed if
 the baud rate was set to 115200 bits per second and only two <a href='https://www.ascii-code.com/'>ASCII</a> characters, “4” and “B”, were sent
 in sequence? Scoping the TXD line is not required, but you are welcome to figure out the waveform that
 way.
 </p>   
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 467 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 480 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See </span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>

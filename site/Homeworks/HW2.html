@@ -28,7 +28,7 @@ your board. </p><figure class='figure'>
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 43 --><p class='noindent' id='photo-resistor-circuit'><img alt='[Picture]' src='HW20x.svg' /> <a id='x1-1001r1'></a>
+<!-- l. 48 --><p class='noindent' id='photo-resistor-circuit'><span aria-label='Voltage-divider schematic. A light-dependent resistor (LDR) sits between VCC at the top and a junction node in the middle; a fixed 2.2 kilohm resistor sits between that junction and GND at the bottom. The junction connects to an ADC pin on the left.' role='img'> <img alt='[Picture]' src='HW20x.svg' /> </span><a id='x1-1001r1'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Photo resistor circuit
 </span></figcaption><!-- tex4ht:label?: x111001r1  -->
@@ -39,7 +39,7 @@ your board. </p><figure class='figure'>
    
 <h3 class='likesectionHead' id='exercise-2-vary-the-intensity-of-an-led-connected-to-a-pwm-output-'>  <a id='x1-2000'></a>Exercise 2: Vary the intensity of an LED connected to a PWM output </h3>
 <p id='exercise-2-vary-the-intensity-of-an-led-connected-to-a-pwm-output'><a id='Q1-1-5'></a>
-<!-- l. 83 --></p><p class='noindent'>Create a new CCS project from the HWstarter project found in your repository and rename it <code class='lstinline'><span style='color:#000000'>HW2/span&gt;<span style='color:#000000'>yourinitials/span&gt;</span>. Use
+<!-- l. 90 --></p><p class='noindent'>Create a new CCS project from the HWstarter project found in your repository and rename it <code class='lstinline'><span style='color:#000000'>HW2/span&gt;<span style='color:#000000'>yourinitials/span&gt;</span>. Use
 this same project for all the exercises below. Each exercise builds on the next one. As discussed in the lecture, the EPWM
 peripheral has many more options than we will need for SE423 this semester. We only need to focus on the peripheral’s
 basic features. I have created a condensed version of the EPWM chapter of the F28379D technical reference guide. The
@@ -84,12 +84,12 @@ later.)
 <span class='fancyvrblineno'><a id='x1-2056r28'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 all;</span></span> 
 <span class='fancyvrblineno'><a id='x1-2058r29'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>struct AQCTLA_BITS bit;</span></span> 
 <span class='fancyvrblineno'><a id='x1-2060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span></pre>
-<!-- l. 120 --><p class='noindent'>Looking at these bit-fields notice the <span class='rm-lmtt-10x-x-109'>:1</span>, <span class='rm-lmtt-10x-x-109'>:2 </span>or <span class='rm-lmtt-10x-x-109'>:3 </span>after <span class='rm-lmtt-10x-x-109'>PHSEN</span>, <span class='rm-lmtt-10x-x-109'>CTRMODE</span>, <span class='rm-lmtt-10x-x-109'>CLKDIV </span>respectively. This indicates how many bits
+<!-- l. 127 --><p class='noindent'>Looking at these bit-fields notice the <span class='rm-lmtt-10x-x-109'>:1</span>, <span class='rm-lmtt-10x-x-109'>:2 </span>or <span class='rm-lmtt-10x-x-109'>:3 </span>after <span class='rm-lmtt-10x-x-109'>PHSEN</span>, <span class='rm-lmtt-10x-x-109'>CTRMODE</span>, <span class='rm-lmtt-10x-x-109'>CLKDIV </span>respectively. This indicates how many bits
 this portion of the bit field uses. If you add up all the numbers after the colons, you see that it adds to 16, which
 is the size of both the <span class='rm-lmtt-10x-x-109'>TBCTL </span>and <span class='rm-lmtt-10x-x-109'>AQCTLA </span>registers. So each bit of the register can be assigned to this bit
 field. To make this clearer, look at the definition of <span class='rm-lmtt-10x-x-109'>TBCTL </span>and <span class='rm-lmtt-10x-x-109'>AQCTLA </span>from TI’s technical reference guide:
 </p><div class='table'>
-<!-- l. 122 --><p class='indent'>   </p><figure class='float' id='x1-2061r1'><span id='tbctl-register-figure-1593'></span>
+<!-- l. 129 --><p class='indent'>   </p><figure class='float' id='x1-2061r1'><span id='tbctl-register-figure-1593'></span>
                                                                                                        
                                                                                                        
 
@@ -129,10 +129,10 @@ field. To make this clearer, look at the definition of <span class='rm-lmtt-10x-
                                                                                                        
    </figure>
    </div>
-<!-- l. 140 --><p class='indent'>   and </p><div class='table'>
+<!-- l. 147 --><p class='indent'>   and </p><div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 142 --><p class='indent'>   </p><figure class='float' id='x1-2062r2'><span id='aqctla-register-figure-15115'></span>
+<!-- l. 149 --><p class='indent'>   </p><figure class='float' id='x1-2062r2'><span id='aqctla-register-figure-15115'></span>
                                                                                                        
                                                                                                        
 
@@ -172,50 +172,50 @@ field. To make this clearer, look at the definition of <span class='rm-lmtt-10x-
                                                                                                        
    </figure>
    </div>
-<!-- l. 161 --><p class='indent'>   Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So, what
+<!-- l. 168 --><p class='indent'>   Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So, what
 bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits
 of the register. So you could code:
 </p>   
 <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2064r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm12Regs.TBCTL.bit.CLKDIV = 3;</span></span></pre>
-<!-- l. 167 --><p class='noindent'>Moreover, that would set bit 10 to 1, bit 11 to 1, and bit 12 to 0 in the TBCTL register, leaving all the other
+<!-- l. 174 --><p class='noindent'>Moreover, that would set bit 10 to 1, bit 11 to 1, and bit 12 to 0 in the TBCTL register, leaving all the other
 bits unchanged. Since CLKDIV uses 3 bits, the smallest value you can set it to is 0. What is the largest
 number you could set it to? <span class='rm-lmri-10x-x-109'>(Technically, you could set it to any number in your code, but only the bottom 3
 bits of the number are looked at in the assignment.) </span>The answer is 7 or binary 111, all three bits set to
 1.
-</p><!-- l. 169 --><p class='indent'>   Given the introduction to register bit-field assignments, write some code in the <span class='rm-lmtt-10x-x-109'>main() </span>function to set up EPWM12A
+</p><!-- l. 176 --><p class='indent'>   Given the introduction to register bit-field assignments, write some code in the <span class='rm-lmtt-10x-x-109'>main() </span>function to set up EPWM12A
 to drive LED1. <span class='rm-lmri-10x-x-109'>If I do not list an option that you see defined in a register, then that means you should not set
 that option, and it will be kept as the default. I may suggest an option that is already the default, but to
 make it clear to the reader of your code that this option is set, I would like you to assign it the default
 value, even though that line of code is not necessary. </span>Set the following options in the EPWM registers for
 EPWM12A:
-</p><!-- l. 171 --><p class='indent'>   With TBCTL set all these options using four lines of C code: (1) Count up Mode, (2) Free Soft emulation mode to
+</p><!-- l. 178 --><p class='indent'>   With TBCTL set all these options using four lines of C code: (1) Count up Mode, (2) Free Soft emulation mode to
 Free Run so that the PWM continues when you set a break point in your code, (3) Do not load the time-base counter from
 the time-base phase register, (4) set clock divide to divide by 1.
-</p><!-- l. 173 --><p class='indent'>   With TBCTR: Start the timer at zero.
-</p><!-- l. 175 --><p class='indent'>   With TBPRD: Set the period (carrier frequency) of the PWM signal to 5KHz, which is a period of 200 microseconds.
+</p><!-- l. 180 --><p class='indent'>   With TBCTR: Start the timer at zero.
+</p><!-- l. 182 --><p class='indent'>   With TBPRD: Set the period (carrier frequency) of the PWM signal to 5KHz, which is a period of 200 microseconds.
 Remember, the clock source the TBCTR register is counting has a frequency of 50 MHz, or a period of 1/50000000
 seconds.
-</p><!-- l. 177 --><p class='indent'>   With CMPA, initially start the duty cycle at 50
-</p><!-- l. 179 --><p class='indent'>   With AQCTLA set, set the PWM12A output pin low when CMPA is reached. Set the pin high when the TBCTR
+</p><!-- l. 184 --><p class='indent'>   With CMPA, initially start the duty cycle at 50
+</p><!-- l. 186 --><p class='indent'>   With AQCTLA set, set the PWM12A output pin low when CMPA is reached. Set the pin high when the TBCTR
 register is zero.
-</p><!-- l. 181 --><p class='indent'>   With TBPHS set to zero, i.e., <span class='rm-lmtt-10x-x-109'>EPwm12Regs.TBPHS.bit.TBPHS = 0; </span>I do not know if this setting is necessary, but I
+</p><!-- l. 188 --><p class='indent'>   With TBPHS set to zero, i.e., <span class='rm-lmtt-10x-x-109'>EPwm12Regs.TBPHS.bit.TBPHS = 0; </span>I do not know if this setting is necessary, but I
 have seen it in several TI examples, so I am just being safe here.
-</p><!-- l. 183 --><p class='indent'>   You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the <a href='http://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf'>PinMux table for the
+</p><!-- l. 190 --><p class='indent'>   You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the <a href='http://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf'>PinMux table for the
 F28379D Launchpad</a> to help you here. Use the function <span class='rm-lmtt-10x-x-109'>GPIO_SetupPinMux </span>to change the PinMux such that
 GPIO22 is instead set as EPWM12A output pin. For example, the below line of code sets GPIO158 as
 GPIO158:
 </p>   
 <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2066r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index</span></span></pre>
-<!-- l. 189 --><p class='noindent'>Looking at the PinMux table, the line of code below sets GPIO40 to be instead the SDAB pin:
+<!-- l. 196 --><p class='noindent'>Looking at the PinMux table, the line of code below sets GPIO40 to be instead the SDAB pin:
 </p>   
 <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-2068r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index</span></span></pre>
-<!-- l. 195 --><p class='noindent'>Finally, based on a number of TI examples, it is a good idea to disable the pull-up resistor when an I/O pin is set as a PWM
+<!-- l. 202 --><p class='noindent'>Finally, based on a number of TI examples, it is a good idea to disable the pull-up resistor when an I/O pin is set as a PWM
 output to reduce power consumption. Add these lines of code after your above initializations.
 </p>   
 <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-2070r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;  // Below are protected registers</span></span> 
 <span class='fancyvrblineno'><a id='x1-2072r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A</span></span> 
 <span class='fancyvrblineno'><a id='x1-2074r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
-<!-- l. 203 --><p class='noindent'>Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s
+<!-- l. 210 --><p class='noindent'>Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s
 interrupt function and comment out the call to the <span class='rm-lmtt-10x-x-109'>displayLEDletter() </span>function. When ready, download this code to
 your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50% duty cycle, so the LED should be
 50% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in Code
@@ -229,14 +229,14 @@ parts, CMPA and CMPAHR. Leave CMPAHR at 0 and change CMPA. First, try setting CM
 value of TBPRD. What happens to the intensity of LED1? Change CMPA to the same value as TBPRD to
 see the maximum brightness (100% duty cycle). Play with other values for CMPA to see the brightness
 change.
-</span></p><!-- l. 205 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Note</span>: Code Composer Studio may not display your EPWM12 registers correctly due to very little code running on
+</span></p><!-- l. 212 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Note</span>: Code Composer Studio may not display your EPWM12 registers correctly due to very little code running on
 your F28379D processor, and also due to the large number of registers to display in the register view. Once you click the
 Registers tab, you will see two icons with yellow arrows pointing towards each other. These are Refresh and
 Continuous Refresh. When you enter a value for CMPA, try clicking Refresh and Continuous Refresh to
 see if CCS refreshes the value in CMPA. If the Refresh icons do not work, you can also pause your code
 with the pause icon, and your values should update. Then click the resume icon to continue running your
 code.
-</p><!-- l. 207 --><p class='indent'>   Now that you see CMPA changes the brightness of LED1, initialize CPU Timer 2 so that its interrupt
+</p><!-- l. 214 --><p class='indent'>   Now that you see CMPA changes the brightness of LED1, initialize CPU Timer 2 so that its interrupt
 function is called every 1ms. Then write code in CPU Timer2’s interrupt function to increase, by one, the
 value of EPWM12’s CMPA register every one millisecond. Then, when CMPA’s value reaches the value
 in TBPRD, change the state of your code to decrease CMPA by 1 each millisecond; then, when CMPA
@@ -246,13 +246,13 @@ way to code this is to create a global variable of type <span class='rm-lmtt-10x
 to 1, count up; when updown is 0, count down. When counting, check for CMPA to reach the value of
 TBPRD and switch to down counting. While down-counting, check if CMPA equals zero to switch back to
 up-counting.
-</p><!-- l. 209 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Show the TAs on the oscilloscope that the LED1 is going up and down every 200 us.</span> </p><figure class='figure'> 
+</p><!-- l. 216 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Show the TAs on the oscilloscope that the LED1 is going up and down every 200 us.</span> </p><figure class='figure'> 
 
                                                                                                        
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 213 --><p class='noindent' id='ramped-led1-brightness-pattern'><img alt='[Picture]' src='HW21x.svg' /> <a id='x1-2075r2'></a>
+<!-- l. 226 --><p class='noindent' id='ramped-led1-brightness-pattern'><span aria-label='Triangular brightness waveform: PWM duty cycle plotted against time. The signal ramps linearly from 0 percent up to 100 percent over the first half of the period, then back down to 0 percent over the second half, repeating to produce a continuous breathe effect on the LED.' role='img'> <img alt='[Picture]' src='HW21x.svg' /> </span><a id='x1-2075r2'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Ramped LED1 Brightness Pattern
 </span></figcaption><!-- tex4ht:label?: x122075r2  -->
@@ -263,7 +263,7 @@ up-counting.
    
 <h3 class='likesectionHead' id='exercise-3-using-adca-to-read-the-voltage-drop-across-a-photo-resistor-'>  <a id='x1-3000'></a>Exercise 3: Using ADCA to read the voltage drop across a photo resistor </h3>
 <p id='exercise-3-using-adca-to-read-the-voltage-drop-across-a-photo-resistor'><a id='Q1-1-10'></a>
-<!-- l. 237 --></p><p class='noindent'>These documents will help you understand how to use the ADC peripheral. Find the whole chapter 11 discussing
+<!-- l. 252 --></p><p class='noindent'>These documents will help you understand how to use the ADC peripheral. Find the whole chapter 11 discussing
 the F28379D’s ADC peripheral in the <a href='http://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf'>TMS320F28379D Technical Reference Guide</a> just in case you need
 some extra detail. Also, read through sections 3.4 through 3.4.5, which discuss Hardware Interrupt events
 on the F28379D. <a href='http://coecsl.ece.illinois.edu/se423/PeripheralInterruptChannelMapTable.pdf'>Table 3-2</a> is important when setting up Hardware Interrupts (HWI), so I have created a
@@ -273,15 +273,15 @@ sections and register descriptions, which should give you an introduction to the
 peripheral will be used to signal the ADC when to convert, rather than driving a duty-cycle-varying square
 wave, so I am including another link to the EPWM reference here. <a href='http://coecsl.ece.illinois.edu/se423/EPWM_Peripheral.pdf'>EPWM Condensed Technical Reference
 Guide</a>.
-</p><!-- l. 240 --><p class='indent'>   Each of the TMS320F28379D processor’s ADC peripherals can generate an interrupt when its sequence of samples has
+</p><!-- l. 255 --><p class='indent'>   Each of the TMS320F28379D processor’s ADC peripherals can generate an interrupt when its sequence of samples has
 been converted and stored in the results registers of the ADC peripheral. When the ADC conversion is complete, the
 F28379D will automatically stop the code it is currently processing and jump to the interrupt service routine (ISR)
 specified for the ADC. Upon completion of the ISR code, the program counter (PC) will automatically jump back to the
 interrupted code and resume processing.
-</p><!-- l. 242 --><p class='indent'>   There are four ADC peripherals in the F28379D: ADCA, ADCB, ADCC, and ADCD. For this first exercise with
+</p><!-- l. 257 --><p class='indent'>   There are four ADC peripherals in the F28379D: ADCA, ADCB, ADCC, and ADCD. For this first exercise with
 the ADC, we will use ADCA and its channel ADCINA4, which you have soldered to the photo resistor’s
 output.
-</p><!-- l. 244 --><p class='indent'>   The input pins, or channels, ADCINA0, ADCINA1, ADCINA2, ADCINA3, ADCINA4, and ADCINA5 are
+</p><!-- l. 259 --><p class='indent'>   The input pins, or channels, ADCINA0, ADCINA1, ADCINA2, ADCINA3, ADCINA4, and ADCINA5 are
 multiplexed into the ADCA peripheral on the F28379D processor. The ADCA peripheral can only sample
 one of these voltage input pins at a time. So the multiplexer allows the ADCA sequencer to sample one
 channel, and then, when finished, the sequencer can change the multiplexer so that the next channel can be
@@ -301,7 +301,7 @@ flagged. The conversion results will be stored in the AdcaResultRegs registers.A
 quite a few things to set up, so I am giving you most of the code. You will need to refer to the register
 descriptions to fill in the blanks. I also include some commented-out code that will help you with the next
 exercise.
-</p><!-- l. 249 --><p class='indent'>   We want to command the ADCA peripheral to sample ADCINA4. There are a few ways to accomplish this, but for
+</p><!-- l. 264 --><p class='indent'>   We want to command the ADCA peripheral to sample ADCINA4. There are a few ways to accomplish this, but for
 this homework, we are going to use EPWM4 as a timer (no duty-cycle output) to trigger the ADCA conversion sequence.
 In <span class='rm-lmtt-10x-x-109'>main() </span>after the <span class='rm-lmtt-10x-x-109'>init_serial </span>functions, add the following code and fill in the ??? blanks by studying the EPWM
 reference. Do not forget to copy EALLOW and EDIS.
@@ -323,13 +323,13 @@ reference. Do not forget to copy EALLOW and EDIS.
 <span class='fancyvrblineno'><a id='x1-3030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
                                                                                                        
                                                                                                        
-<!-- l. 269 --><p class='noindent'>Next, we would like to set up ADCA so that it uses 1 of its 16 SOCs (Start of Conversions). The ADC sequencer uses these
+<!-- l. 284 --><p class='noindent'>Next, we would like to set up ADCA so that it uses 1 of its 16 SOCs (Start of Conversions). The ADC sequencer uses these
 SOCs to sample the ADC channels in any desired order and, if necessary, assign priority to certain SOCs. It may not be
 very clear for the first-time user of this peripheral, but if we stick to the basics, it is pretty straightforward. We will trigger
 SOC0 using the EPWM PRD time event. When triggered, SOC0 will sample/convert its assigned channel. Assign
 channel ADCINA4 to SOC0. The initializations below set up ADCA to flag an interrupt when SOC0 finishes
 converting.
-</p><!-- l. 271 --><p class='indent'>   Some of the given code I found in an ADC example. It retrieves the default calibration values for the ADCA from the
+</p><!-- l. 286 --><p class='indent'>   Some of the given code I found in an ADC example. It retrieves the default calibration values for the ADCA from the
 F28379D’s read-only memory (ROM). Add the following to <span class='rm-lmtt-10x-x-109'>main() </span>after the <span class='rm-lmtt-10x-x-109'>init_serial </span>functions, filling in the
 appropriate blanks (???). Note that the lines of C code that are commented out will be used in the next exercise when you
 also convert the Joystick channels.
@@ -364,12 +364,12 @@ also convert the Joystick channels.
 <span class='fancyvrblineno'><a id='x1-3086r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag</span></span> 
 <span class='fancyvrblineno'><a id='x1-3088r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared        </span></span> 
 <span class='fancyvrblineno'><a id='x1-3090r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
-<!-- l. 306 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Note</span>: <span class='rm-lmri-10x-x-109'>The naming can get confusing here. There are ADCA inputs channels labeled ADCINA0, ADCINA1, ADCINA2,
+<!-- l. 321 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Note</span>: <span class='rm-lmri-10x-x-109'>The naming can get confusing here. There are ADCA inputs channels labeled ADCINA0, ADCINA1, ADCINA2,
 ADCINA3, ADCINA4, ADCINA5 and there are also four ADCA interrupts labeled ADCA1, ADCA2, ADCA3 and
 ADCA4. In the above code, the ADCA1 interrupt is configured to trigger when channel ADCINA4 finishes conversion. </span>You
 will be adding most of the remainder of your code for this exercise inside this ADCA1 hardware interrupt
 function.
-</p><!-- l. 308 --><p class='indent'>   Now add this ADCA1 hardware interrupt function. To get you started with this interrupt function, cut and paste this
+</p><!-- l. 323 --><p class='indent'>   Now add this ADCA1 hardware interrupt function. To get you started with this interrupt function, cut and paste this
 shell function somewhere in your code outside of your <span class='rm-lmtt-10x-x-109'>main() </span>function.
 </p>   
 <pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-3092r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//adca1 pie interrupt</span></span> 
@@ -385,7 +385,7 @@ shell function somewhere in your code outside of your <span class='rm-lmtt-10x-x
 </span><span class='fancyvrblineno'><a id='x1-3112r11'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //clear interrupt flag</span></span> 
 <span class='fancyvrblineno'><a id='x1-3114r12'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
 <span class='fancyvrblineno'><a id='x1-3116r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 326 --><p class='noindent'>Furthermore, perform the following steps (<span class='rm-lmri-10x-x-109'>some of these steps have already been done for you by the shell code</span>):
+<!-- l. 341 --><p class='noindent'>Furthermore, perform the following steps (<span class='rm-lmri-10x-x-109'>some of these steps have already been done for you by the shell code</span>):
 </p>     
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-3118x1'>Create your interrupt function as a global function with “<span class='rm-lmtt-10x-x-109'>void</span>” parameters and of type “<span class='rm-lmtt-10x-x-109'>__interrupt
@@ -423,16 +423,16 @@ function. It is not a good idea to use a count variable from a different timer f
 </li>
 <li class='enumerate' id='x1-3130x7'>As a final step, clear the interrupt source flag and the PIE peripheral so that the processor will wait for the
 next interrupt flag before the ADC ISR is called again. The code below has many of these steps.</li></ol>
-<!-- l. 338 --><p class='noindent'>Place your hand over the photo resistor and use a flashlight to observe the voltage output of your photo resistor circuit
+<!-- l. 353 --><p class='noindent'>Place your hand over the photo resistor and use a flashlight to observe the voltage output of your photo resistor circuit
 change. In addition, write code set EPWM12A’s CMPA register to a scaled value of the photo resistor’s reading. When
 the photoresistor is not receiving much light, LED1 should be dim. As the photoresistor sees more light, LED1 should get
 brighter due to the change in duty cycle.
-</p><!-- l. 340 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
+</p><!-- l. 355 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
 
 </p>   
 <h3 class='likesectionHead' id='exercise-4-also-sample-the-joystick-voltages-'> <a id='x1-4000'></a>Exercise 4: Also sample the Joystick voltages </h3>
 <p id='exercise-4-also-sample-the-joystick-voltages'><a id='Q1-1-12'></a>
-<!-- l. 344 --></p><p class='noindent'>In this exercise, I would like you to add to the ADCA sequence of conversions by sampling the X- and Y-axis voltages of
+<!-- l. 359 --></p><p class='noindent'>In this exercise, I would like you to add to the ADCA sequence of conversions by sampling the X- and Y-axis voltages of
 the Joystick. The Joystick X axis is connected to ADCINA2, and the Y axis is connected to ADCINA3. You will only have
 to make a few changes to Exercise 3’s code to make these additional samples occur. Leave SOC0 setup to sample
 ADCINA4 and triggered by EPWM4. Set up SOC1 to sample ADCINA2 and triggered by EPWM4, and SOC2 to sample
@@ -442,19 +442,19 @@ conversion and triggers the ADCA1 interrupt function. Then, inside the ADCA1 int
                                                                                                        
 results, convert each to a voltage value between 0V and 3V, and print these three values to Tera Term every
 100ms.
-</p><!-- l. 346 --><p class='indent'>   Using the readings of the Joystick X and Y, write code to update LEDs to point in the direction you
+</p><!-- l. 361 --><p class='indent'>   Using the readings of the Joystick X and Y, write code to update LEDs to point in the direction you
 have moved the Joystick. If Joystick Y is in the center position, turn on only LED8. If Joystick Y is moved
 past a threshold and pointing towards the buzzer, then turn on only LED6. If Joystick Y is moved past
 another threshold and pointing away from the buzzer, then turn on only LED10. Similarly, if Joystick X is in
 the center position, turn on only LED8 if Joystick X is moved past a threshold, and, pointing down, turn
 on only LED13. Suppose Joystick X is moved past a threshold and pointing up, then only LED3 turns
 on.
-</p><!-- l. 348 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
+</p><!-- l. 363 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate these items working for your check off.</span>
 
 </p>   
 <h3 class='likesectionHead' id='exercise-5-spi-timing-diagram-'> <a id='x1-5000'></a>Exercise 5: SPI timing diagram </h3>
 <p id='exercise-5-spi-timing-diagram'><a id='Q1-1-14'></a>
-<!-- l. 352 --></p><p class='noindent'>Answer the following questions about the SPI timing diagram on the next page. Remember that SPI both sends and
+<!-- l. 367 --></p><p class='noindent'>Answer the following questions about the SPI timing diagram on the next page. Remember that SPI both sends and
 receives data simultaneously.
 </p>     
 <ol class='enumerate1'>
@@ -467,7 +467,7 @@ master to the slave? What are the values of the bytes received into the master f
 the below timing diagram: <span class='rm-lmtt-10x-x-109'>CLOCK_POLARITY = ?</span>, <span class='rm-lmtt-10x-x-109'>CLOCK_PHASE = ?</span>. So this means that the master reads in
 each bit on the rising edge of the clock (SCK) or the falling edge of SCK?</li></ol>
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 360 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 375 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See </span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
@@ -485,7 +485,7 @@ submission! See </span>
 <span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                           </span>
                                                                                                        
                                                                                                        
-<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 371 --><p class='noindent' id='spi-timing-diagram-analysis'><img alt='PIC' height='686' src='Homeworks/Figures/HW2/SPI.svg' width='686' /><a id='x1-5007r3'></a>
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 391 --><p class='noindent' id='spi-timing-diagram-analysis'><span aria-label='Four-channel SPI timing diagram showing MOSI, MISO, SCK and Slave Select waveforms over roughly 35 microseconds. SS is active-low and pulses low for each of the six byte transfers; SCK toggles eight times within each SS-low window. MOSI and MISO each carry six bytes of data, transmitted MSB-first.' role='img'><img alt='PIC' height='686' src='Homeworks/Figures/HW2/SPI.svg' width='686' /></span><a id='x1-5007r3'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>SPI Timing Diagram Analysis                                                                                                                                       </span></figcaption><!-- tex4ht:label?: x155007r3  -->
                                                                                                                                                                                             </span>

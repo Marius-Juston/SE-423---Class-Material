@@ -1,23 +1,23 @@
 <!DOCTYPE html> 
 <html lang='en-US' xml:lang='en-US'> 
-<head><title></title> 
+<head> <title></title> 
 <meta charset='utf-8' /> 
 <meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
 <meta content='width=device-width,initial-scale=1' name='viewport' /> 
 <link href='LabVIEW4.css' rel='stylesheet' type='text/css' /> 
 <meta content='LabVIEW4.tex' name='src' /> 
 </head><body>
-   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
-<div class='tcolorbox-content'><!-- l. 28 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
-<span class='cmbx-12x-x-120'>LabVIEW Assignment #4</span>
-</p><!-- l. 28 --><p class='noindent'><span class='cmbx-10x-x-109'>This is an optional assignment if you would like to learn about how LABVIEW can be
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 28 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>LabVIEW Assignment #4</span>
+</p><!-- l. 28 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>This is an optional assignment if you would like to learn about how LABVIEW can be
 used like MATLAB/Simulink to simulate system equations.</span>
 </p>
  
 </div> 
 </div>
    
-   <h3 class='likesectionHead' id='exercise-1-'> <a id='x1-1000'></a>Exercise 1 </h3>
+<h3 class='likesectionHead' id='exercise-1-'> <a id='x1-1000'></a>Exercise 1 </h3>
 <p id='exercise-1'><a id='Q1-1-2'></a>
 <!-- l. 32 --></p><p class='noindent'>For this exercise, I would like you to reproduce the two VIs shown in the pictures below. Both VIs perform the same task
 using different methods to implement an “if-else” condition, and one uses a SubVI. Again, for this exercise, start by
@@ -28,74 +28,75 @@ certain blocks. Many of the blocks I used below come from the “Control Design 
 LabVIEW.
 </p><!-- l. 34 --><p class='indent'>   Reproduce the below VI.
 </p><!-- l. 36 --><p class='indent'>   Instructions/tips:
-     </p><ol class='enumerate1'>
+</p>     
+<ol class='enumerate1'>
 <li class='enumerate' id='x1-1002x1'>The entire program is inside a Simulation Loop. The default simulation settings should work fine for this
-     exercise.
-     </li>
-<li class='enumerate' id='x1-1004x2'>
-     <!-- l. 40 --><p class='noindent'>You will notice that I am using a Case Structure in this VI. The case structure is implementing the following if
-     statement:
-</p>
-     <pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-1006r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>if (velocity &gt; 0) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1008r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>FricComp = Vpos*velocity + Cpos;  // viscous friction*velocity + static friction</span></span> 
-<span class='fancyvrblineno'><a id='x1-1010r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>} else {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1012r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>FricComp = Vneg*velocity + Cneg;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1014r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
-     </li>
+exercise.
+</li>
+<li class='enumerate' id='x1-1004x2'>     
+<!-- l. 40 --><p class='noindent'>You will notice that I am using a Case Structure in this VI. The case structure is implementing the following if
+statement:
+</p>     
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-1006r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (velocity &gt; 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1008r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>FricComp = Vpos*velocity + Cpos;  // viscous friction*velocity + static friction</span></span> 
+<span class='fancyvrblineno'><a id='x1-1010r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>} else {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1012r4'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>FricComp = Vneg*velocity + Cneg;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1014r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+</li>
 <li class='enumerate' id='x1-1016x3'>The signal generator is set to Square wave, Amplitude of 1, and frequency of .1 hertz
-     </li>
+</li>
 <li class='enumerate' id='x1-1018x4'>Gain Blocks are set to “terminal” mode so that the gain can be changed with a control.
                                                                                                        
                                                                                                        
      </li>
 <li class='enumerate' id='x1-1020x5'>We are implementing a PID controller. Gain values are displayed in the Control Items section of the Front Panel
-     window.
-     </li>
+window.
+</li>
 <li class='enumerate' id='x1-1022x6'>The Plant transfer function is <img align='middle' alt='3----12600------
 s+14s +448s+3200' class='frac' src='LabVIEW40x.svg' />.
-     </li>
+</li>
 <li class='enumerate' id='x1-1024x7'><img align='middle' alt='100s
 s+100-' class='frac' src='LabVIEW41x.svg' /> is an approximation of a derivative.
-     </li>
+</li>
 <li class='enumerate' id='x1-1026x8'>The Graph is a SimTime Waveform block.
-     </li>
+</li>
 <li class='enumerate' id='x1-1028x9'>I am using a Build Array block before the SimTime Waveform to plot two signals on a single graph.
-     </li>
-<li class='enumerate' id='x1-1030x10'>
-     <!-- l. 55 --><p class='noindent'>More steps continue below. </p><figure class='figure'> 
- <img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW4/Picture1.png' width='542' /> </figure>
-     <figure class='figure'> 
- <img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture2.png' width='542' /> </figure>
-     </li>
+</li>
+<li class='enumerate' id='x1-1030x10'>     
+<!-- l. 55 --><p class='noindent'>More steps continue below. </p><figure class='figure'> 
+ <span aria-label='Reference VI front panel: a SimTime Waveform graph plots two signals (the system response and the friction-compensated response) over time, with numeric controls for gain, friction deadband, and a stop button.' role='img'><img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW4/Picture1.png' width='542' /></span> </figure>
+<figure class='figure'> 
+ <span aria-label='Block diagram of the reference VI inside a Control and Simulation Loop: a transfer-function block, a derivative approximation 100s over (s+100), the Friction Compensation sub-network, and a Build Array feeding the SimTime Waveform graph.' role='img'><img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture2.png' width='542' /></span> </figure>
+</li>
 <li class='enumerate' id='x1-1032x11'>Now, as a final task for this VI, change the Friction Compensation part of the VI into a SubVI. See the
-     following tutorial to help you create this SubVI from the blocks already in your simulation. 
-<a class='url' href='https://www.youtube.com/watch?v=zr2qqv1F4kk'><span class='cmtt-10x-x-109'>https://www.youtube.com/watch?v=zr2qqv1F4kk</span></a>
-     </li>
-<li class='enumerate' id='x1-1034x12'>
-     <!-- l. 65 --><p class='noindent'>Make a simple Icon for your VI and connect the inputs and outputs to the pattern shown in the picture
-     below. There is also another picture below of the simulation with the SubVI. </p><figure class='figure' id='x1-1035r1'><span id='picture-of-icon-and-pattern-to-use'></span> 
- <img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture3.png' width='271' /> 
+following tutorial to help you create this SubVI from the blocks already in your simulation. 
+<a class='url' href='https://www.youtube.com/watch?v=zr2qqv1F4kk'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=zr2qqv1F4kk</span></a>
+</li>
+<li class='enumerate' id='x1-1034x12'>     
+<!-- l. 76 --><p class='noindent'>Make a simple Icon for your VI and connect the inputs and outputs to the pattern shown in the picture
+below. There is also another picture below of the simulation with the SubVI. </p><figure class='figure' id='x1-1035r1'><span id='picture-of-icon-and-pattern-to-use'></span> 
+ <span aria-label='SubVI icon and connector pane layout: a small custom icon, with the connector pane wired so the simulation input is on the left terminal and the friction-compensated output is on the right terminal.' role='img'><img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture3.png' width='271' /></span> 
 <figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Picture of Icon and Pattern to use                                                               </span></figcaption><!-- tex4ht:label?: x1-1035r1  -->
-     </figure>
-     <figure class='figure' id='x1-1036r2'><span id='picture-with-subvi'></span> 
- <img alt='PIC' height='256' src='Homeworks/Figures/LabVIEW4/Picture4.png' width='542' /> 
+</figure>     
+<figure class='figure' id='x1-1036r2'><span id='picture-with-subvi'></span> 
+ <span aria-label='Block diagram with the friction-compensation logic factored out into a single SubVI tile, leaving the rest of the simulation unchanged.' role='img'><img alt='PIC' height='256' src='Homeworks/Figures/LabVIEW4/Picture4.png' width='542' /></span> 
 <figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Picture with SubVI                                                                            </span></figcaption><!-- tex4ht:label?: x1-1036r2  -->
-     </figure>
+</figure>
                                                                                                        
                                                                                                        
      </li>
 <li class='enumerate' id='x1-1038x13'>Now, either create a new VI, or you can copy the Simulation Loop and all of its contents and run two simulation
-     loops in one VI.
-     </li>
+loops in one VI.
+</li>
 <li class='enumerate' id='x1-1040x14'>Here, in this new VI or simulation loop, everything is the same except I would like you to replace the SubVI with
-     a Formula Node. A Formula Node allows you to add small amounts of C code to your LabVIEW
-     program.
-     </li>
-<li class='enumerate' id='x1-1042x15'>
-     <!-- l. 78 --><p class='noindent'>To add a variable to a formula node, right-click on an edge of the formula node and select “Add Input.” To add an
-     output for the formula, right-click on an edge and select “Add Output.” </p><figure class='figure'> 
- <img alt='PIC' height='262' src='Homeworks/Figures/LabVIEW4/Picture5.png' width='542' /> </figure>
-     </li></ol>
-    
+a Formula Node. A Formula Node allows you to add small amounts of C code to your LabVIEW
+program.
+</li>
+<li class='enumerate' id='x1-1042x15'>     
+<!-- l. 98 --><p class='noindent'>To add a variable to a formula node, right-click on an edge of the formula node and select “Add Input.” To add an
+output for the formula, right-click on an edge and select “Add Output.” </p><figure class='figure'> 
+ <span aria-label='Block diagram variant where the friction-compensation SubVI has been replaced by a Formula Node containing equivalent C code; inputs and an output are added on the node&#39;s left and right edges respectively.' role='img'><img alt='PIC' height='262' src='Homeworks/Figures/LabVIEW4/Picture5.png' width='542' /></span> </figure>
+</li></ol>   
+ 
 </body> 
 </html>

@@ -58,8 +58,8 @@ RC servos will be powered with 6V. See the picture below to find where to solder
                                                                                                        
                                                                                                        
 <div class='subfigure'>
-<!-- l. 65 --><p class='noindent'></p><!-- l. 69 --><p class='noindent'><img alt='PIC' height='275' src='Homeworks/Figures/HW4/Solder1.jpg' width='214' />                                     </p></div>                                                              <div class='subfigure'>
-<!-- l. 73 --><p class='noindent'></p><!-- l. 77 --><p class='noindent'><img alt='PIC' height='205' src='Homeworks/Figures/HW4/Solder2.jpg' width='322' />                                                          </p></div> 
+<!-- l. 65 --><p class='noindent'></p><!-- l. 73 --><p class='noindent'><span aria-label='Close-up of the breakout board&#39;s right edge, with a thick red ellipse highlighting the pair of through-holes where the AA battery pack&#39;s positive and negative leads must be soldered.' role='img'><img alt='PIC' height='275' src='Homeworks/Figures/HW4/Solder1.jpg' width='214' /></span>                                     </p></div>                                                              <div class='subfigure'>
+<!-- l. 77 --><p class='noindent'></p><!-- l. 86 --><p class='noindent'><span aria-label='Wider view of the demo breakout board after the battery pack leads have been soldered, with a thick red ellipse around the central solder joints to indicate the finished battery connection.' role='img'><img alt='PIC' height='205' src='Homeworks/Figures/HW4/Solder2.jpg' width='322' /></span>                                                          </p></div> 
 <div class='caption'><span class='id'>Figure 1: </span><span class='content'>Demo board soldering battery pack solder
 </span></div>
                                                                                                        
@@ -69,7 +69,7 @@ RC servos will be powered with 6V. See the picture below to find where to solder
    
 <h3 class='likesectionHead' id='exercise-3-driving-rc-servo-motors-'>  <a id='x1-3000'></a>Exercise 3: Driving RC servo motors </h3>
 <p id='exercise-3-driving-rc-servo-motors'><a id='Q1-1-7'></a>
-<!-- l. 85 --></p><p class='noindent'>RC servos are popular in RC airplanes and RC cars. RC servo motors are devices that you can command to move to a
+<!-- l. 94 --></p><p class='noindent'>RC servos are popular in RC airplanes and RC cars. RC servo motors are devices that you can command to move to a
 desired angle. Typically, they only range from -90 degrees to 90 degrees. To command these motors, a PWM signal with a
 slow carrier frequency of 50Hz (20 millisecond period) is used. Then, to command the motor’s angle, you change the duty
 cycle, setting it between about 4% and 12%. -90 degrees is approximately 4% duty cycle, 0 degrees is close to 8% duty
@@ -91,10 +91,10 @@ additional registers you have to use for EPWM8B are AQCTLB and CMPB. AQCTLB is s
 AQCTLA, but NOTE there is a CBU event. So set up EPWM8 to have the required RC Servo carrier frequency
 of 50Hz, and set CMPA and CMPB’s values so that it commands the RC Servos to 0 degrees (8% duty
 cycle).
-</p><!-- l. 88 --><p class='indent'>   Similar to the PWM functions you created in Lab #3, create two functions
-</p><!-- l. 90 --><p class='indent'>   “<span class='rm-lmtt-10x-x-109'>void setEPWM8A_RCServo(float angle)</span>” and
-</p><!-- l. 92 --><p class='indent'>   “<span class='rm-lmtt-10x-x-109'>void setEPWM8B_RCServo(float angle)</span>”.
-</p><!-- l. 94 --><p class='indent'>   The parameter “angle” is a value between -90 and 90 degrees, where -90 equates to 4% duty cycle,
+</p><!-- l. 97 --><p class='indent'>   Similar to the PWM functions you created in Lab #3, create two functions
+</p><!-- l. 99 --><p class='indent'>   “<span class='rm-lmtt-10x-x-109'>void setEPWM8A_RCServo(float angle)</span>” and
+</p><!-- l. 101 --><p class='indent'>   “<span class='rm-lmtt-10x-x-109'>void setEPWM8B_RCServo(float angle)</span>”.
+</p><!-- l. 103 --><p class='indent'>   The parameter “angle” is a value between -90 and 90 degrees, where -90 equates to 4% duty cycle,
 0 equates to 8% duty cycle, and 12% equates to 90. Make sure to first saturate the “angle” between -90
 and 90, just in case a value outside of the range is passed. Test that your functions work by writing some
 code that gradually changes the value passed to “angle” so that the RC servo is driven back and forth.
@@ -105,7 +105,7 @@ TA</span>.
 </p>   
 <h3 class='likesectionHead' id='exercise-4-interrupts-'>  <a id='x1-4000'></a>Exercise 4: Interrupts </h3>
 <p id='exercise-4-interrupts'><a id='Q1-1-9'></a>
-<!-- l. 98 --></p><p class='noindent'>For this exercise, I would like you to look into the external interrupt capabilities of the F28379D pins, and also give you
+<!-- l. 107 --></p><p class='noindent'>For this exercise, I would like you to look into the external interrupt capabilities of the F28379D pins, and also give you
 another exercise in merging code from one piece of example code into another project’s code. The F28379D allows you
 to set any of its GPIO pins as an input and, in addition, can generate an interrupt when the signal on
 the GPIO pin transitions from High to Low (or Low to High, you can pick). The best use case for this is
@@ -125,7 +125,7 @@ up Tera Term and notice that the number of times you have pressed push button 1 
 is displayed. Press buttons 1 and 2 several times and see how many counts occur. These are cheap push
 buttons, and they can have contact bounce that could cause more than one interrupt each time you press the
 button.
-</p><!-- l. 100 --><p class='indent'>   Study the external interrupt starter code, then modify it so that instead of PB1 and PB2 causing the interrupts, PB3
+</p><!-- l. 109 --><p class='indent'>   Study the external interrupt starter code, then modify it so that instead of PB1 and PB2 causing the interrupts, PB3
 and PB4 cause the two interrupts XINT1 and XINT2. Then, as one final exercise to give you some more experience
 merging example code, move all necessary code from this application that causes external interrupts when PB3 and PB4
 are pressed into your RC servo problem 3 project. Your final code should drive the two RC servos and display the
@@ -136,7 +136,7 @@ TA.</span>
 </p>   
 <h3 class='likesectionHead' id='exercise-5-rotation-matrices-'> <a id='x1-5000'></a>Exercise 5: Rotation matrices </h3>
 <p id='exercise-5-rotation-matrices'><a id='Q1-1-11'></a>
-<!-- l. 105 --></p><p class='noindent'>Obtain the rotation matrix, which converts base J’s coordinates into base <span class='cmmi-10x-x-109'>I</span>’s coordinates (<span class='cmmi-10x-x-109'>R</span><sub><span class='cmmi-8'>J</span></sub><sup><span class='cmmi-8'>I</span></sup>), for the following cases:
+<!-- l. 114 --></p><p class='noindent'>Obtain the rotation matrix, which converts base J’s coordinates into base <span class='cmmi-10x-x-109'>I</span>’s coordinates (<span class='cmmi-10x-x-109'>R</span><sub><span class='cmmi-8'>J</span></sub><sup><span class='cmmi-8'>I</span></sup>), for the following cases:
 </p><figure class='figure' id='x1-5004r2'><span id='rotations-matrices-examples'></span> 
 
                                                                                                        
@@ -144,16 +144,16 @@ TA.</span>
                                                                                                        
                                                                                                        
 <div class='subfigure'>
-<!-- l. 109 --><p class='noindent'></p><!-- l. 111 --><p class='noindent'><img alt='[Picture]' src='HW40x.svg' /> <a id='x1-5001r1'></a>
+<!-- l. 118 --><p class='noindent'></p><!-- l. 126 --><p class='noindent'><span aria-label='Two coordinate frames in the plane. Inertial frame I has its origin in the lower-left, x pointing right and y pointing up. Body frame J is a rectangle placed above and to the right of I, with its x-axis pointing down and its y-axis pointing right — so frame J is rotated minus ninety degrees relative to I.' role='img'> <img alt='[Picture]' src='HW40x.svg' /> </span><a id='x1-5001r1'></a>
 </p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(a) </span></span><span class='content'><span class='rm-lmr-10'>First Rotation</span>
 </span></div>                                              </div>                                                                                         <div class='subfigure'>
-<!-- l. 128 --><p class='noindent'></p><!-- l. 130 --><p class='noindent'><img alt='[Picture]' src='HW41x.svg' /> <a id='x1-5002r2'></a>
+<!-- l. 145 --><p class='noindent'></p><!-- l. 152 --><p class='noindent'><span aria-label='Inertial frame I in the upper-right with its standard x-right, y-up axes. Body frame J is a rectangle in the lower-left whose x-axis points left and y-axis points down — frame J is rotated one hundred eighty degrees relative to I.' role='img'> <img alt='[Picture]' src='HW41x.svg' /> </span><a id='x1-5002r2'></a>
 </p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(b) </span></span><span class='content'><span class='rm-lmr-10'>Second Rotation</span>
 </span></div>                                              </div> <div class='subfigure'>
-<!-- l. 146 --><p class='noindent'></p><!-- l. 148 --><p class='noindent'><img alt='[Picture]' src='HW42x.svg' />
-<a id='x1-5003r3'></a></p>
+<!-- l. 170 --><p class='noindent'></p><!-- l. 178 --><p class='noindent'><span aria-label='Body frame J at an arbitrary angle theta from inertial frame I. A dashed reference line and a dashed arc labelled theta indicate the rotation angle measured from frame I&#39;s x-axis to frame J&#39;s x-axis, with the body shown rotated counter-clockwise by roughly two hundred twenty-five degrees in the example diagram.' role='img'> <img alt='[Picture]' src='HW42x.svg' />
+</span><a id='x1-5003r3'></a></p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(c) </span></span><span class='content'><span class='rm-lmr-10'>Third Rotation</span>
 </span></div>                                              </div> 
 <div class='caption'><span class='id'>Figure 2: </span><span class='content'>Rotations matrices examples
@@ -165,7 +165,7 @@ TA.</span>
    
 <h3 class='likesectionHead' id='exercise-6-transformation-vectors-'>  <a id='x1-6000'></a>Exercise 6: Transformation vectors </h3>
 <p id='exercise-6-transformation-vectors'><a id='Q1-1-14'></a>
-<!-- l. 184 --></p><p class='noindent'>Given the following translation vectors:
+<!-- l. 216 --></p><p class='noindent'>Given the following translation vectors:
 </p>     
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-6002x1'><img alt='−−→
@@ -176,9 +176,9 @@ I0J0' class='mathpalette' src='HW44x.svg' /> <span class='cmr-10x-x-109'>= (11</
 </li>
 <li class='enumerate' id='x1-6006x3'><img alt='−−→
 I0J0' class='mathpalette' src='HW45x.svg' /> <span class='cmr-10x-x-109'>= (5</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>3</span><span class='cmmi-10x-x-109'>,</span><span class='cmsy-10x-x-109'>−</span><span class='cmr-10x-x-109'>1</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>4</span><span class='cmmi-10x-x-109'>,</span><span class='cmr-10x-x-109'>0) </span>(associate with <a href='#x1-5003r3'>2c<!-- tex4ht:ref: fig:third_rotation  --></a>)</li></ol>
-<!-- l. 192 --><p class='noindent'>Moreover, using the results on the previous <a href='#x1-5001r1'>2a<!-- tex4ht:ref: fig:first_rotation  --></a>, <a href='#x1-5002r2'>2b<!-- tex4ht:ref: fig:second_rotation  --></a>, and <a href='#x1-5003r3'>2c<!-- tex4ht:ref: fig:third_rotation  --></a> questions respectively, <span class='rm-lmbx-10x-x-109'>obtain the homogeneous
+<!-- l. 224 --><p class='noindent'>Moreover, using the results on the previous <a href='#x1-5001r1'>2a<!-- tex4ht:ref: fig:first_rotation  --></a>, <a href='#x1-5002r2'>2b<!-- tex4ht:ref: fig:second_rotation  --></a>, and <a href='#x1-5003r3'>2c<!-- tex4ht:ref: fig:third_rotation  --></a> questions respectively, <span class='rm-lmbx-10x-x-109'>obtain the homogeneous
 transformation matrix</span>, which converts frame <span class='cmmi-10x-x-109'>J </span>coordinates to frame <span class='cmmi-10x-x-109'>I </span>coordinates.
-</p><!-- l. 194 --><p class='indent'>   Using the homogeneous transformation matrix found in part c. above, solve the following two questions:
+</p><!-- l. 226 --><p class='indent'>   Using the homogeneous transformation matrix found in part c. above, solve the following two questions:
 </p>     
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-6008x1'>If a golf ball’s coordinates are <span class='cmr-10x-x-109'>(2</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>8</span><span class='cmmi-10x-x-109'>,</span><span class='cmsy-10x-x-109'>−</span><span class='cmr-10x-x-109'>2</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>3</span><span class='cmmi-10x-x-109'>,</span><span class='cmr-10x-x-109'>0) </span>in the robot’s (<span class='cmmi-10x-x-109'>J</span>) frame, what are the golf ball’s coordinates in
@@ -201,16 +201,16 @@ your work, find this x value, and also the y coordinate, and determine if the ba
                                                                                                        
    <h3 class='likesectionHead' id='exercise-7-transistor-synopsis-'>  <a id='x1-7000'></a>Exercise 7: Transistor Synopsis </h3>
 <p id='exercise-7-transistor-synopsis'><a id='Q1-1-16'></a>
-<!-- l. 209 --></p><p class='noindent'>This question is mainly a For Your Information item. You will not be soldering transistors or relays to your green board,
+<!-- l. 241 --></p><p class='noindent'>This question is mainly a For Your Information item. You will not be soldering transistors or relays to your green board,
 or writing any program to turn a transistor or relay on or off. All I want you to turn in for this problem is to read this
 information and write me a synopsis.
-</p><!-- l. 211 --><p class='indent'>   Look at the top left corner of your green board; there are two spots for soldering TIP122 transistors. Also, close to the
+</p><!-- l. 243 --><p class='indent'>   Look at the top left corner of your green board; there are two spots for soldering TIP122 transistors. Also, close to the
 transistor, there is a spot for one relay. For this exercise, you will learn how to wire/use both transistors and relays to
 allow the F28379D’s digital outputs to turn on and off high-current devices that the digital outputs alone would not be
 able to drive, and if attempted to drive these loads, would damage the digital outputs. Below explains and illustrates how
 to wire GPIO outputs to the given NPN transistors, then use the transistors’ high-current outputs to drive an ultra-bright
 LED and a relay.
-</p><!-- l. 213 --><p class='indent'>   If you are unfamiliar with transistors, refer to an introductory electronic circuits text or check the web; a good
+</p><!-- l. 245 --><p class='indent'>   If you are unfamiliar with transistors, refer to an introductory electronic circuits text or check the web; a good
 transistor-switch tutorial is available at <a class='url' href='http://electronicsclub.info/transistorcircuits.htm'><span class='rm-lmtt-10x-x-109'>http://electronicsclub.info/transistorcircuits.htm</span></a>. In a transistor,
 the (possibly large) collector-emitter current is controlled by the small base current through the relationship <span class='cmmi-10x-x-109'>I</span><sub><span class='cmmi-8'>c</span></sub> <span class='cmr-10x-x-109'>= </span><span class='cmmi-10x-x-109'>h</span><sub><span class='cmmi-8'>FE</span></sub> <span class='cmsy-10x-x-109'>⋅</span><span class='cmmi-10x-x-109'>I</span><sub><span class='cmmi-8'>B</span></sub>.
 Since we are interested in using the transistors as switches, we will operate them only in the “on” (saturation) and “off”
@@ -225,7 +225,7 @@ circuit.
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 219 --><p class='noindent' id='transistors'><img alt='[Picture]' src='HW48x.svg' /> <a id='x1-7001r3'></a>
+<!-- l. 257 --><p class='noindent' id='transistors'><span aria-label='Schematic of a TIP122 NPN transistor wired as a low-side switch. The GPIO drives the transistor base through a base resistor RB. The collector connects to an ultra-bright LED in series with a 47-ohm current-limit resistor, both powered from the +6V rail. The emitter ties to ground (routed for the student).' role='img'> <img alt='[Picture]' src='HW48x.svg' /> </span><a id='x1-7001r3'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>Transistors
 </span></figcaption><!-- tex4ht:label?: x1-7001r3  -->
@@ -238,14 +238,14 @@ circuit.
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 243 --><p class='noindent' id='circuit'><img alt='[Picture]' src='HW49x.svg' /> <a id='x1-7002r4'></a>
+<!-- l. 291 --><p class='noindent' id='circuit'><span aria-label='Schematic of the TIP122 transistor driving a DIP05-1A57 reed relay in parallel with a fly-back diode (1N4003). The relay&#39;s coil is energised when the GPIO turns the transistor on; the relay&#39;s normally-open contacts then close, completing a +6V circuit through a standard LED in series with a 47-ohm resistor. Pin numbers 1 through 14 of the DIP package are labelled around the relay symbol.' role='img'> <img alt='[Picture]' src='HW49x.svg' /> </span><a id='x1-7002r4'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Circuit
 </span></figcaption><!-- tex4ht:label?: x1-7002r4  -->
                                                                                                        
                                                                                                        
    </figure>
-<!-- l. 293 --><p class='indent'>   Refer to Figure <a href='#transistors'>3<!-- tex4ht:ref: fig:transistor  --></a> for the following example. If we want to use 5V to drive an ultra-bright LED in series with a 47<span class='cmr-10x-x-109'>Ω</span>
+<!-- l. 343 --><p class='indent'>   Refer to Figure <a href='#transistors'>3<!-- tex4ht:ref: fig:transistor  --></a> for the following example. If we want to use 5V to drive an ultra-bright LED in series with a 47<span class='cmr-10x-x-109'>Ω</span>
 resistor, we can calculate.
 </p>   
 <table class='equation-star'><tr><td>
@@ -253,14 +253,14 @@ resistor, we can calculate.
 <img alt='     -IC-   (6−407.7Ω)V-
 IB ≥  hFE  =   hFE' class='math-display' src='HW410x.svg' /></div>
 </td></tr></table>
-<!-- l. 296 --><p class='nopar'>For the TIP122 NPN Darlington Transistors you will use, <span class='cmmi-10x-x-109'>h</span><sub><span class='cmmi-8'>FE</span></sub> <span class='cmsy-10x-x-109'>≥ </span><span class='cmr-10x-x-109'>1000</span>. Therefore, <span class='cmmi-10x-x-109'>I</span><sub><span class='cmmi-8'>B</span></sub> <span class='cmsy-10x-x-109'>≥ </span><span class='cmr-10x-x-109'>0</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>11 </span>mA. To realize this current
+<!-- l. 346 --><p class='nopar'>For the TIP122 NPN Darlington Transistors you will use, <span class='cmmi-10x-x-109'>h</span><sub><span class='cmmi-8'>FE</span></sub> <span class='cmsy-10x-x-109'>≥ </span><span class='cmr-10x-x-109'>1000</span>. Therefore, <span class='cmmi-10x-x-109'>I</span><sub><span class='cmmi-8'>B</span></sub> <span class='cmsy-10x-x-109'>≥ </span><span class='cmr-10x-x-109'>0</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>11 </span>mA. To realize this current
 with our microcontroller’s 3.3V output, we need to determine an appropriate value for the resistor <span class='cmmi-10x-x-109'>R</span><sub><span class='cmmi-8'>B</span></sub>. When <span class='cmmi-10x-x-109'>V</span> <sub><span class='cmmi-8'>B</span></sub> <span class='cmmi-10x-x-109'>&gt; </span><span class='cmr-10x-x-109'>1</span><span class='cmmi-10x-x-109'>.</span><span class='cmr-10x-x-109'>4</span>V,
 the base-emitter junction of a Darlington transistor behaves like a diode with a 1.4V drop. Therefore, the drop across RB
 is <span class='cmmi-10x-x-109'>V</span> <sub><span class='cmmi-8'>R</span></sub> = 3.3V-1.4V = 1.9V. Now <span class='cmmi-10x-x-109'>R</span><sub><span class='cmmi-8'>B</span></sub> <span class='cmsy-10x-x-109'>≤</span><img align='middle' alt='VR-
 IB' class='frac' src='HW411x.svg' /> <span class='cmr-10x-x-109'>=</span> <img align='middle' alt='1.9V-
  .11' class='frac' src='HW412x.svg' /> <span class='cmsy-10x-x-109'>≈ </span><span class='cmr-10x-x-109'>17</span><span class='cmmi-10x-x-109'>k</span><span class='cmr-10x-x-109'>Ω </span>Therefore, any resistor with a value less than 17k<span class='cmr-10x-x-109'>Ω </span>would
 suffice.
-</p><!-- l. 299 --><p class='indent'>   For the sake of universality, we will use a resistor with a much lower value (470<span class='cmr-10x-x-109'>Ω</span>) so that we can drive larger loads if
+</p><!-- l. 349 --><p class='indent'>   For the sake of universality, we will use a resistor with a much lower value (470<span class='cmr-10x-x-109'>Ω</span>) so that we can drive larger loads if
 needed. You are not asked to do this for this homework assignment, but if you want to use the transistor spots on your
 green board in the future, follow these guidelines. Solder the two TIP122 chips onto the green board. Solder two 470<span class='cmr-10x-x-109'>Ω</span>
 resistors in the places labeled “<span class='cmmi-10x-x-109'>R</span><sub><span class='cmmi-8'>B</span></sub>”. Also, solder the LED circuit to the “COLLECT” terminal of one of the transistors as
@@ -274,7 +274,7 @@ circuit.
 </p>   
 <h3 class='likesectionHead' id='exercise-8-state-machine-part-2-'>  <a id='x1-8000'></a>Exercise 8: State machine part 2 </h3>
 <p id='exercise-8-state-machine-part-2'><a id='Q1-1-20'></a>
-<!-- l. 303 --></p><p class='noindent'>For this assignment, I would like you to expand on the state machine and pseudocode of HW #3. Now,
+<!-- l. 353 --></p><p class='noindent'>For this assignment, I would like you to expand on the state machine and pseudocode of HW #3. Now,
 instead of just having two distance readings from the LIDAR sensor (one front distance and one front-right
 distance), you have access to the 228 distance readings from the LIDAR. The robot’s LIDAR calculates 228
 distance readings starting at -120 degrees on its right and sweeping to 120 degrees on its left. So the LIDAR
@@ -287,14 +287,14 @@ picture below gives you an idea of the sweep of measurements, but note that it s
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 307 --><p class='noindent' id='lidar-viewpoint'><img alt='[Picture]' src='HW413x.svg' /> <a id='x1-8001r5'></a>
+<!-- l. 365 --><p class='noindent' id='lidar-viewpoint'><span aria-label='Top-down diagram of the robot&#39;s LIDAR field of view: a fan of sixteen radial wedges spanning two hundred forty degrees in front of a small central LiDAR unit, from minus one hundred twenty degrees on the robot&#39;s right to plus one hundred twenty degrees on its left. Dashed lines mark the forward and side axes; an arrow labelled ' role='img'> <img alt='[Picture]' src='HW413x.svg' /> </span><a id='x1-8001r5'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 5: </span><span class='content'>LIDAR Viewpoint
 </span></figcaption><!-- tex4ht:label?: x1-8001r5  -->
                                                                                                        
                                                                                                        
    </figure>
-<!-- l. 343 --><p class='indent'>   Given these new measurements from the LIDAR, modify the obstacle avoidance section of your state machine with
+<!-- l. 403 --><p class='indent'>   Given these new measurements from the LIDAR, modify the obstacle avoidance section of your state machine with
 decisions and required states to have the robot either follow the left or right wall when it recognizes an obstacle. Make sure
 to think about what you should do if you encounter an obstacle on your left, on your right, or straight in front of you.
 As a final task, think about how you could recognize human legs and what you would have your robot
@@ -303,7 +303,7 @@ do?
 </p>   
 <h3 class='likesectionHead' id='exercise-9-personal-project-pitch-'>  <a id='x1-9000'></a>Exercise 9: Personal project pitch </h3>
 <p id='exercise-9-personal-project-pitch'><a id='Q1-1-23'></a>
-<!-- l. 347 --></p><p class='noindent'>This homework assignment is up to you. Use your creativity to build a simple mechatronics project that uses <span class='rm-lmbx-10x-x-109'>at least one
+<!-- l. 407 --></p><p class='noindent'>This homework assignment is up to you. Use your creativity to build a simple mechatronics project that uses <span class='rm-lmbx-10x-x-109'>at least one
 RC servo motor </span>and one sensor of your choice. You can use the actuators and sensors we have used in homework up to
 this point. Choose any one of the following: </p>
 <ul class='itemize1'>     
@@ -318,16 +318,16 @@ this point. Choose any one of the following: </p>
 <li class='itemize'>Joystick
 </li>
 <li class='itemize'>Microphone</li></ul>
-<!-- l. 356 --><p class='noindent'>Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So,
+<!-- l. 416 --><p class='noindent'>Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So,
 in other words, we are not expecting an elaborate, finely polished design. <span class='rm-lmbx-10x-x-109'>You cannot use the LADAR or the lab
 robot for the project. It needs to be using the homework board.</span>
-</p><!-- l. 358 --><p class='indent'>   You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer
+</p><!-- l. 418 --><p class='indent'>   You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer
 you have access to. Also, there are some building materials in the Mechatronics Lab, like machine screws,
 plastic sheets, and “Super Velcro”. (<span class='rm-lmri-10x-x-109'>Ask if there is a part that you need and we will see if we have it in the
 lab</span>).
-</p><!-- l. 360 --><p class='indent'>   This assignment spans both HW #4 and HW #5. Your finished product should be completed and checked off by
+</p><!-- l. 420 --><p class='indent'>   This assignment spans both HW #4 and HW #5. Your finished product should be completed and checked off by
 Tuesday, April 21.
-</p><!-- l. 362 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>What needs to be turned in for HW #4 question 9?</span>
+</p><!-- l. 422 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>What needs to be turned in for HW #4 question 9?</span>
                                                                                                        
                                                                                                        
      </p>
@@ -341,7 +341,7 @@ neat.
 </li>
 <li class='enumerate' id='x1-9008x4'>Any source code you have developed to this point.</li></ol>
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 372 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 432 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See </span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
