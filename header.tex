@@ -32,7 +32,6 @@
 ]{hyperref}
 \usepackage{lastpage}
 \usepackage{listings}
-\usepackage{minted}
 \usepackage{setspace}
 \usepackage{subcaption}
 \usepackage{tabularx}
@@ -53,7 +52,32 @@
   pdftitle={SE 423 Assignment},
   pdfauthor={Marius Juston},
 }
-\usepackage{unicode-math}
+\usepackage{pgfcalendar}
+
+
+\usepackage{iftex}
+\makeatletter
+\newif\if@in@html%
+\@ifundefined{HCode}{}{\@in@htmltrue}
+\makeatother
+
+% unicode-math: only when supported
+\if@in@html\else
+  \ifLuaTeX\usepackage{unicode-math}\else
+  \ifXeTeX\usepackage{unicode-math}\fi\fi
+\fi
+
+% minted: stubbed in HTML, real in PDF
+\if@in@html
+  \usepackage{fancyvrb}
+  \RenewDocumentEnvironment{minted}{O{} m +b}{\begin{Verbatim}[fontsize=\footnotesize]#3\end{Verbatim}}{}
+  \RenewDocumentCommand{\mintinline}{O{} m m}{\texttt{#3}}
+  \providecommand{\setminted}[2][]{}
+  \providecommand{\setmintedinline}[2][]{}
+\else
+  \usepackage{minted}
+\fi
+
 
 \definecolor{highlight}{rgb}{101, 0, 184}
 
@@ -122,9 +146,7 @@
 
 \vspace{2mm}
 
-\textbf{
-\AssignmentText
-}
+{\bfseries\AssignmentText\par}
 \end{tcolorbox}
 \vspace{0.5cm}
 }

@@ -1,5 +1,3 @@
-\usepackage{pgfcalendar}
-
 %%%%%%%%%%%%%%%%%%%% MODIFY DATES HERE %%%%%%%%%%%%%%%%
 
 \def\Year{2026}
@@ -11,8 +9,8 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcount\julianday
-\newcount\myweekday % Define a counter for the weekday index
+\newcount\julianday%
+\newcount\myweekday% Define a counter for the weekday index
 
 \newcommand{\GetDate}[2]{%
     \pgfcalendardatetojulian{\StartDate}{\julianday}%

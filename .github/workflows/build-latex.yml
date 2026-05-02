@@ -232,7 +232,7 @@ jobs:
               # -u: uses UTF-8
               # -d: specifies output directory
               # "mathml,mathjax": Generates MathML tags natively, and adds MathJax script for fallback rendering
-              make4ht -l -u -d "$out_dir" "$texfile" "mathml,mathjax"
+              make4ht -s -l -u -d "$out_dir" "$texfile" "mathml,mathjax" -f html5+dvisvgm
             fi
           done
 
