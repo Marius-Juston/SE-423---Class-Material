@@ -121,54 +121,18 @@ Looking at these bit-fields notice the \mintinline{c}{:1}, \mintinline{c}{:2} or
 \caption{TBCTL Register: Figure 15-93}
 \footnotesize
 \centering
-% \renewcommand{\arraystretch}{1.4}
-% \setlength{\tabcolsep}{4pt}
-\setlength{\tabcolsep}{0pt} % eliminate horizontal padding
-
-% Color definitions (matched to figure)
-\definecolor{bitbg}{RGB}{255,255,210}    % lighter yellow
-%
-\begin{tabular}{|*{8}{C{2cm}|}}
-
-\hline
-
-\rowcolor{bitbg}
+\begin{tblr}{
+  colspec = {*{8}{X[c,m]}}, % 8 centered columns, evenly spaced
+  hlines, vlines,           % Automatically draw all grid lines
+  row{1,4} = {bg=bitbg}     % Apply background color to rows 1 and 4
+}
 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\
-\hline
-
-\multicolumn{2}{|c|}{FREE\_SOFT} &
-\multicolumn{1}{c|}{PHSDIR} &
-\multicolumn{3}{c|}{CLKDIV} &
-\multicolumn{2}{c|}{HSPCLKDIV} \\
-\hline
-
-\multicolumn{2}{|c}{R/W-0h} &
-\multicolumn{1}{c}{R/W-0h} &
-\multicolumn{3}{c}{R/W-0h} &
-\multicolumn{2}{c|}{R/W-1h} \\
-\hline
-
-\rowcolor{bitbg}
+\SetCell[c=2]{c} FREE\_SOFT & & PHSDIR & \SetCell[c=3]{c} CLKDIV & & & \SetCell[c=2]{c} HSPCLKDIV & \\
+\SetCell[c=2]{c} R/W-0h & & R/W-0h & \SetCell[c=3]{c} R/W-0h & & & \SetCell[c=2]{c} R/W-1h & \\
 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\
-\hline
-
-\multicolumn{1}{|c|}{HSPCLKDIV} &
-\multicolumn{1}{c|}{SWFSYNC} &
-\multicolumn{2}{c|}{SYNCOSEL} &
-\multicolumn{1}{c|}{PRDLD} &
-\multicolumn{1}{c|}{PHSEN} &
-\multicolumn{2}{c|}{CTRMODE} \\
-\hline
-
-\multicolumn{1}{|c|}{R/W-1h} &
-\multicolumn{1}{c}{R-0/W1S-0h} &
-\multicolumn{2}{c}{R/W-0h} &
-\multicolumn{1}{c}{R/W-0h} &
-\multicolumn{1}{c}{R/W-0h} &
-\multicolumn{2}{c|}{R/W-3h} \\
-\hline
-
-\end{tabular}
+HSPCLKDIV & SWFSYNC & \SetCell[c=2]{c} SYNCOSEL & & PRDLD & PHSEN & \SetCell[c=2]{c} CTRMODE & \\
+R/W-1h & R-0/W1S-0h & \SetCell[c=2]{c} R/W-0h & & R/W-0h & R/W-0h & \SetCell[c=2]{c} R/W-3h & \\
+\end{tblr}
 \end{table}
 %
 and
@@ -177,49 +141,19 @@ and
 \caption{AQCTLA Register: Figure 15-115}
 \footnotesize
 \centering
-% \renewcommand{\arraystretch}{1.4}
-% \setlength{\tabcolsep}{4pt}
-\setlength{\tabcolsep}{0pt} % eliminate horizontal padding
-
-% Color definitions (matched to figure)
-\definecolor{bitbg}{RGB}{255,255,210}    % lighter yellow
-%
-\begin{tabular}{|*{8}{C{1.85cm}|}}
-
-\hline
-
-\rowcolor{bitbg}
+\begin{tblr}{
+  colspec = {*{8}{X[c,m]}}, 
+  hlines, vlines,
+  row{1,4} = {bg=bitbg},
+  cell{2}{1} = {bg=gray!30} % Target the RESERVED cell (Row 2, Column 1)
+}
 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\
-\hline
-
-
-\multicolumn{4}{|c|}{\cellcolor{gray!30}RESERVED} &
-\multicolumn{2}{c|}{CBD} &
-\multicolumn{2}{c|}{CBU}  \\
-\hline
-
-\multicolumn{4}{|c}{R-0-0h} &
-\multicolumn{2}{c}{R/W-0h} &
-\multicolumn{2}{c|}{R/W-0h} \\
-\hline
-
-\rowcolor{bitbg}
+\SetCell[c=4]{c} RESERVED & & & & \SetCell[c=2]{c} CBD & & \SetCell[c=2]{c} CBU & \\
+\SetCell[c=4]{c} R-0-0h & & & & \SetCell[c=2]{c} R/W-0h & & \SetCell[c=2]{c} R/W-0h & \\
 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\
-\hline
-
-\multicolumn{2}{|c|}{CAD} &
-\multicolumn{2}{c|}{CAU} &
-\multicolumn{2}{c|}{PRD} &
-\multicolumn{2}{c|}{ZRO} \\
-\hline
-
-\multicolumn{2}{|c}{R/W-0h} &
-\multicolumn{2}{c}{R/W-0h} &
-\multicolumn{2}{c}{R/W-0h} &
-\multicolumn{2}{c|}{R/W-0h} \\
-\hline
-
-\end{tabular}
+\SetCell[c=2]{c} CAD & & \SetCell[c=2]{c} CAU & & \SetCell[c=2]{c} PRD & & \SetCell[c=2]{c} ZRO & \\
+\SetCell[c=2]{c} R/W-0h & & \SetCell[c=2]{c} R/W-0h & & \SetCell[c=2]{c} R/W-0h & & \SetCell[c=2]{c} R/W-0h & \\
+\end{tblr}
 \end{table}
 %
 Notice that CLKDIV occupies 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So, what bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits of the register. So you could code:
