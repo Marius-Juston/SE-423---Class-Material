@@ -93,6 +93,13 @@
   \usepackage{minted}
 \fi
 
+\ifLuaTeX
+  \usepackage{tagpdf}
+  \tagpdfsetup{activate-all}
+  \AtBeginEnvironment{tcolorbox}{\tagpdfparaOff}
+  \AtEndEnvironment{tcolorbox}{\tagpdfparaOn}
+\fi
+
 % ============================
 % Hyperref (load once, after most packages)
 % ============================
