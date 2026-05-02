@@ -55,82 +55,84 @@ sure you put in the <span class='cmbx-10x-x-109'>top of the file </span>what the
 <span class='fancyvrblineno'><a id='x1-1060r30'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>....</span></span> 
 <span class='fancyvrblineno'><a id='x1-1062r31'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
 <span class='fancyvrblineno'><a id='x1-1064r32'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
-<span class='fancyvrblineno'><a id='x1-1066r33'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer0, 200, 5000); //|\textcolor{red}{\textbf{AAJ}}| Set CPU Timer 0 to call its interrupt function every 5ms. This is the specified sample rate for the control loop calculations.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1068r34'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
-<span class='fancyvrblineno'><a id='x1-1070r35'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
-<span class='fancyvrblineno'><a id='x1-1072r36'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>.... Omitted Code</span></span> 
-<span class='fancyvrblineno'><a id='x1-1074r37'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>.... You should not omit code in your submission, it has just been removed here for the sake of conciseness</span></span> 
-<span class='fancyvrblineno'><a id='x1-1076r38'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>....</span></span> 
-<span class='fancyvrblineno'><a id='x1-1078r39'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Enable global Interrupts and higher priority real-time debug events</span></span> 
-<span class='fancyvrblineno'><a id='x1-1080r40'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>EINT; // Enable Global interrupt INTM</span></span> 
-<span class='fancyvrblineno'><a id='x1-1082r41'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ERTM; // Enable Global realtime interrupt DBGM</span></span> 
-<span class='fancyvrblineno'><a id='x1-1084r42'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-1086r43'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>!!!! There is a second page !!!!!</span></span> 
-<span class='fancyvrblineno'><a id='x1-1088r44'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// IDLE loop. Just sit and loop forever</span></span> 
-<span class='fancyvrblineno'><a id='x1-1090r45'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(1)</span></span> 
-<span class='fancyvrblineno'><a id='x1-1092r46'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-1094r47'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>if (UARTPrint == 1 ) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1096r48'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Here I am using GPIO67 to see how much time the serial_printf function takes to run. In lab I will connect the Oscilloscope</span></span> 
-<span class='fancyvrblineno'><a id='x1-1098r49'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// to GPIO67's pin and measure the width of the pulse created by setting GPIO67 high (3.3Volts) before the function is called and then</span></span> 
-<span class='fancyvrblineno'><a id='x1-1100r50'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// setting GPIO67 low (0Volts) after the function is completed. GPIO67 is controlled by the GPC registers. GPIO67 is the 4th bit</span></span> 
-<span class='fancyvrblineno'><a id='x1-1102r51'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// in the GPC registers. Bit 0 is for GPIO64 Bit 1 is for GPIO65, Bit 2 is for GPIO66, Bit 3 is for GPIO67, Bit 4 is for GPIO68 and so on.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1104r52'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// The below bitfield C statement hides the bit number from me and allows me to just set the associated bit pertaining to GPIO67.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1106r53'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// Setting a bit to 1 in the GPCSET register causes that associated output pin to be high (3.3 Volts).</span></span> 
-<span class='fancyvrblineno'><a id='x1-1108r54'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// Setting a bit to 0 in the GPCSET register does nothing.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1110r55'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO67 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1112r56'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>//|\textcolor{red}{\textbf{AAJ}}| Printing Desired and Actual Speed %.3f tells printf to print 3 decimal places of float variable</span></span> 
-<span class='fancyvrblineno'><a id='x1-1114r57'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>serial_printf(&amp;SerialA,"%.3f Desired Speed, %.3f Actual Speed\r\n",Vref,Vactual);</span></span> 
-<span class='fancyvrblineno'><a id='x1-1116r58'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>UARTPrint = 0;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1118r59'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Set GPIO67 to low (0Volts) so Oscilloscope and see when serial_printf function is complete</span></span> 
-<span class='fancyvrblineno'><a id='x1-1120r60'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// Setting a bit to 1 in the GPCCLEAR register causes that associated output pin to be low (0 Volts). Setting a bit</span></span> 
-<span class='fancyvrblineno'><a id='x1-1122r61'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// to 0 in the GPCCLEAR register does nothing.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1124r62'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO67 = 1</span></span> 
-<span class='fancyvrblineno'><a id='x1-1126r63'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>}</span></span> 
-<span class='fancyvrblineno'><a id='x1-1128r64'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
-<span class='fancyvrblineno'><a id='x1-1130r65'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span> 
-<span class='fancyvrblineno'><a id='x1-1132r66'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
-<span class='fancyvrblineno'><a id='x1-1134r67'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
-<span class='fancyvrblineno'><a id='x1-1136r68'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-1138r69'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Vactual = readfeedback(); // |\textcolor{red}{\textbf{AAJ}}| this is a dummy function for this example.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1140r70'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Here I am calculating the PI control law. I am using the "forward rule" to approximate the integral</span></span> 
-<span class='fancyvrblineno'><a id='x1-1142r71'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Then I calculate the control effort Vout which is Kp times the error between desired speed and actual speed</span></span> 
-<span class='fancyvrblineno'><a id='x1-1144r72'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// and Ki times the integral appoximation of the error. I also check for integral windup and then saturate</span></span> 
-<span class='fancyvrblineno'><a id='x1-1146r73'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// the output between -10 and +10.</span></span> 
-<span class='fancyvrblineno'><a id='x1-1148r74'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Ik = Ikold + (Vref-Vactual)*0.005;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1150r75'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Vout = Kp*(Vref-Vactual) + Ki*Ik;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1152r76'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (fabs(Vout) &gt; 10) Ik = Ikold;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1154r77'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (Vout &gt; 10) Vout = 10;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1156r78'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (Vout &lt; -10) Vout = -10;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1158r79'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>outPWM(Vout); //|\textcolor{red}{\textbf{AAJ}}| dummy function to output control</span></span> 
-<span class='fancyvrblineno'><a id='x1-1160r80'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Ikold = Ik; //|\textcolor{red}{\textbf{AAJ}}| save past state for next 5ms</span></span> 
-<span class='fancyvrblineno'><a id='x1-1162r81'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer0.InterruptCount++;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1164r82'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>numTimer0calls++;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1166r83'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if ((numTimer0calls%20) == 0) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1168r84'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>UARTPrint = 1; //|\textcolor{red}{\textbf{AAJ}}| Print to Tera Term every 100ms 5ms * 20 = 100ms</span></span> 
-<span class='fancyvrblineno'><a id='x1-1170r85'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>// Blink LaunchPad Red LED</span></span> 
-<span class='fancyvrblineno'><a id='x1-1172r86'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1174r87'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
-<span class='fancyvrblineno'><a id='x1-1176r88'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-1178r89'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
-<span class='fancyvrblineno'><a id='x1-1180r90'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-1182r91'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span> 
-<span class='fancyvrblineno'><a id='x1-1184r92'></a></span><span class='fancyvrbline'><span class='cmtt-9'>.... Omitted Code</span></span> 
-<span class='fancyvrblineno'><a id='x1-1186r93'></a></span><span class='fancyvrbline'><span class='cmtt-9'>.... You should not omit code in your submission, it has just been removed here for the sake of conciseness</span></span> 
-<span class='fancyvrblineno'><a id='x1-1188r94'></a></span><span class='fancyvrbline'><span class='cmtt-9'>....</span></span></pre>
-<!-- l. 124 --><p class='indent'>
+<span class='fancyvrblineno'><a id='x1-1066r33'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer0, 200, 5000); //|\textcolor{red}{\textbf{AAJ}}| Set CPU Timer 0 to call its interrupt function every 5ms.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1068r34'></a></span><span class='fancyvrbline'>                                           <span class='cmtt-9'>// This is the specified sample rate for the control loop calculations.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1070r35'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-1072r36'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-1074r37'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>.... Omitted Code</span></span> 
+<span class='fancyvrblineno'><a id='x1-1076r38'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>.... You should not omit code in your submission, it has just been removed here for the sake of conciseness</span></span> 
+<span class='fancyvrblineno'><a id='x1-1078r39'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>....</span></span> 
+<span class='fancyvrblineno'><a id='x1-1080r40'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Enable global Interrupts and higher priority real-time debug events</span></span> 
+<span class='fancyvrblineno'><a id='x1-1082r41'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>EINT; // Enable Global interrupt INTM</span></span> 
+<span class='fancyvrblineno'><a id='x1-1084r42'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ERTM; // Enable Global realtime interrupt DBGM</span></span> 
+<span class='fancyvrblineno'><a id='x1-1086r43'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-1088r44'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>!!!! There is a second page !!!!!</span></span> 
+<span class='fancyvrblineno'><a id='x1-1090r45'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// IDLE loop. Just sit and loop forever</span></span> 
+<span class='fancyvrblineno'><a id='x1-1092r46'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(1)</span></span> 
+<span class='fancyvrblineno'><a id='x1-1094r47'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-1096r48'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>if (UARTPrint == 1 ) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1098r49'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Here I am using GPIO67 to see how much time the serial_printf function takes to run.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1100r50'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// In lab I will connect the Oscilloscope to GPIO67's pin and measure the width of the pulse created by setting GPIO67</span></span> 
+<span class='fancyvrblineno'><a id='x1-1102r51'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// high (3.3Volts) before the function is called and then setting GPIO67 low (0Volts) after the function is completed.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1104r52'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// GPIO67 is controlled by the GPC registers. GPIO67 is the 4th bit in the GPC registers. Bit 0 is for GPIO64 Bit 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-1106r53'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// is for GPIO65, Bit 2 is for GPIO66, Bit 3 is for GPIO67, Bit 4 is for GPIO68 and so on. The below bitfield C</span></span> 
+<span class='fancyvrblineno'><a id='x1-1108r54'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// statement hides the bit number from me and allows me to just set the associated bit pertaining to GPIO67. Setting</span></span> 
+<span class='fancyvrblineno'><a id='x1-1110r55'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// a bit to 1 in the GPCSET register causes that associated output pin to be high (3.3 Volts). Setting a bit to 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-1112r56'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>//in the GPCSET register does nothing.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1114r57'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>GpioDataRegs.GPCSET.bit.GPIO67 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1116r58'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>//|\textcolor{red}{\textbf{AAJ}}| Printing Desired and Actual Speed %.3f tells printf to print 3 decimal places of float variable</span></span> 
+<span class='fancyvrblineno'><a id='x1-1118r59'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>serial_printf(&amp;SerialA,"%.3f Desired Speed, %.3f Actual Speed\r\n",Vref,Vactual);</span></span> 
+<span class='fancyvrblineno'><a id='x1-1120r60'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1122r61'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Set GPIO67 to low (0Volts) so Oscilloscope and see when serial_printf function is complete</span></span> 
+<span class='fancyvrblineno'><a id='x1-1124r62'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>// Setting a bit to 1 in the GPCCLEAR register causes that associated output pin to be low (0 Volts).</span></span> 
+<span class='fancyvrblineno'><a id='x1-1126r63'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>//Setting a bit to 0 in the GPCCLEAR register does nothing.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1128r64'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO67 = 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-1130r65'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-1132r66'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-1134r67'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-1136r68'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-1138r69'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-1140r70'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-1142r71'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Vactual = readfeedback(); // |\textcolor{red}{\textbf{AAJ}}| this is a dummy function for this example.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1144r72'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// |\textcolor{red}{\textbf{AAJ}}| Here I am calculating the PI control law. I am using the "forward rule" to approximate the integral</span></span> 
+<span class='fancyvrblineno'><a id='x1-1146r73'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Then I calculate the control effort Vout which is Kp times the error between desired speed and actual speed</span></span> 
+<span class='fancyvrblineno'><a id='x1-1148r74'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// and Ki times the integral appoximation of the error. I also check for integral windup and then saturate</span></span> 
+<span class='fancyvrblineno'><a id='x1-1150r75'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// the output between -10 and +10.</span></span> 
+<span class='fancyvrblineno'><a id='x1-1152r76'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Ik = Ikold + (Vref-Vactual)*0.005;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1154r77'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Vout = Kp*(Vref-Vactual) + Ki*Ik;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1156r78'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (fabs(Vout) &gt; 10) Ik = Ikold;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1158r79'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (Vout &gt; 10) Vout = 10;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1160r80'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if (Vout &lt; -10) Vout = -10;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1162r81'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>outPWM(Vout); //|\textcolor{red}{\textbf{AAJ}}| dummy function to output control</span></span> 
+<span class='fancyvrblineno'><a id='x1-1164r82'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>Ikold = Ik; //|\textcolor{red}{\textbf{AAJ}}| save past state for next 5ms</span></span> 
+<span class='fancyvrblineno'><a id='x1-1166r83'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer0.InterruptCount++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1168r84'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>numTimer0calls++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1170r85'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if ((numTimer0calls%20) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1172r86'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>UARTPrint = 1; //|\textcolor{red}{\textbf{AAJ}}| Print to Tera Term every 100ms 5ms * 20 = 100ms</span></span> 
+<span class='fancyvrblineno'><a id='x1-1174r87'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>// Blink LaunchPad Red LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-1176r88'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1178r89'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-1180r90'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-1182r91'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-1184r92'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-1186r93'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-1188r94'></a></span><span class='fancyvrbline'><span class='cmtt-9'>.... Omitted Code</span></span> 
+<span class='fancyvrblineno'><a id='x1-1190r95'></a></span><span class='fancyvrbline'><span class='cmtt-9'>.... You should not omit code in your submission, it has just been removed here for the sake of conciseness</span></span> 
+<span class='fancyvrblineno'><a id='x1-1192r96'></a></span><span class='fancyvrbline'><span class='cmtt-9'>....</span></span></pre>
+<!-- l. 126 --><p class='indent'>
                                                                                                        
                                                                                                        
-</p><!-- l. 125 --><p class='indent'>   <span class='cmtt-10x-x-109'>hello</span>
+</p><!-- l. 127 --><p class='indent'>   <span class='cmtt-10x-x-109'>hello</span>
 </p>
-   <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-1189r94'></a></span><span class='fancyvrbline'></span></pre>
+   <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-1193r96'></a></span><span class='fancyvrbline'></span></pre>
    
    <h3 class='likesectionHead' id='exercise-2-function-documentation-'> <a id='x1-2000'></a>Exercise 2: Function documentation </h3>
 <p id='exercise-2-function-documentation'><a id='Q1-1-4'></a>
-<!-- l. 131 --></p><p class='noindent'>When you specifically create a function (you do not need to do this for the provided interrupts or the main function, but
+<!-- l. 133 --></p><p class='noindent'>When you specifically create a function (you do not need to do this for the provided interrupts or the main function, but
 you are welcome to) you should be using be using <a href='https://www.doxygen.nl/manual/docblocks.html'>Doxygen JAVADOC</a> styling for function documentation (it is what the
 industry uses so use it!).
-</p><!-- l. 133 --><p class='indent'>   Each function should have the following structed documentation:
-</p><!-- l. 135 --><p class='indent'>
+</p><!-- l. 135 --><p class='indent'>   Each function should have the following structed documentation:
+</p><!-- l. 137 --><p class='indent'>
      </p><ol class='enumerate1'>
 <li class='enumerate' id='x1-2002x1'>Brief summary (first sentence)
      </li>
@@ -150,7 +152,7 @@ industry uses so use it!).
 <li class='enumerate' id='x1-2014x7'><code class='lstinline'><span style='color:#000000'>@note</span></code> or <code class='lstinline'><span style='color:#000000'>@warning</span></code> when relevant</li></ol>
                                                                                                        
                                                                                                        
-<!-- l. 145 --><p class='indent'>
+<!-- l. 147 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2016r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>/**</span></span> 
 <span class='fancyvrblineno'><a id='x1-2018r2'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* |\textcolor{red}{\textbf{AAJ}}|: A brief history of JavaDoc-style (C-style) comments.</span></span> 
@@ -162,7 +164,7 @@ industry uses so use it!).
 <span class='fancyvrblineno'><a id='x1-2030r8'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>*               set of rules and equations.</span></span> 
 <span class='fancyvrblineno'><a id='x1-2032r9'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>*/</span></span> 
 <span class='fancyvrblineno'><a id='x1-2034r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>void cstyle( int theory );</span></span></pre>
-<!-- l. 158 --><p class='indent'>
+<!-- l. 160 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-2036r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>/**</span></span> 
 <span class='fancyvrblineno'><a id='x1-2038r2'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* |\textcolor{red}{\textbf{AAJ}}|: Computes the arithmetic mean of an array of doubles.</span></span> 
@@ -176,7 +178,7 @@ industry uses so use it!).
 <span class='fancyvrblineno'><a id='x1-2054r10'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* @post The input array is not modified.</span></span> 
 <span class='fancyvrblineno'><a id='x1-2056r11'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>*/</span></span> 
 <span class='fancyvrblineno'><a id='x1-2058r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>double mean(const double *data, size_t length);</span></span></pre>
-<!-- l. 174 --><p class='indent'>
+<!-- l. 176 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-2060r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>/**</span></span> 
 <span class='fancyvrblineno'><a id='x1-2062r2'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* |\textcolor{red}{\textbf{AAJ}}|: Opens a file and reads its contents into a buffer.</span></span> 
@@ -202,7 +204,7 @@ industry uses so use it!).
 <span class='fancyvrblineno'><a id='x1-2102r22'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* @warning The function does not append a null terminator.</span></span> 
 <span class='fancyvrblineno'><a id='x1-2104r23'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>*/</span></span> 
 <span class='fancyvrblineno'><a id='x1-2106r24'></a></span><span class='fancyvrbline'><span class='cmtt-9'>int read_file(const char *path, unsigned char **buffer, size_t *size);</span></span></pre>
-<!-- l. 201 --><p class='indent'>
+<!-- l. 203 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-2108r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>/**</span></span> 
 <span class='fancyvrblineno'><a id='x1-2110r2'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* |\textcolor{red}{\textbf{AAJ}}|: Initializes the ADC peripheral.</span></span> 
@@ -223,8 +225,8 @@ industry uses so use it!).
    
    <h3 class='likesectionHead' id='exercise-3-function-template-'> <a id='x1-3000'></a>Exercise 3: Function template </h3>
 <p id='exercise-3-function-template'><a id='Q1-1-6'></a>
-<!-- l. 222 --></p><p class='noindent'>Below is a template that you can use,
-</p><!-- l. 224 --><p class='indent'>
+<!-- l. 224 --></p><p class='noindent'>Below is a template that you can use,
+</p><!-- l. 226 --><p class='indent'>
 </p>
    <pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-3002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>/**</span></span> 
 <span class='fancyvrblineno'><a id='x1-3004r2'></a></span><span class='fancyvrbline'> <span class='cmtt-9'>* |\textcolor{red}{\textbf{AAJ}}|: Brief one-line summary.</span></span> 
