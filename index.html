@@ -18,7 +18,8 @@
             background-color: #f8fafc;
         }
         
-        .uiuc-orange { color: #C84113; }
+        .uiuc-orange-access { color: #C84113; }
+        .uiuc-orange { color: #ff5f05; }
         .uiuc-blue { color: #13294B; }
 
         .bg-uiuc-blue { background-color: #13294B; }
@@ -85,6 +86,7 @@
         .dark .border-gray-100 { border-color: #334155; }
 
         .dark .uiuc-orange { color: #FF5F05; }
+        .dark .uiuc-orange-access { color: #FF5F05; }
         .dark .uiuc-blue { color: #13294B; }
 
         .dark .text-uiuc-orange { color: #FF5F05; }
@@ -677,7 +679,7 @@
                             }
                         </div>
                         <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${item.title}</span>
-                        <span class="text-[10px] text-gray-400 mt-1 uppercase font-semibold">${formatToUse}</span>
+                        <span class="text-[10px] text-gray-600 mt-1 uppercase font-semibold">${formatToUse}</span>
                     </a>
                 `;
             }).join('');
@@ -724,7 +726,7 @@
                             </svg>
                         </div>
 
-                        <a href="${item.file}" target="_blank" class="mt-2 inline-flex items-center text-sm font-semibold uiuc-orange pdf-link">
+                        <a href="${item.file}" target="_blank" class="mt-2 inline-flex items-center text-sm font-semibold uiuc-orange-access pdf-link">
                             View Assignment PDF
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
