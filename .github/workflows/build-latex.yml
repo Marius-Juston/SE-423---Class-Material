@@ -31,7 +31,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2025/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2025/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2025/texmf-config
-      CACHE_VERSION: v7 # Bumped version key due to dvisvgm addition
+      CACHE_VERSION: v8 # Bumped version key due to dvisvgm addition
 
       LUA_CACHE_DIR: ~/.texlive2025/texmf-var/luatex-cache
 
