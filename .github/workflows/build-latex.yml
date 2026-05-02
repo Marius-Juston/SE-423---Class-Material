@@ -162,9 +162,9 @@ jobs:
             unicode-math \
             microtype \
             polyglossia \
-            selnoilg \
+            selnolig \
             luacolor \
-             luacode
+            luacode
  
 
           # 3. Manually Generate STABLE formats only
