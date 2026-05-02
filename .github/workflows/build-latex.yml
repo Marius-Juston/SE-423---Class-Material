@@ -277,6 +277,8 @@ jobs:
       - name: Convert PDF figures to SVG (for HTML mode)
         if: steps.resolve.outputs.has_tex == 'true'
         run: |
+          sudo apt-get update && sudo apt-get install -y mupdf-tools
+          
           find Homeworks/Figures -type f -name "*.pdf" 2>/dev/null | while read pdf; do
             svg="${pdf%.pdf}.svg"
             if [ ! -f "$svg" ] || [ "$pdf" -nt "$svg" ]; then
