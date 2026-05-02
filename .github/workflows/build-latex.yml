@@ -290,8 +290,8 @@ jobs:
               # - .xbb sidecar files are found at their generated locations
               # TeX's kpathsea already searches the source file's own directory
               # for \input{header} etc., so no cd needed.
-              make4ht -s -d "$GITHUB_WORKSPACE/$out_dir" \
-                "$texfile" 'shell-escape' \
+              make4ht -s -l -d "$GITHUB_WORKSPACE/$out_dir" \
+                "$texfile" \
                 || echo "::warning::HTML build failed for $texfile (continuing)"
             fi
           done
