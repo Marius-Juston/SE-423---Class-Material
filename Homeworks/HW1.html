@@ -1,0 +1,580 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head><title></title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='HW1.css' rel='stylesheet' type='text/css' /> 
+<meta content='HW1.tex' name='src' /> 
+</head><body>
+   <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='cmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='cmbx-12x-x-120'>Homework Assignment #1</span>
+</p><!-- l. 29 --><p class='noindent'><span class='cmbx-10x-x-109'>The Demonstration Check-Offs For Exercises 2, 3, 5, 7, 8, 9 And 10 Are Due By
+</span><span style='color:#FF00FF;'><span class='cmbx-10x-x-109'>5PM Tuesday, February 03</span></span><span class='cmbx-10x-x-109'>.</span>
+</p><!-- l. 29 --><p class='noindent'><span class='cmbx-10x-x-109'>Remainder Due On Gradescope, by </span><span style='color:#FF00FF;'><span class='cmbx-10x-x-109'>9AM Wednesday, February 04</span></span><span class='cmbx-10x-x-109'>.</span>
+</p>
+ 
+</div> 
+</div>
+   
+   <h3 class='likesectionHead' id='exercise-1-c-coding-practice-'> <a id='x1-1000'></a>Exercise 1: C coding practice </h3>
+<p id='exercise-1-c-coding-practice'><a id='Q1-1-2'></a>
+<!-- l. 33 --></p><p class='noindent'>For this exercise, I would like you to go through the “C Essentials Training” course at 
+<a class='url' href='https://www.linkedin.com/learning/c-essential-training'><span class='cmtt-10x-x-109'>https://www.linkedin.com/learning/c-essential-training</span></a> (You first need to log in through the UIUC LinkedIn
+Learning portal with your university NetID to get past the paywall: <a class='url' href='https://web.uillinois.edu/linkedinlearning'><span class='cmtt-10x-x-109'>https://web.uillinois.edu/linkedinlearning</span></a>
+). I am not going to check if you went through every exercise, but I highly recommend it. Go through each chapter.
+Then, for your Homework submission, submit your code and any screenshots showing the code working for
+</p>
+     <ul class='itemize1'>
+     <li class='itemize'>Chapter 3’s final challenge, Binary Math
+     </li>
+     <li class='itemize'>Chapter 4’s final challenge, The Grid Challenge
+     </li>
+     <li class='itemize'>Chapter 5’s final challenge, Complete the Code
+     </li>
+     <li class='itemize'>Byte Splitting and Combining</li></ul>
+<!-- l. 41 --><p class='noindent'>Yes, I know the solution code is included in the course’s download file. Try your best not look at the solutions, as that will
+help you teach yourself C. DO NOT just submit the solution code! The areas I want you to really think about as you go
+through this training are: the different types of variables in C and how to declare global and local variables. The <span class='cmtt-10x-x-109'>printf</span>
+statement and how to use it to print integer variables and floating point variables. Writing functions and how to call those
+functions in your C code.
+</p><!-- l. 43 --><p class='indent'>   There are several free C compilers that you can use to run the C code you write for these training exercises. I am thinking
+that using an online C compiler may be the easiest way to go. You can Google “online C compilers” to see which one you
+like, or you can try this one, which seems to work pretty well: <a class='url' href='https://www.onlinegdb.com/online_c_compiler'><span class='cmtt-10x-x-109'>https://www.onlinegdb.com/online_c_compiler</span></a>. I
+think the biggest issue you will have with the online compilers is saving your files. So, I recommend cutting and
+pasting your code into a text editor and saving your work from there, instead of saving it from the online
+webpage.
+   
+                                                                                                       
+                                                                                                       
+</p>
+   <h4 class='likesubsectionHead' id='byte-splitting-and-combining'>  <a id='x1-2000'></a>Byte Splitting and Combining</h4>
+<!-- l. 46 --><p class='noindent'>Discard bits 8-15, the top 8 bits, from the hex numbers 0xC492 and print out the resulting number as an integer, a
+hexadecimal number, and a binary number. Now, do the same, but by just discarding bits 0-7, the bottom 8 bits.
+Implement the function again for 0xB8AA. Further, combine the high byte 0xA5 and the low byte 0x5D and print the
+result as an integer, a hexadecimal number, and a binary number using a function. Put the combined 2-byte number back
+into the byte-split function.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-2-solder-breakout-board-'>  <a id='x1-3000'></a>Exercise 2: Solder breakout board </h3>
+<p id='exercise-2-solder-breakout-board'><a id='Q1-1-5'></a>
+<!-- l. 50 --></p><p class='noindent'>Solder your breakout board. (When in doubt, view the demo board in the lab.) In previous semesters, a TA made recordings
+while soldering a board very similar to your breakout board. On the board, he is soldering; you will see more parts than
+you have to solder. Keep that in mind when you are watching these videos, and use them as a guide, not as the exact way
+you need to solder this board. <a class='url' href='https://www.youtube.com/playlist?list=PL-csvMdAo235aAa4sEBl57S_syIAsQHoW'><span class='cmtt-10x-x-109'>https://www.youtube.com/playlist?list=PL-csvMdAo235aAa4sEBl57S_syIAsQHoW</span></a>
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-3002x1'>Solder the four 2X10 gold-plated headers. <span class='cmbx-10x-x-109'>Show your instructor that you have them in the correct
+     orientation before soldering</span>
+     </li>
+<li class='enumerate' id='x1-3004x2'>Solder 18 1k Ohm resistors along with 18 surface mount LEDs!! Make sure you know the LEDs’ orientation!!
+     </li>
+<li class='enumerate' id='x1-3006x3'>Solder 3 74LVC04 surface mount inverter chips. Also, 3 0.1uF capacitors right next to these chips.
+     </li>
+<li class='enumerate' id='x1-3008x4'>Solder 4 push buttons.
+     </li>
+<li class='enumerate' id='x1-3010x5'>Solder 1 buzzer, orientation does not matter, and one 100 Ohm resistor next to the buzzer.
+     </li>
+<li class='enumerate' id='x1-3012x6'>Solder one 2X2 header, which controls the input to the buzzer. Make sure it is in the center holes.
+                                                                                                       
+                                                                                                       
+     </li>
+<li class='enumerate' id='x1-3014x7'>Solder two 3X1 and two 2X1 headers, which connect to the RC servos in homework 4.
+     </li>
+<li class='enumerate' id='x1-3016x8'>See the demo board for the placement of a long wire and two short wires. They are shown in the picture but
+     are clearer on the demo board. This is illustrated in Figure <a href='#demo-board-soldering-options'>1<!-- tex4ht:ref: fig:demo_board  --></a>.</li></ol>
+<figure class='figure' id='x1-3017r1'><span id='demo-board-soldering-options'></span> 
+ <div class='subfigure'>
+<!-- l. 66 --><p class='noindent'></p><!-- l. 68 --><p class='noindent'><img alt='[Picture]' src='HW10x.svg' /></p></div>                                                                      <div class='subfigure'>
+<!-- l. 79 --><p class='noindent'></p><!-- l. 81 --><p class='noindent'><img alt='[Picture]' src='HW11x.svg' /></p></div>                                            <div class='subfigure'>
+                                                                                                       
+                                                                                                       
+<!-- l. 95 --><p class='noindent'></p><!-- l. 97 --><p class='noindent'><img alt='[Picture]' src='HW12x.svg' /></p></div>
+<div class='caption'><span class='id'>Figure 1: </span><span class='content'>Demo board soldering options
+</span></div>
+   </figure>
+   
+   <h3 class='likesectionHead' id='exercise-3-create-you-homework-repository-'>  <a id='x1-4000'></a>Exercise 3: Create you homework repository </h3>
+<p id='exercise-3-create-you-homework-repository'><a id='Q1-1-8'></a>
+<!-- l. 113 --></p><p class='noindent'>
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-4002x1'>Follow the document <a href='http://coecsl.ece.illinois.edu/se423/Using the SE423 Repository.pdf'>Using the SE423 Repository</a> and its first section “Create your Repository” to check
+     out the SE423 repository to your lab PC and/or your personal laptop. If you are going to use both the
+     lab PC and your laptop for development, you will want to create the same path on both. Create a folder
+     named your NetID at the root of the <span class='obeylines-h'><code class='verb'>C:\</code></span> drive, and keep all your files there. It is also a good idea for you to
+     make backups of your lab files outside of your Git repository as you progress through the semester. Making
+     this extra backup will save you when we cannot figure out what went wrong with Git. Git is awesome and
+     normally works great, but every once in a while, I have seen issues that caused students to lose versions of
+     their files.
+     </li>
+<li class='enumerate' id='x1-4004x2'>Open                   Code                   Composer                   Studio                   12                   (CCS
+     12) and select the “workspace” folder in your repository. For example, if your netID were “superstdnt”, you
+     would have checked out your repository in <code class='lstinline'><span style='color:#000000'>c:\superstdnt\SE423_HWrepo</span></code>. The workspace folder to select
+     would be <code class='lstinline'><span style='color:#000000'>c:\superstdnt\SE423_HWrepo\workspace</span></code>.
+     </li>
+<li class='enumerate' id='x1-4006x3'>Once CCS 12 is done loading your workspace, you need to load the “HWstarter” project. When you perform
+     this load, the project is copied into your workspace. Therefore, if you rename this project, you can reload the
+     “HWstarter” project to start another minimal project. I purposely placed this “HWstarter” project in the
+                                                                                                       
+                                                                                                       
+     same folder as many of the example projects you will be studying this semester. These examples are part of
+     TI’s software development stack, called C2000ware. I have copied the necessary parts of C2000ware into our
+     repository so that if you accidentally modify something, you can easily restore it. Again, if your NetID was
+     “superstdnt”, perform the following to load your starter project. In CCS, select the menu Project<span class='cmsy-10x-x-109'>→</span>Import
+     CCS Projects. Click “Browse” and explore to “<code class='lstinline'><span style='color:#000000'>C:\superstdnt\SE423_HWrepo\C2000Ware_4_01_00_00\device_support\f2837xd\examples\cpu1\HWstarter</span></code>”
+     and finally press “Finish”. Your project should then be loaded into the CCS environment. Let us then
+     rename the project “<code class='lstinline'><span style='color:#000000'>HW1&lt;yourinitials&gt;</span></code>” by right-clicking on the project name “HWstarter”. In the dialog
+     box, change the name to “<code class='lstinline'><span style='color:#000000'>HW1&lt;yourinitials&gt;</span></code>” i.e., HW1djb. Also, explore the project and find the file
+     “HWstarter_main.c”. Right-Click on “HWstarter_main.c” and select “Rename”. Change the name to “<code class='lstinline'><span style='color:#000000'>HW1&lt;yourinitials&gt;_main.c</span></code>”.
+     To save you some headaches in the future, I recommend you take one more step after creating a new
+     “HWstarter” project. Right-click on your project name in the Project Explorer and select “Properties.”
+     Select “General” on the left-hand side. Then, in the “Project” tab, find the “Connection” drop-down and
+     select “Texas Instruments XDS100v2 USB Debug Probe.” Apply and Close.
+     </li>
+<li class='enumerate' id='x1-4008x4'>Now that you have the project loaded, you can build the code and download it to the LaunchPad board. Plug your
+     LaunchPad into your PC’s USB port, then in CCS, hit the green “Debug” button  <img alt='[Picture]' src='HW13x.svg' />, and in the
+     dialog box that pops up, select CPU1 only. This will compile the code and load it to your LaunchPad
+     board.
+     </li>
+<li class='enumerate' id='x1-4010x5'>Click the Suspend button  <img alt='[Picture]' src='HW14x.svg' />to pause the code and the Resume (or Play) button  <img alt='[Picture]' src='HW15x.svg' />to resume or
+     start your code’s execution. Use both of these to prove to yourself that both the blue and red LEDs are blinking on
+     and off. Use one more button in CCS 12, the Restart  <img alt='[Picture]' src='HW16x.svg' />button. Run your code, then press the pause
+     button to stop it. If you hit the Resume button, the code resumes from where you left off. If you press the Restart
+     button, CCS will take you back to the beginning of your code, and then you can click the Resume button to restart
+     it. This saves time if you need to restart the same code. If you need to make changes to your code, Restart does not
+     download the new code. You have to re-debug your code to get the new changes downloaded to the
+     processor.</li></ol>
+
+   <h3 class='likesectionHead' id='exercise-4-code-review-and-commenting-'>  <a id='x1-5000'></a>Exercise 4: Code review and commenting </h3>
+<p id='exercise-4-code-review-and-commenting'><a id='Q1-1-10'></a>
+<!-- l. 123 --></p><p class='noindent'>Below is an introduction to the starter code given to you for this semester’s homework assignments. I used green for the
+code and black for my commentary. This listing omits a significant amount of the initialization starter code to keep it
+shorter. Read through the code and commentary below and find the same sections of code in your project you created
+above. You will have many questions, of course, as this is the first time you are reading through this code. We will
+be going over this code many times in lecture and lab sessions. Study this code and then start exercise
+5.
+</p>
+   <pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-5002r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//#############################################################################</span></span> 
+<span class='fancyvrblineno'><a id='x1-5004r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// FILE:   hwstarter_main.c</span></span> 
+<span class='fancyvrblineno'><a id='x1-5006r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//</span></span> 
+<span class='fancyvrblineno'><a id='x1-5008r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// TITLE:  Home Work Starter</span></span> 
+<span class='fancyvrblineno'><a id='x1-5010r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>//#############################################################################</span></span> 
+<span class='fancyvrblineno'><a id='x1-5012r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5014r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// Included Files</span></span> 
+<span class='fancyvrblineno'><a id='x1-5016r8'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;stdio.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5018r9'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;stdlib.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5020r10'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;stdarg.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5022r11'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;string.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5024r12'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;math.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5026r13'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include &lt;limits.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5028r14'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "F28x_Project.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5030r15'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "driverlib.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5032r16'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "device.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5034r17'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "f28379dSerial.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5036r18'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "LEDPatterns.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5038r19'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "song.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5040r20'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "dsp.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5042r21'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#include "fpu32/fpu_rfft.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-5044r22'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5046r23'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define PI          3.1415926535897932384626433832795</span></span> 
+<span class='fancyvrblineno'><a id='x1-5048r24'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define TWOPI       6.283185307179586476925286766559</span></span> 
+<span class='fancyvrblineno'><a id='x1-5050r25'></a></span><span class='fancyvrbline'><span class='cmtt-9'>#define HALFPI      1.5707963267948966192313216916398</span></span> 
+<span class='fancyvrblineno'><a id='x1-5052r26'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5054r27'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5056r28'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// Interrupt Service Routines predefinition</span></span> 
+<span class='fancyvrblineno'><a id='x1-5058r29'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer0_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5060r30'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer1_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5062r31'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer2_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5064r32'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void SWI_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5066r33'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5068r34'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// Count variables</span></span> 
+<span class='fancyvrblineno'><a id='x1-5070r35'></a></span><span class='fancyvrbline'><span class='cmtt-9'>uint32_t numTimer0calls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5072r36'></a></span><span class='fancyvrbline'><span class='cmtt-9'>uint32_t numSWIcalls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5074r37'></a></span><span class='fancyvrbline'><span class='cmtt-9'>extern uint32_t numRXA;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5076r38'></a></span><span class='fancyvrbline'><span class='cmtt-9'>uint16_t UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5078r39'></a></span><span class='fancyvrbline'><span class='cmtt-9'>uint16_t LEDdisplaynum = 0;</span></span></pre>
+<!-- l. 167 --><p class='noindent'>For these C exercises, I would like you to create any global variables or functions. Actually, the only functions we will create
+this semester will be global. We will never need to create a function inside another function, including not creating
+                                                                                                       
+                                                                                                       
+functions inside your <span class='cmtt-10x-x-109'>main() </span>function. You can, of course, put your global functions anywhere outside of other functions.
+It is just nice to have all your functions defined in one spot of your code so they are easier for you to find. The same goes
+for global variables.
+</p>
+   <pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-5080r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>void main(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5082r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-5084r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// PLL, WatchDog, enable Peripheral Clocks</span></span> 
+<span class='fancyvrblineno'><a id='x1-5086r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// This example function is found in the F2837xD_SysCtrl.c file.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5088r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>InitSysCtrl();</span></span> 
+<span class='fancyvrblineno'><a id='x1-5090r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5092r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>InitGpio();</span></span> 
+<span class='fancyvrblineno'><a id='x1-5094r8'></a></span><span class='fancyvrbline'>         
+</span><span class='fancyvrblineno'><a id='x1-5096r9'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>// Blue LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-5098r10'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5100r11'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5102r12'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPASET.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5104r13'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5106r14'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>// Red LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-5108r15'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5110r16'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5112r17'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPBSET.bit.GPIO34 = 1;</span></span></pre>
+<!-- l. 189 --><p class='noindent'><span class='cmti-10x-x-109'>… Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
+here …</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-5114r1'></a></span><span class='fancyvrbline'>     <span class='cmtt-9'>EALLOW;  // This is needed to write to EALLOW-protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-5116r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5118r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5120r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</span></span></pre>
+<!-- l. 198 --><p class='noindent'><span class='cmti-10x-x-109'>… Purposely left code out of listing …</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-5122r1'></a></span><span class='fancyvrbline'>     <span class='cmtt-9'>// Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
+<span class='fancyvrblineno'><a id='x1-5124r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5126r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5128r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5130r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5132r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5134r7'></a></span><span class='fancyvrbline'>   <span class='cmtt-9'>// Enable CpuTimer Interrupt bit TIE</span></span> 
+<span class='fancyvrblineno'><a id='x1-5136r8'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer0Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5138r9'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer1Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5140r10'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer2Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5142r11'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5144r12'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>init_serial(&amp;SerialA,115200);</span></span></pre>
+<!-- l. 215 --><p class='noindent'><span class='cmti-10x-x-109'>… Purposely left code out of listing …</span>
+</p>
+   <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-5146r1'></a></span><span class='fancyvrbline'>     <span class='cmtt-9'>// Enable global Interrupts and higher-priority real-time debug events</span></span> 
+<span class='fancyvrblineno'><a id='x1-5148r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>EINT;  // Enable Global interrupt INTM</span></span> 
+<span class='fancyvrblineno'><a id='x1-5150r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>ERTM;  // Enable Global real-time interrupt DBGM</span></span> 
+<span class='fancyvrblineno'><a id='x1-5152r4'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5154r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// IDLE loop. Just sit and loop forever (optional):</span></span> 
+<span class='fancyvrblineno'><a id='x1-5156r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>while(1)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5158r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>{</span></span></pre>
+<!-- l. 227 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='cmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='cmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
+time the timer 2’s function is entered. So both the rate at which timer 2’s function is called and this modulus 50 determine
+the rate at which the <span class='cmtt-10x-x-109'>serial_printf </span>function is called. <span class='cmtt-10x-x-109'>serial_printf </span>prints text to Tera Term or some other serial
+terminal program. Also note that after the <span class='cmtt-10x-x-109'>serial_printf </span>function call, <span class='cmtt-10x-x-109'>UARTPrint </span>is reset to 0. Think about why that is
+important. <span class='cmbx-10x-x-109'>Add a comment to the </span><span class='cmtt-10x-x-109'>UARTPrint = 0; </span><span class='cmbx-10x-x-109'>line of code explaining why it must be set back to zero
+here to make this code work correctly. </span>(Correctly means that the <span class='cmtt-10x-x-109'>serial_printf </span>function is called at a periodic
+rate.)
+</p>
+   <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-5160r1'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>if (UARTPrint == 1 ) {</span></span></pre>
+<!-- l. 233 --><p class='noindent'>For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this
+continuous while loop “<span class='cmtt-10x-x-109'>while(1)</span>”, is less important code. It will be your lower-priority code, which does not have as strict
+timing requirements. Also, this is the only place in your code that you should call <span class='cmtt-10x-x-109'>serial_printf</span>. <span class='cmtt-10x-x-109'>serial_printf </span>is a
+reasonably large function, and depending on how many variables you print, it can take some time and is not
+deterministic.
+</p>
+   <pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-5162r1'></a></span><span class='fancyvrbline'>          <span class='cmtt-9'>serial_printf(&amp;SerialA, "Num Timer2:%ld Num SerialRX: %ld\r\n",</span></span> 
+<span class='fancyvrblineno'><a id='x1-5164r2'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>CpuTimer2.InterruptCount,numRXA);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5166r3'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5168r4'></a></span><span class='fancyvrbline'>      <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5170r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5172r6'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+<!-- l. 244 --><p class='noindent'>Right now, consider the calling of this function, <span class='cmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
+soon in the course.) “<span class='cmtt-10x-x-109'>cpu_timer0_isr() </span>is called every 10ms, without fail, in this starter code. (It actually
+“interrupts” the code running in the <span class='cmtt-10x-x-109'>main() </span>“<span class='cmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='cmtt-10x-x-109'>main() </span>you can change the 10000
+(microseconds) in the line of code “<span class='cmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span>” to have it be called at a
+different rate. For example, if you change the 10000 to 25000, the interrupt function will be called every
+25ms.
+</p>
+   <pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-5174r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-5176r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5178r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-5180r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer0.InterruptCount++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5182r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5184r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>numTimer0calls++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5186r7'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5188r8'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>if ((numTimer0calls%250) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5190r9'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>displayLEDletter(LEDdisplaynum);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5192r10'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>LEDdisplaynum++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5194r11'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>if (LEDdisplaynum == 0xFFFF) {  // prevent roll over exception</span></span> 
+<span class='fancyvrblineno'><a id='x1-5196r12'></a></span><span class='fancyvrbline'>            <span class='cmtt-9'>LEDdisplaynum = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5198r13'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5200r14'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5202r15'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Blink LaunchPad Red LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-5204r16'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5206r17'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-5208r18'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5210r19'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+<!-- l. 268 --><p class='noindent'>Right now, consider the calling of this function, <span class='cmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
+soon in the course.) “<span class='cmtt-10x-x-109'>cpu_timer2_isr() </span>is called every 40ms, without fail, in this starter code. (It actually
+“interrupts” the code running in the <span class='cmtt-10x-x-109'>main() </span>“<span class='cmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='cmtt-10x-x-109'>main() </span>you can change the 40000
+(microseconds) in the line of code “<span class='cmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span>” to have it be called at a different
+rate.
+                                                                                                       
+                                                                                                       
+</p>
+   <pre class='fancyvrb' id='fancyvrb9'><span class='fancyvrblineno'><a id='x1-5212r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>// cpu_timer2_isr CPU Timer2 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-5214r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>__interrupt void cpu_timer2_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5216r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-5218r4'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Blink LaunchPad Blue LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-5220r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>GpioDataRegs.GPATOGGLE.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5222r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5224r7'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>CpuTimer2.InterruptCount++;</span></span></pre>
+<!-- l. 280 --><p class='noindent'>Since “<span class='cmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, the following if statement sets <span class='cmtt-10x-x-109'>UARTPrint </span>to
+1 every 50th time in this function “<span class='cmtt-10x-x-109'>cpu_timer2_isr()</span>”. The % in C is modulus. Modulus returns the remainder of the
+division operation. So 23 % 50 equals 23, 67 % 50 equals 17, etc.
+</p>
+   <pre class='fancyvrb' id='fancyvrb10'><span class='fancyvrblineno'><a id='x1-5226r1'></a></span><span class='fancyvrbline'>     <span class='cmtt-9'>if ((CpuTimer2.InterruptCount % 50) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5228r2'></a></span><span class='fancyvrbline'>        <span class='cmtt-9'>UARTPrint = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5230r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5232r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre>
+
+   <h3 class='likesectionHead' id='exercise-5-interrupt-period-'> <a id='x1-6000'></a>Exercise 5: Interrupt Period </h3>
+<p id='exercise-5-interrupt-period'><a id='Q1-1-12'></a>
+<!-- l. 291 --></p><p class='noindent'>First, change either the periodic rate at which Timer 2’s interrupt function is called or the 50 modulus in Timer 2’s
+interrupt function to make the default <span class='cmtt-10x-x-109'>serial_printf </span>function be called every 250ms. Debug your code and verify that
+the default text is printed to the TeraTerm Windows application 4 times a second.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-6-time-after-n-interrupts-'>  <a id='x1-7000'></a>Exercise 6: Time after n interrupts </h3>
+<p id='exercise-6-time-after-n-interrupts'><a id='Q1-1-14'></a>
+<!-- l. 295 --></p><p class='noindent'>Answer this question after finishing Q5 above. “<span class='cmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” is incremented by 1 each time
+<span class='cmtt-10x-x-109'>cpu_timer2_isr() </span>function is run. (Remember the processor, “by magic”, runs this function at the periodic rate you set
+in “<span class='cmtt-10x-x-109'>ConfigCpuTimer</span>”.) <span class='cmbx-10x-x-109'>If </span><span class='cmtt-10x-x-109'>CpuTimer2.InterruptCount </span><span class='cmbx-10x-x-109'>has incremented to 4823. How much time has gone by?</span>
+This answer could be different from another student depending on what you changed to make <span class='cmtt-10x-x-109'>serial_printf </span>print every
+250ms. <span class='cmbx-10x-x-109'>Show your math for this calculation.</span>
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-7-input-saturation-'> <a id='x1-8000'></a>Exercise 7: Input saturation </h3>
+<p id='exercise-7-input-saturation'><a id='Q1-1-16'></a>
+<!-- l. 299 --></p><p class='noindent'>Write a global function and name it “<span class='cmtt-10x-x-109'>saturate</span>”. Do not use any global variables in this function. This function should
+have two <span class='cmtt-10x-x-109'>float </span>parameters, “<span class='cmtt-10x-x-109'>input</span>” and “<span class='cmtt-10x-x-109'>saturation_limit</span>”, and return a <span class='cmtt-10x-x-109'>float</span>. This return value is
+saturated by “<span class='cmtt-10x-x-109'>saturation_limit</span>”. “<span class='cmtt-10x-x-109'>input</span>” is the input signal (or input value) that will be saturated if its
+value is greater than +<span class='cmtt-10x-x-109'>saturation_limit </span>or less than –<span class='cmtt-10x-x-109'>saturation_limit</span>. For example, if “<span class='cmtt-10x-x-109'>input</span>” is
+passed 3.4 and “<span class='cmtt-10x-x-109'>saturation_limit</span>” is passed 5.5, then “<span class='cmtt-10x-x-109'>saturate</span>” will return 3.4. If “<span class='cmtt-10x-x-109'>input</span>” is passed 9.5
+and “<span class='cmtt-10x-x-109'>saturation_limit</span>” is passed 5.5, then “<span class='cmtt-10x-x-109'>saturate</span>” will return 5.5. If “<span class='cmtt-10x-x-109'>input</span>” is passed -7.4 and
+“<span class='cmtt-10x-x-109'>saturation_limit</span>” is passed 5.5, then “<span class='cmtt-10x-x-109'>saturate</span>” will return -5.5. You will test this function in Exercise
+8.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-8-sine-wave-saturation-'>  <a id='x1-9000'></a>Exercise 8: Sine wave saturation: </h3>
+<p id='exercise-8-sine-wave-saturation'><a id='Q1-1-18'></a>
+<!-- l. 303 --></p><p class='noindent'>We are going to use the “<span class='cmtt-10x-x-109'>sin()</span>” function to generate a sine wave at the sample rate of 250ms. Create five global float
+variables and one global 32-bit integer:
+                                                                                                       
+                                                                                                       
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-9002x1'>
+     <!-- l. 306 --><p class='noindent'>
+</p>
+     <pre class='fancyvrb' id='fancyvrb11'><span class='fancyvrblineno'><a id='x1-9004r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>float sinvalue = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9006r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>float time = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9008r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>float ampl = 3.0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9010r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>float frequency = 0.05;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9012r5'></a></span><span class='fancyvrbline'><span class='cmtt-9'>float offset = 0.25;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9014r6'></a></span><span class='fancyvrbline'><span class='cmtt-9'>int32_t timeint = 0;</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-9016x2'>Then inside the same if statement where “<span class='cmtt-10x-x-109'>serial_printf</span>” is called and before “<span class='cmtt-10x-x-109'>serial_printf</span>” write three lines of
+     code:
+     </li>
+<li class='enumerate' id='x1-9018x3'>
+     <!-- l. 316 --><p class='noindent'>
+</p>
+     <pre class='fancyvrb' id='fancyvrb12'><span class='fancyvrblineno'><a id='x1-9020r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>timeint = timeint+1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9022r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>time = timeint*0.25;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9024r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>sinvalue = ampl*sin(2*PI*frequency*time) + offset;</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-9026x4'>Create one more global float variable, <span class='cmtt-10x-x-109'>float satvalue = 0;</span>
+     </li>
+<li class='enumerate' id='x1-9028x5'>In another line of C code, set “<span class='obeylines-h'><code class='verb'>satvalue</code></span>” equal to your “<span class='obeylines-h'><code class='verb'>saturate</code></span>” function that is passed “<span class='obeylines-h'><code class='verb'>sinvalue</code></span>” to the
+     “input” parameter and constant 2.65 passed to the ”<span class='obeylines-h'><code class='verb'>saturation_limit</code></span>” parameter.
+     </li>
+<li class='enumerate' id='x1-9030x6'>As a final step, modify the <span class='cmtt-10x-x-109'>serial_printf </span>statement so that it prints on one line: timeint, time with 2 digits
+     of precision, <span class='obeylines-h'><code class='verb'>sinvalue</code></span> with 3 digits of precision, and <span class='obeylines-h'><code class='verb'>satvalue</code></span> with 2 digits of precision. %.3f is
+     the formatter for printing a float with 3 digits of precision. %ld is the formatter to print a 32-bit
+     integer.
+     </li>
+<li class='enumerate' id='x1-9032x7'>Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the
+     prints. <span class='cmbx-10x-x-109'>Demo this code to your TA in person. </span>The print out should look something like
+     </li>
+<li class='enumerate' id='x1-9034x8'>
+     <!-- l. 326 --><p class='noindent'>
+                                                                                                       
+                                                                                                       
+</p>
+     <pre class='fancyvrb' id='fancyvrb13'><span class='fancyvrblineno'><a id='x1-9036r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Timeint = 30, Time = 7.50sec, Input = 2.371, SatOut = 2.37</span></span> 
+<span class='fancyvrblineno'><a id='x1-9038r2'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Timeint = 31, Time = 7.75sec, Input = 2.198, SatOut = 2.20</span></span> 
+<span class='fancyvrblineno'><a id='x1-9040r3'></a></span><span class='fancyvrbline'><span class='cmtt-9'>Etc...</span></span></pre>
+     </li>
+<li class='enumerate' id='x1-9042x9'>A common mistake with <span class='cmtt-10x-x-109'>serial_printf </span>is to use the %d formatter for 32 bit integers. (%d is for 16-bit integers only
+     on the F28379D processor.) In the <span class='cmtt-10x-x-109'>serial_printf </span>statement, change the %ld formatter to %d and see what
+     happens. <span class='cmbx-10x-x-109'>Also, demo this to your TA in person</span>.
+     </li>
+<li class='enumerate' id='x1-9044x10'>On Gradescope, upload a PDF of your commented code file.</li></ol>
+
+   <h4 class='likesubsectionHead' id='leds-default-gpio-assignments-listed-here-for-reference'>  <a id='x1-10000'></a>LED’s Default GPIO Assignments: (Listed here for reference)</h4>
+   <div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 337 --><p class='indent'>   </p><figure class='float' id='x1-10001r1'><span id='led-gpio-mapping-and-control-registers'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 1: </span><span class='content'>LED GPIO Mapping and Control Registers                                                       </span></figcaption><!-- tex4ht:label?: x1-10001r1  -->
+ <table class='tabular' id='TBL-3'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /><col id='TBL-3-2' /><col id='TBL-3-3' /><col id='TBL-3-4' /><col id='TBL-3-5' /><col id='TBL-3-6' /><col id='TBL-3-7' /></colgroup><tr id='TBL-3-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-1-1' style='white-space:normal; text-align:center;'> <span class='cmbx-10x-x-109'>LED  </span></td><td class='td11' id='TBL-3-1-2' style='white-space:normal; text-align:center;'> <span class='cmbx-10x-x-109'>GPIO </span></td><td class='td11' id='TBL-3-1-3' style='white-space:normal; text-align:center;'> <span class='cmbx-10x-x-109'>Bank </span></td><td class='td11' id='TBL-3-1-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'><span class='cmbx-10x-x-109'>DAT</span>            </p></td><td class='td11' id='TBL-3-1-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'><span class='cmbx-10x-x-109'>SET</span>             </p></td><td class='td11' id='TBL-3-1-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'><span class='cmbx-10x-x-109'>CLEAR</span>        </p></td><td class='td11' id='TBL-3-1-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'><span class='cmbx-10x-x-109'>TOGGLE</span>     </p></td>
+</tr><tr id='TBL-3-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-2-1' style='white-space:normal; text-align:center;'>  LED1  </td><td class='td11' id='TBL-3-2-2' style='white-space:normal; text-align:center;'>   22     </td><td class='td11' id='TBL-3-2-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-3-2-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPADAT        </p></td><td class='td11' id='TBL-3-2-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPASET         </p></td><td class='td11' id='TBL-3-2-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPACLEAR    </p></td><td class='td11' id='TBL-3-2-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPATOGGLE  </p></td>
+</tr><tr id='TBL-3-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-3-1' style='white-space:normal; text-align:center;'>  LED2  </td><td class='td11' id='TBL-3-3-2' style='white-space:normal; text-align:center;'>   94     </td><td class='td11' id='TBL-3-3-3' style='white-space:normal; text-align:center;'> GPC  </td><td class='td11' id='TBL-3-3-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCDAT        </p></td><td class='td11' id='TBL-3-3-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCSET         </p></td><td class='td11' id='TBL-3-3-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCCLEAR    </p></td><td class='td11' id='TBL-3-3-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCTOGGLE </p></td>
+</tr><tr id='TBL-3-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-4-1' style='white-space:normal; text-align:center;'>  LED3  </td><td class='td11' id='TBL-3-4-2' style='white-space:normal; text-align:center;'>   95     </td><td class='td11' id='TBL-3-4-3' style='white-space:normal; text-align:center;'> GPC  </td><td class='td11' id='TBL-3-4-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCDAT        </p></td><td class='td11' id='TBL-3-4-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCSET         </p></td><td class='td11' id='TBL-3-4-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCCLEAR    </p></td><td class='td11' id='TBL-3-4-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPCTOGGLE </p></td>
+</tr><tr id='TBL-3-5-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-5-1' style='white-space:normal; text-align:center;'>  LED4  </td><td class='td11' id='TBL-3-5-2' style='white-space:normal; text-align:center;'>   97     </td><td class='td11' id='TBL-3-5-3' style='white-space:normal; text-align:center;'> GPD  </td><td class='td11' id='TBL-3-5-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDDAT        </p></td><td class='td11' id='TBL-3-5-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDSET        </p></td><td class='td11' id='TBL-3-5-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDCLEAR    </p></td><td class='td11' id='TBL-3-5-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDTOGGLE </p></td>
+</tr><tr id='TBL-3-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-6-1' style='white-space:normal; text-align:center;'>  LED5  </td><td class='td11' id='TBL-3-6-2' style='white-space:normal; text-align:center;'>  111    </td><td class='td11' id='TBL-3-6-3' style='white-space:normal; text-align:center;'> GPD  </td><td class='td11' id='TBL-3-6-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDDAT        </p></td><td class='td11' id='TBL-3-6-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDSET        </p></td><td class='td11' id='TBL-3-6-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDCLEAR    </p></td><td class='td11' id='TBL-3-6-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPDTOGGLE </p></td>
+</tr><tr id='TBL-3-7-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-7-1' style='white-space:normal; text-align:center;'>  LED6  </td><td class='td11' id='TBL-3-7-2' style='white-space:normal; text-align:center;'>  130    </td><td class='td11' id='TBL-3-7-3' style='white-space:normal; text-align:center;'> GPE  </td><td class='td11' id='TBL-3-7-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPEDAT        </p></td><td class='td11' id='TBL-3-7-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPESET         </p></td><td class='td11' id='TBL-3-7-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPECLEAR    </p></td><td class='td11' id='TBL-3-7-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPETOGGLE </p></td>
+</tr><tr id='TBL-3-8-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-8-1' style='white-space:normal; text-align:center;'>  LED7  </td><td class='td11' id='TBL-3-8-2' style='white-space:normal; text-align:center;'>  131    </td><td class='td11' id='TBL-3-8-3' style='white-space:normal; text-align:center;'> GPE  </td><td class='td11' id='TBL-3-8-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPEDAT        </p></td><td class='td11' id='TBL-3-8-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPESET         </p></td><td class='td11' id='TBL-3-8-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPECLEAR    </p></td><td class='td11' id='TBL-3-8-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPETOGGLE </p></td>
+</tr><tr id='TBL-3-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-9-1' style='white-space:normal; text-align:center;'>  LED8  </td><td class='td11' id='TBL-3-9-2' style='white-space:normal; text-align:center;'>   25     </td><td class='td11' id='TBL-3-9-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-3-9-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPADAT        </p></td><td class='td11' id='TBL-3-9-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPASET         </p></td><td class='td11' id='TBL-3-9-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPACLEAR    </p></td><td class='td11' id='TBL-3-9-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPATOGGLE  </p></td>
+</tr><tr id='TBL-3-10-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-10-1' style='white-space:normal; text-align:center;'>  LED9  </td><td class='td11' id='TBL-3-10-2' style='white-space:normal; text-align:center;'>   26     </td><td class='td11' id='TBL-3-10-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-3-10-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPADAT        </p></td><td class='td11' id='TBL-3-10-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPASET         </p></td><td class='td11' id='TBL-3-10-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPACLEAR    </p></td><td class='td11' id='TBL-3-10-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPATOGGLE  </p></td>
+</tr><tr id='TBL-3-11-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-11-1' style='white-space:normal; text-align:center;'> LED10  </td><td class='td11' id='TBL-3-11-2' style='white-space:normal; text-align:center;'>   27     </td><td class='td11' id='TBL-3-11-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-3-11-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPADAT        </p></td><td class='td11' id='TBL-3-11-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPASET         </p></td><td class='td11' id='TBL-3-11-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPACLEAR    </p></td><td class='td11' id='TBL-3-11-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPATOGGLE  </p></td>
+</tr><tr id='TBL-3-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-12-1' style='white-space:normal; text-align:center;'> LED11  </td><td class='td11' id='TBL-3-12-2' style='white-space:normal; text-align:center;'>   60     </td><td class='td11' id='TBL-3-12-3' style='white-space:normal; text-align:center;'> GPB  </td><td class='td11' id='TBL-3-12-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBDAT        </p></td><td class='td11' id='TBL-3-12-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBSET         </p></td><td class='td11' id='TBL-3-12-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBCLEAR    </p></td><td class='td11' id='TBL-3-12-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBTOGGLE </p></td>
+</tr><tr id='TBL-3-13-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-13-1' style='white-space:normal; text-align:center;'> LED12  </td><td class='td11' id='TBL-3-13-2' style='white-space:normal; text-align:center;'>   61     </td><td class='td11' id='TBL-3-13-3' style='white-space:normal; text-align:center;'> GPB  </td><td class='td11' id='TBL-3-13-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBDAT        </p></td><td class='td11' id='TBL-3-13-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBSET         </p></td><td class='td11' id='TBL-3-13-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBCLEAR    </p></td><td class='td11' id='TBL-3-13-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPBTOGGLE </p></td>
+</tr><tr id='TBL-3-14-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-14-1' style='white-space:normal; text-align:center;'> LED13  </td><td class='td11' id='TBL-3-14-2' style='white-space:normal; text-align:center;'>  157    </td><td class='td11' id='TBL-3-14-3' style='white-space:normal; text-align:center;'> GPE  </td><td class='td11' id='TBL-3-14-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPEDAT        </p></td><td class='td11' id='TBL-3-14-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPESET         </p></td><td class='td11' id='TBL-3-14-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPECLEAR    </p></td><td class='td11' id='TBL-3-14-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPETOGGLE </p></td>
+</tr><tr id='TBL-3-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-15-1' style='white-space:normal; text-align:center;'> LED14  </td><td class='td11' id='TBL-3-15-2' style='white-space:normal; text-align:center;'>  158    </td><td class='td11' id='TBL-3-15-3' style='white-space:normal; text-align:center;'> GPE  </td><td class='td11' id='TBL-3-15-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPEDAT        </p></td><td class='td11' id='TBL-3-15-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPESET         </p></td><td class='td11' id='TBL-3-15-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPECLEAR    </p></td><td class='td11' id='TBL-3-15-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPETOGGLE </p></td>
+</tr><tr id='TBL-3-16-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-16-1' style='white-space:normal; text-align:center;'> LED15  </td><td class='td11' id='TBL-3-16-2' style='white-space:normal; text-align:center;'>  159    </td><td class='td11' id='TBL-3-16-3' style='white-space:normal; text-align:center;'> GPE  </td><td class='td11' id='TBL-3-16-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPEDAT        </p></td><td class='td11' id='TBL-3-16-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPESET         </p></td><td class='td11' id='TBL-3-16-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPECLEAR    </p></td><td class='td11' id='TBL-3-16-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPETOGGLE </p></td>
+</tr><tr id='TBL-3-17-' style='vertical-align:baseline;'><td class='td11' id='TBL-3-17-1' style='white-space:normal; text-align:center;'> LED16  </td><td class='td11' id='TBL-3-17-2' style='white-space:normal; text-align:center;'>  160    </td><td class='td11' id='TBL-3-17-3' style='white-space:normal; text-align:center;'>  GPF  </td><td class='td11' id='TBL-3-17-4' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPFDAT        </p></td><td class='td11' id='TBL-3-17-5' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPFSET         </p></td><td class='td11' id='TBL-3-17-6' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPFCLEAR    </p></td><td class='td11' id='TBL-3-17-7' style='white-space:normal; text-align:left;'> <!-- l. 363 --><p class='noindent'>GPFTOGGLE  </p></td>
+</tr></table>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+   <h4 class='likesubsectionHead' id='push-buttons-default-gpio-assignments'> <a id='x1-11000'></a>Push Button’s Default GPIO Assignments:</h4>
+   <div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 368 --><p class='indent'>   </p><figure class='float' id='x1-11001r2'><span id='push-buttons-gpio-mapping-and-control-registers'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 2: </span><span class='content'>Push Button’s GPIO Mapping and Control Registers                                              </span></figcaption><!-- tex4ht:label?: x1-11001r2  -->
+<div class='tabular'>
+ <table class='tabular' id='TBL-4'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /><col id='TBL-4-2' /><col id='TBL-4-3' /><col id='TBL-4-4' /></colgroup><tr id='TBL-4-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-1-1' style='white-space:normal; text-align:center;'>    <span class='cmbx-10x-x-109'>LED     </span></td><td class='td11' id='TBL-4-1-2' style='white-space:normal; text-align:center;'> <span class='cmbx-10x-x-109'>GPIO </span></td><td class='td11' id='TBL-4-1-3' style='white-space:normal; text-align:center;'> <span class='cmbx-10x-x-109'>Bank </span></td><td class='td11' id='TBL-4-1-4' style='white-space:normal; text-align:center;'>   <span class='cmbx-10x-x-109'>DAT    </span></td>
+</tr><tr id='TBL-4-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-2-1' style='white-space:normal; text-align:center;'>    PB1       </td><td class='td11' id='TBL-4-2-2' style='white-space:normal; text-align:center;'>   4     </td><td class='td11' id='TBL-4-2-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-4-2-4' style='white-space:normal; text-align:center;'> GPADAT  </td></tr><tr id='TBL-4-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-3-1' style='white-space:normal; text-align:center;'> PB2 </td><td class='td11' id='TBL-4-3-2' style='white-space:normal; text-align:center;'> 5 </td><td class='td11' id='TBL-4-3-3' style='white-space:normal; text-align:center;'> GPA </td><td class='td11' id='TBL-4-3-4' style='white-space:normal; text-align:center;'> GPADAT</td>
+</tr><tr id='TBL-4-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-4-1' style='white-space:normal; text-align:center;'>    PB3       </td><td class='td11' id='TBL-4-4-2' style='white-space:normal; text-align:center;'>   6     </td><td class='td11' id='TBL-4-4-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-4-4-4' style='white-space:normal; text-align:center;'> GPADAT  </td>
+</tr><tr id='TBL-4-5-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-5-1' style='white-space:normal; text-align:center;'>    PB4       </td><td class='td11' id='TBL-4-5-2' style='white-space:normal; text-align:center;'>   7     </td><td class='td11' id='TBL-4-5-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-4-5-4' style='white-space:normal; text-align:center;'> GPADAT  </td>
+</tr><tr id='TBL-4-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-4-6-1' style='white-space:normal; text-align:center;'> JoyStick PB  </td><td class='td11' id='TBL-4-6-2' style='white-space:normal; text-align:center;'>   8     </td><td class='td11' id='TBL-4-6-3' style='white-space:normal; text-align:center;'>  GPA  </td><td class='td11' id='TBL-4-6-4' style='white-space:normal; text-align:center;'> GPADAT  </td>
+
+</tr></table>                                                                                       </div>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+   <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-output'> <a id='x1-12000'></a>GPIO Register Use when GPIO pin set as Output:</h5>
+<!-- l. 387 --><p class='noindent'>The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register
+at a time. The “<span class='obeylines-h'><code class='verb'>.all</code></span>” part of the C/C++ union is the entire 32-bit register. The “<span class='obeylines-h'><code class='verb'>.bit.GPIO19</code></span>” is just one bit in the
+32-bit register. So these two lines of C code perform the same operation: </p><div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 389 --><p class='indent'>   </p><figure class='float' id='x1-12001r3'><span id='gpio-register-functional-definitions-and-usage-constraints'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 3: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-12001r3  -->
+<div class='tabular'> <table class='tabular' id='TBL-5'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-1-1' style='white-space:normal; text-align:left;'> <!-- l. 397 --><p class='noindent'><span class='cmbx-9'>Register</span>           </p></td><td class='td11' id='TBL-5-1-2' style='white-space:normal; text-align:left;'> <!-- l. 397 --><p class='noindent'><span class='cmbx-9'>Usage</span>                                           </p></td><td class='td11' id='TBL-5-1-3' style='white-space:normal; text-align:left;'> <!-- l. 397 --><p class='noindent'><span class='cmbx-9'>Example</span>                                                      </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-2-1' style='white-space:normal; text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='cmr-9'>GP?DAT</span>
+                            </p></td><td class='td11' id='TBL-5-2-2' style='white-space:normal; text-align:left;'> <!-- l. 399 --><p class='noindent'><span class='cmtt-9'>GP?DAT.bit.GPIO? = 1; </span><br class='newline' /><span class='cmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='cmtt-9'>GP?DAT.bit.GPIO? = 0; </span><br class='newline' /><span class='cmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' />                                                          </p></td><td class='td11' id='TBL-5-2-3' style='white-space:normal; text-align:left;'> <!-- l. 401 --><p class='noindent'><span class='cmbx-9'>FOR TECHNICAL REASONS, DO NOT USE
+  DAT  FOR  TURNING  ON  AND  OFF  LEDS.
+  JUST USE IT TO READ THE STATE OF THE
+  PUSHBUTTONS BELOW.</span>                              </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-3-1' style='white-space:normal; text-align:left;'> <!-- l. 403 --><p class='noindent'><span class='cmr-9'>GP?SET</span>
+                            </p></td><td class='td11' id='TBL-5-3-2' style='white-space:normal; text-align:left;'> <!-- l. 404 --><p class='noindent'><span class='cmtt-9'>GP?SET.bit.GPIO? = 1; </span><br class='newline' /><span class='cmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='cmtt-9'>GP?SET.bit.GPIO? = 0; </span><br class='newline' /><span class='cmr-9'>Does Nothing</span>                                        </p></td><td class='td11' id='TBL-5-3-3' style='white-space:normal; text-align:left;'> <!-- l. 406 --><p class='noindent'><span class='cmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; </span><br class='newline' /><span class='cmr-9'>Sets GPIO37 High/3.3V. </span><br class='newline' /><span class='cmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; </span><br class='newline' /><span class='cmr-9'>Does Nothing.</span>                                                         </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-4-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-4-1' style='white-space:normal; text-align:left;'> <!-- l. 407 --><p class='noindent'><span class='cmr-9'>GP?CLEAR</span>
+                            </p></td><td class='td11' id='TBL-5-4-2' style='white-space:normal; text-align:left;'> <!-- l. 408 --><p class='noindent'><span class='cmtt-9'>GP?CLEAR.bit.GPIO? = 1; </span><br class='newline' /><span class='cmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' /><span class='cmtt-9'>GP?CLEAR.bit.GPIO? = 0; </span><br class='newline' /><span class='cmr-9'>Does Nothing</span>                                        </p></td><td class='td11' id='TBL-5-4-3' style='white-space:normal; text-align:left;'> <!-- l. 410 --><p class='noindent'><span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; </span><br class='newline' /><span class='cmr-9'>Sets GPIO70 Low/0V. </span><br class='newline' /><span class='cmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; </span><br class='newline' /><span class='cmr-9'>Does Nothing.</span>                                                         </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-5-5-' style='vertical-align:baseline;'><td class='td11' id='TBL-5-5-1' style='white-space:normal; text-align:left;'> <!-- l. 411 --><p class='noindent'><span class='cmr-9'>GP?TOGGLE</span>
+                            </p></td><td class='td11' id='TBL-5-5-2' style='white-space:normal; text-align:left;'> <!-- l. 412 --><p class='noindent'><span class='cmtt-9'>GP?TOGGLE.bit.GPIO? = 1; </span><br class='newline' /><span class='cmr-9'>Sets Pin opposite of its current state </span><br class='newline' /><span class='cmtt-9'>GP?TOGGLE.bit.GPIO? = 0; </span><br class='newline' /><span class='cmr-9'>Does Nothing</span>                                        </p></td><td class='td11' id='TBL-5-5-3' style='white-space:normal; text-align:left;'> <!-- l. 414 --><p class='noindent'><span class='cmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; </span><br class='newline' /><span class='cmr-9'>State toggles (3.3V </span><span class='cmsy-9'>↔ </span><span class='cmr-9'>0V) </span><br class='newline' /><span class='cmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;</span><br class='newline' /><span class='cmr-9'>Does Nothing</span>                                                          </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                     </div>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+   <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-input'> <a id='x1-13000'></a>GPIO Register Use When GPIO Pin Set as Input:</h5>
+<!-- l. 419 --><p class='noindent'>Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for
+that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.
+</p><div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 421 --><p class='indent'>   </p><figure class='float' id='x1-13001r4'><span id='gpio-register-functional-definitions-and-usage-constraints1'></span>
+                                                                                                       
+                                                                                                       
+
+<figcaption class='caption'><span class='id'>Table 4: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-13001r4  -->
+<div class='tabular'> <table class='tabular' id='TBL-6'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-6-1-' style='vertical-align:baseline;'><td class='td11' id='TBL-6-1-1' style='white-space:normal; text-align:left;'> <!-- l. 429 --><p class='noindent'><span class='cmbx-9'>Register</span>     </p></td><td class='td11' id='TBL-6-1-2' style='white-space:normal; text-align:left;'> <!-- l. 429 --><p class='noindent'><span class='cmbx-9'>Usage</span>                                                       </p></td><td class='td11' id='TBL-6-1-3' style='white-space:normal; text-align:left;'> <!-- l. 429 --><p class='noindent'><span class='cmbx-9'>Example</span>                                                   </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-6-2-' style='vertical-align:baseline;'><td class='td11' id='TBL-6-2-1' style='white-space:normal; text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='cmr-9'>GP?DAT</span>
+                     </p></td><td class='td11' id='TBL-6-2-2' style='white-space:normal; text-align:left;'> <!-- l. 431 --><p class='noindent'><span class='cmr-9'>If </span><span class='cmtt-9'>GP?DAT.bit.GPIO? = 1</span><span class='cmr-9'>, the pin is logic high (3.3 V).</span><br class='newline' /><span class='cmr-9'>If   </span><span class='cmtt-9'>GP?DAT.bit.GPIO? = 0</span><span class='cmr-9'>,   the   pin   is   logic   low
+  (0 V/GND).</span>                                                        </p></td><td class='td11' id='TBL-6-2-3' style='white-space:normal; text-align:left;'> <div class='minipage'><pre class='fancyvrb' id='fancyvrb14'><span class='fancyvrblineno'><a id='x1-13003r1'></a></span><span class='fancyvrbline'><span class='cmtt-9'>if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-13005r2'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Code executed when input pin</span></span> 
+<span class='fancyvrblineno'><a id='x1-13007r3'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// GPIO19 is High (3.3V)</span></span> 
+<span class='fancyvrblineno'><a id='x1-13009r4'></a></span><span class='fancyvrbline'><span class='cmtt-9'>} else {</span></span> 
+<span class='fancyvrblineno'><a id='x1-13011r5'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// Code executed when input pin</span></span> 
+<span class='fancyvrblineno'><a id='x1-13013r6'></a></span><span class='fancyvrbline'>    <span class='cmtt-9'>// GPIO19 is Low (0V/GND)</span></span> 
+<span class='fancyvrblineno'><a id='x1-13015r7'></a></span><span class='fancyvrbline'><span class='cmtt-9'>}</span></span></pre> </div> </td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                           </div>
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+   <h3 class='likesectionHead' id='exercise-9-led-toggles-'> <a id='x1-14000'></a>Exercise 9: LED toggles </h3>
+<p id='exercise-9-led-toggles'><a id='Q1-1-28'></a>
+<!-- l. 450 --></p><p class='noindent'>Using the GPIO reference tables above <span class='cmbx-10x-x-109'>(note the example code in the table)</span>, add code to your CPU Timer2
+interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed,
+toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and
+off.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-10-led-patterns-'>  <a id='x1-15000'></a>Exercise 10: LED patterns </h3>
+<p id='exercise-10-led-patterns'><a id='Q1-1-30'></a>
+<!-- l. 454 --></p><p class='noindent'>Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these
+different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each
+other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate
+within one of the CPU timer interrupt functions.
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-11-binary-operations-'>  <a id='x1-16000'></a>Exercise 11: Binary operations </h3>
+<p id='exercise-11-binary-operations'><a id='Q1-1-32'></a>
+<!-- l. 458 --></p><p class='noindent'>Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these
+calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value
+over the serial port using the “<span class='obeylines-h'><code class='verb'>serial_printf</code></span>” function.
+     </p><ol class='enumerate1'>
+<li class='enumerate' id='x1-16002x1'>First, explain why each character sent over the serial port takes 10/9600 seconds, assuming that the bit rate
+     is 9600 bits per second when using the <span class='obeylines-h'><code class='verb'>serial_printf</code></span> function.
+     </li>
+<li class='enumerate' id='x1-16004x2'><span class='cmtt-10x-x-109'>x = 532 &amp; 205;</span>
+     </li>
+<li class='enumerate' id='x1-16006x3'><span class='cmtt-10x-x-109'>x = 0x4f &amp; 0x1ad;</span>
+     </li>
+                                                                                                       
+                                                                                                       
+<li class='enumerate' id='x1-16008x4'><span class='cmtt-10x-x-109'>x = 0x02ad | 0x1a1;</span>
+     </li>
+<li class='enumerate' id='x1-16010x5'><span class='cmtt-10x-x-109'>x = 0x3ba &gt;&gt; 4;</span>
+     </li>
+<li class='enumerate' id='x1-16012x6'><span class='cmtt-10x-x-109'>x = 104 &lt;&lt; 3;</span>
+     </li>
+<li class='enumerate' id='x1-16014x7'><span class='cmtt-10x-x-109'>x = 495 &amp; (0x5 &lt;&lt; 4);</span></li></ol>
+
+   <h3 class='likesectionHead' id='exercise-12-type-bit-sizes-'> <a id='x1-17000'></a>Exercise 12: Type bit sizes </h3>
+<p id='exercise-12-type-bit-sizes'><a id='Q1-1-34'></a>
+<!-- l. 472 --></p><p class='noindent'>Read section 6.3 of the F28379D C reference guide (<a class='url' href='https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf'><span class='cmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf</span></a>).
+How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: <span class='cmtt-10x-x-109'>int</span>,
+<span class='cmtt-10x-x-109'>long int</span>, <span class='cmtt-10x-x-109'>unsigned int</span>, <span class='cmtt-10x-x-109'>short int</span>, <span class='cmtt-10x-x-109'>char</span>, <span class='cmtt-10x-x-109'>double</span>, <span class='cmtt-10x-x-109'>float</span>?
+   
+</p>
+   <h3 class='likesectionHead' id='exercise-13-uart-signal-display-'>  <a id='x1-18000'></a>Exercise 13: UART signal display </h3>
+<p id='exercise-13-uart-signal-display'><a id='Q1-1-36'></a>
+<!-- l. 477 --></p><p class='noindent'>To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope
+was connected to the transmit line (TXD) of your TMS320F28379D processor, what would be displayed if
+the baud rate was set to 115200 bits per second and only two <a href='https://www.ascii-code.com/'>ASCII</a> characters, “4” and “B”, were sent
+in sequence? Scoping the TXD line is not required, but you are welcome to figure out the waveform that
+way.
+</p>
+   <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 479 --><p class='noindent'><span class='cmbx-10x-x-109'>Make sure that you </span><span style='color:#FF00FF;'><span class='cmbx-10x-x-109'>comment</span></span> <span class='cmbx-10x-x-109'>you code and put your </span><span style='color:#FF00FF;'><span class='cmbx-10x-x-109'>initials</span></span> <span class='cmbx-10x-x-109'>in your Gradescope
+submission! See </span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='cmtt-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='cmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+    
+</body> 
+</html>
