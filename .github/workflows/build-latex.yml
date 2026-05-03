@@ -331,7 +331,7 @@ jobs:
               echo "Converting TikZ figure: $texfile"
               
               # 1. Compile to PDF (standalone handles the cropping)
-              latexmk -pdflua -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
+              latexmk -pdf -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
               
               # 2. Convert PDF to SVG
               # --no-fonts: converts text to paths (prevents font rendering issues on the web)
