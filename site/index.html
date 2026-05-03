@@ -22,6 +22,9 @@
         .uiuc-orange { color: #ff5f05; }
         .uiuc-blue { color: #13294B; }
 
+        .html-highlight { color: #5876B4; }
+        .dark .html-highlight { color: #93C5FD; }
+
         .bg-uiuc-blue { background-color: #13294B; }
         .border-uiuc-orange { border-color: #FF5F05; }
         
@@ -631,7 +634,7 @@
                 const isLocalPdf = item.file && !/^https?:\/\//i.test(item.file) && item.file.toLowerCase().endsWith('.pdf');
                 const htmlFile = isLocalPdf ? 'site/' + item.file.replace(/\.pdf$/i, '.html') : null;
                 const htmlLinkHtml = htmlFile ? `
-                        <a href="${htmlFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold uiuc-blue dark:text-blue-300 pdf-link">
+                        <a href="${htmlFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
                             View HTML (Accessible)
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 0118 16.5h-3.75l.75 3h1.5a.75.75 0 010 1.5H7.5a.75.75 0 010-1.5H9l.75-3H6a2.25 2.25 0 01-2.25-2.25v-9z" />
