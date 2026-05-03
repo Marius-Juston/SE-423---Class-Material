@@ -10,9 +10,9 @@
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
 <span class='rm-lmbx-12x-x-120'>Homework Assignment #2</span>
-</p><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>The Demonstration Check-Offs For Exercises 1 And 2 Are Due By </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>5PM Tuesday,
-February 17</span></span><span class='rm-lmbx-10x-x-109'>. Check-Offs For Exercises 3 And 4 Are Due By </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>5PM Tuesday, February 24</span></span><span class='rm-lmbx-10x-x-109'>.</span>
-</p><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Remainder Due On GradeScope, by </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>9AM Wednesday, February 25</span></span><span class='rm-lmbx-10x-x-109'>.</span>
+</p><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>The Demonstration Check-Offs For Exercises 1 And 2 Are Due By </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>5PM Tuesday,
+February 17</span></span><span class='rm-lmbx-10x-x-109'>. Check-Offs For Exercises 3 And 4 Are Due By </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>5PM Tuesday, February 24</span></span><span class='rm-lmbx-10x-x-109'>.</span>
+</p><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Remainder Due On GradeScope, by </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>9AM Wednesday, February 25</span></span><span class='rm-lmbx-10x-x-109'>.</span>
 </p>
  
 </div> 
@@ -217,11 +217,11 @@ output to reduce power consumption. Add these lines of code after your above ini
 <span class='fancyvrblineno'><a id='x1-2074r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
 <!-- l. 210 --><p class='noindent'>Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s
 interrupt function and comment out the call to the <span class='rm-lmtt-10x-x-109'>displayLEDletter() </span>function. When ready, download this code to
-your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50% duty cycle, so the LED should be
-50% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in Code
+your Launchpad. When you run your code, the EPWM12A signal driving LED1 is 50% duty cycle, so the LED
+should be 50% on. You will change the duty cycle of EPWM12A by manually updating its CMPA register in
                                                                                                        
                                                                                                        
-Composer Studio. In CCS, select the menu View <span class='cmmi-10x-x-109'>rightarrow </span>Registers, and the Registers tab should appear.
+Code Composer Studio. In CCS, select the menu View <span class='cmsy-10x-x-109'>→ </span>Registers, and the Registers tab should appear.
 There are a bunch of registers, so you will have to scroll down until you see the “EPwm12Regs” register.
 Click the “<span class='cmmi-10x-x-109'>/span&gt;” to expand the register. Scroll down until you find the TBPRD and CMPA registers. Note
 the value in TBPRD. Expand the CMPA register and confirm that it is a 32-bit register with two 16-bit
@@ -467,7 +467,7 @@ master to the slave? What are the values of the bytes received into the master f
 the below timing diagram: <span class='rm-lmtt-10x-x-109'>CLOCK_POLARITY = ?</span>, <span class='rm-lmtt-10x-x-109'>CLOCK_PHASE = ?</span>. So this means that the master reads in
 each bit on the rising edge of the clock (SCK) or the falling edge of SCK?</li></ol>
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 375 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#6500B8;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 375 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See </span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
