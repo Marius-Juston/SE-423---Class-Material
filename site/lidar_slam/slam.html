@@ -10,23 +10,47 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 
 <style>
+  /*
+    UIUC brand palette (https://brand.illinois.edu/visual-identity/color)
+    Primary:    Illini Blue #13294B, Illini Orange #FF5F05
+    Storm grays: #707372, #9C9A9D, #C8C6C7
+    Supporting: Industrial #1D58A7, Arches #009FD4, Patina #007E8E,
+                Berry #5C0E41, Harvest #FCB316, Prairie #006230,
+                Earth #7D3E13, Altgeld #C84113
+    Tints:      Arches-90 #C4E9F5
+    All foreground/background pairings below verified to meet
+    WCAG 2.1 AA contrast (≥ 4.5:1 normal text, ≥ 3:1 large text / UI).
+  */
   :root {
-    --bg-0: oklch(0.155 0.012 248);
-    --bg-1: oklch(0.185 0.014 248);
-    --bg-2: oklch(0.215 0.016 248);
-    --bg-3: oklch(0.255 0.018 248);
-    --line: oklch(0.32 0.018 248);
-    --line-soft: oklch(0.27 0.016 248 / 0.7);
-    --text-0: oklch(0.96 0.005 248);
-    --text-1: oklch(0.78 0.012 248);
-    --text-2: oklch(0.58 0.012 248);
-    --text-3: oklch(0.45 0.012 248);
-    --cyan:   oklch(0.80 0.13 220);
-    --cyan-d: oklch(0.55 0.13 220);
-    --amber:  oklch(0.82 0.13 75);
-    --amber-d:oklch(0.58 0.13 75);
-    --rose:   oklch(0.74 0.14 25);
-    --green:  oklch(0.80 0.14 150);
+    /* Page surfaces — progressively lighter blues from Illini Blue */
+    --bg-0: #13294B;          /* Illini Blue — page background */
+    --bg-1: #1A335F;          /* card / surface */
+    --bg-2: #1F3D6E;          /* elevated surface */
+    --bg-3: #2A4D85;          /* highest surface */
+
+    /* Borders / dividers — semi-transparent white reads cleanly on blue */
+    --line:      rgba(255, 255, 255, 0.18);
+    --line-soft: rgba(255, 255, 255, 0.10);
+
+    /* Text — verified contrast ratios on --bg-0 (#13294B) */
+    --text-0: #FFFFFF;   /* primary  — 14.2:1 (AAA) */
+    --text-1: #C4E9F5;   /* arches-90 — 11.4:1 (AAA) */
+    --text-2: #C8C6C7;   /* storm-light — 8.7:1 (AAA) */
+    --text-3: #9C9A9D;   /* storm-mid —  5.3:1 (AA)  — minimum dim text */
+
+    /* Functional accents — UIUC supporting palette
+       (per UIUC, supporting colors are reserved for icons, charts,
+       and graphics — never for large background floods) */
+    --cyan:    #C4E9F5;  /* Arches-90 light  — 11.4:1 */
+    --cyan-d:  #009FD4;  /* Arches           —  4.8:1 */
+    --amber:   #FCB316;  /* Harvest          —  8.0:1 */
+    --amber-d: #FF5F05;  /* Illini Orange    —  4.8:1 (AA, large text/icon) */
+    --rose:    #FF5F05;  /* Illini Orange (brand has no dedicated red;
+                            orange used for warm/alert accents) */
+    --green:   #5DB47A;  /* Prairie tint — readable green for dark bg */
+
+    /* Focus ring — high-contrast on every brand background */
+    --focus: #FCB316;    /* Harvest yellow */
   }
   * { box-sizing: border-box; }
   html, body {
@@ -39,9 +63,28 @@
     height: 100%;
     overflow: hidden;
   }
-  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar { width: 10px; height: 10px; }
   ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.30); }
   ::-webkit-scrollbar-track { background: transparent; }
+
+  /* Visible keyboard focus indicator (WCAG 2.4.7) — 3px Harvest ring,
+     contrast against Illini Blue ≈ 8:1 */
+  :focus-visible {
+    outline: 3px solid var(--focus);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  /* Respect users with motion sensitivities (WCAG 2.3.3 / Success Crit. 2.3.3) */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
 
   #root { height: 100vh; width: 100vw; }
 </style>
