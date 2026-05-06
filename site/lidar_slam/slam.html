@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>LiDAR SLAM — Process Flow</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --bg-0: oklch(0.155 0.012 248);
+    --bg-1: oklch(0.185 0.014 248);
+    --bg-2: oklch(0.215 0.016 248);
+    --bg-3: oklch(0.255 0.018 248);
+    --line: oklch(0.32 0.018 248);
+    --line-soft: oklch(0.27 0.016 248 / 0.7);
+    --text-0: oklch(0.96 0.005 248);
+    --text-1: oklch(0.78 0.012 248);
+    --text-2: oklch(0.58 0.012 248);
+    --text-3: oklch(0.45 0.012 248);
+    --cyan:   oklch(0.80 0.13 220);
+    --cyan-d: oklch(0.55 0.13 220);
+    --amber:  oklch(0.82 0.13 75);
+    --amber-d:oklch(0.58 0.13 75);
+    --rose:   oklch(0.74 0.14 25);
+    --green:  oklch(0.80 0.14 150);
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg-0);
+    color: var(--text-0);
+    font-family: "Inter", system-ui, sans-serif;
+    font-size: 13px;
+    line-height: 1.45;
+    height: 100%;
+    overflow: hidden;
+  }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: var(--line); border-radius: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+
+  #root { height: 100vh; width: 100vw; }
+</style>
+
+<script type="application/json" id="slam-stages-json">__STAGES_JSON__</script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+  <script type="text/babel" src="src/data.jsx"></script>
+  <script type="text/babel" src="src/code-panel.jsx"></script>
+  <script type="text/babel" src="src/robot-scene.jsx"></script>
+  <script type="text/babel" src="src/subgraph.jsx"></script>
+  <script type="text/babel" src="src/flow-nodes.jsx"></script>
+  <script type="text/babel" src="src/timeline.jsx"></script>
+  <script type="text/babel" src="src/app.jsx"></script>
+</body>
+</html>
