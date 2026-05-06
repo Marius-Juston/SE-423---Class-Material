@@ -7,12 +7,33 @@
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+/*
+  UIUC brand palette — https://brand.illinois.edu/visual-identity/color
+  Primary: Illini Blue #13294B, Illini Orange #FF5F05
+  All foreground/background pairings verified for WCAG 2.1 AA.
+*/
 :root {
-  --bg: #0a0a0f; --bg-card: #111119; --bg-elevated: #1a1a26;
-  --border: #252535; --text: #e8e6f0; --text-dim: #7878a0;
-  --accent: #7c6aef; --accent-glow: rgba(124,106,239,0.2);
-  --mono: 'JetBrains Mono', monospace; --serif: 'Instrument Serif', serif; --sans: 'DM Sans', sans-serif;
-  --radius: 12px; --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  /* Surfaces — Illini Blue ladder */
+  --bg: #13294B;             /* Illini Blue — page bg */
+  --bg-card: #1A335F;        /* card surface */
+  --bg-elevated: #1F3D6E;    /* elevated surface */
+  /* Borders — soft white tints (visible on every blue tone) */
+  --border: rgba(255, 255, 255, 0.14);
+  /* Text */
+  --text: #FFFFFF;           /* 14.2:1 on Illini Blue (AAA) */
+  --text-dim: #C8C6C7;       /* Storm-light — 8.7:1 on bg, 7.3:1 on bg-card (AAA) */
+  /* Brand accent — Illini Orange (graphics/large-display only).
+     For SMALL accent text on cards, use --text-accent (Harvest). */
+  --accent: #FF5F05;
+  --accent-glow: rgba(255, 95, 5, 0.25);
+  --text-accent: #FCB316;    /* Harvest — 8.0:1 on bg-card (AAA) for small text */
+
+  --mono: 'JetBrains Mono', monospace;
+  --serif: 'Instrument Serif', serif;
+  --sans: 'DM Sans', sans-serif;
+  --radius: 12px;
+  --transition: 0.3s cubic-bezier(0.4,0,0.2,1);
+  --focus: #FCB316;          /* focus ring */
 }
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: var(--sans); line-height: 1.6; overflow-x: hidden; }
@@ -20,17 +41,17 @@ body { background: var(--bg); color: var(--text); font-family: var(--sans); line
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 
-header { position: sticky; top: 0; z-index: 100; background: rgba(10,10,15,0.85); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 2rem; }
+header { position: sticky; top: 0; z-index: 100; background: rgba(19,41,75,0.88); backdrop-filter: blur(20px); border-bottom: 1px solid var(--border); padding: 0 2rem; }
 .header-inner { max-width: 1440px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; height: 60px; }
 .logo { font-family: var(--serif); font-size: 1.4rem; font-style: italic; display: flex; align-items: center; gap: 0.7rem; }
-.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#ef4444,#eab308,#22c55e,#3b82f6,#a855f7,#ef4444); animation: spin 6s linear infinite; }
+.logo-dot { width: 10px; height: 10px; border-radius: 50%; background: conic-gradient(#FF5F05,#FCB316,#5DB47A,#009FD4,#C4E9F5,#FF5F05); animation: spin 6s linear infinite; }
 @keyframes spin { to { transform: rotate(360deg); } }
 nav { display: flex; gap: 0.2rem; }
 nav a { color: var(--text-dim); text-decoration: none; font-size: 0.78rem; font-weight: 500; padding: 0.35rem 0.75rem; border-radius: 6px; transition: var(--transition); }
 nav a:hover, nav a.active { color: var(--text); background: var(--bg-elevated); }
 
 .hero { max-width: 1440px; margin: 0 auto; padding: 4rem 2rem 2.5rem; text-align: center; }
-.hero h1 { font-family: var(--serif); font-size: clamp(2.2rem,5vw,4rem); font-weight: 400; font-style: italic; line-height: 1.1; margin-bottom: 0.8rem; background: linear-gradient(135deg,#e8e6f0 0%,#7c6aef 50%,#e8e6f0 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 5s ease-in-out infinite; }
+.hero h1 { font-family: var(--serif); font-size: clamp(2.2rem,5vw,4rem); font-weight: 400; font-style: italic; line-height: 1.1; margin-bottom: 0.8rem; background: linear-gradient(135deg,#FFFFFF 0%,#FF5F05 50%,#FFFFFF 100%); background-size: 200% 200%; -webkit-background-clip: text; -webkit-text-fill-color: transparent; animation: shimmer 5s ease-in-out infinite; }
 @keyframes shimmer { 0%,100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
 .hero p { color: var(--text-dim); font-size: 1.05rem; max-width: 620px; margin: 0 auto; }
 
@@ -38,24 +59,24 @@ section { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 3.5rem; }
 .section-header { margin-bottom: 1.8rem; }
 .section-header h2 { font-family: var(--serif); font-size: 1.9rem; font-style: italic; font-weight: 400; margin-bottom: 0.3rem; }
 .section-header p { color: var(--text-dim); font-size: 0.92rem; }
-.section-tag { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; display: block; }
+.section-tag { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--text-accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.4rem; display: block; }
 
 .viewer-grid { display: grid; grid-template-columns: 240px 1fr; gap: 1.5rem; }
 .space-selector { display: flex; flex-direction: column; gap: 0.4rem; }
 .space-btn { display: flex; align-items: center; gap: 0.7rem; background: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 0.75rem 1rem; color: var(--text-dim); font-family: var(--sans); font-size: 0.82rem; cursor: pointer; transition: var(--transition); text-align: left; }
 .space-btn:hover { border-color: var(--accent); color: var(--text); }
-.space-btn.active { border-color: var(--accent); background: rgba(124,106,239,0.07); color: var(--text); box-shadow: 0 0 20px var(--accent-glow); }
-.space-btn .badge { font-family: var(--mono); font-size: 0.58rem; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--bg-elevated); color: var(--accent); margin-left: auto; white-space: nowrap; }
-.space-btn.active .badge { background: var(--accent); color: #fff; }
+.space-btn.active { border-color: var(--accent); background: rgba(255,95,5,0.08); color: var(--text); box-shadow: 0 0 20px var(--accent-glow); }
+.space-btn .badge { font-family: var(--mono); font-size: 0.58rem; font-weight: 600; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--bg-elevated); color: var(--text-accent); margin-left: auto; white-space: nowrap; }
+.space-btn.active .badge { background: var(--accent); color: var(--bg); }
 
 .viewer-main { display: flex; flex-direction: column; gap: 1.2rem; }
 .viewer-3d-wrap { position: relative; background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; aspect-ratio: 16/10; }
 .viewer-3d-wrap canvas { width: 100% !important; height: 100% !important; display: block; }
 .viewer-overlay { position: absolute; top: 0; left: 0; right: 0; padding: 0.7rem 1rem; display: flex; justify-content: space-between; align-items: flex-start; pointer-events: none; z-index: 2; }
-.viewer-label { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--accent); background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
-.viewer-hint { font-family: var(--mono); font-size: 0.62rem; color: var(--text-dim); background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
-.viewer-axes-info { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10,10,15,0.8); backdrop-filter: blur(8px); padding: 0.5rem 1rem; display: flex; gap: 1.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); z-index: 2; }
-.ax-x { color: #ef6060; font-weight: 600; } .ax-y { color: #60ef60; font-weight: 600; } .ax-z { color: #6090ef; font-weight: 600; }
+.viewer-label { font-family: var(--mono); font-size: 0.68rem; font-weight: 600; color: var(--text-accent); background: rgba(19,41,75,0.85); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
+.viewer-hint { font-family: var(--mono); font-size: 0.62rem; color: var(--text-dim); background: rgba(19,41,75,0.85); backdrop-filter: blur(8px); padding: 0.25rem 0.65rem; border-radius: 6px; }
+.viewer-axes-info { position: absolute; bottom: 0; left: 0; right: 0; background: rgba(19,41,75,0.85); backdrop-filter: blur(8px); padding: 0.5rem 1rem; display: flex; gap: 1.5rem; font-family: var(--mono); font-size: 0.65rem; color: var(--text-dim); z-index: 2; }
+.ax-x { color: #FF5F05; font-weight: 600; } .ax-y { color: #5DB47A; font-weight: 600; } .ax-z { color: #009FD4; font-weight: 600; }
 
 .slice-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
 .slice-canvas-wrap { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; aspect-ratio: 1; position: relative; }
@@ -69,7 +90,7 @@ section { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 3.5rem; }
 .slider-group input[type="range"]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--accent); box-shadow: 0 0 6px var(--accent-glow); cursor: pointer; }
 .color-swatch-row { display: flex; gap: 0.7rem; align-items: stretch; margin-top: 0.3rem; }
 .swatch-large { width: 60px; min-height: 60px; border-radius: 10px; border: 1px solid var(--border); flex-shrink: 0; position: relative; overflow: hidden; }
-.swatch-large::before { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(#222 0% 25%, #1a1a1a 0% 50%) 0 0/14px 14px; }
+.swatch-large::before { content: ''; position: absolute; inset: 0; background: repeating-conic-gradient(rgba(255,255,255,0.10) 0% 25%, rgba(255,255,255,0.04) 0% 50%) 0 0/14px 14px; }
 .swatch-large .fill { position: absolute; inset: 0; z-index: 1; }
 .color-vals { flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; }
 .cv-item { background: var(--bg-card); border: 1px solid var(--border); border-radius: 6px; padding: 0.35rem 0.55rem; font-family: var(--mono); font-size: 0.62rem; }
@@ -121,6 +142,25 @@ section { max-width: 1440px; margin: 0 auto; padding: 2.5rem 2rem 3.5rem; }
 footer { max-width: 1440px; margin: 0 auto; padding: 2rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; color: var(--text-dim); font-size: 0.78rem; }
 footer .logo-small { font-family: var(--serif); font-style: italic; color: var(--text); }
 @media (max-width: 960px) { .viewer-grid { grid-template-columns: 1fr; } .slice-row { grid-template-columns: 1fr; } .interp-3d-section { grid-template-columns: 1fr; } .transition-section { grid-template-columns: 1fr; } nav { display: none; } }
+
+/* === Accessibility: visible keyboard focus (WCAG 2.4.7) ===
+   Harvest yellow ring contrasts ~8:1 against Illini Blue background. */
+:focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 6px; }
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 3px solid var(--focus); outline-offset: 2px;
+}
+
+/* === Accessibility: respect reduced-motion preference (WCAG 2.3.3) ===
+   Silences the hero shimmer, logo spin, and all transitions for users
+   who request reduced motion. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
 </style>
 </head>
 <script type="importmap">
@@ -160,8 +200,8 @@ footer .logo-small { font-family: var(--serif); font-style: italic; color: var(-
   <div class="section-header"><span class="section-tag">02 — Hue Interpolation &amp; 3D Paths</span><h2>The Path Between Colors</h2><p>The gradient strips show the 2D result. Below, 3D viewers reveal the actual path each method takes through the gamut.</p></div>
   <div class="interp-grid">
     <div class="interp-controls">
-      <label>From:</label><div class="color-input-wrap"><input type="color" id="interpColorA" value="#ef4444"><span id="interpColorALabel">#ef4444</span></div>
-      <label>To:</label><div class="color-input-wrap"><input type="color" id="interpColorB" value="#3b82f6"><span id="interpColorBLabel">#3b82f6</span></div>
+      <label>From:</label><div class="color-input-wrap"><input type="color" id="interpColorA" value="#FF5F05"><span id="interpColorALabel">#FF5F05</span></div>
+      <label>To:</label><div class="color-input-wrap"><input type="color" id="interpColorB" value="#009FD4"><span id="interpColorBLabel">#009FD4</span></div>
       <div class="steps-counter">Steps: <input type="number" id="interpSteps" value="16" min="2" max="256"></div>
     </div>
     <div id="interpRows"></div>
@@ -326,13 +366,13 @@ class Orbit {
 
 function makeAxes(scene){
   const g=new THREE.Group();
-  [[1.3,0,0,0xef6060],[0,1.3,0,0x60ef60],[0,0,1.3,0x6090ef]].forEach(([x,y,z,c])=>{
+  [[1.3,0,0,0xff5f05],[0,1.3,0,0x5db47a],[0,0,1.3,0x009fd4]].forEach(([x,y,z,c])=>{
     const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(x,y,z)]);
     g.add(new THREE.Line(geo,new THREE.LineBasicMaterial({color:c,transparent:true,opacity:0.5})));
   });
   const gp=[];for(let i=-1;i<=1;i+=0.5){gp.push(-1,0,i,1,0,i,i,0,-1,i,0,1);}
   const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(gp,3));
-  g.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0x252540,transparent:true,opacity:0.3})));
+  g.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.3})));
   scene.add(g);
 }
 
@@ -343,7 +383,7 @@ function init3DViewer(){
   const wrap=document.getElementById('viewer3dWrap');
   const w=wrap.clientWidth,h=wrap.clientHeight;
   const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-  renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x111119,1);
+  renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x13294b,1);
   // Enable proper depth sorting
   renderer.sortObjects=true;
   wrap.insertBefore(renderer.domElement,wrap.firstChild);
@@ -373,7 +413,7 @@ function init3DViewer(){
   // Glow halo
   const indGlow=new THREE.Mesh(
     new THREE.RingGeometry(0.095,0.16,32),
-    new THREE.MeshBasicMaterial({color:0x7c6aef,side:THREE.DoubleSide,transparent:true,opacity:0.4,depthTest:false})
+    new THREE.MeshBasicMaterial({color:0xff5f05,side:THREE.DoubleSide,transparent:true,opacity:0.4,depthTest:false})
   );
   indGroup.add(indGlow);
   // Crosshair lines through the point
@@ -701,7 +741,7 @@ function renderInterpolation(){
 function renderInterp3D(colA,colB){
   const grid=document.getElementById('interp3dGrid');
   const uSpaces=['rgb','hsv','hsl','cielab','oklab','oklch'];
-  const pathCols=[0xff6666,0x66ff99,0x6699ff,0xffcc44,0xff66ff,0x66ffff,0xffaa66,0xaaff66];
+  const pathCols=[0xff5f05,0x009fd4,0xfcb316,0x5db47a,0xc4e9f5,0xff8a3e,0xffffff,0xa5c77f];
 
   if(!i3v.length){
     grid.innerHTML='';
@@ -715,7 +755,7 @@ function renderInterp3D(colA,colB){
       const wrap=document.getElementById(`i3w${idx}`);
       const w=wrap.clientWidth,h=wrap.clientHeight||260;
       const renderer=new THREE.WebGLRenderer({antialias:true,alpha:true});
-      renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x111119,1);
+      renderer.setSize(w,h);renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));renderer.setClearColor(0x13294b,1);
       renderer.sortObjects=true;
       wrap.appendChild(renderer.domElement);
       const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);

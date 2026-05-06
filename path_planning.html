@@ -154,6 +154,23 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:4p
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
 }
 
+/* === Accessibility: small-text accent override (WCAG 1.4.3) ===
+   Per UIUC: Illini Orange is only accessible at 24px+ (or 18.66px+ bold).
+   For small accent text on card surfaces, use Harvest (#FCB316) which
+   clears AAA on every brand surface. Illini Orange remains the primary
+   CTA background, large-display, and graphic color. */
+.b.import-b,.b.import-b:hover{color:#FCB316}
+.b.compare{color:#FCB316} /* compare label — small */
+.b.compare:hover{color:#FCB316;background:rgba(252,179,22,.18)}
+.algo-label.l-label{background:rgba(252,179,22,.20);color:#FCB316} /* L tag */
+.tag-d{background:rgba(252,179,22,.20);color:#FCB316}              /* DIJKSTRA tag */
+.modal-body code{color:#FCB316}                                    /* inline code */
+.panel-hdr.l-hdr{background:rgba(252,179,22,.20);color:#FCB316}
+.panel-stats.l-stats .sv{color:#FCB316}
+.stats .sv{color:#FCB316}
+.val-g{color:#FCB316}                                              /* g-value */
+.info-btn:hover{border-color:#FCB316;color:#FCB316;background:rgba(252,179,22,.18)}
+
 @media(max-width:900px){.header{gap:5px;padding:5px 8px} .sep{display:none} .b{font-size:9.5px;padding:3px 6px} .tgl{font-size:9.5px;padding:2px 5px} select.sel{font-size:9.5px;padding:3px 16px 3px 5px} .info-bar{font-size:9.5px;padding:4px 10px} .footer{font-size:8.5px;padding:4px 10px} .explain.open{width:240px} .explain-inner{width:240px}}
 @media(max-width:600px){.header{gap:4px;padding:4px 6px} .logo{font-size:11px} .b{font-size:8.5px;padding:2px 5px} .tgl{font-size:8.5px} .cg{padding:1px;gap:1px} .info-bar{font-size:8.5px;padding:3px 8px} .footer{font-size:7.5px;padding:3px 8px;gap:4px} .legend{gap:5px} .spd{font-size:8.5px} input[type=range]{width:36px} .grids-row{padding:4px;gap:4px} .explain.open{width:200px} .explain-inner{width:200px;padding:8px}}
 </style>
