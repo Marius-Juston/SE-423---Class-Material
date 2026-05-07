@@ -237,6 +237,19 @@ jobs:
         if: steps.resolve.outputs.has_tex == 'true'
         run: echo "${{ env.TL_DIR }}/bin/x86_64-linux" >> $GITHUB_PATH
 
+      - name: Install mupdf-tools
+        if: steps.resolve.outputs.has_tex == 'true'
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends mupdf-tools
+
+      - name: Restore derived asset cache
+        id: cache-derived
+        if: steps.resolve.outputs.has_tex == 'true'
+        uses: actions/cache@v5
+        with:
+          path: .ci-cache
+          key: derived-${{ runner.os }}-${{ github.run_id }}
+          restore-keys: derived-${{ runner.os }}-
+
       - name: Compile LaTeX Documents
         if: steps.resolve.outputs.has_tex == 'true'
         env:
@@ -264,9 +277,28 @@ jobs:
       - name: Generate XBB sidecars for raster images
         if: steps.resolve.outputs.has_tex == 'true'
         run: |
+          mkdir -p .ci-cache/xbb
+          HASH_FILE=".ci-cache/xbb/.hashes"
+          touch "$HASH_FILE"
+
           find Homeworks Lectures -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | while read img; do
-            out="${img%.*}.xbb"
-            [ -f "$out" ] || extractbb "$img"
+            xbb="${img%.*}.xbb"
+            cached=".ci-cache/xbb/$xbb"
+            current_hash=$(sha256sum "$img" | cut -d' ' -f1)
+            stored_hash=$(grep -F "${img}:" "$HASH_FILE" | cut -d: -f2)
+
+            if [ "$current_hash" = "$stored_hash" ] && [ -f "$cached" ]; then
+              cp "$cached" "$xbb"
+            else
+              extractbb "$img"
+              if [ -f "$xbb" ]; then
+                mkdir -p "$(dirname "$cached")"
+                cp "$xbb" "$cached"
+                grep -vF "${img}:" "$HASH_FILE" > "${HASH_FILE}.tmp" 2>/dev/null || true
+                echo "${img}:${current_hash}" >> "${HASH_FILE}.tmp"
+                mv "${HASH_FILE}.tmp" "$HASH_FILE"
+              fi
+            fi
           done
 
       # tex4ht has no working PDF-to-raster path for vector figures
@@ -277,14 +309,29 @@ jobs:
       - name: Convert PDF figures to SVG (for HTML mode)
         if: steps.resolve.outputs.has_tex == 'true'
         run: |
-          sudo apt-get update && sudo apt-get install -y mupdf-tools
-          
+          mkdir -p .ci-cache/html-svgs
+          HASH_FILE=".ci-cache/html-svgs/.hashes"
+          touch "$HASH_FILE"
+
           find Homeworks/Figures -type f -name "*.pdf" 2>/dev/null | while read pdf; do
             svg="${pdf%.pdf}.svg"
-            if [ ! -f "$svg" ] || [ "$pdf" -nt "$svg" ]; then
+            cached=".ci-cache/html-svgs/$svg"
+            current_hash=$(sha256sum "$pdf" | cut -d' ' -f1)
+            stored_hash=$(grep -F "${pdf}:" "$HASH_FILE" | cut -d: -f2)
+
+            if [ "$current_hash" = "$stored_hash" ] && [ -f "$cached" ]; then
+              cp "$cached" "$svg"
+            else
               echo "Converting $pdf -> $svg"
-              dvisvgm --pdf --no-fonts --output="$svg" "$pdf" || \
+              if dvisvgm --pdf --no-fonts --output="$svg" "$pdf"; then
+                mkdir -p "$(dirname "$cached")"
+                cp "$svg" "$cached"
+                grep -vF "${pdf}:" "$HASH_FILE" > "${HASH_FILE}.tmp" 2>/dev/null || true
+                echo "${pdf}:${current_hash}" >> "${HASH_FILE}.tmp"
+                mv "${HASH_FILE}.tmp" "$HASH_FILE"
+              else
                 echo "::warning::dvisvgm failed for $pdf (HTML may miss this figure)"
+              fi
             fi
           done
 
@@ -318,29 +365,45 @@ jobs:
           done
 
       - name: Convert TikZ Figures to SVG
-        if: contains(steps.changed-files.outputs.all_changed_files, 'Lectures/Figures/') || github.event_name == 'workflow_dispatch'
+        if: steps.resolve.outputs.has_tex == 'true'
         run: |
-          sudo apt-get update && sudo apt-get install -y mupdf-tools
+          mkdir -p build/Lectures/Figures .ci-cache/tikz-svgs
+          HASH_FILE=".ci-cache/tikz-svgs/.hashes"
+          touch "$HASH_FILE"
 
-          mkdir -p build/Lectures/Figures
+          # Warm the build dir with previously compiled outputs before hash checks.
+          rsync -a --include="*.svg" --include="*.pdf" --exclude="*" \
+            .ci-cache/tikz-svgs/ build/Lectures/Figures/ 2>/dev/null || true
 
           for texfile in Lectures/Figures/*.tex; do
-            # On manual dispatch, rebuild every figure; otherwise only the changed ones.
-            if [ "${{ github.event_name }}" = "workflow_dispatch" ] \
-               || echo "${{ steps.changed-files.outputs.all_changed_files }}" | grep -q "$texfile"; then
-              echo "Converting TikZ figure: $texfile"
-              
-              # 1. Compile to PDF (standalone handles the cropping)
-              latexmk -pdf -interaction=nonstopmode -shell-escape -outdir=build/Lectures/Figures "$texfile"
-              
-              # 2. Convert PDF to SVG
-              # --no-fonts: converts text to paths (prevents font rendering issues on the web)
-              # --pdf: tells dvisvgm to process a PDF input
-              pdf_file="build/Lectures/Figures/$(basename "${texfile%.tex}.pdf")"
-              svg_file="build/Lectures/Figures/$(basename "${texfile%.tex}.svg")"
-              
-              dvisvgm --pdf --no-fonts --output="$svg_file" "$pdf_file"
+            [ -f "$texfile" ] || continue
+            name=$(basename "$texfile")
+            current_hash=$(sha256sum "$texfile" | cut -d' ' -f1)
+            stored_hash=$(grep -F "${name}:" "$HASH_FILE" | cut -d: -f2)
+            svg_file="build/Lectures/Figures/${name%.tex}.svg"
+
+            if [ "$current_hash" = "$stored_hash" ] && [ -f "$svg_file" ]; then
+              echo "Skipping unchanged: $texfile"
+              continue
             fi
+
+            echo "Building: $texfile"
+            # 1. Compile to PDF (standalone handles the cropping)
+            latexmk -pdf -interaction=nonstopmode -shell-escape \
+              -outdir=build/Lectures/Figures "$texfile"
+
+            # 2. Convert PDF to SVG
+            # --no-fonts: converts text to paths (prevents font rendering issues on the web)
+            # --pdf: tells dvisvgm to process a PDF input
+            pdf_file="build/Lectures/Figures/${name%.tex}.pdf"
+            dvisvgm --pdf --no-fonts --output="$svg_file" "$pdf_file"
+
+            # Update persistent cache
+            cp "$svg_file" ".ci-cache/tikz-svgs/${name%.tex}.svg"
+            cp "$pdf_file" ".ci-cache/tikz-svgs/${name%.tex}.pdf"
+            grep -vF "${name}:" "$HASH_FILE" > "${HASH_FILE}.tmp" 2>/dev/null || true
+            echo "${name}:${current_hash}" >> "${HASH_FILE}.tmp"
+            mv "${HASH_FILE}.tmp" "$HASH_FILE"
           done
 
       - name: Convert PPTX to PDF (Vector-Preserving)
