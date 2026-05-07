@@ -1,0 +1,875 @@
+<!DOCTYPE html>
+<html lang="en" id="html-root">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professor's Guide | SE 423 Course Material</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>tailwind.config = { darkMode: 'class' }</script>
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+    code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
+
+    .bg-uiuc-blue  { background-color: #13294B; }
+    .text-uiuc-orange { color: #FF5F05; }
+    .border-uiuc-orange { border-color: #FF5F05; }
+
+    /* Code blocks */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      border-radius: 0.5rem;
+      overflow-x: auto;
+      position: relative;
+    }
+    .dark .code-block { background: #020617; }
+
+    .copy-btn {
+      position: absolute;
+      top: 0.5rem;
+      right: 0.5rem;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.7rem;
+      border-radius: 0.3rem;
+      background: #334155;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: none;
+    }
+    .copy-btn:hover { background: #475569; color: #e2e8f0; }
+    .copy-btn.copied { background: #166534; color: #bbf7d0; }
+
+    /* Sidebar nav */
+    .nav-link {
+      display: block;
+      padding: 0.35rem 0.75rem;
+      border-radius: 0.375rem;
+      font-size: 0.85rem;
+      color: #475569;
+      transition: all 0.15s;
+      text-decoration: none;
+    }
+    .dark .nav-link { color: #94a3b8; }
+    .nav-link:hover { background: #f1f5f9; color: #13294B; }
+    .dark .nav-link:hover { background: #1e293b; color: #e2e8f0; }
+    .nav-link.active { background: #eff6ff; color: #13294B; font-weight: 600; border-left: 3px solid #FF5F05; }
+    .dark .nav-link.active { background: #1e293b; color: #93c5fd; }
+
+    .nav-section { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #94a3b8; padding: 0.75rem 0.75rem 0.25rem; }
+
+    /* Step badges */
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 1.75rem; height: 1.75rem; border-radius: 50%;
+      background: #13294B; color: white;
+      font-size: 0.8rem; font-weight: 700;
+      flex-shrink: 0; margin-top: 0.1rem;
+    }
+    .dark .step-badge { background: #FF5F05; }
+
+    /* Callout boxes */
+    .callout-tip    { background: #f0fdf4; border-left: 4px solid #22c55e; }
+    .callout-warn   { background: #fffbeb; border-left: 4px solid #f59e0b; }
+    .callout-info   { background: #eff6ff; border-left: 4px solid #3b82f6; }
+    .callout-danger { background: #fef2f2; border-left: 4px solid #ef4444; }
+    .dark .callout-tip    { background: #052e16; border-color: #16a34a; }
+    .dark .callout-warn   { background: #1c1400; border-color: #d97706; }
+    .dark .callout-info   { background: #0c1a2e; border-color: #2563eb; }
+    .dark .callout-danger { background: #1f0000; border-color: #dc2626; }
+
+    /* Inline code */
+    .ic {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.82em;
+      background: #f1f5f9;
+      color: #0f172a;
+      padding: 0.1em 0.35em;
+      border-radius: 0.25rem;
+    }
+    .dark .ic { background: #1e293b; color: #e2e8f0; }
+
+    /* Table */
+    .guide-table { border-collapse: collapse; width: 100%; }
+    .guide-table th { background: #13294B; color: white; padding: 0.6rem 1rem; text-align: left; font-size: 0.85rem; }
+    .guide-table td { padding: 0.6rem 1rem; font-size: 0.85rem; border-bottom: 1px solid #e2e8f0; }
+    .dark .guide-table td { border-color: #1e293b; }
+    .guide-table tr:hover td { background: #f8fafc; }
+    .dark .guide-table tr:hover td { background: #0f172a; }
+
+    /* Sticky sidebar */
+    @media (min-width: 1024px) {
+      .sidebar { position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow-y: auto; }
+    }
+
+    /* Section anchors */
+    .section-title { scroll-margin-top: 5rem; }
+
+    /* Dark mode overrides */
+    .dark body { background-color: #020617; color: #e2e8f0; }
+    .dark .bg-white { background-color: #0f172a; }
+    .dark .text-gray-900 { color: #f1f5f9; }
+    .dark .text-gray-700 { color: #cbd5e1; }
+    .dark .text-gray-600 { color: #94a3b8; }
+    .dark .border-gray-200 { border-color: #1e293b; }
+    .dark .bg-gray-50 { background-color: #0f172a; }
+  </style>
+</head>
+<body class="min-h-screen bg-gray-50 text-gray-900">
+
+  <!-- Header -->
+  <header class="bg-uiuc-blue text-white py-8 shadow-lg">
+    <div class="container mx-auto px-6 flex items-center justify-between">
+      <div>
+        <a href="index.html" class="text-white/60 hover:text-white text-sm mb-1 block transition-colors">← Back to Course Hub</a>
+        <h1 class="text-2xl font-bold">Professor's Guide</h1>
+        <p class="text-uiuc-orange font-semibold text-sm tracking-widest uppercase mt-1">SE 423 Course Material Repository</p>
+      </div>
+      <button id="theme-toggle" aria-label="Toggle dark mode" class="p-2 rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 transition-all">
+        <svg id="icon-sun" class="w-5 h-5 text-yellow-300 hidden" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"/></svg>
+        <svg id="icon-moon" class="w-5 h-5 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- Layout -->
+  <div class="container mx-auto px-4 lg:px-6 py-8 flex gap-8">
+
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-64 flex-shrink-0">
+      <nav class="sidebar bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 py-3">
+        <div class="nav-section">Getting Started</div>
+        <a href="#overview"       class="nav-link">Overview</a>
+        <a href="#how-ci-works"   class="nav-link">How CI Works</a>
+        <a href="#forking"        class="nav-link">Forking for Your Course</a>
+
+        <div class="nav-section">Day-to-Day Editing</div>
+        <a href="#slides"         class="nav-link">Lecture Slides</a>
+        <a href="#labs"           class="nav-link">Lab Assignments</a>
+        <a href="#homeworks"      class="nav-link">Homework Assignments</a>
+        <a href="#figures"        class="nav-link">Figures</a>
+        <a href="#website"        class="nav-link">Course Website</a>
+
+        <div class="nav-section">Reference</div>
+        <a href="#latex-primer"   class="nav-link">LaTeX Primer</a>
+        <a href="#accessibility"  class="nav-link">Accessibility</a>
+        <a href="#quick-ref"      class="nav-link">Quick Reference</a>
+      </nav>
+    </aside>
+
+    <!-- Main content -->
+    <main class="flex-1 min-w-0 space-y-12">
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- OVERVIEW -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="overview" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Overview</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          This repository holds all course material for SE 423 — lecture slides, lab handouts, homework assignments, and an interactive course website. The key idea is simple: <strong>you edit files, push them to GitHub, and everything else happens automatically.</strong>
+        </p>
+
+        <div class="callout-info rounded-lg p-4 mb-6">
+          <p class="font-semibold text-blue-800 dark:text-blue-300 mb-1">The workflow in one sentence</p>
+          <p class="text-blue-700 dark:text-blue-200 text-sm">Edit a <span class="ic">.tex</span> or <span class="ic">.pptx</span> file → push to the <span class="ic">main</span> branch → GitHub automatically compiles it into a PDF and publishes it to the course website.</p>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3 mt-6">What lives where</h3>
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm">
+          <thead><tr><th>Directory / File</th><th>What it contains</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ic">Lectures/Slides/</span></td><td>PowerPoint slides (.pptx) for each lecture</td></tr>
+            <tr><td><span class="ic">Lectures/Figures/</span></td><td>Vector figures (TikZ / SVG) used in slides — auto-converted to SVG</td></tr>
+            <tr><td><span class="ic">Labs/</span></td><td>Lab handout source files (.tex)</td></tr>
+            <tr><td><span class="ic">Homeworks/</span></td><td>Homework assignment source files (.tex)</td></tr>
+            <tr><td><span class="ic">site/</span></td><td>The GitHub Pages website (HTML + JavaScript)</td></tr>
+            <tr><td><span class="ic">header.tex</span></td><td>Shared formatting — all assignments import this</td></tr>
+            <tr><td><span class="ic">pdf-list.txt</span></td><td>The build manifest — lists every .tex file the CI should compile</td></tr>
+            <tr><td><span class="ic">.github/workflows/build-latex.yml</span></td><td>The automation script (GitHub Actions) — you rarely need to touch this</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- HOW CI WORKS -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="how-ci-works" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">How CI Works (The Automatic Pipeline)</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          "CI" stands for Continuous Integration — it's a robot that runs on GitHub's servers every time you push code. You never have to install LaTeX or PDF tools on your own machine; the robot handles it.
+        </p>
+
+        <div class="grid md:grid-cols-2 gap-4 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 p-5 shadow-sm">
+            <h3 class="font-bold mb-3 flex items-center gap-2">
+              <span class="text-green-500 text-xl">✓</span> Happens automatically on every push
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>• <span class="ic">.tex</span> files → compiled to PDF <em>and</em> accessible HTML</li>
+              <li>• <span class="ic">.pptx</span> files → converted to PDF</li>
+              <li>• TikZ figure files → converted to SVG for the website gallery</li>
+              <li>• All outputs published to the <span class="ic">artifacts</span> branch (which GitHub Pages serves)</li>
+            </ul>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 p-5 shadow-sm">
+            <h3 class="font-bold mb-3 flex items-center gap-2">
+              <span class="text-blue-500 text-xl">↗</span> You must do manually
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+              <li>• Write / edit <span class="ic">.tex</span> and <span class="ic">.pptx</span> files</li>
+              <li>• Add new .tex files to <span class="ic">pdf-list.txt</span></li>
+              <li>• Update <span class="ic">site/index.html</span> when adding new assignments</li>
+              <li>• Commit and push your changes</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="callout-warn rounded-lg p-4 mb-4">
+          <p class="font-semibold text-amber-800 dark:text-amber-300 mb-1">⚠ Never edit the <span class="ic">artifacts</span> branch directly</p>
+          <p class="text-amber-700 dark:text-amber-200 text-sm">The <span class="ic">artifacts</span> branch is completely managed by the robot. Any manual edits you make there will be overwritten the next time CI runs. Always edit on the <span class="ic">main</span> branch.</p>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Triggering a full rebuild</h3>
+        <p class="text-gray-700 dark:text-gray-300 text-sm mb-3">
+          By default, CI only recompiles files that changed. To force a complete rebuild of everything (useful after renaming files or fixing a shared header):
+        </p>
+        <ol class="space-y-2 text-sm text-gray-700 dark:text-gray-300 mb-2">
+          <li class="flex gap-3"><span class="step-badge">1</span><span>Go to your GitHub repository page</span></li>
+          <li class="flex gap-3"><span class="step-badge">2</span><span>Click <strong>Actions</strong> in the top menu</span></li>
+          <li class="flex gap-3"><span class="step-badge">3</span><span>Click the <strong>Build LaTeX PDFs</strong> workflow</span></li>
+          <li class="flex gap-3"><span class="step-badge">4</span><span>Click <strong>Run workflow</strong> → <strong>Run workflow</strong> — this rebuilds every file in <span class="ic">pdf-list.txt</span></span></li>
+        </ol>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- FORKING -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="forking" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Forking for Your Own Course</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          "Forking" means creating your own copy of this repository that you fully control. From that point on, you can change anything without affecting the original SE 423 materials.
+        </p>
+
+        <div class="space-y-6">
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">1</span>
+            <div>
+              <p class="font-semibold mb-1">Fork on GitHub</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Go to the repository page, click <strong>Fork</strong> (top right), and choose your personal or institutional account. GitHub creates a full copy under your account.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">2</span>
+            <div>
+              <p class="font-semibold mb-1">Enable GitHub Actions on your fork</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Forks start with Actions disabled. Go to <strong>Actions</strong> tab in your forked repo and click <strong>Enable GitHub Actions</strong>.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">3</span>
+            <div>
+              <p class="font-semibold mb-1">Update the course name and metadata in <span class="ic">header.tex</span></p>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Near line 158 of <span class="ic">header.tex</span>, change these two lines to match your course:</p>
+              <div class="code-block p-4 text-sm mb-2">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>\def\CourseCode{ECE 420}
+\def\CourseName{Advanced Robotics}</pre>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">4</span>
+            <div>
+              <p class="font-semibold mb-1">Set your course start date in <span class="ic">timline.tex</span></p>
+              <p class="text-sm text-gray-600 dark:text-gray-400 mb-2">Change the start date so that due-date calculations across all assignments update automatically:</p>
+              <div class="code-block p-4 text-sm mb-2">
+                <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+                <pre>\def\StartDate{2026-01-20}   % Change to your semester start date (YYYY-MM-DD)
+\def\HWCheckOffTime{5PM}     % Time students demo work in lab
+\def\HWSubmitTime{9AM}       % Time Gradescope submissions are due</pre>
+              </div>
+              <p class="text-sm text-gray-600 dark:text-gray-400">After this one change, every <span class="ic">\GetDate{week}{day}</span> call in every homework file automatically shows the correct date for your semester.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">5</span>
+            <div>
+              <p class="font-semibold mb-1">Replace or clear out the existing content</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Delete the existing <span class="ic">Lectures/Slides/*.pptx</span>, <span class="ic">Labs/*.tex</span>, and <span class="ic">Homeworks/*.tex</span> files and replace them with your own. Keep the directory structure intact.</p>
+            </div>
+          </div>
+
+          <div class="flex gap-4">
+            <span class="step-badge mt-1">6</span>
+            <div>
+              <p class="font-semibold mb-1">Enable GitHub Pages</p>
+              <p class="text-sm text-gray-600 dark:text-gray-400">Go to <strong>Settings → Pages</strong> in your forked repo. Under <em>Source</em>, select <strong>Deploy from a branch</strong>, choose branch <span class="ic">artifacts</span>, folder <span class="ic">/ (root)</span>, and save. After the first CI run, your site will be live at <span class="ic">https://your-username.github.io/repo-name/</span>.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- LECTURE SLIDES -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="slides" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Lecture Slides (PPTX)</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          Lecture slides live in <span class="ic">Lectures/Slides/</span> as PowerPoint files. The CI converts each one to PDF automatically — you don't need to export them yourself.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">Adding a new lecture</h3>
+        <ol class="space-y-3 mb-6">
+          <li class="flex gap-3"><span class="step-badge">1</span><span class="text-sm text-gray-700 dark:text-gray-300">Create your slide deck in Microsoft PowerPoint (recommended) or LibreOffice Impress, following the <a href="https://brand.illinois.edu/visual-identity/color" class="text-blue-600 underline" target="_blank">UIUC branding guidelines</a> for colors.</span></li>
+          <li class="flex gap-3"><span class="step-badge">2</span><span class="text-sm text-gray-700 dark:text-gray-300">Name the file following the existing pattern: <span class="ic">L1.pptx</span>, <span class="ic">L2.pptx</span>, … and place it in <span class="ic">Lectures/Slides/</span>.</span></li>
+          <li class="flex gap-3"><span class="step-badge">3</span><span class="text-sm text-gray-700 dark:text-gray-300">Commit and push to <span class="ic">main</span>. The CI detects all <span class="ic">L*.pptx</span> files automatically — no entry in <span class="ic">pdf-list.txt</span> is needed for slides.</span></li>
+          <li class="flex gap-3"><span class="step-badge">4</span><span class="text-sm text-gray-700 dark:text-gray-300">Add a card to the lectures list in <span class="ic">site/index.html</span> so it appears on the course hub (see the <a href="#website" class="text-blue-600 underline">Website section</a>).</span></li>
+        </ol>
+
+        <div class="callout-tip rounded-lg p-4 mb-4">
+          <p class="font-semibold text-green-800 dark:text-green-300 mb-1">💡 UIUC Color Palette</p>
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
+            <div class="flex items-center gap-2 text-sm"><span style="background:#13294B" class="w-5 h-5 rounded inline-block border border-white/20"></span> Illini Blue <span class="ic">#13294B</span></div>
+            <div class="flex items-center gap-2 text-sm"><span style="background:#FF5F05" class="w-5 h-5 rounded inline-block"></span> Illini Orange <span class="ic">#FF5F05</span></div>
+            <div class="flex items-center gap-2 text-sm"><span style="background:#009FD4" class="w-5 h-5 rounded inline-block"></span> Arches <span class="ic">#009FD4</span></div>
+            <div class="flex items-center gap-2 text-sm"><span style="background:#006230" class="w-5 h-5 rounded inline-block"></span> Prairie <span class="ic">#006230</span></div>
+            <div class="flex items-center gap-2 text-sm"><span style="background:#FCB316" class="w-5 h-5 rounded inline-block border border-gray-200"></span> Harvest <span class="ic">#FCB316</span></div>
+          </div>
+        </div>
+
+        <div class="callout-warn rounded-lg p-4">
+          <p class="font-semibold text-amber-800 dark:text-amber-300 mb-1">⚠ Sourcing images</p>
+          <p class="text-amber-700 dark:text-amber-200 text-sm">Always note the source of any image or diagram taken from an external website. Add a small caption below the image (e.g., "Source: Wikipedia"). Circuit diagrams from the F28379D technical reference should cite that document.</p>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- LABS -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="labs" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Lab Assignments</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          Lab handouts are written in LaTeX and compiled to PDF by the CI. If you've never used LaTeX before, read the <a href="#latex-primer" class="text-blue-600 underline">LaTeX Primer</a> section first, then come back here.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">Creating a new lab</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Copy this template and save it as <span class="ic">Labs/Lab4.tex</span> (or whatever number comes next):</p>
+
+        <div class="code-block p-4 text-sm mb-4">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>\documentclass[11pt]{article}
+
+\def\AssignmentMode{Lab}      % Do not change this for labs
+\def\HWNum{4}                 % Lab number
+\def\AssignmentText{Brief one-line description of the lab}
+
+\input{header}                % Loads all shared formatting — do not move this line
+
+\begin{document}
+
+\MakeAssignmentTitle          % Prints the gray title box at the top
+
+\section*{Goals for this Lab Assignment}
+\begin{itemize}
+    \item Goal 1
+    \item Goal 2
+\end{itemize}
+
+\section*{Laboratory Exercises}
+
+\Ex                           % Exercise 1 (auto-numbered)
+
+Description of the first exercise.
+
+\begin{enumerate}
+    \item Step one
+    \item Step two
+\end{enumerate}
+
+\Ex[Optional title]           % Exercise 2 with a subtitle
+
+Another exercise. Code example:
+
+\begin{minted}{c}
+int main(void) {
+    // Your C code here
+    return 0;
+}
+\end{minted}
+
+\MakeFooter                   % Prints the reminder box at the bottom
+\end{document}</pre>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Registering the lab so CI compiles it</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Open <span class="ic">pdf-list.txt</span> and add a line for your new file:</p>
+        <div class="code-block p-4 text-sm mb-4">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>Labs/Lab4.tex</pre>
+        </div>
+
+        <div class="callout-danger rounded-lg p-4">
+          <p class="font-semibold text-red-800 dark:text-red-300 mb-1">🚫 If you skip this step, CI will not compile your file</p>
+          <p class="text-red-700 dark:text-red-200 text-sm">Every <span class="ic">.tex</span> file that should become a PDF must be listed in <span class="ic">pdf-list.txt</span>. The CI ignores <span class="ic">.tex</span> files not on this list.</p>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- HOMEWORKS -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="homeworks" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Homework Assignments</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          Homework files follow the same LaTeX pattern as labs but use <span class="ic">\AssignmentMode{HW}</span> and include accessibility metadata required by UIUC's PDF/UA-2 standard.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">Homework template</h3>
+        <div class="code-block p-4 text-sm mb-4">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>% This block MUST come first — before \documentclass.
+% It enables accessibility tagging in the PDF output.
+\ifdefined\HCode\else
+\DocumentMetadata{
+  testphase = {phase-III, math, table},
+  pdfstandard = ua-2,
+  lang = en
+}
+\fi
+
+\documentclass[11pt]{article}
+
+\def\AssignmentMode{HW}      % Do not change this for homeworks
+\def\HWNum{7}                % Homework number
+
+\input{header}
+
+% \GetDate{weeks}{days} counts from the semester start date defined in timline.tex
+\def\AssignmentText{%
+  Check-offs due \HWCheckOffTime~\GetDate{8}{1}.
+  Gradescope submission due \HWSubmitTime~\GetDate{8}{2}.%
+}
+
+\begin{document}
+\MakeAssignmentTitle
+
+\Ex[First Problem]
+
+Problem description here. You can use \textbf{bold}, \textit{italics},
+or \mintinline{c}{inline code}.
+
+\Ex[Second Problem]
+
+\begin{enumerate}
+    \item Part a
+    \item Part b
+\end{enumerate}
+
+\MakeFooter
+\end{document}</pre>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Due dates with <span class="ic">\GetDate</span></h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+          The <span class="ic">\GetDate{weeks}{days}</span> macro counts forward from the <span class="ic">\StartDate</span> you set in <span class="ic">timline.tex</span>. You never hardcode dates — if the semester shifts, you change <span class="ic">\StartDate</span> once and every deadline updates.
+        </p>
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-4">
+          <thead><tr><th>Command</th><th>Means</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ic">\GetDate{2}{1}</span></td><td>2 weeks + 1 day after start date</td></tr>
+            <tr><td><span class="ic">\GetDate{4}{5}</span></td><td>4 weeks + 5 days after start date</td></tr>
+          </tbody>
+        </table>
+
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Add the new file to <span class="ic">pdf-list.txt</span>:</p>
+        <div class="code-block p-4 text-sm mb-2">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>Homeworks/HW7.tex</pre>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- FIGURES -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="figures" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Figures</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          Figures in <span class="ic">Lectures/Figures/</span> are automatically converted to SVG and shown in the website's gallery. Each figure gets a modal preview card — no manual steps needed.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">Preferred formats (best to worst)</h3>
+        <div class="space-y-3 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border-l-4 border-green-500 p-4 shadow-sm">
+            <p class="font-semibold text-sm">✓ TikZ (.tex) — Best</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Written in LaTeX, compiles to a perfect vector graphic. CI converts it to SVG automatically. Use for diagrams, block diagrams, and circuit drawings.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg border-l-4 border-blue-400 p-4 shadow-sm">
+            <p class="font-semibold text-sm">✓ SVG — Good</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Native vector format for the web. Export from Inkscape, Figma, or Adobe Illustrator. CI copies it directly.</p>
+          </div>
+          <div class="bg-white dark:bg-gray-800 rounded-lg border-l-4 border-yellow-400 p-4 shadow-sm">
+            <p class="font-semibold text-sm">~ PNG / JPG — Only when necessary</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Raster images look blurry when zoomed. Only use if no vector source exists (e.g., a photo of lab hardware). Always provide meaningful alt text for accessibility.</p>
+          </div>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Naming convention</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Use lowercase with underscores. The filename becomes the gallery card title.</p>
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+          <thead><tr><th>Good name</th><th>Bad name</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ic">adc_soc_trigger_flow.tex</span></td><td><span class="ic">Figure1.png</span></td></tr>
+            <tr><td><span class="ic">encoder_disk_diagram.svg</span></td><td><span class="ic">Untitled.svg</span></td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="font-bold text-lg mb-3">Using a figure in a LaTeX document</h3>
+        <div class="code-block p-4 text-sm mb-2">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>% Always use \AltImg (not plain \includegraphics) for accessibility.
+% The third argument is the alt text — describe what the figure shows.
+\begin{figure}[H]
+\centering
+\AltImg[width=0.8\textwidth]{Lectures/Figures/adc_soc_trigger_flow.pdf}{%
+    Block diagram showing ADC SOC trigger path from ePWM through
+    SOC channel selection to the ADC result register%
+}
+\caption{ADC SOC trigger flow.}
+\end{figure}</pre>
+        </div>
+
+        <div class="callout-info rounded-lg p-4">
+          <p class="font-semibold text-blue-800 dark:text-blue-300 mb-1">ℹ TikZ figures are compiled to PDF then referenced as PDF</p>
+          <p class="text-blue-700 dark:text-blue-200 text-sm">In your <span class="ic">\includegraphics</span> call, reference the <span class="ic">.pdf</span> version of the figure (e.g., <span class="ic">Lectures/Figures/mydiagram.pdf</span>). The CI converts the TikZ <span class="ic">.tex</span> to PDF first, then to SVG for the web.</p>
+        </div>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- WEBSITE -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="website" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Course Website (<span class="ic">site/index.html</span>)</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          The course hub page lists all lectures, labs, and homeworks as clickable cards. This list is <strong>not</strong> automatically generated from the file system — you must manually update the JavaScript data object inside <span class="ic">site/index.html</span> when you add new content.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">Adding a homework card</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Search for the <span class="ic">hw:</span> array in <span class="ic">site/index.html</span> and add an entry:</p>
+        <div class="code-block p-4 text-sm mb-4">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>// Inside the data object in site/index.html
+hw: [
+  // ... existing entries ...
+  {
+    title: "Homework 7: SLAM",
+    file: "Homeworks/HW7.pdf",
+    links: [
+      { label: "Dataset",   url: "https://example.com/slam-dataset" },
+      { label: "Reference", url: "https://example.com/slam-paper"   }
+    ]
+  },
+]</pre>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Adding a lecture card</h3>
+        <div class="code-block p-4 text-sm mb-4">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre>lectures: [
+  // ... existing entries ...
+  {
+    title: "Lecture 24: SLAM",
+    basePath: "Lectures/Slides/L24",   // CI creates both L24.pdf and leaves L24.pptx
+    topic: "Simultaneous Localization and Mapping, particle filters"
+  },
+]</pre>
+        </div>
+
+        <div class="callout-info rounded-lg p-4 mb-4">
+          <p class="font-semibold text-blue-800 dark:text-blue-300 mb-1">ℹ The figure gallery updates automatically</p>
+          <p class="text-blue-700 dark:text-blue-200 text-sm">The SVG gallery (the modal that shows all figures) is injected by CI between the <span class="ic">/* INJECT_FIGURES_START */</span> and <span class="ic">/* INJECT_FIGURES_END */</span> markers. Do not edit that block manually — it will be overwritten.</p>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Adding an interactive tool</h3>
+        <ol class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <li class="flex gap-3"><span class="step-badge">1</span><span>Create <span class="ic">site/my_tool.html</span> as a self-contained HTML page (see <span class="ic">color_spaces.html</span> as a reference)</span></li>
+          <li class="flex gap-3"><span class="step-badge">2</span><span>Add a navigation button in the header of <span class="ic">site/index.html</span> linking to it</span></li>
+          <li class="flex gap-3"><span class="step-badge">3</span><span>Push to <span class="ic">main</span> — CI copies the entire <span class="ic">site/</span> directory to the <span class="ic">artifacts</span> branch</span></li>
+        </ol>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- LATEX PRIMER -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="latex-primer" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">LaTeX Primer for Beginners</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          LaTeX is a document preparation system where you write plain text with formatting commands, and it produces a professionally typeset PDF. Think of it like writing HTML, but for documents.
+        </p>
+
+        <div class="callout-tip rounded-lg p-4 mb-6">
+          <p class="font-semibold text-green-800 dark:text-green-300 mb-1">💡 Easiest way to get started: Overleaf</p>
+          <p class="text-green-700 dark:text-green-200 text-sm">
+            <a href="https://overleaf.com" class="underline" target="_blank">Overleaf</a> is a free browser-based LaTeX editor — no installation required. This repo supports Overleaf sync, so you can import it directly. UIUC provides free Overleaf Professional accounts to faculty and students.
+          </p>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Core concepts</h3>
+
+        <div class="space-y-4 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">Commands start with a backslash</p>
+            <div class="code-block p-3 text-sm">
+              <pre>\textbf{bold text}      → <strong>bold text</strong>
+\textit{italic text}    → <em>italic text</em>
+\texttt{code font}      → monospace
+\url{https://uiuc.edu}  → clickable link</pre>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">Environments wrap blocks of content</p>
+            <div class="code-block p-3 text-sm">
+              <pre>\begin{itemize}          % unordered list
+    \item First item
+    \item Second item
+\end{itemize}
+
+\begin{enumerate}        % numbered list
+    \item Step one
+    \item Step two
+\end{enumerate}</pre>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">Math mode uses dollar signs</p>
+            <div class="code-block p-3 text-sm">
+              <pre>Inline math: $x = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$
+
+Display math (centered, on its own line):
+\[ F = ma \]</pre>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">Code listings with minted</p>
+            <div class="code-block p-3 text-sm">
+              <pre>% Inline: short snippet in a sentence
+The function \mintinline{c}{int main(void)} starts every program.
+
+% Block: multi-line code
+\begin{minted}{c}
+#include &lt;stdio.h&gt;
+int main(void) {
+    printf("Hello, world!\n");
+    return 0;
+}
+\end{minted}</pre>
+            </div>
+          </div>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Repo-specific macros you'll use constantly</h3>
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+          <thead><tr><th>Macro</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ic">\MakeAssignmentTitle</span></td><td>Prints the gray title box at the top of the document</td></tr>
+            <tr><td><span class="ic">\MakeFooter</span></td><td>Prints the reminder box at the bottom (about code comments)</td></tr>
+            <tr><td><span class="ic">\Ex</span></td><td>Starts a new exercise (auto-numbered)</td></tr>
+            <tr><td><span class="ic">\Ex[Subtitle]</span></td><td>Starts a new exercise with an optional subtitle</td></tr>
+            <tr><td><span class="ic">\AltImg[width=...]{path}{alt text}</span></td><td>Inserts an image with accessibility alt text</td></tr>
+            <tr><td><span class="ic">\GetDate{weeks}{days}</span></td><td>Computes a date relative to the semester start</td></tr>
+            <tr><td><span class="ic">\mintinline{c}{code}</span></td><td>Inline syntax-highlighted code</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="font-bold text-lg mb-3">Formatting rules specific to this repo</h3>
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm">
+          <thead><tr><th>Do this</th><th>Not this</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><span class="ic">\begin{figure}[H]</span></td><td><span class="ic">\begin{figure}[t]</span></td><td>Forces figure to appear exactly where written</td></tr>
+            <tr><td><span class="ic">\begin{subfigure}[b]</span></td><td><span class="ic">\begin{subfigure}[t]</span></td><td>Bottom-aligns side-by-side figures</td></tr>
+            <tr><td><span class="ic">$\rightarrow$</span></td><td><span class="ic">-&gt;</span></td><td>Proper math arrow in text</td></tr>
+            <tr><td>Add a <span class="ic">%</span> line between paragraphs and environments</td><td>Blank lines between <span class="ic">\end{...}</span> and <span class="ic">\begin{...}</span></td><td>Prevents spacing issues in HTML output</td></tr>
+            <tr><td><span class="ic">\AltImg</span></td><td><span class="ic">\includegraphics</span></td><td>Required for accessibility compliance</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- ACCESSIBILITY -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="accessibility" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Accessibility Requirements</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          UIUC requires course materials to meet <strong>WCAG 2.1 AA</strong> accessibility standards. This repo's CI pipeline automatically handles most of it — but you need to follow a few rules when writing content.
+        </p>
+
+        <div class="callout-info rounded-lg p-4 mb-6">
+          <p class="font-semibold text-blue-800 dark:text-blue-300 mb-1">ℹ What the repo handles automatically</p>
+          <ul class="text-blue-700 dark:text-blue-200 text-sm list-disc list-inside space-y-1">
+            <li>PDF/UA-2 accessibility tagging (via <span class="ic">tagpdf</span> package)</li>
+            <li>Dark mode support on the website (system preference detection)</li>
+            <li>Accessible HTML conversion with ARIA attributes</li>
+            <li>WCAG AA color contrast for code blocks</li>
+          </ul>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">What you must do</h3>
+
+        <div class="space-y-4 mb-6">
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">1. Always use <span class="ic">\AltImg</span> for images (never bare <span class="ic">\includegraphics</span>)</p>
+            <div class="code-block p-3 text-sm">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>% ✓ Correct — includes alt text for screen readers
+\AltImg[width=\textwidth]{Labs/Figures/board.jpg}{%
+    Top view of the F28379D breakout board with four 2x10 headers
+    soldered along the top edge and 18 LEDs in two rows below%
+}
+
+% ✗ Wrong — no alt text, fails accessibility check
+\includegraphics[width=\textwidth]{Labs/Figures/board.jpg}</pre>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">2. Write meaningful alt text — describe what the image <em>shows</em>, not just what it <em>is</em></p>
+            <table class="guide-table rounded-lg overflow-hidden mt-2">
+              <thead><tr><th>Good alt text</th><th>Bad alt text</th></tr></thead>
+              <tbody>
+                <tr><td>"Block diagram showing ePWM → ADC SOC trigger with channel select and result register output"</td><td>"Figure 1" or "diagram"</td></tr>
+                <tr><td>"Photo of soldered board, top view. Headers installed along top edge."</td><td>"board photo"</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">3. Use <span class="ic">\AltMath</span> for important equations</p>
+            <div class="code-block p-3 text-sm">
+              <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+              <pre>% Wraps the equation with an English description for screen readers
+\AltMath{Newton's second law: force equals mass times acceleration}{%
+    F = ma
+}</pre>
+            </div>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">4. Do not use color alone to convey meaning</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">For example, don't write "the red wire connects to pin 3" without also providing a label or pattern. Users who are colorblind will miss color-only cues.</p>
+          </div>
+        </div>
+
+        <h3 class="font-bold text-lg mb-3">Checking your work</h3>
+        <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
+          <li>• Run the <a href="https://wave.webaim.org/" class="text-blue-600 underline" target="_blank">WebAIM WAVE tool</a> on any HTML page you publish to check for errors</li>
+          <li>• For PDFs: open in Adobe Acrobat and run the built-in Accessibility Checker</li>
+          <li>• UIUC's accessibility guide: <a href="https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr" class="text-blue-600 underline" target="_blank">Box link</a></li>
+        </ul>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- QUICK REFERENCE -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="quick-ref" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Quick Reference</h2>
+
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-8">
+          <thead><tr><th>Task</th><th>What to do</th></tr></thead>
+          <tbody>
+            <tr><td>Change course name</td><td>Edit <span class="ic">\def\CourseCode</span> and <span class="ic">\def\CourseName</span> in <span class="ic">header.tex</span></td></tr>
+            <tr><td>Change semester start date</td><td>Edit <span class="ic">\def\StartDate</span> in <span class="ic">timline.tex</span></td></tr>
+            <tr><td>Add a lecture slide deck</td><td>Put <span class="ic">L23.pptx</span> in <span class="ic">Lectures/Slides/</span>, add entry to <span class="ic">data.lectures</span> in <span class="ic">site/index.html</span></td></tr>
+            <tr><td>Add a new lab</td><td>Create <span class="ic">Labs/Lab4.tex</span>, add line to <span class="ic">pdf-list.txt</span>, add card to <span class="ic">data.labs</span> in <span class="ic">site/index.html</span></td></tr>
+            <tr><td>Add a new homework</td><td>Create <span class="ic">Homeworks/HW7.tex</span>, add line to <span class="ic">pdf-list.txt</span>, add card to <span class="ic">data.hw</span> in <span class="ic">site/index.html</span></td></tr>
+            <tr><td>Add a figure to the gallery</td><td>Put a <span class="ic">.tex</span> or <span class="ic">.svg</span> file in <span class="ic">Lectures/Figures/</span> — gallery updates automatically on next CI run</td></tr>
+            <tr><td>Force a full rebuild</td><td>GitHub → Actions → Build LaTeX PDFs → Run workflow</td></tr>
+            <tr><td>Add a new package to LaTeX</td><td>Open an issue to discuss first — package order affects the accessibility pipeline</td></tr>
+          </tbody>
+        </table>
+
+        <div class="bg-uiuc-blue text-white rounded-xl p-6">
+          <h3 class="font-bold text-lg mb-3">Contact</h3>
+          <p class="text-sm text-white/80 mb-2">Questions about this repository? Contact the original author:</p>
+          <p class="font-semibold">Marius Juston</p>
+          <p class="text-sm text-white/70">
+            <a href="mailto:marius.juston@hotmail.fr" class="underline hover:text-white">marius.juston@hotmail.fr</a>
+            &nbsp;·&nbsp;
+            <a href="mailto:mjuston2@illinois.edu" class="underline hover:text-white">mjuston2@illinois.edu</a>
+          </p>
+          <p class="text-sm text-white/60 mt-2">If you're a professor adapting this material for your own course, Marius would love to hear from you!</p>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="bg-uiuc-blue text-white/60 text-center text-xs py-5 mt-12">
+    SE 423: Introduction to Mechatronics · University of Illinois Urbana-Champaign
+  </footer>
+
+  <script>
+    // ── Dark mode ─────────────────────────────────────────────────────────────
+    const html = document.getElementById('html-root');
+    const iconSun  = document.getElementById('icon-sun');
+    const iconMoon = document.getElementById('icon-moon');
+
+    function applyTheme(dark) {
+      html.classList.toggle('dark', dark);
+      iconSun.classList.toggle('hidden', !dark);
+      iconMoon.classList.toggle('hidden', dark);
+    }
+
+    const stored = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyTheme(stored === 'dark' || (!stored && prefersDark));
+
+    document.getElementById('theme-toggle').addEventListener('click', () => {
+      const isDark = html.classList.contains('dark');
+      applyTheme(!isDark);
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+    });
+
+    // ── Copy buttons ──────────────────────────────────────────────────────────
+    function copyCode(btn) {
+      const pre = btn.nextElementSibling;
+      navigator.clipboard.writeText(pre.innerText).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy'; btn.classList.remove('copied'); }, 1800);
+      });
+    }
+
+    // ── Active sidebar link on scroll ────────────────────────────────────────
+    const sections = document.querySelectorAll('.section-title');
+    const navLinks = document.querySelectorAll('.nav-link');
+
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          navLinks.forEach(a => a.classList.remove('active'));
+          const active = document.querySelector(`.nav-link[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-10% 0px -80% 0px' });
+
+    sections.forEach(s => observer.observe(s));
+  </script>
+</body>
+</html>
