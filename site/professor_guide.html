@@ -57,7 +57,11 @@
     .nav-link.active { background: #eff6ff; color: #13294B; font-weight: 600; border-left: 3px solid #FF5F05; }
     .dark .nav-link.active { background: #1e293b; color: #93c5fd; }
 
-    .nav-section { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #78748A; padding: 0.75rem 0.75rem 0.25rem; }
+    .nav-section { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: #62546B; padding: 0.75rem 0.75rem 0.25rem; }
+    .dark .nav-section { color: #A7B5C4; }
+
+    .url { color: #1E49D8; }
+    .dark .url { color: #50A6FF; }
 
     /* Step badges */
     .step-badge {
@@ -67,7 +71,7 @@
       font-size: 0.8rem; font-weight: 700;
       flex-shrink: 0; margin-top: 0.1rem;
     }
-    .dark .step-badge { background: #FF5F05; }
+    .dark .step-badge { background: #FF5F05; color: #13294B;}
 
     /* Callout boxes */
     .callout-tip    { background: #f0fdf4; border-left: 4px solid #22c55e; }
@@ -329,10 +333,10 @@
 
         <h3 class="font-bold text-lg mb-3">Adding a new lecture</h3>
         <ol class="space-y-3 mb-6">
-          <li class="flex gap-3"><span class="step-badge">1</span><span class="text-sm text-gray-700 dark:text-gray-300">Create your slide deck in Microsoft PowerPoint (recommended) or LibreOffice Impress, following the <a href="https://brand.illinois.edu/visual-identity/color" class="text-blue-600 underline" target="_blank">UIUC branding guidelines</a> for colors.</span></li>
+          <li class="flex gap-3"><span class="step-badge">1</span><span class="text-sm text-gray-700 dark:text-gray-300">Create your slide deck in Microsoft PowerPoint (recommended) or LibreOffice Impress, following the <a href="https://brand.illinois.edu/visual-identity/color" class="url underline" target="_blank">UIUC branding guidelines</a> for colors.</span></li>
           <li class="flex gap-3"><span class="step-badge">2</span><span class="text-sm text-gray-700 dark:text-gray-300">Name the file following the existing pattern: <span class="ic">L1.pptx</span>, <span class="ic">L2.pptx</span>, … and place it in <span class="ic">Lectures/Slides/</span>.</span></li>
           <li class="flex gap-3"><span class="step-badge">3</span><span class="text-sm text-gray-700 dark:text-gray-300">Commit and push to <span class="ic">main</span>. The CI detects all <span class="ic">L*.pptx</span> files automatically — no entry in <span class="ic">pdf-list.txt</span> is needed for slides.</span></li>
-          <li class="flex gap-3"><span class="step-badge">4</span><span class="text-sm text-gray-700 dark:text-gray-300">Add a card to the lectures list in <span class="ic">site/index.html</span> so it appears on the course hub (see the <a href="#website" class="text-blue-600 underline">Website section</a>).</span></li>
+          <li class="flex gap-3"><span class="step-badge">4</span><span class="text-sm text-gray-700 dark:text-gray-300">Add a card to the lectures list in <span class="ic">site/index.html</span> so it appears on the course hub (see the <a href="#website" class="url underline">Website section</a>).</span></li>
         </ol>
 
         <div class="callout-tip rounded-lg p-4 mb-4">
@@ -359,7 +363,7 @@
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Lab Assignments</h2>
 
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          Lab handouts are written in LaTeX and compiled to PDF by the CI. If you've never used LaTeX before, read the <a href="#latex-primer" class="text-blue-600 underline">LaTeX Primer</a> section first, then come back here.
+          Lab handouts are written in LaTeX and compiled to PDF by the CI. If you've never used LaTeX before, read the <a href="#latex-primer" class="url underline">LaTeX Primer</a> section first, then come back here.
         </p>
 
         <h3 class="font-bold text-lg mb-3">Creating a new lab</h3>
@@ -777,10 +781,20 @@ int main(void) {
 
         <h3 class="font-bold text-lg mb-3">Checking your work</h3>
         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-          <li>• Run the <a href="https://wave.webaim.org/" class="text-blue-600 underline" target="_blank">WebAIM WAVE tool</a> on any HTML page you publish to check for errors</li>
+          <li>• Run the <a href="https://wave.webaim.org/" class="url underline" target="_blank">WebAIM WAVE tool</a> on any HTML page you publish to check for errors</li>
           <li>• For PDFs: open in Adobe Acrobat and run the built-in Accessibility Checker</li>
-          <li>• UIUC's accessibility guide: <a href="https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr" class="text-blue-600 underline" target="_blank">Box link</a></li>
+          <li>• UIUC's accessibility guide: <a href="https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr" class="url underline" target="_blank">Box link</a></li>
         </ul>
+
+                <p class="mb-4">
+        </p>
+
+        <div class="callout-tip rounded-lg p-4 mb-6">
+          <p class="font-semibold text-green-800 dark:text-green-300 mb-1">💡 Easiest way to fix WCAG constrast issues</p>
+          <p class="text-green-700 dark:text-green-200 text-sm">
+            <a href="https://marius-juston.github.io/ConstrastFinder/" class="underline" target="_blank">ConstrastFinder</a> is a free browser-based tool for finding the closest accessible color contrast based on your foreground color and background color — no installation required. UIUC only requires WCAG AA constrast, so you can use the "AA" column values to fix any issues flagged by the WAVE tool or Acrobat checker.
+          </p>
+        </div>
       </section>
 
       <!-- ──────────────────────────────────────── -->
