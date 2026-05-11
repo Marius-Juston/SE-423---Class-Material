@@ -87,7 +87,7 @@
 \draw[<-, thick, draw=black] (lidar.north west) -- (RedBoard.south east) node[midway, above, font=\sffamily\scriptsize, align=center] {Transmit 'G' command};
 
 
-\draw[->, thick, draw=black] (lidar.north east) -- (RedBoard.north east) node[midway, above, font=\sffamily\scriptsize, align=center] {Send LiDAR point};
+\draw[->, thick, draw=black] (lidar.south west) -- (RedBoard.south) node[midway, above, font=\sffamily\scriptsize, align=center] {Send LiDAR point};
 
 \draw[->, thick, draw=black] (lidar.south west) -- (Ladar.north east) node[midway, above, font=\sffamily\scriptsize, align=center] {Send LiDAR point through UART3};
 
