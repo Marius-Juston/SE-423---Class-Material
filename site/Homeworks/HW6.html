@@ -40,16 +40,18 @@ the pseudocode for the A* algorithm we went through in class and posted here cou
 exercise. 12 items are numbered in the A* function of <span class='obeylines-h'><code class='verb'>astar.cpp</code></span>. Some of the items have you add a line or
 two of source code. Other items ask you to write comments explaining what certain lines of code accomplish.
 Complete these 12 items. Then compile (use menu item “Rebuild Solution”) and run your project by pressing
-the arrow/play button. Once your program is compiled, it should run identically to <span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>. For
-your homework submission, print out the changes and comments you made for these twelve items.
+the arrow/play button. Once your program is compiled, it should run identically to <span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>. <span class='rm-lmbx-10x-x-109'>For
+your homework submission, print out the changes and comments you made for these twelve
+items.</span>
 </li>
 <li class='enumerate' id='x1-1006x3'>Change  the  location  of  at  least  three  obstacles  in  the  course  map  defined  by  the  array  “<span class='rm-lmtt-10x-x-109'>char
 mapCourseStart[176]</span>”. This is also the map used when item 7 is selected in the application. For your
-homework submission, print the output of your compiled program when you have selected a start and finish
                                                                                                        
                                                                                                        
+     homework submission, print the output of your compiled program when you have selected a start and finish
      point with several obstacles between them.
-     </li>
+     
+</li>
 <li class='enumerate' id='x1-1008x4'>As a final exercise, add enough obstacles so that there is no path A* can find from the starting point to the
 ending point. Verify that A* returns an error when it cannot find a path.</li></ol>
    
@@ -89,32 +91,31 @@ homework might be helpful during this coding.
 following form works well for the robot car.
                                                                                                        
                                                                                                        
-     </p>
-     <table class='align-star'>                                         
-<tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub></td>                                             
-<td class='align-even'> <span class='cmr-10x-x-109'>=</span> Process (Dead Reckoning) Uncertainty</td>                                         
-<td class='align-label'></td>                                         
-<td class='align-label'> 
-</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>Q</span></td>                                     
-<td class='align-even'> <span class='cmr-10x-x-109'>= </span><img align='middle' alt='⌊            ⌋
- UP    0   U1P0-
-|| 0   UP   U1P0||
-⌈UP-  UP-  0 ⌉
-  10   10' class='left' src='HW60x.svg' /></td>                                 
-<td class='align-label'></td>                   
-<td class='align-label'> 
-</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub></td>                                             
-<td class='align-even'> <span class='cmr-10x-x-109'>=</span> Measurement (OptiTrack) Uncertainty</td>                                         
-<td class='align-label'></td>                                         
-<td class='align-label'> 
-</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>R</span></td>                                     
-<td class='align-even'> <span class='cmr-10x-x-109'>= </span><img align='middle' alt='⌊UM    0    UM-⌋
-| 0   U     1U0M-|
-|⌈UM-   UMP-  10 |⌉
-  10   10  UM' class='left' src='HW61x.svg' /></td>                                
-<td class='align-label'></td>                   
-<td class='align-label'></td></tr></table>
      
+</p>
+<table class='align-star'>                            
+<tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub></td>                             
+<td class='align-even'> <span class='cmr-10x-x-109'>=</span> Process (Dead Reckoning) Uncertainty</td>                            
+<td class='align-label'></td>                            
+<td class='align-label'>
+</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>Q</span></td>                              
+<td class='align-even'> <span class='cmr-10x-x-109'>= </span><img align='middle' alt='⌊UP    0   UP⌋
+|          1U0P|
+|⌈U0P-  UUPP-  10|⌉
+  10   10   0' class='left' src='HW60x.svg' /></td>                                                
+<td class='align-label'></td>                            
+<td class='align-label'>
+</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub></td>                            
+<td class='align-even'> <span class='cmr-10x-x-109'>=</span> Measurement (OptiTrack) Uncertainty</td>                            
+<td class='align-label'></td>                            
+<td class='align-label'>
+</td></tr><tr><td class='align-odd'><span class='cmmi-10x-x-109'>R</span></td>                              
+<td class='align-even'> <span class='cmr-10x-x-109'>= </span><img align='middle' alt='⌊           UM-⌋
+ UM    0    1U0
+|| 0   UM    1M0-||
+⌈UM10   U1P0- UM  ⌉' class='left' src='HW61x.svg' /></td>                                               
+<td class='align-label'></td>                            
+<td class='align-label'></td></tr></table>
 <!-- l. 72 --><p class='noindent'>Start with <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub> and <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub> 1.0 and run the M-file. (<span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>P</span> </sub> and <span class='cmmi-10x-x-109'>U</span><sub><span class='cmmi-8'>M</span></sub> are named “<span class='obeylines-h'><code class='verb'>MeasUncert</code></span>” and “<span class='obeylines-h'><code class='verb'>ProcUncert</code></span>” in the
 code.) Zoom in on the third plot that plots both data sets on top of each other. Does it look like the Kalman filtered
 data is following the OptiTrack data too closely and jumping around? OptiTrack data is the dots. Also, make sure to
@@ -133,12 +134,12 @@ data point.</li></ol>
 on the behavior of your fused data near the discontinuity in the OptiTrack data. Be sure to show how quickly the
 fused data converges to the OptiTrack data.</p></li></ol>
 <!-- l. 81 --><p class='noindent'>What to turn in: </p>
-<ul class='itemize1'>     
-<li class='itemize'>A printout of your edited M-file
                                                                                                        
                                                                                                        
-     </li>
-     <li class='itemize'>Three plots for the three <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>pairs that you chose, and somewhere in the plot, the value of the <span class='cmmi-10x-x-109'>Q </span>and
+     <ul class='itemize1'>
+     <li class='itemize'>A printout of your edited M-file
+</li>
+<li class='itemize'>Three plots for the three <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>pairs that you chose, and somewhere in the plot, the value of the <span class='cmmi-10x-x-109'>Q </span>and
 <span class='cmmi-10x-x-109'>R </span>matrices.</li></ul>
    
 <h4 class='subsectionHead' id='kalman-equations'><span class='titlemark'>0.1   </span>   <a id='x1-30000.1'></a>Kalman Equations</h4>
