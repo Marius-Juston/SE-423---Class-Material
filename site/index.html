@@ -564,7 +564,8 @@
             },{
                 title: `Lecture 15 Extra: April Tag Inverse Transform`,
                 basePath: `https://www.desmos.com/calculator/s0grdlhadw`,
-                topic: `desmos,transform,rotation,april tags`
+                topic: `desmos,transform,rotation,april tags`,
+                isHtml: true
             },{
                 title: `Lecture 16: LiDAR Code`,
                 basePath: `Lectures/Slides/L16`,
@@ -637,7 +638,7 @@
             }
 
             container.innerHTML = data.lectures.map(item => {
-                const isHtmlFormat = item.basePath.endsWith("html");
+                const isHtmlFormat = item.isHtml || item.basePath.endsWith("html");
 
                 const formatToUse = isHtmlFormat ? "html" : currentFormat;  
                 const url = isHtmlFormat? item.basePath: `${item.basePath}.${formatToUse}`;
