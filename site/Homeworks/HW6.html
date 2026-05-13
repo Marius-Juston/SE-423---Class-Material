@@ -42,7 +42,7 @@ two of source code. Other items ask you to write comments explaining what certai
 Complete these 12 items. Then compile (use menu item “Rebuild Solution”) and run your project by pressing
 the arrow/play button. Once your program is compiled, it should run identically to <span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>. <span class='rm-lmbx-10x-x-109'>For
 your homework submission, print out the changes and comments you made for these twelve
-items. Do </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>not</span></span> <span class='rm-lmbx-10x-x-109'>put the full code.</span>
+items. Do </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>not</span></span> <span class='rm-lmbx-10x-x-109'>put the full code (points will be removed).</span>
 </li>
 <li class='enumerate' id='x1-1006x3'>Change  the  location  of  at  least  three  obstacles  in  the  course  map  defined  by  the  array  “<span class='rm-lmtt-10x-x-109'>char
 mapCourseStart[176]</span>”. This is also the map used when item 7 is selected in the application. For your
@@ -141,10 +141,13 @@ fused data converges to the OptiTrack data.</p></li></ol>
      <li class='itemize'>A printout of your edited M-file
 </li>
 <li class='itemize'>Three plots for the three <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>pairs that you chose, and somewhere in the plot, the value of the <span class='cmmi-10x-x-109'>Q </span>and
-<span class='cmmi-10x-x-109'>R </span>matrices.</li></ul>
+<span class='cmmi-10x-x-109'>R </span>matrices.
+</li>
+<li class='itemize'>Three plots showing the zoomed in discontinuity in the OptiTrack data associated with the previous <span class='cmmi-10x-x-109'>Q </span>and
+<span class='cmmi-10x-x-109'>R </span>pairs.</li></ul>
    
 <h4 class='subsectionHead' id='kalman-equations'><span class='titlemark'>0.1   </span>   <a id='x1-30000.1'></a>Kalman Equations</h4>
-<!-- l. 89 --><p class='noindent'>For the robot car:
+<!-- l. 90 --><p class='noindent'>For the robot car:
 </p><table class='align-star'>       
 <tr><td class='align-odd'><span class='cmmi-10x-x-109'>F </span><span class='cmr-10x-x-109'>= </span><img align='middle' alt='⌊       ⌋
  1  0  0
@@ -161,7 +164,7 @@ fused data converges to the OptiTrack data.</p></li></ol>
  0  0  1' class='left' src='HW65x.svg' /></td>       
 <td class='align-even'></td>       
 <td class='align-label'></td></tr></table>
-<!-- l. 98 --><p class='indent'>   <span class='cmmi-10x-x-109'>K </span>is <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3 </span>and <span class='cmmi-10x-x-109'>S </span>is <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3</span>
+<!-- l. 99 --><p class='indent'>   <span class='cmmi-10x-x-109'>K </span>is <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3 </span>and <span class='cmmi-10x-x-109'>S </span>is <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3</span>
                                                                                                        
                                                                                                        
 </p><table class='align-star'>                                 
@@ -193,8 +196,8 @@ fused data converges to the OptiTrack data.</p></li></ol>
 ⌈    OptiTrack 𝜃 of robot   ⌉' class='left' src='HW611x.svg' /></td>                                 
 <td class='align-label'></td>                                 
 <td class='align-label'></td></tr></table>
-<!-- l. 109 --><p class='indent'>   <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>are <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3 </span>matrices that you need to tune
-</p><!-- l. 111 --><p class='indent'>   Prediction Steps
+<!-- l. 110 --><p class='indent'>   <span class='cmmi-10x-x-109'>Q </span>and <span class='cmmi-10x-x-109'>R </span>are <span class='cmr-10x-x-109'>3 </span><span class='cmsy-10x-x-109'>× </span><span class='cmr-10x-x-109'>3 </span>matrices that you need to tune
+</p><!-- l. 112 --><p class='indent'>   Prediction Steps
 </p><table class='align-star'>                                         
 <tr><td class='align-odd'><img alt='ˆx' class='hat' src='HW612x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                         
 <td class='align-even'> <span class='cmr-10x-x-109'>= </span><span class='cmmi-10x-x-109'>F</span><img alt='ˆx' class='hat' src='HW613x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub> <span class='cmr-10x-x-109'>+ </span><span class='cmmi-10x-x-109'>Bu</span><sub><span class='cmmi-8'>k</span></sub></td>                                           
@@ -205,7 +208,7 @@ fused data converges to the OptiTrack data.</p></li></ol>
 <span class='cmmi-8'>k</span></sub></td>                                         
 <td class='align-label'></td>                                         
 <td class='align-label'></td></tr></table>
-<!-- l. 117 --><p class='indent'>   Correction Steps
+<!-- l. 118 --><p class='indent'>   Correction Steps
                                                                                                        
                                                                                                        
 </p><table class='align-star'>                                       
@@ -217,7 +220,7 @@ fused data converges to the OptiTrack data.</p></li></ol>
 <td class='align-even'> <span class='cmr-10x-x-109'>= (</span><span class='cmmi-10x-x-109'>I </span><span class='cmsy-10x-x-109'>− </span><span class='cmmi-10x-x-109'>KH</span><span class='cmr-10x-x-109'>)</span><span class='cmmi-10x-x-109'>P</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                       
 <td class='align-label'></td>                                       
 <td class='align-label'></td></tr></table>
-<!-- l. 124 --><p class='indent'>   where
+<!-- l. 125 --><p class='indent'>   where
 </p><table class='align-star'>                                        
 <tr><td class='align-odd'><img alt='～y' class='widetilde' src='HW617x.svg' /> </td>                                         
 <td class='align-even'> <span class='cmr-10x-x-109'>= </span><span class='cmmi-10x-x-109'>z</span><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span></sub> <span class='cmsy-10x-x-109'>− </span><span class='cmmi-10x-x-109'>H</span><img alt='ˆx' class='hat' src='HW618x.svg' /><sub><span class='cmmi-8'>k</span><span class='cmr-8'>+1</span><span class='cmsy-8'>|</span><span class='cmmi-8'>k</span></sub></td>                                            
@@ -233,7 +236,7 @@ fused data converges to the OptiTrack data.</p></li></ol>
 <td class='align-label'></td>                                        
 <td class='align-label'></td></tr></table>
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 133 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 134 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See </span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
