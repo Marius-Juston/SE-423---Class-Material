@@ -15,6 +15,8 @@ You can always do a pull request to eithe repo if you want to enhance the conten
 
 **Unless stated otherwise any circuit diagram is taken the [F28379D Full Reference](https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf)**
 
+The TAs and the instructors should make use of a Master Google Sheet https://docs.google.com/spreadsheets/d/1EjXK2MJgzjrd5-wEUsCvaBVAg1YNXNx1oO10wNDdHqI/edit?usp=sharing 
+
 ## Resources
 
 ### Animations
@@ -89,9 +91,23 @@ And for the website: https://wave.webaim.org/report#/https://marius-juston.githu
 
 ### L21
 - The lecture ended up short about 20 minutes, you can increase the length of the lecture
+
 - you could add Lie Algebra Kalman filters
 - you could go into the homework? You could implement different sensor math? Questions?  
 
+
+# Things that I want to add
+
+## Autograder
+An auto grader for the course code so that the students can verify that everything is correct even if the TAs / instructors miss something. This has been started at https://github.com/Marius-Juston/AutomaticGrader
+
+## AutoSpreadsheet uploader
+
+Currently the TAs and the instructors make use of a Master Google Sheet https://docs.google.com/spreadsheets/d/1EjXK2MJgzjrd5-wEUsCvaBVAg1YNXNx1oO10wNDdHqI/edit?usp=sharing 
+
+I want to make it so that you can automatically have a cron job that automatically uploads the Google Sheet to Canvas
+
+Also there are some things that could be fixed / improved inside the sheet, such as combining the excerises that are split into multiple weeks still into a single sheet but different columns
 ### L22-23 & L24-25
 - Instead of doing L22-23 focus instead instead for the SLAM lectures (L24-25) since there is a LOT of content to be covered
 - The SLAM will be more applicable than the Computer Vision stuff anyways
