@@ -151,3 +151,4 @@ Also there are some things that could be fixed / improved inside the sheet, such
    - Be able to generate more picture, animations, websites would of course be better!
  - For some lectures they were really heavy on the video only content, where I just showed a couple of video during the whole lecture instead of teaching it, this was recieved with mixed feeling, some people like it and some thought it was a waste of lecture time (the problem is that if you assigned it / recommended people ot watch it they probably would not lol, so always a double edge sword)
  - One of the lectures, I forget which one but had the transformation matrix be wrong that was in code and I forget which one it was. However, it needs to be fixed (it was some kind of LiDAR cooridnate transformation where the y value was wrong since it just never got used)
+ - Probably should add more incentive to attend lectures, maybe quiz but if that is the case then Zoom has to be an option
