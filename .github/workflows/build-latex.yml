@@ -39,7 +39,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
@@ -102,7 +102,7 @@ jobs:
           echo "Resolved files: $ALL"
 
       - name: Checkout Artifacts Branch
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: artifacts
           path: deploy_target
