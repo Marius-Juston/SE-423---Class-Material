@@ -95,6 +95,9 @@ And for the website: https://wave.webaim.org/report#/https://marius-juston.githu
 - you could add Lie Algebra Kalman filters
 - you could go into the homework? You could implement different sensor math? Questions?  
 
+### L22-23 & L24-25
+- Instead of doing L22-23 focus instead instead for the SLAM lectures (L24-25) since there is a LOT of content to be covered
+- The SLAM will be more applicable than the Computer Vision stuff anyways
 
 # Things that I want to add
 
@@ -108,6 +111,43 @@ Currently the TAs and the instructors make use of a Master Google Sheet https://
 I want to make it so that you can automatically have a cron job that automatically uploads the Google Sheet to Canvas
 
 Also there are some things that could be fixed / improved inside the sheet, such as combining the excerises that are split into multiple weeks still into a single sheet but different columns
-### L22-23 & L24-25
-- Instead of doing L22-23 focus instead instead for the SLAM lectures (L24-25) since there is a LOT of content to be covered
-- The SLAM will be more applicable than the Computer Vision stuff anyways
+
+# Student Feedback
+
+## 2026
+
+(response count 7, from people that usually came to lectures)
+(I removed personal comments about my specific style and paraphrased it where necessary to keep the comments more private and general)
+
+### What aspects of the course design and/or delivery most benefitted your learning?
+ - Having plenty of visual examples of algorithms and code–following was extremely helpful throughout the course. Being able to visualize how things like Djikstra's algorithm works allowed me to comprehend them in a lecture setting despite not learning well from lectures, and in past classes having to teach myself similar content.
+ - how the lectures better explained topics that were talked about in labs (the connection)
+ - The challenges in the laboratory experiments and homework assignments while being able to use lab equipment and our very own electronic components most benefited my learning.
+ - It being a lab based course. Had applications to apply material learned.
+
+### What change to the course design or delivery would most benefit your learning?
+ - Maybe having the lectures on Zoom since the lectures being at 9 AM meant going to lectures was hard
+ – the lecture side of this class is very nice! I think some slight reorganization might be helpful (ie. they found SLAM very interesting but we've spent very little time on it despite its complexity)
+ - the lecture that is given before lab (Dan's lectures) could be given during lecture times
+ - Perhaps the course is not intended for fully beginners, but a little simplified/"for–dummies" descriptions of the material would've assisted in my learning, as someone with no prior experience in mechatronics besides Python coding.
+ - Add quizzes or exams to the course. It is a little too easy right now and doesn't incentivize attending lectures at all
+ - Condense some lecture slides content. Less words on each slide. The diagrams you showed were great!
+
+### What recommendations would you give to future students of this course?
+ - It is so much fun and you learn SO MUCH. Best choice for a design elective, don't wait till day of to do homework unless you have a lot of prior C knowledge.
+ - Go to lectures. Even if they are on the earlier end. I'd also recommend starting the homework earlier rather than later, so that you may visit one of the less busy office hours as opposed to the busiest ones right before homework is due. Make time to go to office hrs to ask questions
+ - Even if you are a beginner to mechatronics or believe you aren't skilled enough for it, please don't fret!
+ - Go to lecture, ask questions, go to office hours.
+
+## Self reflection from student feedback
+
+ - This was an absolutely fantastic time! Love teaching and the students. It really taught me the perspective and the hard work that professors put in everyday to make their content / work for their students
+ - As some students said, reorganizing the lecture slides would also be my major critical point. Because I was maing things in a quick manner, I was not really having the foresight of really planning everything out and maing things really coherent.
+    - One of the most confusing things is the ADC which is a very complicated system and I feel like I should have imrpvoed this
+    - Probably should have hammered the beginner GPIO information at the beginning a bit more
+    - Really look holistically at everything now that all the material and then reorganize it all into a proper set of slide decks
+ - This has been a recuring problem with me that I know about, but is hard to really realize but I speak pretty fast and so during lectures that can be a problem.
+ - Less text!!! (Tried my best there, but I like putting text on slides lol, makes it "easier" to follow, but also harder to follow since you can just read from the slides)
+   - Be able to generate more picture, animations, websites would of course be better!
+ - For some lectures they were really heavy on the video only content, where I just showed a couple of video during the whole lecture instead of teaching it, this was recieved with mixed feeling, some people like it and some thought it was a waste of lecture time (the problem is that if you assigned it / recommended people ot watch it they probably would not lol, so always a double edge sword)
+ - One of the lectures, I forget which one but had the transformation matrix be wrong that was in code and I forget which one it was. However, it needs to be fixed (it was some kind of LiDAR cooridnate transformation where the y value was wrong since it just never got used)
