@@ -147,6 +147,7 @@ Also there are some things that could be fixed / improved inside the sheet, such
     - Probably should have hammered the beginner GPIO information at the beginning a bit more
     - Really look holistically at everything now that all the material and then reorganize it all into a proper set of slide decks
  - This has been a recuring problem with me that I know about, but is hard to really realize but I speak pretty fast and so during lectures that can be a problem.
+ - Apparently I am too loud lol
  - Less text!!! (Tried my best there, but I like putting text on slides lol, makes it "easier" to follow, but also harder to follow since you can just read from the slides)
    - Be able to generate more picture, animations, websites would of course be better!
  - For some lectures they were really heavy on the video only content, where I just showed a couple of video during the whole lecture instead of teaching it, this was recieved with mixed feeling, some people like it and some thought it was a waste of lecture time (the problem is that if you assigned it / recommended people ot watch it they probably would not lol, so always a double edge sword)
