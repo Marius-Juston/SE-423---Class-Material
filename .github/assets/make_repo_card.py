@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["fonttools", "uharfbuzz", "resvg-py"]
+# dependencies = ["fonttools", "brotli", "uharfbuzz", "resvg-py"]
 # ///
 """SE 423 GitHub repo card: a flat isometric diorama of the mechatronics lab.
 
@@ -14,16 +14,20 @@ paths, so the card renders identically everywhere.
     uv run make_repo_card.py [out.svg] [--no-png]
 
 writes out.svg (default: repo-card.svg next to this script) and, unless --no-png is
-given, the 1280x640 out.png that GitHub's social preview needs.  The script is
-self-contained: everything it reads lives next to it.
+given, the 1280x640 out.png that GitHub's social preview needs.
 
-    fonts/                 Montserrat + Source Sans 3 (Illinois brand typefaces, SIL OFL 1.1)
-    SE423_F28379D.brd      Eagle layout of the SE 423 breakout board (drawn from it)
+    SE423_F28379D.brd      Eagle layout of the SE 423 breakout board (drawn from it; committed)
+    fonts/                 Montserrat + Source Sans 3 (Illinois brand typefaces, SIL OFL 1.1),
+                           downloaded on first run from the @fontsource npm packages and
+                           cached here (git-ignored), together with their licences
 
 Before writing, validate() runs geometric/accessibility checks; any failure aborts.
 """
+import io
 import math
 import sys
+import tarfile
+import urllib.request
 from pathlib import Path
 
 import uharfbuzz as hb
@@ -47,11 +51,28 @@ INK = "#0E1E38"
 # ------------------------------------------------------------------ fonts → outlines
 FONT_DIR = HERE / "fonts"
 _fonts = {}
+_NPM = {"montserrat": "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-5.2.8.tgz",
+        "source-sans-3": "https://registry.npmjs.org/@fontsource/source-sans-3/-/source-sans-3-5.2.9.tgz"}
+
+
+def _fetch_font(name):
+    """Download the fontsource package once, convert the needed woff2 to TTF, keep its licence."""
+    family = "montserrat" if name.startswith("montserrat") else "source-sans-3"
+    print(f"downloading {family} ({name}) from the npm registry …")
+    with urllib.request.urlopen(_NPM[family], timeout=60) as resp:
+        tar = tarfile.open(fileobj=io.BytesIO(resp.read()), mode="r:gz")
+    FONT_DIR.mkdir(exist_ok=True)
+    font = TTFont(io.BytesIO(tar.extractfile(f"package/files/{name}.woff2").read()))
+    font.flavor = None
+    font.save(FONT_DIR / f"{name}.ttf")
+    (FONT_DIR / f"LICENSE-{family}.txt").write_bytes(tar.extractfile("package/LICENSE").read())
 
 
 def _font(name):
     if name not in _fonts:
         path = FONT_DIR / f"{name}.ttf"
+        if not path.exists():
+            _fetch_font(name)
         data = path.read_bytes()
         face = hb.Face(data)
         _fonts[name] = (TTFont(path), hb.Font(face), face.upem)
