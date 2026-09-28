@@ -1,4 +1,5 @@
 /* eslint-disable */
+(() => {
 // Floating process-flow node graph. Renders the architecture: shared memory,
 // readers, the SLAM main thread, the loop-closure thread, queues, and iSAM2.
 // Nodes light up + edges animate based on the active stage.
@@ -201,3 +202,4 @@ function RegionLabel({ x, y, w, h, label, stroke = "oklch(0.30 0.014 248)" }) {
 }
 
 window.FlowNodes = FlowNodes;
+})();

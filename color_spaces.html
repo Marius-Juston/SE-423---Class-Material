@@ -162,21 +162,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 </style>
-</head>
 <script type="importmap">
 {
   "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.183.0/build/three.module.js"
+    "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js"
   }
 }
 </script>
+</head>
 <body>
 <header><div class="header-inner"><div class="logo"><span class="logo-dot"></span> Chromascape</div><nav><a href="#spaces" class="active">3D Spaces</a><a href="#interpolation">Interpolation</a><a href="#transitions">Transitions</a><a href="#grayscale">Grayscale</a></nav></div></header>
 
 <div class="hero"><h1>Explore the Geometry of Color</h1><p>Rotate the 3D shape of each color space. Watch interpolation paths carve through their volumes. See how different spaces shape perception.</p></div>
 
 <section id="spaces">
-  <div class="section-header"><span class="section-tag">01 — 3D Color Spaces</span><h2>Shape of Color</h2><p>Each color model sculpts sRGB into a unique 3D form. Drag to rotate, scroll to zoom. The 2D slice tracks the fixed axis.</p></div>
+  <div class="section-header"><span class="section-tag">01 — 3D Color Spaces</span><h2>Shape of Color</h2><p>Each color model sculpts sRGB into a unique 3D form. Drag to rotate, scroll to zoom. The 2D slice tracks the fixed axis. Hue always runs counter-clockwise seen from above. HSV and HSL are drawn as cylinders (radius = S, as their formulas define); the HSV cone and HSL bicone are the chroma-based variants (radius = max−min).</p></div>
   <div class="viewer-grid">
     <div class="space-selector" id="spaceSelector"></div>
     <div class="viewer-main">
@@ -218,7 +218,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 <div class="sep"><hr></div>
 
 <section id="grayscale">
-  <div class="section-header"><span class="section-tag">04 — Grayscale Conversion</span><h2>Losing Color, Keeping Meaning</h2><p>Different formulas for extracting luminance. Perceptually uniform spaces better preserve apparent brightness.</p></div>
+  <div class="section-header"><span class="section-tag">04 — Grayscale Conversion</span><h2>Losing Color, Keeping Meaning</h2><p>Different formulas for reducing color to one gray value. Luma (Y′) weights the gamma-encoded channels; relative luminance (Y) weights linear light; CIELAB L* and OKLab L are perceptual lightness scales, shown as the gray of equal lightness. Luminance- and lightness-based grays follow apparent brightness better than channel averages, though saturated colors still look brighter than their equal-luminance gray (Helmholtz–Kohlrausch effect).</p></div>
   <div class="grayscale-grid" id="grayscaleGrid"></div>
 </section>
 <footer><span class="logo-small">Chromascape</span><span>Color Science Explorer — 2026</span></footer>
@@ -228,16 +228,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 // ═══════ COLOR MATH ═══════
 const CM={
   clamp:(v,lo,hi)=>Math.max(lo,Math.min(hi,v)),
-  srgbToLin(c){return c<=0.04045?c/12.92:Math.pow((c+0.055)/1.055,2.4);},
-  linToSrgb(c){return c<=0.0031308?12.92*c:1.055*Math.pow(c,1/2.4)-0.055;},
+  // sRGB transfer (IEC 61966-2-1), sign-extended for out-of-gamut values as in CSS Color 4
+  srgbToLin(c){const a=Math.abs(c);return a<=0.04045?c/12.92:Math.sign(c)*Math.pow((a+0.055)/1.055,2.4);},
+  linToSrgb(c){const a=Math.abs(c);return a<=0.0031308?12.92*c:Math.sign(c)*(1.055*Math.pow(a,1/2.4)-0.055);},
   rgbToHsl(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=0,l=(mx+mn)/2;if(mx!==mn){const d=mx-mn;s=l>0.5?d/(2-mx-mn):d/(mx+mn);if(mx===r)h=((g-b)/d+(g<b?6:0))/6;else if(mx===g)h=((b-r)/d+2)/6;else h=((r-g)/d+4)/6;}return[h*360,s,l];},
   hslToRgb(h,s,l){h=((h%360)+360)%360/360;if(s===0)return[l,l,l];const q=l<0.5?l*(1+s):l+s-l*s,p=2*l-q;const hr=(pp,qq,t)=>{if(t<0)t+=1;if(t>1)t-=1;if(t<1/6)return pp+(qq-pp)*6*t;if(t<1/2)return qq;if(t<2/3)return pp+(qq-pp)*(2/3-t)*6;return pp;};return[hr(p,q,h+1/3),hr(p,q,h),hr(p,q,h-1/3)];},
   rgbToHsv(r,g,b){const mx=Math.max(r,g,b),mn=Math.min(r,g,b);let h=0,s=mx===0?0:(mx-mn)/mx;if(mx!==mn){const d=mx-mn;if(mx===r)h=((g-b)/d+(g<b?6:0))/6;else if(mx===g)h=((b-r)/d+2)/6;else h=((r-g)/d+4)/6;}return[h*360,s,mx];},
   hsvToRgb(h,s,v){h=((h%360)+360)%360/60;const i=Math.floor(h),f=h-i,p=v*(1-s),q=v*(1-s*f),t=v*(1-s*(1-f));return[[v,t,p],[q,v,p],[p,v,t],[p,q,v],[t,p,v],[v,p,q]][i%6];},
   rgbToXyz(r,g,b){r=this.srgbToLin(r);g=this.srgbToLin(g);b=this.srgbToLin(b);return[0.4124564*r+0.3575761*g+0.1804375*b,0.2126729*r+0.7151522*g+0.0721750*b,0.0193339*r+0.1191920*g+0.9503041*b];},
   xyzToRgb(x,y,z){return[this.linToSrgb(3.2404542*x-1.5371385*y-0.4985314*z),this.linToSrgb(-0.9692660*x+1.8760108*y+0.0415560*z),this.linToSrgb(0.0556434*x-0.2040259*y+1.0572252*z)];},
-  xyzToLab(x,y,z){const xn=0.95047,yn=1,zn=1.08883,f=t=>t>0.008856?Math.cbrt(t):(903.3*t+16)/116;const fx=f(x/xn),fy=f(y/yn),fz=f(z/zn);return[116*fy-16,500*(fx-fy),200*(fy-fz)];},
-  labToXyz(l,a,b){const xn=0.95047,yn=1,zn=1.08883,fy=(l+16)/116,fx=a/500+fy,fz=fy-b/200;const fi=t=>t>0.206897?t*t*t:(t-16/116)/7.787;return[fi(fx)*xn,fi(fy)*yn,fi(fz)*zn];},
+  // CIELAB (D65 white), exact CIE constants: EPS=216/24389, KAPPA=24389/27
+  EPS:216/24389,KAPPA:24389/27,
+  xyzToLab(x,y,z){const xn=0.95047,yn=1,zn=1.08883,E=this.EPS,K=this.KAPPA,f=t=>t>E?Math.cbrt(t):(K*t+16)/116;const fx=f(x/xn),fy=f(y/yn),fz=f(z/zn);return[116*fy-16,500*(fx-fy),200*(fy-fz)];},
+  labToXyz(l,a,b){const xn=0.95047,yn=1,zn=1.08883,E=this.EPS,K=this.KAPPA,fy=(l+16)/116,fx=a/500+fy,fz=fy-b/200;const fi=t=>{const t3=t*t*t;return t3>E?t3:(116*t-16)/K;};return[fi(fx)*xn,fi(fy)*yn,fi(fz)*zn];},
   rgbToLab(r,g,b){return this.xyzToLab(...this.rgbToXyz(r,g,b));},
   labToRgb(l,a,b){return this.xyzToRgb(...this.labToXyz(l,a,b));},
   rgbToOklab(r,g,b){r=this.srgbToLin(r);g=this.srgbToLin(g);b=this.srgbToLin(b);let l_=0.4122214708*r+0.5363325363*g+0.0514459929*b,m_=0.2119034982*r+0.6806995451*g+0.1073969566*b,s_=0.0883024619*r+0.2817188376*g+0.6299787005*b;l_=Math.cbrt(l_);m_=Math.cbrt(m_);s_=Math.cbrt(s_);return[0.2104542553*l_+0.7936177850*m_-0.0040720468*s_,1.9779984951*l_-2.4285922050*m_+0.4505937099*s_,0.0259040371*l_+0.7827717662*m_-0.8086757660*s_];},
@@ -248,7 +251,23 @@ const CM={
   rgbToHex(r,g,b){const c=v=>Math.round(this.clamp(v,0,1)*255).toString(16).padStart(2,'0');return`#${c(r)}${c(g)}${c(b)}`;},
   rgbToCss(r,g,b){return`rgb(${Math.round(this.clamp(r,0,1)*255)},${Math.round(this.clamp(g,0,1)*255)},${Math.round(this.clamp(b,0,1)*255)})`;},
   luminance(r,g,b){return 0.2126*this.srgbToLin(r)+0.7152*this.srgbToLin(g)+0.0722*this.srgbToLin(b);},
-  inGamut(r,g,b){return r>=-0.005&&r<=1.005&&g>=-0.005&&g<=1.005&&b>=-0.005&&b<=1.005;}
+  inGamut(r,g,b){return r>=-0.005&&r<=1.005&&g>=-0.005&&g<=1.005&&b>=-0.005&&b<=1.005;},
+  // CSS Color 4 §13.2 gamut mapping: binary search on OKLCH chroma (constant L,h), deltaEOK JND 0.02
+  deltaEOK(p,q){return Math.hypot(p[0]-q[0],p[1]-q[1],p[2]-q[2]);},
+  gamutMapOklch(L,C,h){
+    const inG=c=>c[0]>=0&&c[0]<=1&&c[1]>=0&&c[1]<=1&&c[2]>=0&&c[2]<=1,clip=c=>c.map(v=>this.clamp(v,0,1));
+    if(L>=1)return[1,1,1];if(L<=0)return[0,0,0];
+    let cur=this.oklchToRgb(L,C,h);if(inG(cur))return cur;
+    const JND=0.02,eps=0.0001,hr=h*Math.PI/180,cs=Math.cos(hr),sn=Math.sin(hr);
+    let clipped=clip(cur),E=this.deltaEOK(this.rgbToOklab(...clipped),[L,C*cs,C*sn]);if(E<JND)return clipped;
+    let min=0,max=C,minIn=true;
+    while(max-min>eps){const ch=(min+max)/2;cur=this.oklchToRgb(L,ch,h);
+      if(minIn&&inG(cur)){min=ch;continue;}
+      clipped=clip(cur);E=this.deltaEOK(this.rgbToOklab(...clipped),[L,ch*cs,ch*sn]);
+      if(E<JND){if(JND-E<eps)break;minIn=false;min=ch;}else max=ch;}
+    return clipped;},
+  // Map any (possibly out-of-range) sRGB triple into [0,1]^3 for display
+  gamutMap(r,g,b){if(r>=0&&r<=1&&g>=0&&g<=1&&b>=0&&b<=1)return[r,g,b];if(!isFinite(r+g+b))return[0,0,0];return this.gamutMapOklch(...this.rgbToOklch(r,g,b));}
 };
 
 // ═══════ SPACES ═══════
@@ -257,32 +276,32 @@ const SPACES=[
     channels:[{name:'Red',min:0,max:1,step:0.01,def:0.5},{name:'Green',min:0,max:1,step:0.01,def:0.5},{name:'Blue',min:0,max:1,step:0.01,def:0.5}],
     toRgb:ch=>[ch[0],ch[1],ch[2]],fromRgb:(r,g,b)=>[r,g,b],sliceAxes:[0,1],sliceFixed:2,
     axLabels:['Red','Green','Blue'],
-    to3d:ch=>[(ch[0]-0.5)*2,(ch[2]-0.5)*2,(ch[1]-0.5)*2]},
+    to3d:ch=>[(ch[0]-0.5)*2,(ch[1]-0.5)*2,(ch[2]-0.5)*2]},
   {id:'hsv',name:'HSV',badge:'Cylindrical',desc:'Hue-Saturation-Value',
     channels:[{name:'Hue',min:0,max:360,step:1,def:180,unit:'°'},{name:'Saturation',min:0,max:1,step:0.01,def:1},{name:'Value',min:0,max:1,step:0.01,def:1}],
     toRgb:ch=>CM.hsvToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToHsv(r,g,b),sliceAxes:[0,1],sliceFixed:2,
-    axLabels:['Hue (angle)','Value (height)','Saturation (radius)'],
-    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,ch[1]*Math.sin(a)];}},
+    axLabels:['Hue 0° (hue runs CCW seen from above)','Value (height)','Hue 90° · Saturation = radius'],zAx:-1,
+    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,-ch[1]*Math.sin(a)];}},
   {id:'hsl',name:'HSL',badge:'Cylindrical',desc:'Hue-Saturation-Lightness',
     channels:[{name:'Hue',min:0,max:360,step:1,def:180,unit:'°'},{name:'Saturation',min:0,max:1,step:0.01,def:1},{name:'Lightness',min:0,max:1,step:0.01,def:0.5}],
     toRgb:ch=>CM.hslToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToHsl(r,g,b),sliceAxes:[0,1],sliceFixed:2,
-    axLabels:['Hue (angle)','Lightness (height)','Saturation (radius)'],
-    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,ch[1]*Math.sin(a)];}},
+    axLabels:['Hue 0° (hue runs CCW seen from above)','Lightness (height)','Hue 90° · Saturation = radius'],zAx:-1,
+    to3d:ch=>{const a=ch[0]*Math.PI/180;return[ch[1]*Math.cos(a),(ch[2]-0.5)*2,-ch[1]*Math.sin(a)];}},
   {id:'cielab',name:'CIELAB',badge:'Perceptual',desc:'CIE 1976 L*a*b*',
     channels:[{name:'L*',min:0,max:100,step:1,def:65},{name:'a*',min:-128,max:127,step:1,def:20},{name:'b*',min:-128,max:127,step:1,def:20}],
     toRgb:ch=>CM.labToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToLab(r,g,b),sliceAxes:[1,2],sliceFixed:0,
-    axLabels:['a* (Green→Red)','L* (Lightness)','b* (Blue→Yellow)'],
-    to3d:ch=>[ch[1]/128,(ch[0]-50)/50,ch[2]/128]},
+    axLabels:['a* (Green→Red)','L* (Lightness)','b* (Blue→Yellow)'],zAx:-1,
+    to3d:ch=>[ch[1]/128,(ch[0]-50)/50,-ch[2]/128]},
   {id:'oklab',name:'OKLAB',badge:'Perceptual',desc:'Modern perceptual space',
     channels:[{name:'L',min:0,max:1,step:0.01,def:0.7},{name:'a',min:-0.4,max:0.4,step:0.005,def:0.05},{name:'b',min:-0.4,max:0.4,step:0.005,def:0.05}],
     toRgb:ch=>CM.oklabToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToOklab(r,g,b),sliceAxes:[1,2],sliceFixed:0,
-    axLabels:['a (Green→Red)','L (Lightness)','b (Blue→Yellow)'],
-    to3d:ch=>[ch[1]/0.4,(ch[0]-0.5)*2,ch[2]/0.4]},
+    axLabels:['a (Green→Red)','L (Lightness)','b (Blue→Yellow)'],zAx:-1,
+    to3d:ch=>[ch[1]/0.4,(ch[0]-0.5)*2,-ch[2]/0.4]},
   {id:'oklch',name:'OKLCH',badge:'CSS 4',desc:'Polar OKLAB — CSS standard',
     channels:[{name:'L',min:0,max:1,step:0.01,def:0.7},{name:'C (Chroma)',min:0,max:0.4,step:0.005,def:0.15},{name:'H (Hue)',min:0,max:360,step:1,def:150,unit:'°'}],
     toRgb:ch=>CM.oklchToRgb(ch[0],ch[1],ch[2]),fromRgb:(r,g,b)=>CM.rgbToOklch(r,g,b),sliceAxes:[2,1],sliceFixed:0,
-    axLabels:['Hue (angle)','L (height)','Chroma (radius)'],
-    to3d:ch=>{const a=ch[2]*Math.PI/180;return[(ch[1]/0.2)*Math.cos(a),(ch[0]-0.5)*2,(ch[1]/0.2)*Math.sin(a)];}},
+    axLabels:['Hue 0° (+a; hue runs CCW seen from above)','L (height)','Hue 90° (+b) · Chroma = radius'],zAx:-1,
+    to3d:ch=>{const a=ch[2]*Math.PI/180;return[(ch[1]/0.4)*Math.cos(a),(ch[0]-0.5)*2,-(ch[1]/0.4)*Math.sin(a)];}},
 ];
 
 // ═══════ BUILD GAMUT SURFACE MESH ═══════
@@ -303,11 +322,10 @@ function buildGamutMesh(space, res=32) {
         rgb[axes[1]]=j*step;
         const ch=space.fromRgb(rgb[0],rgb[1],rgb[2]);
         const p=space.to3d(ch);
-        if(!isFinite(p[0])||!isFinite(p[1])||!isFinite(p[2])) {
-          positions.push(0,0,0); colors.push(rgb[0],rgb[1],rgb[2]);
-        } else {
-          positions.push(p[0],p[1],p[2]); colors.push(rgb[0],rgb[1],rgb[2]);
-        }
+        // three.js (r152+) treats vertex colors as linear-sRGB: linearize the sRGB-encoded values
+        colors.push(CM.srgbToLin(rgb[0]),CM.srgbToLin(rgb[1]),CM.srgbToLin(rgb[2]));
+        if(!isFinite(p[0])||!isFinite(p[1])||!isFinite(p[2])) positions.push(0,0,0);
+        else positions.push(p[0],p[1],p[2]);
       }
     }
     // Triangulate grid
@@ -337,7 +355,7 @@ function genCloudSurface(space, density=22) {
     const u=i*s,v=j*s;
     [[0,u,v],[1,u,v],[u,0,v],[u,1,v],[u,v,0],[u,v,1]].forEach(([r,g,b])=>{
       const ch=space.fromRgb(r,g,b),p=space.to3d(ch);
-      if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pos.push(p[0],p[1],p[2]);col.push(r,g,b);}
+      if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pos.push(p[0],p[1],p[2]);col.push(CM.srgbToLin(r),CM.srgbToLin(g),CM.srgbToLin(b));}
     });
   }
   return{positions:new Float32Array(pos),colors:new Float32Array(col)};
@@ -364,7 +382,7 @@ class Orbit {
   }
 }
 
-function makeAxes(scene){
+function makeAxes(scene,zs=1){
   const g=new THREE.Group();
   [[1.3,0,0,0xff5f05],[0,1.3,0,0x5db47a],[0,0,1.3,0x009fd4]].forEach(([x,y,z,c])=>{
     const geo=new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0),new THREE.Vector3(x,y,z)]);
@@ -373,7 +391,8 @@ function makeAxes(scene){
   const gp=[];for(let i=-1;i<=1;i+=0.5){gp.push(-1,0,i,1,0,i,i,0,-1,i,0,1);}
   const gg=new THREE.BufferGeometry();gg.setAttribute('position',new THREE.Float32BufferAttribute(gp,3));
   g.add(new THREE.LineSegments(gg,new THREE.LineBasicMaterial({color:0xffffff,transparent:true,opacity:0.3})));
-  scene.add(g);
+  g.scale.z=zs; // zs=-1: Z marker points to -z (the +b* / hue-90° direction)
+  scene.add(g);return g;
 }
 
 // ═══════ MAIN 3D VIEWER ═══════
@@ -390,7 +409,7 @@ function init3DViewer(){
   const scene=new THREE.Scene();
   const camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
   const orbit=new Orbit(camera,renderer.domElement);
-  makeAxes(scene);
+  const axes=makeAxes(scene);
 
   // Gamut surface mesh — solid with transparency
   const surfaceGroup=new THREE.Group();
@@ -440,7 +459,7 @@ function init3DViewer(){
     renderer.render(scene,camera);
   })();
 
-  V3={renderer,scene,camera,orbit,surfaceGroup,indGroup,indCore,indRing,indGlow,wrap};
+  V3={renderer,scene,camera,orbit,axes,surfaceGroup,indGroup,indCore,indRing,indGlow,wrap};
   window.addEventListener('resize',()=>{const ww=wrap.clientWidth,hh=wrap.clientHeight;camera.aspect=ww/hh;camera.updateProjectionMatrix();renderer.setSize(ww,hh);});
 }
 
@@ -463,6 +482,7 @@ function updateCloud(sp){
   });
   sg.add(new THREE.Mesh(geo,wireMat));
 
+  V3.axes.scale.z=sp.zAx||1;
   const al=sp.axLabels;
   document.getElementById('viewerAxes').innerHTML=`<span><span class="ax-x">X</span> ${al[0]}</span><span><span class="ax-y">Y</span> ${al[1]}</span><span><span class="ax-z">Z</span> ${al[2]}</span>`;
 }
@@ -472,9 +492,8 @@ function updateIndicator(sp,cv){
   if(!isFinite(p[0])||!isFinite(p[1])||!isFinite(p[2]))return;
   V3.indGroup.position.set(p[0],p[1],p[2]);
   // Set the core sphere to the actual selected color
-  const rgb=sp.toRgb(cv);
-  const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
-  V3.indCore.material.color.setRGB(r,g,b);
+  const [r,g,b]=CM.gamutMap(...sp.toRgb(cv));
+  V3.indCore.material.color.setRGB(r,g,b,THREE.SRGBColorSpace);
   // Make the ring contrast: white on dark colors, dark on light
   const lum=CM.luminance(r,g,b);
   V3.indRing.material.color.setHex(lum>0.3?0x000000:0xffffff);
@@ -554,9 +573,8 @@ function drawCrosshair(){
   const curX=(chVals[axX]-chX.min)/(chX.max-chX.min)*w;
   const curY=(1-(chVals[axY]-chY.min)/(chY.max-chY.min))*h;
 
-  const rgb=sp.toRgb(chVals);
-  const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
-  const lum=0.2126*r+0.7152*g+0.0722*b; // fast approx (skip linearize for perf)
+  const [r,g,b]=CM.gamutMap(...sp.toRgb(chVals));
+  const lum=0.2126*r+0.7152*g+0.0722*b; // luma on encoded values: cheap contrast heuristic
   const crossColor=lum>0.35?'rgba(0,0,0,0.85)':'rgba(255,255,255,0.9)';
   const crossShadow=lum>0.35?'rgba(255,255,255,0.5)':'rgba(0,0,0,0.5)';
   const s=dpr; // scale factor
@@ -612,8 +630,8 @@ function initSliceInteraction(){
     // Sync sliders (direct property set — no DOM query overhead in loop)
     const slX=document.getElementById(`sl${axX}`);
     const slY=document.getElementById(`sl${axY}`);
-    if(slX){slX.value=chVals[axX];document.getElementById(`sv${axX}`).textContent=chVals[axX].toFixed(chX.max>10?0:2)+(chX.unit||'');}
-    if(slY){slY.value=chVals[axY];document.getElementById(`sv${axY}`).textContent=chVals[axY].toFixed(chY.max>10?0:2)+(chY.unit||'');}
+    if(slX){slX.value=chVals[axX];document.getElementById(`sv${axX}`).textContent=fmtCh(chX,chVals[axX]);}
+    if(slY){slY.value=chVals[axY];document.getElementById(`sv${axY}`).textContent=fmtCh(chY,chVals[axY]);}
 
     // Schedule ONE update per animation frame
     if(!sliceRafId){
@@ -660,12 +678,12 @@ function buildSliders(){
   const panel=document.getElementById('slidersPanel');
   panel.innerHTML=activeSp.channels.map((ch,i)=>{
     const gc=buildSlGrad(i);
-    return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${chVals[i].toFixed(ch.max>10?0:2)}${ch.unit||''}</span></div><input type="range" id="sl${i}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
+    return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${fmtCh(ch,chVals[i])}</span></div><input type="range" id="sl${i}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
   }).join('');
   const fixedIdx=activeSp.sliceFixed;
   activeSp.channels.forEach((ch,i)=>{document.getElementById(`sl${i}`).addEventListener('input',e=>{
     chVals[i]=parseFloat(e.target.value);
-    document.getElementById(`sv${i}`).textContent=chVals[i].toFixed(ch.max>10?0:2)+(ch.unit||'');
+    document.getElementById(`sv${i}`).textContent=fmtCh(ch,chVals[i]);
     updateIndicator(activeSp,chVals);
     if(i===fixedIdx){
       // Fixed axis changed — must recompute all pixels
@@ -679,32 +697,40 @@ function buildSliders(){
   });});
 }
 
-function buildSlGrad(ci){const stops=10,cols=[];for(let i=0;i<=stops;i++){const t=i/stops,vals=[...chVals],ch=activeSp.channels[ci];vals[ci]=ch.min+t*(ch.max-ch.min);const rgb=activeSp.toRgb(vals);cols.push(CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1)));}return cols.join(',');}
+// Decimals follow the slider step (e.g. OKLab a/b step 0.005 → 3 decimals)
+function fmtCh(ch,v){return v.toFixed(ch.step>=1?0:ch.step<0.01?3:2)+(ch.unit||'');}
+
+function buildSlGrad(ci){const stops=10,cols=[];for(let i=0;i<=stops;i++){const t=i/stops,vals=[...chVals],ch=activeSp.channels[ci];vals[ci]=ch.min+t*(ch.max-ch.min);cols.push(CM.rgbToCss(...CM.gamutMap(...activeSp.toRgb(vals))));}return cols.join(',');}
 
 function updatePreview(){
-  const rgb=activeSp.toRgb(chVals);const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
+  const rgb=activeSp.toRgb(chVals),inG=CM.inGamut(...rgb);const[r,g,b]=CM.gamutMap(...rgb);
   const cssCol=CM.rgbToCss(r,g,b);
   const swEl=document.getElementById('previewSwatch');
   swEl.style.backgroundColor=cssCol;
   swEl.style.boxShadow='inset 0 0 0 1px rgba(255,255,255,0.1)';
   const hex=CM.rgbToHex(r,g,b),hsl=CM.rgbToHsl(r,g,b),oklab=CM.rgbToOklab(r,g,b),oklch=CM.rgbToOklch(r,g,b);
   document.getElementById('colorValues').innerHTML=[
-    {l:'HEX',v:hex.toUpperCase()},{l:'RGB',v:`${Math.round(r*255)}, ${Math.round(g*255)}, ${Math.round(b*255)}`},
+    {l:inG?'HEX':'HEX (gamut-mapped)',v:hex.toUpperCase()},{l:'RGB',v:`${Math.round(r*255)}, ${Math.round(g*255)}, ${Math.round(b*255)}`},
     {l:'HSL',v:`${hsl[0].toFixed(0)}° ${(hsl[1]*100).toFixed(0)}% ${(hsl[2]*100).toFixed(0)}%`},
-    {l:'OKLCH',v:`${oklch[0].toFixed(3)} ${oklch[1].toFixed(3)} ${oklch[2].toFixed(0)}°`},
+    {l:'OKLCH',v:`${oklch[0].toFixed(3)} ${oklch[1].toFixed(3)} ${oklch[1]<1e-4?'none':oklch[2].toFixed(0)+'°'}`},
   ].map(x=>`<div class="cv-item"><div class="cv-l">${x.l}</div><div class="cv-v">${x.v}</div></div>`).join('');
 }
 
 // ═══════ INTERPOLATION ═══════
+// CSS Color 4 §12.4: an achromatic endpoint (S or C ≈ 0) has a "missing" hue → take the other endpoint's hue
+function fixHues(h1,h2,none1,none2){if(none1&&none2)return[0,0];if(none1)return[h2,h2];if(none2)return[h1,h1];return[h1,h2];}
+// CSS Color 4 §12.4.1 hue interpolation: 'shorter' or 'longer' arc; returns the hue delta to add to h1
+function hueDelta(h1,h2,mode){let dh=h2-h1;if(mode==='short'){if(dh>180)dh-=360;else if(dh<-180)dh+=360;}else{if(dh>0&&dh<180)dh-=360;else if(dh>-180&&dh<=0)dh+=360;}return dh;}
+function lerpPolar(a,b,t,hi,si,mode,toRgb){const[h1,h2]=fixHues(a[hi],b[hi],a[si]<1e-4,b[si]<1e-4),dh=hueDelta(h1,h2,mode);const o=a.map((v,k)=>v+(b[k]-v)*t);o[hi]=h1+dh*t;return toRgb(...o);}
 const INTERPS=[
   {name:'sRGB',desc:'Direct lerp in sRGB',space:'rgb',fn:(a,b,t)=>[a[0]+(b[0]-a[0])*t,a[1]+(b[1]-a[1])*t,a[2]+(b[2]-a[2])*t]},
   {name:'Linear RGB',desc:'Lerp in linearized RGB',space:'rgb',fn:(a,b,t)=>{const la=[CM.srgbToLin(a[0]),CM.srgbToLin(a[1]),CM.srgbToLin(a[2])],lb=[CM.srgbToLin(b[0]),CM.srgbToLin(b[1]),CM.srgbToLin(b[2])];return[CM.linToSrgb(la[0]+(lb[0]-la[0])*t),CM.linToSrgb(la[1]+(lb[1]-la[1])*t),CM.linToSrgb(la[2]+(lb[2]-la[2])*t)];}},
-  {name:'HSL Short',desc:'Shortest hue arc in HSL',space:'hsl',fn:(a,b,t)=>{const ha=CM.rgbToHsl(...a),hb=CM.rgbToHsl(...b);let dh=hb[0]-ha[0];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.hslToRgb(ha[0]+dh*t,ha[1]+(hb[1]-ha[1])*t,ha[2]+(hb[2]-ha[2])*t);}},
-  {name:'HSV Short',desc:'Shortest hue arc in HSV',space:'hsv',fn:(a,b,t)=>{const ha=CM.rgbToHsv(...a),hb=CM.rgbToHsv(...b);let dh=hb[0]-ha[0];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.hsvToRgb(ha[0]+dh*t,ha[1]+(hb[1]-ha[1])*t,ha[2]+(hb[2]-ha[2])*t);}},
-  {name:'CIELAB',desc:'Perceptually uniform lerp',space:'cielab',fn:(a,b,t)=>{const la=CM.rgbToLab(...a),lb=CM.rgbToLab(...b);return CM.labToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+(lb[2]-la[2])*t);}},
+  {name:'HSL Short',desc:'Shortest hue arc in HSL',space:'hsl',fn:(a,b,t)=>lerpPolar(CM.rgbToHsl(...a),CM.rgbToHsl(...b),t,0,1,'short',CM.hslToRgb)},
+  {name:'HSV Short',desc:'Shortest hue arc in HSV',space:'hsv',fn:(a,b,t)=>lerpPolar(CM.rgbToHsv(...a),CM.rgbToHsv(...b),t,0,1,'short',CM.hsvToRgb)},
+  {name:'CIELAB',desc:'Lerp in L*a*b* (approx. perceptually uniform)',space:'cielab',fn:(a,b,t)=>{const la=CM.rgbToLab(...a),lb=CM.rgbToLab(...b);return CM.labToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+(lb[2]-la[2])*t);}},
   {name:'OKLAB',desc:'Modern perceptual gradient',space:'oklab',fn:(a,b,t)=>{const la=CM.rgbToOklab(...a),lb=CM.rgbToOklab(...b);return CM.oklabToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+(lb[2]-la[2])*t);}},
-  {name:'OKLCH Short',desc:'Polar OKLAB, short hue arc',space:'oklch',fn:(a,b,t)=>{const la=CM.rgbToOklch(...a),lb=CM.rgbToOklch(...b);let dh=lb[2]-la[2];if(dh>180)dh-=360;if(dh<-180)dh+=360;return CM.oklchToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+dh*t);}},
-  {name:'OKLCH Long',desc:'OKLCH long arc — more hues',space:'oklch',fn:(a,b,t)=>{const la=CM.rgbToOklch(...a),lb=CM.rgbToOklch(...b);let dh=lb[2]-la[2];if(dh>0&&dh<=180)dh-=360;else if(dh<0&&dh>=-180)dh+=360;return CM.oklchToRgb(la[0]+(lb[0]-la[0])*t,la[1]+(lb[1]-la[1])*t,la[2]+dh*t);}},
+  {name:'OKLCH Short',desc:'Polar OKLAB, short hue arc',space:'oklch',fn:(a,b,t)=>lerpPolar(CM.rgbToOklch(...a),CM.rgbToOklch(...b),t,2,1,'short',(L,C,h)=>CM.oklchToRgb(L,C,h))},
+  {name:'OKLCH Long',desc:'OKLCH long arc — more hues',space:'oklch',fn:(a,b,t)=>lerpPolar(CM.rgbToOklch(...a),CM.rgbToOklch(...b),t,2,1,'long',(L,C,h)=>CM.oklchToRgb(L,C,h))},
 ];
 
 function getSp(id){return SPACES.find(s=>s.id===id);}
@@ -731,7 +757,7 @@ function renderInterpolation(){
     for(let s=0;s<steps;s++){
       const t=(s+0.5)/steps; // sample from center of each block
       const rgb=sp.fn(colA,colB,t);
-      ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));
+      ctx.fillStyle=CM.rgbToCss(...CM.gamutMap(...rgb));
       ctx.fillRect(Math.floor(s*blockW),0,Math.ceil(blockW)+1,ch);
     }
   });
@@ -760,9 +786,9 @@ function renderInterp3D(colA,colB){
       wrap.appendChild(renderer.domElement);
       const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
       const orbit=new Orbit(camera,renderer.domElement);orbit.autoRot=true;orbit.sph.theta=Math.PI/4+idx*0.5;
-      makeAxes(scene);
-      // Ghost surface mesh (very transparent)
       const sp=getSp(spId);
+      makeAxes(scene,sp.zAx||1);
+      // Ghost surface mesh (very transparent)
       const ghostGeo=buildGamutMesh(sp,18);
       scene.add(new THREE.Mesh(ghostGeo,new THREE.MeshBasicMaterial({vertexColors:true,transparent:true,opacity:0.08,side:THREE.DoubleSide,depthWrite:false})));
       scene.add(new THREE.Mesh(ghostGeo,new THREE.MeshBasicMaterial({vertexColors:true,wireframe:true,transparent:true,opacity:0.06})));
@@ -783,20 +809,20 @@ function renderInterp3D(colA,colB){
     relevant.forEach((ip,pi)=>{
       const pts=[],vc=[];
       for(let i=0;i<=100;i++){const t=i/100;const rgb=ip.fn(colA,colB,t);
-        const r=CM.clamp(rgb[0],0,1),g=CM.clamp(rgb[1],0,1),b=CM.clamp(rgb[2],0,1);
-        const ch=sp.fromRgb(r,g,b),p=sp.to3d(ch);
-        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pts.push(new THREE.Vector3(p[0],p[1],p[2]));vc.push(r,g,b);}
+        // Position from the UNCLAMPED value (straight Lab/OKLab lines stay straight); color gamut-mapped for display
+        const ch=sp.fromRgb(rgb[0],rgb[1],rgb[2]),p=sp.to3d(ch),dc=CM.gamutMap(...rgb);
+        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){pts.push(new THREE.Vector3(p[0],p[1],p[2]));vc.push(CM.srgbToLin(dc[0]),CM.srgbToLin(dc[1]),CM.srgbToLin(dc[2]));}
       }
       if(pts.length>1){
         const geo=new THREE.BufferGeometry().setFromPoints(pts);
         geo.setAttribute('color',new THREE.Float32BufferAttribute(vc,3));
-        v.pg.add(new THREE.Line(geo,new THREE.LineBasicMaterial({vertexColors:true,linewidth:2})));
+        v.pg.add(new THREE.Line(geo,new THREE.LineBasicMaterial({vertexColors:true})));
         // Color-coded glow
         v.pg.add(new THREE.Line(geo.clone(),new THREE.LineBasicMaterial({color:pathCols[pi%pathCols.length],transparent:true,opacity:0.35})));
         // Start/end markers
         const sg=new THREE.SphereGeometry(0.055,12,12);
-        const ms=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({color:new THREE.Color(colA[0],colA[1],colA[2])}));ms.position.copy(pts[0]);v.pg.add(ms);
-        const me=new THREE.Mesh(sg.clone(),new THREE.MeshBasicMaterial({color:new THREE.Color(colB[0],colB[1],colB[2])}));me.position.copy(pts[pts.length-1]);v.pg.add(me);
+        const ms=new THREE.Mesh(sg,new THREE.MeshBasicMaterial({color:new THREE.Color().setRGB(colA[0],colA[1],colA[2],THREE.SRGBColorSpace)}));ms.position.copy(pts[0]);v.pg.add(ms);
+        const me=new THREE.Mesh(sg.clone(),new THREE.MeshBasicMaterial({color:new THREE.Color().setRGB(colB[0],colB[1],colB[2],THREE.SRGBColorSpace)}));me.position.copy(pts[pts.length-1]);v.pg.add(me);
         // White rings on endpoints (depth-independent)
         const rg=new THREE.RingGeometry(0.065,0.08,20);
         const rm=new THREE.MeshBasicMaterial({color:0xffffff,side:THREE.DoubleSide,transparent:true,opacity:0.6,depthTest:false});
@@ -807,9 +833,9 @@ function renderInterp3D(colA,colB){
     // sRGB reference as dashed
     if(v.spId!=='rgb'){
       const rp=[],rc=[];for(let i=0;i<=100;i++){const t=i/100;
-        const r=CM.clamp(colA[0]+(colB[0]-colA[0])*t,0,1),g=CM.clamp(colA[1]+(colB[1]-colA[1])*t,0,1),b=CM.clamp(colA[2]+(colB[2]-colA[2])*t,0,1);
+        const r=colA[0]+(colB[0]-colA[0])*t,g=colA[1]+(colB[1]-colA[1])*t,b=colA[2]+(colB[2]-colA[2])*t; // always inside the cube
         const ch=sp.fromRgb(r,g,b),p=sp.to3d(ch);
-        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){rp.push(new THREE.Vector3(p[0],p[1],p[2]));rc.push(r,g,b);}
+        if(isFinite(p[0])&&isFinite(p[1])&&isFinite(p[2])){rp.push(new THREE.Vector3(p[0],p[1],p[2]));rc.push(CM.srgbToLin(r),CM.srgbToLin(g),CM.srgbToLin(b));}
       }
       if(rp.length>1){const geo=new THREE.BufferGeometry().setFromPoints(rp);geo.setAttribute('color',new THREE.Float32BufferAttribute(rc,3));
         const line=new THREE.Line(geo,new THREE.LineDashedMaterial({vertexColors:true,transparent:true,opacity:0.35,dashSize:0.05,gapSize:0.03}));
@@ -838,15 +864,19 @@ function handleInterpChange(){
 function initTransitions(){
   const grid=document.getElementById('transitionGrid');
   const spaces=[
-    {name:'HSL Hue Sweep',desc:'Full hue rotation, S=1 L=0.5',gen:t=>CM.hslToRgb(t*360,1,0.5)},
-    {name:'HSV Hue Sweep',desc:'Full hue rotation, S=1 V=1',gen:t=>CM.hsvToRgb(t*360,1,1)},
-    {name:'OKLCH Hue Sweep',desc:'Constant L=0.75 C=0.15 — uniform brightness',gen:t=>CM.oklchToRgb(0.75,0.15,t*360)},
-    {name:'CIELAB Hue Ring',desc:'a*b* circle, L*=65 r=80',gen:t=>{const a=t*2*Math.PI;return CM.labToRgb(65,80*Math.cos(a),80*Math.sin(a));}},
-    {name:'OKLAB a-b Ring',desc:'a,b circle, L=0.7 r=0.15',gen:t=>{const a=t*2*Math.PI;return CM.oklabToRgb(0.7,0.15*Math.cos(a),0.15*Math.sin(a));}},
-    {name:'OKLCH Lightness',desc:'L 0→1, hue=264 C=0.12',gen:t=>CM.oklchToRgb(t,0.12,264)},
+    {name:'HSL Hue Sweep',desc:'Full hue rotation, S=1 L=0.5 — lightness looks uneven (yellow/cyan bright, blue dark)',gen:t=>CM.hslToRgb(t*360,1,0.5)},
+    {name:'HSV Hue Sweep',desc:'Full hue rotation, S=1 V=1 — same colors as the HSL sweep',gen:t=>CM.hsvToRgb(t*360,1,1)},
+    {name:'OKLCH Hue Sweep',desc:'Constant L=0.75 C=0.12 — near-uniform perceived lightness and chroma',gen:t=>CM.oklchToRgb(0.75,0.12,t*360)},
+    {name:'CIELAB Hue Ring',desc:'a*b* circle, L*=65 r=35',gen:t=>{const a=t*2*Math.PI;return CM.labToRgb(65,35*Math.cos(a),35*Math.sin(a));}},
+    {name:'OKLAB a-b Ring',desc:'a,b circle, L=0.7 r=0.11',gen:t=>{const a=t*2*Math.PI;return CM.oklabToRgb(0.7,0.11*Math.cos(a),0.11*Math.sin(a));}},
+    {name:'OKLCH Lightness',desc:'L 0→1, hue=264 C=0.12 requested — sRGB cannot reach that chroma near black/white',gen:t=>CM.oklchToRgb(t,0.12,264)},
   ];
-  grid.innerHTML=spaces.map((sp,i)=>`<div class="transition-card"><canvas id="tc${i}"></canvas><div class="transition-card-info"><h4>${sp.name}</h4><p>${sp.desc}</p></div></div>`).join('');
-  spaces.forEach((sp,i)=>{const canvas=document.getElementById(`tc${i}`);const dpr=Math.min(window.devicePixelRatio,2);const w=canvas.clientWidth*dpr,h=canvas.clientHeight*dpr;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d');for(let px=0;px<w;px++){const t=px/(w-1);const rgb=sp.gen(t);ctx.fillStyle=CM.rgbToCss(CM.clamp(rgb[0],0,1),CM.clamp(rgb[1],0,1),CM.clamp(rgb[2],0,1));ctx.fillRect(px,0,1,h);}});
+  // Out-of-gamut samples are gamut-mapped (CSS Color 4: reduce OKLCH chroma at constant L,h), never per-channel clipped,
+  // and flagged by an orange tick under the strip; the caption reports the in-gamut fraction.
+  const strict=c=>c.every(v=>v>=-1e-6&&v<=1+1e-6);
+  const inFrac=sp=>{let k=0;const N=1000;for(let i=0;i<N;i++)if(strict(sp.gen(i/(N-1))))k++;return k/N;};
+  grid.innerHTML=spaces.map((sp,i)=>{const f=inFrac(sp);return`<div class="transition-card"><canvas id="tc${i}"></canvas><div class="transition-card-info"><h4>${sp.name}</h4><p>${sp.desc} · ${f===1?'100% inside sRGB':`${(f*100).toFixed(0)}% inside sRGB; ticks mark gamut-mapped samples`}</p></div></div>`;}).join('');
+  spaces.forEach((sp,i)=>{const canvas=document.getElementById(`tc${i}`);const dpr=Math.min(window.devicePixelRatio,2);const w=canvas.clientWidth*dpr,h=canvas.clientHeight*dpr;canvas.width=w;canvas.height=h;const ctx=canvas.getContext('2d'),tk=Math.max(3,Math.round(h*0.08));for(let px=0;px<w;px++){const t=px/(w-1);const rgb=sp.gen(t),ok=strict(rgb);ctx.fillStyle=CM.rgbToCss(...CM.gamutMap(...rgb));ctx.fillRect(px,0,1,ok?h:h-tk);if(!ok){ctx.fillStyle='#FF5F05';ctx.fillRect(px,h-tk,1,tk);}}});
 }
 
 // ═══════ GRAYSCALE ═══════
@@ -855,10 +885,11 @@ function initGrayscale(){
   const methods=[
     {name:'Original',desc:'Color test image with hue ramps, bars, saturation and temperature gradients.',isO:true},
     {name:'Average',desc:'(R+G+B)/3 — naive, equal weight.',gray:(r,g,b)=>(r+g+b)/3},
-    {name:'Rec. 709',desc:'0.2126R+0.7152G+0.0722B — HDTV standard.',gray:(r,g,b)=>CM.luminance(r,g,b),linOut:true},
-    {name:'Rec. 601',desc:'0.299R+0.587G+0.114B — classic NTSC.',gray:(r,g,b)=>0.299*r+0.587*g+0.114*b},
-    {name:'CIELAB L*',desc:'L* from CIELAB, normalized.',gray:(r,g,b)=>CM.rgbToLab(r,g,b)[0]/100},
-    {name:'OKLAB L',desc:'L from OKLAB — modern perceptual.',gray:(r,g,b)=>CM.rgbToOklab(r,g,b)[0]},
+    {name:'Rec. 709 luma Y′',desc:'Y′ = 0.2126R′+0.7152G′+0.0722B′ on gamma-encoded values (BT.709 video luma).',gray:(r,g,b)=>0.2126*r+0.7152*g+0.0722*b},
+    {name:'Relative luminance Y',desc:'Y = 0.2126R+0.7152G+0.0722B on linear-light values (sRGB/BT.709 primaries), sRGB-encoded for display.',gray:(r,g,b)=>CM.luminance(r,g,b),linOut:true},
+    {name:'Rec. 601 luma Y′',desc:'Y′ = 0.299R′+0.587G′+0.114B′ on gamma-encoded values (SDTV/NTSC luma).',gray:(r,g,b)=>0.299*r+0.587*g+0.114*b},
+    {name:'CIELAB L*',desc:'Gray with the same L* (Y from L* via the inverse CIELAB f). L* depends only on Y, so this matches the luminance card.',gray:(r,g,b)=>CM.labToRgb(CM.rgbToLab(r,g,b)[0],0,0)[1]},
+    {name:'OKLAB L',desc:'Gray with the same OKLab L (Y = L³ for grays). OKLab L is not a function of Y alone, so it differs slightly from L*.',gray:(r,g,b)=>CM.oklabToRgb(CM.rgbToOklab(r,g,b)[0],0,0)[1]},
     {name:'HSL L',desc:'(max+min)/2 — simple, not perceptual.',gray:(r,g,b)=>(Math.max(r,g,b)+Math.min(r,g,b))/2},
     {name:'HSV V',desc:'max(R,G,B) — brightest channel.',gray:(r,g,b)=>Math.max(r,g,b)},
   ];
