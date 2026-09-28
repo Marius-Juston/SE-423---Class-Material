@@ -186,92 +186,384 @@ out = []
 add = out.append
 defs = []
 
-# ------------------------------------------------------------------ world layout
-RX, RY = 360, 222                      # room floor extents
-ROOM_H = 118
-ARENA = (140, 16, 354, 216)            # x0, y0, x1, y1 of the black mat
-ROBOT = (200, 80)
-WALLS = {                              # plywood arena walls: x, y, dx, dy
-    "back": (140, 16, 214, 6),
-    "left": (140, 22, 6, 194),
-    "mid": (264, 22, 6, 76),
-    "low": (146, 162, 84, 6),
+
+# ==================================================================== v3 scene
+# Composition notes
+#  * 2:1 banner, text column on the left (~40%), diorama on the right (~60%).
+#  * Value groups: dark = navy background + arena mat, mid = walls/floor/plywood,
+#    light = whiteboard, wall tops, text.  The lightest-vs-darkest contrast is
+#    reserved for the focal points: "SE 423" and the robot on the dark mat.
+#  * Illini Orange is the ~10% accent and is always opaque (no transparent
+#    orange over navy, which turns brown).
+#  * Eye path (Z): eyebrow → "SE 423" → robot → students → tagline.  The robot
+#    faces +y, i.e. towards the text and the students; both students look at it.
+
+K = 1.2
+OX, OY = 832, 214
+
+WALL_L = "#9FB4D1"          # left wall inner face (mid value)
+WALL_R = "#B7C7DD"          # right wall inner face
+WALL_TOP = "#EEF3F9"
+FLOOR_TOP = "#CAD5E4"
+SLAB = ("#CAD5E4", "#24457A", "#1A3561")
+SHADOW_FLOOR = "#AFBCCF"    # pre-mixed cast shadow on the floor
+SHADOW_MAT = "#1B2437"      # pre-mixed cast shadow on the mat
+MAT = "#27324A"
+CELL_SEEN = "#35456A"       # A* closed set (pre-mixed, opaque)
+LAUNCH = ("#C42330", "#A51C1C", "#7F1414")   # darker red: separates from green for CVD
+PCB = ("#3DBE72", "#2E9E5B", "#237A46")      # lighter green
+HOODIE_B = ("#F1F4F9", "#D3DBE7")
+
+RX, RY = 330, 190
+ROOM_H = 104
+ARENA = (130, 12, 324, 186)
+WALLS = {
+    "back": (130, 12, 194, 6),
+    "left": (130, 18, 6, 168),
+    "baffle": (136, 110, 80, 6),
 }
-BOX_OBS = (300, 46, 28, 28)            # a crate obstacle
-GOAL = (324, 184)
+CRATE = (266, 58, 26, 26)
+ROBOT = (178, 52)
+BALL_O = (166, 160)
+BALL_B = (298, 150)
 WALL_H = 20
+
+defs = []
+out = []
+add = out.append
+
+
+def prism(poly2, z0, z1, top, light, dark, extra=""):
+    """Extrude a convex polygon (CCW in world x/y); shade side faces by normal."""
+    faces = []
+    n = len(poly2)
+    for i in range(n):
+        (x0, y0), (x1, y1) = poly2[i], poly2[(i + 1) % n]
+        nx, ny = (y1 - y0), -(x1 - x0)
+        faces.append(((x0, y0), (x1, y1), nx, ny))
+    # make normals point away from the centroid
+    cx = sum(p[0] for p in poly2) / n
+    cy = sum(p[1] for p in poly2) / n
+    res = []
+    for (a, b, nx, ny) in faces:
+        mx, my = (a[0] + b[0]) / 2 - cx, (a[1] + b[1]) / 2 - cy
+        if nx * mx + ny * my < 0:
+            nx, ny = -nx, -ny
+        if nx + ny <= 1e-6:                      # faces away from the camera
+            continue
+        L = math.hypot(nx, ny)
+        col = _mix(light, dark, (nx / L) ** 2 if ny >= 0 else 1.0)
+        res.append(poly([(a[0], a[1], z0), (b[0], b[1], z0), (b[0], b[1], z1), (a[0], a[1], z1)], col, extra))
+    res.append(poly([(x, y, z1) for x, y in poly2], top, extra))
+    return "".join(res)
+
+
+def _mix(c1, c2, t):
+    a = [int(c1[i:i + 2], 16) for i in (1, 3, 5)]
+    b = [int(c2[i:i + 2], 16) for i in (1, 3, 5)]
+    return "#" + "".join(f"{round(x + (y - x) * t):02X}" for x, y in zip(a, b))
+
+
+def disc_x(x, yc, zc, r, fill):
+    """Circle lying in the plane x = const (e.g. a wheel on a +x axle)."""
+    return f'<g transform="{m_xface(x, 0, 0)}"><circle cx="{-yc:.2f}" cy="{-zc:.2f}" r="{r}" fill="{fill}"/></g>'
+
+
+def ell(x, y, z, r, fill, extra=""):
+    """Horizontal circle of world radius r (an ellipse on screen)."""
+    sx, sy = P(x, y, z)
+    return (f'<ellipse cx="{sx:.1f}" cy="{sy:.1f}" rx="{r*C*math.sqrt(2)*K:.1f}" ry="{r*S*math.sqrt(2)*K:.1f}" '
+            f'fill="{fill}"{extra}/>')
+
 
 # ------------------------------------------------------------------ background
 add(f'<rect width="{W}" height="{H}" fill="{BLUE}"/>')
-defs.append('<radialGradient id="halo" cx="0.5" cy="0.5" r="0.5">'
-            '<stop offset="0" stop-color="#2B5496" stop-opacity="0.55"/>'
-            '<stop offset="1" stop-color="#2B5496" stop-opacity="0"/></radialGradient>')
 defs.append('<pattern id="dots" width="24" height="24" patternUnits="userSpaceOnUse">'
-            '<circle cx="2" cy="2" r="1.2" fill="#FFFFFF" fill-opacity="0.07"/></pattern>')
+            '<circle cx="2" cy="2" r="1.1" fill="#1F3A66"/></pattern>')
 add(f'<rect width="{W}" height="{H}" fill="url(#dots)"/>')
-add(f'<ellipse cx="880" cy="340" rx="440" ry="320" fill="url(#halo)"/>')
+# large soft backdrop disc (opaque, concentric steps instead of alpha glow)
+
 
 # ------------------------------------------------------------------ room shell
-# soft drop shadow under the floating floor slab
-for i, op in enumerate((0.10, 0.10, 0.12)):
-    add(poly([(-16 + i*6, -16 + i*6, -40), (RX + 16 - i*6, -16 + i*6, -40), (RX + 16 - i*6, RY + 16 - i*6, -40), (-16 + i*6, RY + 16 - i*6, -40)], "#050E1F", f' opacity="{op}"'))
-add(box(0, 0, -20, RX, RY, 20, FLOOR))
-# thin highlight on the floor edge
-add(f'<polyline points="{pts((0, RY, 0), (RX, RY, 0), (RX, 0, 0))}" fill="none" stroke="#FFFFFF" stroke-opacity="0.7" stroke-width="1.5"/>')
-
-# cut-away walls (orange section edges = UIUC accent)
-WT = 10
-add(poly([(0, 0, 0), (0, RY, 0), (0, RY, ROOM_H), (0, 0, ROOM_H)], WALL_L))             # left inner face
-add(poly([(0, 0, 0), (RX, 0, 0), (RX, 0, ROOM_H), (0, 0, ROOM_H)], WALL_R))             # right inner face
+add(poly([(8, 8, -30), (RX + 10, 8, -30), (RX + 10, RY + 10, -30), (8, RY + 10, -30)], "#0F2344"))   # cast shadow
+add(box(0, 0, -18, RX, RY, 18, SLAB))
+add(poly([(0, RY, -4), (RX, RY, -4), (RX, RY, 0), (0, RY, 0)], ORANGE))          # orange floor-edge band
+add(poly([(RX, 0, -4), (RX, RY, -4), (RX, RY, 0), (RX, 0, 0)], ALTGELD))
+WT = 8
+add(poly([(0, 0, 0), (0, RY, 0), (0, RY, ROOM_H), (0, 0, ROOM_H)], WALL_L))
+add(poly([(0, 0, 0), (RX, 0, 0), (RX, 0, ROOM_H), (0, 0, ROOM_H)], WALL_R))
 add(poly([(-WT, -WT, ROOM_H), (-WT, RY, ROOM_H), (0, RY, ROOM_H), (0, 0, ROOM_H), (RX, 0, ROOM_H), (RX, -WT, ROOM_H)], WALL_TOP))
-add(poly([(-WT, RY, -20), (0, RY, -20), (0, RY, ROOM_H), (-WT, RY, ROOM_H)], ORANGE))   # section cuts
-add(poly([(RX, -WT, -20), (RX, 0, -20), (RX, 0, ROOM_H), (RX, -WT, ROOM_H)], ALTGELD))
-# skirting shadow where walls meet floor
-add(f'<polyline points="{pts((0, RY, 0), (0, 0, 0), (RX, 0, 0))}" fill="none" stroke="#B4C0D0" stroke-width="3"/>')
+add(poly([(-WT, RY, -18), (0, RY, -18), (0, RY, ROOM_H), (-WT, RY, ROOM_H)], "#DCE4EF"))
+add(poly([(RX, -WT, -18), (RX, 0, -18), (RX, 0, ROOM_H), (RX, -WT, ROOM_H)], "#C3CFDF"))
+# skirting boards
+add(poly([(0.01, 0, 0), (0.01, RY, 0), (0.01, RY, 5), (0.01, 0, 5)], "#8398B7"))
+add(poly([(0, 0.01, 0), (RX, 0.01, 0), (RX, 0.01, 5), (0, 0.01, 5)], "#9CAECA"))
 
-# --- right wall: whiteboard with a control loop, PWM and a LiDAR map
+# --- whiteboard: the two ideas the whole course keeps returning to (PWM → PID)
 wb = []
-wb.append('<rect x="0" y="0" width="170" height="74" rx="3" fill="#FFFFFF" stroke="#AEB9C9" stroke-width="3"/>')
-# block diagram:  r → (Σ) → [PID] → [robot] → y , feedback underneath
-wb.append(f'<g fill="none" stroke="{ARCHES}" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
-          '<path d="M8 22h12"/><circle cx="25" cy="22" r="5"/><path d="M30 22h8"/>'
-          '<rect x="38" y="13" width="30" height="18" rx="2"/><path d="M68 22h10"/>'
-          '<rect x="78" y="13" width="30" height="18" rx="2"/><path d="M108 22h14"/>'
-          '<path d="M116 22v18H25v-13"/></g>')
-wb.append(f'<path d="M36 19l3 3-3 3M76 19l3 3-3 3M120 19l3 3-3 3" fill="none" stroke="{ARCHES}" stroke-width="2" stroke-linecap="round"/>')
-t, _ = text_path("PID", 53, 26.5, 9, MONT[800], ARCHES, anchor="middle"); wb.append(t)
-t, _ = text_path("ROBOT", 93, 25.8, 6.6, MONT[800], ARCHES, anchor="middle"); wb.append(t)
-# PWM trace
-wb.append(f'<path d="M8 64h8v-12h10v12h6v-12h10v12h6v-12h10v12h8" fill="none" stroke="{ORANGE}" stroke-width="2.4" stroke-linejoin="round"/>')
-# tiny occupancy map sketch
-wb.append(f'<g fill="none" stroke="{BLUE}" stroke-width="2" stroke-linecap="round"><path d="M96 48h60v20h-60z" stroke-dasharray="1 3.5"/>'
-          f'<path d="M112 68v-10M136 48v10"/></g><circle cx="104" cy="60" r="2.4" fill="{ORANGE}"/>'
-          f'<path d="M104 60c10 0 12-6 22-6s14 8 22 8" fill="none" stroke="{ORANGE}" stroke-width="1.6" stroke-dasharray="3 2"/>')
-add(f'<g transform="{m_yface(0, 160, 104)}">{"".join(wb)}</g>')
-# marker tray
-add(box(160, 0, 26, 170, 5, 3, METAL))
+wb.append('<rect x="0" y="0" width="128" height="62" rx="3" fill="#FFFFFF"/>')
+wb.append('<rect x="0" y="58" width="128" height="4" fill="#DDE4EE"/>')
+wb.append(f'<g fill="none" stroke="{BLUE}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">'
+          '<path d="M10 20h14"/><circle cx="29" cy="20" r="5"/><path d="M34 20h10"/>'
+          '<rect x="44" y="10" width="36" height="20" rx="3"/><path d="M80 20h26M100 20v16H29v-11"/>'
+          '<path d="M102 15l5 5-5 5"/></g>')
+t, _ = text_path("PID", 62, 25.5, 12, MONT[800], BLUE, anchor="middle"); wb.append(t)
+wb.append(f'<path d="M10 50h12v-10h12v10h12v-10h12v10h12v-10h12v10h12" fill="none" stroke="{ORANGE}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>')
+add(f'<g transform="{m_yface(0, 196, 92)}">{"".join(wb)}</g>')
 
-# --- left wall: SE 423 pennant + lab clock
-pen_ = []
-pen_.append(f'<path d="M0 0L96 18L0 36Z" fill="{ORANGE}"/><path d="M0 0v36" stroke="{INK}" stroke-width="3"/>')
-t, _ = text_path("SE 423", 10, 22.5, 11.5, MONT[900], BLUE); pen_.append(t)
-add(f'<g transform="{m_xface(0, 214, 100)}">{"".join(pen_)}</g>')
-clk = (f'<circle cx="0" cy="0" r="15" fill="#FFFFFF" stroke="{INK}" stroke-width="3"/>'
-       f'<path d="M0 0V-9M0 0L7 3" stroke="{INK}" stroke-width="2.4" stroke-linecap="round"/>'
-       f'<circle r="1.8" fill="{ORANGE}"/>')
-cx_, cy_ = P(0, 40, 98)
-add(f'<g transform="translate({cx_:.1f} {cy_:.1f}) scale({K}) matrix({C:.3f} {-S:.3f} 0 1 0 0)">{clk}</g>')
-
-# ------------------------------------------------------------------ arena floor decals
+# ------------------------------------------------------------------ arena floor
 ax0, ay0, ax1, ay1 = ARENA
-add(poly([(ax0, ay0, 0.3), (ax1, ay0, 0.3), (ax1, ay1, 0.3), (ax0, ay1, 0.3)], MAT))
-grid = []
-for gx in range(ax0 + 30, ax1, 30):
-    grid.append(f"M{P(gx, ay0, .3)[0]:.1f} {P(gx, ay0, .3)[1]:.1f}L{P(gx, ay1, .3)[0]:.1f} {P(gx, ay1, .3)[1]:.1f}")
-for gy in range(ay0 + 30, ay1, 30):
-    grid.append(f"M{P(ax0, gy, .3)[0]:.1f} {P(ax0, gy, .3)[1]:.1f}L{P(ax1, gy, .3)[0]:.1f} {P(ax1, gy, .3)[1]:.1f}")
-add(f'<path d="{"".join(grid)}" stroke="#FFFFFF" stroke-opacity="0.06" stroke-width="1"/>')
-# --- LiDAR scan: real 2-D ray casting against the arena geometry
+add(poly([(ax0, ay0, .2), (ax1, ay0, .2), (ax1, ay1, .2), (ax0, ay1, .2)], MAT))
+
+# A* on the arena grid (Lecture 18): closed set + final path, computed for real
+G = 16
+cols, rows = int((ax1 - 136) // G), int((ay1 - 18) // G)
+gx0, gy0 = 136, 18
+
+
+def blocked(i, j):
+    x, y = gx0 + i * G, gy0 + j * G
+    for (wx, wy, wdx, wdy) in list(WALLS.values()) + [CRATE]:
+        if x < wx + wdx + 4 and x + G > wx - 4 and y < wy + wdy + 4 and y + G > wy - 4:
+            return True
+    return False
+
+
+def cell_of(p):
+    return (int((p[0] - gx0) // G), int((p[1] - gy0) // G))
+
+
+def astar(start, goal):
+    import heapq
+    oct_h = lambda a: (max(abs(a[0] - goal[0]), abs(a[1] - goal[1])) + (math.sqrt(2) - 1) * min(abs(a[0] - goal[0]), abs(a[1] - goal[1])))
+    openq = [(oct_h(start), 0.0, start)]
+    came, gcost, closed = {}, {start: 0.0}, []
+    while openq:
+        _, g, cur = heapq.heappop(openq)
+        if cur in closed:
+            continue
+        closed.append(cur)
+        if cur == goal:
+            break
+        for di in (-1, 0, 1):
+            for dj in (-1, 0, 1):
+                if di == dj == 0:
+                    continue
+                nb = (cur[0] + di, cur[1] + dj)
+                if not (0 <= nb[0] < cols and 0 <= nb[1] < rows) or blocked(*nb):
+                    continue
+                if di and dj and (blocked(cur[0] + di, cur[1]) or blocked(cur[0], cur[1] + dj)):
+                    continue
+                ng = g + (math.sqrt(2) if di and dj else 1)
+                if ng < gcost.get(nb, 1e9):
+                    gcost[nb] = ng
+                    came[nb] = cur
+                    heapq.heappush(openq, (ng + oct_h(nb), ng, nb))
+    path = [goal]
+    while path[-1] in came:
+        path.append(came[path[-1]])
+    return path[::-1], closed
+
+
+start_c = cell_of((ROBOT[0], ROBOT[1] + 30))
+goal_c = cell_of(BALL_O)
+apath, aclosed = astar(start_c, goal_c)
+for (i, j) in aclosed:
+    x, y = gx0 + i * G, gy0 + j * G
+    add(poly([(x + 1.5, y + 1.5, .3), (x + G - 1.5, y + 1.5, .3), (x + G - 1.5, y + G - 1.5, .3), (x + 1.5, y + G - 1.5, .3)], CELL_SEEN))
+centers = [(gx0 + (i + .5) * G, gy0 + (j + .5) * G) for i, j in apath]
+dpath = "M" + "L".join(f"{P(x, y, .5)[0]:.1f} {P(x, y, .5)[1]:.1f}" for x, y in centers)
+add(f'<path d="{dpath}" fill="none" stroke="{ORANGE}" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>')
+for x, y in centers[1:-1]:
+    q = P(x, y, .5)
+    add(f'<circle cx="{q[0]:.1f}" cy="{q[1]:.1f}" r="2.6" fill="{ORANGE}"/>')
+# goal ring around the orange ball
+add(ell(*BALL_O, .6, 13, "none", f' stroke="{ORANGE}" stroke-width="2.4"'))
+
+# ------------------------------------------------------------------ people
+SKIN_A, SKIN_A_D = "#8A5536", "#6E3F25"      # deep tone
+SKIN_B, SKIN_B_D = "#E3AE85", "#C98F66"      # medium tone
+
+
+def ik(sx, sy, hx, hy, l1, l2, bend=1):
+    dx, dy = hx - sx, hy - sy
+    dist = max(1e-3, min(math.hypot(dx, dy), l1 + l2 - 0.01))
+    a = math.atan2(dy, dx)
+    cosb = (l1 * l1 + dist * dist - l2 * l2) / (2 * l1 * dist)
+    b = math.acos(max(-1, min(1, cosb)))
+    ea = a + bend * b
+    return sx + l1 * math.cos(ea), sy + l1 * math.sin(ea)
+
+
+def person(fx, fy, p):
+    """3/4 view, facing screen-right. ~5.6 heads tall. Local units → scaled by K."""
+    g = []
+    top, top_d = p["top"]
+    pants, pants_d = p["pants"]
+    skin, skin_d = p["skin"]
+    # legs + shoes
+    g.append(f'<path d="M-10 -52H0L-1.5 -6H-9Z" fill="{pants_d}"/>')
+    g.append(f'<path d="M-1 -52H10L9 -5H0.5Z" fill="{pants}"/>')
+    g.append('<rect x="-11" y="-7" width="13" height="7" rx="3.5" fill="#C9D2DE"/>')
+    g.append(f'<rect x="0" y="-6.5" width="16" height="6.5" rx="3.2" fill="{p.get("shoe", "#FFFFFF")}"/>')
+    g.append('<rect x="0" y="-2" width="16" height="2" rx="1" fill="#9AA7B8"/>')
+    # hoodie torso with shoulders
+    g.append(f'<path d="M-13 -50C-15 -64 -16 -79 -12 -85Q-9 -90 -2 -90H7Q13 -90 15.5 -85C18 -78 17 -64 16 -50Z" fill="{top}"/>')
+    g.append(f'<path d="M-13 -50C-15 -64 -16 -79 -12 -85Q-9 -90 -3 -90C-8 -80 -8 -62 -6 -50Z" fill="{top_d}"/>')
+    g.append(f'<rect x="-13" y="-55" width="29" height="6" rx="2.5" fill="{top_d}"/>')
+    g.append(f'<path d="M0 -66H13L11.5 -58H1.5Z" fill="{top_d}"/>')                 # kangaroo pocket
+    g.append(f'<path d="M-7 -89C-11 -97 6 -99 9 -90Z" fill="{top_d}"/>')              # hood
+    if p.get("strings"):
+        g.append('<path d="M4.5 -87v9M8.5 -87v7" stroke="#FFFFFF" stroke-width="1.5" stroke-linecap="round"/>')
+    # neck + head
+    g.append(f'<rect x="-2" y="-96" width="7" height="8" fill="{skin_d}"/>')
+    g.append(f'<circle cx="2.5" cy="-104" r="10.5" fill="{skin}"/>')
+    g.append(f'<ellipse cx="-4.2" cy="-103" rx="2.4" ry="3.2" fill="{skin_d}"/>')
+    g.append(p["hair"])
+    # face: 3/4 right, looking toward the robot
+    g.append(f'<path d="M4 -108.6l3 -.6M9.6 -109.2l2.6 .2" stroke="{p["brow"]}" stroke-width="1.3" stroke-linecap="round"/>')
+    g.append(f'<ellipse cx="6" cy="-105" rx="1.25" ry="1.7" fill="{INK}"/><ellipse cx="11.2" cy="-105" rx="1.1" ry="1.6" fill="{INK}"/>')
+    g.append(f'<path d="M12.6 -103.5q1.4 1.8 -.4 2.6" fill="none" stroke="{skin_d}" stroke-width="1.2" stroke-linecap="round"/>')
+    g.append(f'<path d="M6.5 -99q2.8 2.2 5.4 .2" fill="none" stroke="{INK}" stroke-width="1.3" stroke-linecap="round"/>')
+    if p.get("glasses"):
+        g.append(f'<g fill="none" stroke="{INK}" stroke-width="1.1"><rect x="3" y="-107.8" width="5.6" height="4.8" rx="1.6"/><rect x="9.6" y="-107.8" width="4.2" height="4.6" rx="1.4"/><path d="M8.6 -106h1M3 -106l-6 -1"/></g>')
+    return f'<g transform="translate({fx:.1f} {fy:.1f}) scale({K})">{"".join(g)}</g>'
+
+
+def arm(fx, fy, shoulder, hand, p, l1=21, l2=20, bend=1, back=False, point=None):
+    """Sleeve (upper arm + forearm) with cuff and mitten hand, solved with 2-bone IK."""
+    top, top_d = p["top"]
+    skin, _ = p["skin"]
+    sx, sy = fx + shoulder[0] * K, fy + shoulder[1] * K
+    hx, hy = hand
+    ex, ey = ik(sx, sy, hx, hy, l1 * K, l2 * K, bend)
+    col = top_d if back else top
+    ang = math.atan2(hy - ey, hx - ex)
+    cx_, cy_ = hx - math.cos(ang) * 4.5 * K, hy - math.sin(ang) * 4.5 * K
+    s = (f'<path d="M{sx:.1f} {sy:.1f}L{ex:.1f} {ey:.1f}" stroke="{col}" stroke-width="{9*K:.1f}" stroke-linecap="round"/>'
+         f'<path d="M{ex:.1f} {ey:.1f}L{cx_:.1f} {cy_:.1f}" stroke="{col}" stroke-width="{7.6*K:.1f}" stroke-linecap="round"/>'
+         f'<circle cx="{cx_:.1f}" cy="{cy_:.1f}" r="{4.1*K:.1f}" fill="{top_d}"/>')
+    deg = math.degrees(ang)
+    hand_svg = (f'<g transform="translate({hx:.1f} {hy:.1f}) rotate({deg:.1f}) scale({K})">'
+                f'<ellipse cx="0.5" cy="0" rx="4.4" ry="3.4" fill="{skin}"/>'
+                f'<ellipse cx="-0.5" cy="-3" rx="1.6" ry="1.2" fill="{skin}"/>')
+    if point:
+        hand_svg += f'<rect x="2" y="-1.2" width="6.5" height="2.4" rx="1.2" fill="{skin}"/>'
+    hand_svg += '</g>'
+    return s + hand_svg
+
+
+HAIR_A = ('<circle cx="-5" cy="-121" r="7.5" fill="#1B120E"/>'
+          '<path d="M-8.5 -101C-12 -113 -4 -118 5 -117C11 -116 14 -111 13.5 -107C9 -111 3 -112 -1 -109C-3 -106 -5 -103 -8.5 -101Z" fill="#1B120E"/>'
+          '<rect x="-7" y="-116.5" width="9" height="3" rx="1.5" fill="#FF5F05"/>')
+HAIR_B = ('<path d="M-8.8 -99C-13 -110 -8 -117 2 -117C10 -117 15 -112 13.5 -107.5C10 -110 6 -110.5 3 -108.5C1 -106 -3 -104 -5 -99Z" fill="#3B2A1E"/>'
+          '<path d="M2 -117C6 -120 12 -117 13.5 -112" fill="none" stroke="#3B2A1E" stroke-width="3" stroke-linecap="round"/>')
+STU_A = dict(top=(ORANGE, ALTGELD), pants=("#1D58A7", "#1E3877"), skin=(SKIN_A, SKIN_A_D), hair=HAIR_A,
+             brow="#1B120E", strings=True, shoe="#FFFFFF")
+STU_B = dict(top=HOODIE_B, pants=("#2B3F63", "#1E2E4B"), skin=(SKIN_B, SKIN_B_D), hair=HAIR_B,
+             brow="#3B2A1E", glasses=True, shoe="#FFFFFF")
+
+A_POS, B_POS = (24, 150), (24, 84)
+BENCH = (38, 58, 54, 118, 44)                 # x, y, depth, length, height
+bx, by, bdx, bdy, bh = BENCH
+BT = bh
+
+fa, fb = P(*A_POS), P(*B_POS)
+# soft cast shadows (pre-mixed floor shadow colour)
+for fx_, fy_ in (A_POS, B_POS):
+    add(ell(fx_ + 2, fy_ + 2, .1, 11, SHADOW_FLOOR))
+add(person(*fb, STU_B))
+add(person(*fa, STU_A))
+
+# ------------------------------------------------------------------ workbench
+OAKC = ("#EDBB78", "#D9A05C", "#BC8242")
+METALC = ("#E3E8EE", "#BCC6D2", "#9CA8B8")
+add(poly([(bx + 4, by + 4, .1), (bx + bdx + 8, by + 4, .1), (bx + bdx + 8, by + bdy + 8, .1), (bx + 4, by + bdy + 8, .1)], SHADOW_FLOOR))
+for lx, ly in ((bx + 3, by + 3), (bx + bdx - 7, by + 3), (bx + 3, by + bdy - 7), (bx + bdx - 7, by + bdy - 7)):
+    add(box(lx, ly, 0, 4, 4, bh - 5, METALC))
+add(box(bx + 3, by + 3, 12, bdx - 6, bdy - 6, 3, METALC))
+add(box(bx + 12, by + 70, 15, 30, 36, 18, ("#5B6B84", "#4A5970", "#3B475B")))     # bench power supply
+add(box(bx, by, bh - 5, bdx, bdy, 5, OAKC))
+
+# laptop (B types, lid faces B so we see its back)
+lx0, ly0 = bx + 10, by + 8
+add(box(lx0, ly0, BT, 24, 34, 2, ("#D5DBE4", "#B6BFCC", "#9AA5B4")))
+add(box(lx0 + 2, ly0, BT + 2, 2.5, 34, 22, ("#E1E6ED", "#C3CBD6", "#CDD4DE")))
+lid = (f'<circle cx="17" cy="10" r="5" fill="{ORANGE}"/>'
+       f'<rect x="7" y="14" width="11" height="4.5" rx="1.2" fill="{BLUE}"/>')
+add(f'<g transform="{m_xface(lx0 + 4.5, ly0 + 34, BT + 23)}">{lid}</g>')
+
+
+def big_board():
+    """TI LaunchPad F28379D (red) on the SE 423 breakout (green); top-down, 280x160."""
+    s = []
+    BW, BH = 280, 160
+    s.append(f'<rect width="{BW}" height="{BH}" rx="10" fill="{PCB[1]}"/>')
+    s.append(f'<rect x="5" y="5" width="{BW-10}" height="{BH-10}" rx="7" fill="none" stroke="{PCB[0]}" stroke-width="4"/>')
+    for hx, hy in ((16, 16), (BW - 16, 16), (16, BH - 16), (BW - 16, BH - 16)):
+        s.append(f'<circle cx="{hx}" cy="{hy}" r="8" fill="#F2C14E"/><circle cx="{hx}" cy="{hy}" r="3.5" fill="{PCB[2]}"/>')
+    for i in range(3):
+        s.append(f'<rect x="{30+i*26}" y="{BH-44}" width="22" height="20" rx="3" fill="#8FE0B0"/>')
+    s.append(f'<rect x="232" y="100" width="34" height="30" rx="3" fill="#FAFAF7"/>')
+    s.append(f'<circle cx="250" cy="46" r="15" fill="#23262E"/>')
+    s.append(f'<rect x="-10" y="56" width="26" height="48" rx="4" fill="#C9D0DA"/>')
+    s.append(f'<rect x="92" y="{BH-22}" width="88" height="13" rx="2" fill="#15171D"/>')
+    t_, _ = text_path("SE 423", 30, 30, 15, MONT[800], "#FFFFFF", spacing=1.5)
+    s.append(t_)
+    LX, LY, LW, LH = 70, 34, 158, 80
+    s.append(f'<rect x="{LX+6}" y="{LY+7}" width="{LW}" height="{LH}" rx="5" fill="{PCB[2]}"/>')
+    s.append(f'<rect x="{LX}" y="{LY}" width="{LW}" height="{LH}" rx="5" fill="{LAUNCH[1]}"/>')
+    s.append(f'<rect x="{LX+3}" y="{LY+3}" width="{LW-6}" height="{LH-6}" rx="4" fill="none" stroke="#F4F4F4" stroke-width="2.5"/>')  # silkscreen edge (non-colour cue)
+    for hy in (LY + 6, LY + LH - 18):                         # light header strips: a non-colour cue
+        s.append(f'<rect x="{LX+24}" y="{hy}" width="{LW-32}" height="12" rx="2" fill="#17181E"/>')
+        for i_ in range(15):
+            s.append(f'<rect x="{LX+28+i_*8.2:.1f}" y="{hy+4}" width="3.6" height="3.6" fill="#C9CED6"/>')
+    s.append(f'<rect x="{LX-12}" y="{LY+30}" width="24" height="20" rx="3" fill="#D5DAE1"/>')
+    s.append(f'<rect x="{LX+80}" y="{LY+23}" width="36" height="36" rx="3" fill="#1C1D24"/>')
+    s.append(f'<circle cx="{LX+138}" cy="{LY+40}" r="5" fill="#FFD23F"/>')
+    for d_, c_ in (("M150 40C150 4 236 2 248 34", "#FFD23F"), ("M106 114C112 150 62 152 46 128", "#63A4FF")):
+        s.append(f'<path d="{d_}" fill="none" stroke="{c_}" stroke-width="5" stroke-linecap="round"/>')
+    return "".join(s)
+
+
+BS = 0.31
+bxw, byw = bx + 6, by + 48
+add(box(bxw, byw, BT, 160 * BS, 280 * BS, 1.6, PCB))
+add(f'<g transform="{m_top_uy(bxw + 160*BS, byw, BT + 1.6, BS)} rotate(180 140 80)">{big_board()}</g>')
+c0, c1 = P(bxw + 30, byw + 2, BT + 2), P(lx0 + 14, ly0 + 34, BT + 2)
+add(f'<path d="M{c0[0]:.1f} {c0[1]:.1f}C{c0[0]+10:.1f} {c0[1]-4:.1f} {c1[0]+14:.1f} {c1[1]+6:.1f} {c1[0]:.1f} {c1[1]:.1f}" fill="none" stroke="#3B4252" stroke-width="2.4" stroke-linecap="round"/>')
+
+# arms: B types on the laptop, A steadies the board and points at the robot
+hb1 = P(lx0 + 12, ly0 + 12, BT + 3)
+hb2 = P(lx0 + 14, ly0 + 26, BT + 3)
+add(arm(*fb, (-4, -85), hb1, STU_B, bend=-1, back=True))
+add(arm(*fb, (10, -85), hb2, STU_B, bend=-1))
+ha = P(bx + 3, A_POS[1] + 10, BT + 1)
+add(arm(*fa, (-6, -85), ha, STU_A, l1=20, l2=19, bend=-1, back=True))
+lid_pt = P(ROBOT[0], ROBOT[1] + 10, 80)
+sh = (fa[0] + 11 * K, fa[1] - 85 * K)
+ang = math.atan2(lid_pt[1] - sh[1], lid_pt[0] - sh[0])
+pa = (sh[0] + math.cos(ang) * 38 * K, sh[1] + math.sin(ang) * 38 * K)
+add(arm(*fa, (11, -85), pa, STU_A, l1=21, l2=19, bend=-1, point=True))
+
+# ------------------------------------------------------------------ arena objects (back → front)
+PLY = ("#F2D6A2", "#E1B777", "#C7975A")
+
+
+def ply_wall(key):
+    x, y, dx, dy = WALLS[key]
+    return box(x, y, 0, dx, dy, WALL_H, PLY)
+
+
+add(ply_wall("back"))
+# AprilTag on the back wall (faces +y)
+tag = ['<rect x="0" y="0" width="16" height="16" fill="#FFFFFF"/><rect x="2" y="2" width="12" height="12" fill="#111"/>']
+for (i, j) in ((1, 1), (3, 1), (2, 2), (1, 3), (4, 3), (3, 4), (2, 4)):
+    tag.append(f'<rect x="{2+i*2}" y="{2+j*2}" width="2" height="2" fill="#FFFFFF"/>')
+add(f'<g transform="{m_yface(18, 238, 18)}">{"".join(tag)}</g>')
+add(ply_wall("left"))
+
+# --- LiDAR (URG-04LX style 240° fan, centred on the heading +y), ray-cast for real
 segs = []
 
 
@@ -282,12 +574,13 @@ def rect_segs(x, y, dx, dy):
 
 for (x, y, dx, dy) in WALLS.values():
     segs += rect_segs(x, y, dx, dy)
-segs += rect_segs(*BOX_OBS)
+segs += rect_segs(*CRATE)
 segs += [((0, 0), (RX, 0)), ((0, 0), (0, RY))]
+edge_segs = [((ax1, 0), (ax1, ay1)), ((0, ay1), (ax1, ay1))]
 
 
-def cast(ox, oy, ang, rmax):
-    dx, dy = math.cos(ang), math.sin(ang)
+def cast(ox, oy, a, rmax):
+    dx, dy = math.cos(a), math.sin(a)
     best = rmax
     for (x1, y1), (x2, y2) in segs:
         ex, ey = x2 - x1, y2 - y1
@@ -301,334 +594,137 @@ def cast(ox, oy, ang, rmax):
     return best
 
 
-RMAX = 118
-scan, hits = [], []
-N = 540
-for i in range(N):
-    ang = 2 * math.pi * i / N
-    r = cast(*ROBOT, ang, RMAX)
-    px, py = ROBOT[0] + r * math.cos(ang), ROBOT[1] + r * math.sin(ang)
-    scan.append((px, py, 0.6))
-    if r < RMAX - 1e-6 and i % 4 == 0:
-        hits.append((px, py))
-rcx, rcy = P(*ROBOT, 0.6)
-defs.append(f'<radialGradient id="scan" gradientUnits="userSpaceOnUse" cx="{rcx:.1f}" cy="{rcy:.1f}" r="{RMAX*C*math.sqrt(2)*K:.1f}" '
-            f'gradientTransform="translate({rcx:.1f} {rcy:.1f}) scale(1 {S/C:.4f}) translate({-rcx:.1f} {-rcy:.1f})">'
-            f'<stop offset="0" stop-color="{ORANGE}" stop-opacity="0.24"/>'
-            f'<stop offset="1" stop-color="{ORANGE}" stop-opacity="0.06"/></radialGradient>')
-add(f'<polygon points="{pts(*scan)}" fill="url(#scan)"/>')
-rays = "".join(f"M{rcx:.1f} {rcy:.1f}L{P(x, y, .6)[0]:.1f} {P(x, y, .6)[1]:.1f}" for x, y, _ in scan[::9])
-add(f'<path d="{rays}" stroke="#FF8A3D" stroke-opacity="0.45" stroke-width="1"/>')
-add(f'<polygon points="{pts(*scan)}" fill="none" stroke="#FF9D5C" stroke-opacity="0.5" stroke-width="1.2" stroke-linejoin="round"/>')
-# faint rings on the floor
+LID = (ROBOT[0], ROBOT[1] + 16)
+rays, hits = [], []
+for k in range(0, 33):
+    a = math.pi / 2 + math.radians(-120 + k * 7.5)
+    r = cast(*LID, a, 120)
+    segs_all, segs[:] = segs[:], segs + edge_segs
+    r_edge = cast(*LID, a, 120)
+    segs[:] = segs_all
+    rr = min(r, r_edge)
+    hx, hy = LID[0] + rr * math.cos(a), LID[1] + rr * math.sin(a)
+    rays.append((hx, hy))
+    if r < 120 and r <= r_edge:
+        hits.append((hx, hy))
+lp = P(*LID, .6)
+rp = "".join(f"M{lp[0]:.1f} {lp[1]:.1f}L{P(x, y, .6)[0]:.1f} {P(x, y, .6)[1]:.1f}" for x, y in rays)
+add(f'<path d="{rp}" stroke="#6A5260" stroke-width="1"/>')      # opaque, pre-mixed orange-on-mat
 
 
-# --- planned path (rounded polyline) + goal target
-route = [ROBOT, (ROBOT[0], 130), (GOAL[0], 130), GOAL]
+def hits_where(sel):
+    for hx, hy in hits:
+        if sel(hx + hy):
+            q = P(hx, hy, 8)
+            add(f'<circle cx="{q[0]:.1f}" cy="{q[1]:.1f}" r="2.2" fill="{ORANGE}"/>')
 
 
-def rounded(route, rad=26, step=3):
-    outp = [route[0]]
-    for i in range(1, len(route) - 1):
-        (x0, y0), (x1, y1), (x2, y2) = route[i - 1], route[i], route[i + 1]
-        d0 = math.hypot(x1 - x0, y1 - y0); d1 = math.hypot(x2 - x1, y2 - y1)
-        a = (x1 - (x1 - x0) / d0 * rad, y1 - (y1 - y0) / d0 * rad)
-        b = (x1 + (x2 - x1) / d1 * rad, y1 + (y2 - y1) / d1 * rad)
-        for k in range(step + 1):
-            t = k / step
-            outp.append(((1-t)**2*a[0] + 2*(1-t)*t*x1 + t*t*b[0], (1-t)**2*a[1] + 2*(1-t)*t*y1 + t*t*b[1]))
-    outp.append(route[-1])
-    return outp
-
-
-path_pts = rounded(route, step=10)
-# simpler & robust: draw path points after the robot's front bumper
-start_i = next(i for i, (x, y) in enumerate(path_pts) if y > ROBOT[1] + 32)
-seg_pts = [(ROBOT[0], ROBOT[1] + 32)] + path_pts[start_i:-1] + [(GOAL[0], GOAL[1] - 16)]
-dp = "M" + "L".join(f"{P(x, y, .8)[0]:.1f} {P(x, y, .8)[1]:.1f}" for x, y in seg_pts)
-add(f'<path d="{dp}" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-dasharray="1 8" stroke-linecap="round" stroke-linejoin="round"/>')
-gx_, gy_ = P(*GOAL, .8)
-for rr, col in ((16, ORANGE), (11, "#FFFFFF"), (6, ORANGE)):
-    add(f'<ellipse cx="{gx_:.1f}" cy="{gy_:.1f}" rx="{rr*C*math.sqrt(2)*K:.1f}" ry="{rr*S*math.sqrt(2)*K:.1f}" fill="{col}"/>')
-
-# ------------------------------------------------------------------ people
-SKIN_A, SKIN_B = "#9A5E3A", "#F2C7A0"
-
-
-def ik(sx, sy, hx, hy, l1, l2, bend=1):
-    dx, dy = hx - sx, hy - sy
-    dist = min(math.hypot(dx, dy), l1 + l2 - 0.01)
-    a = math.atan2(dy, dx)
-    cosb = (l1 * l1 + dist * dist - l2 * l2) / (2 * l1 * dist)
-    b = math.acos(max(-1, min(1, cosb)))
-    ea = a + bend * b
-    return sx + l1 * math.cos(ea), sy + l1 * math.sin(ea)
-
-
-def person_body(fx, fy, p):
-    """Standing figure, 3/4 view facing screen-right (+x world). Origin at feet."""
-    g = []
-    pants, pants_d, shoe = p["pants"], p["pants_d"], "#F7F8FA"
-    top, top_d = p["top"], p["top_d"]
-    skin, hair = p["skin"], p["hair"]
-    # legs
-    g.append(f'<path d="M-9 -50h9v44h-9z" fill="{pants_d}"/><path d="M0 -50h10v46H0z" fill="{pants}"/>')
-    g.append(f'<rect x="-10" y="-7" width="14" height="7" rx="3.5" fill="#D5DBE4"/><rect x="0" y="-6" width="17" height="7" rx="3.5" fill="{shoe}"/>')
-    # torso (hoodie)
-    g.append(f'<path d="M-15 -48C-16 -70 -15 -86 -6 -91H8C16 -86 17 -70 16 -48Z" fill="{top}"/>')
-    g.append(f'<path d="M-15 -48C-16 -70 -15 -86 -6 -91H-1C-8 -80 -9 -64 -7 -48Z" fill="{top_d}"/>')
-    g.append(f'<rect x="-15" y="-52" width="31" height="5" rx="2" fill="{top_d}"/>')
-    g.append(f'<path d="M-9 -91C-8 -84 8 -84 10 -91Z" fill="{top_d}"/>')  # hood collar
-    if p.get("strings"):
-        g.append(f'<path d="M4 -86v10M8 -86v8" stroke="#FFFFFF" stroke-width="1.6" stroke-linecap="round"/>')
-    # neck + head
-    g.append(f'<rect x="-3" y="-96" width="8" height="8" fill="{p["skin_d"]}"/>')
-    g.append(f'<circle cx="2" cy="-106" r="12" fill="{skin}"/>')
-    g.append(f'<circle cx="-7" cy="-105" r="3.2" fill="{p["skin_d"]}"/>')          # ear
-    g.append(p["hair_svg"](hair))
-    # face (3/4 right)
-    g.append(f'<circle cx="5" cy="-106" r="1.6" fill="{INK}"/><circle cx="11" cy="-106" r="1.6" fill="{INK}"/>')
-    g.append(f'<path d="M6 -100q3 2.2 6 0" fill="none" stroke="{INK}" stroke-width="1.5" stroke-linecap="round"/>')
-    g.append(f'<circle cx="4" cy="-102" r="2.2" fill="#E77C6B" opacity="0.45"/>')
-    if p.get("glasses"):
-        g.append(f'<g fill="none" stroke="{INK}" stroke-width="1.3"><circle cx="5.2" cy="-106" r="3.6"/><circle cx="12" cy="-106" r="3"/><path d="M8.8 -106.5h0.4M1.6 -106.5l-6 -1"/></g>')
-    return f'<g transform="translate({fx:.1f} {fy:.1f}) scale({K})">{"".join(g)}</g>'
-
-
-def arm(fx, fy, shoulder, hand, p, l1=22, l2=22, bend=1, back=False):
-    sx, sy = fx + shoulder[0] * K, fy + shoulder[1] * K
-    l1, l2 = l1 * K, l2 * K
-    hx, hy = hand
-    ex, ey = ik(sx, sy, hx, hy, l1, l2, bend)
-    col = p["top_d"] if back else p["top"]
-    return (f'<path d="M{sx:.1f} {sy:.1f}L{ex:.1f} {ey:.1f}L{hx:.1f} {hy:.1f}" fill="none" stroke="{col}" stroke-width="{8.5*K:.1f}" stroke-linecap="round" stroke-linejoin="round"/>'
-            f'<circle cx="{hx:.1f}" cy="{hy:.1f}" r="{4.3*K:.1f}" fill="{p["skin"]}"/>')
-
-
-def hair_curly_bun(c):
-    return (f'<circle cx="-4" cy="-122" r="7" fill="{c}"/>'
-            f'<path d="M-10 -104C-14 -122 4 -124 14 -114C10 -118 2 -116 -1 -112C-3 -106 -6 -104 -10 -104Z" fill="{c}"/>'
-            f'<circle cx="-6" cy="-113" r="6" fill="{c}"/><circle cx="3" cy="-117" r="6" fill="{c}"/><circle cx="10" cy="-115" r="4.5" fill="{c}"/>')
-
-
-def hair_short(c):
-    return (f'<path d="M-11 -100C-15 -118 0 -124 12 -118C16 -115 15 -111 14 -110C8 -114 2 -114 -1 -110C-3 -106 -5 -102 -8 -100Z" fill="{c}"/>')
-
-
-STU_A = dict(top=ORANGE, top_d=ALTGELD, pants=ARCHES, pants_d=INDUSTRIAL, skin=SKIN_A, skin_d="#7C4A2C",
-             hair="#1B1411", hair_svg=hair_curly_bun, strings=True)
-STU_B = dict(top="#2E4F86", top_d="#1E3877", pants="#5D6B80", pants_d="#46536A", skin=SKIN_B, skin_d="#D9A882",
-             hair="#5A3A22", hair_svg=hair_short, glasses=True)
-
-A_POS, B_POS = (30, 176), (30, 100)          # world feet positions (behind the bench)
-BENCH = (46, 62, 60, 150, 44)                # x, y, dx(depth), dy(length), height
-
-# bodies first (they are behind the bench)
-fa, fb = P(*A_POS), P(*B_POS)
-add(person_body(*fb, STU_B))
-add(person_body(*fa, STU_A))
-
-# ------------------------------------------------------------------ workbench
-bx, by, bdx, bdy, bh = BENCH
-for lx, ly in ((bx + 3, by + 3), (bx + bdx - 7, by + 3), (bx + 3, by + bdy - 7), (bx + bdx - 7, by + bdy - 7)):
-    add(box(lx, ly, 0, 4, 4, bh - 5, METAL))
-add(box(bx + 3, by + 3, 12, bdx - 6, bdy - 6, 3, METAL))                 # lower shelf
-add(box(bx + 10, by + 14, 15, 30, 26, 12, ("#5B6B84", "#4A5970", "#3B475B")))  # parts bin
-add(box(bx + 12, by + 96, 15, 34, 40, 20, ("#6A7890", "#4E5B72", "#3E485B")))  # power supply
-add(box(bx, by, bh - 5, bdx, bdy, 5, OAK))                                 # oak top
-BT = bh                                                                   # bench top z
-
-# laptop: base on bench, lid open towards the student (we see its back)
-lx0, ly0 = bx + 12, by + 8
-add(box(lx0, ly0, BT, 24, 34, 2, ("#D5DBE4", "#B6BFCC", "#9AA5B4")))
-add(box(lx0 + 2, ly0, BT + 2, 2.5, 34, 24, ("#E1E6ED", "#C3CBD6", "#CDD4DE")))
-lid = (f'<circle cx="17" cy="11" r="5.5" fill="{ORANGE}"/>'
-       f'<rect x="6" y="15" width="12" height="5" rx="1.2" fill="{BLUE}"/>')
-add(f'<g transform="{m_xface(lx0 + 4.5, ly0 + 34, BT + 25)}">{lid}</g>')
-# screen glow on student B
-gxl, gyl = P(lx0, ly0 + 17, BT + 20)
-add(f'<ellipse cx="{gxl-18:.1f}" cy="{gyl-4:.1f}" rx="32" ry="22" fill="#9CD3FF" opacity="0.18"/>')
-
-# ---- the red + green board (TI LaunchPad F28379D on the SE 423 breakout)
-def big_board():
-    s = []
-    BW, BH = 280, 160
-    s.append(f'<rect x="6" y="8" width="{BW}" height="{BH}" rx="10" fill="#000" opacity="0.18"/>')
-    s.append(f'<rect width="{BW}" height="{BH}" rx="10" fill="{PCB[1]}"/>')
-    s.append(f'<rect x="4" y="4" width="{BW-8}" height="{BH-8}" rx="8" fill="none" stroke="{PCB[0]}" stroke-width="3"/>')
-    for d_ in ("M22 34h40l12 12h20", "M22 128h58l14-14h28", "M204 140h40l10-10v-40", "M240 24v28l-10 10", "M40 62v40l10 10h12"):
-        s.append(f'<path d="{d_}" fill="none" stroke="#3CC274" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.8"/>')
-    for hx, hy in ((14, 14), (BW - 14, 14), (14, BH - 14), (BW - 14, BH - 14)):
-        s.append(f'<circle cx="{hx}" cy="{hy}" r="7" fill="#F2C14E"/><circle cx="{hx}" cy="{hy}" r="3" fill="{PCB[2]}"/>')
-    for i in range(3):
-        s.append(f'<rect x="{28+i*24}" y="{BH-42}" width="20" height="18" rx="2" fill="#35D07F"/><circle cx="{38+i*24}" cy="{BH-33}" r="4.5" fill="#B9C2CE"/>')
-    s.append(f'<rect x="232" y="100" width="34" height="28" rx="3" fill="#FAFAF7"/><rect x="239" y="107" width="20" height="12" fill="#D2D2CA"/>')
-    s.append(f'<circle cx="250" cy="46" r="14" fill="#23262E"/><circle cx="250" cy="46" r="3.5" fill="#555B66"/>')
-    s.append(f'<rect x="186" y="118" width="38" height="30" rx="3" fill="{ARCHES}"/><rect x="199" y="127" width="12" height="12" fill="#0E1426"/>')
-    s.append(f'<rect x="-10" y="58" width="24" height="46" rx="3" fill="#C9D0DA"/><rect x="-5" y="68" width="12" height="26" rx="3" fill="#6B7684"/>')
-    s.append(f'<rect x="92" y="{BH-20}" width="86" height="11" rx="1" fill="#15171D"/>')
-    for i in range(12):
-        s.append(f'<rect x="{95+i*7}" y="{BH-17}" width="3.2" height="5" fill="#F2C14E"/>')
-    t_, _ = text_path("SE 423 BREAKOUT", 30, 25, 11, MONT[800], "#EAF7EE", spacing=1.2)
-    s.append(t_)
-    LX, LY, LW, LH = 70, 34, 158, 80
-    s.append(f'<rect x="{LX+5}" y="{LY+6}" width="{LW}" height="{LH}" rx="5" fill="#000" opacity="0.28"/>')
-    s.append(f'<rect x="{LX}" y="{LY}" width="{LW}" height="{LH}" rx="5" fill="{LAUNCH[1]}"/>')
-    s.append(f'<rect x="{LX+3}" y="{LY+3}" width="{LW-6}" height="{LH-6}" rx="3" fill="none" stroke="{LAUNCH[0]}" stroke-width="2.5"/>')
-    for hy in (LY + 5, LY + LH - 16):
-        s.append(f'<rect x="{LX+24}" y="{hy}" width="{LW-32}" height="11" rx="1.5" fill="#17181E"/>')
-        for i in range(17):
-            s.append(f'<rect x="{LX+27+i*7.3:.1f}" y="{hy+4}" width="3.2" height="3.2" fill="#5E6270"/>')
-    s.append(f'<rect x="{LX-12}" y="{LY+28}" width="22" height="20" rx="2.5" fill="#D5DAE1"/>')
-    s.append(f'<rect x="{LX+14}" y="{LY+26}" width="16" height="16" rx="1" fill="#1A1B21"/>')
-    mx, my = LX + 74, LY + 22
-    s.append(f'<rect x="{mx-4}" y="{my-4}" width="44" height="44" rx="2" fill="#C9CED6" opacity="0.9"/>')
-    s.append(f'<rect x="{mx}" y="{my}" width="36" height="36" rx="2" fill="#1C1D24"/><circle cx="{mx+7}" cy="{my+7}" r="2.4" fill="#3A3C48"/>')
-    s.append(f'<rect x="{LX+36}" y="{LY+46}" width="12" height="12" rx="2" fill="#EDEDED"/><circle cx="{LX+42}" cy="{LY+52}" r="3" fill="#3A3C48"/>')
-    s.append(f'<circle cx="{LX+138}" cy="{LY+32}" r="4" fill="#FF6B6B"/><circle cx="{LX+138}" cy="{LY+32}" r="8" fill="#FF6B6B" opacity="0.35"/>')
-    s.append(f'<circle cx="{LX+138}" cy="{LY+48}" r="4" fill="#63B3FF"/><circle cx="{LX+138}" cy="{LY+48}" r="8" fill="#63B3FF" opacity="0.35"/>')
-    for d_, c_ in (("M150 38C150 2 238 0 248 34", "#FFD23F"), ("M178 38C186 10 226 12 236 102", "#4F8BFF"),
-                   ("M106 114C112 150 62 152 46 128", "#FF5A5A")):
-        s.append(f'<path d="{d_}" fill="none" stroke="#0B1222" stroke-width="7" stroke-linecap="round" opacity="0.35"/>'
-                 f'<path d="{d_}" fill="none" stroke="{c_}" stroke-width="4.2" stroke-linecap="round"/>')
-    return "".join(s)
-
-
-# board lies on the bench, long side along +y; 280x160 local → 70x40 world
-BS = 0.33
-bxw, byw = bx + 4, by + 50
-add(box(bxw, byw, BT, 160 * BS, 280 * BS, 1.5, PCB))      # PCB thickness
-add(f'<g transform="{m_top_uy(bxw + 160*BS, byw, BT + 1.5, BS)} rotate(180 140 80)">{big_board()}</g>')
-
-# USB cable board → laptop
-c0, c1 = P(bxw + 30, byw + 2, BT + 2), P(lx0 + 12, ly0 + 34, BT + 2)
-add(f'<path d="M{c0[0]:.1f} {c0[1]:.1f}C{c0[0]+10:.1f} {c0[1]-4:.1f} {c1[0]+14:.1f} {c1[1]+6:.1f} {c1[0]:.1f} {c1[1]:.1f}" fill="none" stroke="#3B4252" stroke-width="2.6" stroke-linecap="round"/>')
-
-# arms over the bench: B types, A reaches for the board and points at the robot
-hand_b = P(lx0 + 12, ly0 + 20, BT + 3)
-add(arm(*fb, (6, -84), (hand_b[0], hand_b[1]), STU_B, l1=24, l2=24, bend=-1))
-hand_a = P(bxw + 22, byw + 58, BT + 3)
-add(arm(*fa, (-2, -84), (hand_a[0], hand_a[1]), STU_A, l1=24, l2=24, bend=1, back=True))
-# pointing arm towards the robot
-pa = (fa[0] + 46*K, fa[1] - 100*K)
-add(arm(*fa, (8, -84), pa, STU_A, l1=21, l2=21, bend=-1))
-add(f'<path d="M{pa[0]:.1f} {pa[1]:.1f}l{7*K:.1f} {-4*K:.1f}" stroke="{SKIN_A}" stroke-width="{3.2*K:.1f}" stroke-linecap="round"/>')
-
-# ------------------------------------------------------------------ arena objects (back → front)
-def ply_wall(key):
-    x, y, dx, dy = WALLS[key]
-    return box(x, y, 0, dx, dy, WALL_H, PLY)
-
-
-add(ply_wall("back"))
-add(ply_wall("left"))
-
-
-# ---- the robot
+# ---- the robot (heading +y), modelled on the SE 423 robot car
 def robot(rx, ry):
     g = []
-    sx, sy = P(rx, ry, 0)
-    g.append(f'<ellipse cx="{sx:.1f}" cy="{sy:.1f}" rx="{34*K:.1f}" ry="{19*K:.1f}" fill="#0A0F1A" opacity="0.4"/>')
-    # mocap frame (behind)
-    fxp = rx - 22
-    for yy in (ry - 24, ry + 21):
-        g.append(box(fxp, yy, 22, 3, 3, 84, METAL))
-    g.append(box(fxp - 1, ry - 30, 106, 5, 60, 6, BLACK))
-    g.append(box(fxp - 1.2, ry - 30, 106, 5.4, 12, 6.2, ("#F0F76A", "#E4F04B", "#C7D23A")))
-    g.append(box(fxp - 1.2, ry + 18, 106, 5.4, 12, 6.2, ("#F0F76A", "#E4F04B", "#C7D23A")))
-    balls = [(fxp + 1, ry - 20, 112, 128), (fxp + 1, ry + 6, 112, 136), (fxp + 1, ry + 26, 112, 124), (fxp + 1, ry - 4, 112, 120)]
-    stick = []
-    for bxx, byy, z0, z1 in balls:
-        a_, b_ = P(bxx, byy, z0), P(bxx, byy, z1)
-        stick.append(f'<path d="M{a_[0]:.1f} {a_[1]:.1f}L{b_[0]:.1f} {b_[1]:.1f}" stroke="#9AA5B4" stroke-width="2.2"/>')
-    # sideways marker
-    a_, b_ = P(fxp + 2, ry - 30, 110), P(fxp + 16, ry - 44, 114)
-    stick.append(f'<path d="M{a_[0]:.1f} {a_[1]:.1f}L{b_[0]:.1f} {b_[1]:.1f}" stroke="#9AA5B4" stroke-width="1.8"/>')
-    g.extend(stick)
-    ball_pos = [P(bxx, byy, z1) for bxx, byy, _, z1 in balls] + [b_]
-    # wheels (+y side visible)
-    for wx in (rx,):
-        g.append(f'<g transform="{m_yface(ry + 23, 0, 0)}"><circle cx="{wx}" cy="-11" r="11" fill="#1A1C22"/><circle cx="{wx}" cy="-11" r="4.5" fill="#B9C2CE"/></g>')
-    # chassis
-    g.append(box(rx - 20, ry - 20, 5, 40, 40, 17, METAL))
-    g.append(box(rx - 26, ry - 26, 22, 52, 52, 3, WHITE))            # acrylic deck
-    # velcro pads
-    for vx, vy in ((rx + 10, ry - 22), (rx - 22, ry + 12), (rx + 12, ry + 14)):
-        g.append(poly([(vx, vy, 25.1), (vx + 10, vy, 25.1), (vx + 10, vy + 8, 25.1), (vx, vy + 8, 25.1)], "#2A2D36"))
-    # standoffs
-    for ox_, oy_ in ((-18, -18), (18, -18), (-18, 18), (18, 18)):
-        g.append(box(rx + ox_ - 1, ry + oy_ - 1, 25, 2, 2, 32, METAL))
-    # green board + red launchpad on the robot
-    g.append(box(rx - 16, ry - 20, 38, 32, 40, 2, PCB))
-    g.append(box(rx - 9, ry - 14, 40, 18, 28, 2.5, LAUNCH))
-    g.append(box(rx - 8, ry - 12, 42.5, 3, 24, 2, BLACK))
-    g.append(box(rx + 4, ry - 12, 42.5, 3, 24, 2, BLACK))
-    g.append(box(rx - 3, ry - 5, 42.5, 6, 6, 1.5, BLACK))
-    # upper deck
-    g.append(box(rx - 24, ry - 24, 57, 48, 48, 2.5, BLACK))
-    # camera (faces +y)
-    g.append(box(rx - 6, ry + 20, 59.5, 12, 3, 10, LAUNCH))
-    g.append(f'<g transform="{m_yface(ry + 23, 0, 0)}"><circle cx="{rx}" cy="-64.5" r="3.6" fill="#1B2230"/><circle cx="{rx-1}" cy="-65.5" r="1.1" fill="#9CD3FF"/></g>')
-    # LiDAR
-    g.append(box(rx - 8, ry - 8, 59.5, 16, 16, 14, ("#EEF1F5", "#D5DAE1", "#B7BEC9")))
-    g.append(poly([(rx - 5, ry + 8, 62), (rx + 5, ry + 8, 62), (rx + 5, ry + 8, 67), (rx - 5, ry + 8, 67)], "#F5D90A"))
-    g.append(cyl(rx, ry, 73.5, 88, 7.5, "#3A3F4B", "#2C2F38", "#111318"))
-    g.append(cyl(rx, ry, 88, 90, 5.5, ARCHES, "#16408A", "#0E2E66"))
-    # the robot's face: two eyes on the LiDAR, looking at the students
-    for dy_, dx_ in ((7.2, -3.6), (5.4, 4.6)):
-        ex_, ey_ = P(rx + dx_, ry + dy_, 80.5)
-        g.append(f'<ellipse cx="{ex_:.1f}" cy="{ey_:.1f}" rx="{3.4*K:.1f}" ry="{4.2*K:.1f}" fill="#FFFFFF"/><circle cx="{ex_-1.4:.1f}" cy="{ey_+0.8:.1f}" r="{2*K:.1f}" fill="{INK}"/>')
-    # scan-plane glow ring
-    cxr, cyr = P(rx, ry, 80.5)
-    g.append(f'<ellipse cx="{cxr:.1f}" cy="{cyr:.1f}" rx="{12*C*math.sqrt(2)*K:.1f}" ry="{12*S*math.sqrt(2)*K:.1f}" fill="none" stroke="{ORANGE}" stroke-width="1.6" opacity="0.9"/>')
-    # markers on top
-    for bxy in ball_pos:
-        g.append(f'<circle cx="{bxy[0]:.1f}" cy="{bxy[1]:.1f}" r="{4.6*K:.1f}" fill="url(#ball)"/>')
-    # yellow wire loop (as on the real robot)
-    w0, w1 = P(rx + 20, ry - 6, 60), P(rx + 22, ry + 10, 44)
-    g.append(f'<path d="M{w0[0]:.1f} {w0[1]:.1f}C{w0[0]+12:.1f} {w0[1]+4:.1f} {w1[0]+12:.1f} {w1[1]-4:.1f} {w1[0]:.1f} {w1[1]:.1f}" fill="none" stroke="#FFD23F" stroke-width="1.8"/>')
+    g.append(ell(rx, ry + 4, .4, 36, SHADOW_MAT))
+    # mocap frame at the back
+    for xx in (rx - 25, rx + 22):
+        g.append(box(xx, ry - 30, 24, 3, 3, 82, METALC))
+    YEL = ("#F0F76A", "#E4F04B", "#C7D23A")
+    g.append(box(rx - 31, ry - 31.5, 106, 62, 5, 6, ("#3A3F4B", "#262A33", "#1A1D24")))
+    g.append(box(rx - 31.2, ry - 31.7, 106, 12, 5.4, 6.2, YEL))
+    g.append(box(rx + 19, ry - 31.7, 106, 12, 5.4, 6.2, YEL))
+    balls = [(rx - 20, ry - 29, 112, 128), (rx + 4, ry - 29, 112, 136), (rx + 24, ry - 29, 112, 124)]
+    for bx_, by_, z0, z1 in balls:
+        a_, b_ = P(bx_, by_, z0), P(bx_, by_, z1)
+        g.append(f'<path d="M{a_[0]:.1f} {a_[1]:.1f}L{b_[0]:.1f} {b_[1]:.1f}" stroke="#8C97A7" stroke-width="2"/>')
+    a_, b_ = P(rx - 31, ry - 29, 110), P(rx - 46, ry - 26, 114)
+    g.append(f'<path d="M{a_[0]:.1f} {a_[1]:.1f}L{b_[0]:.1f} {b_[1]:.1f}" stroke="#8C97A7" stroke-width="2"/>')
+    ball_pts = [P(bx_, by_, z1) for bx_, by_, _, z1 in balls] + [b_]
+    # far wheel (−x side) then chassis then near wheel (+x side)
+    g.append(disc_x(rx - 26, ry - 10, 13, 13, "#1A1C22"))
+    g.append(box(rx - 21, ry - 30, 5, 42, 44, 20, METALC))
+    g.append(box(rx - 28, ry - 20, 8, 56, 3, 1, METALC))
+    for w_ in range(6):
+        g.append(disc_x(rx + 26 + w_ * 1.2, ry - 10, 13, 13, "#23262E" if w_ < 5 else "#2E323B"))
+    g.append(disc_x(rx + 32.2, ry - 10, 13, 6, "#B9C2CE"))
+    g.append(disc_x(rx + 32.3, ry - 10, 13, 2.2, "#6B7684"))
+    # white acrylic front skirt (chamfered) with velcro
+    skirt = [(rx - 30, ry + 2), (rx + 30, ry + 2), (rx + 30, ry + 30), (rx + 20, ry + 42), (rx - 20, ry + 42), (rx - 30, ry + 30)]
+    g.append(prism(skirt, 10, 14, "#FFFFFF", "#E1E6EE", "#C3CCD8"))
+    for vx, vy in ((rx - 22, ry + 30), (rx - 5, ry + 33), (rx + 12, ry + 30)):
+        g.append(poly([(vx, vy, 14.1), (vx + 10, vy, 14.1), (vx + 10, vy + 7, 14.1), (vx, vy + 7, 14.1)], "#2A2D36"))
+    # standoffs + mid deck carrying the red + green board (visible at the back)
+    for ox_, oy_ in ((-18, -26), (18, -26), (-18, 10), (18, 10)):
+        g.append(box(rx + ox_ - 1, ry + oy_ - 1, 25, 2.4, 2.4, 20, METALC))
+    g.append(box(rx - 26, ry - 32, 45, 52, 54, 3, ("#3A3F4B", "#262A33", "#1A1D24")))
+    g.append(box(rx - 22, ry - 30, 48, 44, 30, 2, PCB))
+    g.append(box(rx - 12, ry - 26, 50, 24, 22, 2.6, LAUNCH))
+    g.append(box(rx - 11, ry - 24, 52.6, 22, 3, 1.6, ("#3A3F4B", "#262A33", "#1A1D24")))
+    g.append(box(rx - 11, ry - 9, 52.6, 22, 3, 1.6, ("#3A3F4B", "#262A33", "#1A1D24")))
+    g.append(box(rx - 4, ry - 19, 52.6, 7, 7, 1.6, ("#3A3F4B", "#262A33", "#1A1D24")))
+    # yellow wire loop
+    w0, w1 = P(rx + 21, ry - 16, 51), P(rx + 24, ry + 8, 38)
+    g.append(f'<path d="M{w0[0]:.1f} {w0[1]:.1f}C{w0[0]+14:.1f} {w0[1]+2:.1f} {w1[0]+12:.1f} {w1[1]-8:.1f} {w1[0]:.1f} {w1[1]:.1f}" fill="none" stroke="#FFD23F" stroke-width="2"/>')
+    # front tower: posts + white plate with the LiDAR and camera
+    for ox_ in (-12, 10):
+        g.append(box(rx + ox_, ry + 24, 14, 2.4, 2.4, 44, METALC))
+    g.append(box(rx - 16, ry + 4, 58, 32, 26, 3, ("#FFFFFF", "#E1E6EE", "#C3CCD8")))
+    # camera (faces +y) under the plate
+    g.append(box(rx - 7, ry + 28, 46, 14, 4, 11, LAUNCH))
+    g.append(f'<g transform="{m_yface(ry + 32, 0, 0)}"><circle cx="{rx}" cy="-51.5" r="4.4" fill="#C9D0DA"/><circle cx="{rx}" cy="-51.5" r="3" fill="#1B2230"/><circle cx="{rx-1}" cy="-52.5" r="1" fill="#9CD3FF"/></g>')
+    # LiDAR body + spinning head
+    g.append(box(rx - 7, ry + 9, 61, 14, 14, 13, ("#F4F6F9", "#D9DEE5", "#B9C1CC")))
+    g.append(poly([(rx - 4, ry + 23, 64), (rx + 4, ry + 23, 64), (rx + 4, ry + 23, 69), (rx - 4, ry + 23, 69)], "#F5D90A"))
+    g.append(cyl(rx, ry + 16, 74, 88, 7.5, "#3A3F4B", "#2F333D", "#101217"))
+    g.append(cyl(rx, ry + 16, 88, 90.5, 5.5, "#2F6BC4", "#1D58A7", "#133F7C"))
+    # the face (from the class mascot): two big eyes on the LiDAR, looking at the students
+    for dx_, dy_ in ((-4.6, 5.8), (3.6, 6.6)):
+        e = P(rx + dx_, ry + 16 + dy_, 81)
+        g.append(f'<ellipse cx="{e[0]:.1f}" cy="{e[1]:.1f}" rx="{3.5*K:.1f}" ry="{4.4*K:.1f}" fill="#FFFFFF"/>'
+                 f'<circle cx="{e[0]-1.3:.1f}" cy="{e[1]+0.9:.1f}" r="{2.1*K:.1f}" fill="{INK}"/>'
+                 f'<circle cx="{e[0]-2:.1f}" cy="{e[1]-.2:.1f}" r="{0.7*K:.1f}" fill="#FFFFFF"/>')
+    for bp in ball_pts:
+        g.append(f'<circle cx="{bp[0]:.1f}" cy="{bp[1]:.1f}" r="{4.8*K:.1f}" fill="#DCE1E8"/>'
+                 f'<circle cx="{bp[0]-1.4:.1f}" cy="{bp[1]-1.6:.1f}" r="{1.8*K:.1f}" fill="#FFFFFF"/>')
     return "".join(g)
 
 
-defs.append('<radialGradient id="ball" cx="0.35" cy="0.3" r="0.8"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#A3ABB7"/></radialGradient>')
-def draw_hits(sel):
-    for hx, hy in hits:
-        if sel(hx + hy):
-            q = P(hx, hy, 10)
-            add(f'<circle cx="{q[0]:.1f}" cy="{q[1]:.1f}" r="2" fill="#FFB07A"/>')
-
-
-draw_hits(lambda d: d < sum(ROBOT))
+hits_where(lambda d: d < sum(ROBOT) + 10)
 add(robot(*ROBOT))
-add(ply_wall("mid"))
-add(box(*BOX_OBS[:2], 0, BOX_OBS[2], BOX_OBS[3], 26, PLY))
-xo, yo = BOX_OBS[:2]
-tape = f'<rect x="0" y="0" width="{BOX_OBS[2]}" height="4" fill="{ORANGE}"/>'
-add(f'<g transform="{m_yface(yo + BOX_OBS[3], xo, 16)}">{tape}</g><g transform="{m_xface(xo + BOX_OBS[2], yo + BOX_OBS[3], 16)}">{tape}</g>')
-add(ply_wall("low"))
-# LiDAR returns: dots where rays hit geometry (drawn above walls at scan height)
-draw_hits(lambda d: d >= sum(ROBOT))
-# goal flag
-fp0, fp1 = P(*GOAL, 0), P(*GOAL, 40)
-add(f'<path d="M{fp0[0]:.1f} {fp0[1]:.1f}V{fp1[1]:.1f}" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round"/>')
-add(f'<g transform="{m_yface(GOAL[1], GOAL[0], 40)}"><path d="M0 0L22 6L0 12Z" fill="{ORANGE}"/></g>')
+add(box(*CRATE[:2], 0, CRATE[2], CRATE[3], 24, PLY))
+xo, yo = CRATE[:2]
+add(f'<g transform="{m_yface(yo + CRATE[3], xo, 15)}"><rect width="{CRATE[2]}" height="4" fill="{ORANGE}"/></g>'
+    f'<g transform="{m_xface(xo + CRATE[2], yo + CRATE[3], 15)}"><rect width="{CRATE[3]}" height="4" fill="{ALTGELD}"/></g>')
+add(ply_wall("baffle"))
+hits_where(lambda d: d >= sum(ROBOT) + 10)
 
-# ------------------------------------------------------------------ title block
+
+# golf balls (vision / blob detection: orange vs blue is colour-blind safe)
+def golf(x, y, col, hi):
+    s = ell(x + 2, y + 2, .3, 5.5, SHADOW_MAT)
+    c = P(x, y, 5)
+    s += f'<circle cx="{c[0]:.1f}" cy="{c[1]:.1f}" r="{5*K:.1f}" fill="{col}"/><circle cx="{c[0]-1.8:.1f}" cy="{c[1]-2:.1f}" r="{1.7*K:.1f}" fill="{hi}"/>'
+    return s
+
+
+add(golf(*BALL_O, ORANGE, "#FFB27A"))
+add(golf(*BALL_B, "#3D8BFF", "#B5D3FF"))
+
+# ------------------------------------------------------------------ title block (all text ≥ AA on Illini Blue)
 TX = 64
-t, _ = text_path("UNIVERSITY OF ILLINOIS URBANA-CHAMPAIGN", TX, 168, 13, MONT[700], ORANGE, spacing=1.9); add(t)
-t, w_se = text_path("SE", TX - 5, 282, 128, MONT[900], "#FFFFFF", spacing=-2); add(t)
-t, _ = text_path("423", TX - 5 + w_se + 30, 282, 128, MONT[900], ORANGE, spacing=-2); add(t)
-t, _ = text_path("Introduction to", TX, 336, 30, MONT[600], "#B8C8E0"); add(t)
-t, _ = text_path("Mechatronics", TX - 2, 390, 52, MONT[800], "#FFFFFF", spacing=-0.5); add(t)
-# PWM waveform as the divider — the signature signal of the course
-add(f'<path d="M{TX} 430h36v-14h22v14h14v-14h22v14h14v-14h22v14h36" fill="none" stroke="{ORANGE}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>')
-t, _ = text_path("Microcontrollers · Sensors · Control · Robotics", TX, 474, 21, SANS[600], "#DCE5F2"); add(t)
-t, _ = text_path("github.com/Marius-Juston/SE-423---Class-Material", TX, 592, 15, SANS[600], "#7489AB"); add(t)
-t, _ = text_path("illustration · Claude", 1240, 618, 12.5, SANS[600], "#6F84A6", anchor="end"); add(t)
+t, _ = text_path("UNIVERSITY OF ILLINOIS", TX, 150, 20, MONT[700], ORANGE, spacing=3.2); add(t)          # 4.8:1, bold 20px
+t, w_se = text_path("SE", TX - 6, 290, 146, MONT[900], "#FFFFFF", spacing=-2); add(t)                   # 14.5:1
+t, _ = text_path("423", TX - 6 + w_se + 30, 290, 146, MONT[900], ORANGE, spacing=-2); add(t)
+t, _ = text_path("Introduction to", TX, 346, 32, MONT[600], "#B8C8E0"); add(t)                          # 8.6:1
+t, _ = text_path("Mechatronics", TX - 2, 404, 58, MONT[800], "#FFFFFF", spacing=-0.5); add(t)
+add(f'<path d="M{TX} 446h34v-16h22v16h14v-16h22v16h14v-16h22v16h34" fill="none" stroke="{ORANGE}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>')
+t, _ = text_path("Microcontrollers · Sensors · Control · Robots", TX, 494, 24, SANS[600], "#DCE5F2"); add(t)   # 11.4:1
+t, _ = text_path("Urbana-Champaign  ·  lectures, labs & homework", TX, 526, 20, SANS[400], "#B8C8E0"); add(t)
+t, _ = text_path("illustration · Claude", 1236, 620, 14, SANS[600], "#A9BBD6", anchor="end"); add(t)    # 7.4:1
 
 svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}" role="img" aria-labelledby="t d">'
        f'<title id="t">SE 423: Introduction to Mechatronics, University of Illinois Urbana-Champaign</title>'
-       f'<desc id="d">Isometric illustration of the mechatronics lab: two partners program the red and green TI F28379D board at a workbench while the class robot scans its plywood arena with LiDAR and follows a planned path to a goal.</desc>'
+       f'<desc id="d">Isometric illustration of the SE 423 mechatronics lab. Two lab partners at a workbench program the red '
+       f'TI LaunchPad F28379D on its green breakout board from a laptop, and point at the class robot car. The robot, with its '
+       f'LiDAR, camera and motion-capture markers, scans a plywood arena and follows an A-star path around a wall to an orange '
+       f'golf ball. A whiteboard shows a PWM signal and a PID feedback loop.</desc>'
        f'<defs>{"".join(defs)}</defs>{"".join(out)}</svg>\n')
 OUT.write_text(svg, encoding="utf-8")
 print(f"wrote {OUT} ({len(svg)/1024:.0f} KB)")
