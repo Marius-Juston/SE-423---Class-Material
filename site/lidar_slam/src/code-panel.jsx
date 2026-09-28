@@ -1,4 +1,5 @@
 /* eslint-disable */
+(() => {
 // Code panel — shows lidar_slam_2d.py with the active stage's
 // line range highlighted and auto-scrolled into view.
 
@@ -140,6 +141,7 @@ const CODE_STYLES = {
     border: "1px solid var(--line)",
   },
   scroll: {
+    position: "relative",   // offsetParent for the auto-scroll below
     overflow: "auto",
     flex: 1,
     minHeight: 0,
@@ -187,8 +189,27 @@ const TOK_COLOR = {
   ws:   "var(--text-0)",
 };
 
-function CodeLine({ n, text, active, focus }) {
-  const tokens = useMemo(() => tokenizePyLine(text), [text]);
+// Lines that sit inside (or open / close) a multi-line triple-quoted string.
+function docstringLines(lines) {
+  const out = new Array(lines.length).fill(false);
+  let open = null;                      // '"""' or "'''" while inside
+  for (let i = 0; i < lines.length; i++) {
+    const ln = lines[i];
+    if (open) {
+      out[i] = true;
+      if (ln.split(open).length - 1 >= 1) open = null;
+      continue;
+    }
+    for (const q of ['"""', "'''"]) {
+      if ((ln.split(q).length - 1) % 2 === 1) { open = q; out[i] = true; break; }
+    }
+  }
+  return out;
+}
+
+function CodeLine({ n, text, active, focus, doc }) {
+  const tokens = useMemo(
+    () => (doc ? [{ t: "str", v: text }] : tokenizePyLine(text)), [text, doc]);
   const style = { ...CODE_STYLES.row };
   if (focus) Object.assign(style, CODE_STYLES.rowFocus);
   else if (active) Object.assign(style, CODE_STYLES.rowActive);
@@ -207,6 +228,7 @@ function CodeLine({ n, text, active, focus }) {
 function CodePanel({ source, stage }) {
   const scrollRef = useRef(null);
   const lines = useMemo(() => source.split("\n"), [source]);
+  const doc = useMemo(() => docstringLines(lines), [lines]);
   const [a, b] = stage.lines;
   const [fa, fb] = stage.focus || stage.lines;
 
@@ -242,7 +264,7 @@ function CodePanel({ source, stage }) {
           const n = i + 1;
           const inRange = n >= a && n <= b;
           const inFocus = n >= fa && n <= fb;
-          return <CodeLine key={n} n={n} text={line} active={inRange} focus={inFocus} />;
+          return <CodeLine key={n} n={n} text={line} active={inRange} focus={inFocus} doc={doc[i]} />;
         })}
       </div>
     </div>
@@ -250,3 +272,4 @@ function CodePanel({ source, stage }) {
 }
 
 window.CodePanel = CodePanel;
+})();
