@@ -55,12 +55,17 @@ _NPM = {"montserrat": "https://registry.npmjs.org/@fontsource/montserrat/-/monts
         "source-sans-3": "https://registry.npmjs.org/@fontsource/source-sans-3/-/source-sans-3-5.2.9.tgz"}
 
 
+_tarballs = {}
+
+
 def _fetch_font(name):
-    """Download the fontsource package once, convert the needed woff2 to TTF, keep its licence."""
+    """Download each fontsource package once, convert the needed woff2 to TTF, keep its licence."""
     family = "montserrat" if name.startswith("montserrat") else "source-sans-3"
-    print(f"downloading {family} ({name}) from the npm registry …")
-    with urllib.request.urlopen(_NPM[family], timeout=60) as resp:
-        tar = tarfile.open(fileobj=io.BytesIO(resp.read()), mode="r:gz")
+    if family not in _tarballs:
+        print(f"downloading {family} from the npm registry …")
+        with urllib.request.urlopen(_NPM[family], timeout=60) as resp:
+            _tarballs[family] = resp.read()
+    tar = tarfile.open(fileobj=io.BytesIO(_tarballs[family]), mode="r:gz")
     FONT_DIR.mkdir(exist_ok=True)
     font = TTFont(io.BytesIO(tar.extractfile(f"package/files/{name}.woff2").read()))
     font.flavor = None
