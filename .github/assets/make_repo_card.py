@@ -464,7 +464,7 @@ STU_B = dict(top=HOODIE_B, pants=("#2B3F63", "#1E2E4B"), skin=(SKIN_B, SKIN_B_D)
              brow="#3B2A1E", glasses=True, shoe="#FFFFFF")
 
 A_POS, B_POS = (24, 150), (24, 84)
-BENCH = (38, 58, 54, 118, 44)                 # x, y, depth, length, height
+BENCH = (38, 58, 54, 122, 44)                 # x, y, depth, length, height
 bx, by, bdx, bdy, bh = BENCH
 BT = bh
 
@@ -485,60 +485,130 @@ add(box(bx + 3, by + 3, 12, bdx - 6, bdy - 6, 3, METALC))
 add(box(bx + 12, by + 70, 15, 30, 36, 18, ("#5B6B84", "#4A5970", "#3B475B")))     # bench power supply
 add(box(bx, by, bh - 5, bdx, bdy, 5, OAKC))
 
-# laptop (B types, lid faces B so we see its back)
-lx0, ly0 = bx + 10, by + 8
-add(box(lx0, ly0, BT, 24, 34, 2, ("#D5DBE4", "#B6BFCC", "#9AA5B4")))
-add(box(lx0 + 2, ly0, BT + 2, 2.5, 34, 22, ("#E1E6ED", "#C3CBD6", "#CDD4DE")))
-lid = (f'<circle cx="17" cy="10" r="5" fill="{ORANGE}"/>'
-       f'<rect x="7" y="14" width="11" height="4.5" rx="1.2" fill="{BLUE}"/>')
-add(f'<g transform="{m_xface(lx0 + 4.5, ly0 + 34, BT + 23)}">{lid}</g>')
+# ---- general affine map for any plane: origin + u·uvec + w·wvec (world vectors)
+def m_plane(origin, uvec, wvec):
+    ox_, oy_ = P(*origin)
+    ux, uy = P(origin[0] + uvec[0], origin[1] + uvec[1], origin[2] + uvec[2])
+    wx, wy = P(origin[0] + wvec[0], origin[1] + wvec[1], origin[2] + wvec[2])
+    return f"matrix({ux-ox_:.4f} {uy-oy_:.4f} {wx-ox_:.4f} {wy-oy_:.4f} {ox_:.2f} {oy_:.2f})"
 
 
-def big_board():
-    """TI LaunchPad F28379D (red) on the SE 423 breakout (green); top-down, 280x160."""
+def wire3d(p0, p1, lift, col, w=1.7):
+    """Jumper wire: a quadratic arc in 3-D between two pins, lifted by `lift`."""
+    (x0, y0, z0), (x1, y1, z1) = p0, p1
+    mx, my, mz = (x0 + x1) / 2, (y0 + y1) / 2, max(z0, z1) + lift
+    pts_ = []
+    for i in range(17):
+        t = i / 16
+        x = (1 - t) ** 2 * x0 + 2 * (1 - t) * t * mx + t * t * x1
+        y = (1 - t) ** 2 * y0 + 2 * (1 - t) * t * my + t * t * y1
+        z = (1 - t) ** 2 * z0 + 2 * (1 - t) * t * mz + t * t * z1
+        pts_.append(P(x, y, z))
+    d = "M" + "L".join(f"{a:.1f} {b:.1f}" for a, b in pts_)
+    return f'<path d="{d}" fill="none" stroke="{col}" stroke-width="{w*K:.1f}" stroke-linecap="round" stroke-linejoin="round"/>'
+
+
+# ---- laptop: keyboard towards the student (low x), lid hinged on the far edge and
+#      tilted back, so we see the lid's aluminium back; B's hands go behind it.
+lx0, ly0 = bx + 10, by + 7
+LW_, LL_ = 26, 34                      # depth (x) and width (y) of the base
+ALU = ("#E3E8EE", "#C3CBD6", "#A6B0BE")
+add(box(lx0, ly0, BT, LW_, LL_, 1.8, ALU))
+kb = (f'<rect x="{LL_/2-6}" y="2.5" width="12" height="6" rx="1.2" fill="#CDD4DE"/>'
+      f'<rect x="3" y="10" width="{LL_-6}" height="11" rx="1.5" fill="#2F3440"/>')
+add(f'<g transform="{m_plane((lx0 + 1, ly0 + LL_, BT + 1.8), (0, -1, 0), (1, 0, 0))}">{kb}</g>')
+
+
+def laptop_lid():
+    h, z0 = lx0 + LW_ - 3, BT + 1.8
+    tilt, L, T = math.radians(16), 23, 1.4
+    dx, dz = L * math.sin(tilt), L * math.cos(tilt)
+    y0, y1 = ly0 + 1, ly0 + LL_ - 1
     s = []
-    BW, BH = 280, 160
-    s.append(f'<rect width="{BW}" height="{BH}" rx="10" fill="{PCB[1]}"/>')
-    s.append(f'<rect x="5" y="5" width="{BW-10}" height="{BH-10}" rx="7" fill="none" stroke="{PCB[0]}" stroke-width="4"/>')
-    for hx, hy in ((16, 16), (BW - 16, 16), (16, BH - 16), (BW - 16, BH - 16)):
-        s.append(f'<circle cx="{hx}" cy="{hy}" r="8" fill="#F2C14E"/><circle cx="{hx}" cy="{hy}" r="3.5" fill="{PCB[2]}"/>')
-    for i in range(3):
-        s.append(f'<rect x="{30+i*26}" y="{BH-44}" width="22" height="20" rx="3" fill="#8FE0B0"/>')
-    s.append(f'<rect x="232" y="100" width="34" height="30" rx="3" fill="#FAFAF7"/>')
-    s.append(f'<circle cx="250" cy="46" r="15" fill="#23262E"/>')
-    s.append(f'<rect x="-10" y="56" width="26" height="48" rx="4" fill="#C9D0DA"/>')
-    s.append(f'<rect x="92" y="{BH-22}" width="88" height="13" rx="2" fill="#15171D"/>')
-    t_, _ = text_path("SE 423", 30, 30, 15, MONT[800], "#FFFFFF", spacing=1.5)
-    s.append(t_)
-    LX, LY, LW, LH = 70, 34, 158, 80
-    s.append(f'<rect x="{LX+6}" y="{LY+7}" width="{LW}" height="{LH}" rx="5" fill="{PCB[2]}"/>')
-    s.append(f'<rect x="{LX}" y="{LY}" width="{LW}" height="{LH}" rx="5" fill="{LAUNCH[1]}"/>')
-    s.append(f'<rect x="{LX+3}" y="{LY+3}" width="{LW-6}" height="{LH-6}" rx="4" fill="none" stroke="#F4F4F4" stroke-width="2.5"/>')  # silkscreen edge (non-colour cue)
-    for hy in (LY + 6, LY + LH - 18):                         # light header strips: a non-colour cue
-        s.append(f'<rect x="{LX+24}" y="{hy}" width="{LW-32}" height="12" rx="2" fill="#17181E"/>')
-        for i_ in range(15):
-            s.append(f'<rect x="{LX+28+i_*8.2:.1f}" y="{hy+4}" width="3.6" height="3.6" fill="#C9CED6"/>')
-    s.append(f'<rect x="{LX-12}" y="{LY+30}" width="24" height="20" rx="3" fill="#D5DAE1"/>')
-    s.append(f'<rect x="{LX+80}" y="{LY+23}" width="36" height="36" rx="3" fill="#1C1D24"/>')
-    s.append(f'<circle cx="{LX+138}" cy="{LY+40}" r="5" fill="#FFD23F"/>')
-    for d_, c_ in (("M150 40C150 4 236 2 248 34", "#FFD23F"), ("M106 114C112 150 62 152 46 128", "#63A4FF")):
-        s.append(f'<path d="{d_}" fill="none" stroke="{c_}" stroke-width="5" stroke-linecap="round"/>')
+    s.append(poly([(h, y1, z0), (h + T, y1, z0), (h + T + dx, y1, z0 + dz), (h + dx, y1, z0 + dz)], "#EEF2F6"))      # side edge
+    s.append(poly([(h + T, y0, z0), (h + T, y1, z0), (h + T + dx, y1, z0 + dz), (h + T + dx, y0, z0 + dz)], "#C7CFDA"))  # back
+    s.append(poly([(h + dx, y0, z0 + dz), (h + T + dx, y0, z0 + dz), (h + T + dx, y1, z0 + dz), (h + dx, y1, z0 + dz)], "#F4F7FA"))
+    # stickers on the lid back (plane mapped so text reads left → right)
+    org = (h + T + dx, y1, z0 + dz)
+    uvec, wvec = (0, -1, 0), (-math.sin(tilt), 0, -math.cos(tilt))
+    st = (f'<circle cx="10" cy="8" r="4.6" fill="{ORANGE}"/>'
+          f'<rect x="17" y="12" width="12" height="5" rx="1.2" fill="{BLUE}"/>'
+          f'<rect x="6" y="15" width="7" height="4" rx="1" fill="#F2C14E"/>')
+    s.append(f'<g transform="{m_plane(org, uvec, wvec)}">{st}</g>')
     return "".join(s)
 
 
-BS = 0.31
-bxw, byw = bx + 6, by + 48
-add(box(bxw, byw, BT, 160 * BS, 280 * BS, 1.6, PCB))
-add(f'<g transform="{m_top_uy(bxw + 160*BS, byw, BT + 1.6, BS)} rotate(180 140 80)">{big_board()}</g>')
-c0, c1 = P(bxw + 30, byw + 2, BT + 2), P(lx0 + 14, ly0 + 34, BT + 2)
-add(f'<path d="M{c0[0]:.1f} {c0[1]:.1f}C{c0[0]+10:.1f} {c0[1]-4:.1f} {c1[0]+14:.1f} {c1[1]+6:.1f} {c1[0]:.1f} {c1[1]:.1f}" fill="none" stroke="#3B4252" stroke-width="2.4" stroke-linecap="round"/>')
+# ---- the red + green board, modelled in 3-D:
+#      SE 423 breakout (green) with the TI LaunchPad F28379D (red) standing on its headers.
+BX0, BY0, BW_, BL_ = bx + 6, by + 44, 42, 74       # footprint (x depth, y length)
+BZ = BT
+PCB_T = 1.6
 
-# arms: B types on the laptop, A steadies the board and points at the robot
-hb1 = P(lx0 + 12, ly0 + 12, BT + 3)
-hb2 = P(lx0 + 14, ly0 + 26, BT + 3)
+
+def board3d():
+    s = []
+    z1 = BZ + PCB_T
+    s.append(box(BX0, BY0, BZ, BW_, BL_, PCB_T, PCB))
+    # flat details on the breakout (traces, holes, silkscreen)
+    flat = []
+    flat.append(f'<rect x="1.5" y="1.5" width="{BL_-3}" height="{BW_-3}" rx="2" fill="none" stroke="{PCB[0]}" stroke-width="1.2"/>')
+    for d_ in ("M6 8h10l4 4h6", "M6 34h14l4-4h8", "M60 36h8v-10", "M50 6h14"):
+        flat.append(f'<path d="{d_}" fill="none" stroke="#5FD393" stroke-width="0.9" stroke-linecap="round"/>')
+    for hx, hy in ((4, 4), (BL_ - 4, 4), (4, BW_ - 4), (BL_ - 4, BW_ - 4)):
+        flat.append(f'<circle cx="{hx}" cy="{hy}" r="2.2" fill="#F2C14E"/><circle cx="{hx}" cy="{hy}" r="1" fill="{PCB[2]}"/>')
+    t_, _ = text_path("SE 423", 20, 39.6, 4.4, MONT[800], "#FFFFFF", spacing=0.4)
+    flat.append(t_)
+    # plane: u along −y from the far end (reads left→right on screen), w along −x
+    add_flat = f'<g transform="{m_plane((BX0, BY0 + BL_, z1 + .01), (0, -1, 0), (1, 0, 0))}">{"".join(flat)}</g>'
+    s.append(add_flat)
+
+    # serial DB-9 at the back end, JST + buzzer + IMU on the sides
+    s.append(box(BX0 + 14, BY0 + 1, z1, 14, 5, 5, ("#E3E8EE", "#C3CBD6", "#A6B0BE")))
+    s.append(cyl(BX0 + 6, BY0 + 10, z1, z1 + 3, 3.2, "#3A3F4B", "#2A2E36", "#15171C"))
+    # female headers on the breakout that the LaunchPad plugs into
+    LX0, LY0, LWd, LLn = BX0 + 10, BY0 + 16, 22, 44
+    for hx in (LX0 + 1, LX0 + LWd - 4):
+        s.append(box(hx, LY0 + 3, z1, 3, LLn - 6, 5.5, ("#3A3F4B", "#262A33", "#1A1D24")))
+    lz = z1 + 5.5
+    # LaunchPad PCB
+    s.append(box(LX0, LY0, lz, LWd, LLn, 1.4, LAUNCH))
+    lt = lz + 1.4
+    # silkscreen edge (non-colour cue) + labels on the LaunchPad top
+    lp = (f'<rect x="1" y="1" width="{LLn-2}" height="{LWd-2}" rx="1.4" fill="none" stroke="#F4F4F4" stroke-width="0.8"/>'
+          f'<circle cx="{LLn-8}" cy="8" r="1.3" fill="#FF6B6B"/><circle cx="{LLn-8}" cy="12" r="1.3" fill="#8EC5FF"/>')
+    s.append(f'<g transform="{m_plane((LX0, LY0 + LLn, lt + .01), (0, -1, 0), (1, 0, 0))}">{lp}</g>')
+    # USB connector (debug) overhanging the back end, male headers, MCU, reset button
+    s.append(box(LX0 + 8, LY0 - 3, lt, 6, 6, 2.6, ("#F1F4F8", "#CDD4DE", "#AAB4C2")))
+    for hx in (LX0 + 1.5, LX0 + LWd - 4):
+        s.append(box(hx, LY0 + 6, lt, 2.5, LLn - 10, 2.4, ("#3A3F4B", "#262A33", "#1A1D24")))
+    s.append(box(LX0 + 8, LY0 + 20, lt, 8, 8, 1.2, ("#2F333C", "#22252C", "#17191E")))
+    s.append(box(LX0 + 16, LY0 + 8, lt, 3, 3, 1.4, ("#F4F4F4", "#DADADA", "#BDBDBD")))
+    # front end: green screw terminals, white JST, blue IMU breakout
+    for i in range(3):
+        s.append(box(BX0 + 4 + i * 6, BY0 + BL_ - 8, z1, 5, 5, 4, ("#8FE0B0", "#5CC98A", "#3FA86C")))
+    s.append(box(BX0 + BW_ - 11, BY0 + BL_ - 12, z1, 7, 8, 4, ("#FFFFFF", "#EDEDE8", "#D4D4CC")))
+    s.append(box(BX0 + BW_ - 10, BY0 + 6, z1, 7, 7, 1.2, ("#2F6BC4", "#1D58A7", "#133F7C")))
+    # jumper wires arcing from the LaunchPad headers to the breakout
+    s.append(wire3d((LX0 + 3, LY0 + 38, lt + 2.4), (BX0 + 7, BY0 + BL_ - 6, z1 + 4), 9, "#FFD23F"))
+    s.append(wire3d((LX0 + LWd - 3, LY0 + 30, lt + 2.4), (BX0 + BW_ - 7, BY0 + BL_ - 8, z1 + 4), 7, "#4F8BFF"))
+    s.append(wire3d((LX0 + LWd - 3, LY0 + 10, lt + 2.4), (BX0 + BW_ - 7, BY0 + 9, z1 + 1.2), 6, "#FF6B6B"))
+    return "".join(s)
+
+
+add(board3d())
+# USB cable: LaunchPad debug port → laptop
+c0 = P(bx + 6 + 10 + 11, by + 44 + 16 - 3, BT + PCB_T + 5.5 + 2.6)
+c1 = P(lx0 + 14, ly0 + LL_, BT + 1)
+add(f'<path d="M{c0[0]:.1f} {c0[1]:.1f}C{c0[0]-2:.1f} {c0[1]-10:.1f} {c1[0]+10:.1f} {c1[1]+6:.1f} {c1[0]:.1f} {c1[1]:.1f}" fill="none" stroke="#3B4252" stroke-width="{2*K:.1f}" stroke-linecap="round"/>')
+
+# arms: B types (hands on the keyboard, behind the lid), A rests a hand on the bench
+# and points at the robot
+hb1 = P(lx0 + 13, ly0 + 11, BT + 3)
+hb2 = P(lx0 + 13, ly0 + 23, BT + 3)
 add(arm(*fb, (-4, -85), hb1, STU_B, bend=-1, back=True))
 add(arm(*fb, (10, -85), hb2, STU_B, bend=-1))
-ha = P(bx + 3, A_POS[1] + 10, BT + 1)
+add(laptop_lid())
+ha = P(bx + 3, A_POS[1] + 12, BT + 1)
 add(arm(*fa, (-6, -85), ha, STU_A, l1=20, l2=19, bend=-1, back=True))
 lid_pt = P(ROBOT[0], ROBOT[1] + 10, 80)
 sh = (fa[0] + 11 * K, fa[1] - 85 * K)
