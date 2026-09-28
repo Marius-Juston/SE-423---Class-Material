@@ -202,8 +202,8 @@ defs = []
 #    (section view) with phantom outlines, like the room itself.
 #  * A* runs on a grid with obstacles inflated by the robot's footprint radius.
 
-K = 1.2
-OX, OY = 832, 222
+K = 1.36
+OX, OY = 836, 212
 
 WALL_L = "#9FB4D1"
 WALL_R = "#B7C7DD"
@@ -253,17 +253,17 @@ BALL_B = (170, 160)          # the other colour: in view of the robot's camera
 BALL_R = 4.5
 
 # ---- bench + people
-A_POS, B_POS = (23, 150), (23, 84)
+A_POS, B_POS = (25, 150), (25, 84)
 BODY_R = 11                                         # footprint radius of a person (matches the cast shadow)
-BENCH = (38, 58, 54, 124, 44)                       # x, y, depth, length, height
+BENCH = (38, 58, 54, 124, 58)                       # x, y, depth, length, height (standing lab bench ≈ ½ body height)
 bx, by, bdx, bdy, bh = BENCH
 BT = bh
 BOARD_K = 0.284                                     # world units per mm (breakout is 154.9 x 198.1 mm)
 BOARD_POS = (bx + 5, by + 62)
-LAPTOP = (bx + 10, by + 7, 26, 34)                  # x, y, depth, width
+LAPTOP = (bx + 4, by + 7, 26, 34)                  # x, y, depth, width
 
 WB = (158, 250, 72, 114)                            # whiteboard on the back wall: x0, x1, z0, (z1 unused)
-TAG = (284, 304, 30, 50)                            # AprilTag on the back wall (right chamber)
+TAG = (280, 306, 24, 50)                            # AprilTag (tag36h11 #0) on the back wall, right chamber
 
 defs = []
 out = []
@@ -367,6 +367,8 @@ def arm(fx, fy, shoulder, hand, p, l1=21, l2=20, bend=1, back=False, point=None)
     skin, _ = p["skin"]
     sx, sy = fx + shoulder[0] * K, fy + shoulder[1] * K
     hx, hy = hand
+    reach = math.hypot(hx - sx, hy - sy) / ((l1 + l2) * K)
+    check(reach <= 0.97, f"arm reaches its target with a bent elbow (reach {reach:.2f} of full length)")
     ex, ey = ik(sx, sy, hx, hy, l1 * K, l2 * K, bend)
     col = top_d if back else top
     ang = math.atan2(hy - ey, hx - ex)
@@ -746,10 +748,14 @@ wb.append(f'<path d="M10 50h12v-10h12v10h12v-10h12v10h12v-10h12v10h12" fill="non
 add(f'<g transform="{m_yface(0.02, WB[0], WB[2] + 62 * wb_s, wb_s)}">{"".join(wb)}</g>')
 check(WB[2] + 62 * wb_s <= ROOM_H - 2, "whiteboard fits below the top of the back wall")
 
-tag = ['<rect x="0" y="0" width="16" height="16" fill="#FFFFFF"/><rect x="2" y="2" width="12" height="12" fill="#111"/>']
-for (i, j) in ((1, 1), (3, 1), (2, 2), (1, 3), (4, 3), (3, 4), (2, 4)):
-    tag.append(f'<rect x="{2+i*2}" y="{2+j*2}" width="2" height="2" fill="#FFFFFF"/>')
-add(f'<g transform="{m_yface(0.02, TAG[0], TAG[3], (TAG[1]-TAG[0])/16)}">{"".join(tag)}</g>')
+TAG36H11_ID0 = ("########", "###.####", "##..#.##", "####.#.#",       # '#' black, '.' white
+                "####..##", "#.#...##", "#.#.#..#", "########")          # (8×8 incl. black border)
+tag = ['<rect x="0" y="0" width="10" height="10" fill="#FFFFFF"/>']
+for j, row in enumerate(TAG36H11_ID0):
+    for i, c in enumerate(row):
+        if c == "#":
+            tag.append(f'<rect x="{i + 1}" y="{j + 1}" width="1.02" height="1.02" fill="#111"/>')
+add(f'<g transform="{m_yface(0.02, TAG[0], TAG[3], (TAG[1]-TAG[0])/10)}">{"".join(tag)}</g>')
 
 # ------------------------------------------------------------------ arena floor + A*
 mx0, my0, mx1, my1 = MAT_R
@@ -840,11 +846,16 @@ add(person(*fb, STU_B))
 add(person(*fa, STU_A))
 
 add(poly([(bx + 4, by + 4, .1), (bx + bdx + 8, by + 4, .1), (bx + bdx + 8, by + bdy + 8, .1), (bx + 4, by + bdy + 8, .1)], SHADOW_FLOOR))
-for lx, ly in ((bx + 3, by + 3), (bx + bdx - 7, by + 3), (bx + 3, by + bdy - 7), (bx + bdx - 7, by + bdy - 7)):
-    add(box(lx, ly, 0, 4, 4, bh - 5, METALC))
-add(box(bx + 3, by + 3, 12, bdx - 6, bdy - 6, 3, METALC))
-add(box(bx + 12, by + 70, 15, 30, 36, 18, ("#5B6B84", "#4A5970", "#3B475B")))     # bench power supply
+LEG = 5
+legs = ((bx + 1.5, by + 1.5), (bx + bdx - 1.5 - LEG, by + 1.5), (bx + 1.5, by + bdy - 1.5 - LEG), (bx + bdx - 1.5 - LEG, by + bdy - 1.5 - LEG))
+for lx, ly in legs[:3]:
+    add(box(lx, ly, 0, LEG, LEG, bh - 5, METALC))
+add(box(bx + 1.5, by + 1.5, 14, bdx - 3, bdy - 3, 2, METALC))                     # lower shelf, between the legs
+add(box(bx + 10, by + 70, 16, 30, 36, 16, ("#5B6B84", "#4A5970", "#3B475B")))     # bench power supply on the shelf
+add(box(*legs[3], 0, LEG, LEG, bh - 5, METALC))                                    # front leg last (nearest the camera)
+add(box(bx + 1.5, by + 1.5, bh - 9, bdx - 3, bdy - 3, 4, METALC))                 # apron frame under the top
 add(box(bx, by, bh - 5, bdx, bdy, 5, OAKC))
+check(16 + 16 <= bh - 9, "power supply fits between the shelf and the apron")
 
 # laptop base + keyboard (keys towards the student at low x)
 lx0, ly0, LW_, LL_ = LAPTOP
@@ -872,31 +883,74 @@ check(A_POS[0] + BODY_R <= bx - 2 and B_POS[0] + BODY_R <= bx - 2, "students sta
 SH_NEAR, SH_FAR = -5, 10.5
 
 
-def arms_cross(f, hand_near, hand_far):
-    """True if the shoulder→hand lines of the two arms intersect on screen."""
-    a0, a1 = (f[0] + SH_NEAR * K, f[1] - 85 * K), hand_near
-    b0, b1 = (f[0] + SH_FAR * K, f[1] - 85 * K), hand_far
+UPPER_ARM, FOREARM = 22, 23           # shoulder→elbow, elbow→palm centre (≈0.19 H and 0.20 H for H ≈ 115)
+
+
+def shoulder_world(pos, sprite_dx, y_off):
+    """World point of a shoulder: lateral offset y_off (+y is the near side), chosen so that it
+    projects exactly onto the sprite's shoulder at (sprite_dx, −85)."""
+    x_off = sprite_dx / C + y_off
+    z = 85 + (x_off + y_off) * S
+    return (pos[0] + x_off, pos[1] + y_off, z)
+
+
+def arm3d(pos, sprite_dx, y_off, hand, p, bend_dir, back=False, point=False, who=""):
+    """Two-bone arm solved in 3-D (so its length is right from the camera's point of view),
+    then projected.  bend_dir: preferred elbow direction (world vector)."""
+    Sh = shoulder_world(pos, sprite_dx, y_off)
+    d = math.dist(Sh, hand)
+    reach = d / (UPPER_ARM + FOREARM)
+    check(reach <= 0.97, f"{who} reaches its target with a bent elbow (reach {reach:.2f})")
+    u = [(hand[i] - Sh[i]) / d for i in range(3)]
+    a = (UPPER_ARM ** 2 - FOREARM ** 2 + d * d) / (2 * d)
+    hgt = math.sqrt(max(UPPER_ARM ** 2 - a * a, 0))
+    bdot = sum(bend_dir[i] * u[i] for i in range(3))
+    n = [bend_dir[i] - bdot * u[i] for i in range(3)]
+    nl = math.sqrt(sum(v * v for v in n)) or 1
+    E = tuple(Sh[i] + a * u[i] + hgt * n[i] / nl for i in range(3))
+    check(abs(math.dist(Sh, E) - UPPER_ARM) < 1e-6 and abs(math.dist(E, hand) - FOREARM) < 1e-6, f"{who}: limb lengths preserved")
+    top, top_d = p["top"]
+    skin, _ = p["skin"]
+    (sx, sy), (ex, ey), (hx, hy) = P(*Sh), P(*E), P(*hand)
+    col = top_d if back else top
+    ang = math.atan2(hy - ey, hx - ex)
+    cx_, cy_ = hx - math.cos(ang) * 4.5 * K, hy - math.sin(ang) * 4.5 * K
+    s_ = (f'<path d="M{sx:.1f} {sy:.1f}L{ex:.1f} {ey:.1f}" stroke="{col}" stroke-width="{9*K:.1f}" stroke-linecap="round"/>'
+          f'<path d="M{ex:.1f} {ey:.1f}L{cx_:.1f} {cy_:.1f}" stroke="{col}" stroke-width="{7.6*K:.1f}" stroke-linecap="round"/>'
+          f'<circle cx="{cx_:.1f}" cy="{cy_:.1f}" r="{4.1*K:.1f}" fill="{top_d}"/>')
+    hand_svg = (f'<g transform="translate({hx:.1f} {hy:.1f}) rotate({math.degrees(ang):.1f}) scale({K})">'
+                f'<ellipse cx="0.5" cy="0" rx="4.4" ry="3.4" fill="{skin}"/>'
+                f'<ellipse cx="-0.5" cy="-3" rx="1.6" ry="1.2" fill="{skin}"/>')
+    if point:
+        hand_svg += '<rect x="2" y="-1.2" width="6.5" height="2.4" rx="1.2" fill="' + skin + '"/>'
+    hand_svg += '</g>'
+    return s_ + hand_svg, (sx, sy), (hx, hy)
+
+
+def cross2(a0, a1, b0, b1):
     o = lambda p, q, r: (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
     return o(a0, a1, b0) * o(a0, a1, b1) < 0 and o(b0, b1, a0) * o(b0, b1, a1) < 0
 
 
-# B types: near hand on the +y half of the keyboard, far hand on the −y half (both behind the lid)
-hb_near = P(lx0 + 13, ly0 + 23, BT + 3)
-hb_far = P(lx0 + 13, ly0 + 11, BT + 3)
-check(not arms_cross(fb, hb_near, hb_far), "B's arms do not cross")
-add(arm(*fb, (SH_FAR, -85), hb_far, STU_B, bend=-1, back=True))
-add(arm(*fb, (SH_NEAR, -85), hb_near, STU_B, bend=-1))
+# B types: palms on the palm rest, near hand on the +y half, far hand on the −y half (behind the lid)
+far_b, s0, h0 = arm3d(B_POS, SH_FAR, -9, (lx0 + 9, ly0 + 11, BT + 2.5), STU_B, (0, -1, -1), back=True, who="B's far arm")
+near_b, s1, h1 = arm3d(B_POS, SH_NEAR, 6, (lx0 + 9, ly0 + 23, BT + 2.5), STU_B, (0, 1, -1), who="B's near arm")
+check(not cross2(s0, h0, s1, h1), "B's arms do not cross")
+add(far_b)
+add(near_b)
 add(laptop_lid())
 # A points at the robot's LiDAR with the far arm and rests the near hand on the bench
-ha = P(bx + 2, A_POS[1] + 14, BT + 1)
 check(bx <= bx + 2 <= bfoot[0], "A's resting hand is on the bench, beside the board")
-lid_pt = P(ROBOT[0] + LIDAR_LOCAL[0] * RS, ROBOT[1] + LIDAR_LOCAL[1] * RS, LIDAR_Z)
-sh = (fa[0] + SH_FAR * K, fa[1] - 85 * K)
-ang = math.atan2(lid_pt[1] - sh[1], lid_pt[0] - sh[0])
-pa = (sh[0] + math.cos(ang) * 38 * K, sh[1] + math.sin(ang) * 38 * K)
-check(not arms_cross(fa, ha, pa), "A's arms do not cross")
-add(arm(*fa, (SH_FAR, -85), pa, STU_A, l1=21, l2=19, bend=-1, back=True, point=True))
-add(arm(*fa, (SH_NEAR, -85), ha, STU_A, l1=20, l2=19, bend=-1))
+Sh_far = shoulder_world(A_POS, SH_FAR, -9)
+lid_w = (ROBOT[0] + LIDAR_LOCAL[0] * RS, ROBOT[1] + LIDAR_LOCAL[1] * RS, LIDAR_Z)
+dv = [lid_w[i] - Sh_far[i] for i in range(3)]
+dl = math.sqrt(sum(v * v for v in dv))
+point_to = tuple(Sh_far[i] + dv[i] / dl * 0.93 * (UPPER_ARM + FOREARM) for i in range(3))
+far_a, s0, h0 = arm3d(A_POS, SH_FAR, -9, point_to, STU_A, (0, -1, -1), back=True, point=True, who="A's pointing arm")
+near_a, s1, h1 = arm3d(A_POS, SH_NEAR, 6, (bx + 2, A_POS[1] + 14, BT + 1), STU_A, (0, 1, -0.3), who="A's resting arm")
+check(not cross2(s0, h0, s1, h1), "A's arms do not cross")
+add(far_a)
+add(near_a)
 
 # ------------------------------------------------------------------ LiDAR ray casting (scan plane z = LIDAR_Z)
 LX, LY = ROBOT[0] + LIDAR_LOCAL[0] * RS, ROBOT[1] + LIDAR_LOCAL[1] * RS
