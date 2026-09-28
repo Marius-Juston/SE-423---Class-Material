@@ -6,34 +6,54 @@ External producers (e.g., a C/C++ driver) write to two POSIX shared-memory
 regions and post two POSIX named semaphores:
 
   - LiDAR     : 228x2 xy points + timestamp + sweep duration, ~10 Hz
-  - Odometry  : integrated SE(2) pose (e.g. wheel + IMU), ~50 Hz
+  - Odometry  : integrated SE(2) pose (wheel encoders + gyro), ~50 Hz
+
+Every region is guarded by a seqlock (see "Wire format" below), so a reader
+never keeps a half-written sample.
 
 This Python process attaches by name and runs SLAM in four threads:
 
   OdomReader  ─ blocks on odom semaphore, fills 50 Hz pose ring buffer
   LidarReader ─ blocks on lidar semaphore, pushes scans onto a queue
-  SLAM main   ─ pops scans, samples IMU pose at scan time, undistorts,
-                runs PL-ICP vs cached submap, writes factors into iSAM2
+  SLAM main   ─ pops scans, samples the odometry pose at scan time,
+                undistorts, runs PL-ICP vs the local submap, writes
+                wheel-odometry + scan-matching factors into iSAM2
   LoopClosure ─ runs loop-validation ICP off the critical path; results
                 are re-injected into iSAM2 by the main thread
 
-Optimizations vs. the previous version:
-  - Asynchronous loop closure  (off the per-frame budget)
-  - Float32 throughout the ICP pipeline
-  - Submap KD-tree cached across consecutive keyframes
+Design notes:
+  - Point-to-line ICP (Censi, ICRA 2008) with KISS-ICP's adaptive
+    correspondence gate and Geman-McClure kernel (Vizzo et al., RA-L 2023)
+  - Two factors per keyframe: wheel odometry (σ from the odometry noise
+    model) always, plus scan matching (inflated ICP covariance) when ICP
+    passes its guards — a rejected ICP never masquerades as a precise one
+  - Loop closures: degeneracy check (cf. Zhang et al., ICRA 2016), ICP
+    covariance, and a Cauchy kernel so a wrong loop cannot wreck the map
+    (cf. Dynamic Covariance Scaling, Agarwal et al., ICRA 2013); run
+    asynchronously, off the per-frame budget
+  - Points stored as float32; ICP normal equations solved in float64
+  - Submap points + KD-tree + normals memoised per base keyframe: reused only
+    while the base keyframe is unchanged AND no pose in the submap window has
+    moved (relative to the base) since it was built; rebuilt otherwise. The
+    main loop asks for it once per new keyframe, so in practice it is built
+    once per keyframe and only saves work on repeated requests.
   - Append-only voxelized scan storage (raw scans dropped)
-  - Scan motion-compensation using the 50 Hz IMU samples
+  - Per-beam scan motion-compensation using the 50 Hz odometry samples and
+    SE(2) geodesic interpolation
 
 iSAM2 is touched by the main thread only; loop closures cross thread
 boundaries through a queue, so the GTSAM data structures stay single-writer.
+
+Run `python lidar_slam_2d.py` for the full demo, or
+`python lidar_slam_2d.py --smoke` for a short headless start/stop test.
 """
 
 from __future__ import annotations
 
-import os, time, queue, threading
+import os, sys, time, queue, threading
 from collections import deque
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, NamedTuple, Optional, Tuple
 
 import numpy as np
 from scipy.spatial import cKDTree
@@ -47,10 +67,21 @@ import posix_ipc
 # ---------------------------------------------------------------------------
 # Wire format — must match the C producer side
 # ---------------------------------------------------------------------------
+# `seq` is a seqlock counter. The writer makes it odd, writes the payload,
+# then makes it even again:
+#     seq = s + 1  (odd: write in progress)   [release fence]
+#     ...payload...                            [release fence]
+#     seq = s + 2  (even: stable)             then sem_post()
+# A reader copies the record and accepts it only if `seq` was even and
+# unchanged across the copy; otherwise it retries. In C use
+# __atomic_store_n / __atomic_thread_fence for the fences. Python cannot emit
+# fences itself, so on weakly-ordered CPUs the reader side is best-effort;
+# the sem_post/sem_wait pair still orders the common case.
 N_BEAMS = 228
+LIDAR_FOV = np.deg2rad(240.0)   # beams swept from -FOV/2 to +FOV/2 in time order
 
 ODOM_DTYPE = np.dtype([
-    ('seq',       '<u8'),   # 8
+    ('seq',       '<u8'),   # 8  seqlock counter (even = stable)
     ('timestamp', '<f8'),   # 8  (epoch seconds)
     ('x',         '<f8'),   # 8
     ('y',         '<f8'),   # 8
@@ -58,7 +89,7 @@ ODOM_DTYPE = np.dtype([
 ])
 
 LIDAR_DTYPE = np.dtype([
-    ('seq',            '<u8'),   # 8
+    ('seq',            '<u8'),   # 8  seqlock counter (even = stable)
     ('timestamp',      '<f8'),   # 8  (end of sweep)
     ('sweep_duration', '<f8'),   # 8
     ('n_points',       '<u4'),   # 4  (valid points; the rest are padding)
@@ -70,6 +101,9 @@ LIDAR_DTYPE = np.dtype([
 # ---------------------------------------------------------------------------
 # IPC wrappers
 # ---------------------------------------------------------------------------
+_CREATED_HERE: set = set()   # shm names this process created (and owns)
+
+
 class ShmRegion:
     """A POSIX shared-memory region viewed as a numpy structured scalar."""
     def __init__(self, name: str, dtype: np.dtype, create: bool = False):
@@ -82,17 +116,54 @@ class ShmRegion:
             except FileNotFoundError:
                 pass
             self.shm = shared_memory.SharedMemory(name=name, create=True, size=size)
+            _CREATED_HERE.add(name)
+        elif sys.version_info >= (3, 13):
+            # Attaching must not register the segment with resource_tracker,
+            # or it would unlink the producer's memory when we exit.
+            self.shm = shared_memory.SharedMemory(name=name, create=False, track=False)
         else:
             self.shm = shared_memory.SharedMemory(name=name, create=False)
+            if name not in _CREATED_HERE:
+                try:
+                    from multiprocessing import resource_tracker
+                    resource_tracker.unregister(self.shm._name, "shared_memory")
+                except Exception:
+                    pass
         self.array = np.ndarray((1,), dtype=dtype, buffer=self.shm.buf)
 
     def close(self):
+        self.array = None
         try: self.shm.close()
         except Exception: pass
 
     def unlink(self):
         try: self.shm.unlink()
         except Exception: pass
+        _CREATED_HERE.discard(self.name)
+
+
+def seqlock_read(view: np.ndarray, max_tries: int = 1000
+                 ) -> Optional[Tuple[int, np.void]]:
+    """Consistent snapshot of a seqlock-guarded record: (seq, record copy)."""
+    for _ in range(max_tries):
+        s1 = int(view['seq'][0])
+        if s1 & 1:                 # writer is mid-update
+            time.sleep(0)
+            continue
+        snap = view[0].copy()      # one memcpy of the whole record
+        s2 = int(view['seq'][0])
+        if s1 == s2:
+            return s1, snap
+    return None
+
+
+def seqlock_write(view: np.ndarray, write_payload) -> int:
+    """Writer side of the seqlock (used by the simulated producer)."""
+    s = int(view['seq'][0])
+    view['seq'][0] = s + 1         # odd: in progress
+    write_payload(view)
+    view['seq'][0] = s + 2         # even: stable
+    return s + 2
 
 
 class NamedSemaphore:
@@ -130,6 +201,45 @@ class NamedSemaphore:
 
 
 # ---------------------------------------------------------------------------
+# SE(2) geodesic interpolation (vectorised) — shared by pose_at + _undistort
+# ---------------------------------------------------------------------------
+def _sinc_terms(w: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
+    """A = sin(w)/w, B = (1 - cos w)/w, with Taylor series near w = 0."""
+    small = np.abs(w) < 1e-6
+    ws = np.where(small, 1.0, w)
+    A = np.where(small, 1.0 - w * w / 6.0, np.sin(ws) / ws)
+    B = np.where(small, w / 2.0, (1.0 - np.cos(ws)) / ws)
+    return A, B
+
+
+def se2_interp(xa, ya, tha, xb, yb, thb, u):
+    """Pose at fraction u along the SE(2) geodesic from a to b:
+    a ⊕ Exp(u · Log(a⁻¹ ⊕ b)). Arguments broadcast as numpy arrays."""
+    xa, ya, tha, xb, yb, thb, u = map(np.asarray, (xa, ya, tha, xb, yb, thb, u))
+    ca, sa = np.cos(tha), np.sin(tha)
+    # a⁻¹ ⊕ b
+    dxw, dyw = xb - xa, yb - ya
+    dx = ca * dxw + sa * dyw
+    dy = -sa * dxw + ca * dyw
+    w = np.arctan2(np.sin(thb - tha), np.cos(thb - tha))
+    # Log: rho = V(w)⁻¹ · [dx, dy],  V = [[A, -B], [B, A]]
+    A, B = _sinc_terms(w)
+    det = A * A + B * B
+    rx = ( A * dx + B * dy) / det
+    ry = (-B * dx + A * dy) / det
+    # Exp(u · [rho, w]) = [V(u w) · u rho, u w]
+    uw = u * w
+    A2, B2 = _sinc_terms(uw)
+    tx = u * (A2 * rx - B2 * ry)
+    ty = u * (B2 * rx + A2 * ry)
+    # a ⊕ (tx, ty, uw)
+    x = xa + ca * tx - sa * ty
+    y = ya + sa * tx + ca * ty
+    th = np.arctan2(np.sin(tha + uw), np.cos(tha + uw))
+    return x, y, th
+
+
+# ---------------------------------------------------------------------------
 # Reader threads
 # ---------------------------------------------------------------------------
 class OdomReader(threading.Thread):
@@ -142,25 +252,29 @@ class OdomReader(threading.Thread):
         self.lock = threading.Lock()
         self.last_seq = -1
         self.received = 0
-        self._stop = threading.Event()
+        self.torn_retries_failed = 0
+        # NB: not `_stop` — that would shadow threading.Thread._stop()
+        self._stop_evt = threading.Event()
 
-    def stop(self): self._stop.set()
+    def stop(self): self._stop_evt.set()
 
     def run(self):
         view = self.shm.array
-        while not self._stop.is_set():
+        while not self._stop_evt.is_set():
             if not self.sem.acquire(timeout=0.2):
                 continue
-            seq = int(view['seq'][0])
-            if seq == self.last_seq:
+            got = seqlock_read(view)
+            if got is None:
+                self.torn_retries_failed += 1
                 continue
-            ts = float(view['timestamp'][0])
-            x  = float(view['x'][0])
-            y  = float(view['y'][0])
-            th = float(view['theta'][0])
+            seq, rec = got
+            if seq == self.last_seq or seq == 0:
+                continue
             self.last_seq = seq
+            sample = (float(rec['timestamp']), float(rec['x']),
+                      float(rec['y']), float(rec['theta']))
             with self.lock:
-                self.buffer.append((ts, x, y, th))
+                self.buffer.append(sample)
                 self.received += 1
 
     def latest(self) -> Optional[Tuple[float, float, float, float]]:
@@ -169,8 +283,8 @@ class OdomReader(threading.Thread):
 
     def pose_at(self, t: float, wait: float = 0.05
                 ) -> Optional[Tuple[float, float, float]]:
-        """Linearly interpolate pose at time t. Briefly waits for fresh IMU
-        if the buffer hasn't reached t yet."""
+        """SE(2)-geodesic interpolation of the pose at time t. Briefly waits
+        for a fresh odom sample if the buffer hasn't reached t yet."""
         deadline = time.monotonic() + wait
         snap: List[Tuple[float, float, float, float]] = []
         while True:
@@ -198,16 +312,8 @@ class OdomReader(threading.Thread):
 
         a, b = snap[lo], snap[hi]
         u = (t - a[0]) / max(b[0] - a[0], 1e-9)
-
-        pose_a = gtsam.Pose2(a[1], a[2], a[3])
-        pose_b = gtsam.Pose2(b[1], b[2], b[3])
-
-        # Exact SE(2) interpolation
-        delta = pose_a.between(pose_b)
-        twist = gtsam.Pose2.Logmap(delta)
-        interp = pose_a.compose(gtsam.Pose2.Expmap(u * twist))
-
-        return interp.x(), interp.y(), interp.theta()
+        x, y, th = se2_interp(a[1], a[2], a[3], b[1], b[2], b[3], u)
+        return float(x), float(y), float(th)
 
 
 class LidarReader(threading.Thread):
@@ -220,22 +326,27 @@ class LidarReader(threading.Thread):
         self.last_seq = -1
         self.received = 0
         self.dropped = 0
-        self._stop = threading.Event()
+        self.torn_retries_failed = 0
+        self._stop_evt = threading.Event()
 
-    def stop(self): self._stop.set()
+    def stop(self): self._stop_evt.set()
 
     def run(self):
         view = self.shm.array
-        while not self._stop.is_set():
+        while not self._stop_evt.is_set():
             if not self.sem.acquire(timeout=0.2):
                 continue
-            seq = int(view['seq'][0])
-            if seq == self.last_seq:
+            got = seqlock_read(view)
+            if got is None:
+                self.torn_retries_failed += 1
                 continue
-            n     = int(view['n_points'][0])
-            ts    = float(view['timestamp'][0])
-            sweep = float(view['sweep_duration'][0])
-            pts   = np.array(view['points'][0, :n], dtype=np.float32, copy=True)
+            seq, rec = got
+            if seq == self.last_seq or seq == 0:
+                continue
+            n     = min(int(rec['n_points']), N_BEAMS)
+            ts    = float(rec['timestamp'])
+            sweep = float(rec['sweep_duration'])
+            pts   = np.array(rec['points'][:n], dtype=np.float32, copy=True)
             self.last_seq = seq
             self.received += 1
             try:
@@ -249,7 +360,7 @@ class LidarReader(threading.Thread):
 
 
 # ---------------------------------------------------------------------------
-# Voxel + PL-ICP (float32)
+# Voxel + PL-ICP
 # ---------------------------------------------------------------------------
 def voxel_downsample(points: np.ndarray, cell: float) -> np.ndarray:
     if len(points) == 0:
@@ -266,85 +377,152 @@ def voxel_downsample(points: np.ndarray, cell: float) -> np.ndarray:
     return (sums / counts[:, None]).astype(np.float32)
 
 
+class ICPResult(NamedTuple):
+    pose: gtsam.Pose2       # source frame expressed in target frame
+    rmse: float             # point-to-line RMSE of gated pairs at the returned pose
+    inlier_ratio: float     # fraction of source points within the gate
+    n_inliers: int
+    H: np.ndarray           # 3x3 JᵀJ of gated pairs at the returned pose, in
+                            # (tx, ty, θ) of the target frame
+    degeneracy: float       # λ_min / trace of H's translation block, in [0, 0.5]
+                            # (≈0: one direction unconstrained, e.g. a corridor)
+
+
+def estimate_normals(points: np.ndarray, tree: cKDTree, k: int = 6) -> np.ndarray:
+    """Unit normal of the local line at every point: the eigenvector with the
+    smallest eigenvalue of its k-neighbourhood covariance (PCA)."""
+    k = min(k, len(points))
+    _, idx = tree.query(points, k=k)
+    nb = points[idx].astype(np.float64)
+    nb -= nb.mean(axis=1, keepdims=True)
+    C = np.einsum('nki,nkj->nij', nb, nb)
+    _, V = np.linalg.eigh(C)
+    return V[:, :, 0]
+
+
 def pl_icp_2d(source: np.ndarray, target: np.ndarray,
               init_pose: gtsam.Pose2,
-              max_iter: int = 20, tol: float = 1e-5,
-              huber_k: float = 0.1, reject_pct: float = 85.0,
-              max_neighbor_gap: float = 0.30,
-              target_tree: Optional[cKDTree] = None
-              ) -> Tuple[gtsam.Pose2, float, float, int]:
-    if len(target) < 2 or len(source) < 3:
-        return init_pose, float('inf'), 0.0, 0
+              max_corr_dist: float, kernel: float,
+              target_tree: Optional[cKDTree] = None,
+              target_normals: Optional[np.ndarray] = None,
+              max_iter: int = 50, tol: float = 1e-4) -> ICPResult:
+    """Point-to-line ICP (the metric of Censi, ICRA 2008 "PL-ICP"), solved by
+    Gauss-Newton with robust IRLS weights.
 
-    src = source.astype(np.float32, copy=False)
-    tgt = target.astype(np.float32, copy=False)
+    Each source point is paired with its nearest target point q and measured
+    along q's line normal n (PCA of q's 6 nearest neighbours):
+        r = (R p + t − q) · n
+    Pairs farther apart than `max_corr_dist` are ignored and the rest are
+    weighted with the Geman-McClure kernel w = κ² / (κ + r²)². Both come from
+    KISS-ICP (Vizzo et al., RA-L 2023), where the gate is 3σ and κ = σ/3 for
+    an adaptively estimated σ (see AdaptiveThreshold).
 
-    theta = float(init_pose.theta())
-    c, s = np.cos(theta), np.sin(theta)
-    R = np.array([[c, -s], [s, c]], dtype=np.float32)
-    t = np.array([init_pose.x(), init_pose.y()], dtype=np.float32)
+    Stops when the update step ‖δ‖ < `tol`, then re-evaluates RMSE, inliers
+    and the information matrix H at the returned pose. Solved in float64 with
+    a tiny trace-scaled damping term.
+    """
+    fail = ICPResult(init_pose, float('inf'), 0.0, 0, np.zeros((3, 3)), 0.0)
+    if len(target) < 6 or len(source) < 6:
+        return fail
 
+    src = np.asarray(source, dtype=np.float64)
+    tgt = np.asarray(target, dtype=np.float64)
     if target_tree is None:
         target_tree = cKDTree(tgt)
+    if target_normals is None:
+        target_normals = estimate_normals(tgt, target_tree)
 
-    rmse = np.inf
-    inlier_ratio = 0.0
-    n_inl = 0
-    prev_err = np.inf
+    theta = float(init_pose.theta())
+    t = np.array([init_pose.x(), init_pose.y()], dtype=np.float64)
 
-    for _ in range(max_iter):
-        rotated = src @ R.T
+    def correspond(theta, t):
+        c, s = np.cos(theta), np.sin(theta)
+        rotated = src @ np.array([[c, -s], [s, c]]).T
         transformed = rotated + t
+        dist, idx = target_tree.query(transformed, k=1,
+                                      distance_upper_bound=max_corr_dist)
+        gated = np.isfinite(dist)               # within the correspondence gate
+        idx = np.where(gated, idx, 0)
+        normals = target_normals[idx]
+        residuals = np.sum((transformed - tgt[idx]) * normals, axis=1)
+        return rotated, normals, residuals, gated
 
-        _, idx = target_tree.query(transformed, k=2)
-        q1 = tgt[idx[:, 0]]; q2 = tgt[idx[:, 1]]
-        seg = q2 - q1
-        seg_len = np.linalg.norm(seg, axis=1)
-        line_dir = seg / np.maximum(seg_len[:, None], 1e-9)
-        normals = np.stack([-line_dir[:, 1], line_dir[:, 0]], axis=1)
-
-        residuals = np.sum((transformed - q1) * normals, axis=1)
-        abs_r = np.abs(residuals)
-
-        valid = seg_len < max_neighbor_gap
-        if valid.sum() < 6:
-            valid = np.ones_like(valid)
-        cutoff = np.percentile(abs_r[valid], reject_pct)
-        inliers = valid & (abs_r < max(cutoff, 1e-6))
-        n_inl = int(inliers.sum())
-        inlier_ratio = n_inl / max(len(residuals), 1)
-        if n_inl < 6:
-            break
-
-        w = np.zeros_like(residuals)
-        w[inliers] = 1.0
-        big = inliers & (abs_r > huber_k)
-        w[big] = huber_k / abs_r[big]
-
-        J = np.empty((len(residuals), 3), dtype=np.float32)
+    def jacobian(rotated, normals):
+        J = np.empty((len(normals), 3))
         J[:, 0] = normals[:, 0]
         J[:, 1] = normals[:, 1]
         J[:, 2] = -normals[:, 0] * rotated[:, 1] + normals[:, 1] * rotated[:, 0]
+        return J
 
+    for _ in range(max_iter):
+        rotated, normals, residuals, gated = correspond(theta, t)
+        if gated.sum() < 6:
+            return fail
+        w = np.where(gated, kernel**2 / (kernel + residuals**2)**2, 0.0)
+        J = jacobian(rotated, normals)
         Jw = J * w[:, None]
-        H = Jw.T @ J + np.float32(1e-9) * np.eye(3, dtype=np.float32)
+        H = Jw.T @ J
         g = Jw.T @ residuals
+        H += (1e-9 * np.trace(H) + 1e-12) * np.eye(3)
         try:
             delta = np.linalg.solve(H, -g)
         except np.linalg.LinAlgError:
-            break
-
-        t = t + delta[:2].astype(np.float32)
+            return fail
+        t = t + delta[:2]
         theta += float(delta[2])
-        c, s = np.cos(theta), np.sin(theta)
-        R = np.array([[c, -s], [s, c]], dtype=np.float32)
-
-        rmse = float(np.sqrt(np.mean(residuals[inliers] ** 2)))
-        if abs(prev_err - rmse) < tol:
+        if np.linalg.norm(delta) < tol:
             break
-        prev_err = rmse
 
-    return gtsam.Pose2(float(t[0]), float(t[1]), theta), rmse, inlier_ratio, n_inl
+    # Final evaluation at the pose we actually return.
+    pose = gtsam.Pose2(float(t[0]), float(t[1]), theta)
+    rotated, normals, residuals, gated = correspond(theta, t)
+    n_inl = int(gated.sum())
+    if n_inl < 6:
+        return ICPResult(pose, float('inf'), n_inl / len(src), n_inl, np.zeros((3, 3)), 0.0)
+    rmse = float(np.sqrt(np.mean(residuals[gated] ** 2)))
+    J = jacobian(rotated[gated], normals[gated])
+    H = J.T @ J
+    Ht = H[:2, :2]
+    degeneracy = float(np.linalg.eigvalsh(Ht)[0] / max(np.trace(Ht), 1e-12))
+    return ICPResult(pose, rmse, n_inl / len(src), n_inl, H, degeneracy)
+
+
+def icp_covariance(res: ICPResult, min_rmse: float = 0.01) -> np.ndarray:
+    """Gauss-Newton covariance σ²·(AᵀHA)⁻¹ of an ICP pose, in the tangent space
+    GTSAM uses for Pose2 (right perturbation T ⊕ Exp(ξ): δt = R(θ)·ξ_xy, so
+    A = blockdiag(R(θ), 1)). σ is the residual RMSE (floored). This is an
+    optimistic, local estimate — callers add a floor / inflate it."""
+    c, s = np.cos(res.pose.theta()), np.sin(res.pose.theta())
+    A = np.eye(3)
+    A[:2, :2] = [[c, -s], [s, c]]
+    info = A.T @ res.H @ A / max(res.rmse, min_rmse) ** 2
+    return np.linalg.inv(info + 1e-6 * np.eye(3))
+
+
+class AdaptiveThreshold:
+    """KISS-ICP's adaptive correspondence threshold (Vizzo et al., RA-L 2023).
+
+    σ is the running RMS of the *model deviation* between the odometry
+    prediction and the ICP result, measured as ‖Δt‖ + 2·r_max·sin(|Δθ|/2)
+    (the largest displacement that error causes on any point within r_max).
+    Deviations below `min_deviation` are not counted. ICP then gates
+    correspondences at 3σ and uses a Geman-McClure kernel with κ = σ/3."""
+    def __init__(self, initial_sigma: float, max_range: float, min_deviation: float):
+        self.sse = initial_sigma ** 2      # the initial guess counts as one sample
+        self.n = 1
+        self.max_range = max_range
+        self.min_deviation = min_deviation
+
+    @property
+    def sigma(self) -> float:
+        return float(np.sqrt(self.sse / self.n))
+
+    def update(self, predicted: gtsam.Pose2, corrected: gtsam.Pose2):
+        d = predicted.between(corrected)
+        dev = np.hypot(d.x(), d.y()) + 2.0 * self.max_range * abs(np.sin(d.theta() / 2.0))
+        if dev > self.min_deviation:
+            self.sse += dev * dev
+            self.n += 1
 
 
 # ---------------------------------------------------------------------------
@@ -355,30 +533,63 @@ class SLAMConfig:
     voxel_size:    float = 0.07
 
     prior_sigmas:  Tuple[float, float, float] = (1e-3, 1e-3, 1e-4)
-    odom_sigmas:   Tuple[float, float, float] = (0.05, 0.05, 0.02)
-    loop_sigmas:   Tuple[float, float, float] = (0.05, 0.05, 0.02)
+
+    # Wheel-odometry factor, added between every pair of consecutive
+    # keyframes. σ follows the producer's noise model (see ProducerSim):
+    # along-track k_d·√d, heading σ_θ = √(k_θ²·|Δθ| + ARW²·Δt), lateral
+    # ≈ d·σ_θ/2 (heading error integrated over the segment), each + a floor.
+    wheel_k_d:     float = 0.15
+    wheel_k_th:    float = 0.10
+    wheel_arw:     float = 0.005
+    wheel_floor_sigmas: Tuple[float, float, float] = (0.01, 0.01, 0.005)
+
+    # Scan-matching factor, added only when ICP is accepted: its Gauss-Newton
+    # covariance (icp_covariance) × icp_cov_scale, plus a floor. The raw
+    # covariance is far too confident (it ignores wrong correspondences).
+    icp_cov_scale: float = 30.0
+    icp_floor_sigmas: Tuple[float, float, float] = (0.005, 0.005, 0.002)
 
     kf_trans:      float = 0.30
     kf_rot:        float = 0.175
     submap_size:   int   = 6
+    submap_cache_tol: float = 1e-4   # m / rad change that invalidates the cache
 
-    loop_search_radius:    float = 2.5
-    loop_min_kf_gap:       int   = 15
-    loop_rmse_thresh:      float = 0.08
-    loop_inlier_thresh:    float = 0.55
-    loop_min_inliers:      int   = 40
-    loop_max_heading_diff: float = np.deg2rad(75.0)
-    loop_every_n_kf:       int   = 1
-    loop_max_candidates:   int   = 4
+    # KISS-ICP adaptive threshold (AdaptiveThreshold)
+    icp_initial_sigma:  float = 0.5
+    icp_min_deviation:  float = 0.01
+    lidar_max_range:    float = 10.0
 
-    icp_max_trans_dev: float = 0.4
-    icp_max_rot_dev:   float = 0.3
+    icp_max_trans_dev: float = 0.4    # reject ICP if it moves farther than this from
+    icp_max_rot_dev:   float = 0.3    # odometry AND beyond icp_guard_nsigma·σ_wheel
+    icp_guard_nsigma:  float = 5.0
     icp_max_rmse:      float = 0.3
 
-    use_huber_on_loops: bool = True
-    huber_k: float = 0.3
+    loop_search_radius:    float = 2.5
+    loop_min_kf_gap:       int   = 15     # candidate j must satisfy i - j ≥ gap
+    loop_max_heading_diff: float = np.deg2rad(75.0)
+    loop_max_candidates:   int   = 4
+    loop_every_n_kf:       int   = 1
+    loop_cooldown_kf:      int   = 3      # after a loop at i, skip i+1 .. i+cooldown-1
+    loop_rmse_thresh:      float = 0.08
+    loop_inlier_thresh:    float = 0.55   # fraction of scan points within the gate
+    loop_min_inliers:      int   = 40
+    loop_min_degeneracy:   float = 0.10   # λ_min / trace of the translation block
+    loop_max_trans_dev:    float = 1.0    # ICP result vs. estimate-based guess
+    loop_max_rot_dev:      float = 0.35
+    loop_sigmas:   Tuple[float, float, float] = (0.05, 0.05, 0.02)  # added to ICP cov
+    loop_cauchy_k: float = 1.0            # in σ units (whitened residual)
+    isam_extra_iters_after_loop: int = 3
 
     enable_undistort: bool = True
+    lidar_angle_min: float = -LIDAR_FOV / 2   # angle of the first beam in time
+    lidar_angle_max: float = +LIDAR_FOV / 2   # angle of the last beam in time
+
+
+def wheel_odometry_sigmas(delta: gtsam.Pose2, dt: float, cfg: SLAMConfig) -> np.ndarray:
+    d = np.hypot(delta.x(), delta.y())
+    s_th = np.sqrt(cfg.wheel_k_th ** 2 * abs(delta.theta()) + cfg.wheel_arw ** 2 * max(dt, 0.0))
+    f = cfg.wheel_floor_sigmas
+    return np.array([f[0] + cfg.wheel_k_d * np.sqrt(d), f[1] + d * s_th / 2.0, f[2] + s_th])
 
 
 class LidarSLAM2D:
@@ -392,97 +603,147 @@ class LidarSLAM2D:
         self._pending_factors = gtsam.NonlinearFactorGraph()
         self._pending_values  = gtsam.Values()
 
-        self.kf_scans: List[np.ndarray]  = []
-        self.kf_poses: List[gtsam.Pose2] = []
+        self.kf_scans:   List[np.ndarray]  = []
+        self.kf_normals: List[np.ndarray]  = []
+        self.kf_poses:   List[gtsam.Pose2] = []
         self.loop_closures: List[Tuple[int, int, float]] = []
         self.n_kf = 0
         self.current_pose = gtsam.Pose2(0, 0, 0)
+        self.threshold = AdaptiveThreshold(self.cfg.icp_initial_sigma,
+                                           self.cfg.lidar_max_range,
+                                           self.cfg.icp_min_deviation)
 
-        self._submap_pts:  Optional[np.ndarray] = None
-        self._submap_tree: Optional[cKDTree] = None
+        self._submap = None             # (points, tree, normals)
         self._submap_anchor: int = -1
+        self._submap_rels: Optional[np.ndarray] = None
+        self.submap_builds = 0
+        self.submap_hits = 0
 
         self._prior_noise = gtsam.noiseModel.Diagonal.Sigmas(np.asarray(self.cfg.prior_sigmas))
-        self._odom_noise  = gtsam.noiseModel.Diagonal.Sigmas(np.asarray(self.cfg.odom_sigmas))
-        base_loop = gtsam.noiseModel.Diagonal.Sigmas(np.asarray(self.cfg.loop_sigmas))
-        if self.cfg.use_huber_on_loops:
-            self._loop_noise = gtsam.noiseModel.Robust.Create(
-                gtsam.noiseModel.mEstimator.Huber.Create(self.cfg.huber_k),
-                base_loop)
-        else:
-            self._loop_noise = base_loop
-
         self.timings = {"isam": []}
 
     # ---- API used by orchestrator (under slam_lock) -----------------------
+    def _store_scan(self, scan_ds: np.ndarray):
+        self.kf_scans.append(scan_ds)
+        self.kf_normals.append(estimate_normals(scan_ds, cKDTree(scan_ds)))
+
     def add_first_scan(self, scan: np.ndarray, pose: gtsam.Pose2):
         scan_ds = voxel_downsample(scan, self.cfg.voxel_size)
         self._pending_factors.add(gtsam.PriorFactorPose2(X(0), pose, self._prior_noise))
         self._pending_values.insert(X(0), pose)
-        self.kf_scans.append(scan_ds)
+        self._store_scan(scan_ds)
         self.kf_poses.append(pose)
         self.n_kf = 1
         self.current_pose = pose
         self._flush_isam()
 
-    def add_keyframe(self, scan: np.ndarray, refined_delta: gtsam.Pose2) -> int:
-        scan_ds = voxel_downsample(scan, self.cfg.voxel_size)
+    def match_keyframe(self, scan_ds: np.ndarray, odom_delta: gtsam.Pose2, submap,
+                       dt: float) -> Optional[ICPResult]:
+        """Scan-to-submap ICP from the odometry guess. Returns the ICP result if
+        it passes the guards (and feeds it to the adaptive threshold), else None.
+        Main-thread only; needs no lock (reads nothing the loop worker writes)."""
+        pts, tree, normals = submap
+        if len(pts) <= 10:
+            return None
+        sigma = self.threshold.sigma
+        res = pl_icp_2d(scan_ds, pts, odom_delta, max_corr_dist=3.0 * sigma,
+                        kernel=sigma / 3.0, target_tree=tree, target_normals=normals)
+        # Guard: the correction must be plausible — within the fixed limits
+        # or within icp_guard_nsigma σ of the wheel-odometry noise model.
+        diff = odom_delta.between(res.pose)
+        ws = self.cfg.icp_guard_nsigma * wheel_odometry_sigmas(odom_delta, dt, self.cfg)
+        max_t = max(self.cfg.icp_max_trans_dev, np.hypot(ws[0], ws[1]))
+        max_r = max(self.cfg.icp_max_rot_dev, ws[2])
+        if (np.hypot(diff.x(), diff.y()) > max_t or abs(diff.theta()) > max_r
+                or res.rmse > self.cfg.icp_max_rmse):
+            return None
+        self.threshold.update(odom_delta, res.pose)
+        return res
+
+    def add_keyframe(self, scan_ds: np.ndarray, odom_delta: gtsam.Pose2,
+                     icp: Optional[ICPResult], dt: float) -> int:
+        """Adds X(j) with a wheel-odometry factor and, if ICP was accepted, a
+        scan-matching factor. `scan_ds` must already be voxel-downsampled."""
         j = self.n_kf
-        new_pose = self.kf_poses[-1].compose(refined_delta)
+        wheel_noise = gtsam.noiseModel.Diagonal.Sigmas(
+            wheel_odometry_sigmas(odom_delta, dt, self.cfg))
         self._pending_factors.add(gtsam.BetweenFactorPose2(
-            X(j-1), X(j), refined_delta, self._odom_noise))
+            X(j-1), X(j), odom_delta, wheel_noise))
+        delta = odom_delta
+        if icp is not None:
+            cov = (self.cfg.icp_cov_scale * icp_covariance(icp)
+                   + np.diag(np.square(self.cfg.icp_floor_sigmas)))
+            self._pending_factors.add(gtsam.BetweenFactorPose2(
+                X(j-1), X(j), icp.pose, gtsam.noiseModel.Gaussian.Covariance(cov)))
+            delta = icp.pose
+        new_pose = self.kf_poses[-1].compose(delta)
         self._pending_values.insert(X(j), new_pose)
-        self.kf_scans.append(scan_ds)
+        self._store_scan(scan_ds)
         self.kf_poses.append(new_pose)
         self.n_kf += 1
         self.current_pose = new_pose
-        self._submap_anchor = -1   # invalidate cache
         return j
 
-    def get_submap(self, base_idx: int) -> Tuple[np.ndarray, cKDTree]:
-        if base_idx == self._submap_anchor and self._submap_tree is not None:
-            return self._submap_pts, self._submap_tree
+    def get_submap(self, base_idx: int) -> Tuple[np.ndarray, cKDTree, np.ndarray]:
+        """Last `submap_size` keyframe scans in keyframe `base_idx`'s frame:
+        (points, KD-tree, per-point line normals)."""
         start = max(0, base_idx - self.cfg.submap_size + 1)
         base_pose = self.kf_poses[base_idx]
+        rels = [base_pose.between(self.kf_poses[k]) for k in range(start, base_idx + 1)]
+        rel_arr = np.array([[r.x(), r.y(), r.theta()] for r in rels])
+        if (base_idx == self._submap_anchor and self._submap is not None
+                and self._submap_rels is not None
+                and self._submap_rels.shape == rel_arr.shape
+                and np.max(np.abs(self._submap_rels - rel_arr)) < self.cfg.submap_cache_tol):
+            self.submap_hits += 1
+            return self._submap
         parts = []
-        for k in range(start, base_idx + 1):
-            rel = base_pose.between(self.kf_poses[k])
+        for k, rel in zip(range(start, base_idx + 1), rels):
             cc, ss = np.cos(rel.theta()), np.sin(rel.theta())
             R = np.array([[cc, -ss], [ss, cc]], dtype=np.float32)
             t = np.array([rel.x(), rel.y()], dtype=np.float32)
             parts.append(self.kf_scans[k] @ R.T + t)
-        if not parts:
-            self._submap_pts = np.zeros((0, 2), dtype=np.float32)
-            self._submap_tree = cKDTree(np.zeros((1, 2)))
-        else:
-            pts = voxel_downsample(np.vstack(parts), self.cfg.voxel_size)
-            self._submap_pts = pts
-            self._submap_tree = cKDTree(pts)
+        pts = voxel_downsample(np.vstack(parts), self.cfg.voxel_size)
+        tree = cKDTree(pts)
+        self._submap = (pts, tree, estimate_normals(pts, tree))
         self._submap_anchor = base_idx
-        return self._submap_pts, self._submap_tree
+        self._submap_rels = rel_arr
+        self.submap_builds += 1
+        return self._submap
 
-    def inject_loop_factor(self, j: int, i: int, rel: gtsam.Pose2, rmse: float):
+    def inject_loop_factor(self, j: int, i: int, rel: gtsam.Pose2, rmse: float,
+                           cov: np.ndarray):
+        """Add X(j) → X(i) with measurement rel = X(j)⁻¹ ⊕ X(i). Noise: the loop
+        ICP covariance + diag(loop_sigmas²), wrapped in a Cauchy kernel on the
+        whitened residual so one wrong loop cannot drag the whole graph (cf.
+        Dynamic Covariance Scaling, Agarwal et al., ICRA 2013)."""
         if j >= self.n_kf or i >= self.n_kf:
             return
-        self._pending_factors.add(gtsam.BetweenFactorPose2(
-            X(j), X(i), rel, self._loop_noise))
+        base = gtsam.noiseModel.Gaussian.Covariance(
+            cov + np.diag(np.square(self.cfg.loop_sigmas)))
+        noise = gtsam.noiseModel.Robust.Create(
+            gtsam.noiseModel.mEstimator.Cauchy.Create(self.cfg.loop_cauchy_k), base)
+        self._pending_factors.add(gtsam.BetweenFactorPose2(X(j), X(i), rel, noise))
         self.loop_closures.append((j, i, rmse))
 
-    def flush(self):
-        self._flush_isam()
+    def flush(self, extra_iters: int = 0):
+        self._flush_isam(extra_iters)
 
-    def _flush_isam(self):
+    def _flush_isam(self, extra_iters: int = 0):
         if self._pending_factors.size() == 0 and self._pending_values.size() == 0:
             return
         t0 = time.perf_counter()
         self.isam.update(self._pending_factors, self._pending_values)
+        # A loop closure moves many poses at once; one iSAM2 step is a single
+        # Gauss-Newton iteration, so relinearize a few more times.
+        for _ in range(extra_iters):
+            self.isam.update()
         self._pending_factors = gtsam.NonlinearFactorGraph()
         self._pending_values  = gtsam.Values()
         result = self.isam.calculateEstimate()
         for k in range(self.n_kf):
             self.kf_poses[k] = result.atPose2(X(k))
         self.current_pose = self.kf_poses[-1]
-        self._submap_anchor = -1
         self.timings["isam"].append((time.perf_counter() - t0) * 1e3)
 
     def trajectory(self) -> np.ndarray:
@@ -500,8 +761,64 @@ class LidarSLAM2D:
 
 
 # ---------------------------------------------------------------------------
-# Loop-closure worker
+# Loop-closure search + validation (used by the worker thread)
 # ---------------------------------------------------------------------------
+def _wrap(a: float) -> float:
+    return float(np.arctan2(np.sin(a), np.cos(a)))
+
+
+class LoopMatch(NamedTuple):
+    j: int                  # older keyframe
+    i: int                  # query (newest) keyframe
+    rel: gtsam.Pose2        # X(j)⁻¹ ⊕ X(i) measured by ICP
+    rmse: float
+    cov: np.ndarray         # ICP covariance of rel (GTSAM tangent)
+
+
+def search_loop_closure(poses: np.ndarray, scans: List[np.ndarray],
+                        normals: List[np.ndarray], i: int, cfg: SLAMConfig,
+                        sigma: float) -> Tuple[Optional[LoopMatch], List[int]]:
+    """Find a loop closure for keyframe i using the *current SLAM estimates*
+    `poses` (n×3 snapshot) and the ICP threshold σ. Returns (best match or
+    None, candidates tried)."""
+    last = i - cfg.loop_min_kf_gap        # newest admissible old keyframe
+    if last < 0:
+        return None, []
+    xy  = poses[:last + 1, :2]
+    ths = poses[:last + 1, 2]
+    cx, cy, cth = poses[i]
+    cand = cKDTree(xy).query_ball_point([cx, cy], cfg.loop_search_radius)
+    if not cand:
+        return None, []
+    cand.sort(key=lambda j: (cx - xy[j, 0])**2 + (cy - xy[j, 1])**2)
+    cand = cand[: cfg.loop_max_candidates * 3]
+
+    current = gtsam.Pose2(float(cx), float(cy), float(cth))
+    best: Optional[LoopMatch] = None
+    tried: List[int] = []
+    for j in cand:
+        if len(tried) >= cfg.loop_max_candidates:
+            break
+        if abs(_wrap(cth - float(ths[j]))) > cfg.loop_max_heading_diff:
+            continue
+        tried.append(j)
+        old_pose = gtsam.Pose2(float(xy[j, 0]), float(xy[j, 1]), float(ths[j]))
+        guess = old_pose.between(current)            # X(j)⁻¹ ⊕ X(i)
+        res = pl_icp_2d(scans[i], scans[j], guess, max_corr_dist=3.0 * sigma,
+                        kernel=sigma / 3.0, target_normals=normals[j])
+        dev = guess.between(res.pose)
+        if (res.degeneracy < cfg.loop_min_degeneracy        # cf. Zhang et al., ICRA 2016
+                or np.hypot(dev.x(), dev.y()) > cfg.loop_max_trans_dev
+                or abs(dev.theta()) > cfg.loop_max_rot_dev):
+            continue
+        if (res.rmse < cfg.loop_rmse_thresh
+                and res.inlier_ratio > cfg.loop_inlier_thresh
+                and res.n_inliers > cfg.loop_min_inliers
+                and (best is None or res.rmse < best.rmse)):
+            best = LoopMatch(j, i, res.pose, res.rmse, icp_covariance(res))
+    return best, tried
+
+
 class LoopClosureWorker(threading.Thread):
     """Runs ICP loop validation off the SLAM main thread."""
     def __init__(self, slam: LidarSLAM2D, slam_lock: threading.Lock,
@@ -512,68 +829,39 @@ class LoopClosureWorker(threading.Thread):
         self.in_q = in_q
         self.out_q = out_q
         self.cfg = cfg
-        self._stop = threading.Event()
+        self._stop_evt = threading.Event()
         self.timings: List[float] = []
+        self.last_loop_i = -10**9
 
-    def stop(self): self._stop.set()
-
-    @staticmethod
-    def _wrap(a: float) -> float:
-        return float(np.arctan2(np.sin(a), np.cos(a)))
+    def stop(self): self._stop_evt.set()
 
     def run(self):
-        while not self._stop.is_set():
+        while not self._stop_evt.is_set():
             try:
                 i = self.in_q.get(timeout=0.2)
             except queue.Empty:
                 continue
+            # Rate limit: consecutive keyframes would close nearly the same
+            # loop again, adding correlated factors that iSAM2 treats as
+            # independent (overconfident).
+            if i - self.last_loop_i < self.cfg.loop_cooldown_kf:
+                continue
             t0 = time.perf_counter()
 
-            # Snapshot under the lock; scans are append-only so we can keep
-            # reading them without the lock as long as indices are bounded.
+            # Snapshot the current estimates under the lock; scans are
+            # append-only, so the lists can be read without the lock.
             with self.slam_lock:
                 if i >= self.slam.n_kf:
                     continue
-                current = self.slam.kf_poses[i]
-                max_j = i - self.cfg.loop_min_kf_gap
-                if max_j <= 0:
-                    self.timings.append((time.perf_counter() - t0) * 1e3)
-                    continue
-                xy  = np.array([[p.x(), p.y()] for p in self.slam.kf_poses[:max_j]])
-                ths = np.array([p.theta()        for p in self.slam.kf_poses[:max_j]])
+                poses = self.slam.trajectory()
+                scans = list(self.slam.kf_scans[: i + 1])
+                normals = list(self.slam.kf_normals[: i + 1])
+                sigma = self.slam.threshold.sigma
 
-            cx, cy, cth = current.x(), current.y(), current.theta()
-            tree = cKDTree(xy)
-            cand = tree.query_ball_point([cx, cy], self.cfg.loop_search_radius)
-            if not cand:
-                self.timings.append((time.perf_counter() - t0) * 1e3)
-                continue
-            cand.sort(key=lambda j: (cx - xy[j, 0])**2 + (cy - xy[j, 1])**2)
-            cand = cand[: self.cfg.loop_max_candidates * 3]
-
-            scan_i = self.slam.kf_scans[i]   # immutable once added
-
-            best = None
-            tried = 0
-            for j in cand:
-                if tried >= self.cfg.loop_max_candidates:
-                    break
-                if abs(self._wrap(cth - float(ths[j]))) > self.cfg.loop_max_heading_diff:
-                    continue
-                tried += 1
-                old_pose = gtsam.Pose2(float(xy[j, 0]), float(xy[j, 1]), float(ths[j]))
-                guess = old_pose.between(current)
-                scan_j = self.slam.kf_scans[j]
-                rel, rmse, ratio, ninl = pl_icp_2d(scan_i, scan_j, guess)
-                if (rmse  < self.cfg.loop_rmse_thresh
-                        and ratio > self.cfg.loop_inlier_thresh
-                        and ninl  > self.cfg.loop_min_inliers
-                        and (best is None or rmse < best[0])):
-                    best = (rmse, j, rel)
-
+            best, _ = search_loop_closure(poses, scans, normals, i, self.cfg, sigma)
             if best is not None:
-                rmse, j, rel = best
-                try: self.out_q.put_nowait((j, i, rel, rmse))
+                self.last_loop_i = i
+                try: self.out_q.put_nowait(best)
                 except queue.Full: pass
             self.timings.append((time.perf_counter() - t0) * 1e3)
 
@@ -604,11 +892,14 @@ class RealtimeLidarSLAM:
         self.loop_worker  = LoopClosureWorker(
             self.slam, self.slam_lock, self.loop_in_q, self.loop_out_q, self.cfg)
 
-        self._stop = threading.Event()
+        self._stop_evt = threading.Event()
         self._main_thread = threading.Thread(
             target=self._main_loop, daemon=True, name="SLAM")
 
         self.timings = {"frame": [], "kf": [], "icp": [], "undistort": []}
+
+    def threads(self) -> List[threading.Thread]:
+        return [self._main_thread, self.lidar_reader, self.odom_reader, self.loop_worker]
 
     def start(self):
         self.odom_reader.start()
@@ -616,8 +907,9 @@ class RealtimeLidarSLAM:
         self.loop_worker.start()
         self._main_thread.start()
 
-    def stop(self):
-        self._stop.set()
+    def stop(self) -> List[str]:
+        """Stops all threads; returns the names of any that failed to join."""
+        self._stop_evt.set()
         self.lidar_reader.stop()
         self.odom_reader.stop()
         self.loop_worker.stop()
@@ -626,13 +918,14 @@ class RealtimeLidarSLAM:
         except Exception: pass
         try: self.odom_sem.release()
         except Exception: pass
-        for t in (self._main_thread, self.lidar_reader, self.odom_reader, self.loop_worker):
-            try: t.join(timeout=1.0)
-            except Exception: pass
+        for t in self.threads():
+            t.join(timeout=2.0)
+        alive = [t.name for t in self.threads() if t.is_alive()]
         self.lidar_shm.close()
         self.odom_shm.close()
         self.lidar_sem.close()
         self.odom_sem.close()
+        return alive
 
     def trajectory(self) -> np.ndarray:
         with self.slam_lock:
@@ -648,34 +941,39 @@ class RealtimeLidarSLAM:
 
     # ---- main loop --------------------------------------------------------
     def _main_loop(self):
-        last_imu_pose: Optional[gtsam.Pose2] = None
+        last_odom_pose: Optional[gtsam.Pose2] = None
         delta_since_kf = gtsam.Pose2(0, 0, 0)
+        t_last_kf = 0.0
 
-        while not self._stop.is_set():
+        while not self._stop_evt.is_set():
             try:
                 seq, t_lidar, sweep, scan = self.lidar_q.get(timeout=0.2)
             except queue.Empty:
                 continue
             t_frame = time.perf_counter()
 
-            imu_xyt = self.odom_reader.pose_at(t_lidar)
-            if imu_xyt is None:
+            # Odometry (wheel + gyro) pose at the end of the sweep
+            odom_xyt = self.odom_reader.pose_at(t_lidar)
+            if odom_xyt is None:
                 continue
-            imu_pose = gtsam.Pose2(*imu_xyt)
+            odom_pose = gtsam.Pose2(*odom_xyt)
 
-            # Scan motion-compensation using 50 Hz IMU samples
-            if self.cfg.enable_undistort and last_imu_pose is not None:
+            # Scan motion-compensation: every beam → end-of-sweep frame
+            if self.cfg.enable_undistort:
                 t_un = time.perf_counter()
-                scan = self._undistort(scan, t_lidar - sweep, sweep, imu_xyt)
+                with self.odom_reader.lock:
+                    buf = np.asarray(self.odom_reader.buffer, dtype=np.float64)
+                scan = undistort_scan(scan, t_lidar - sweep, sweep, odom_xyt, buf, self.cfg)
                 self.timings["undistort"].append((time.perf_counter() - t_un) * 1e3)
 
-            if last_imu_pose is None:
+            if last_odom_pose is None:
                 with self.slam_lock:
-                    self.slam.add_first_scan(scan, imu_pose)
-                last_imu_pose = imu_pose
+                    self.slam.add_first_scan(scan, odom_pose)
+                last_odom_pose = odom_pose
+                t_last_kf = t_lidar
                 continue
 
-            odom_delta = last_imu_pose.between(imu_pose)
+            odom_delta = last_odom_pose.between(odom_pose)
             delta_since_kf = delta_since_kf.compose(odom_delta)
 
             # Inject loop closures discovered by the worker
@@ -685,34 +983,26 @@ class RealtimeLidarSLAM:
             d = delta_since_kf
             if (np.hypot(d.x(), d.y()) > self.cfg.kf_trans
                     or abs(d.theta()) > self.cfg.kf_rot):
-                self._handle_keyframe(scan, delta_since_kf)
+                self._handle_keyframe(scan, delta_since_kf, t_lidar - t_last_kf)
                 delta_since_kf = gtsam.Pose2(0, 0, 0)
+                t_last_kf = t_lidar
 
-            last_imu_pose = imu_pose
+            last_odom_pose = odom_pose
             self.timings["frame"].append((time.perf_counter() - t_frame) * 1e3)
 
-    def _handle_keyframe(self, scan: np.ndarray, odom_delta: gtsam.Pose2):
+    def _handle_keyframe(self, scan: np.ndarray, odom_delta: gtsam.Pose2, dt: float):
         t0 = time.perf_counter()
         scan_ds = voxel_downsample(scan, self.cfg.voxel_size)
 
         with self.slam_lock:
-            base_idx = self.slam.n_kf - 1
-            submap, tree = self.slam.get_submap(base_idx)
+            submap = self.slam.get_submap(self.slam.n_kf - 1)
 
         t_icp = time.perf_counter()
-        if len(submap) > 10:
-            refined, rmse, _, _ = pl_icp_2d(scan_ds, submap, odom_delta, target_tree=tree)
-            diff = odom_delta.between(refined)
-            if (np.hypot(diff.x(), diff.y()) > self.cfg.icp_max_trans_dev
-                    or abs(diff.theta()) > self.cfg.icp_max_rot_dev
-                    or rmse > self.cfg.icp_max_rmse):
-                refined = odom_delta
-        else:
-            refined = odom_delta
+        icp = self.slam.match_keyframe(scan_ds, odom_delta, submap, dt)   # None = rejected
         self.timings["icp"].append((time.perf_counter() - t_icp) * 1e3)
 
         with self.slam_lock:
-            j_new = self.slam.add_keyframe(scan_ds, refined)
+            j_new = self.slam.add_keyframe(scan_ds, odom_delta, icp, dt)
             self.slam.flush()
 
         if j_new % self.cfg.loop_every_n_kf == 0:
@@ -727,53 +1017,55 @@ class RealtimeLidarSLAM:
         injected = False
         while True:
             try:
-                j, i, rel, rmse = self.loop_out_q.get_nowait()
+                m: LoopMatch = self.loop_out_q.get_nowait()
             except queue.Empty:
                 break
             with self.slam_lock:
-                self.slam.inject_loop_factor(j, i, rel, rmse)
+                self.slam.inject_loop_factor(m.j, m.i, m.rel, m.rmse, m.cov)
                 injected = True
         if injected:
             with self.slam_lock:
-                self.slam.flush()
+                self.slam.flush(self.cfg.isam_extra_iters_after_loop)
 
-    def _undistort(self, pts: np.ndarray, t_start: float, sweep: float,
-                   ref_xyth: Tuple[float, float, float]) -> np.ndarray:
-        n = len(pts)
-        if n == 0:
-            return pts
-        ts = t_start + (np.arange(n, dtype=np.float64) / max(n - 1, 1)) * sweep
-        with self.odom_reader.lock:
-            buf = list(self.odom_reader.buffer)
-        if len(buf) < 2:
-            return pts
-        bts  = np.array([b[0] for b in buf])
-        bxs  = np.array([b[1] for b in buf])
-        bys  = np.array([b[2] for b in buf])
-        bths = np.array([b[3] for b in buf])
 
-        idx = np.searchsorted(bts, ts) - 1
-        idx = np.clip(idx, 0, len(bts) - 2)
-        t0 = bts[idx]; t1 = bts[idx + 1]
-        u  = np.clip((ts - t0) / np.maximum(t1 - t0, 1e-9), 0.0, 1.0)
-        x_i = bxs[idx] + u * (bxs[idx + 1] - bxs[idx])
-        y_i = bys[idx] + u * (bys[idx + 1] - bys[idx])
-        dth_raw = bths[idx + 1] - bths[idx]
-        dth_raw = (dth_raw + np.pi) % (2 * np.pi) - np.pi
-        th_i = bths[idx] + u * dth_raw
+def undistort_scan(pts: np.ndarray, t_start: float, sweep: float,
+                   ref_xyth: Tuple[float, float, float], odom_buf: np.ndarray,
+                   cfg: SLAMConfig) -> np.ndarray:
+    """Re-express every point in the end-of-sweep frame `ref_xyth`.
+    `odom_buf` is an (n, 4) array of (t, x, y, θ) odometry samples."""
+    n = len(pts)
+    if n == 0 or len(odom_buf) < 2:
+        return pts
+    # Beam time from its bearing: points are in the sensor frame at the
+    # instant their beam fired, so atan2 recovers the beam angle (even when
+    # invalid beams were dropped from the array).
+    a0, a1 = cfg.lidar_angle_min, cfg.lidar_angle_max
+    ang = np.arctan2(pts[:, 1].astype(np.float64), pts[:, 0].astype(np.float64))
+    frac = np.clip(np.mod(ang - a0, 2 * np.pi) / (a1 - a0), 0.0, 1.0)
+    ts = t_start + frac * sweep
+    bts, bxs, bys, bths = odom_buf[:, 0], odom_buf[:, 1], odom_buf[:, 2], odom_buf[:, 3]
 
-        rx, ry, rth = ref_xyth
-        dxw = x_i - rx; dyw = y_i - ry
-        cc, ss = np.cos(-rth), np.sin(-rth)
-        dx = (cc * dxw - ss * dyw).astype(np.float32)
-        dy = (ss * dxw + cc * dyw).astype(np.float32)
-        dth = (th_i - rth).astype(np.float32)
-        cc2 = np.cos(dth); ss2 = np.sin(dth)
+    idx = np.searchsorted(bts, ts, side='right') - 1
+    idx = np.clip(idx, 0, len(bts) - 2)
+    t0 = bts[idx]; t1 = bts[idx + 1]
+    u  = np.clip((ts - t0) / np.maximum(t1 - t0, 1e-9), 0.0, 1.0)
+    x_i, y_i, th_i = se2_interp(bxs[idx], bys[idx], bths[idx],
+                                bxs[idx + 1], bys[idx + 1], bths[idx + 1], u)
 
-        out = np.empty_like(pts)
-        out[:, 0] = dx + cc2 * pts[:, 0] - ss2 * pts[:, 1]
-        out[:, 1] = dy + ss2 * pts[:, 0] + cc2 * pts[:, 1]
-        return out
+    # T_ref⁻¹ ⊕ T_beam ⊕ p
+    rx, ry, rth = ref_xyth
+    dxw = x_i - rx; dyw = y_i - ry
+    cc, ss = np.cos(-rth), np.sin(-rth)
+    dx = cc * dxw - ss * dyw
+    dy = ss * dxw + cc * dyw
+    dth = th_i - rth
+    cc2 = np.cos(dth); ss2 = np.sin(dth)
+
+    px = pts[:, 0].astype(np.float64); py = pts[:, 1].astype(np.float64)
+    out = np.empty_like(pts)
+    out[:, 0] = dx + cc2 * px - ss2 * py
+    out[:, 1] = dy + ss2 * px + cc2 * py
+    return out
 
 
 # ===========================================================================
@@ -810,15 +1102,18 @@ def _raycast(origin, angle, walls, max_range):
     return best
 
 
-def _simulate_scan(pose, walls, n_beams=N_BEAMS, fov=np.deg2rad(240),
-                   max_range=10.0, noise_std=0.015):
-    x, y, th = pose
-    origin = np.array([x, y])
+def _simulate_scan(pose, walls, n_beams=N_BEAMS, fov=LIDAR_FOV,
+                   max_range=10.0, noise_std=0.015, beam_poses=None):
+    """Simulated sweep. Beams fire in angle order from -fov/2 to +fov/2.
+    If `beam_poses` (n_beams×3) is given, beam k is cast from its own pose
+    and reported in that instantaneous sensor frame — i.e. with the motion
+    distortion a real spinning LiDAR produces. Otherwise all beams use `pose`."""
     angles = np.linspace(-fov / 2, fov / 2, n_beams)
     pts = np.empty((n_beams, 2), dtype=np.float32)
     valid = 0
-    for a in angles:
-        r = _raycast(origin, th + a, walls, max_range)
+    for k, a in enumerate(angles):
+        x, y, th = pose if beam_poses is None else beam_poses[k]
+        r = _raycast(np.array([x, y]), th + a, walls, max_range)
         if r < max_range - 1e-3:
             r += np.random.randn() * noise_std
             pts[valid, 0] = r * np.cos(a)
@@ -827,21 +1122,18 @@ def _simulate_scan(pose, walls, n_beams=N_BEAMS, fov=np.deg2rad(240),
     return pts[:valid]
 
 
-def _make_trajectory_50hz(speed=0.6, side=8.0, laps=2):
-    """Return a 50 Hz sample of a rectangular trajectory at given speed."""
-    dt = 0.02
-    step = speed * dt
-    legs = [(0.0, side), (np.pi / 2, side), (np.pi, side), (-np.pi / 2, side)]
-    x, y = -side / 2, -side / 2
-    traj = [(x, y, 0.0)]
-    for _ in range(laps):
-        for heading, length in legs:
-            n = int(length / step)
-            for _ in range(n):
-                x += step * np.cos(heading)
-                y += step * np.sin(heading)
-                traj.append((x, y, heading))
-    return traj
+def _sweep_beam_poses(traj, i_end: int, samples_per_sweep: int,
+                      n_beams: int = N_BEAMS) -> np.ndarray:
+    """Ground-truth pose of every beam of the sweep that ends at traj[i_end],
+    SE(2)-interpolated between the 50 Hz trajectory samples."""
+    f = i_end - samples_per_sweep + samples_per_sweep * np.linspace(0.0, 1.0, n_beams)
+    f = np.clip(f, 0.0, len(traj) - 1)
+    lo = np.minimum(np.floor(f).astype(int), len(traj) - 2)
+    u = f - lo
+    arr = np.asarray(traj, dtype=np.float64)
+    a, b = arr[lo], arr[lo + 1]
+    x, y, th = se2_interp(a[:, 0], a[:, 1], a[:, 2], b[:, 0], b[:, 1], b[:, 2], u)
+    return np.stack([x, y, th], axis=1)
 
 
 def _make_diff_drive_trajectory(hz=50, speed=0.6, side=8.0, laps=2):
@@ -892,63 +1184,78 @@ def _make_diff_drive_trajectory(hz=50, speed=0.6, side=8.0, laps=2):
 
     return traj
 
+
 class ProducerSim:
     """Simulates the C-side producer: writes shm + posts semaphores at the
-    requested rates. A `sim_speed` of 1 means real time."""
+    requested rates. A `sim_speed` of 1 means real time. Odom sample i and
+    the sweep ending at trajectory sample i share one clock, t0 + i·dt."""
     def __init__(self,
                  lidar_shm: ShmRegion, lidar_sem: NamedSemaphore,
                  odom_shm:  ShmRegion, odom_sem:  NamedSemaphore,
                  trajectory_50hz, walls,
                  sim_speed: float = 1.0,
-                 odom_k_d: float = 0.05,  # Encoder distance error std dev (m/sqrt(m))
-                 odom_k_th: float = 0.02,  # Gyro scale factor error std dev (rad/sqrt(rad))
-                 gyro_arw: float = 0.005):
+                 odom_k_d: float = 0.05,   # encoder distance noise: σ_d = k_d·√d      (m/√m)
+                 odom_k_th: float = 0.02,  # heading random walk:   σ_θ = k_θ·√|dθ|  (rad/√rad)
+                 gyro_arw: float = 0.005,  # gyro angle random walk: σ = ARW·√dt     (rad/√s)
+                 max_samples: Optional[int] = None):
         self.lidar_shm = lidar_shm; self.lidar_sem = lidar_sem
         self.odom_shm  = odom_shm;  self.odom_sem  = odom_sem
-        self.traj = trajectory_50hz
+        self.traj = trajectory_50hz if max_samples is None else trajectory_50hz[:max_samples]
         self.walls = walls
         self.sim_speed = sim_speed
         self.odom_dt  = 0.020 / sim_speed
-        self.lidar_dt = 0.100 / sim_speed
-        self.lidar_sweep = self.lidar_dt
+        self.samples_per_sweep = 5                       # 50 Hz / 5 = 10 Hz
+        self.lidar_dt = self.samples_per_sweep * self.odom_dt
+        self.lidar_sweep = self.lidar_dt                 # continuously spinning
 
         # Noise parameters
         self.odom_k_d = odom_k_d
         self.odom_k_th = odom_k_th
         self.gyro_arw = gyro_arw
 
-        self._stop = threading.Event()
+        self._stop_evt = threading.Event()
         self._done = threading.Event()
         self.odom_seq = 0
         self.lidar_seq = 0
-        self.cum = np.zeros(3)
 
         self.noisy_pose = np.zeros(3, dtype=float)
         self.odom_history = []
         self.rng = np.random.default_rng(0)
+        self._t0_wall = 0.0
+        self._t0_mono = 0.0
         self._odom_t  = threading.Thread(target=self._odom_loop,  daemon=True, name="ProdOdom")
         self._lidar_t = threading.Thread(target=self._lidar_loop, daemon=True, name="ProdLidar")
 
     def start(self):
+        self._t0_wall = time.time()
+        self._t0_mono = time.monotonic()
         self._odom_t.start()
         self._lidar_t.start()
 
     def stop(self):
-        self._stop.set()
+        self._stop_evt.set()
+        for t in (self._odom_t, self._lidar_t):
+            if t.is_alive():
+                t.join(timeout=2.0)
 
     def is_done(self) -> bool:
         return self._done.is_set()
 
+    def _sleep_until(self, i: int):
+        target = self._t0_mono + i * self.odom_dt
+        now = time.monotonic()
+        if now < target:
+            time.sleep(target - now)
+
+    def _stamp(self, i: int) -> float:
+        return self._t0_wall + i * self.odom_dt
+
     def _odom_loop(self):
-        next_t = time.monotonic()
         i = 0
         n = len(self.traj)
 
-        while not self._stop.is_set() and i < n:
-            now = time.monotonic()
-            if now < next_t:
-                time.sleep(next_t - now)
-
+        while not self._stop_evt.is_set() and i < n:
+            self._sleep_until(i)
             gt = self.traj[i]
 
             if i == 0:
@@ -964,17 +1271,17 @@ class ProducerSim:
                 true_d = np.hypot(dx, dy)
                 true_dth = (gt[2] - gt_prev[2] + np.pi) % (2 * np.pi) - np.pi
 
-                # 1. Simulate encoder distance measurement
+                # 1. Encoder distance: variance grows with distance travelled
                 var_d = (self.odom_k_d ** 2) * true_d
                 noisy_d = true_d + self.rng.normal(0.0, np.sqrt(var_d))
 
-                # 2. Simulate gyroscope heading measurement (Scale factor + ARW)
-                # Note: true delta-t of integration is 0.020s, scaling by sim_speed
-                # preserves the mathematical variance accumulation with respect to virtual time.
+                # 2. Heading: random-walk noise ∝ √|dθ| turned, plus gyro ARW
+                # per dt. dt is the virtual 20 ms step (odom_dt · sim_speed),
+                # so the variance accumulates the same at any sim speed.
                 var_th = (self.odom_k_th ** 2) * abs(true_dth) + (self.gyro_arw ** 2) * (self.odom_dt * self.sim_speed)
                 noisy_dth = true_dth + self.rng.normal(0.0, np.sqrt(var_th))
 
-                # 3. Mid-point integration (Runge-Kutta 2nd Order)
+                # 3. Mid-point (RK2) integration
                 mid_th = self.noisy_pose[2] + noisy_dth / 2.0
 
                 self.noisy_pose[0] += noisy_d * np.cos(mid_th)
@@ -985,76 +1292,120 @@ class ProducerSim:
 
             self.odom_history.append((noisy_x, noisy_y, noisy_th))
 
-            view = self.odom_shm.array
-            self.odom_seq += 1
-            view['seq'][0] = self.odom_seq
-            view['timestamp'][0] = time.time()
-            view['x'][0] = noisy_x
-            view['y'][0] = noisy_y
-            view['theta'][0] = noisy_th
+            stamp = self._stamp(i)
+            def payload(v, stamp=stamp, x=noisy_x, y=noisy_y, th=noisy_th):
+                v['timestamp'][0] = stamp
+                v['x'][0] = x
+                v['y'][0] = y
+                v['theta'][0] = th
+            self.odom_seq = seqlock_write(self.odom_shm.array, payload)
             self.odom_sem.release()
-
             i += 1
-            next_t += self.odom_dt
 
         self._done.set()
 
     def _lidar_loop(self):
-        next_t = time.monotonic()
-        i = 0
+        i = self.samples_per_sweep          # first sweep ends at sample 5
         n = len(self.traj)
-        while not self._stop.is_set() and i < n:
-            now = time.monotonic()
-            if now < next_t:
-                time.sleep(next_t - now)
-            gt = self.traj[i]
-            scan = _simulate_scan(gt, self.walls)
-            view = self.lidar_shm.array
-            self.lidar_seq += 1
-            view['seq'][0]            = self.lidar_seq
-            view['timestamp'][0]      = time.time()
-            view['sweep_duration'][0] = self.lidar_sweep
+        while not self._stop_evt.is_set() and i < n:
+            self._sleep_until(i)
+            # Each beam is cast from the ground-truth pose at its own firing
+            # time, so the scan carries real motion distortion.
+            beam_poses = _sweep_beam_poses(self.traj, i, self.samples_per_sweep)
+            scan = _simulate_scan(self.traj[i], self.walls, beam_poses=beam_poses)
             k = len(scan)
-            view['n_points'][0]       = k
-            view['capacity'][0]       = N_BEAMS
-            view['points'][0, :k]     = scan
+            stamp = self._stamp(i)
+            def payload(v, stamp=stamp, scan=scan, k=k):
+                v['timestamp'][0]      = stamp
+                v['sweep_duration'][0] = self.lidar_sweep
+                v['n_points'][0]       = k
+                v['capacity'][0]       = N_BEAMS
+                v['points'][0, :k]     = scan
+            self.lidar_seq = seqlock_write(self.lidar_shm.array, payload)
             self.lidar_sem.release()
-            i += 5  # 50 Hz / 5 = 10 Hz
-            next_t += self.lidar_dt
+            i += self.samples_per_sweep
+        # (odom loop sets _done)
+
+
+class _DemoIPC:
+    """Creates (and later removes) the producer-side shm regions + semaphores."""
+    def __init__(self):
+        pid = os.getpid()
+        self.lidar_shm_name = f"/lslam_lidar_{pid}"
+        self.odom_shm_name  = f"/lslam_odom_{pid}"
+        self.lidar_sem_name = f"/lslam_lsem_{pid}"
+        self.odom_sem_name  = f"/lslam_osem_{pid}"
+        self.lidar_shm = ShmRegion(self.lidar_shm_name, LIDAR_DTYPE, create=True)
+        self.odom_shm  = ShmRegion(self.odom_shm_name,  ODOM_DTYPE,  create=True)
+        self.lidar_sem = NamedSemaphore(self.lidar_sem_name, create=True, initial=0)
+        self.odom_sem  = NamedSemaphore(self.odom_sem_name,  create=True, initial=0)
+
+    def consumer(self, cfg: Optional[SLAMConfig] = None) -> RealtimeLidarSLAM:
+        return RealtimeLidarSLAM(
+            lidar_shm_name=self.lidar_shm_name, lidar_sem_name=self.lidar_sem_name,
+            odom_shm_name=self.odom_shm_name,  odom_sem_name=self.odom_sem_name,
+            cfg=cfg)
+
+    def cleanup(self):
+        for r in (self.lidar_shm, self.odom_shm):
+            r.close(); r.unlink()
+        for s in (self.lidar_sem, self.odom_sem):
+            s.close(); s.unlink()
+
+
+def run_smoke_test(sim_speed: float = 8.0, samples: int = 1500) -> bool:
+    """Short headless run: start producer + consumer, stop, check every
+    thread joined and data flowed. Returns True on success."""
+    ipc = _DemoIPC()
+    slam = prod = None
+    ok = False
+    try:
+        np.random.seed(0)
+        traj = _make_diff_drive_trajectory(hz=50, side=8.0, laps=2)
+        prod = ProducerSim(ipc.lidar_shm, ipc.lidar_sem, ipc.odom_shm, ipc.odom_sem,
+                           traj, _build_world(), sim_speed=sim_speed, max_samples=samples)
+        slam = ipc.consumer()
+        slam.start(); prod.start()
+        while not prod.is_done():
+            time.sleep(0.05)
+        time.sleep(0.5)
+        prod.stop()
+        alive = slam.stop()
+        n_kf = slam.slam.n_kf
+        print(f"smoke: odom={slam.odom_reader.received} lidar={slam.lidar_reader.received} "
+              f"kf={n_kf} threads-still-alive={alive}")
+        ok = (not alive and slam.odom_reader.received > 0
+              and slam.lidar_reader.received > 0 and n_kf > 1)
+        slam = None
+    finally:
+        if prod is not None: prod.stop()
+        if slam is not None: slam.stop()
+        ipc.cleanup()
+    print("smoke test", "PASSED" if ok else "FAILED")
+    return ok
 
 
 def run_demo():
+    import matplotlib
+    matplotlib.use("Agg")
     import matplotlib.pyplot as plt
 
-    pid = os.getpid()
-    lidar_shm_name = f"/lslam_lidar_{pid}"
-    odom_shm_name  = f"/lslam_odom_{pid}"
-    lidar_sem_name = f"/lslam_lsem_{pid}"
-    odom_sem_name  = f"/lslam_osem_{pid}"
-
-    lidar_shm = ShmRegion(lidar_shm_name, LIDAR_DTYPE, create=True)
-    odom_shm  = ShmRegion(odom_shm_name,  ODOM_DTYPE,  create=True)
-    lidar_sem = NamedSemaphore(lidar_sem_name, create=True, initial=0)
-    odom_sem  = NamedSemaphore(odom_sem_name,  create=True, initial=0)
-
+    ipc = _DemoIPC()
     slam = None
     prod = None
     try:
         np.random.seed(0)
         walls = _build_world()
-        # traj = _make_trajectory_50hz(speed=0.6, side=8.0, laps=2)
         traj = _make_diff_drive_trajectory(hz=50, side=8.0, laps=2)
 
         # sim_speed=1.0 means real-time. Larger values stress-test the pipeline.
         SIM_SPEED = 4.0
 
-        prod = ProducerSim(lidar_shm, lidar_sem, odom_shm, odom_sem,
+        prod = ProducerSim(ipc.lidar_shm, ipc.lidar_sem, ipc.odom_shm, ipc.odom_sem,
                            traj, walls, sim_speed=SIM_SPEED,
                            odom_k_d=0.15, odom_k_th=0.1, gyro_arw=0.005)
 
-        slam = RealtimeLidarSLAM(
-            lidar_shm_name=lidar_shm_name, lidar_sem_name=lidar_sem_name,
-            odom_shm_name=odom_shm_name,  odom_sem_name=odom_sem_name)
+        slam = ipc.consumer()
         slam.start()
         prod.start()
 
@@ -1116,14 +1467,15 @@ def run_demo():
             if prod is not None: prod.stop()
         except Exception: pass
         try:
-            if slam is not None: slam.stop()
+            if slam is not None:
+                alive = slam.stop()
+                if alive:
+                    print(f"warning: threads did not stop: {alive}")
         except Exception: pass
-        time.sleep(0.1)
-        for r in (lidar_shm, odom_shm):
-            r.close(); r.unlink()
-        for s in (lidar_sem, odom_sem):
-            s.close(); s.unlink()
+        ipc.cleanup()
 
 
 if __name__ == "__main__":
+    if "--smoke" in sys.argv[1:]:
+        sys.exit(0 if run_smoke_test() else 1)
     run_demo()

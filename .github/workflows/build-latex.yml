@@ -484,7 +484,21 @@ jobs:
           if [ -d "site" ]; then
             cp -r site/* deploy_target/
           fi
-      
+
+      - name: Set up Node.js (LiDAR SLAM walkthrough build)
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6.5.0
+        with:
+          node-version: 22
+
+      # Compile site/lidar_slam/src/*.jsx -> deploy_target/lidar_slam/dist/*.js
+      # (built straight from the repo sources, so it does not depend on the
+      # copy above). Also drop the pre-split data file left on the artifacts
+      # branch by older builds.
+      - name: Build LiDAR SLAM walkthrough
+        run: |
+          bash site/lidar_slam/build.sh site/lidar_slam deploy_target/lidar_slam/dist
+          rm -f deploy_target/lidar_slam/data/slam_cache.json
+
       - name: Inject Dynamic SVG Gallery into HTML
         run: |
           # Navigate into the deployment staging area

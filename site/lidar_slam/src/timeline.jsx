@@ -1,4 +1,5 @@
 /* eslint-disable */
+(() => {
 // Timeline scrubber — lets the user step through stages and frames.
 
 const { useEffect: useEffectT, useRef: useRefT } = React;
@@ -126,3 +127,4 @@ const btnStyle = {
 };
 
 window.Timeline = Timeline;
+})();
