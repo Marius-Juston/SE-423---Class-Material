@@ -1145,7 +1145,6 @@ t, w_ = text_path("Mechatronics", TX - 2, 404, 58, MONT[800], "#FFFFFF", spacing
 add(f'<path d="M{TX} 446h34v-16h22v16h14v-16h22v16h14v-16h22v16h34" fill="none" stroke="{ORANGE}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>')
 t, w_ = text_path("Microcontrollers · Sensors · Control · Robots", TX, 494, 24, SANS[600], "#DCE5F2"); add(t); text_right = max(text_right, TX + w_)
 t, w_ = text_path("Urbana-Champaign  ·  lectures, labs & homework", TX, 526, 20, SANS[400], "#B8C8E0"); add(t); text_right = max(text_right, TX + w_)
-t, _ = text_path("illustration · Claude", 1236, 620, 14, SANS[600], "#A9BBD6", anchor="end"); add(t)
 
 
 def _lum(h):
@@ -1161,7 +1160,7 @@ def contrast(a, b):
 
 # (colour, px size, bold?) → WCAG AA: 4.5:1, or 3:1 for large text (≥24px, or ≥18.66px bold)
 for col, size, bold in ((ORANGE, 20, True), ("#FFFFFF", 146, True), (ORANGE, 146, True), ("#B8C8E0", 32, False),
-                        ("#FFFFFF", 58, True), ("#DCE5F2", 24, True), ("#B8C8E0", 20, False), ("#A9BBD6", 14, True)):
+                        ("#FFFFFF", 58, True), ("#DCE5F2", 24, True), ("#B8C8E0", 20, False)):
     need = 3.0 if (size >= 24 or (bold and size >= 18.66)) else 4.5
     cr = contrast(col, BLUE)
     check(cr >= need, f"text {col} at {size}px: contrast {cr:.2f}:1 ≥ {need}")

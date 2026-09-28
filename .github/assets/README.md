@@ -35,4 +35,4 @@ is collision-free, starts along the robot's heading and ends on the goal ball; t
 AprilTag is tag36h11 ID 0; every text colour meets WCAG AA contrast on Illini Blue; the
 layout keeps its margins.
 
-Illustration by Claude (Anthropic).
+Illustration by Claude (Anthropic); credited under the banner in the main README.
