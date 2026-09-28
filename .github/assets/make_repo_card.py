@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["fonttools", "brotli", "uharfbuzz"]
+# dependencies = ["fonttools", "uharfbuzz", "resvg-py"]
 # ///
 """SE 423 GitHub repo card: a flat isometric diorama of the mechatronics lab.
 
@@ -11,16 +11,19 @@ class robot maps its plywood arena with LiDAR and plans a path to the goal.
 Everything (including text, converted to outlines) is emitted as plain SVG
 paths, so the card renders identically everywhere.
 
-    uv run make_repo_card.py [out.svg]
+    uv run make_repo_card.py [out.svg] [--no-png]
 
-Fonts: Montserrat + Source Sans 3 (the Illinois brand typefaces, SIL OFL),
-fetched once from the @fontsource npm packages into ./ttf.
+writes out.svg (default: repo-card.svg next to this script) and, unless --no-png is
+given, the 1280x640 out.png that GitHub's social preview needs.  The script is
+self-contained: everything it reads lives next to it.
+
+    fonts/                 Montserrat + Source Sans 3 (Illinois brand typefaces, SIL OFL 1.1)
+    SE423_F28379D.brd      Eagle layout of the SE 423 breakout board (drawn from it)
+
+Before writing, validate() runs geometric/accessibility checks; any failure aborts.
 """
-import io
 import math
 import sys
-import tarfile
-import urllib.request
 from pathlib import Path
 
 import uharfbuzz as hb
@@ -28,8 +31,10 @@ from fontTools.pens.svgPathPen import SVGPathPen
 from fontTools.pens.transformPen import TransformPen
 from fontTools.ttLib import TTFont
 
-HERE = Path(__file__).parent
-OUT = Path(sys.argv[1]) if len(sys.argv) > 1 else HERE / "repo-card.svg"
+HERE = Path(__file__).resolve().parent
+_args = [a for a in sys.argv[1:] if not a.startswith("--")]
+OUT = Path(_args[0]) if _args else HERE / "repo-card.svg"
+WRITE_PNG = "--no-png" not in sys.argv
 W, H = 1280, 640
 
 # ------------------------------------------------------------------ palette
@@ -37,47 +42,16 @@ BLUE = "#13294B"        # Illini Blue
 ORANGE = "#FF5F05"      # Illini Orange
 ALTGELD = "#C84113"
 ARCHES = "#1D58A7"
-INDUSTRIAL = "#1E3877"
-CLOUD = "#E8E9EB"
-
 INK = "#0E1E38"
-FLOOR = ("#E9EEF5", "#FF5F05", "#C84113")         # top, +y face, +x face
-WALL_L = "#D3DCE8"                               # inner face of left wall
-WALL_R = "#E4EAF2"                               # inner face of right wall
-WALL_TOP = "#F7F9FC"
-MAT = "#27324A"
-PLY = ("#F2D6A2", "#E1B777", "#C7975A")
-OAK = ("#EDBB78", "#D9A05C", "#BC8242")
-METAL = ("#DDE2E9", "#B9C2CE", "#98A3B2")
-PCB = ("#27A35A", "#1E8A4A", "#176B3A")
-LAUNCH = ("#E0233F", "#C8102E", "#9E0B23")
-BLACK = ("#3A3F4B", "#262A33", "#1A1D24")
-WHITE = ("#FFFFFF", "#E6EAF0", "#C9D0DA")
 
 # ------------------------------------------------------------------ fonts → outlines
-FONT_DIR = HERE / "ttf"
+FONT_DIR = HERE / "fonts"
 _fonts = {}
-_NPM = {"montserrat": "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-5.2.8.tgz",
-        "source-sans-3": "https://registry.npmjs.org/@fontsource/source-sans-3/-/source-sans-3-5.2.9.tgz"}
-
-
-def _fetch_font(name):
-    """Download the fontsource tarball and convert the woff2 file to TTF."""
-    family = "montserrat" if name.startswith("montserrat") else "source-sans-3"
-    with urllib.request.urlopen(_NPM[family]) as resp:
-        tar = tarfile.open(fileobj=io.BytesIO(resp.read()), mode="r:gz")
-    member = tar.extractfile(f"package/files/{name}.woff2")
-    font = TTFont(io.BytesIO(member.read()))
-    font.flavor = None
-    FONT_DIR.mkdir(exist_ok=True)
-    font.save(FONT_DIR / f"{name}.ttf")
 
 
 def _font(name):
     if name not in _fonts:
         path = FONT_DIR / f"{name}.ttf"
-        if not path.exists():
-            _fetch_font(name)
         data = path.read_bytes()
         face = hb.Face(data)
         _fonts[name] = (TTFont(path), hb.Font(face), face.upem)
@@ -114,8 +88,8 @@ SANS = {w: f"source-sans-3-latin-{w}-normal" for w in (400, 600, 700)}
 
 # ------------------------------------------------------------------ isometric engine
 C, S = math.cos(math.pi / 6), 0.5
-K = 1.3                    # world → screen scale
-OX, OY = 800, 198          # screen position of world origin (back corner of the room)
+K = 1.36                   # world → screen scale
+OX, OY = 836, 212          # screen position of the world origin (back corner of the room)
 
 
 def P(x, y, z=0.0):
@@ -154,18 +128,8 @@ def cyl(cx, cy, z0, z1, r, top, side_l, side_r, extra=""):
     return g + side + cap
 
 
-def m_top(x0, y0, z, s=1.0):
-    """Affine map: local (u→+x, v→+y) on a horizontal plane."""
-    s *= K
-    ex, ey = P(x0, y0, z)
-    return f"matrix({C*s:.4f} {S*s:.4f} {-C*s:.4f} {S*s:.4f} {ex:.2f} {ey:.2f})"
 
 
-def m_top_uy(x0, y0, z, s=1.0):
-    """Horizontal plane with local u→+y, v→−x (reads naturally for things lying along y)."""
-    s *= K
-    ex, ey = P(x0, y0, z)
-    return f"matrix({-C*s:.4f} {S*s:.4f} {-C*s:.4f} {-S*s:.4f} {ex:.2f} {ey:.2f})"
 
 
 def m_yface(y, x0, ztop, s=1.0):
@@ -202,8 +166,6 @@ defs = []
 #    (section view) with phantom outlines, like the room itself.
 #  * A* runs on a grid with obstacles inflated by the robot's footprint radius.
 
-K = 1.36
-OX, OY = 836, 212
 
 WALL_L = "#9FB4D1"
 WALL_R = "#B7C7DD"
@@ -234,7 +196,6 @@ LIDAR_LOCAL = (0, 16)
 LIDAR_Z = 81 * RS                                  # centre of the spinning head
 ROBOT_FOOT = (-31, 31, -32, 42)                     # local footprint x0,x1,y0,y1
 ROBOT_HALF_W = 31 * RS                              # inflation radius for A* (drives axis-aligned segments)
-ROBOT_TOP = 114 * RS
 MOCAP_BAR_Z = 92 * RS
 CAM_LOCAL, CAM_HFOV = (0, 32), 70                   # front camera: position (local) and horizontal FOV
 
@@ -1205,3 +1166,8 @@ svg = (f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBo
        f'<defs>{"".join(defs)}</defs>{"".join(out)}</svg>\n')
 OUT.write_text(svg, encoding="utf-8")
 print(f"wrote {OUT} ({len(svg)/1024:.0f} KB)")
+if WRITE_PNG:
+    import resvg_py
+    png = OUT.with_suffix(".png")
+    png.write_bytes(bytes(resvg_py.svg_to_bytes(svg_string=svg, width=W, height=H)))
+    print(f"wrote {png} ({png.stat().st_size/1024:.0f} KB, {W}x{H}; GitHub accepts < 1 MB)")
