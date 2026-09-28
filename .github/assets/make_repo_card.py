@@ -741,21 +741,38 @@ check(bx <= lx0 and lx0 + LW_ <= bx + bdx and by <= ly0 and ly0 + LL_ <= by + bd
 check(ly0 + LL_ <= bfoot[2] - 2, "laptop and board do not overlap")
 check(A_POS[0] + BODY_R <= bx - 2 and B_POS[0] + BODY_R <= bx - 2, "students stand behind the bench, not inside it")
 
-# arms: B types (hands on the keyboard, behind the lid); A rests a hand on the bench and
-# points at the robot's LiDAR
-hb1 = P(lx0 + 13, ly0 + 11, BT + 3)
-hb2 = P(lx0 + 13, ly0 + 23, BT + 3)
-add(arm(*fb, (-4, -85), hb1, STU_B, bend=-1, back=True))
-add(arm(*fb, (10, -85), hb2, STU_B, bend=-1))
+# arms. People face +x, so their left side (+y) is towards the camera: the left shoulder
+# (screen-left, x = −4..−6) is the NEAR arm — drawn last, in the main colour — and it must
+# reach the +y side of whatever it touches; the right shoulder (x = +10..+11) is the FAR arm,
+# drawn first in the shadow colour.
+SH_NEAR, SH_FAR = -5, 10.5
+
+
+def arms_cross(f, hand_near, hand_far):
+    """True if the shoulder→hand lines of the two arms intersect on screen."""
+    a0, a1 = (f[0] + SH_NEAR * K, f[1] - 85 * K), hand_near
+    b0, b1 = (f[0] + SH_FAR * K, f[1] - 85 * K), hand_far
+    o = lambda p, q, r: (q[0] - p[0]) * (r[1] - p[1]) - (q[1] - p[1]) * (r[0] - p[0])
+    return o(a0, a1, b0) * o(a0, a1, b1) < 0 and o(b0, b1, a0) * o(b0, b1, a1) < 0
+
+
+# B types: near hand on the +y half of the keyboard, far hand on the −y half (both behind the lid)
+hb_near = P(lx0 + 13, ly0 + 23, BT + 3)
+hb_far = P(lx0 + 13, ly0 + 11, BT + 3)
+check(not arms_cross(fb, hb_near, hb_far), "B's arms do not cross")
+add(arm(*fb, (SH_FAR, -85), hb_far, STU_B, bend=-1, back=True))
+add(arm(*fb, (SH_NEAR, -85), hb_near, STU_B, bend=-1))
 add(laptop_lid())
+# A points at the robot's LiDAR with the far arm and rests the near hand on the bench
 ha = P(bx + 2, A_POS[1] + 14, BT + 1)
 check(bx <= bx + 2 <= bfoot[0], "A's resting hand is on the bench, beside the board")
-add(arm(*fa, (-6, -85), ha, STU_A, l1=20, l2=19, bend=-1, back=True))
 lid_pt = P(ROBOT[0] + LIDAR_LOCAL[0] * RS, ROBOT[1] + LIDAR_LOCAL[1] * RS, LIDAR_Z)
-sh = (fa[0] + 11 * K, fa[1] - 85 * K)
+sh = (fa[0] + SH_FAR * K, fa[1] - 85 * K)
 ang = math.atan2(lid_pt[1] - sh[1], lid_pt[0] - sh[0])
 pa = (sh[0] + math.cos(ang) * 38 * K, sh[1] + math.sin(ang) * 38 * K)
-add(arm(*fa, (11, -85), pa, STU_A, l1=21, l2=19, bend=-1, point=True))
+check(not arms_cross(fa, ha, pa), "A's arms do not cross")
+add(arm(*fa, (SH_FAR, -85), pa, STU_A, l1=21, l2=19, bend=-1, back=True, point=True))
+add(arm(*fa, (SH_NEAR, -85), ha, STU_A, l1=20, l2=19, bend=-1))
 
 # ------------------------------------------------------------------ LiDAR ray casting (scan plane z = LIDAR_Z)
 LX, LY = ROBOT[0] + LIDAR_LOCAL[0] * RS, ROBOT[1] + LIDAR_LOCAL[1] * RS
