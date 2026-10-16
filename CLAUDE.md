@@ -42,10 +42,12 @@ dvisvgm --pdf --no-fonts --output=<output>.svg <figure>.pdf
 
 **Slide figures** (Python 3.11+, stdlib only; `mutool` from mupdf-tools refreshes SVG PNG fallbacks):
 ```bash
-python3 tools/sync_deck_figures.py check            # exit 1 if a deck differs from its figure sources
-python3 tools/sync_deck_figures.py sync             # copy changed sources into the decks
-python3 tools/sync_deck_figures.py extract          # register pictures newly inserted in PowerPoint
-python3 tools/sync_deck_figures.py decks <files>    # which decks use these source files
+python3 tools/sync_deck_figures.py extract           # register new pictures, drop deleted ones
+python3 tools/sync_deck_figures.py auto --base HEAD  # copy each change in the direction it was made
+python3 tools/sync_deck_figures.py sync | pull       # force files -> decks | decks -> files
+python3 tools/sync_deck_figures.py check             # exit 1 if a picture differs from its file
+python3 tools/sync_deck_figures.py decks <files>     # which decks use these source files
+sh tools/install-hooks.sh                            # pre-commit hook: extract + auto, stages results
 ```
 
 **Repo card:** `uv run .github/assets/make_repo_card.py` (rewrites `repo-card.svg` + `.png`; ~300 layout/accessibility checks must pass).
@@ -64,7 +66,7 @@ All LaTeX documents share a common preamble via `\input{header}` at the top of e
 - **`icons.tex`** — icon/symbol definitions used across documents
 - **`timline.tex`** — shared course timeline header included in assignments
 - **`fontsetup.tex`** — sets the course typeface, Atkinson Hyperlegible Next, from the OTFs vendored in `fonts/` (SIL OFL). Loaded by `header.tex` and by every `Lectures/Figures/*.tex`; needs LuaLaTeX (no-op under pdfLaTeX/tex4ht). Builds must run from the repo root so `fonts/` resolves
-- **`tools/sync_deck_figures.py`** + **`Lectures/Slides/figures.toml`** — every picture in the decks has a source file in `Lectures/Figures/{svg,png,jpg,gif,ppm}/` (deck-only images in per-deck subfolders); `sync` copies sources into the decks (with SVG PNG fallbacks and frame aspect), `check` reports drift, `extract` registers newly inserted pictures. Pictures are keyed by slide id + `a16:creationId`, not by `ppt/media` names (PowerPoint renumbers those). Never edit an embedded figure directly
+- **`tools/sync_deck_figures.py`** + **`Lectures/Slides/figures.toml`** — every picture in the decks has a source file in `Lectures/Figures/{svg,png,jpg,gif,ppm}/` (deck-only images in per-deck subfolders); `auto --base REF` copies each change in the direction it was made since REF (slide edited → file, file edited → slide, both → conflict), `sync`/`pull` force a direction, `check` reports drift, `extract` registers new pictures and prunes deleted ones (and their generated files). `tools/git-hooks/pre-commit` (enabled by `tools/install-hooks.sh`) runs extract + auto and stages what they write. Pictures are keyed by slide id + `a16:creationId`, not by `ppt/media` names (PowerPoint renumbers those). Video/audio placeholders (YouTube embeds, sound clips) are not figures and are skipped
 - **`se423.cfg`** — tex4ht configuration for accessibility output (overrides inline styles to meet WCAG AA; also sets Atkinson Hyperlegible Next for HTML output)
 
 The `\ifSEhtml` flag switches between `minted` (PDF) and a verbatim fallback (HTML), since `minted` requires shell-escape which make4ht doesn't support in the same way.
@@ -74,7 +76,7 @@ The `\ifSEhtml` flag switches between `minted` (PDF) and a verbatim fallback (HT
 `.github/workflows/build-latex.yml` orchestrates the entire build:
 1. Detects changed `.tex` / `.pptx` / figure-source files via `tj-actions/changed-files` (incremental builds; a changed figure source also rebuilds the decks that embed it)
 2. Builds PDFs with `latexmk -pdflua`
-3. Syncs figure sources into the decks (`tools/sync_deck_figures.py sync`), then converts PPTX to PDF via LibreOffice headless
+3. Brings decks and figure sources in step (`tools/sync_deck_figures.py auto --base <commit before the push>`; never reverts a slide edit, nothing committed back), then converts PPTX to PDF via LibreOffice headless
 4. Converts TikZ figures to SVG via `dvisvgm`
 5. Generates accessible HTML via `make4ht`
 6. Injects SVG gallery (top-level `Lectures/Figures/svg/*.svg` only) into the site's `index.html`
@@ -102,12 +104,14 @@ All material is set in **Atkinson Hyperlegible Next** (Braille Institute, SIL OF
 
 ## Figures in the slides
 
-Every picture on a slide (except the UIUC template logos, listed under `ignore`) has an entry in `Lectures/Slides/figures.toml` pointing to its source file. **The source file is the copy to edit; the embedded copy is derived** and `sync` overwrites edits made inside PowerPoint.
+Every picture on a slide (except the UIUC template logos, listed under `ignore`) has an entry in `Lectures/Slides/figures.toml` pointing to its source file. Either side may be edited: the instructor authors in PowerPoint, plots are regenerated in SE423Animations. Direction is decided from git history, per picture (`auto`).
 
-- Changing a figure: edit/regenerate the file in `Lectures/Figures/`, run `sync`, commit both the source and the deck.
-- New picture: insert it in PowerPoint, save, run `extract` (writes `Lectures/Figures/<kind>/<deck>/slideNNN_k.<ext>` and a manifest entry; identical content reuses an existing file). Prefer pointing `source` at a well-named file in `Lectures/Figures/svg/` (e.g. a regenerated SE423Animations plot).
-- A source must keep the embedded picture's format (svg↔svg, png↔png, …); a format change means re-inserting in PowerPoint and re-running `extract`.
-- Entries are keyed by `<slide id>/<a16:creationId>` (fallback `shape-<id>`), which survive saves and slide reordering; `slide =` is informational only. Deleting/re-inserting a picture breaks its entry (`check` reports it).
+- Editing a figure file (e.g. regenerating a plot): change it in `Lectures/Figures/`, run `auto --base HEAD` (or let the hook do it), commit the file and the deck.
+- Editing in PowerPoint: just save and commit; the hook/`auto` copies the picture into its source file. A picture replaced with another format gets a new source file (`Lectures/Figures/<kind>/<deck>/slideNNN_k.<ext>`) and its manifest entry is repointed.
+- New picture: `extract` writes `Lectures/Figures/<kind>/<deck>/slideNNN_k.<ext>` (identical content reuses an existing file) and adds an entry. Deleted picture: `extract` drops the entry and deletes now-unused files in the per-deck folders (those folders are owned by the tool; put hand-made sources elsewhere). Prefer pointing `source` at a well-named file in `Lectures/Figures/svg/`.
+- Both sides changed since the base → conflict; resolve with `pull` (slide wins) or `sync` (file wins). Never "fix" a conflict by editing `figures.toml`.
+- Entries are keyed by `<slide id>/<a16:creationId>` (fallback `shape-<id>`), which survive saves and slide reordering; `slide =` is informational only.
+- When scripting deck edits in tests or tools, write decks with `Deck.save` (keeps zip order/compression) and keep the hook's contract: everything a run writes goes through `written()` so `--written` can stage it.
 - Never rename or renumber files in `ppt/media/` by hand, and don't edit decks with scripts that rewrite `[Content_Types].xml` or drop unknown parts: preserve zip entry order and compression (see `Deck.save`).
 
 ## LaTeX Conventions

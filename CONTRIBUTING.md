@@ -73,23 +73,36 @@ Lecture slides live in `Lectures/Slides/` as PowerPoint (`.pptx`) files. The CI 
 
 ### Figures inside slides (single source)
 
-Every picture on a slide has a source file under `Lectures/Figures/` (`svg/`, `png/`, `jpg/`, `gif/`; images that exist only in a deck live in a per-deck subfolder such as `png/L3/`). [`Lectures/Slides/figures.toml`](Lectures/Slides/figures.toml) records which file each picture comes from. The deck keeps an embedded copy so it works offline and in any viewer, but **the file in `Lectures/Figures/` is the one you edit**:
+Every picture on a slide has a source file under `Lectures/Figures/` (`svg/`, `png/`, `jpg/`, `gif/`; images that exist only in a deck live in a per-deck subfolder such as `png/L3/`). [`Lectures/Slides/figures.toml`](Lectures/Slides/figures.toml) records which file each picture comes from. The deck keeps an embedded copy so it works offline and in any viewer. **You can edit a figure on either side**, in PowerPoint or in its source file; the other side is updated for you.
+
+**One-time setup** (per clone; needs Python 3.11+ on your PATH):
 
 ```bash
-# after changing a figure source
-python3 tools/sync_deck_figures.py sync     # copies it into every deck that uses it
-python3 tools/sync_deck_figures.py check    # exits 1 if any deck is out of date
-
-# after inserting a new picture in PowerPoint
-python3 tools/sync_deck_figures.py extract  # writes its file and adds it to figures.toml
+sh tools/install-hooks.sh
 ```
 
-`sync` re-renders PowerPoint's PNG fallback for SVGs (needs `mutool`, from mupdf-tools) and keeps the picture's frame proportional if the new image has another aspect ratio. CI runs `sync` before exporting the PDFs and warns when the committed decks are out of date. To use a better-named file for a picture, change its `source` in `figures.toml` (e.g. a regenerated plot in `Lectures/Figures/svg/`).
+This enables a pre-commit hook. Whenever a commit includes a deck, a figure file or `figures.toml`, it:
+
+- registers pictures you inserted in PowerPoint (writing their files) and drops pictures you deleted;
+- copies each change the way you made it: a picture replaced or edited in PowerPoint updates its source file, and an edited or regenerated source file (e.g. a plot from SE423Animations) updates every deck that uses it;
+- adds those files to the commit.
+
+So the day-to-day workflow is simply: **edit in PowerPoint (or edit the file), save, commit.** If a picture and its file both changed since the last commit, the hook stops the commit and asks you to choose: `python3 tools/sync_deck_figures.py pull` keeps the slide, `sync` keeps the file.
+
+Without the hook, run the same steps by hand before committing:
+
+```bash
+python3 tools/sync_deck_figures.py extract           # new/deleted pictures
+python3 tools/sync_deck_figures.py auto --base HEAD  # copy changes in the direction they were made
+python3 tools/sync_deck_figures.py check             # exits 1 if anything still differs
+```
+
+Updating a deck re-renders PowerPoint's PNG fallback for SVGs (needs `mutool`, from mupdf-tools) and keeps the picture's frame proportional if the new image has another aspect ratio. If you replace a picture in PowerPoint with one of another format (say an SVG with a PNG), it gets a new source file of that format. CI runs the same `auto` step before exporting the PDFs (it never reverts a slide edit) and warns when a deck and its files disagree. To use a better-named file for a picture, change its `source` in `figures.toml` (e.g. a regenerated plot in `Lectures/Figures/svg/`).
 
 ### Things to watch for
 
 - Don't change the slide master/template unless you have a specific reason and discuss it in an issue first.
-- Don't edit or replace a figure inside PowerPoint: `sync` would overwrite it. Change its source file instead (see above).
+- Enable the pre-commit hook (`sh tools/install-hooks.sh`) so figure edits made in PowerPoint reach their source files (see above).
 - Keep slide content concise — detailed derivations and worked examples belong in the labs and homeworks.
 - Be sure to note the source of any material taken from an external website (images for example) and cite them underneath the material.
 

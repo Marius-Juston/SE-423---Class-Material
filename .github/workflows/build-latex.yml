@@ -433,14 +433,19 @@ jobs:
         if: steps.resolve.outputs.has_pptx == 'true'
         env:
           PPTX_OUTPUT_DIR: build
+          BEFORE: ${{ github.event.before }}
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
 
-          # Copy figure sources into the decks first (Lectures/Slides/figures.toml),
-          # so the exported PDFs and the published .pptx files carry the current figures.
-          python3 tools/sync_deck_figures.py check \
-            || echo "::warning::Decks on main are out of date with their figure sources; run 'python3 tools/sync_deck_figures.py sync' and commit the decks."
-          python3 tools/sync_deck_figures.py sync
+          # Bring decks and figure sources in step first (Lectures/Slides/figures.toml).
+          # `auto` copies each change in the direction it was made since the commit
+          # before this push: an edited source file updates the deck (so the PDFs and
+          # published .pptx carry it); a picture edited in PowerPoint is kept and its
+          # source updated. Nothing is committed back; conflicts only warn.
+          python3 tools/sync_deck_figures.py auto --base "$BEFORE" \
+            || echo "::warning::Slide figure conflicts (see log); the decks were exported as committed."
+          python3 tools/sync_deck_figures.py check > /dev/null \
+            || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'python3 tools/sync_deck_figures.py auto --base origin/main', and commit."
 
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
           # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.

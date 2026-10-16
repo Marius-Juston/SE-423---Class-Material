@@ -1,0 +1,45 @@
+#!/bin/sh
+# Keep slide pictures and their source files in step (tools/sync_deck_figures.py).
+# Runs when a commit touches a deck, a figure source or the manifest:
+#   1. `extract` registers pictures added in PowerPoint and drops deleted ones;
+#   2. `auto --base HEAD` copies each change the way it was made: a picture edited
+#      in PowerPoint updates its source file, an edited source file updates the deck;
+#   3. everything those steps wrote is staged into this commit.
+# A conflict (the slide and its file both changed) stops the commit.
+# Enable with tools/install-hooks.sh; skip once with `git commit --no-verify`.
+
+git diff --cached --name-only | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' || exit 0
+
+PY=
+for c in python3 python; do
+  if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import tomllib' >/dev/null 2>&1; then PY=$c; break; fi
+done
+if [ -z "$PY" ]; then
+  echo "pre-commit: Python 3.11+ not found, slide figures not synced (run tools/sync_deck_figures.py yourself)" >&2
+  exit 0
+fi
+
+root=$(git rev-parse --show-toplevel)
+list=$(mktemp)
+trap 'rm -f "$list"' EXIT
+base=HEAD
+git rev-parse -q --verify HEAD >/dev/null || base=
+
+"$PY" "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
+status=0
+if [ -n "$base" ]; then
+  "$PY" "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
+fi
+
+sort -u "$list" | while IFS= read -r f; do
+  if [ -e "$root/$f" ]; then
+    git -C "$root" add -- "$f"
+  else
+    git -C "$root" rm -q --cached --ignore-unmatch -- "$f"
+  fi
+done
+
+if [ "$status" -ne 0 ]; then
+  echo "pre-commit: resolve the slide figure conflicts above, then commit again" >&2
+fi
+exit "$status"

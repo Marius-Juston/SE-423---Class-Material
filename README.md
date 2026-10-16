@@ -51,7 +51,7 @@ See the [Professor's Guide](https://marius-juston.github.io/SE-423---Class-Mater
 
 #### Figures in the slides
 
-Each picture in the decks has its source file in `Lectures/Figures/` and is listed in `Lectures/Slides/figures.toml`. Edit the source file, then run `python3 tools/sync_deck_figures.py sync` to update every deck that uses it (CI also does this before exporting the PDFs). See [CONTRIBUTING](CONTRIBUTING.md#figures-inside-slides-single-source).
+Each picture in the decks has its source file in `Lectures/Figures/` and is listed in `Lectures/Slides/figures.toml`. Edit figures in PowerPoint or in their source files, whichever you prefer: run `sh tools/install-hooks.sh` once, and every commit copies each change to the other side (CI does the same before exporting the PDFs). See [CONTRIBUTING](CONTRIBUTING.md#figures-inside-slides-single-source).
 
 ### RegEx
 
