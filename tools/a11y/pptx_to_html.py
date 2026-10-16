@@ -33,6 +33,17 @@ import sync_deck_figures as sdf  # noqa: E402
 
 ESC = html.escape
 WEB_IMAGES = {"png", "jpg", "jpeg", "gif", "svg", "webp"}
+# Content signatures: a part's name can lie (PowerPoint keeps e.g. BMPs as .png).
+SIGNATURES = {b"\x89PNG": "png", b"\xff\xd8\xff": "jpg", b"GIF8": "gif", b"RIFF": "webp"}
+
+
+def real_ext(data, ext):
+    """Format by content for raster images; the name's extension for SVG."""
+    if ext == "svg":
+        return ext
+    return next((e for sig, e in SIGNATURES.items() if data.startswith(sig)), "bmp")
+
+
 YOUTUBE_EMBED = re.compile(r"youtube(?:-nocookie)?\.com/embed/([\w-]{11}).*")
 
 
@@ -204,7 +215,8 @@ class DeckPage:
     def media_file(self, part):
         """Copy a picture part next to the page (content-addressed name); its URL.
         Formats browsers cannot show (PPM, BMP, TIFF) are converted to PNG."""
-        data, ext = part.blob, part.partname.ext.lower()
+        data = part.blob
+        ext = real_ext(data, part.partname.ext.lower())
         name = f"{hashlib.sha1(data).hexdigest()[:12]}.{ext if ext in WEB_IMAGES else 'png'}"
         path = self.out_dir / self.files / name
         if not path.exists():
