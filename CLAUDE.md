@@ -88,6 +88,14 @@ Incremental builds only rebuild files that changed: editing `header.tex`, `fonts
 
 Static HTML/CSS/JS served via GitHub Pages. Uses Three.js (via import map) for the LIDAR SLAM visualization; its JSX in `site/lidar_slam/src/` is compiled by CI (`site/lidar_slam/build.sh`). The `index.html` gallery is auto-populated by CI from the top-level `Lectures/Figures/svg/*.svg` — do not manually edit the SVG injection block.
 
+## Accessibility checks (`tools/a11y/`)
+
+uv scripts: `lint_latex.py`, `lint_pptx.py`, `check_pdf.py` (veraPDF `ua2`), `check_html.py` (Playwright + pinned, hash-checked axe-core), orchestrated by `run_all.py` with a ratchet against `a11y-baseline.json` (`findings.py`). Findings are keyed by stable locators (file + rule + slide id/picture id or colour scheme), never line numbers. Rules for agents:
+- Never add a picture, figure or slide without alt text and (for slides) a real title; never raise counts in `a11y-baseline.json`, only lower them with `--update-baseline` after fixing things.
+- CI gates pull requests (`pull_request` trigger) and only reports on `main` (`continue-on-error`), so publishing is never blocked; the deploy step is skipped on PRs.
+- Slide PDFs are reported as warnings only until the LibreOffice export is tagged.
+- Local veraPDF: set `VERAPDF` to the `verapdf` launcher; CI uses the `verapdf/cli:v1.30.2` image (`--docker`).
+
 ## Typeface (required everywhere)
 
 All material is set in **Atkinson Hyperlegible Next** (Braille Institute, SIL OFL; files in `fonts/`, including SemiBold/ExtraBold for the repo card). Code stays monospace; LaTeX math stays in Latin Modern, and math-only labels in figures (Cambria Math, Computer Modern, math-italic Unicode) keep their math face. When adding or changing anything:

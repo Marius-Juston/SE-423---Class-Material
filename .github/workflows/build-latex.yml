@@ -7,11 +7,27 @@ on:
     paths:
       - '**.tex'
       - '**.pptx'
+      - '**.cfg'
       - 'pdf-list.txt'
       - 'site/**'
       - 'Lectures/Figures/**'
       - 'Lectures/Slides/figures.toml'
-      - 'tools/sync_deck_figures.py'
+      - 'tools/**'
+      - 'a11y-baseline.json'
+  # Pull requests build the same way and gate on accessibility regressions;
+  # only pushes to main deploy.
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '**.tex'
+      - '**.pptx'
+      - '**.cfg'
+      - 'pdf-list.txt'
+      - 'site/**'
+      - 'Lectures/Figures/**'
+      - 'Lectures/Slides/figures.toml'
+      - 'tools/**'
+      - 'a11y-baseline.json'
 
 permissions:
   contents: write
@@ -387,7 +403,8 @@ jobs:
               # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
               make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" \
                 "$texfile" \
-                || echo "::warning::HTML build failed for $texfile (continuing)"
+                || { echo "::warning::HTML build failed for $texfile (continuing)"; \
+                     mkdir -p build/a11y; echo "$texfile" >> build/a11y/make4ht-failures.txt; }
             fi
           done
 
@@ -439,7 +456,7 @@ jobs:
         if: steps.resolve.outputs.has_pptx == 'true'
         env:
           PPTX_OUTPUT_DIR: build
-          BEFORE: ${{ github.event.before }}
+          BEFORE: ${{ github.event.pull_request.base.sha || github.event.before }}
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
 
@@ -575,7 +592,25 @@ jobs:
               echo "Warning: index.html not found. Skipping injection."
           fi
           
+      - name: Set up accessibility checkers
+        run: |
+          # Headless Chromium for axe-core (HTML) and the pinned veraPDF image (PDF/UA-2).
+          uv run --quiet --with playwright==1.64.0 playwright install --with-deps chromium
+          docker pull --quiet verapdf/cli:v1.30.2
+
+      # Ratchet (tools/a11y, a11y-baseline.json): pull requests fail on new or worse
+      # accessibility problems; on main the results are reported but never block deploy.
+      - name: Accessibility checks
+        continue-on-error: ${{ github.event_name != 'pull_request' }}
+        run: |
+          uv run --quiet tools/a11y/run_all.py \
+            --pdf-root build --docker \
+            --html-root deploy_target \
+            --make4ht-failures build/a11y/make4ht-failures.txt
+          mkdir -p deploy_target/a11y && cp build/a11y/report.json deploy_target/a11y/report.json
+
       - name: Deploy Incremental Updates
+        if: github.event_name != 'pull_request'
         run: |
           cd deploy_target
           git config user.name "github-actions[bot]"

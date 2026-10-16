@@ -142,6 +142,29 @@ All colors follow the [UIUC branding guidelines](https://brand.illinois.edu/visu
 - If a figure was taken from another location, note its source in a LaTeX comment near the `\includegraphics` call.
 - Place new images in the same directory as the `.tex` file that references them.
 
+## Accessibility
+
+Course material has to be usable with screen readers, keyboard-only and low vision (WCAG 2.2 AA; PDFs to PDF/UA-2). Most of this is checked automatically by `tools/a11y/`:
+
+| Checker | Looks at | Examples |
+|---|---|---|
+| `lint_latex.py` | documents in `pdf-list.txt` | pictures without alt text (use `\AltImg` / `\AltStart{…}…\AltEnd`), figures without `\caption`, missing `\DocumentMetadata` |
+| `lint_pptx.py` | `Lectures/Slides/L*.pptx` | pictures and videos without alt text, slides without a real title, tables without a header row, low-contrast text |
+| `check_pdf.py` | built PDFs | PDF/UA-2 validation with veraPDF |
+| `check_html.py` | the published site and HTML handouts | axe-core WCAG 2.2 A/AA checks, light and dark mode |
+
+**The ratchet.** Existing problems are recorded in `a11y-baseline.json`, so nothing fails today because of the backlog, but a change may not add new problems or make existing ones worse:
+
+- the pre-commit hook (`sh tools/install-hooks.sh`) checks the `.tex` files and decks you commit;
+- pull requests run every checker and fail on anything new; pushes to `main` report but never block publishing.
+
+```bash
+uv run tools/a11y/run_all.py                     # linters (fast)
+uv run tools/a11y/run_all.py --update-baseline   # after fixing things: lock the improvement in
+```
+
+Commit the updated `a11y-baseline.json` with your fix. Use `--accept-new` only when a new problem genuinely can't be avoided, and say why in the PR.
+
 ## Setting Up Your LaTeX Environment
 
 If you're editing labs or homeworks, you'll need a working LaTeX setup. Lecture slides (PPTX) don't require LaTeX.
