@@ -50,7 +50,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
-      CACHE_VERSION: v12 # Bumped due to kastrup (binhex) addition for HTML lualatex build
+      CACHE_VERSION: v13 # Bumped for collection-luatex (luatex85: standalone figures under LuaLaTeX)
 
       LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
@@ -243,6 +243,8 @@ jobs:
             luaotfload \
             make4ht \
             tex4ht \
+            collection-luatex \
+            luatex85 \
             kastrup \
             luamml \
             unicode-math \
