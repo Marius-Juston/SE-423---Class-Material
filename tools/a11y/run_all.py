@@ -12,7 +12,7 @@
     uv run tools/a11y/run_all.py --update-baseline    # lock in improvements
     uv run tools/a11y/run_all.py --files a.tex b.pptx # only these files (pre-commit)
 
-Checkers run only when their input exists: latex and pptx always; pdf with --pdf-root
+Checkers run only when their input exists: latex, pptx and cvd (figure colours) always; pdf with --pdf-root
 (veraPDF via $VERAPDF, PATH or --docker); html with --html-root; make4ht with
 --make4ht-failures (a file listing the documents whose HTML build failed).
 
@@ -73,6 +73,10 @@ def main():
     if files is None or pptx:
         found += run_tool("lint_pptx.py", pptx)
         tools.add("pptx")
+    svgs = [f for f in files if f.endswith(".svg")] if files is not None else []
+    if files is None or svgs:
+        found += run_tool("cvd_check.py", svgs)  # warnings only: reported, never gating
+        tools.add("cvd")
     checked = {}  # tool -> files actually examined (CI builds only what changed)
     if args.pdf_root and Path(args.pdf_root).is_dir():
         found += run_tool("check_pdf.py", ["--root", args.pdf_root] + (["--docker"] if args.docker else []))

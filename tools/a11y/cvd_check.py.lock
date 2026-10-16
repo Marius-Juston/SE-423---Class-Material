@@ -1,0 +1,19 @@
+version = 1
+revision = 5
+requires-python = ">=3.12"
+
+[options]
+exclude-newer = "0001-01-01T00:00:00Z" # This has no effect and is included for backwards compatibility when using relative exclude-newer values.
+exclude-newer-span = "P14D"
+
+[manifest]
+requirements = [{ name = "coloraide", specifier = "==8.13" }]
+
+[[package]]
+name = "coloraide"
+version = "8.13"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/b3/c0/4b9a4c5bfcd37ed0bea60ad7414b3d105139f4fdf8b6a380fddc37a08371/coloraide-8.13.tar.gz", hash = "sha256:acd94d150268bf6e96568482943cb39bfe73a92a37c8912baf7506785996de58", size = 22369379, upload-time = "2026-09-24T13:30:06.174Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/30/be/671a260c60dfac3cd96aa4ac8e6ec45014076b60ae933d7d84e5a5266b55/coloraide-8.13-py3-none-any.whl", hash = "sha256:5e8e2b83af928fe6ff841d6731af7722014ba0bbb1ea371727346f954616cf96", size = 348994, upload-time = "2026-09-24T13:30:03.689Z" },
+]

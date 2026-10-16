@@ -1,3 +1,4 @@
+% alt: Flowchart of a LiDAR-inertial SLAM loop. Front end (high rate): each IMU/odometry interrupt (100 Hz or more) is preintegrated and a motion model predicts and publishes a fast pose. When a LiDAR scan is ready (10 Hz), the back end deskews and voxel-filters the cloud, matches it to the local map (ICP/NDT) to get an odometry factor, optimises the factor graph (iSAM2/GTSAM) with loop-closure factors, updates the map manager, and publishes the global map and corrected pose, which corrects the front end's drift.
 \documentclass[border=10pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)
 \usepackage{tikz}

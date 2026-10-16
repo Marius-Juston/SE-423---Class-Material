@@ -1,3 +1,4 @@
+% alt: Process diagram of the Raspberry Pi SLAM program. External LiDAR and odometry programs write scans and poses to shared memory (lslam_lidar, lslam_odom), signalled by semaphores; LidarReader and OdomReader threads move them into a queue and a deque for the SLAM main loop. The main loop updates factors and estimates poses with iSAM2 (GTSAM), shares keyframe scans and poses under a lock, and sends new keyframes to a LoopClosureWorker thread, which returns relative poses and errors through queues.
 % SLAM Pipeline IPC & Thread Architecture
 \documentclass[tikz, border=10pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)

@@ -587,41 +587,12 @@ jobs:
           bash site/lidar_slam/build.sh site/lidar_slam deploy_target/lidar_slam/dist
           rm -f deploy_target/lidar_slam/data/slam_cache.json
 
-      - name: Inject Dynamic SVG Gallery into HTML
-        run: |
-          # Navigate into the deployment staging area
-          cd deploy_target
-          
-          FIGURES_ARRAY=""
+      # Names and descriptions for the published figure SVGs (<title>/<desc>, from
+      # reviewed alt text in figures.toml or `% alt:` lines in the TikZ sources), and
+      # the gallery entries in index.html (JSON-escaped).
+      - name: Describe figures and fill the gallery
+        run: uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
 
-          # Check if any SVGs exist recursively
-          if find Lectures/Figures -type f -name "*.svg" | grep -q .; then
-              echo "Generating gallery data from SVGs..."
-
-              while IFS= read -r svg_path; do
-              # Extract filename without extension
-              filename=$(basename "$svg_path" .svg)
-
-              # Format Title: Replace underscores/dashes with spaces and Capitalize Each Word
-              title=$(echo "$filename" | tr '_-' ' ' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
-
-              # Append the JS object to our payload string
-              FIGURES_ARRAY+="                { title: \"$title\", file: \"$svg_path\" },\n"
-
-              done < <(find Lectures/Figures -type f -name "*.svg" | sort)
-
-          else
-              echo "No SVGs found in Lectures/Figures/. Proceeding with empty gallery."
-          fi
-
-          # Use Perl to safely inject the multiline payload between the target comment blocks
-          if [ -f "index.html" ]; then
-              perl -0777 -pi -e "s|/\* INJECT_FIGURES_START \*/.*?/\* INJECT_FIGURES_END \*/|/* INJECT_FIGURES_START */\n$FIGURES_ARRAY                /* INJECT_FIGURES_END */|s" index.html
-              echo "Injection complete."
-          else
-              echo "Warning: index.html not found. Skipping injection."
-          fi
-          
       - name: Set up accessibility checkers
         run: |
           # Headless Chromium for axe-core (HTML) and the pinned veraPDF image (PDF/UA-2).

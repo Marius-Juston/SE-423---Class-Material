@@ -1,3 +1,4 @@
+% alt: Pipeline from perception to motion: perception and mapping provide a costmap; 1. path planning (Hybrid A* with a bicycle model) produces a geometric path of poses; 2. trajectory planning (optimisation for smoothness within velocity and acceleration limits) produces a time-parameterised reference trajectory; 3. a tracking controller (MPC or pure pursuit) sends velocity commands to the vehicle, with state feedback from the vehicle.
 \documentclass[border=10pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)
 \usepackage{tikz}

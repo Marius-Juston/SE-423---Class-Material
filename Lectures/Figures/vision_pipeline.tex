@@ -1,3 +1,4 @@
+% alt: Four-stage vision pipeline. 1. Raw sensor data: CMOS array and Bayer colour filter (1 red : 2 green : 1 blue). 2. Pre-processing: demosaicing, RGB to HSV conversion and a binary threshold on hue. 3. Feature extraction: blob detection with connected components, area filtering and image moments giving the centroid x-bar = M10 / M00. 4. Control logic: error e = x-bar minus image centre, a PI controller, and PWM motor commands for the left and right wheels.
 \documentclass[tikz, border=5pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)
 \usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, backgrounds, shadows}

@@ -1,3 +1,4 @@
+% alt: Two-state machine for wall following. State 1, right wall follow (forward velocity, angular velocity = Kp times (d_ref minus d_right)), switches to state 2, left turn, when the front distance is below the stop threshold; state 2 (turning speed, angular velocity from the front distance) switches back when the front distance exceeds the start threshold.
 % Marius-Juston 2026
 \documentclass{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)

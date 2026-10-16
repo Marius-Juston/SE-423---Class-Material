@@ -181,7 +181,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     <div class="space-selector" id="spaceSelector"></div>
     <div class="viewer-main">
       <div class="viewer-3d-wrap" id="viewer3dWrap">
-        <div class="viewer-overlay"><span class="viewer-label" id="viewerLabel">RGB</span><span class="viewer-hint">drag · scroll to zoom</span></div>
+        <div class="viewer-overlay"><span class="viewer-label" id="viewerLabel">RGB</span><span class="viewer-hint">drag or arrow keys · scroll or +/− to zoom</span></div>
         <div class="viewer-axes-info" id="viewerAxes"></div>
       </div>
       <div class="slice-row">
@@ -200,9 +200,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   <div class="section-header"><span class="section-tag">02 — Hue Interpolation &amp; 3D Paths</span><h2>The Path Between Colors</h2><p>The gradient strips show the 2D result. Below, 3D viewers reveal the actual path each method takes through the gamut.</p></div>
   <div class="interp-grid">
     <div class="interp-controls">
-      <label>From:</label><div class="color-input-wrap"><input type="color" id="interpColorA" value="#FF5F05"><span id="interpColorALabel">#FF5F05</span></div>
-      <label>To:</label><div class="color-input-wrap"><input type="color" id="interpColorB" value="#009FD4"><span id="interpColorBLabel">#009FD4</span></div>
-      <div class="steps-counter">Steps: <input type="number" id="interpSteps" value="16" min="2" max="256"></div>
+      <label for="interpColorA">From:</label><div class="color-input-wrap"><input type="color" id="interpColorA" value="#FF5F05"><span id="interpColorALabel">#FF5F05</span></div>
+      <label for="interpColorB">To:</label><div class="color-input-wrap"><input type="color" id="interpColorB" value="#009FD4"><span id="interpColorBLabel">#009FD4</span></div>
+      <div class="steps-counter"><label for="interpSteps">Steps:</label> <input type="number" id="interpSteps" value="16" min="2" max="256"></div>
     </div>
     <div id="interpRows"></div>
     <div class="section-header" style="margin-top:1.2rem;"><h2 style="font-size:1.3rem;">3D Path Visualization</h2><p>Ghosted surface shows the sRGB gamut. Bright lines are interpolation paths. Dashed = sRGB reference.</p></div>
@@ -362,10 +362,26 @@ function genCloudSurface(space, density=22) {
 }
 
 // ═══════ ORBIT CONTROLS ═══════
+// Honour the OS "reduce motion" setting: no auto-rotation.
+const REDUCED_MOTION=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 class Orbit {
-  constructor(cam,el){
+  constructor(cam,el,label){
     this.cam=cam;this.el=el;this.sph={r:3.8,phi:Math.PI/3,theta:Math.PI/4};
-    this.dragging=false;this.prev={x:0,y:0};this.autoRot=true;
+    this.dragging=false;this.prev={x:0,y:0};this._autoRot=!REDUCED_MOTION;
+    // Keyboard: focusable, arrow keys rotate, +/- zoom (stops auto-rotation like a drag does).
+    el.tabIndex=0;el.setAttribute('role','application');el.setAttribute('aria-roledescription','3D viewer');
+    el.setAttribute('aria-label',(label||'3D view')+'. Arrow keys rotate, plus and minus zoom.');
+    el.addEventListener('keydown',e=>{
+      const step=e.shiftKey?0.3:0.1;let used=true;
+      if(e.key==='ArrowLeft')this.sph.theta+=step;
+      else if(e.key==='ArrowRight')this.sph.theta-=step;
+      else if(e.key==='ArrowUp')this.sph.phi=Math.max(0.1,this.sph.phi-step);
+      else if(e.key==='ArrowDown')this.sph.phi=Math.min(Math.PI-0.1,this.sph.phi+step);
+      else if(e.key==='+'||e.key==='=')this.sph.r=Math.max(1.5,this.sph.r-0.3);
+      else if(e.key==='-'||e.key==='_')this.sph.r=Math.min(10,this.sph.r+0.3);
+      else used=false;
+      if(used){e.preventDefault();this._autoRot=false;}
+    });
     el.addEventListener('pointerdown',e=>{this.dragging=true;this.prev={x:e.clientX,y:e.clientY};this.autoRot=false;});
     window.addEventListener('pointerup',()=>this.dragging=false);
     el.addEventListener('pointermove',e=>{if(!this.dragging)return;this.sph.theta-=(e.clientX-this.prev.x)*0.008;this.sph.phi=Math.max(0.1,Math.min(Math.PI-0.1,this.sph.phi-(e.clientY-this.prev.y)*0.008));this.prev={x:e.clientX,y:e.clientY};});
@@ -374,8 +390,10 @@ class Orbit {
     el.addEventListener('touchmove',e=>{if(!this.dragging||e.touches.length!==1)return;e.preventDefault();this.sph.theta-=(e.touches[0].clientX-this.prev.x)*0.008;this.sph.phi=Math.max(0.1,Math.min(Math.PI-0.1,this.sph.phi-(e.touches[0].clientY-this.prev.y)*0.008));this.prev={x:e.touches[0].clientX,y:e.touches[0].clientY};},{passive:false});
     el.addEventListener('touchend',()=>this.dragging=false);
   }
+  get autoRot(){return this._autoRot;}
+  set autoRot(v){this._autoRot=v&&!REDUCED_MOTION;}
   update(dt){
-    if(this.autoRot)this.sph.theta+=dt*0.25;
+    if(this._autoRot)this.sph.theta+=dt*0.25;
     const{r,phi,theta}=this.sph;
     this.cam.position.set(r*Math.sin(phi)*Math.cos(theta),r*Math.cos(phi),r*Math.sin(phi)*Math.sin(theta));
     this.cam.lookAt(0,0,0);
@@ -408,7 +426,7 @@ function init3DViewer(){
   wrap.insertBefore(renderer.domElement,wrap.firstChild);
   const scene=new THREE.Scene();
   const camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
-  const orbit=new Orbit(camera,renderer.domElement);
+  const orbit=new Orbit(camera,renderer.domElement,'3D shape of the selected color space');
   const axes=makeAxes(scene);
 
   // Gamut surface mesh — solid with transparency
@@ -658,27 +676,45 @@ function initSliceInteraction(){
   });
   wrap.addEventListener('pointercancel',()=>sliceDragging=false);
   wrap.style.cursor='crosshair';
+  // Keyboard: arrow keys move the crosshair (1% steps, Shift for 10%).
+  wrap.tabIndex=0;wrap.setAttribute('role','application');
+  wrap.setAttribute('aria-label','2D slice of the color space. Arrow keys move the selected color; the sliders show its values.');
+  wrap.addEventListener('keydown',e=>{
+    const d={ArrowLeft:[-1,0],ArrowRight:[1,0],ArrowUp:[0,1],ArrowDown:[0,-1]}[e.key];
+    if(!d)return;
+    e.preventDefault();
+    const sp=activeSp,step=e.shiftKey?0.1:0.01;
+    [[sp.sliceAxes[0],d[0]],[sp.sliceAxes[1],d[1]]].forEach(([ax,dir])=>{
+      if(!dir)return;
+      const ch=sp.channels[ax];
+      chVals[ax]=CM.clamp(chVals[ax]+dir*step*(ch.max-ch.min),ch.min,ch.max);
+      const sl=document.getElementById(`sl${ax}`);
+      if(sl){sl.value=chVals[ax];document.getElementById(`sv${ax}`).textContent=fmtCh(ch,chVals[ax]);}
+    });
+    drawCrosshair();updateIndicator(activeSp,chVals);updatePreview();
+  });
 }
 
 function initSpaces(){
   const sel=document.getElementById('spaceSelector');
-  sel.innerHTML=SPACES.map(sp=>`<button class="space-btn ${sp.id===activeSp.id?'active':''}" data-id="${sp.id}">${sp.name}<span class="badge">${sp.badge}</span></button>`).join('');
+  sel.innerHTML=SPACES.map(sp=>`<button type="button" class="space-btn ${sp.id===activeSp.id?'active':''}" aria-pressed="${sp.id===activeSp.id}" data-id="${sp.id}">${sp.name}<span class="badge">${sp.badge}</span></button>`).join('');
   sel.querySelectorAll('.space-btn').forEach(b=>b.addEventListener('click',()=>{const sp=SPACES.find(s=>s.id===b.dataset.id);if(sp)selectSpace(sp);}));
 }
 
 function selectSpace(sp){
   activeSp=sp;chVals=sp.channels.map(c=>c.def);
   sliceCacheKey=''; // invalidate pixel cache
-  document.querySelectorAll('.space-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===sp.id));
+  document.querySelectorAll('.space-btn').forEach(b=>{b.classList.toggle('active',b.dataset.id===sp.id);b.setAttribute('aria-pressed',b.dataset.id===sp.id);});
   document.getElementById('viewerLabel').textContent=sp.name+' — '+sp.desc;
   buildSliders();updateCloud(sp);updateIndicator(sp,chVals);renderSlice();updatePreview();
 }
 
+function sp_label(ch){return `${activeSp.name} ${ch.name}`;}
 function buildSliders(){
   const panel=document.getElementById('slidersPanel');
   panel.innerHTML=activeSp.channels.map((ch,i)=>{
     const gc=buildSlGrad(i);
-    return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${fmtCh(ch,chVals[i])}</span></div><input type="range" id="sl${i}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
+    return`<div class="slider-group"><div class="slider-label"><span>${ch.name}</span><span class="val" id="sv${i}">${fmtCh(ch,chVals[i])}</span></div><input type="range" id="sl${i}" aria-label="${sp_label(ch)}" min="${ch.min}" max="${ch.max}" step="${ch.step}" value="${chVals[i]}" style="background:linear-gradient(to right,${gc})"></div>`;
   }).join('');
   const fixedIdx=activeSp.sliceFixed;
   activeSp.channels.forEach((ch,i)=>{document.getElementById(`sl${i}`).addEventListener('input',e=>{
@@ -785,8 +821,8 @@ function renderInterp3D(colA,colB){
       renderer.sortObjects=true;
       wrap.appendChild(renderer.domElement);
       const scene=new THREE.Scene(),camera=new THREE.PerspectiveCamera(42,w/h,0.1,100);
-      const orbit=new Orbit(camera,renderer.domElement);orbit.autoRot=true;orbit.sph.theta=Math.PI/4+idx*0.5;
       const sp=getSp(spId);
+      const orbit=new Orbit(camera,renderer.domElement,`Interpolation paths through the ${sp.name} gamut`);orbit.autoRot=true;orbit.sph.theta=Math.PI/4+idx*0.5;
       makeAxes(scene,sp.zAx||1);
       // Ghost surface mesh (very transparent)
       const ghostGeo=buildGamutMesh(sp,18);
