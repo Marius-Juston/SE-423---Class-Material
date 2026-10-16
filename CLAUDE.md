@@ -40,13 +40,13 @@ dvisvgm --pdf --no-fonts --output=<output>.svg <figure>.pdf
 
 **Alternative (no local install):** Import the project into Overleaf — the repo supports Overleaf sync. Set the compiler to **LuaLaTeX**.
 
-**Slide figures** (Python 3.11+, stdlib only; `mutool` from mupdf-tools refreshes SVG PNG fallbacks):
+**Slide figures** (a uv script, stdlib only; `mutool` from mupdf-tools refreshes SVG PNG fallbacks):
 ```bash
-python3 tools/sync_deck_figures.py extract           # register new pictures, drop deleted ones
-python3 tools/sync_deck_figures.py auto --base HEAD  # copy each change in the direction it was made
-python3 tools/sync_deck_figures.py sync | pull       # force files -> decks | decks -> files
-python3 tools/sync_deck_figures.py check             # exit 1 if a picture differs from its file
-python3 tools/sync_deck_figures.py decks <files>     # which decks use these source files
+uv run tools/sync_deck_figures.py extract           # register new pictures, drop deleted ones
+uv run tools/sync_deck_figures.py auto --base HEAD  # copy each change in the direction it was made
+uv run tools/sync_deck_figures.py sync | pull       # force files -> decks | decks -> files
+uv run tools/sync_deck_figures.py check             # exit 1 if a picture differs from its file
+uv run tools/sync_deck_figures.py decks <files>     # which decks use these source files
 sh tools/install-hooks.sh                            # pre-commit hook: extract + auto, stages results
 ```
 

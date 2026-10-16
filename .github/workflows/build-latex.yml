@@ -46,6 +46,12 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Set up uv
+        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: "tools/**/*.py"
+
       - name: Get changed files
         id: changed-files
         uses: tj-actions/changed-files@9426d40962ed5378910ee2e21d5f8c6fcbf2dd96 # v47.0.6
@@ -88,7 +94,7 @@ jobs:
             if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py'; then
               PPTX="$PPTX $(find Lectures/Slides -name 'L*.pptx' | tr '\n' ' ')"
             else
-              PPTX="$PPTX $(python3 tools/sync_deck_figures.py decks $CHANGED)"
+              PPTX="$PPTX $(uv run --quiet tools/sync_deck_figures.py decks $CHANGED)"
             fi
             PPTX=$(echo $PPTX | tr ' ' '\n' | sort -u | tr '\n' ' ')
           fi
@@ -442,10 +448,10 @@ jobs:
           # before this push: an edited source file updates the deck (so the PDFs and
           # published .pptx carry it); a picture edited in PowerPoint is kept and its
           # source updated. Nothing is committed back; conflicts only warn.
-          python3 tools/sync_deck_figures.py auto --base "$BEFORE" \
+          uv run --quiet tools/sync_deck_figures.py auto --base "$BEFORE" \
             || echo "::warning::Slide figure conflicts (see log); the decks were exported as committed."
-          python3 tools/sync_deck_figures.py check > /dev/null \
-            || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'python3 tools/sync_deck_figures.py auto --base origin/main', and commit."
+          uv run --quiet tools/sync_deck_figures.py check > /dev/null \
+            || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'uv run tools/sync_deck_figures.py auto --base origin/main', and commit."
 
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
           # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.

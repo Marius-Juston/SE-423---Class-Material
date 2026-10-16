@@ -1,4 +1,8 @@
-#!/usr/bin/env python3
+#!/usr/bin/env -S uv run --script
+# /// script
+# requires-python = ">=3.12"
+# dependencies = []
+# ///
 """Keep the pictures in the lecture decks and their source files in step.
 
 Every picture on a slide in Lectures/Slides/L*.pptx is listed in
@@ -7,12 +11,12 @@ deck keeps an embedded copy so it works offline and in any viewer; the source
 file can be edited outside PowerPoint (or regenerated, e.g. by SE423Animations).
 Either side may change: `auto` works out which one did from git history.
 
-    python3 tools/sync_deck_figures.py extract          # register new pictures, drop deleted ones
-    python3 tools/sync_deck_figures.py auto --base REF  # copy each change the way it was made since REF
-    python3 tools/sync_deck_figures.py sync             # force sources -> decks
-    python3 tools/sync_deck_figures.py pull             # force decks -> sources
-    python3 tools/sync_deck_figures.py check            # exit 1 if any picture differs from its source
-    python3 tools/sync_deck_figures.py decks FILE...    # decks that use any FILE (used by CI)
+    uv run tools/sync_deck_figures.py extract          # register new pictures, drop deleted ones
+    uv run tools/sync_deck_figures.py auto --base REF  # copy each change the way it was made since REF
+    uv run tools/sync_deck_figures.py sync             # force sources -> decks
+    uv run tools/sync_deck_figures.py pull             # force decks -> sources
+    uv run tools/sync_deck_figures.py check            # exit 1 if any picture differs from its source
+    uv run tools/sync_deck_figures.py decks FILE...    # decks that use any FILE (used by CI)
 
 `auto`, per picture that differs from its source, compared with REF:
 deck changed only -> the source is updated (an edit made in PowerPoint);

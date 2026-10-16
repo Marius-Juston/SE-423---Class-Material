@@ -10,12 +10,10 @@
 
 git diff --cached --name-only | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' || exit 0
 
-PY=
-for c in python3 python; do
-  if command -v "$c" >/dev/null 2>&1 && "$c" -c 'import tomllib' >/dev/null 2>&1; then PY=$c; break; fi
-done
-if [ -z "$PY" ]; then
-  echo "pre-commit: Python 3.11+ not found, slide figures not synced (run tools/sync_deck_figures.py yourself)" >&2
+if ! command -v uv >/dev/null 2>&1; then
+  echo "pre-commit: uv not found, slide figures not synced." >&2
+  echo "  Install it (https://docs.astral.sh/uv/getting-started/installation/), e.g." >&2
+  echo "  curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
   exit 0
 fi
 
@@ -25,10 +23,10 @@ trap 'rm -f "$list"' EXIT
 base=HEAD
 git rev-parse -q --verify HEAD >/dev/null || base=
 
-"$PY" "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
+uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
 status=0
 if [ -n "$base" ]; then
-  "$PY" "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
+  uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
 fi
 
 sort -u "$list" | while IFS= read -r f; do
