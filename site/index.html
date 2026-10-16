@@ -348,6 +348,7 @@
          * - title: Main text
          * - file: Primary PDF link
          * - html: Optional accessible HTML version (default: derived from a local PDF)
+         * - large: Optional large-print PDF (default: <file>-large.pdf for a local PDF)
          * - links: Optional array of { label: string, url: string }
          */
         const data = {
@@ -444,7 +445,6 @@
                 { 
                     title: "Lab 1: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
                     file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab1.pdf" ,
-                    html: "site/Labs/Lab1.html",
                      links: [
                         { label: "Using the Lab Repository", url: "https://coecsl.ece.illinois.edu/se423/Using%20the%20SE423%20Repository.docx" },
                         { label: "Lab PinMux Table", url: "https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf" },
@@ -454,7 +454,6 @@
                     { 
                     title: "Lab 2: Introduction to Raspberry PI4 and TMS320F28379D GPIO Programming", 
                     file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab2.pdf" ,
-                    html: "site/Labs/Lab2.html",
                      links: [
                         { label: "Commenting your Code, Example", url: "Homeworks/commenting_code_example.pdf" },
                     ]
@@ -462,7 +461,6 @@
                                 { 
                     title: "Lab 3: Pulse-Width Modulation, Optical Encoders and Friction Compensation", 
                     file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab3.pdf" ,
-                    html: "site/Labs/Lab3.html",
                      links: [
                         { label: "Lab PinMux Table", url: "https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf" },
                         { label: "EPWM Condensed Reference", url: "https://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf" },
@@ -699,9 +697,15 @@
                 // External URLs (http/https) and non-PDFs are skipped.
                 const isLocalPdf = item.file && !/^https?:\/\//i.test(item.file) && item.file.toLowerCase().endsWith('.pdf');
                 const htmlFile = item.html || (isLocalPdf ? 'site/' + item.file.replace(/\.pdf$/i, '.html') : null);
+                const largeFile = item.large || (isLocalPdf ? item.file.replace(/\.pdf$/i, '-large.pdf') : null);
+                const largeLinkHtml = largeFile ? `
+                        <a href="${largeFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
+                            Large-print PDF<span class="sr-only"> (opens in a new tab)</span>
+                        </a>
+                ` : '';
                 const htmlLinkHtml = htmlFile ? `
                         <a href="${htmlFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
-                            View HTML (Accessible)
+                            View HTML (Accessible)<span class="sr-only"> (opens in a new tab)</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 0118 16.5h-3.75l.75 3h1.5a.75.75 0 010 1.5H7.5a.75.75 0 010-1.5H9l.75-3H6a2.25 2.25 0 01-2.25-2.25v-9z" />
                             </svg>
@@ -718,12 +722,13 @@
                         </div>
 
                         <a href="${item.file}" target="_blank" class="mt-2 inline-flex items-center text-sm font-semibold uiuc-orange-access pdf-link">
-                            View Assignment PDF
+                            View Assignment PDF<span class="sr-only"> (opens in a new tab)</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
                         </a>
                         ${htmlLinkHtml}
+                        ${largeLinkHtml}
 
                         ${extraLinksHtml}
                     </div>

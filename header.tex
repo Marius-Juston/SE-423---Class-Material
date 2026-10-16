@@ -165,6 +165,13 @@
 % ============================
 \input{fontsetup}
 
+% Large print (\SElargeprint, see fontsetup.tex): 1.5 line spacing and wider
+% margins on top of the 1.3x fonts.
+\ifdefined\SElargeprint
+  \geometry{left=0.75in, right=0.75in, top=0.75in, bottom=1.0in}
+  \AtBeginDocument{\setstretch{1.5}}
+\fi
+
 \definecolor{highlight}{rgb}{0.788235294, 0.0117647059, 0.0431372549}
 
 % pgfcalendar must be loaded in the preamble (here, in header.tex) rather

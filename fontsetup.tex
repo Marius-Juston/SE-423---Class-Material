@@ -12,6 +12,10 @@
 % se423.cfg instead.
 %
 % Usage: \input{fontsetup} in the preamble (header.tex already does).
+%
+% Large print: when \SElargeprint is defined (CI builds <doc>-large.pdf with
+% latexmk -usepretex='\def\SElargeprint{}'), every face is scaled 1.3x
+% (11pt -> about 14pt); header.tex adds line spacing and margins.
 % ============================
 \RequirePackage{iftex}
 \newif\ifSEfontspec
@@ -21,7 +25,11 @@
 \ifdefined\HCode\SEfontspecfalse\fi
 \ifSEfontspec
   \RequirePackage{fontspec}
-  \defaultfontfeatures{Ligatures=TeX}
+  \ifdefined\SElargeprint
+    \defaultfontfeatures{Ligatures=TeX, Scale=1.3}
+  \else
+    \defaultfontfeatures{Ligatures=TeX}
+  \fi
   \setmainfont{AtkinsonHyperlegibleNext}[
     Path=fonts/,
     Extension=.otf,
@@ -38,4 +46,9 @@
     BoldFont=*-Bold,
     BoldItalicFont=*-BoldItalic
   ]
+  \ifdefined\SElargeprint
+    % Code and math at the same 1.3x (fontspec's defaults would stay 1x).
+    \setmonofont{Latin Modern Mono}[Scale=1.3]
+    \ifdefined\setmathfont\setmathfont{Latin Modern Math}[Scale=1.3]\fi
+  \fi
 \fi

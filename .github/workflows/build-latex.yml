@@ -330,6 +330,12 @@ jobs:
 
               latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
                 -shell-escape -outdir="$out_dir" "$texfile"
+
+              # Large-print edition, <doc>-large.pdf: fonts 1.3x, 1.5 line spacing
+              # (\SElargeprint, see fontsetup.tex / header.tex).
+              latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
+                -shell-escape -outdir="$out_dir" -jobname="$(basename "$texfile" .tex)-large" \
+                -usepretex='\def\SElargeprint{}' "$texfile"
             fi
           done
 
