@@ -345,22 +345,22 @@
           Every picture on a slide has a source file in <span class="ic">Lectures/Figures/</span> (<span class="ic">svg/</span>, <span class="ic">png/</span>, <span class="ic">jpg/</span>, <span class="ic">gif/</span>; images used only in one deck live in a per-deck subfolder such as <span class="ic">png/L3/</span>), listed in <span class="ic">Lectures/Slides/figures.toml</span>. The deck keeps an embedded copy so it works offline and in every viewer. <strong>Edit figures wherever you like, in PowerPoint or in the file</strong>: the other side is updated when you commit.
         </p>
         <ol class="space-y-3 mb-4">
-          <li class="flex gap-3"><span class="step-badge">1</span><span class="text-sm text-gray-700 dark:text-gray-300">Once per clone, enable the commit hook (needs Python 3.11+): <span class="ic">sh tools/install-hooks.sh</span></span></li>
+          <li class="flex gap-3"><span class="step-badge">1</span><span class="text-sm text-gray-700 dark:text-gray-300">Once per clone, enable the commit hook (needs <a href="https://docs.astral.sh/uv/getting-started/installation/" class="url underline" target="_blank">uv</a>): <span class="ic">sh tools/install-hooks.sh</span></span></li>
           <li class="flex gap-3"><span class="step-badge">2</span><span class="text-sm text-gray-700 dark:text-gray-300">Work as usual: insert, replace or delete pictures in PowerPoint, or edit/regenerate a figure file. Save.</span></li>
           <li class="flex gap-3"><span class="step-badge">3</span><span class="text-sm text-gray-700 dark:text-gray-300">Commit. The hook registers new pictures, drops deleted ones, copies slide edits into their files and file edits into every deck that uses them, and adds those files to the commit.</span></li>
         </ol>
         <div class="callout-warn rounded-lg p-4 mb-3">
           <p class="font-semibold text-amber-800 dark:text-amber-300 mb-1">⚠ If the commit stops with a conflict</p>
-          <p class="text-amber-700 dark:text-amber-200 text-sm">A picture and its file were both changed since the last commit. Keep the slide's version with <span class="ic">python3 tools/sync_deck_figures.py pull</span>, or the file's with <span class="ic">python3 tools/sync_deck_figures.py sync</span>, then commit again.</p>
+          <p class="text-amber-700 dark:text-amber-200 text-sm">A picture and its file were both changed since the last commit. Keep the slide's version with <span class="ic">uv run tools/sync_deck_figures.py pull</span>, or the file's with <span class="ic">uv run tools/sync_deck_figures.py sync</span>, then commit again.</p>
         </div>
         <div class="code-block p-4 text-sm mb-3">
           <button class="copy-btn" onclick="copyCode(this)">Copy</button>
           <pre># the same steps by hand (without the hook)
-python3 tools/sync_deck_figures.py extract
-python3 tools/sync_deck_figures.py auto --base HEAD
+uv run tools/sync_deck_figures.py extract
+uv run tools/sync_deck_figures.py auto --base HEAD
 
 # does any picture differ from its file? (exit code 1 if so)
-python3 tools/sync_deck_figures.py check</pre>
+uv run tools/sync_deck_figures.py check</pre>
         </div>
         <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">CI runs the same step before exporting the slide PDFs. It never reverts an edit made in PowerPoint, and it warns if a deck and its files disagree. To give a picture a better-named source (for example a regenerated plot in <span class="ic">Lectures/Figures/svg/</span>), change its <span class="ic">source</span> line in <span class="ic">figures.toml</span>.</p>
 
