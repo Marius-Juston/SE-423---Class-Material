@@ -1,7 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["playwright==1.64.0"]
+# dependencies = ["playwright==1.63.0"]
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Check HTML pages with axe-core (WCAG 2.2 A/AA) in light and dark mode.
 
@@ -11,13 +13,15 @@ Pages are served from --root over a local HTTP server (some tools fetch JSON), o
 in headless Chromium with prefers-color-scheme light and dark, and scanned with a
 pinned, hash-checked axe-core. One finding per (page, rule, colour scheme), counting
 the offending elements. critical/serious violations are errors; moderate/minor are
-warnings. First run: `uv run --with playwright==1.64.0 playwright install chromium`.
+warnings. First run: `uv run tools/a11y/check_html.py --install-browser` (the Chromium
+build matching the locked Playwright version; add --with-deps on a fresh CI machine).
 """
 
 import argparse
 import functools
 import hashlib
 import http.server
+import subprocess
 import sys
 import threading
 import urllib.request
@@ -104,9 +108,16 @@ def check(pages, root):
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("pages", nargs="*")
-    ap.add_argument("--root", required=True, help="directory served as the site root")
+    ap.add_argument("--root", help="directory served as the site root")
     ap.add_argument("--json", help="write findings here")
+    ap.add_argument("--install-browser", action="store_true", help="install the matching Chromium and exit")
+    ap.add_argument("--with-deps", action="store_true", help="with --install-browser: also its system libraries")
     args = ap.parse_args()
+    if args.install_browser:
+        cmd = [sys.executable, "-m", "playwright", "install", *(["--with-deps"] if args.with_deps else []), "chromium"]
+        sys.exit(subprocess.run(cmd).returncode)
+    if not args.root:
+        ap.error("--root is required")
     root = Path(args.root).resolve()
     # Page arguments are relative to --root (or absolute).
     pages = [(root / p).resolve() for p in args.pages] or sorted(root.rglob("*.html"))

@@ -12,6 +12,7 @@ running `run_all.py --update-baseline` lowers the counts; the baseline can only 
 unless someone deliberately accepts new problems with `--accept-new`.
 """
 
+import hashlib
 import json
 from dataclasses import asdict, dataclass
 from pathlib import Path
@@ -100,6 +101,71 @@ def updated_baseline(findings, baseline, tools, accept_new=False):
         elif accept_new:
             out[k] = n
     return out
+
+
+def source_file(path):
+    """Repo file a finding belongs to: built outputs (Homeworks/HW1.pdf, .html) map to
+    the source they are built from (.tex, or .pptx for slide PDFs)."""
+    if (REPO / path).is_file():
+        return path
+    stem = path.rsplit(".", 1)[0]
+    for ext in (".tex", ".pptx"):
+        if (REPO / (stem + ext)).is_file():
+            return stem + ext
+    return path
+
+
+def sarif(findings, baseline):
+    """SARIF 2.1.0 log for GitHub code scanning: alerts on the files, and on pull
+    requests only the alerts a change introduces. Each alert is fingerprinted by its
+    stable key, so it is tracked across commits like the baseline is. Findings already
+    accepted in the baseline are reported as notes."""
+    rules, results = {}, []
+    for f in findings:
+        rules.setdefault(
+            f.rule,
+            {
+                "id": f.rule,
+                "name": f.rule.replace("/", "-"),
+                "shortDescription": {"text": f.rule},
+                "properties": {"tags": ["accessibility", f.tool]},
+            },
+        )
+        accepted = f.severity == "error" and f.count <= baseline.get(f.key, 0)
+        where = f" ({f.where})" if f.where else ""
+        count = f" x{f.count}" if f.count > 1 else ""
+        results.append(
+            {
+                "ruleId": f.rule,
+                "level": "note" if accepted else f.severity,
+                "message": {"text": f"{f.message}{where}{count}"},
+                "locations": [
+                    {
+                        "physicalLocation": {
+                            "artifactLocation": {"uri": source_file(f.file), "uriBaseId": "%SRCROOT%"},
+                            "region": {"startLine": 1},
+                        }
+                    }
+                ],
+                "partialFingerprints": {"a11yKey/v1": hashlib.sha256(f.key.encode()).hexdigest()},
+            }
+        )
+    return {
+        "$schema": "https://json.schemastore.org/sarif-2.1.0.json",
+        "version": "2.1.0",
+        "runs": [
+            {
+                "tool": {
+                    "driver": {
+                        "name": "se423-a11y",
+                        "informationUri": "https://github.com/Marius-Juston/SE-423---Class-Material/tree/main/tools/a11y",
+                        "rules": sorted(rules.values(), key=lambda r: r["id"]),
+                    }
+                },
+                "results": results,
+            }
+        ],
+    }
 
 
 def summary_markdown(findings, regressions, improved):

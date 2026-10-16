@@ -2,6 +2,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = []
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Validate PDFs against PDF/UA-2 with veraPDF.
 
@@ -26,7 +28,8 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from findings import Finding, write  # noqa: E402
 
-DOCKER_IMAGE = "verapdf/cli:v1.30.2"
+# Pinned by digest as well as tag: a re-pushed tag cannot change what runs.
+DOCKER_IMAGE = "verapdf/cli:v1.30.2@sha256:d5ee329657cf9bc4b2400392dd54c7d0a0ce9980ff6fa2da5590eebeec007cdb"
 
 
 def verapdf_cmd(use_docker, root):

@@ -151,7 +151,7 @@ Course material has to be usable with screen readers, keyboard-only and low visi
 | `lint_latex.py` | documents in `pdf-list.txt` | pictures without alt text (use `\AltImg` / `\AltStart{…}…\AltEnd`), figures without `\caption`, missing `\DocumentMetadata` |
 | `lint_pptx.py` | `Lectures/Slides/L*.pptx` | pictures and videos without alt text, slides without a real title, tables without a header row, low-contrast text |
 | `check_pdf.py` | built PDFs | PDF/UA-2 validation with veraPDF |
-| `check_html.py` | the published site and HTML handouts | axe-core WCAG 2.2 A/AA checks, light and dark mode |
+| `check_html.py` | the published site, HTML handouts and slide pages | axe-core WCAG 2.2 A/AA checks, light and dark mode |
 
 **The ratchet.** Existing problems are recorded in `a11y-baseline.json`, so nothing fails today because of the backlog, but a change may not add new problems or make existing ones worse:
 
@@ -164,6 +164,20 @@ uv run tools/a11y/run_all.py --update-baseline   # after fixing things: lock the
 ```
 
 Commit the updated `a11y-baseline.json` with your fix. Use `--accept-new` only when a new problem genuinely can't be avoided, and say why in the PR.
+
+On pull requests the findings also appear as **code-scanning alerts** on the changed files (only the ones the PR introduces; the baseline backlog shows as notes), from the SARIF file `run_all.py --sarif` writes.
+
+**Accessible formats built by CI** (published next to the PDFs): an HTML version of every handout (MathML equations, alt text, light/dark mode) and of every lecture deck (`Lectures/Slides/<deck>.html`: one section per slide with its title as a heading, nested lists, alt text, tables, MathML equations and the speaker notes; `uv run tools/a11y/pptx_to_html.py --out build/Lectures/Slides` builds them locally).
+
+## Python tooling
+
+All Python in this repo (`tools/`, `.github/assets/make_repo_card.py`) are [uv](https://docs.astral.sh/uv/) scripts: dependencies are declared in the script header (PEP 723), so `uv run tools/<script>.py` is all you need: no virtualenv, no `pip install`. To keep builds reproducible and safe:
+
+- **Exact pins + lockfiles.** Each script pins its dependencies with `==` and has a committed `<script>.py.lock` (exact versions and hashes of everything, transitive packages included). CI and the hook run `uv run --locked`, which refuses a stale lockfile instead of silently resolving something else.
+- **Release cooldown.** `exclude-newer = "14 days"` in each header: uv only considers releases at least two weeks old, which keeps freshly published (possibly compromised or broken) versions out. Dependabot updates the GitHub Actions with the same cooldown; actions and the veraPDF Docker image are pinned by SHA/digest.
+- **Upgrading a dependency:** raise the `==` pin in the script header, run `uv lock --script <script>.py`, run the script, commit both files. (`uv lock --check --script <script>.py` tells you whether a lockfile is current; CI checks all of them.)
+- **Lint/format:** `uvx ruff@0.16.9 check . && uvx ruff@0.16.9 format --check .` (settings in `ruff.toml`; CI and the hook run the same).
+- **Reading decks:** read-only tools use python-pptx through `tools/a11y/deck_reader.py` (XPath, theme colours via coloraide, equations to MathML via pandoc from `pypandoc-binary`). Anything that **writes** a deck goes through `tools/sync_deck_figures.py` (`Deck.save`), which keeps every untouched byte of the file: python-pptx re-serializes the whole package on save, which is the kind of change that broke embedded video links before.
 
 ## Setting Up Your LaTeX Environment
 

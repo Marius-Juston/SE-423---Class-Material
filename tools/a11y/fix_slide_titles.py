@@ -1,7 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["pymupdf==1.28.2", "pillow==12.3.0"]
+# dependencies = ["pymupdf==1.28.2", "pillow==12.3.0", "python-pptx==1.0.2", "coloraide==8.13"]
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Give every slide a real title (a title placeholder), without changing how it looks.
 
@@ -34,7 +36,7 @@ from pathlib import Path
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
-import lint_pptx as L  # noqa: E402
+import deck_reader as dr  # noqa: E402
 import sync_deck_figures as sdf  # noqa: E402
 from findings import REPO  # noqa: E402
 
@@ -49,17 +51,14 @@ def lecture_label(deck_name):
     return f"Lectures {m[1]}–{m[2]}" if m[2] else f"Lecture {m[1]}"
 
 
-def slide_size(deck):
-    return tuple(map(int, re.search(r'<p:sldSz cx="(\d+)" cy="(\d+)"', deck.data["ppt/presentation.xml"].decode()).groups()))
-
-
-def header_bands(xml, sw, sh, theme):
+def header_bands(root, sw, sh, theme):
+    """Boxes of filled full-width bands at the top of a slide, layout or master."""
     out = []
-    for sp in re.findall(r"<p:sp>.*?</p:sp>", xml, re.S):
-        b = L.box(sp)
-        sp_pr = re.search(r"<p:spPr\b.*?</p:spPr>", sp, re.S)
-        colour = theme.fill(sp_pr[0]) if sp_pr else None
-        if b and colour not in (None, L.UNKNOWN) and b[1] <= sh * 0.02 and b[2] >= sw * 0.9 and b[3] <= sh * 0.2:
+    for sp in dr.xp(root, ".//p:sp"):
+        b = dr.box(sp)
+        sp_pr = dr.xp(sp, "./p:spPr")
+        colour = theme.solid(sp_pr[0]) if sp_pr else None
+        if b and colour not in (None, dr.UNKNOWN) and b[1] <= sh * 0.02 and b[2] >= sw * 0.9 and b[3] <= sh * 0.2:
             out.append(b)
     return out
 
@@ -68,35 +67,34 @@ def text_of(sp):
     return "".join(re.findall(r"<a:t>([^<]*)</a:t>", sp)).strip()
 
 
-def choose_title(deck, part, theme, sw, sh):
-    """Return the <p:sp> string to turn into the title, or None."""
-    x = deck.data[part].decode()
-    layout = next(t for t in deck.rels(part).values() if "slideLayout" in t)
-    master = next(t for t in deck.rels(layout).values() if "slideMaster" in t)
+def choose_title(slide, theme, sw, sh):
+    """Index (among the slide's p:sp elements, in document order) of the text box to
+    turn into the title, or None."""
+    layout = slide.slide_layout
     bands = (
-        header_bands(x, sw, sh, theme)
-        + header_bands(deck.data[layout].decode(), sw, sh, theme)
-        + header_bands(deck.data[master].decode(), sw, sh, theme)
+        header_bands(slide._element, sw, sh, theme)
+        + header_bands(layout._element, sw, sh, theme)
+        + header_bands(layout.slide_master._element, sw, sh, theme)
     )
     boxes = [
-        (sp, L.box(sp))
-        for sp in re.findall(r"<p:sp>.*?</p:sp>", x, re.S)
-        if "<p:ph" not in sp and text_of(sp) and L.box(sp)
+        (i, sp, dr.box(sp))
+        for i, sp in enumerate(dr.xp(slide._element, ".//p:sp"))
+        if not dr.xp(sp, "./p:nvSpPr/p:nvPr/p:ph") and dr.text_of(sp).strip() and dr.box(sp)
     ]
     if bands:
         top = bands[0][1] + bands[0][3]
-        inside = [(sp, b) for sp, b in boxes if b[1] + b[3] / 2 <= top]
+        inside = [c for c in boxes if c[2][1] + c[2][3] / 2 <= top]
         if inside:
-            fully = [(sp, b) for sp, b in inside if b[1] + b[3] <= top + sh * 0.01]
-            return min(fully or inside, key=lambda c: c[1][1])[0]
+            fully = [c for c in inside if c[2][1] + c[2][3] <= top + sh * 0.01]
+            return min(fully or inside, key=lambda c: c[2][1])[0]
         return None
 
     def biggest_font(sp):
-        sizes = [int(s) for s in re.findall(r'<a:rPr\b[^>]*\bsz="(\d+)"', sp)]
+        sizes = [int(v) for v in dr.xp(sp, ".//a:rPr/@sz")]
         return max(sizes) if sizes else 0
 
     if boxes:
-        return max(boxes, key=lambda c: (biggest_font(c[0]), -c[1][1]))[0]
+        return max(boxes, key=lambda c: (biggest_font(c[1]), -c[2][1]))[0]
     return None
 
 
@@ -114,7 +112,13 @@ def text_defaults(deck):
         d = {"algn": (re.search(r'algn="(\w+)"', attrs) or [None, "l"])[1]}
         for el in ("lnSpc", "spcBef", "spcAft"):
             e = re.search(rf"<a:{el}>.*?</a:{el}>", body, re.S)
-            d[el] = e[0] if e else {"lnSpc": "<a:lnSpc><a:spcPct val=\"100000\"/></a:lnSpc>"}.get(el, f"<a:{el}><a:spcPts val=\"0\"/></a:{el}>")
+            d[el] = (
+                e[0]
+                if e
+                else {"lnSpc": '<a:lnSpc><a:spcPct val="100000"/></a:lnSpc>'}.get(
+                    el, f'<a:{el}><a:spcPts val="0"/></a:{el}>'
+                )
+            )
         r = re.search(r"<a:defRPr\b([^>]*?)(?:/>|>(.*?)</a:defRPr>)", body, re.S)
         rattrs, rbody = (r[1], r[2] or "") if r else ("", "")
         d["sz"] = (re.search(r'\bsz="(\d+)"', rattrs) or [None, "1800"])[1]
@@ -162,7 +166,7 @@ def pin_formatting(sp, defaults):
             for m in spacing:
                 if m:
                     inner = inner.replace(m[0], "", 1)
-            merged = "".join(m[0] if m else d[el] for el, m in zip(("lnSpc", "spcBef", "spcAft"), spacing))
+            merged = "".join(m[0] if m else d[el] for el, m in zip(("lnSpc", "spcBef", "spcAft"), spacing, strict=True))
             new_ppr = head + ">" + merged + inner + "</a:pPr>"
             para = para.replace(ppr[0], new_ppr, 1)
         else:
@@ -217,21 +221,29 @@ def hidden_title(xml, text, sw):
 
 def convert(path):
     """Return (new deck bytes, {slide no: action}) with titles added; the file is not written."""
+    # Read with python-pptx (deck_reader), edit the slide XML text and write with the
+    # faithful zip writer, so everything else in the file stays byte-identical.
     deck = sdf.Deck(path)
-    theme = L.Theme(deck)
-    sw, sh = slide_size(deck)
+    prs = dr.open_deck(path)
+    theme = dr.Theme(prs)
+    sw, sh = prs.slide_width, prs.slide_height
     defaults = text_defaults(deck)
     actions = {}
-    for no, _sid, part in deck.slides():
+    for (no, _sid, part), (_no, slide) in zip(deck.slides(), dr.slides(prs), strict=True):
         x = deck.data[part].decode()
-        if L.title_text(x):
+        if dr.title_text(slide):
             continue
-        sp = choose_title(deck, part, theme, sw, sh)
+        i = choose_title(slide, theme, sw, sh)
+        sp = re.findall(r"<p:sp>.*?</p:sp>", x, re.S)[i] if i is not None else None
         if sp:
             x = x.replace(sp, make_title(sp, defaults), 1)
             actions[no] = f"title: {text_of(sp)[:50]!r}"
         elif not re.search(r'<p:ph\b[^>]*type="(?:title|ctrTitle)"', x):
-            label = f"End of {lecture_label(path.name)}" if no == len(deck.slides()) else f"{lecture_label(path.name)}, slide {no}"
+            label = (
+                f"End of {lecture_label(path.name)}"
+                if no == len(deck.slides())
+                else f"{lecture_label(path.name)}, slide {no}"
+            )
             x = hidden_title(x, label, sw)
             actions[no] = f"hidden title: {label!r}"
         deck.data[part] = x.encode()
@@ -246,7 +258,16 @@ def render(pptx_bytes, workdir, name):
     src.write_bytes(pptx_bytes)
     profile = Path(workdir, "lo-profile").as_uri()
     subprocess.run(
-        ["soffice", f"-env:UserInstallation={profile}", "--headless", "--convert-to", "pdf", "--outdir", str(workdir), str(src)],
+        [
+            "soffice",
+            f"-env:UserInstallation={profile}",
+            "--headless",
+            "--convert-to",
+            "pdf",
+            "--outdir",
+            str(workdir),
+            str(src),
+        ],
         check=True,
         capture_output=True,
         timeout=900,
@@ -299,7 +320,10 @@ def main():
         done = {n: a for n, a in actions.items() if n not in changed}
         total += len(done)
         reverted_total += len(changed)
-        print(f"{path.name}: {len(done)} slide(s) titled" + (f", {len(changed)} reverted (looked different): {changed}" if changed else ""))
+        print(
+            f"{path.name}: {len(done)} slide(s) titled"
+            + (f", {len(changed)} reverted (looked different): {changed}" if changed else "")
+        )
         if not args.dry_run:
             path.write_bytes(content)
     print(f"done: {total} slides titled, {reverted_total} left for manual review")

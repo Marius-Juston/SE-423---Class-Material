@@ -2,6 +2,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = []
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Run the accessibility checkers and apply the ratchet (a11y-baseline.json).
 
@@ -19,6 +21,7 @@ Writes build/a11y/report.json (all findings) and, on GitHub Actions, a job summa
 """
 
 import argparse
+import json
 import os
 import subprocess
 import sys
@@ -35,7 +38,11 @@ def run_tool(script, args):
     with tempfile.TemporaryDirectory() as d:
         out = Path(d, "findings.json")
         r = subprocess.run(
-            ["uv", "run", "--quiet", str(HERE / script), *args, "--json", str(out)], capture_output=True, text=True
+            # --locked: the script's dependencies come from its committed <script>.py.lock
+            # (exact versions and hashes); a stale lock is an error, not a silent re-resolve.
+            ["uv", "run", "--quiet", "--locked", str(HERE / script), *args, "--json", str(out)],
+            capture_output=True,
+            text=True,
         )
         if r.returncode != 0 or not out.exists():
             sys.exit(f"{script} failed:\n{r.stdout[-2000:]}\n{r.stderr[-2000:]}")
@@ -50,6 +57,7 @@ def main():
     ap.add_argument("--html-root", help="directory served as the site (e.g. deploy_target or site)")
     ap.add_argument("--make4ht-failures", help="file listing documents whose HTML build failed")
     ap.add_argument("--report", default=str(fd.REPO / "build/a11y/report.json"))
+    ap.add_argument("--sarif", help="also write the findings as SARIF (GitHub code scanning)")
     ap.add_argument("--update-baseline", action="store_true", help="lower baseline counts to the current state")
     ap.add_argument("--accept-new", action="store_true", help="with --update-baseline: also accept new problems")
     args = ap.parse_args()
@@ -98,6 +106,9 @@ def main():
 
     if files is None:
         fd.write(found, args.report)
+    if args.sarif:
+        Path(args.sarif).parent.mkdir(parents=True, exist_ok=True)
+        Path(args.sarif).write_text(json.dumps(fd.sarif(found, baseline), indent=1) + "\n")
     summary = fd.summary_markdown(found, regressions, improved if files is None else [])
     if os.environ.get("GITHUB_STEP_SUMMARY"):
         with open(os.environ["GITHUB_STEP_SUMMARY"], "a") as s:

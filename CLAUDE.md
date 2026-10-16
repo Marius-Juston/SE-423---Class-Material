@@ -94,7 +94,14 @@ uv scripts: `lint_latex.py`, `lint_pptx.py`, `check_pdf.py` (veraPDF `ua2`), `ch
 - Never add a picture, figure or slide without alt text and (for slides) a real title; never raise counts in `a11y-baseline.json`, only lower them with `--update-baseline` after fixing things.
 - CI gates pull requests (`pull_request` trigger) and only reports on `main` (`continue-on-error`), so publishing is never blocked; the deploy step is skipped on PRs.
 - Slide PDFs are reported as warnings only until the LibreOffice export is tagged.
-- Local veraPDF: set `VERAPDF` to the `verapdf` launcher; CI uses the `verapdf/cli:v1.30.2` image (`--docker`).
+- Local veraPDF: set `VERAPDF` to the `verapdf` launcher; CI uses the `verapdf/cli:v1.30.2` image pinned by digest (`--docker`).
+- `run_all.py --sarif` also writes the findings as SARIF; CI uploads it to code scanning (category `accessibility`), fingerprinted by the same stable keys.
+- `pptx_to_html.py` builds the accessible HTML of each deck (CI publishes `Lectures/Slides/<deck>.html`); equations go OMML → MathML through pandoc.
+- Read decks with `deck_reader.py` (python-pptx + XPath, coloraide for colours), never with regexes over XML. Write decks only through `sync_deck_figures.py` (`Deck.save`): python-pptx's save re-serializes every part.
+
+## Python tooling (uv)
+
+Every script is a uv script (PEP 723 header) with `==` pins, `[tool.uv] exclude-newer = "14 days"` (release cooldown) and a committed `<script>.py.lock`. Run scripts with `uv run [--locked] tools/...`, never `python3`/`pip`. When you add or change a dependency: pin it with `==` to a release at least 14 days old, run `uv lock --script <script>.py`, commit the lockfile. A script that imports another script's module must declare that module's dependencies too. Lint/format with `uvx ruff@0.16.9 check .` / `format` (`ruff.toml`); the ruff version is pinned in the workflow and the hook, keep them in step. GitHub Actions are pinned by commit SHA with the version in a comment.
 
 ## Typeface (required everywhere)
 
