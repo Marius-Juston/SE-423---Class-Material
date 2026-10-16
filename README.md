@@ -38,6 +38,21 @@ The color scheme follows [UIUC branding guidelines](https://brand.illinois.edu/v
 
 The powerpoint template was derived from [UIUC PowerPoint Template Library](https://brand.illinois.edu/resources/downloads) 
 
+#### Typeface (required)
+
+All course material is set in [Atkinson Hyperlegible Next](https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next) (Braille Institute, SIL Open Font License) for readability. The font files are in [`fonts/`](fonts/), and new material must use it too:
+
+- **Slides:** install the `fonts/*.otf` files before opening a deck in PowerPoint, or it will substitute another font. The decks and `SE-Deck-Template.pptx` already use it.
+- **LaTeX (labs, homeworks, syllabus, TikZ figures):** compile with **LuaLaTeX** from the repo root (`latexmk -pdflua -shell-escape <file>.tex`; on Overleaf set the compiler to LuaLaTeX). `header.tex` loads [`fontsetup.tex`](fontsetup.tex); every figure in `Lectures/Figures/` starts with `\input{fontsetup}`. Code stays monospaced and math stays in Latin Modern.
+- **Plots:** matplotlib figures from [SE423Animations](https://github.com/Marius-Juston/SE423Animations) call `course_style.apply()`, which sets the same font.
+- **Website:** pages load the font from Google Fonts.
+
+See the [Professor's Guide](https://marius-juston.github.io/SE-423---Class-Material/professor_guide.html#typeface) for details and install steps.
+
+#### Figures in the slides
+
+Each picture in the decks has its source file in `Lectures/Figures/` and is listed in `Lectures/Slides/figures.toml`. Edit the source file, then run `python3 tools/sync_deck_figures.py sync` to update every deck that uses it (CI also does this before exporting the PDFs). See [CONTRIBUTING](CONTRIBUTING.md#figures-inside-slides-single-source).
+
 ### RegEx
 
 Useful regex for improve the LaTeX documents
@@ -64,6 +79,8 @@ Especially look at this now: https://aelira.ai/us/blog/how-to-make-latex-accessi
 And for the website: https://wave.webaim.org/report#/https://marius-juston.github.io/SE-423---Class-Material/
 
 ## Notes to professors
+
+> **Before editing anything:** install the course typeface from `fonts/` and build LaTeX with LuaLaTeX (see [Typeface](#typeface-required)).
 
 ## L2
 

@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Professor's Guide | SE 423 Course Material</title>
   <script src="https://cdn.tailwindcss.com/3.4.17"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script>tailwind.config = { darkMode: 'class' }</script>
   <style>
-    body { font-family: 'Inter', sans-serif; }
+    body { font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
     code, pre, .mono { font-family: 'JetBrains Mono', monospace; }
 
     .bg-uiuc-blue  { background-color: #13294B; }
@@ -157,6 +157,7 @@
 
         <div class="nav-section">Reference</div>
         <a href="#latex-primer"   class="nav-link">LaTeX Primer</a>
+        <a href="#typeface"       class="nav-link">Typeface</a>
         <a href="#accessibility"  class="nav-link">Accessibility</a>
         <a href="#quick-ref"      class="nav-link">Quick Reference</a>
       </nav>
@@ -339,6 +340,23 @@
           <li class="flex gap-3"><span class="step-badge">4</span><span class="text-sm text-gray-700 dark:text-gray-300">Add a card to the lectures list in <span class="ic">site/index.html</span> so it appears on the course hub (see the <a href="#website" class="url underline">Website section</a>).</span></li>
         </ol>
 
+        <h3 class="font-bold text-lg mb-3">Figures inside slides (single source)</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
+          Every picture on a slide has a source file in <span class="ic">Lectures/Figures/</span> (<span class="ic">svg/</span>, <span class="ic">png/</span>, <span class="ic">jpg/</span>, <span class="ic">gif/</span>; images used only in one deck live in a per-deck subfolder such as <span class="ic">png/L3/</span>). <span class="ic">Lectures/Slides/figures.toml</span> records which file each picture comes from. The deck keeps an embedded copy so it works offline and in every viewer, but <strong>the file in <span class="ic">Lectures/Figures/</span> is the one you edit</strong>.
+        </p>
+        <div class="code-block p-4 text-sm mb-3">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre># after changing a figure source: update every deck that uses it
+python3 tools/sync_deck_figures.py sync
+
+# after inserting a new picture in PowerPoint: save its file and register it
+python3 tools/sync_deck_figures.py extract
+
+# is any deck out of date? (exit code 1 if so)
+python3 tools/sync_deck_figures.py check</pre>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6">CI runs <span class="ic">sync</span> before exporting the slide PDFs, so the published PDFs and <span class="ic">.pptx</span> files always carry the current figures; it warns if the committed decks are behind. Don't edit or replace a figure inside PowerPoint, since the next sync overwrites it. To give a picture a better-named source (for example a regenerated plot in <span class="ic">Lectures/Figures/svg/</span>), change its <span class="ic">source</span> line in <span class="ic">figures.toml</span>.</p>
+
         <div class="callout-tip rounded-lg p-4 mb-4">
           <p class="font-semibold text-green-800 dark:text-green-300 mb-1">💡 UIUC Color Palette</p>
           <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 mt-2">
@@ -348,6 +366,11 @@
             <div class="flex items-center gap-2 text-sm"><span style="background:#006230" class="w-5 h-5 rounded inline-block"></span> Prairie <span class="ic">#006230</span></div>
             <div class="flex items-center gap-2 text-sm"><span style="background:#FCB316" class="w-5 h-5 rounded inline-block border border-gray-200"></span> Harvest <span class="ic">#FCB316</span></div>
           </div>
+        </div>
+
+        <div class="callout-warn rounded-lg p-4 mb-4">
+          <p class="font-semibold text-amber-800 dark:text-amber-300 mb-1">⚠ Install the course typeface before editing slides</p>
+          <p class="text-amber-700 dark:text-amber-200 text-sm">Every deck (and <span class="ic">SE-Deck-Template.pptx</span>) is set in <strong>Atkinson Hyperlegible Next</strong>. Install the <span class="ic">.otf</span> files from <span class="ic">fonts/</span> first, or PowerPoint will silently substitute another font. Keep new text boxes in the theme font. See <a href="#typeface" class="url underline">Typeface</a>.</p>
         </div>
 
         <div class="callout-warn rounded-lg p-4">
@@ -509,7 +532,7 @@ or \mintinline{c}{inline code}.
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Figures</h2>
 
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          Figures in <span class="ic">Lectures/Figures/</span> are automatically converted to SVG and shown in the website's gallery. Each figure gets a modal preview card — no manual steps needed.
+          Figures in <span class="ic">Lectures/Figures/</span> are automatically converted to SVG and shown in the website's gallery. Each figure gets a modal preview card — no manual steps needed. The same folder also holds the source of every picture in the slide decks; see <a href="#slides" class="url underline">Figures inside slides</a>.
         </p>
 
         <h3 class="font-bold text-lg mb-3">Preferred formats (best to worst)</h3>
@@ -551,6 +574,11 @@ or \mintinline{c}{inline code}.
 }
 \caption{ADC SOC trigger flow.}
 \end{figure}</pre>
+        </div>
+
+        <div class="callout-warn rounded-lg p-4 mb-4">
+          <p class="font-semibold text-amber-800 dark:text-amber-300 mb-1">⚠ Figures use the course typeface too</p>
+          <p class="text-amber-700 dark:text-amber-200 text-sm">Start every TikZ figure with <span class="ic">\input{fontsetup}</span> right after <span class="ic">\documentclass</span> and build it with LuaLaTeX. Plots made with matplotlib (in <a href="https://github.com/Marius-Juston/SE423Animations" class="url underline" target="_blank">SE423Animations</a>) must call <span class="ic">course_style.apply()</span>. SVGs from other tools should use Atkinson Hyperlegible Next with text converted to outlines. See <a href="#typeface" class="url underline">Typeface</a>.</p>
         </div>
 
         <div class="callout-info rounded-lg p-4">
@@ -711,6 +739,40 @@ int main(void) {
             <tr><td><span class="ic">\AltImg</span></td><td><span class="ic">\includegraphics</span></td><td>Required for accessibility compliance</td></tr>
           </tbody>
         </table>
+      </section>
+
+      <!-- ──────────────────────────────────────── -->
+      <!-- TYPEFACE -->
+      <!-- ──────────────────────────────────────── -->
+      <section id="typeface" class="section-title">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Typeface: Atkinson Hyperlegible Next</h2>
+
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          All course material is set in <strong>Atkinson Hyperlegible Next</strong>, a typeface from the Braille Institute designed to keep similar characters (<span class="ic">Il1</span>, <span class="ic">O0</span>, <span class="ic">rn/m</span>) distinct for low-vision readers. It is free under the SIL Open Font License. The OTF files live in <span class="ic">fonts/</span> at the repo root, so builds never depend on what is installed on a machine. Code stays monospaced and LaTeX math stays in Latin Modern.
+        </p>
+
+        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+          <thead><tr><th>Material</th><th>How the typeface is applied</th><th>What you need to do</th></tr></thead>
+          <tbody>
+            <tr><td>Labs, homeworks, syllabus (PDF)</td><td><span class="ic">header.tex</span> loads <span class="ic">fontsetup.tex</span></td><td>Compile with <strong>LuaLaTeX</strong> (<span class="ic">latexmk -pdflua -shell-escape</span>) from the repo root. On Overleaf, set the compiler to LuaLaTeX. pdfLaTeX still compiles, but in the old font.</td></tr>
+            <tr><td>Accessible HTML</td><td><span class="ic">se423.cfg</span> (Google Fonts + CSS)</td><td>Nothing.</td></tr>
+            <tr><td>TikZ figures</td><td><span class="ic">\input{fontsetup}</span> after <span class="ic">\documentclass</span></td><td>Add that line to every new figure and build with <span class="ic">latexmk -pdflua</span>.</td></tr>
+            <tr><td>Lecture slides (PPTX)</td><td>Theme and text runs use the font</td><td>Install the font locally before editing. CI installs it before converting to PDF.</td></tr>
+            <tr><td>matplotlib plots</td><td><span class="ic">course_style.apply()</span> in SE423Animations</td><td>Call it after any <span class="ic">plt.style.use</span> / <span class="ic">rcParams</span> block, regenerate, and replace the copies in <span class="ic">Lectures/Figures/svg/</span> and in the deck.</td></tr>
+            <tr><td>Website and tools</td><td>Google Fonts link + CSS</td><td>Use <span class="ic">'Atkinson Hyperlegible Next'</span> for any new page; keep monospace for code.</td></tr>
+          </tbody>
+        </table>
+
+        <h3 class="font-bold text-lg mb-3">Installing the font</h3>
+        <div class="code-block p-4 text-sm mb-2">
+          <button class="copy-btn" onclick="copyCode(this)">Copy</button>
+          <pre># Linux
+mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &amp;&amp; fc-cache -f
+
+# macOS: double-click each fonts/*.otf → Install Font
+# Windows: right-click each fonts/*.otf → Install (or "Install for all users")</pre>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">The font is also available from <a href="https://fonts.google.com/specimen/Atkinson+Hyperlegible+Next" class="url underline" target="_blank">Google Fonts</a>.</p>
       </section>
 
       <!-- ──────────────────────────────────────── -->
