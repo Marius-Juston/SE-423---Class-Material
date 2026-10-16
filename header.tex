@@ -109,6 +109,15 @@
     \tagpdfsetup{activate-all}
     \AtBeginEnvironment{tcolorbox}{\tagpdfparaOff}
     \AtEndEnvironment{tcolorbox}{\tagpdfparaOn}
+    % End any open paragraph before a figure. A [H] float placed right after
+    % a list (only a `%` line between, the repo's convention) is otherwise
+    % typeset inside the paragraph that continues the list, and tagpdf's
+    % paragraph begin/end hooks go out of step (fatal at \end{document}).
+    % \par in vertical mode is a no-op, so other figures are unaffected.
+    \AddToHook{env/figure/before}{\par}
+    % Same for a minted block that directly follows a nested list inside an
+    % \item (e.g. HW3): end the list-continuation paragraph first.
+    \AddToHook{env/minted/before}{\par}
   \fi
 \fi
 
@@ -122,8 +131,8 @@
   citecolor=blue
 ]{hyperref}
 \hypersetup{
-  pdftitle={SE 423 Assignment},
   pdfauthor={Marius Juston},
+  pdfdisplaydoctitle=true,  % PDF/UA: viewers show the title, not the file name
 }
 
 \title{\CourseCode\ \CourseName\ - \AssignmentType\ \HWNum}
@@ -188,6 +197,11 @@
 }
 \makeatother
 
+% Document title (PDF metadata, shown by viewers and screen readers),
+% e.g. "SE 423 Mechatronics: Homework Assignment 3". A document can override
+% it with its own \hypersetup{pdftitle=...} after \input{header}.
+\hypersetup{pdftitle={\CourseCode\ \CourseName: \AssignmentType\ \HWNum}}
+
 % ============================
 % Header / footer
 % ============================
@@ -230,7 +244,11 @@
 % ============================
 % minted styling (PDF mode only - stubs above are no-ops in HTML)
 % ============================
-\setmintedinline{breaklines, breakafter=_}
+% Inline code does not wrap either: with tagging active, fvextra's inline
+% line breaking can recurse without end on some snippets (Lab2:
+% "TeX capacity exceeded" in \end{MintedVerbatim}). Long identifiers may
+% run into the margin instead.
+\setmintedinline{breaklines=false}
 
 % Note: breaklines is intentionally OFF here. fvextra (which minted
 % builds on) implements line wrapping via \everypar, and tagpdf's

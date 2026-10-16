@@ -1,43 +1,62 @@
 #!/bin/sh
-# Keep slide pictures and their source files in step (tools/sync_deck_figures.py).
-# Runs when a commit touches a deck, a figure source or the manifest:
-#   1. `extract` registers pictures added in PowerPoint and drops deleted ones;
-#   2. `auto --base HEAD` copies each change the way it was made: a picture edited
+# Pre-commit checks for the course material. Enable with tools/install-hooks.sh;
+# skip once with `git commit --no-verify`.
+#
+# 1. Slide figures (when a deck, a figure source or the manifest is staged),
+#    via tools/sync_deck_figures.py:
+#    - `extract` registers pictures added in PowerPoint and drops deleted ones;
+#    - `auto --base HEAD` copies each change the way it was made: a picture edited
 #      in PowerPoint updates its source file, an edited source file updates the deck;
-#   3. everything those steps wrote is staged into this commit.
-# A conflict (the slide and its file both changed) stops the commit.
-# Enable with tools/install-hooks.sh; skip once with `git commit --no-verify`.
+#    - everything those steps wrote is staged into this commit.
+#    A conflict (the slide and its file both changed) stops the commit.
+# 2. Accessibility (when a .tex document or a deck is staged), via
+#    tools/a11y/run_all.py --files: stops the commit only on problems that are new
+#    compared with a11y-baseline.json (missing alt text, missing slide titles, ...).
 
-git diff --cached --name-only | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' || exit 0
+staged=$(git diff --cached --name-only --diff-filter=ACMR)
+echo "$staged" | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' && sync=1 || sync=
+echo "$staged" | grep -qE '\.(tex|pptx)$' && a11y=1 || a11y=
+[ -n "$sync$a11y" ] || exit 0
 
 if ! command -v uv >/dev/null 2>&1; then
-  echo "pre-commit: uv not found, slide figures not synced." >&2
+  echo "pre-commit: uv not found, slide figures and accessibility not checked." >&2
   echo "  Install it (https://docs.astral.sh/uv/getting-started/installation/), e.g." >&2
   echo "  curl -LsSf https://astral.sh/uv/install.sh | sh" >&2
   exit 0
 fi
 
 root=$(git rev-parse --show-toplevel)
-list=$(mktemp)
-trap 'rm -f "$list"' EXIT
-base=HEAD
-git rev-parse -q --verify HEAD >/dev/null || base=
-
-uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
 status=0
-if [ -n "$base" ]; then
-  uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
-fi
 
-sort -u "$list" | while IFS= read -r f; do
-  if [ -e "$root/$f" ]; then
-    git -C "$root" add -- "$f"
-  else
-    git -C "$root" rm -q --cached --ignore-unmatch -- "$f"
+if [ -n "$sync" ]; then
+  list=$(mktemp)
+  trap 'rm -f "$list"' EXIT
+  base=HEAD
+  git rev-parse -q --verify HEAD >/dev/null || base=
+
+  uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
+  if [ -n "$base" ]; then
+    uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
   fi
-done
 
-if [ "$status" -ne 0 ]; then
-  echo "pre-commit: resolve the slide figure conflicts above, then commit again" >&2
+  sort -u "$list" | while IFS= read -r f; do
+    if [ -e "$root/$f" ]; then
+      git -C "$root" add -- "$f"
+    else
+      git -C "$root" rm -q --cached --ignore-unmatch -- "$f"
+    fi
+  done
+  [ "$status" -ne 0 ] && echo "pre-commit: resolve the slide figure conflicts above, then commit again" >&2
 fi
+
+if [ -n "$a11y" ]; then
+  # Re-read the staged list: the sync above may have staged more decks.
+  files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(tex|pptx)$')
+  # shellcheck disable=SC2086
+  if ! (cd "$root" && uv run --quiet tools/a11y/run_all.py --files $files); then
+    echo "pre-commit: new accessibility problems (above). Fix them, or see CONTRIBUTING.md#accessibility." >&2
+    status=1
+  fi
+fi
+
 exit "$status"
