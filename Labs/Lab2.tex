@@ -209,11 +209,28 @@ In Exercise 1, you will create a simple LabVIEW VI from scratch to communicate w
 %
 \begin{figure}[H]
     \centering
-    \includegraphics[width=1\linewidth]{Labs/Figures/Lab2/Picture1.png}
+    \AltImg[width=1\linewidth]{Labs/Figures/Lab2/Picture1.png}{%
+        LabVIEW block diagram of the finished TCP echo program, a flat
+        sequence of four frames. Frame 1 waits 1000 ms. Frame 2 opens a
+        TCP connection to 192.168.1.73, port 10001, and runs a While loop
+        around an Event structure with a 50 ms timeout. In the SendButton
+        Mouse Down case, the Send String is placed between the start
+        character FD and the end character FF and sent with TCP Write;
+        Bytes Sent shows the count, and TCP Read in CRLF mode fills the
+        Received String indicator. Frame 3 waits before closing, and
+        frame 4 closes the TCP connection.%
+    }
+    \caption{Completed block diagram of the TCP echo VI}
 \end{figure}
 \begin{figure}[H]
     \centering
-    \includegraphics[width=0.5\linewidth]{Labs/Figures/Lab2/Picture2.png}
+    \AltImg[width=0.5\linewidth]{Labs/Figures/Lab2/Picture2.png}{%
+        LabVIEW front panel of the TCP echo VI: a Send String text box
+        containing "This is a test", a Send button, a Bytes Sent
+        indicator reading 0, an empty Received String indicator and a
+        STOP button.%
+    }
+    \caption{Front panel of the TCP echo VI}
 \end{figure}
 %
 \Ex
