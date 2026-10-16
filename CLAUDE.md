@@ -29,7 +29,7 @@ latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error -shell-
 
 **Accessible HTML output (via make4ht):**
 ```bash
-make4ht -s -l -c se423 -d out/ <file>.tex
+make4ht -s -l -c se423 -d out/ <file>.tex "mathml"
 ```
 
 **Figures → SVG:**

@@ -401,8 +401,9 @@ jobs:
               # TeX's kpathsea already searches the source file's own directory
               # for \input{header} etc., so no cd needed.
               # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
+              # "mathml": equations become MathML that screen readers can read.
               make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" \
-                "$texfile" \
+                "$texfile" "mathml" \
                 || { echo "::warning::HTML build failed for $texfile (continuing)"; \
                      mkdir -p build/a11y; echo "$texfile" >> build/a11y/make4ht-failures.txt; }
             fi
@@ -513,7 +514,10 @@ jobs:
           
           # Map build directory structure over to target (rsync acts as a spatial integration function)
           if [ -d "build" ]; then
+            # *-luamml-mathml.html are luamml's by-products of the tagged PDF build,
+            # not pages: never publish them (and drop copies left by older builds).
             rsync -av --prune-empty-dirs \
+              --exclude="*-luamml-mathml.html" \
               --include="*/" \
               --include="*.pdf" \
               --include="*.pptx" \
@@ -524,6 +528,8 @@ jobs:
               --include="*.jpg" \
               --exclude="*" build/ deploy_target/
           fi
+
+          find deploy_target -name "*-luamml-mathml.html" -not -path "*/.git/*" -delete
 
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
           if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then

@@ -5,7 +5,7 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III}, % Activates core tagging, math, and tables
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
   pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
   lang = en-US                             % Sets the document language 
 }
@@ -26,7 +26,8 @@
 \def\HWNum{0}
 
 \input{header}
-\hypersetup{pdftitle={SE 423 Introduction to Mechatronics: Syllabus}}
+\renewcommand{\SEDocTitle}{SE 423 Introduction to Mechatronics: Syllabus}
+\hypersetup{pdftitle={\SEDocTitle}}
 
 \geometry{margin=1in}
 
@@ -179,16 +180,16 @@ If you have relied on AI for content, you are expected to comment the lines that
 \toprule
 \textbf{Lecture Date} & \textbf{Topics} & \textbf{Current Lab} \\ \midrule
 \endfirsthead
-
+%
 \toprule
 \textbf{Lecture Date} & \textbf{Topics} & \textbf{Current Lab} \\ \midrule
 \endhead
-
+%
 \bottomrule
 \endfoot
-
+%
 \GetDate{0}{2} & Introduction. What is Mechatronics? What parts are we focusing on? Walk through Syllabus. & Lab \#1 \\ \midrule
-
+%
 \GetDate{1}{0} & 
 \begin{itemize}
     \item Look at the LaunchXL-F28379D board and the green expansion board. Start to understand the pinout. What are System and Peripheral Registers? Hex numbers and Bitwise operators.
@@ -196,14 +197,14 @@ If you have relied on AI for content, you are expected to comment the lines that
     \item Default starter code
     \item Timers and Digital I/O Pins 
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{1}{2} & 
 \begin{itemize}
     \item Digital Outputs. Turn on and off an LED
     \item Digital Inputs. Pull-up resistor. Passive Push Button
     \item What is a peripheral register? How many I/O pins does the F28379D have? Talk about the pin multiplexer.
 \end{itemize} & Lab \#1 / Soldering \\ \midrule
-
+%
 \GetDate{2}{0} & 
 \begin{itemize}
     \item What is a CPU interrupt? Timer interrupt functions
@@ -211,13 +212,13 @@ If you have relied on AI for content, you are expected to comment the lines that
     \item RS 232 Serial Port,  The ASCII character set
     \item 16 bit and 32 bit integers and 2s compliment numbers
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{2}{2} \newline \textbf{\color{red}HW\#1 Due (\HWSubmitTime)} \newline \textbf{\color{red}LabVIEW \#1 Due (\LabVIEWSubmitTime)} & 
 \begin{itemize}
     \item What is a DAC and how does it work? What is an ADC and how does it work?   
     \item F28379D ADC Peripheral Architecture
 \end{itemize} & Lab \#2 \\ \midrule
-
+%
 \GetDate{3}{0} & 
 \begin{itemize}
     \item Continue with ADC peripheral. ADC Resolution. Successive Approximation Register (SAR) type of ADC.  
@@ -225,52 +226,52 @@ If you have relied on AI for content, you are expected to comment the lines that
     \item What is a PWM signal? How to generate a PWM signal with the F28379D EPWM peripheral.
     \item H-bridge, Example circuit
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{3}{2} & 
 \begin{itemize}
     \item Examples using the EPWM peripheral. The RCservo Motor.  
     \item What is an Optical Encoder Sensor? Calculating velocity
     \item Friction Compensation
 \end{itemize} & Lab \#3 / Scope \\ \midrule
-
+%
 \GetDate{4}{0} & 
 \begin{itemize}
     \item Filter design and implementation, Filter Examples in Matlab
     \item Use DMA to store ADC samples. Using the FFT algorithm to find signal’s dominant frequencies.  
     \item Ping/Pong Buffering
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{4}{2} & Continue Filter Design and FFT Algorithms. & Lab \#3 \\ \midrule
-
+%
 \GetDate{5}{0} & Review three serial ports UART, SPI, I2C. SPI 4 clock modes. F28379D SPI peripheral registers & \\ \midrule
-
+%
 \GetDate{5}{2} \newline \textbf{\color{red}HW\#2 Due (\HWSubmitTime)} \newline \textbf{\color{red}LabVIEW \#2 Due (\LabVIEWSubmitTime)} & 
 \begin{itemize}
     \item DAN28027 SPI Interface Datasheet
     \item Connecting multiple slave devices to one SPI serial port. 
     \item Understand the F28379D’s SPI Receive and Transmit FIFO
 \end{itemize} & Lab \#4 \\ \midrule
-
+%
 \GetDate{6}{0} & 
 \begin{itemize}
     \item PID Control: Integral Windup \& Rollover
     \item Robot Speed and Steering Control
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{6}{2} & 
 \begin{itemize}
     \item Linux for Embedded Systems
     \item Threads, Processes, and Applications
     \item Review Lab \#5’s LabVIEW display requirements
 \end{itemize} & Lab \#4 \\ \midrule
-
+%
 \GetDate{7}{0} & 
 \begin{itemize}
     \item Sensors: CAN IR, Rate Gyro, LIDAR
     \item Wall-following, Inner-loop and Outer-loop controllers
     \item Review LABVIEW application expectation.
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{7}{2} & 
 \begin{itemize}
     \item Coordinate Transforms 
@@ -278,19 +279,19 @@ If you have relied on AI for content, you are expected to comment the lines that
     \item Handling Gyro Drift 
     \item Landmark Detection with distance sensors
 \end{itemize} & Lab \#5 \\ \midrule
-
+%
 \rowcolor{gray!10} \GetDate{8}{0} & \textbf{Spring Break} & \textbf{Spring Break} \\ \midrule
 \rowcolor{gray!10} \GetDate{8}{2} & \textbf{Spring Break} & \textbf{Spring Break} \\ \midrule
-
+%
 \GetDate{9}{0} & \begin{itemize}
     \item Talk about the LIDAR. How it works and How we interface with it.  
     \item Understand the data received by the LIDAR
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{9}{2} \newline \textbf{\color{red}HW\#3 Due (\HWSubmitTime)} & Review SPI serial interface and how to communicate with the MPU-9250 IMU chip. & Lab \#6 \\ \midrule
-
+%
 \GetDate{10}{0} & Revisit developing Linux applications. Deciding what processes can run in a non-real-time environment and what processes need to run in a real-time environment. & \\ \midrule
-
+%
 \GetDate{10}{2} & 
 \begin{itemize}
 \item Introduce Vision Processing
@@ -299,38 +300,38 @@ If you have relied on AI for content, you are expected to comment the lines that
 \item RGB \& HSV color space
 \item Blob detection algorithm
 \end{itemize} & Lab \#6 \\ \midrule
-
+%
 \GetDate{11}{0} & \begin{itemize}
     \item Introduce the OpenMV camera module
     \item Robot following Flash light / Bright Color
 \end{itemize} & \\ \midrule
-
+%
 \GetDate{11}{2} \newline \textbf{\color{red}HW\#4 Due (\HWSubmitTime)} & 
 \begin{itemize}
     \item Using camera to calculate distance to an object
     \item Using Landmarks to update robot’s position
 \end{itemize} & Lab \#6 (RC Servo) \\ \midrule
-
+%
 \GetDate{12}{0} & Path Planning: Bug Algorithms \& A*. & \\ \midrule
-
+%
 \GetDate{12}{2} & A* Path Planning Implementation. & Lab \#7 \\ \midrule
-
+%
 \GetDate{13}{0} & A* Path Planning (Cont.). & \\ \midrule
-
+%
 \GetDate{13}{2} \newline \textbf{\color{red}HW\#5 Due (\HWSubmitTime)} & A* Path Planning (Cont.). & Lab \#7 \\ \midrule
-
+%
 \GetDate{14}{0} & \begin{itemize}
     \item Dead-Reckoning
 \item Using Landmarks to update robot’s position
 \item Using Kalman filtering to help mix OptiTrack motion capture data with Dead-Reckoned robot position
 \end{itemize} & Project \\ \midrule
-
+%
 \GetDate{14}{2} & Kalman Filtering: Code Walkthrough. & Project \\ \midrule
-
+%
 \GetDate{15}{0} & Kalman Filtering and Move-to-XY Logic. & Project \\ \midrule
-
+%
 \GetDate{15}{2} \newline \textbf{\color{red}HW\#6 Due (\HWSubmitTime)} & Move-to-XY Code Finalization. & Project \\ \midrule
-
+%
 \textbf{\Final } & \textbf{\color{red}{Final Project Presentations (11:00--2:00)}} & 
 \end{longtable}
 %

@@ -108,7 +108,8 @@ def main():
     ap.add_argument("--json", help="write findings here")
     args = ap.parse_args()
     root = Path(args.root).resolve()
-    pages = [Path(p).resolve() for p in args.pages] or sorted(root.rglob("*.html"))
+    # Page arguments are relative to --root (or absolute).
+    pages = [(root / p).resolve() for p in args.pages] or sorted(root.rglob("*.html"))
     findings = check(pages, root)
     if args.json:
         write(findings, args.json)
