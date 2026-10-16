@@ -228,7 +228,7 @@
       color: "var(--text-3)",
       letterSpacing: 0.5
     } }, "REAL-TIME 2D LIDAR SLAM \xB7 SHM-IPC \xB7 iSAM2"), /* @__PURE__ */ React.createElement("div", { style: {
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
       fontSize: 14,
       fontWeight: 600,
       color: "var(--text-0)",
@@ -318,7 +318,7 @@
       padding: "10px 14px 12px",
       background: "var(--bg-1)"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
       fontSize: 12,
       lineHeight: 1.55,
       color: "var(--text-1)",
@@ -357,7 +357,7 @@
       padding: "12px 14px",
       boxShadow: "0 6px 18px oklch(0 0 0 / 0.4)",
       zIndex: 50,
-      fontFamily: "Inter, sans-serif"
+      fontFamily: "'Atkinson Hyperlegible Next', sans-serif"
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       alignItems: "center",

@@ -73,7 +73,7 @@
           fontSize: "11",
           fontWeight: "600",
           fill: "var(--text-1)",
-          fontFamily: "Inter, sans-serif"
+          fontFamily: "'Atkinson Hyperlegible Next', sans-serif"
         },
         "Factor Graph \xB7 iSAM2"
       ),

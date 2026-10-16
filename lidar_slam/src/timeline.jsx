@@ -123,7 +123,7 @@ const btnStyle = {
   fontSize: 13,
   cursor: "pointer",
   display: "inline-flex", alignItems: "center", justifyContent: "center",
-  fontFamily: "Inter, sans-serif",
+  fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
 };
 
 window.Timeline = Timeline;
