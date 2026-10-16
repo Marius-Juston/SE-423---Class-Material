@@ -54,7 +54,7 @@ sh tools/install-hooks.sh                            # pre-commit hook: extract 
 
 **Local TeX caveat:** Debian/Ubuntu's packaged TeX Live (2023) lacks `luaotfload` unless `texlive-luatex` is installed, and its LaTeX kernel is too old for the PDF/UA tagging in the homeworks. Use TeX Live 2026 (as CI does) to reproduce CI builds.
 
-`pdf-list.txt` lists every `.tex` file the CI compiles. All files in that list must build without errors before a PR is merged.
+`pdf-list.txt` lists every `.tex` file the CI compiles (syllabus, homeworks, LabVIEW, labs). All files in that list must build without errors before a PR is merged.
 
 ## Architecture
 
@@ -133,11 +133,13 @@ Branch naming: `fix/lecture-5-adc-diagram`, `add/homework-3-extra-problems`, `im
 
 Commit messages: start with a verb (*Fix*, *Add*, *Update*, *Clarify*) and reference the affected material. Example: `Fix sign error in Lecture 10 transfer function derivation`
 
-## Known Build Failures (pre-existing, as of 2026-10-16 on TeX Live 2026)
+## Tagged-PDF pitfalls (PDF/UA-2, `testphase = phase-III`)
 
-These fail on `main` independent of any change; don't assume your change caused them:
-- PDF: `syllabus.tex` (line 63, "Missing number"), `HW1.tex` / `HW3.tex` / `LabVIEW2.tex` (tagpdf "number of automatic begin … differ"), `HW2.tex` (minted "TeX capacity exceeded").
-- HTML (`make4ht`): `syllabus`, `HW4`, `HW6`, `commenting_code_example`; `HW2` locally only, because CI generates `Homeworks/Figures/HW2/SPI.svg` first.
+Every document in `pdf-list.txt` (syllabus, homeworks, labs) starts with `\DocumentMetadata{... pdfstandard = ua-2, lang = en-US}` and must build on TeX Live 2026. Things that broke builds before and are now guarded in `header.tex`; don't undo them:
+- A figure or minted block directly after a list (only a `%` line between, or a minted block right after a nested list inside an `\item`) left tagpdf's paragraph hooks unbalanced ("number of automatic begin … and end … para hooks differ"). `header.tex` adds `\par` before every `figure` and `minted` environment.
+- fvextra line breaking (`breaklines`) does not work with tagging: blocks and inline code (`\setmintedinline`) both keep it off; inline breaking recursed forever in Lab2.
+- With the new tagged lists, enumitem's `leftmargin=*` and the `before`/`after` keys are rejected; use explicit lengths (see `syllabus.tex`).
+- The PDF title comes from `\CourseCode`, `\CourseName`, `\AssignmentType` and `\HWNum` (`header.tex`); override with `\hypersetup{pdftitle=...}` after `\input{header}` when that doesn't fit (the syllabus does).
 
 ## Known Content Issues (do not fix without discussion)
 
