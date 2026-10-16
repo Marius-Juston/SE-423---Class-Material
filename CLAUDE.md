@@ -54,7 +54,7 @@ sh tools/install-hooks.sh                            # pre-commit hook: extract 
 
 **Local TeX caveat:** Debian/Ubuntu's packaged TeX Live (2023) lacks `luaotfload` unless `texlive-luatex` is installed, and its LaTeX kernel is too old for the PDF/UA tagging in the homeworks. Use TeX Live 2026 (as CI does) to reproduce CI builds.
 
-`pdf-list.txt` lists every `.tex` file the CI compiles (syllabus, homeworks, LabVIEW, labs). All files in that list must build without errors before a PR is merged.
+`pdf-list.txt` lists every `.tex` file the CI compiles (syllabus, homeworks, LabVIEW). The lab handouts (`Labs/`) are published by the official course website, so they are deliberately not in the list; don't add them. All files in that list must build without errors before a PR is merged.
 
 ## Architecture
 
@@ -143,7 +143,7 @@ Commit messages: start with a verb (*Fix*, *Add*, *Update*, *Clarify*) and refer
 
 ## Tagged-PDF pitfalls (PDF/UA-2, `testphase = phase-III`)
 
-Every document in `pdf-list.txt` (syllabus, homeworks, labs) starts with `\DocumentMetadata{... pdfstandard = ua-2, lang = en-US}` and must build on TeX Live 2026. Things that broke builds before and are now guarded in `header.tex`; don't undo them:
+Every document in `pdf-list.txt` (syllabus, homeworks, LabVIEW) starts with `\DocumentMetadata{... pdfstandard = ua-2, lang = en-US}` and must build on TeX Live 2026. Things that broke builds before and are now guarded in `header.tex`; don't undo them:
 - A figure or minted block directly after a list (only a `%` line between, or a minted block right after a nested list inside an `\item`) left tagpdf's paragraph hooks unbalanced ("number of automatic begin … and end … para hooks differ"). `header.tex` adds `\par` before every `figure` and `minted` environment.
 - fvextra line breaking (`breaklines`) does not work with tagging: blocks and inline code (`\setmintedinline`) both keep it off; inline breaking recursed forever in Lab2.
 - With the new tagged lists, enumitem's `leftmargin=*` and the `before`/`after` keys are rejected; use explicit lengths (see `syllabus.tex`).

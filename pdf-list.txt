@@ -11,6 +11,3 @@ Homeworks/LabVIEW3.tex
 Homeworks/LabVIEW4.tex
 
 Homeworks/commenting_code_example.tex
-Labs/Lab1.tex
-Labs/Lab2.tex
-Labs/Lab3.tex
