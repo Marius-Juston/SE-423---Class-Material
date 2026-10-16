@@ -45,7 +45,9 @@ def verapdf_cmd(use_docker, root):
     return [exe], lambda p: str(p)
 
 
-REPORT_ONLY = ("Lectures/Slides/",)  # slide PDFs: reported, not gated, until exported tagged
+# Slide PDFs come from LibreOffice, which exports PDF/UA-1 (not UA-2): they are validated
+# against ua1 and reported only, since exact counts depend on the LibreOffice version.
+REPORT_ONLY = ("Lectures/Slides/",)
 
 
 def check(pdfs, root, use_docker):
@@ -54,8 +56,9 @@ def check(pdfs, root, use_docker):
     for pdf in pdfs:
         rel = pdf.relative_to(root).as_posix()
         sev = "warning" if rel.startswith(REPORT_ONLY) else "error"
+        flavour = "ua1" if rel.startswith(REPORT_ONLY) else "ua2"
         r = subprocess.run(
-            [*base, "--flavour", "ua2", "--format", "json", path_of(pdf)], capture_output=True, text=True
+            [*base, "--flavour", flavour, "--format", "json", path_of(pdf)], capture_output=True, text=True
         )
         try:
             job = json.loads(r.stdout)["report"]["jobs"][0]

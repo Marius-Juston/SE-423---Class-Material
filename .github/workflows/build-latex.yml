@@ -478,6 +478,8 @@ jobs:
               out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
               mkdir -p "$out_dir"
 
+              # Tagged PDF/UA export: screen readers get the reading order, headings from
+              # the slide titles and the pictures' alt text (same image quality as before).
               libreoffice \
                 --headless \
                 --invisible \
@@ -485,10 +487,7 @@ jobs:
                 --nolockcheck \
                 --nologo \
                 --nofirststartwizard \
-                --convert-to pdf:impress_pdf_Export:\
-                  ReduceImageResolution=false,\
-                  UseLosslessCompression=true,\
-                  EmbedStandardFonts=true \
+                --convert-to 'pdf:impress_pdf_Export:{"UseTaggedPDF":{"type":"boolean","value":"true"},"PDFUACompliance":{"type":"boolean","value":"true"},"ReduceImageResolution":{"type":"boolean","value":"false"},"UseLosslessCompression":{"type":"boolean","value":"true"},"EmbedStandardFonts":{"type":"boolean","value":"true"}}' \
                 --outdir "$out_dir" \
                 "$pptx"
 
