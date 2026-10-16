@@ -165,9 +165,11 @@ uv run tools/a11y/run_all.py --update-baseline   # after fixing things: lock the
 
 Commit the updated `a11y-baseline.json` with your fix. Use `--accept-new` only when a new problem genuinely can't be avoided, and say why in the PR.
 
+The site's [accessibility page](https://marius-juston.github.io/SE-423---Class-Material/accessibility.html) (`tools/a11y/report_page.py`) publishes the statement, the open problems and their trend after every build; barriers can be reported with the *Accessibility barrier or format request* issue form. Pull requests get a checklist (`.github/pull_request_template.md`).
+
 On pull requests the findings also appear as **code-scanning alerts** on the changed files (only the ones the PR introduces; the baseline backlog shows as notes), from the SARIF file `run_all.py --sarif` writes.
 
-**Accessible formats built by CI** (published next to the PDFs): an HTML version of every handout (MathML equations, alt text, light/dark mode) and of every lecture deck (`Lectures/Slides/<deck>.html`: one section per slide with its title as a heading, nested lists, alt text, tables, MathML equations and the speaker notes; `uv run tools/a11y/pptx_to_html.py --out build/Lectures/Slides` builds them locally).
+**Accessible formats built by CI** (published next to the PDFs): a large-print PDF (`<doc>-large.pdf`: fonts 1.3x, 1.5 line spacing; `\SElargeprint`), an EPUB 3 book (`<doc>.epub`, tex4ebook + `tools/a11y/epub_repair.py`, validated by epubcheck), an HTML version of every handout (MathML equations, alt text, light/dark mode) and of every lecture deck (`Lectures/Slides/<deck>.html`: one section per slide with its title as a heading, nested lists, alt text, tables, MathML equations and the speaker notes; `uv run tools/a11y/pptx_to_html.py --out build/Lectures/Slides` builds them locally).
 
 ## Python tooling
 

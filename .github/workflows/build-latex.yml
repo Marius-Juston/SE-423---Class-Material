@@ -51,7 +51,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
-      CACHE_VERSION: v12 # Bumped due to kastrup (binhex) addition for HTML lualatex build
+      CACHE_VERSION: v13 # Bumped for tex4ebook (EPUB 3 handouts)
 
       LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
@@ -258,6 +258,7 @@ jobs:
             fontspec \
             luaotfload \
             make4ht \
+            tex4ebook \
             tex4ht \
             kastrup \
             luamml \
@@ -433,6 +434,27 @@ jobs:
             fi
           done
 
+      # EPUB 3 edition of every handout (reflowable, MathML, alt text), repaired for
+      # strict EPUB validity by tools/a11y/epub_repair.py; checked by check_epub.py.
+      - name: Compile EPUB versions (accessible)
+        if: steps.resolve.outputs.has_tex == 'true'
+        env:
+          TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
+        run: |
+          books=""
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
+              out_dir="build/$(dirname "$texfile")"
+              mkdir -p "$out_dir"
+              if tex4ebook -c se423-ebook -f epub3 -d "$GITHUB_WORKSPACE/$out_dir" "$texfile" "mathml"; then
+                books="$books $out_dir/$(basename "$texfile" .tex).epub"
+              else
+                echo "::warning::EPUB build failed for $texfile (continuing)"
+              fi
+            fi
+          done
+          [ -z "$books" ] || uv run --quiet --locked tools/a11y/epub_repair.py $books
+
       - name: Convert TikZ Figures to SVG
         if: steps.resolve.outputs.has_tex == 'true'
         run: |
@@ -559,6 +581,7 @@ jobs:
               --include="*.jpg" \
               --include="*.jpeg" \
               --include="*.gif" \
+              --include="*.epub" \
               --exclude="*" build/ deploy_target/
           fi
 
@@ -613,11 +636,13 @@ jobs:
         continue-on-error: ${{ github.event_name != 'pull_request' }}
         run: |
           uv run --quiet --locked tools/a11y/run_all.py \
-            --pdf-root build --docker \
+            --pdf-root build --docker --epub-root build \
             --html-root deploy_target \
             --make4ht-failures build/a11y/make4ht-failures.txt \
             --sarif build/a11y/a11y.sarif
-          mkdir -p deploy_target/a11y && cp build/a11y/report.json deploy_target/a11y/report.json
+          # Public status page (accessibility.html) and the merged report it reads.
+          uv run --quiet --locked tools/a11y/report_page.py --report build/a11y/report.json \
+            --checked build/a11y/checked.json --site deploy_target
 
       # The same findings as code-scanning alerts: annotated on the changed files of a
       # pull request (only the ones it introduces), tracked over time on main. Skipped

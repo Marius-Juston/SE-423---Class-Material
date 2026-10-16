@@ -1,0 +1,40 @@
+name: Accessibility barrier or format request
+description: Something in the course material is hard or impossible to use, or you need it in another format.
+title: "[Accessibility] "
+labels: ["accessibility"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for telling us. You don't need to explain why you need something; describing what got in the way is enough.
+        If you'd rather not post publicly, contact the course staff directly instead.
+  - type: input
+    id: material
+    attributes:
+      label: Which material?
+      description: A link or name, e.g. "Lecture 15 slides, slide 27" or "Homework 4 PDF, Figure 2".
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What got in the way?
+      description: For example, an image without a description, text that is hard to read, something that doesn't work with a keyboard or a screen reader, or a video without captions.
+    validations:
+      required: true
+  - type: dropdown
+    id: format
+    attributes:
+      label: Would another format help?
+      options:
+        - No, just fix it
+        - Accessible HTML / text version
+        - EPUB
+        - Large print
+        - Described or transcribed version of a figure or video
+        - Something else (describe above)
+  - type: input
+    id: tools
+    attributes:
+      label: What were you using? (optional)
+      description: For example, NVDA with Firefox, VoiceOver on iPhone, 200% zoom, a Braille display.

@@ -302,6 +302,7 @@
         <div class="container mx-auto px-4 text-center text-slate-600 dark:text-slate-400 text-sm">
             <p>&copy; 2026 UIUC Department of Industrial and Enterprise Systems Engineering</p>
             <p class="mt-1 italic">Designed for educational access within SE 423.</p>
+            <p class="mt-2"><a href="accessibility.html" class="underline">Accessibility</a>: statement, current status, and how to ask for another format.</p>
         </div>
     </footer>
 
@@ -349,6 +350,7 @@
          * - file: Primary PDF link
          * - html: Optional accessible HTML version (default: derived from a local PDF)
          * - large: Optional large-print PDF (default: <file>-large.pdf for a local PDF)
+         * - epub: Optional EPUB 3 edition (default: <file>.epub for a local PDF)
          * - links: Optional array of { label: string, url: string }
          */
         const data = {
@@ -697,6 +699,12 @@
                 // External URLs (http/https) and non-PDFs are skipped.
                 const isLocalPdf = item.file && !/^https?:\/\//i.test(item.file) && item.file.toLowerCase().endsWith('.pdf');
                 const htmlFile = item.html || (isLocalPdf ? 'site/' + item.file.replace(/\.pdf$/i, '.html') : null);
+                const epubFile = item.epub || (isLocalPdf ? item.file.replace(/\.pdf$/i, '.epub') : null);
+                const epubLinkHtml = epubFile ? `
+                        <a href="${epubFile}" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link" download>
+                            EPUB (e-reader)
+                        </a>
+                ` : '';
                 const largeFile = item.large || (isLocalPdf ? item.file.replace(/\.pdf$/i, '-large.pdf') : null);
                 const largeLinkHtml = largeFile ? `
                         <a href="${largeFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
@@ -729,6 +737,7 @@
                         </a>
                         ${htmlLinkHtml}
                         ${largeLinkHtml}
+                        ${epubLinkHtml}
 
                         ${extraLinksHtml}
                     </div>

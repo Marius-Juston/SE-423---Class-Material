@@ -96,6 +96,7 @@ uv scripts: `lint_latex.py`, `lint_pptx.py`, `check_pdf.py` (veraPDF `ua2`), `ch
 - Slide PDFs are reported as warnings only until the LibreOffice export is tagged.
 - Local veraPDF: set `VERAPDF` to the `verapdf` launcher; CI uses the `verapdf/cli:v1.30.2` image pinned by digest (`--docker`).
 - `run_all.py --sarif` also writes the findings as SARIF; CI uploads it to code scanning (category `accessibility`), fingerprinted by the same stable keys.
+- Other formats: `<doc>-large.pdf` (`\SElargeprint`, fontsetup.tex/header.tex), `<doc>.epub` (`tex4ebook -c se423-ebook`, then `epub_repair.py`; `check_epub.py` runs epubcheck), `accessibility.html` (`report_page.py`). `svg_gallery.py` describes published SVGs and fills the gallery; `cvd_check.py` warns about colour-blind collisions in figures.
 - `pptx_to_html.py` builds the accessible HTML of each deck (CI publishes `Lectures/Slides/<deck>.html`); equations go OMML → MathML through pandoc.
 - Read decks with `deck_reader.py` (python-pptx + XPath, coloraide for colours), never with regexes over XML. Write decks only through `sync_deck_figures.py` (`Deck.save`): python-pptx's save re-serializes every part.
 
