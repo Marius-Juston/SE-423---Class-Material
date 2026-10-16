@@ -9,6 +9,9 @@ on:
       - '**.pptx'
       - 'pdf-list.txt'
       - 'site/**'
+      - 'Lectures/Figures/**'
+      - 'Lectures/Slides/figures.toml'
+      - 'tools/sync_deck_figures.py'
 
 permissions:
   contents: write
@@ -50,6 +53,9 @@ jobs:
           files: |
             **/*.tex
             **/L*.pptx
+            Lectures/Figures/**
+            Lectures/Slides/figures.toml
+            tools/sync_deck_figures.py
 
       - name: List all changed files
         env:
@@ -77,6 +83,14 @@ jobs:
           else
             FILES="$CHANGED"
             PPTX="$CHANGED"
+            # Decks that embed a changed figure source must be re-exported too
+            # (every deck when the manifest or the sync tool itself changed).
+            if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py'; then
+              PPTX="$PPTX $(find Lectures/Slides -name 'L*.pptx' | tr '\n' ' ')"
+            else
+              PPTX="$PPTX $(python3 tools/sync_deck_figures.py decks $CHANGED)"
+            fi
+            PPTX=$(echo $PPTX | tr ' ' '\n' | sort -u | tr '\n' ' ')
           fi
           # Single space-joined string for downstream loops.
           ALL="$FILES $PPTX"
@@ -117,7 +131,14 @@ jobs:
             libreoffice-impress \
             fonts-dejavu \
             fonts-liberation \
-            fonts-noto
+            fonts-noto \
+            mupdf-tools
+          # Course typeface used by the decks (vendored in fonts/).
+          mkdir -p ~/.local/share/fonts
+          cp fonts/*.otf ~/.local/share/fonts/
+          fc-cache -f
+          fc-list | grep -q "Atkinson Hyperlegible Next" \
+            || { echo "::error::Atkinson Hyperlegible Next not installed"; exit 1; }
 
       - name: Cache TeX Live
         id: cache-texlive
@@ -378,7 +399,7 @@ jobs:
           for texfile in Lectures/Figures/*.tex; do
             [ -f "$texfile" ] || continue
             name=$(basename "$texfile")
-            current_hash=$(sha256sum "$texfile" | cut -d' ' -f1)
+            current_hash=$(cat "$texfile" fontsetup.tex | sha256sum | cut -d' ' -f1)
             stored_hash=$(grep -F "${name}:" "$HASH_FILE" | cut -d: -f2)
             svg_file="build/Lectures/Figures/${name%.tex}.svg"
 
@@ -388,8 +409,10 @@ jobs:
             fi
 
             echo "Building: $texfile"
-            # 1. Compile to PDF (standalone handles the cropping)
-            latexmk -pdf -interaction=nonstopmode -shell-escape \
+            # 1. Compile to PDF (standalone handles the cropping).
+            # LuaLaTeX so fontspec can load Atkinson Hyperlegible Next
+            # (fontsetup.tex); run from the repo root so fonts/ resolves.
+            latexmk -pdflua -interaction=nonstopmode -shell-escape \
               -outdir=build/Lectures/Figures "$texfile"
 
             # 2. Convert PDF to SVG
@@ -410,8 +433,19 @@ jobs:
         if: steps.resolve.outputs.has_pptx == 'true'
         env:
           PPTX_OUTPUT_DIR: build
+          BEFORE: ${{ github.event.before }}
         run: |
           mkdir -p ${{ env.PPTX_OUTPUT_DIR }}
+
+          # Bring decks and figure sources in step first (Lectures/Slides/figures.toml).
+          # `auto` copies each change in the direction it was made since the commit
+          # before this push: an edited source file updates the deck (so the PDFs and
+          # published .pptx carry it); a picture edited in PowerPoint is kept and its
+          # source updated. Nothing is committed back; conflicts only warn.
+          python3 tools/sync_deck_figures.py auto --base "$BEFORE" \
+            || echo "::warning::Slide figure conflicts (see log); the decks were exported as committed."
+          python3 tools/sync_deck_figures.py check > /dev/null \
+            || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'python3 tools/sync_deck_figures.py auto --base origin/main', and commit."
 
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
           # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.
@@ -472,9 +506,10 @@ jobs:
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
           if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then
             mkdir -p deploy_target/${{ env.SVG_INCLUDE_DIR }}
+            # Top level only: the per-deck subfolders hold images extracted from
+            # the slides (tools/sync_deck_figures.py), which are not gallery figures.
             rsync -av \
-              --prune-empty-dirs \
-              --include="*/" \
+              --exclude="*/" \
               --include="*.svg" \
               --exclude="*" \
               ${{ env.SVG_INCLUDE_DIR }}/ deploy_target/${{ env.SVG_INCLUDE_DIR }}/

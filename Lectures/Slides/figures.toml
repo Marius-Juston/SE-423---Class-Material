@@ -1,0 +1,2362 @@
+# Pictures in the lecture decks and the source file each one is copied from.
+# Maintained by tools/sync_deck_figures.py (`extract` adds new pictures and drops
+# deleted ones); `source` may be edited by hand to point a picture at another file.
+#
+# Edit a figure either in PowerPoint or in its source file; the pre-commit hook
+# (tools/install-hooks.sh) and CI copy the change to the other side.
+#   picture: "<slide id>/<creationId>" (both kept by PowerPoint across saves)
+#   slide:   position in the deck when the entry was made (for humans only)
+
+# Images placed on many slides by the template (UIUC logos); never synced.
+ignore = [
+  "a9ca3b97a363781f6ca08fd29a3c590772b28078",
+  "f4e62608a3d0aedb421f7ec6db6224fb6fb16334",
+  "6563bebced3271edd7e67006033aa03153f79a27",
+  "efa54bb6f498d1487132a8d16f0e61b9369067c3",
+]
+
+[[figure]]
+deck = "L1.pptx"
+slide = 2
+picture = "259/{F08F1229-F74C-C806-9243-DFA99F70E43C}"
+source = "Lectures/Figures/png/L1/slide002_1.png"
+
+[[figure]]
+deck = "L1.pptx"
+slide = 5
+picture = "272/{8754EDC0-99B7-CBA6-37EB-E90E9A22774B}"
+source = "Lectures/Figures/jpg/L1/slide005_1.jpg"
+
+[[figure]]
+deck = "L1.pptx"
+slide = 6
+picture = "273/{146F05D5-34A6-365B-F1DA-44E97F5A3DA1}"
+source = "Lectures/Figures/png/L1/slide006_1.png"
+
+[[figure]]
+deck = "L1.pptx"
+slide = 7
+picture = "277/{251A081B-19F6-1928-3E2F-F4E659BFC51D}"
+source = "Lectures/Figures/png/L1/slide007_1.png"
+
+[[figure]]
+deck = "L1.pptx"
+slide = 8
+picture = "271/{F5188C12-6FFC-D65F-054A-721D1BA272A3}"
+source = "Lectures/Figures/png/L1/slide007_1.png"
+
+[[figure]]
+deck = "L1.pptx"
+slide = 17
+picture = "287/{7C7351D6-EBBC-1027-7660-0184F9A6A06B}"
+source = "Lectures/Figures/png/L1/slide017_1.png"
+
+[[figure]]
+deck = "L2.pptx"
+slide = 1
+picture = "256/{3DEDD2ED-7EA0-C726-B86C-DAF6A1B5857D}"
+source = "Lectures/Figures/png/L2/slide001_1.png"
+
+[[figure]]
+deck = "L2.pptx"
+slide = 23
+picture = "292/{0073D16F-1F5B-03A8-350C-E201DDF86EF3}"
+source = "Lectures/Figures/svg/L2/slide023_1.svg"
+
+[[figure]]
+deck = "L2.pptx"
+slide = 26
+picture = "293/{2BCB83CC-7AC6-B0A5-00FA-C78A00ADEF21}"
+source = "Lectures/Figures/svg/L2/slide026_1.svg"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 8
+picture = "285/{D88FE8AE-D2ED-E266-E374-A8E60E3A05C0}"
+source = "Lectures/Figures/svg/L3/slide008_1.svg"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 11
+picture = "287/{24E33918-C5EA-B4E7-A605-B10068B72348}"
+source = "Lectures/Figures/svg/L3/slide011_1.svg"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 13
+picture = "295/{785CA8E1-A16A-6597-2A7A-112D6D707849}"
+source = "Lectures/Figures/png/L3/slide013_1.png"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 14
+picture = "296/{D1F8CC7D-879A-7262-1244-4483EACF7252}"
+source = "Lectures/Figures/png/L3/slide013_1.png"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 16
+picture = "298/{6C983543-E503-AFF6-EB67-27E5999BF530}"
+source = "Lectures/Figures/svg/L3/slide011_1.svg"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 19
+picture = "290/{951CD270-E96E-0C94-E14F-8969C8EC804E}"
+source = "Lectures/Figures/png/L3/slide019_1.png"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 19
+picture = "290/{AC7668CD-BA9C-41F4-D48B-CB43716E3FEA}"
+source = "Lectures/Figures/png/L3/slide019_2.png"
+
+[[figure]]
+deck = "L3.pptx"
+slide = 21
+picture = "291/{4DEAC88C-CC19-E63D-08DE-C2D078D9E86E}"
+source = "Lectures/Figures/svg/L3/slide021_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 11
+picture = "321/{F1D32B60-CFAE-3FF0-A7F1-65D2BAE555C0}"
+source = "Lectures/Figures/svg/L4/slide011_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 12
+picture = "322/{497865CA-A0B3-0AA9-F5AD-5ECA84EBDEE8}"
+source = "Lectures/Figures/svg/L4/slide012_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 14
+picture = "325/{366C7F76-8FFA-B739-6C30-41C8E8443E6F}"
+source = "Lectures/Figures/svg/L4/slide014_2.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 14
+picture = "325/{63351F2F-FF01-2706-4626-BA427732B0A4}"
+source = "Lectures/Figures/svg/L4/slide014_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 15
+picture = "326/{F938DA17-59DF-BAC1-98E1-951DFCFFB333}"
+source = "Lectures/Figures/svg/L4/slide015_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 18
+picture = "329/{599356A3-0D60-A9FD-E3C6-702FA2E162DD}"
+source = "Lectures/Figures/svg/L4/slide018_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 21
+picture = "330/{416B3715-F369-8368-B824-154A9BE19229}"
+source = "Lectures/Figures/svg/L4/slide021_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 24
+picture = "292/{0073D16F-1F5B-03A8-350C-E201DDF86EF3}"
+source = "Lectures/Figures/svg/L2/slide023_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 25
+picture = "293/{2BCB83CC-7AC6-B0A5-00FA-C78A00ADEF21}"
+source = "Lectures/Figures/svg/L2/slide026_1.svg"
+
+[[figure]]
+deck = "L4.pptx"
+slide = 28
+picture = "296/{02135911-0C67-578A-04CE-DE041BC2C821}"
+source = "Lectures/Figures/svg/L4/slide028_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 7
+picture = "313/{08D8DC2D-0B7C-BECC-3B08-23FDA0F21088}"
+source = "Lectures/Figures/svg/L5/slide007_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 8
+picture = "314/{2E58F4D6-84A8-6EE1-349B-9E1138B5173B}"
+source = "Lectures/Figures/svg/L5/slide008_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 10
+picture = "317/{B6A0F4FE-9541-2923-1AEE-CAE88CF0099B}"
+source = "Lectures/Figures/svg/L5/slide010_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 13
+picture = "320/{D7819B87-1A56-4347-DD8B-BB705D116090}"
+source = "Lectures/Figures/svg/L5/slide013_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 16
+picture = "323/{2135A234-4CD2-54C5-4972-B0CDC73F3FA0}"
+source = "Lectures/Figures/svg/L5/slide016_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 17
+picture = "324/{7F107DCA-C2A6-7213-8C2F-190B929C168F}"
+source = "Lectures/Figures/svg/L5/slide013_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 17
+picture = "324/{FFBD0417-A150-8D58-FF5E-C83E5EDFC2E0}"
+source = "Lectures/Figures/svg/L5/slide017_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 18
+picture = "327/{63401C51-F28F-0E9D-CAE6-B6188F1D6EEF}"
+source = "Lectures/Figures/svg/L5/slide018_1.svg"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 20
+picture = "335/{AB2E0165-C1E4-5D08-6847-3A62DFCC6B89}"
+source = "Lectures/Figures/gif/L5/slide020_1.gif"
+
+[[figure]]
+deck = "L5.pptx"
+slide = 24
+picture = "331/{BC7B23A1-7B33-9631-08E4-8494D1AAD642}"
+source = "Lectures/Figures/svg/L5/slide024_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 6
+picture = "313/{E085C5D8-D434-61DF-7AD5-ECFC5D5480E0}"
+source = "Lectures/Figures/png/L6-7/slide006_1.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 8
+picture = "316/{2503CA4C-C9A0-28CA-2BEA-45E13830915E}"
+source = "Lectures/Figures/png/L6-7/slide008_1.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 8
+picture = "316/{ABCBC115-5896-42BA-872A-0975D754F95D}"
+source = "Lectures/Figures/png/L6-7/slide008_2.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 10
+picture = "315/{8FFC8881-B788-D82E-2842-B06E2B8DD89B}"
+source = "Lectures/Figures/gif/L6-7/slide010_1.gif"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 11
+picture = "320/{C2235EBB-6C90-DBE3-1B47-38AFD35D2604}"
+source = "Lectures/Figures/gif/L6-7/slide011_1.gif"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 12
+picture = "319/{D2EC7600-8AC7-F09B-1F53-AE9E5FDF7AFB}"
+source = "Lectures/Figures/gif/L6-7/slide010_1.gif"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 12
+picture = "319/{DBAADA90-402A-E9F4-1454-F003B9F016DD}"
+source = "Lectures/Figures/gif/L6-7/slide011_1.gif"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 13
+picture = "312/{1E944887-F44C-FAD5-F9BE-FC50F812B1F6}"
+source = "Lectures/Figures/svg/L6-7/slide013_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 15
+picture = "324/{72EF6654-5103-A01A-DBAD-9C9F47B5C54B}"
+source = "Lectures/Figures/svg/L6-7/slide015_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 15
+picture = "324/{C2253F07-688A-FE18-A290-EEAD46E118A7}"
+source = "Lectures/Figures/svg/L6-7/slide015_2.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 18
+picture = "321/{C16E2DE4-C380-655A-EAA4-316930318A95}"
+source = "Lectures/Figures/svg/L6-7/slide018_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 19
+picture = "327/{39F42D80-8E3C-7788-7EF7-17AEA313736D}"
+source = "Lectures/Figures/png/L6-7/slide019_1.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 21
+picture = "328/{660DFC84-6DC7-7D59-E703-23FA4CA73638}"
+source = "Lectures/Figures/gif/L6-7/slide021_1.gif"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 24
+picture = "342/{04C35D3B-231B-85B9-DB11-2976AD0EF319}"
+source = "Lectures/Figures/svg/L6-7/slide024_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 27
+picture = "348/{5DF49792-1753-1EF4-6C86-6062DEE964F9}"
+source = "Lectures/Figures/svg/L6-7/slide027_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 29
+picture = "349/{A370D3DB-FB40-D562-2467-3F6AF16A1A63}"
+source = "Lectures/Figures/svg/L6-7/slide029_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 31
+picture = "354/{346D31BF-2F08-2FB7-5DE7-17CF7C271177}"
+source = "Lectures/Figures/svg/L6-7/slide015_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 33
+picture = "357/{56783C8F-784F-097E-8E37-01F2BF230542}"
+source = "Lectures/Figures/svg/L6-7/slide033_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 35
+picture = "337/{D6C1C104-7CA8-65B2-5496-0F26999FB65E}"
+source = "Lectures/Figures/svg/L6-7/slide035_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 39
+picture = "352/{10B17922-CF3A-12C0-C9FE-1A65C8F40EBB}"
+source = "Lectures/Figures/png/L6-7/slide039_1.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 40
+picture = "358/{977D35C3-3E13-7431-61F2-75DAC4F586AC}"
+source = "Lectures/Figures/svg/L6-7/slide040_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 41
+picture = "360/{430ABF43-E62D-6C07-F34F-0100345B7801}"
+source = "Lectures/Figures/svg/L6-7/slide041_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 42
+picture = "392/{A2C751A5-B34B-D3F6-4EA0-0BA4554B9031}"
+source = "Lectures/Figures/svg/L6-7/slide042_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 45
+picture = "363/{A4B42BA2-BA94-C715-8BED-33FFA0BEF666}"
+source = "Lectures/Figures/svg/L6-7/slide045_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 48
+picture = "391/{1CAB6A71-95F3-E209-A218-4D4849A0CC43}"
+source = "Lectures/Figures/svg/L6-7/slide048_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 49
+picture = "387/{9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}"
+source = "Lectures/Figures/svg/L6-7/slide049_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 52
+picture = "368/{CA794137-8D78-4974-4EB6-CDBBC218B436}"
+source = "Lectures/Figures/svg/L6-7/slide042_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 54
+picture = "388/{57DED5E8-FF03-D84A-2C95-E93C92E59674}"
+source = "Lectures/Figures/svg/L6-7/slide054_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 60
+picture = "334/{00B54087-6B08-FC0E-A820-76387806E61B}"
+source = "Lectures/Figures/svg/L6-7/slide060_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 62
+picture = "371/{03A556D8-4466-897D-7296-E1D7E11452C0}"
+source = "Lectures/Figures/svg/L6-7/slide062_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 63
+picture = "372/{ECBC909C-E185-23BE-58C2-703E817519B4}"
+source = "Lectures/Figures/svg/L6-7/slide063_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 64
+picture = "335/{88B76D67-908B-5D79-38B0-E6C9A3F69934}"
+source = "Lectures/Figures/svg/L6-7/slide064_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 67
+picture = "393/{95D11B9A-E303-8F20-9B2C-23F2E71B43BB}"
+source = "Lectures/Figures/svg/L6-7/slide067_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 68
+picture = "374/{A0BBE5DC-DAED-8E67-27CF-B97DEEC1AAB0}"
+source = "Lectures/Figures/svg/L6-7/slide068_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 69
+picture = "394/{584FF96F-3FBE-5255-1DAC-3AE6EC7C0BB5}"
+source = "Lectures/Figures/svg/L6-7/slide069_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 70
+picture = "375/{349DFD70-8BB9-B479-CA1B-F04CF5512BF5}"
+source = "Lectures/Figures/svg/L6-7/slide070_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 73
+picture = "385/{B311D077-57BE-37D8-69C6-449D6D89B97E}"
+source = "Lectures/Figures/svg/L6-7/slide073_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 76
+picture = "384/{A8D493C8-78BB-6C74-25B0-AD0D972D0631}"
+source = "Lectures/Figures/svg/L6-7/slide076_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 78
+picture = "397/{81BB0BEC-8689-6AB5-B838-34D6468D81D9}"
+source = "Lectures/Figures/svg/L6-7/slide078_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 79
+picture = "381/{DE56D442-8AB1-0A5A-E71E-372294321CAD}"
+source = "Lectures/Figures/png/L6-7/slide079_1.png"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 81
+picture = "383/{322B5B7A-2A00-1525-E2DF-C579338779EB}"
+source = "Lectures/Figures/svg/L6-7/slide081_1.svg"
+
+[[figure]]
+deck = "L6-7.pptx"
+slide = 82
+picture = "398/{22E37C3B-ADD1-EBF6-4AF2-004DAC012C6F}"
+source = "Lectures/Figures/png/L6-7/slide082_1.png"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 14
+picture = "324/{AE5AE88A-ED40-2A09-B15C-C1F13F87F1E3}"
+source = "Lectures/Figures/svg/L8-9/slide014_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 17
+picture = "333/{C58E5A04-20EC-B639-8403-26357B70BFBB}"
+source = "Lectures/Figures/svg/L8-9/slide017_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 18
+picture = "334/{871DE840-7AA5-524D-AE85-F2576F8B6FBD}"
+source = "Lectures/Figures/svg/L8-9/slide018_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 34
+picture = "341/{7E6D07FB-281B-5369-B2CC-6745E735844A}"
+source = "Lectures/Figures/svg/L8-9/slide034_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 35
+picture = "342/{D2B56D98-8223-63CC-C4A6-83798BF36BC3}"
+source = "Lectures/Figures/svg/L8-9/slide035_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 36
+picture = "343/{97A5600B-470C-EF18-9074-FC62F93CAE59}"
+source = "Lectures/Figures/svg/L8-9/slide036_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 37
+picture = "344/{8C0CD861-BA5F-BE9F-4574-1903F0B82AD6}"
+source = "Lectures/Figures/svg/L8-9/slide037_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 40
+picture = "347/{F3E860BC-900A-E531-DFB6-C2F79FAC75EE}"
+source = "Lectures/Figures/svg/L8-9/slide040_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 41
+picture = "348/{CF1F19BB-E830-CCE8-E20C-E1E4D21FB1E8}"
+source = "Lectures/Figures/svg/L8-9/slide041_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 42
+picture = "349/{6C01899C-96C7-0F8F-9DA0-082A41A7EB6D}"
+source = "Lectures/Figures/svg/L8-9/slide042_1.svg"
+
+[[figure]]
+deck = "L8-9.pptx"
+slide = 43
+picture = "350/{735C8AA8-01BD-5878-5893-1F532B467A59}"
+source = "Lectures/Figures/svg/L8-9/slide043_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 7
+picture = "314/{93684A5F-CA2F-28C0-49AD-4A49C4B0AB84}"
+source = "Lectures/Figures/svg/L10/slide007_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 10
+picture = "315/{3B811EB4-FFC8-B884-FA4E-2DE4D94CF01A}"
+source = "Lectures/Figures/svg/L10/slide010_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 11
+picture = "318/{7FBC60A7-C44A-88C2-2880-42A130B2D873}"
+source = "Lectures/Figures/svg/L10/slide011_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 12
+picture = "319/{D302A98A-CEE1-9372-173D-59C903A10761}"
+source = "Lectures/Figures/svg/L10/slide011_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 13
+picture = "320/{5247E9EB-6C19-47E0-2230-76E8EDED30CD}"
+source = "Lectures/Figures/svg/L10/slide011_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 18
+picture = "324/{F2DB4266-0321-68D1-A7B8-0DC3666EEF0D}"
+source = "Lectures/Figures/svg/L10/slide018_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 21
+picture = "327/{99E9D030-886D-7734-B32F-4BB8C199C523}"
+source = "Lectures/Figures/gif/L10/slide021_1.gif"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 21
+picture = "327/{CD66EAA8-F009-4E81-E5AB-3F7F4FC56A0D}"
+source = "Lectures/Figures/jpg/L10/slide021_2.jpeg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 26
+picture = "331/{7F3DCA0B-06EC-CDAB-5F7A-048D3BBDB4CD}"
+source = "Lectures/Figures/svg/L4/slide018_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 29
+picture = "334/{37104FA7-F39F-8F31-1F55-4826818DCDA8}"
+source = "Lectures/Figures/svg/L10/slide029_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 35
+picture = "336/{647DD6B5-C8C7-BE73-FB99-988487132B67}"
+source = "Lectures/Figures/gif/L10/slide035_1.gif"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 39
+picture = "387/{9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}"
+source = "Lectures/Figures/svg/L6-7/slide049_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 40
+picture = "392/{A2C751A5-B34B-D3F6-4EA0-0BA4554B9031}"
+source = "Lectures/Figures/svg/L6-7/slide042_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 45
+picture = "398/{87F78193-1707-7908-BA06-B40E6782147B}"
+source = "Lectures/Figures/svg/L10/slide045_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 46
+picture = "405/{7C788A6C-9173-E3C2-5AA8-97894712E557}"
+source = "Lectures/Figures/svg/L10/slide046_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 48
+picture = "399/{1A4A4412-5944-0B4E-16E8-7FDCA80BC159}"
+source = "Lectures/Figures/svg/L10/slide048_2.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 48
+picture = "399/{B029C68A-1543-011F-D3B6-A4CE4200B828}"
+source = "Lectures/Figures/svg/L10/slide048_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 50
+picture = "402/{53F754A7-3686-6B9D-9B12-97F1F3E76F8A}"
+source = "Lectures/Figures/svg/L10/slide050_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 52
+picture = "404/{61188845-24DF-5C13-BC45-4F51B6829131}"
+source = "Lectures/Figures/svg/L10/slide052_1.svg"
+
+[[figure]]
+deck = "L10.pptx"
+slide = 56
+picture = "409/{89F6B071-B715-7FBB-0E30-D060E408D0E0}"
+source = "Lectures/Figures/svg/L10/slide056_1.svg"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 7
+picture = "417/{80FC701E-794E-5C2C-E1F5-4739C0BC8277}"
+source = "Lectures/Figures/svg/L11/slide007_1.svg"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 14
+picture = "430/{7869FDA0-4CF7-481C-A8DF-0846B8BF8F79}"
+source = "Lectures/Figures/png/L11/slide014_1.png"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 16
+picture = "421/{F019B837-225D-A578-169B-D851C7A2C1D3}"
+source = "Lectures/Figures/png/L11/slide016_1.png"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 18
+picture = "428/{5582DEE3-F239-7E2F-227E-E5AC805EB3E6}"
+source = "Lectures/Figures/gif/L11/slide018_1.gif"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 20
+picture = "433/{7396B6AB-E327-BBF0-7275-F666CB059720}"
+source = "Lectures/Figures/svg/L11/slide020_1.svg"
+
+[[figure]]
+deck = "L11.pptx"
+slide = 21
+picture = "434/{B09EE897-6171-2032-9BE2-00C2F44C9310}"
+source = "Lectures/Figures/svg/L11/slide021_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 8
+picture = "420/{C0099A63-1F74-2E2F-FA77-FE4FC1DFDFF4}"
+source = "Lectures/Figures/png/L12/slide008_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 11
+picture = "421/{6041F7B9-5E30-C48D-9CF0-8BD0E9279BCC}"
+source = "Lectures/Figures/jpg/L12/slide011_1.jpeg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 11
+picture = "421/{A3E81219-B5A3-D25A-A450-7ED9CF3F8F9F}"
+source = "Lectures/Figures/png/L12/slide011_3.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 11
+picture = "421/{E430249B-F567-6199-F617-19C666074DD2}"
+source = "Lectures/Figures/jpg/L12/slide011_2.jpeg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 12
+picture = "424/{D3FF78EE-AC3F-93DB-9FC6-122F1A402E20}"
+source = "Lectures/Figures/png/L12/slide012_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 15
+picture = "426/{9AE8F741-9312-721E-B0DC-B9D63AB5C94B}"
+source = "Lectures/Figures/svg/L12/slide015_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 16
+picture = "427/{CB05BAB7-0766-30F5-0865-E7B4123DF48E}"
+source = "Lectures/Figures/gif/L12/slide016_1.gif"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 18
+picture = "431/{40184BF8-5A89-92BE-2236-599732502E12}"
+source = "Lectures/Figures/gif/L12/slide016_1.gif"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 20
+picture = "451/{957B35E0-A86B-C109-1016-CB738AD590B1}"
+source = "Lectures/Figures/gif/L12/slide016_1.gif"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 20
+picture = "451/{F18ED1C7-D745-C13F-7369-BC61283C12F6}"
+source = "Lectures/Figures/png/L12/slide020_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 21
+picture = "430/{0D78ADC0-A2AC-BB77-CD8D-CC9F37AD820E}"
+source = "Lectures/Figures/gif/L12/slide021_2.gif"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 21
+picture = "430/{BE5D9B58-09FD-B5F7-D59A-CD58A4C8DFD6}"
+source = "Lectures/Figures/gif/L12/slide021_1.gif"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 22
+picture = "435/{F6074030-B8F1-B0AD-1A65-72A80DAE0131}"
+source = "Lectures/Figures/png/L12/slide022_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 25
+picture = "436/{1BF9D921-52E2-F515-06E7-EBE2FE1968D8}"
+source = "Lectures/Figures/png/L12/slide025_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 26
+picture = "452/{349791BD-0831-E515-610E-3099F565FCBA}"
+source = "Lectures/Figures/png/L12/slide026_1.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 26
+picture = "452/{6147A6F7-68D6-F85D-5E95-D5CD2F6F6982}"
+source = "Lectures/Figures/png/L12/slide026_2.png"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 31
+picture = "441/{6DAB086C-55CF-1A28-68CB-954CFF4AFBF9}"
+source = "Lectures/Figures/svg/L12/slide031_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 32
+picture = "442/{4B287157-1149-6EFD-6641-BD017E014418}"
+source = "Lectures/Figures/svg/L12/slide032_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 37
+picture = "447/{CAB8B104-0853-0562-290B-5A74B3804C62}"
+source = "Lectures/Figures/svg/L12/slide032_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 39
+picture = "450/{4C8589C5-0B8C-BDAF-E74E-A8BBBB20F64F}"
+source = "Lectures/Figures/svg/L12/slide032_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 40
+picture = "387/{9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}"
+source = "Lectures/Figures/svg/L6-7/slide049_1.svg"
+
+[[figure]]
+deck = "L12.pptx"
+slide = 41
+picture = "449/{359598AE-F55A-9B86-D5BE-1F5C7A0AAC5D}"
+source = "Lectures/Figures/svg/L12/slide041_1.svg"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 6
+picture = "442/{24356165-11B7-5CA3-9C3C-2FF29D036AC1}"
+source = "Lectures/Figures/svg/L13/slide006_1.svg"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 11
+picture = "423/{5AAA68F8-9D75-7853-D652-AFBB9C534ED2}"
+source = "Lectures/Figures/png/L13/slide011_2.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 11
+picture = "423/{A38C60A1-C66E-CE47-28E4-763F4132E6BF}"
+source = "Lectures/Figures/png/L13/slide011_1.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 12
+picture = "422/{F96529A1-B40E-A8F2-D80D-74408277B80A}"
+source = "Lectures/Figures/png/L13/slide012_1.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 16
+picture = "429/{20166750-1C13-A3FF-99A1-2CB80308C6D9}"
+source = "Lectures/Figures/png/L13/slide016_1.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 17
+picture = "430/{B062A763-D041-A592-9822-74D17B82A0DA}"
+source = "Lectures/Figures/png/L13/slide017_1.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 19
+picture = "421/{848AF4E3-252A-1573-3205-F1DAD91D90E5}"
+source = "Lectures/Figures/jpg/L13/slide019_1.jpeg"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 24
+picture = "431/{04DBDED2-FC79-A6C7-F177-0D9C747FF478}"
+source = "Lectures/Figures/png/L13/slide024_1.png"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 26
+picture = "443/{84B40BA0-6200-7012-2665-31C9F569C493}"
+source = "Lectures/Figures/svg/L13/slide006_1.svg"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 31
+picture = "444/{D88A1901-4402-8DD6-6D8F-007EA8BCF76A}"
+source = "Lectures/Figures/svg/L13/slide006_1.svg"
+
+[[figure]]
+deck = "L13.pptx"
+slide = 41
+picture = "455/{1318D75A-6E38-B719-46F0-F70CD629CBA7}"
+source = "Lectures/Figures/svg/L13/slide006_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 12
+picture = "427/{95B64AEF-6C4C-F19B-2D4D-03E6FA9EA2CD}"
+source = "Lectures/Figures/jpg/L14/slide012_1.jpeg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 13
+picture = "428/{011725C8-59C4-03A3-48F2-633CF75A3A10}"
+source = "Lectures/Figures/jpg/L14/slide013_1.jpeg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 15
+picture = "430/{6EE6CDDF-E069-0316-A6F0-FE9CA9748642}"
+source = "Lectures/Figures/jpg/L14/slide015_1.jpeg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 19
+picture = "437/{03EB3E49-9F9E-4275-AD28-CC209C190861}"
+source = "Lectures/Figures/gif/L14/slide019_2.gif"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 19
+picture = "437/{D3309F61-DBF8-ADD5-DDCC-7CAFCBCBDE1F}"
+source = "Lectures/Figures/gif/L14/slide019_1.gif"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 20
+picture = "436/{0C64EA01-EC69-2AB7-A454-9CA845DCA2E7}"
+source = "Lectures/Figures/svg/L14/slide020_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 22
+picture = "442/{90BDC651-87BC-7F7F-A3A5-D34A1C946415}"
+source = "Lectures/Figures/svg/L14/slide022_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 25
+picture = "440/{22F6EAA8-D1E8-2E30-34AA-E3E04D9A1ED7}"
+source = "Lectures/Figures/svg/L14/slide025_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 26
+picture = "444/{662D4277-2399-920C-94B4-F3EE2E5790F5}"
+source = "Lectures/Figures/jpg/L14/slide026_1.jpg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 27
+picture = "443/{FE6F859E-2E0D-BE78-1AFA-2D262DE7E689}"
+source = "Lectures/Figures/gif/L14/slide027_1.gif"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 30
+picture = "448/{45945A97-1EC3-51F2-D867-9CB53EC098DB}"
+source = "Lectures/Figures/svg/L14/slide030_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 33
+picture = "451/{D564E30D-12B0-B940-E27A-97B5A4271577}"
+source = "Lectures/Figures/svg/L14/slide033_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 37
+picture = "456/{9380E33E-904F-ACBA-FB5C-400272C931BE}"
+source = "Lectures/Figures/svg/L14/slide037_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 38
+picture = "457/{FE1FDDE6-E8C4-63CB-DC53-04F648D4BD61}"
+source = "Lectures/Figures/png/L14/slide038_1.png"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 39
+picture = "459/{52B52767-BC6A-58FF-6CBF-F32DD842F92B}"
+source = "Lectures/Figures/svg/L14/slide039_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 40
+picture = "458/{60760AFA-7E5F-FF84-8B45-D570D8D42F96}"
+source = "Lectures/Figures/svg/L14/slide037_1.svg"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 42
+picture = "422/{B03BADCA-92CE-EC47-0841-616BEA662AEF}"
+source = "Lectures/Figures/png/L14/slide042_1.png"
+
+[[figure]]
+deck = "L14.pptx"
+slide = 44
+picture = "455/{66048966-B200-A1D9-C88D-B7C71B5C9292}"
+source = "Lectures/Figures/svg/L14/slide044_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 10
+picture = "422/{B09C676A-C7CC-590E-E845-C95E05865DD4}"
+source = "Lectures/Figures/png/L15/slide010_1.png"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 11
+picture = "421/{B01BA914-F748-37D2-7034-19DF3A5F1142}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 13
+picture = "424/{D2324FFB-0CF5-F03C-B042-14E9646FD156}"
+source = "Lectures/Figures/svg/L15/slide013_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 15
+picture = "426/{6CD07C2B-9CCD-5838-F433-5C2EBF3516E8}"
+source = "Lectures/Figures/svg/L15/slide015_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 22
+picture = "434/{F253A45E-17E9-77F6-0CF5-586594A729A5}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 23
+picture = "435/{5981030D-0294-627F-8D3B-A114FD5891DE}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 24
+picture = "437/{057E820A-FAFB-0518-9A2F-DF8DB1F97973}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 25
+picture = "436/{2E5442EB-5FDF-63B8-74EC-F0DEBD0C3517}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 26
+picture = "438/{08DCB2E8-FF30-3015-8E18-F5DE0586C1B9}"
+source = "Lectures/Figures/svg/L15/slide011_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 27
+picture = "458/{89D0CA00-8753-DA08-F841-EF1FE694E952}"
+source = "Lectures/Figures/svg/L15/slide027_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 27
+picture = "458/{AE4E309E-FD80-C30D-E2B0-52B363B78C09}"
+source = "Lectures/Figures/svg/Left_Riemann_Sum.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 30
+picture = "441/{D7E15BB6-082A-1B39-6E44-A4C768B729AC}"
+source = "Lectures/Figures/svg/L15/slide030_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 31
+picture = "442/{5AB07676-E75C-9490-A2CF-AB34E41E2BCF}"
+source = "Lectures/Figures/svg/L15/slide030_1.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 35
+picture = "444/{51BAB843-7088-724C-E33B-5C28CB5B4365}"
+source = "Lectures/Figures/svg/white_noise.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 36
+picture = "448/{315ED8E6-1A93-6BA4-35DD-15A6BF9A8007}"
+source = "Lectures/Figures/svg/white_noise_mean.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 36
+picture = "448/{5EDCFAED-D88C-BF40-EBFD-F63257E52099}"
+source = "Lectures/Figures/svg/white_std.svg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 42
+picture = "455/{3FF978FE-3B23-FBD7-7C9B-C9235E17DCAB}"
+source = "Lectures/Figures/png/L15/slide042_1.png"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 42
+picture = "455/{75E36511-A060-74B2-042C-98B852A9EFA4}"
+source = "Lectures/Figures/jpg/L15/slide042_2.jpeg"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 44
+picture = "457/{38F2D035-EEDF-B5B1-7F00-156C87F5E51B}"
+source = "Lectures/Figures/gif/L15/slide044_1.gif"
+
+[[figure]]
+deck = "L15.pptx"
+slide = 44
+picture = "457/{749C5622-0D26-7FC2-2E63-53E62FF28A68}"
+source = "Lectures/Figures/gif/L15/slide044_2.gif"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 9
+picture = "421/{EF9E573E-BDFA-DA32-BAEC-9A7134E9912A}"
+source = "Lectures/Figures/jpg/L16/slide009_1.jpeg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 10
+picture = "422/{B4CAD503-94E3-549E-60EF-2A1B9F6F673F}"
+source = "Lectures/Figures/jpg/L16/slide009_1.jpeg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 15
+picture = "428/{BBAB6D5A-341B-ACD8-BAA3-A78ADAC524D8}"
+source = "Lectures/Figures/png/L16/slide015_2.png"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 15
+picture = "428/{D2D10FB6-D953-00EB-84CA-C1878DFF7FF0}"
+source = "Lectures/Figures/svg/L16/slide015_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 18
+picture = "431/{576F147B-51BA-D5AB-81E5-CADD9A5B10E8}"
+source = "Lectures/Figures/svg/L16/slide018_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 18
+picture = "431/{6085CB31-7B1B-44F9-C259-63C45FF68578}"
+source = "Lectures/Figures/svg/L16/slide018_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 19
+picture = "432/{BFD2AB86-F5E6-BC4C-CEA7-D858A5E60D1A}"
+source = "Lectures/Figures/svg/L16/slide019_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 20
+picture = "433/{3EFB3967-80C8-1F91-3D55-0DCA4793CEEA}"
+source = "Lectures/Figures/svg/L16/slide020_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 22
+picture = "435/{C6CEE4EA-86BC-5A3B-C33C-223CA06B5EFA}"
+source = "Lectures/Figures/svg/L16/slide022_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 23
+picture = "436/{DF6ABBC9-8162-C324-89DA-8469C01AFE72}"
+source = "Lectures/Figures/svg/L16/slide022_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 23
+picture = "436/{F479F71F-6634-1BB5-519F-67394CB2FD13}"
+source = "Lectures/Figures/svg/L16/slide023_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 24
+picture = "437/{77A5E155-8E76-E0A9-D357-6759E148F1F4}"
+source = "Lectures/Figures/svg/L16/slide022_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 24
+picture = "437/{A6D11F94-4902-1D2F-2530-E6A7ACD88758}"
+source = "Lectures/Figures/svg/L16/slide023_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 25
+picture = "441/{4CBEC6BF-EC18-1A02-C5F8-07B8B2AD0B72}"
+source = "Lectures/Figures/svg/L16/slide025_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 26
+picture = "438/{ADD02CC6-039D-F520-F02E-F9DF71027302}"
+source = "Lectures/Figures/svg/L16/slide026_1.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 26
+picture = "438/{C04602B4-FB65-879D-0271-533181C290B2}"
+source = "Lectures/Figures/svg/L16/slide026_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 27
+picture = "439/{6ECD23FF-F85B-E3AE-06E9-78DBEF2C5302}"
+source = "Lectures/Figures/svg/L16/slide026_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 28
+picture = "440/{B5EBC154-0030-723B-6E07-EF9517686B53}"
+source = "Lectures/Figures/svg/L16/slide026_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 29
+picture = "442/{1D699870-7E14-EDEE-84C3-89063CD246F4}"
+source = "Lectures/Figures/svg/L16/slide026_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 30
+picture = "443/{4C8F5941-36FB-E6BC-27C0-9366122C7FD0}"
+source = "Lectures/Figures/svg/L16/slide026_2.svg"
+
+[[figure]]
+deck = "L16.pptx"
+slide = 34
+picture = "448/{7A495A7C-4D09-60AF-F301-540BA716036A}"
+source = "Lectures/Figures/svg/L16/slide034_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 2
+picture = "417/{24A77EEA-1740-B395-D98B-8393E536A5FE}"
+source = "Lectures/Figures/png/L17/slide002_2.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 2
+picture = "417/{5C9ED0E5-D2F3-6859-05CA-DBB780B2AEFF}"
+source = "Lectures/Figures/gif/L17/slide002_1.gif"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 6
+picture = "418/{16494730-091D-C1B6-F5BD-6F81EF76ADA1}"
+source = "Lectures/Figures/jpg/L17/slide006_1.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 9
+picture = "422/{13F46CA8-EE1D-75C2-2D7F-5CB72CE2BE3F}"
+source = "Lectures/Figures/svg/L17/slide009_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 11
+picture = "441/{D5130AE9-14BA-F584-28E1-F910A55AB149}"
+source = "Lectures/Figures/svg/L17/slide009_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 13
+picture = "424/{A0F68EDD-8402-D252-610E-D50621D0FAD5}"
+source = "Lectures/Figures/jpg/L17/slide013_2.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 13
+picture = "424/{CE785DB6-441D-D3F4-8BB7-605AB4669079}"
+source = "Lectures/Figures/jpg/L17/slide013_1.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 14
+picture = "423/{607017C9-F3C9-CE7F-6ED2-053A21D09358}"
+source = "Lectures/Figures/svg/L17/slide014_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 15
+picture = "427/{A7C3B241-1FB8-9B94-5DF3-2792191F22B1}"
+source = "Lectures/Figures/svg/L17/slide015_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 17
+picture = "442/{45C563A8-9C6C-884F-050B-DCCA4FA58ED2}"
+source = "Lectures/Figures/svg/L17/slide009_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 19
+picture = "429/{1D8E7123-8833-59E4-C7E6-F8C1F1E9FDB4}"
+source = "Lectures/Figures/svg/L17/slide019_2.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 19
+picture = "429/{E9F80111-1378-6BC9-2B5D-07F27806A1A1}"
+source = "Lectures/Figures/svg/L17/slide019_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 20
+picture = "430/{82222B3B-389F-7775-51FF-2BA97B418931}"
+source = "Lectures/Figures/svg/L17/slide019_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 21
+picture = "431/{80CC4E5E-E877-37EB-865E-FB15BC4881BA}"
+source = "Lectures/Figures/svg/L17/slide021_1.svg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 22
+picture = "432/{FDC5DBA4-DACA-DD70-878D-935106022821}"
+source = "Lectures/Figures/png/L17/slide022_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 23
+picture = "433/{A838F4B9-F11D-9A10-4905-78818523DE90}"
+source = "Lectures/Figures/png/L17/slide023_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 25
+picture = "435/{2C29C659-83F3-5525-4410-BAC568249FF0}"
+source = "Lectures/Figures/png/L17/slide025_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 26
+picture = "436/{2919FED6-C67F-725D-39A7-7E7B85FE4C9B}"
+source = "Lectures/Figures/png/L17/slide025_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 27
+picture = "437/{D438D219-4CEC-F988-4BF8-AD7BCD28C967}"
+source = "Lectures/Figures/png/L17/slide025_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 28
+picture = "438/{AF6EB6C2-AADA-A0B4-39C7-4724DBFA9211}"
+source = "Lectures/Figures/png/L17/slide025_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 29
+picture = "446/{391BBE52-D58B-65EA-4C1E-6779ABB764E2}"
+source = "Lectures/Figures/jpg/L17/slide029_3.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 29
+picture = "446/{41A7A60A-73DC-DEC4-0C5F-CF88DBAF0420}"
+source = "Lectures/Figures/jpg/L17/slide029_1.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 29
+picture = "446/{CB2095BA-9684-22C8-ADC8-E825ADD54885}"
+source = "Lectures/Figures/jpg/L17/slide029_2.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 29
+picture = "446/{DCF6C397-C9DD-3CAF-C0CA-D5D1CDA95204}"
+source = "Lectures/Figures/jpg/L17/slide029_4.jpeg"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 31
+picture = "447/{C26F9AA7-B35C-8A6F-B8EB-91A4578A80E6}"
+source = "Lectures/Figures/png/L17/slide031_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 31
+picture = "447/{D2AA05EC-F333-E110-32DC-1E4D05FF14F6}"
+source = "Lectures/Figures/png/L17/slide031_2.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 32
+picture = "448/{65C38C90-2230-46A9-529F-C754AA363B8E}"
+source = "Lectures/Figures/png/L17/slide031_1.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 32
+picture = "448/{D1FD9546-DC56-C2E1-82B5-993921386BDC}"
+source = "Lectures/Figures/png/L17/slide031_2.png"
+
+[[figure]]
+deck = "L17.pptx"
+slide = 34
+picture = "443/{AE05105A-68F1-3D08-DB16-EBFF7C585996}"
+source = "Lectures/Figures/svg/L17/slide009_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 8
+picture = "419/{31B775A8-68D4-B1F8-F2D5-F470BC3EDAD9}"
+source = "Lectures/Figures/svg/L18/slide008_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 9
+picture = "421/{698375AB-26D4-42E2-7EE1-76E199CEBC74}"
+source = "Lectures/Figures/svg/L18/slide009_2.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 9
+picture = "421/{B92C4461-3DAC-027F-FD82-FA79FA94E318}"
+source = "Lectures/Figures/svg/L18/slide009_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 14
+picture = "428/{5B66694E-3611-A63F-B31B-2C03C8C55AE7}"
+source = "Lectures/Figures/svg/L18/slide014_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 15
+picture = "427/{116C6903-85C2-2428-2452-0AD555162D1D}"
+source = "Lectures/Figures/svg/L18/slide015_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 19
+picture = "436/{204D41CB-C77A-305A-D2CF-F57C09B9D67D}"
+source = "Lectures/Figures/svg/L18/slide019_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 21
+picture = "432/{6C0588D9-6262-9FE0-4B67-28BF44C0D08A}"
+source = "Lectures/Figures/svg/L18/slide021_1.svg"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 29
+picture = "443/{2BF7C7E3-5C85-8313-2AE3-2C75871A8948}"
+source = "Lectures/Figures/png/L18/slide029_1.png"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 34
+picture = "461/{4DF359CC-053B-3BFF-DD14-99CB49BB0EE8}"
+source = "Lectures/Figures/png/L18/slide034_1.png"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 34
+picture = "461/{4FC67481-99FD-B36B-82FB-F3B7C0FCEB80}"
+source = "Lectures/Figures/png/L18/slide034_2.png"
+
+[[figure]]
+deck = "L18.pptx"
+slide = 35
+picture = "448/{1AB14D8B-94E4-C45C-CA35-ED195E5479D2}"
+source = "Lectures/Figures/svg/L18/slide035_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 6
+picture = "418/{DE29BBC0-4BB7-869B-8200-C3349CD5F674}"
+source = "Lectures/Figures/png/L18/slide029_1.png"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 10
+picture = "458/{5F5E9C8F-1320-10CF-C7C0-24E090752BE9}"
+source = "Lectures/Figures/svg/L19/slide010_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 14
+picture = "459/{2506955E-C640-0B5D-8D0B-301D7AF462E5}"
+source = "Lectures/Figures/gif/L19/slide014_1.gif"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 17
+picture = "464/{4E5447E2-7341-B44F-352B-3D9830A5CBF2}"
+source = "Lectures/Figures/svg/L19/slide017_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 22
+picture = "466/{919D33E8-7EAF-AA80-88C6-2F1B4B16AC19}"
+source = "Lectures/Figures/svg/L19/slide022_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 23
+picture = "467/{EEC4A36C-2B95-7EB7-BB96-4923A7CEC1AB}"
+source = "Lectures/Figures/svg/L19/slide022_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 24
+picture = "468/{4F94F830-256A-67F2-824F-F9E77F5C877A}"
+source = "Lectures/Figures/svg/L19/slide024_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 26
+picture = "470/{AF935A9C-ED9D-597F-5808-6489F310C0F6}"
+source = "Lectures/Figures/svg/L19/slide026_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 27
+picture = "471/{2BA1BAA0-EC2A-FBB3-AF83-752E1DA00F4F}"
+source = "Lectures/Figures/svg/L19/slide026_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 30
+picture = "473/{2559E48E-C689-C2E4-FD11-7D15588834EA}"
+source = "Lectures/Figures/svg/L19/slide030_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 30
+picture = "473/{414DD0D5-C094-C132-3B6F-960BF02C5695}"
+source = "Lectures/Figures/svg/L19/slide030_2.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 30
+picture = "473/{F94BBFB2-2786-0EF6-0D70-23FAAC7D84B2}"
+source = "Lectures/Figures/svg/L19/slide030_3.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 33
+picture = "484/{08DBD55E-454A-A22E-8FCA-0324AB95588A}"
+source = "Lectures/Figures/svg/L19/slide033_1.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 33
+picture = "484/{A261F26B-1B5E-F705-6B89-BC061BD78359}"
+source = "Lectures/Figures/svg/L19/slide033_2.svg"
+
+[[figure]]
+deck = "L19.pptx"
+slide = 46
+picture = "491/{13CEFEBB-CABF-3586-5974-092C1A099C81}"
+source = "Lectures/Figures/svg/L19/slide046_1.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 10
+picture = "424/{898DA8B1-06EE-F383-1742-DF52DE9381C2}"
+source = "Lectures/Figures/svg/L20-21/slide010_1.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 12
+picture = "427/{1BCCD553-6D42-489E-24ED-5153F66EF2A3}"
+source = "Lectures/Figures/svg/gaussians.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 15
+picture = "429/{8BA59FD0-35B2-89C5-FDBD-04FCD45DEDAF}"
+source = "Lectures/Figures/svg/L20-21/slide015_1.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 22
+picture = "437/{F36F80FA-8AB9-CA0B-87D2-56033447C5A0}"
+source = "Lectures/Figures/svg/01_initial_belief.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 24
+picture = "438/{ABCE8D01-A433-765C-31F8-999610B4C624}"
+source = "Lectures/Figures/svg/02_prediction.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 28
+picture = "439/{BF02FE44-DD7C-2BF2-7311-06C963C661F0}"
+source = "Lectures/Figures/svg/03_sensor_opinion.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 30
+picture = "440/{DE7AA5F7-52D4-DFA6-6A7F-55939E484891}"
+source = "Lectures/Figures/svg/04_fused_update.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 36
+picture = "472/{C912C74F-6B49-F930-5A27-F2BCE85E1FCA}"
+source = "Lectures/Figures/svg/MD_01_initial_belief.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 38
+picture = "473/{CD571A45-C401-F0E2-ABC0-41DDD883CAA2}"
+source = "Lectures/Figures/svg/MD_02_prediction.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 40
+picture = "446/{7EA5D460-2371-5DDC-7B12-80A2B905D861}"
+source = "Lectures/Figures/svg/05_covariance_matrix.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 53
+picture = "474/{C258B433-0AD9-AB4A-4E5E-7067A7B3F22A}"
+source = "Lectures/Figures/svg/MD_03_sensor_opinion.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 55
+picture = "475/{B7BD1292-1381-74C9-7D60-929C34529F92}"
+source = "Lectures/Figures/svg/MD_04_fused_update.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 77
+picture = "493/{916BB3D0-BBD4-DBFB-B0F6-36E53C66B70C}"
+source = "Lectures/Figures/svg/gaussian_transform.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 78
+picture = "505/{42196BA8-67CB-FEC0-DC5E-09554E7A5DF5}"
+source = "Lectures/Figures/svg/monte_carlo_only.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 80
+picture = "514/{0F746960-7837-7025-1E03-27CDC991D05E}"
+source = "Lectures/Figures/svg/monte_carlo_ekf.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 88
+picture = "506/{BAB53DCF-39D4-00A6-32FB-1B692FF53B1A}"
+source = "Lectures/Figures/svg/monte_carlo_ekf.svg"
+
+[[figure]]
+deck = "L20-21.pptx"
+slide = 98
+picture = "507/{FB821CD5-ADF9-81BC-13BF-E2E66DCE4CCF}"
+source = "Lectures/Figures/svg/monte_carlo_ekf_lie.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 6
+picture = "420/{16494730-091D-C1B6-F5BD-6F81EF76ADA1}"
+source = "Lectures/Figures/jpg/L17/slide006_1.jpeg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 9
+picture = "422/{EF13CDBB-0C94-B08F-4050-E913015CB7D7}"
+source = "Lectures/Figures/svg/L22-23/slide009_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 11
+picture = "427/{D68E115A-821F-04D8-CA91-EF8D68A2EB50}"
+source = "Lectures/Figures/svg/L22-23/slide011_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 12
+picture = "428/{FBC98894-E41E-C45E-7AED-4A3D24D1AC67}"
+source = "Lectures/Figures/svg/L22-23/slide011_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 13
+picture = "429/{D5A5294C-26E8-DEAD-39F0-2D1D2AD71F00}"
+source = "Lectures/Figures/svg/L22-23/slide011_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 14
+picture = "423/{16007D7B-1A09-7A7F-FAB3-B2CD1D02268F}"
+source = "Lectures/Figures/svg/L22-23/slide014_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 16
+picture = "424/{6B973CFB-5AC6-A79D-91D5-46E485F4B21A}"
+source = "Lectures/Figures/svg/L22-23/slide016_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 24
+picture = "437/{87C70462-9099-5DE3-41F4-016C8AA15073}"
+source = "Lectures/Figures/svg/L22-23/slide024_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 29
+picture = "442/{480721DF-6236-5C04-ED77-787CD3EF102D}"
+source = "Lectures/Figures/svg/L22-23/slide029_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 30
+picture = "443/{D3ED5833-CD34-2A44-D59C-C4F1E4C5677C}"
+source = "Lectures/Figures/svg/L22-23/slide030_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 31
+picture = "444/{CD4F6074-2342-44E4-603D-7BBEB0ABC089}"
+source = "Lectures/Figures/svg/L22-23/slide030_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 34
+picture = "447/{6B3BD2D8-5782-690F-7D47-71A54CBFDD47}"
+source = "Lectures/Figures/svg/L22-23/slide034_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 36
+picture = "450/{80E7BA96-8E1C-A49D-1A90-DE537FC7A7C3}"
+source = "Lectures/Figures/svg/L22-23/slide036_2.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 36
+picture = "450/{A21A4FF7-BE46-DD16-A84E-B833F0366E2A}"
+source = "Lectures/Figures/svg/L22-23/slide036_3.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 36
+picture = "450/{B12402E6-85AA-1660-3B56-41AB6EA5FC55}"
+source = "Lectures/Figures/svg/L22-23/slide036_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 39
+picture = "455/{FE2A42B3-A304-A058-8773-52AE6753F26B}"
+source = "Lectures/Figures/svg/L22-23/slide039_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 40
+picture = "456/{4D7160FC-FC11-EB66-C767-47B837C0D462}"
+source = "Lectures/Figures/svg/L22-23/slide040_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 41
+picture = "458/{B757FF99-5C78-5DC7-2AA1-7FE02C1014FC}"
+source = "Lectures/Figures/svg/L22-23/slide041_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 42
+picture = "459/{246AB825-4C5D-06E1-4787-A67A362193AB}"
+source = "Lectures/Figures/svg/L22-23/slide041_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 43
+picture = "460/{67E5AC74-4151-6881-6E40-4C9B5D988C4A}"
+source = "Lectures/Figures/svg/L22-23/slide041_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 48
+picture = "463/{375CE45C-B50C-4C0E-DACF-C83F205D8C48}"
+source = "Lectures/Figures/jpg/L22-23/slide048_3.jpeg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 48
+picture = "463/{5DA4C708-EFC9-844E-77CB-83F1D9D90C4C}"
+source = "Lectures/Figures/jpg/L22-23/slide048_1.jpeg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 48
+picture = "463/{D9435647-6AAD-7469-1ABF-3ABF4721B3CD}"
+source = "Lectures/Figures/jpg/L22-23/slide048_2.jpeg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 54
+picture = "465/{695B3723-1567-8DFA-1673-FAC0F8BBA029}"
+source = "Lectures/Figures/svg/L22-23/slide054_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 55
+picture = "471/{C32521C5-2C97-79A3-AE97-9E43F0FE93C2}"
+source = "Lectures/Figures/svg/L22-23/slide054_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 56
+picture = "472/{56EF08F1-C912-FB9D-C3F1-651D0D3F0CE0}"
+source = "Lectures/Figures/svg/L22-23/slide056_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 57
+picture = "473/{384ABA18-8201-7377-5E1F-0EC851F397A5}"
+source = "Lectures/Figures/svg/L22-23/slide056_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 58
+picture = "474/{22BECA5C-7AFC-CC38-289F-E91C20157BB1}"
+source = "Lectures/Figures/svg/L22-23/slide056_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 59
+picture = "475/{A0E59CB1-AD1E-E0F9-4346-7E5D59CED79D}"
+source = "Lectures/Figures/svg/L22-23/slide059_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 60
+picture = "476/{90ADB7A4-7D03-9FC8-9190-F7B75E68F852}"
+source = "Lectures/Figures/svg/L22-23/slide060_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 67
+picture = "483/{1D79F333-EE4B-42B3-5864-A122A975A4B9}"
+source = "Lectures/Figures/svg/L22-23/slide067_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 67
+picture = "483/{8E90DAC3-ABE9-0BA5-54D5-A14CC7637D6D}"
+source = "Lectures/Figures/svg/L22-23/slide067_3.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 67
+picture = "483/{9CF57325-6069-C4F1-B2BA-D37290417D29}"
+source = "Lectures/Figures/svg/L22-23/slide067_2.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 69
+picture = "485/{08B3E3CB-69CF-1CCD-85E5-24872374253F}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 69
+picture = "485/{0E31E96D-C5EB-D488-C9A6-05C8A1B8EB50}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 69
+picture = "485/{DDE39FFD-0524-B962-1343-B9F0F2F1B397}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 70
+picture = "486/{1BA95C49-EE26-7648-AF94-C025A13830BA}"
+source = "Lectures/Figures/svg/L22-23/slide070_2.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 70
+picture = "486/{6E3C2A3B-EE3D-76EE-C438-099842595325}"
+source = "Lectures/Figures/svg/L22-23/slide070_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 70
+picture = "486/{A3C95885-7C80-62C9-02E1-4B794C76C219}"
+source = "Lectures/Figures/svg/L22-23/slide070_3.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 71
+picture = "487/{2047D363-B7A0-D76C-C4C0-F9290C07BBA1}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 71
+picture = "487/{7313A76F-ED51-01A0-9ADD-DBE7CE90A535}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 71
+picture = "487/{7F9D8868-AF71-7322-096F-0A9838ECB26B}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 71
+picture = "487/{8F47C22A-4D9A-9D1F-3A20-2EACB80C8F18}"
+source = "Lectures/Figures/svg/L22-23/slide069_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 72
+picture = "488/{EA790A75-42FF-D3FE-9902-9E39F5F3959B}"
+source = "Lectures/Figures/svg/april_tag_transformed.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 73
+picture = "490/{9217DB6E-CB47-BF4D-40A8-92B5BC133AE8}"
+source = "Lectures/Figures/png/L22-23/slide073_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 74
+picture = "492/{FE681539-F429-A5E8-2CFF-20EEE1A4D471}"
+source = "Lectures/Figures/png/L22-23/slide074_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 75
+picture = "493/{CA843DB7-D8E1-3236-8235-F17D22B22148}"
+source = "Lectures/Figures/png/L22-23/slide075_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 76
+picture = "494/{BE07F963-9838-E116-2EDB-92B87BDD606B}"
+source = "Lectures/Figures/png/L22-23/slide075_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 76
+picture = "494/{D026E1BB-C654-6E26-8F2F-426E81E4E734}"
+source = "Lectures/Figures/png/L22-23/slide076_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 77
+picture = "495/{78DC9D52-E4BC-AE9F-D15E-D921E745F894}"
+source = "Lectures/Figures/png/L22-23/slide077_2.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 77
+picture = "495/{DCDE5FAB-8809-95E2-6DC6-3A29A6BCFA3D}"
+source = "Lectures/Figures/png/L22-23/slide077_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 81
+picture = "499/{C1B36956-7582-A1CC-00B0-0EA7637CB811}"
+source = "Lectures/Figures/svg/L22-23/slide081_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 84
+picture = "503/{909E9ED3-FA57-BBF4-29EF-D61B1A821181}"
+source = "Lectures/Figures/svg/L22-23/slide084_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 86
+picture = "505/{F4C37A16-5395-BC8E-D87B-5C5A8430597B}"
+source = "Lectures/Figures/svg/L22-23/slide086_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 88
+picture = "507/{8484A9A5-DA84-D76E-E0F1-EBEB9D5462D0}"
+source = "Lectures/Figures/png/L22-23/slide088_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 90
+picture = "509/{F26E0098-803C-47C2-0D58-FA85DABDDC6D}"
+source = "Lectures/Figures/svg/L22-23/slide090_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 91
+picture = "510/{7C6B6DCD-5D03-BABA-41F1-E2B0E4D51A77}"
+source = "Lectures/Figures/png/L22-23/slide091_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 93
+picture = "512/{1E64088C-4711-00D7-F092-79E72E1F3EC0}"
+source = "Lectures/Figures/svg/L22-23/slide093_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 94
+picture = "513/{A8FA60DD-33EB-3195-99D3-B83F672FF237}"
+source = "Lectures/Figures/svg/L22-23/slide094_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 95
+picture = "514/{4774BBB2-A79B-D8B1-2022-7CFAD33E157D}"
+source = "Lectures/Figures/png/L22-23/slide095_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 96
+picture = "520/{376E8454-2569-8537-C01B-8EC4377A2572}"
+source = "Lectures/Figures/svg/L22-23/slide094_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 98
+picture = "516/{8B5E52F1-ED21-8C8D-48C1-75E34F1C45A8}"
+source = "Lectures/Figures/png/L22-23/slide098_1.png"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 99
+picture = "517/{AD4EFAD0-C8BA-1753-205C-F66777552FC0}"
+source = "Lectures/Figures/svg/L22-23/slide099_1.svg"
+
+[[figure]]
+deck = "L22-23.pptx"
+slide = 101
+picture = "519/{EC23FDD1-32C2-8417-FCA5-B1056865E578}"
+source = "Lectures/Figures/png/L22-23/slide101_1.png"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 18
+picture = "503/{694E4C2D-B133-A7BD-6E7F-280D7170D46A}"
+source = "Lectures/Figures/svg/L24-25/slide018_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 23
+picture = "509/{C79949CB-594B-F688-E4EF-95F9EBEE6462}"
+source = "Lectures/Figures/svg/L24-25/slide023_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 28
+picture = "513/{B15FABCB-9326-B5A1-346B-EDFBCF964159}"
+source = "Lectures/Figures/svg/L24-25/slide028_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 30
+picture = "515/{81743C38-62B8-77DC-2BF1-B3B213EBF581}"
+source = "Lectures/Figures/svg/L24-25/slide028_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 42
+picture = "527/{18BAE210-BBF1-CBAB-22A6-C3EB4E085A20}"
+source = "Lectures/Figures/svg/p2p_icp_steps_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 43
+picture = "528/{FD20D93B-0F98-5034-611E-C6C783D4B50E}"
+source = "Lectures/Figures/svg/p2p_icp_steps_2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 44
+picture = "529/{536E3C64-6EBB-C997-8554-1A3F2ECD8123}"
+source = "Lectures/Figures/svg/p2p_icp_steps_3.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 45
+picture = "530/{0305EC02-A30E-839C-30BE-F1AB43709982}"
+source = "Lectures/Figures/svg/p2p_icp_steps_4.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 46
+picture = "531/{24D571A1-D7AF-E1FF-EA34-3C42C1061DB3}"
+source = "Lectures/Figures/svg/p2p_icp_steps_5.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 50
+picture = "552/{E3E09890-3168-E32E-1D7B-91ED2DDD0670}"
+source = "Lectures/Figures/svg/L24-25/slide050_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 53
+picture = "537/{A9A4C169-3B8F-0939-6C78-523D57240305}"
+source = "Lectures/Figures/svg/pl_icp_step_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 53
+picture = "537/{F7175818-FC9A-A861-6098-08D488DBB57F}"
+source = "Lectures/Figures/svg/pl_icp_step_2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 56
+picture = "540/{FBBEBDBD-7C39-FD68-1AED-2A027E06B352}"
+source = "Lectures/Figures/svg/L24-25/slide056_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 59
+picture = "545/{1489C5F9-7D67-13E3-0059-079BEF23468A}"
+source = "Lectures/Figures/svg/L24-25/slide059_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 60
+picture = "546/{935A3870-4E40-AB7E-5489-15E08BBF3AAE}"
+source = "Lectures/Figures/svg/L24-25/slide060_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 61
+picture = "547/{114A0657-A83D-04FE-DCEF-BDBD87BC48C9}"
+source = "Lectures/Figures/svg/L24-25/slide061_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 62
+picture = "548/{AB26337C-C0FE-785D-664C-E78E4F41C1B1}"
+source = "Lectures/Figures/svg/L24-25/slide062_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 63
+picture = "549/{B089199C-4AA2-F6DE-DC64-0A874270896F}"
+source = "Lectures/Figures/svg/L24-25/slide063_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 72
+picture = "558/{40748070-3272-41C3-D5A9-877BB099CFC4}"
+source = "Lectures/Figures/svg/slide1_init.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 73
+picture = "559/{E044F0E9-46B3-AFDB-4258-F880045052B0}"
+source = "Lectures/Figures/svg/slide2_predict.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 74
+picture = "560/{339E70BD-E16D-312C-7656-B1F9534783F3}"
+source = "Lectures/Figures/svg/slide3_update.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 75
+picture = "561/{E6A1CC5D-3528-B967-C279-75044A85974F}"
+source = "Lectures/Figures/svg/slide4_resample.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 76
+picture = "562/{BDF95E64-54D0-046E-19A9-0F58B731CBDD}"
+source = "Lectures/Figures/svg/slide5_predict2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 77
+picture = "563/{8ABDE1BB-38AB-A455-03AD-25A978257A27}"
+source = "Lectures/Figures/svg/slide6_update2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 78
+picture = "564/{5D047045-F956-090B-782A-4A80C5B5138F}"
+source = "Lectures/Figures/svg/slide7_resample2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 84
+picture = "571/{A1A54DBA-9E2C-AC65-949E-17E308E465AD}"
+source = "Lectures/Figures/svg/lidar_grid.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 89
+picture = "575/{1B5362B7-0ED9-368F-CD30-86D45EAC4F4A}"
+source = "Lectures/Figures/svg/L24-25/slide089_2.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 89
+picture = "575/{5A8D1BB4-7B58-B08A-98D7-DCAEE416E205}"
+source = "Lectures/Figures/svg/L24-25/slide089_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 96
+picture = "583/{42B940EE-E68B-1D6D-810D-059BF73012DC}"
+source = "Lectures/Figures/svg/L24-25/slide096_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 101
+picture = "588/{3EEBB267-9700-6CFC-7EAD-A4840F0915FE}"
+source = "Lectures/Figures/ppm/L24-25/slide101_2.ppm"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 101
+picture = "588/{CA4B0EBA-3591-752E-8B94-4DED076421FC}"
+source = "Lectures/Figures/ppm/L24-25/slide101_1.ppm"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 106
+picture = "594/{6A00BD3A-0A73-8147-BEE2-AD09DE9C544B}"
+source = "Lectures/Figures/jpg/L24-25/slide106_2.jpg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 106
+picture = "594/{6ACD4586-5708-226D-D134-AD3D211B74E6}"
+source = "Lectures/Figures/jpg/L24-25/slide106_1.jpg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 111
+picture = "597/{817E7B6D-2F59-38A8-86FE-2CAD62884839}"
+source = "Lectures/Figures/svg/L24-25/slide111_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 112
+picture = "598/{C96CED09-7FCB-36C7-6700-4F9AE2FC7B98}"
+source = "Lectures/Figures/gif/L24-25/slide112_1.gif"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 113
+picture = "599/{336D3C0E-6853-6E73-2D66-427B51A9BDD6}"
+source = "Lectures/Figures/svg/L24-25/slide111_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 114
+picture = "600/{E577ADDD-4AEC-D195-080E-7B0BF815BCE0}"
+source = "Lectures/Figures/svg/L24-25/slide111_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 117
+picture = "604/{DF6AE405-0BBD-2451-122E-9FAF9CF319F8}"
+source = "Lectures/Figures/png/L24-25/slide117_1.png"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 118
+picture = "605/{9C2B3218-E3A8-3123-8C75-88B44C977D36}"
+source = "Lectures/Figures/png/L24-25/slide118_1.png"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 118
+picture = "605/{B41A5A28-CC8E-BBA8-F9F0-639EA2E4F556}"
+source = "Lectures/Figures/png/L24-25/slide118_2.png"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 136
+picture = "624/{ECE00094-BEC3-DEB1-565F-4231CAE04C4D}"
+source = "Lectures/Figures/svg/L24-25/slide136_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 141
+picture = "632/{7A6228AF-A121-E196-A3EB-03CAD843C07F}"
+source = "Lectures/Figures/svg/huber_loss.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 144
+picture = "633/{9BD424DD-5576-6588-72B8-EA4CD4CCEA28}"
+source = "Lectures/Figures/png/L24-25/slide144_1.png"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 145
+picture = "636/{8FDC3884-5ECA-6F2F-63B2-30850521890B}"
+source = "Lectures/Figures/gif/L24-25/slide145_1.gif"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 146
+picture = "640/{013150FE-7CE7-7D4F-C4C0-354BBE252DF6}"
+source = "Lectures/Figures/gif/L24-25/slide146_1.gif"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 149
+picture = "637/{320CDAC4-80A4-31B8-AD1B-87A27C79FC64}"
+source = "Lectures/Figures/svg/L24-25/slide149_1.svg"
+
+[[figure]]
+deck = "L24-25.pptx"
+slide = 152
+picture = "638/{CFEE3E84-B35F-73C5-99D7-B2B41B3E8B51}"
+source = "Lectures/Figures/gif/L24-25/slide152_1.gif"

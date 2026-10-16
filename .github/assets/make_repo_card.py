@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # /// script
 # requires-python = ">=3.10"
-# dependencies = ["fonttools", "brotli", "uharfbuzz", "resvg-py"]
+# dependencies = ["fonttools", "uharfbuzz", "resvg-py"]
 # ///
 """SE 423 GitHub repo card: a flat isometric diorama of the mechatronics lab.
 
@@ -17,17 +17,13 @@ writes out.svg (default: repo-card.svg next to this script) and, unless --no-png
 given, the 1280x640 out.png that GitHub's social preview needs.
 
     SE423_F28379D.brd      Eagle layout of the SE 423 breakout board (drawn from it; committed)
-    fonts/                 Montserrat + Source Sans 3 (Illinois brand typefaces, SIL OFL 1.1),
-                           downloaded on first run from the @fontsource npm packages and
-                           cached here (git-ignored), together with their licences
+    ../../fonts/           Atkinson Hyperlegible Next (the course typeface, SIL OFL 1.1),
+                           vendored at the repo root and shared with the LaTeX/HTML builds
 
 Before writing, validate() runs geometric/accessibility checks; any failure aborts.
 """
-import io
 import math
 import sys
-import tarfile
-import urllib.request
 from pathlib import Path
 
 import uharfbuzz as hb
@@ -49,35 +45,15 @@ ARCHES = "#1D58A7"
 INK = "#0E1E38"
 
 # ------------------------------------------------------------------ fonts → outlines
-FONT_DIR = HERE / "fonts"
+# Atkinson Hyperlegible Next (Braille Institute, SIL OFL 1.1): the course typeface,
+# vendored in the repo-root fonts/ directory and shared with the LaTeX/HTML builds.
+FONT_DIR = HERE.parent.parent / "fonts"
 _fonts = {}
-_NPM = {"montserrat": "https://registry.npmjs.org/@fontsource/montserrat/-/montserrat-5.2.8.tgz",
-        "source-sans-3": "https://registry.npmjs.org/@fontsource/source-sans-3/-/source-sans-3-5.2.9.tgz"}
-
-
-_tarballs = {}
-
-
-def _fetch_font(name):
-    """Download each fontsource package once, convert the needed woff2 to TTF, keep its licence."""
-    family = "montserrat" if name.startswith("montserrat") else "source-sans-3"
-    if family not in _tarballs:
-        print(f"downloading {family} from the npm registry …")
-        with urllib.request.urlopen(_NPM[family], timeout=60) as resp:
-            _tarballs[family] = resp.read()
-    tar = tarfile.open(fileobj=io.BytesIO(_tarballs[family]), mode="r:gz")
-    FONT_DIR.mkdir(exist_ok=True)
-    font = TTFont(io.BytesIO(tar.extractfile(f"package/files/{name}.woff2").read()))
-    font.flavor = None
-    font.save(FONT_DIR / f"{name}.ttf")
-    (FONT_DIR / f"LICENSE-{family}.txt").write_bytes(tar.extractfile("package/LICENSE").read())
 
 
 def _font(name):
     if name not in _fonts:
-        path = FONT_DIR / f"{name}.ttf"
-        if not path.exists():
-            _fetch_font(name)
+        path = FONT_DIR / f"{name}.otf"
         data = path.read_bytes()
         face = hb.Face(data)
         _fonts[name] = (TTFont(path), hb.Font(face), face.upem)
@@ -109,8 +85,9 @@ def text_path(s, x, y, size, font, fill, spacing=0.0, anchor="start", extra=""):
     return f'<path d="{pen.getCommands()}" fill="{fill}"{extra}/>', total
 
 
-MONT = {w: f"montserrat-latin-{w}-normal" for w in (600, 700, 800, 900)}
-SANS = {w: f"source-sans-3-latin-{w}-normal" for w in (400, 600, 700)}
+# Weight → static face. The family stops at ExtraBold (800), so 900 maps to it.
+_AHN = {400: "Regular", 600: "SemiBold", 700: "Bold", 800: "ExtraBold", 900: "ExtraBold"}
+AHN = {w: f"AtkinsonHyperlegibleNext-{face}" for w, face in _AHN.items()}
 
 # ------------------------------------------------------------------ isometric engine
 C, S = math.cos(math.pi / 6), 0.5
@@ -544,7 +521,7 @@ def _brd_texture():
         x, y = T(float(t.get("x")), float(t.get("y")))
         size = float(t.get("size")) * 1.25
         _, ang = _rot(t.get("rot"))
-        tp, _ = text_path(t.text.strip(), 0, 0, size, SANS[700], "#F1F5F0")
+        tp, _ = text_path(t.text.strip(), 0, 0, size, AHN[700], "#F1F5F0")
         s.append(f'<g transform="translate({x:.2f} {y:.2f}) rotate({-ang:.0f})">{tp}</g>')
     s.append(f'<g fill="#D8C27A">{"".join(pads)}</g>')
     s.append(f'<g fill="#173A26">{"".join(holes)}</g>')
@@ -730,7 +707,7 @@ wb.append(f'<g fill="none" stroke="{BLUE}" stroke-width="3" stroke-linecap="roun
           '<path d="M10 20h14"/><circle cx="29" cy="20" r="5"/><path d="M34 20h10"/>'
           '<rect x="44" y="10" width="36" height="20" rx="3"/><path d="M80 20h26M100 20v16H29v-11"/>'
           '<path d="M102 15l5 5-5 5"/></g>')
-t, _ = text_path("PID", 62, 25.5, 12, MONT[800], BLUE, anchor="middle"); wb.append(t)
+t, _ = text_path("PID", 62, 25.5, 12, AHN[800], BLUE, anchor="middle"); wb.append(t)
 wb.append(f'<path d="M10 50h12v-10h12v10h12v-10h12v10h12v-10h12v10h12" fill="none" stroke="{ORANGE}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>')
 add(f'<g transform="{m_yface(0.02, WB[0], WB[2] + 62 * wb_s, wb_s)}">{"".join(wb)}</g>')
 check(WB[2] + 62 * wb_s <= ROOM_H - 2, "whiteboard fits below the top of the back wall")
@@ -1137,14 +1114,14 @@ for w in WALLS:
 # ------------------------------------------------------------------ title block
 TX = 64
 text_right = 0
-t, w_ = text_path("UNIVERSITY OF ILLINOIS", TX, 150, 20, MONT[700], ORANGE, spacing=3.2); add(t); text_right = max(text_right, TX + w_)
-t, w_se = text_path("SE", TX - 6, 290, 146, MONT[900], "#FFFFFF", spacing=-2); add(t)
-t, w_ = text_path("423", TX - 6 + w_se + 30, 290, 146, MONT[900], ORANGE, spacing=-2); add(t); text_right = max(text_right, TX - 6 + w_se + 30 + w_)
-t, w_ = text_path("Introduction to", TX, 346, 32, MONT[600], "#B8C8E0"); add(t); text_right = max(text_right, TX + w_)
-t, w_ = text_path("Mechatronics", TX - 2, 404, 58, MONT[800], "#FFFFFF", spacing=-0.5); add(t); text_right = max(text_right, TX + w_)
+t, w_ = text_path("UNIVERSITY OF ILLINOIS", TX, 150, 20, AHN[700], ORANGE, spacing=3.2); add(t); text_right = max(text_right, TX + w_)
+t, w_se = text_path("SE", TX - 6, 290, 146, AHN[900], "#FFFFFF", spacing=-2); add(t)
+t, w_ = text_path("423", TX - 6 + w_se + 30, 290, 146, AHN[900], ORANGE, spacing=-2); add(t); text_right = max(text_right, TX - 6 + w_se + 30 + w_)
+t, w_ = text_path("Introduction to", TX, 346, 32, AHN[600], "#B8C8E0"); add(t); text_right = max(text_right, TX + w_)
+t, w_ = text_path("Mechatronics", TX - 2, 404, 58, AHN[800], "#FFFFFF", spacing=-0.5); add(t); text_right = max(text_right, TX + w_)
 add(f'<path d="M{TX} 446h34v-16h22v16h14v-16h22v16h14v-16h22v16h34" fill="none" stroke="{ORANGE}" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>')
-t, w_ = text_path("Microcontrollers · Sensors · Control · Robots", TX, 494, 24, SANS[600], "#DCE5F2"); add(t); text_right = max(text_right, TX + w_)
-t, w_ = text_path("Urbana-Champaign  ·  lectures, labs & homework", TX, 526, 20, SANS[400], "#B8C8E0"); add(t); text_right = max(text_right, TX + w_)
+t, w_ = text_path("Microcontrollers · Sensors · Control · Robots", TX, 494, 24, AHN[600], "#DCE5F2"); add(t); text_right = max(text_right, TX + w_)
+t, w_ = text_path("Urbana-Champaign  ·  lectures, labs & homework", TX, 526, 20, AHN[400], "#B8C8E0"); add(t); text_right = max(text_right, TX + w_)
 
 
 def _lum(h):

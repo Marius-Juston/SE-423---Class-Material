@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 <title>Pathfinding Visualizer</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 /*
   UIUC brand palette — https://brand.illinois.edu/visual-identity/color
@@ -40,13 +40,13 @@
   --focus:#FCB316;          /* Harvest — focus ring */
 }
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;user-select:none;-webkit-user-select:none}
+body{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;user-select:none;-webkit-user-select:none}
 .header{display:flex;align-items:center;gap:8px;padding:6px 10px;background:var(--surface);border-bottom:1px solid var(--border);flex-shrink:0;flex-wrap:wrap}
 .logo{font-weight:700;font-size:13px;letter-spacing:.3px;white-space:nowrap;display:flex;align-items:center;gap:6px}
 .logo .ic{width:20px;height:20px;background:linear-gradient(135deg,var(--accent),var(--purple));border-radius:5px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff}
 .sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
 .cg{display:flex;gap:2px;background:var(--bg);border-radius:7px;padding:2px;border:1px solid var(--border)}
-.b{font-family:'DM Sans',sans-serif;font-size:10.5px;font-weight:500;padding:3px 8px;border:none;border-radius:5px;cursor:pointer;background:transparent;color:var(--text-mid);transition:all .12s;white-space:nowrap;line-height:1.4}
+.b{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:10.5px;font-weight:500;padding:3px 8px;border:none;border-radius:5px;cursor:pointer;background:transparent;color:var(--text-mid);transition:all .12s;white-space:nowrap;line-height:1.4}
 .b:hover{color:var(--text);background:var(--border)} .b.on{background:var(--accent);color:#fff}
 .b.go{color:var(--green);font-weight:600} .b.go:hover{background:var(--green-dim)} .b.go.running{color:var(--yellow);animation:blink 1.2s infinite}
 .b.danger{color:var(--red)} .b.danger:hover{background:var(--red-dim)}
@@ -332,11 +332,11 @@ function drawGrid(cvEl,gwEl,st,sz,isRight){
     }else if(st.closed.has(K)&&v!==ST&&v!==EN&&v!==WL){col=CC.closed;}
     if(v===ST)col=CC.start;if(v===EN)col=CC.end;
     cx.fillStyle=col;cx.beginPath();cx.roundRect(x,y,sz,sz,cr);cx.fill();
-    if(v===FR&&!st.path.has(K)){cx.fillStyle='rgba(93,180,122,.30)';cx.font=iSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u2698',x+sz/2,y+sz/2);}
-    if(v===WA&&!st.path.has(K)){cx.fillStyle='rgba(0,159,212,.30)';cx.font=iSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u301C',x+sz/2,y+sz/2);}
+    if(v===FR&&!st.path.has(K)){cx.fillStyle='rgba(93,180,122,.30)';cx.font=iSz+' "Atkinson Hyperlegible Next",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u2698',x+sz/2,y+sz/2);}
+    if(v===WA&&!st.path.has(K)){cx.fillStyle='rgba(0,159,212,.30)';cx.font=iSz+' "Atkinson Hyperlegible Next",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText('\u301C',x+sz/2,y+sz/2);}
     if(showCost&&(st.open.has(K)||st.closed.has(K))&&v!==ST&&v!==EN&&v!==WL){const g2=st.costSoFar[K];if(g2!==undefined){cx.fillStyle=CC.ftxt;cx.font=cSz+' IBM Plex Mono,monospace';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(g2<1000?Math.round(g2):'++',x+sz/2,y+sz/2);}}
-    if(st.path.has(K)&&v!==ST&&v!==EN&&st.cameFrom[K]){const[fr,fc]=fk(st.cameFrom[K]);const dr2=r-fr,dc2=c-fc;const A={'-1,0':'\u2191','1,0':'\u2193','0,-1':'\u2190','0,1':'\u2192','-1,-1':'\u2196','-1,1':'\u2197','1,-1':'\u2199','1,1':'\u2198'};cx.fillStyle=CC.arrw;cx.font='bold '+aSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(A[dr2+','+dc2]||'.',x+sz/2,y+sz/2);}
-    if(v===ST||v===EN){cx.fillStyle='#13294B';cx.font='bold '+lSz+' DM Sans';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(v===ST?'S':'E',x+sz/2,y+sz/2);}
+    if(st.path.has(K)&&v!==ST&&v!==EN&&st.cameFrom[K]){const[fr,fc]=fk(st.cameFrom[K]);const dr2=r-fr,dc2=c-fc;const A={'-1,0':'\u2191','1,0':'\u2193','0,-1':'\u2190','0,1':'\u2192','-1,-1':'\u2196','-1,1':'\u2197','1,-1':'\u2199','1,1':'\u2198'};cx.fillStyle=CC.arrw;cx.font='bold '+aSz+' "Atkinson Hyperlegible Next",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(A[dr2+','+dc2]||'.',x+sz/2,y+sz/2);}
+    if(v===ST||v===EN){cx.fillStyle='#13294B';cx.font='bold '+lSz+' "Atkinson Hyperlegible Next",sans-serif';cx.textAlign='center';cx.textBaseline='middle';cx.fillText(v===ST?'S':'E',x+sz/2,y+sz/2);}
   }
   // Overlays
   const showOverlay=explainOpen&&st.steps>0;
