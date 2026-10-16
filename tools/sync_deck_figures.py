@@ -42,6 +42,7 @@ import sys
 import tempfile
 import tomllib
 import zipfile
+import zlib
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
@@ -121,10 +122,127 @@ class Picture:
         self.fallback_rid = blip[1] if (svg and blip) else None
 
 
+# ------------------------------------------------------------------ faithful zip writing
+def _central_records(raw):
+    """{name: raw central-directory record} of a zip file, plus the archive comment."""
+    eocd = raw.rfind(b"PK\x05\x06")
+    if eocd < 0:
+        raise ValueError("not a zip file")
+    count, cd_size, cd_offset, comment_len = struct.unpack("<HII H".replace(" ", ""), raw[eocd + 10 : eocd + 22])
+    if cd_offset == 0xFFFFFFFF or count == 0xFFFF:
+        raise ValueError("ZIP64 archives are not supported")
+    records, pos = {}, cd_offset
+    for _ in range(count):
+        fn, ex, cm = struct.unpack("<HHH", raw[pos + 28 : pos + 34])
+        end = pos + 46 + fn + ex + cm
+        records[raw[pos + 46 : pos + 46 + fn].decode("utf8")] = raw[pos:end]
+        pos = end
+    return records, raw[eocd + 22 : eocd + 22 + comment_len]
+
+
+def write_faithful_zip(raw, infos, data):
+    """Rebuild a zip so that every entry whose content is unchanged is copied verbatim
+    (local header, compressed bytes and central record), and changed or new entries are
+    recompressed with their original header fields. PowerPoint is sensitive to how its
+    packages are written, so decks are never repacked wholesale."""
+    orig = {i.filename: i for i in zipfile.ZipFile(io.BytesIO(raw)).infolist()}
+    central, comment = _central_records(raw)
+    first = next(iter(orig.values()), None)
+    out, records = io.BytesIO(), []
+    for info in infos:
+        name, content = info.filename, data[info.filename]
+        o, offset = orig.get(name), out.tell()
+        crc = zlib.crc32(content)
+        if o is not None and o.CRC == crc and o.file_size == len(content):
+            h = o.header_offset
+            fn, ex = struct.unpack("<HH", raw[h + 26 : h + 30])
+            end = h + 30 + fn + ex + o.compress_size
+            if o.flag_bits & 0x08:  # data descriptor follows the data
+                end += 16 if raw[end : end + 4] == b"PK\x07\x08" else 12
+            out.write(raw[h:end])
+            rec = central[name]
+            records.append(rec[:42] + struct.pack("<I", offset) + rec[46:])
+            continue
+        method = o.compress_type if o is not None else zipfile.ZIP_DEFLATED
+        if method == zipfile.ZIP_DEFLATED:
+            c = zlib.compressobj(6, zlib.DEFLATED, -15)
+            comp = c.compress(content) + c.flush()
+        else:
+            method, comp = zipfile.ZIP_STORED, content
+        fname = name.encode("utf8")
+        if o is not None:
+            h = o.header_offset
+            fn, ex = struct.unpack("<HH", raw[h + 26 : h + 30])
+            local_extra = raw[h + 30 + fn : h + 30 + fn + ex]
+            rec = central[name]
+            version_needed, flags, _, mtime, mdate = struct.unpack("<HHHHH", rec[6:16])
+            flags &= ~0x08
+            records.append(
+                rec[:8]
+                + struct.pack("<HHHHIII", flags, method, mtime, mdate, crc, len(comp), len(content))
+                + rec[28:42]
+                + struct.pack("<I", offset)
+                + rec[46:]
+            )
+        else:
+            local_extra, version_needed, flags = b"", 20, 0
+            mtime, mdate = struct.unpack("<HH", central[first.filename][12:16]) if first else (0, 0x21)
+            records.append(
+                struct.pack(
+                    "<IHHHHHHIIIHHHHHII",
+                    0x02014B50,
+                    20,
+                    20,
+                    0,
+                    method,
+                    mtime,
+                    mdate,
+                    crc,
+                    len(comp),
+                    len(content),
+                    len(fname),
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    offset,
+                )
+                + fname
+            )
+        out.write(
+            struct.pack(
+                "<IHHHHHIIIHH",
+                0x04034B50,
+                version_needed,
+                flags,
+                method,
+                mtime,
+                mdate,
+                crc,
+                len(comp),
+                len(content),
+                len(fname),
+                len(local_extra),
+            )
+            + fname
+            + local_extra
+            + comp
+        )
+    cd_offset = out.tell()
+    for rec in records:
+        out.write(rec)
+    cd_size = out.tell() - cd_offset
+    out.write(struct.pack("<IHHHHIIH", 0x06054B50, 0, 0, len(records), len(records), cd_size, cd_offset, len(comment)))
+    out.write(comment)
+    return out.getvalue()
+
+
 class Deck:
     def __init__(self, path, content=None):
         self.path = path
-        with zipfile.ZipFile(io.BytesIO(content) if content is not None else path) as z:
+        self.raw = content if content is not None else Path(path).read_bytes()
+        with zipfile.ZipFile(io.BytesIO(self.raw)) as z:
             self.infos = z.infolist()
             self.data = {i.filename: z.read(i.filename) for i in self.infos}
         self.changed = False
@@ -223,14 +341,15 @@ class Deck:
         return f"frame width x{ratio:.3f}"
 
     def save(self):
+        """Write the deck back, touching only the entries whose content changed."""
+        content = write_faithful_zip(self.raw, self.infos, self.data)
+        with zipfile.ZipFile(io.BytesIO(content)) as z:
+            if z.testzip() is not None or any(z.read(i.filename) != self.data[i.filename] for i in self.infos):
+                raise SystemExit(f"{self.path.name}: failed to write a valid package, original kept")
         tmp = self.path.with_suffix(".pptx.tmp")
-        with zipfile.ZipFile(tmp, "w") as z:
-            for info in self.infos:
-                z.writestr(info, self.data[info.filename], compress_type=info.compress_type)
-        with zipfile.ZipFile(tmp) as z:
-            if z.testzip() is not None:
-                raise SystemExit(f"{self.path.name}: wrote a corrupt file, original kept")
+        tmp.write_bytes(content)
         tmp.replace(self.path)
+        self.raw = content
         written(self.path)
 
 
