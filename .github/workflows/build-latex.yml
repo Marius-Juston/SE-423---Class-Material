@@ -324,7 +324,9 @@ jobs:
           HASH_FILE=".ci-cache/xbb/.hashes"
           touch "$HASH_FILE"
 
-          find Homeworks Lectures -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | while read img; do
+          # Only the LaTeX documents' images need bounding boxes (the slide figure
+          # sources in Lectures/Figures/ are not included by any .tex file).
+          find Homeworks Labs -type f \( -name "*.jpg" -o -name "*.jpeg" -o -name "*.png" \) 2>/dev/null | while read img; do
             xbb="${img%.*}.xbb"
             cached=".ci-cache/xbb/$xbb"
             current_hash=$(sha256sum "$img" | cut -d' ' -f1)
@@ -333,7 +335,7 @@ jobs:
             if [ "$current_hash" = "$stored_hash" ] && [ -f "$cached" ]; then
               cp "$cached" "$xbb"
             else
-              extractbb "$img"
+              extractbb "$img" || echo "::warning file=$img::extractbb could not read this image (wrong file type for its extension?)"
               if [ -f "$xbb" ]; then
                 mkdir -p "$(dirname "$cached")"
                 cp "$xbb" "$cached"
