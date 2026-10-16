@@ -1,0 +1,41 @@
+% ============================
+% fontsetup.tex - course-wide typeface
+% ----------------------------
+% Sets Atkinson Hyperlegible Next (Braille Institute, SIL OFL 1.1) as the
+% text face for every document and figure. The OTF files are vendored in
+% fonts/ so the build works identically in CI, locally and on Overleaf;
+% the path is relative to the repo root, which is where every build
+% (latexmk, make4ht, Overleaf) is run from.
+%
+% Requires LuaLaTeX or XeLaTeX (fontspec). Under pdfLaTeX / tex4ht this
+% file is a no-op: the HTML build sets the same face through CSS in
+% se423.cfg instead.
+%
+% Usage: \input{fontsetup} in the preamble (header.tex already does).
+% ============================
+\RequirePackage{iftex}
+\newif\ifSEfontspec
+\SEfontspecfalse
+\ifLuaTeX\SEfontspectrue\fi
+\ifXeTeX\SEfontspectrue\fi
+\ifdefined\HCode\SEfontspecfalse\fi
+\ifSEfontspec
+  \RequirePackage{fontspec}
+  \defaultfontfeatures{Ligatures=TeX}
+  \setmainfont{AtkinsonHyperlegibleNext}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    BoldItalicFont=*-BoldItalic
+  ]
+  \setsansfont{AtkinsonHyperlegibleNext}[
+    Path=fonts/,
+    Extension=.otf,
+    UprightFont=*-Regular,
+    ItalicFont=*-Italic,
+    BoldFont=*-Bold,
+    BoldItalicFont=*-BoldItalic
+  ]
+\fi

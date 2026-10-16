@@ -7,7 +7,7 @@ Social preview*; GitHub accepts PNG/JPG/GIF under 1 MB, recommended 1280×640).
 ## Regenerate
 
 Requires [uv](https://docs.astral.sh/uv/) (it installs the script's Python dependencies —
-`fonttools`, `brotli`, `uharfbuzz`, `resvg-py` — from the inline metadata at the top of the script):
+`fonttools`, `uharfbuzz`, `resvg-py` — from the inline metadata at the top of the script):
 
 ```bash
 uv run .github/assets/make_repo_card.py            # writes repo-card.svg + repo-card.png here
@@ -15,15 +15,15 @@ uv run .github/assets/make_repo_card.py out.svg    # custom output path (out.svg
 uv run .github/assets/make_repo_card.py --no-png   # SVG only
 ```
 
-On the first run the fonts are downloaded from the npm registry (the `@fontsource`
-packages) into `fonts/`, which is git-ignored; later runs reuse that cache. The board
-layout is committed here, so nothing else is fetched.
+Text is set in Atkinson Hyperlegible Next, the course typeface, read from the repo-root
+[`fonts/`](../../fonts/) directory and converted to outlines, so nothing is downloaded.
+The board layout is committed here as well.
 
 | File | Purpose |
 |---|---|
 | `make_repo_card.py` | Generator: isometric scene, text-to-outline conversion, validation, SVG/PNG output |
 | `SE423_F28379D.brd` | Eagle layout of the SE 423 breakout board; its traces, pads, silkscreen and populated parts are drawn from it |
-| `fonts/` (generated, git-ignored) | Montserrat and Source Sans 3 (the Illinois brand typefaces, SIL Open Font License 1.1), downloaded on first run together with their licences |
+| `../../fonts/` | Atkinson Hyperlegible Next (SIL Open Font License 1.1), shared with the rest of the course material |
 
 ## Validation
 

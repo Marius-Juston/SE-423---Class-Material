@@ -79,7 +79,7 @@ function FactorGraphInner({ stage, step, cache }) {
          style={{ display: "block", width: "100%", height: "100%", maxWidth: W, maxHeight: H }}
          role="img" aria-label="Factor graph of keyframe poses">
       <text x={PAD_L} y={20} fontSize="11" fontWeight="600" fill="var(--text-1)"
-            fontFamily="Inter, sans-serif">
+            fontFamily="'Atkinson Hyperlegible Next', sans-serif">
         Factor Graph · iSAM2
       </text>
       <text x={PAD_L} y={36} fontSize="10" fill="var(--text-3)"

@@ -164,7 +164,7 @@ function FlowNodes({ stage }) {
             )}
             <text x={n.x + n.w/2} y={n.y + 20}
                   textAnchor="middle"
-                  fontFamily="Inter, sans-serif"
+                  fontFamily="'Atkinson Hyperlegible Next', sans-serif"
                   fontSize="12" fontWeight="600"
                   fill={isActive ? "var(--text-0)" : "var(--text-1)"}>
               {n.label}

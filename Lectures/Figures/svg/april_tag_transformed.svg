@@ -5,7 +5,7 @@
    viewBox="0 0 386.46289 354.33789"
    version="1.1"
    id="svg14"
-   sodipodi:docname="gemini-svg.svg"
+   sodipodi:docname="april_tag_transformed.in.svg"
    inkscape:version="1.4.3 (0d15f75, 2025-12-25)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -74,62 +74,38 @@
   <g
      transform="matrix(-20,10,25,15,164.9502,219.33789)"
      id="g10">
-    <rect
-       x="-3.5"
-       y="-3.5"
-       width="7"
-       height="7"
-       fill="#050505"
-       id="rect3" />
-    <rect
-       x="-2.5"
-       y="-2.5"
-       width="5"
-       height="5"
-       fill="#fafafa"
-       id="rect4" />
-    <rect
-       x="0.5"
-       y="-2.5"
-       width="2"
-       height="1"
-       fill="#050505"
-       id="rect5" />
-    <rect
-       x="-1.5"
-       y="-1.5"
-       width="2"
-       height="1"
-       fill="#050505"
-       id="rect6" />
-    <rect
-       x="1.5"
-       y="-1.5"
-       width="1"
-       height="1"
-       fill="#050505"
-       id="rect7" />
-    <rect
-       x="-1.5"
-       y="-0.5"
-       width="2"
-       height="1"
-       fill="#050505"
-       id="rect8" />
-    <rect
-       x="1.5"
-       y="-0.5"
-       width="1"
-       height="1"
-       fill="#050505"
-       id="rect9" />
-    <rect
-       x="-1.5"
-       y="1.5"
-       width="3"
-       height="1"
-       fill="#050505"
-       id="rect10" />
+    <path
+       id="rect3"
+       style="fill:#050505"
+       d="m -3.5,-3.5 h 7 v 7 h -7 z" />
+    <path
+       id="rect4"
+       style="fill:#fafafa"
+       d="m -2.5,-2.5 h 5 v 5 h -5 z" />
+    <path
+       id="rect5"
+       style="fill:#050505"
+       d="m 0.5,-2.5 h 2 v 1 h -2 z" />
+    <path
+       id="rect6"
+       style="fill:#050505"
+       d="m -1.5,-1.5 h 2 v 1 h -2 z" />
+    <path
+       id="rect7"
+       style="fill:#050505"
+       d="m 1.5,-1.5 h 1 v 1 h -1 z" />
+    <path
+       id="rect8"
+       style="fill:#050505"
+       d="m -1.5,-0.5 h 2 v 1 h -2 z" />
+    <path
+       id="rect9"
+       style="fill:#050505"
+       d="m 1.5,-0.5 h 1 v 1 h -1 z" />
+    <path
+       id="rect10"
+       style="fill:#050505"
+       d="m -1.5,1.5 h 3 v 1 h -3 z" />
   </g>
   <line
      x1="164.9502"
@@ -158,28 +134,28 @@
      stroke-width="5"
      marker-end="url(#arrowZ)"
      id="line12" />
-  <text
-     x="-0.049804688"
-     y="329.33789"
-     font-family="Arial, sans-serif"
-     font-size="34px"
-     font-weight="900"
-     fill="#e3342f"
-     id="text12">X</text>
-  <text
-     x="359.9502"
-     y="354.33789"
-     font-family="Arial, sans-serif"
-     font-size="34px"
-     font-weight="900"
-     fill="#38c172"
-     id="text13">Y</text>
-  <text
-     x="224.9502"
-     y="24.337891"
-     font-family="Arial, sans-serif"
-     font-size="34px"
-     font-weight="900"
-     fill="#3490dc"
-     id="text14">Z</text>
+  <g
+     aria-label="X"
+     id="text12"
+     style="font-weight:900;font-size:34px;font-family:'Atkinson Hyperlegible Next';fill:#e3342f">
+    <path
+       d="M 0.29019531,329.33789 H 6.2741953 l 5.3039997,-7.514 5.338,7.514 h 5.984 l -8.33,-11.662 7.854,-11.05 h -5.95 l -4.896,6.868 -4.8619997,-6.868 H 0.76619531 l 7.85399999,11.05 z"
+       id="path34" />
+  </g>
+  <g
+     aria-label="Y"
+     id="text13"
+     style="font-weight:900;font-size:34px;font-family:'Atkinson Hyperlegible Next';fill:#38c172">
+    <path
+       d="m 368.5182,354.33789 h 4.964 v -8.874 l 8.568,-13.838 h -5.78 l -5.27,9.146 -5.304,-9.146 h -5.746 l 8.568,13.872 z"
+       id="path37" />
+  </g>
+  <g
+     aria-label="Z"
+     id="text14"
+     style="font-weight:900;font-size:34px;font-family:'Atkinson Hyperlegible Next';fill:#3490dc">
+    <path
+       d="m 226.1062,24.337891 h 18.7 v -4.352 h -12.24 l 11.73,-14.5180004 v -3.842 h -17.68 v 4.352 h 11.322 l -11.832,14.4840004 z"
+       id="path40" />
+  </g>
 </svg>

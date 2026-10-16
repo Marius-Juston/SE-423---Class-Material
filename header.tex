@@ -142,6 +142,14 @@
   \fi\fi
 \fi
 
+% ============================
+% Typeface: Atkinson Hyperlegible Next (see fontsetup.tex)
+% ----------------------------
+% Must come after unicode-math (which loads fontspec). No-op under
+% pdfLaTeX / tex4ht; the HTML build sets the face in se423.cfg.
+% ============================
+\input{fontsetup}
+
 \definecolor{highlight}{rgb}{0.788235294, 0.0117647059, 0.0431372549}
 
 % pgfcalendar must be loaded in the preamble (here, in header.tex) rather

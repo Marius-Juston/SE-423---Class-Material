@@ -263,7 +263,7 @@ function Header({ stage, stageIdx, totalStages }) {
             REAL-TIME 2D LIDAR SLAM · SHM-IPC · iSAM2
           </div>
           <div style={{
-            fontFamily: "Inter, sans-serif",
+            fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
             fontSize: 14, fontWeight: 600, color: "var(--text-0)",
             marginTop: 1,
           }}>
@@ -387,7 +387,7 @@ function StageDetail({ stage }) {
       background: "var(--bg-1)",
     }}>
       <div style={{
-        fontFamily: "Inter, sans-serif",
+        fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
         fontSize: 12, lineHeight: 1.55,
         color: "var(--text-1)",
         textWrap: "pretty",
@@ -442,7 +442,7 @@ function DriftPanel({ index, levelIdx, setLevelIdx, level, liveErr, thetaModel }
       padding: "12px 14px",
       boxShadow: "0 6px 18px oklch(0 0 0 / 0.4)",
       zIndex: 50,
-      fontFamily: "Inter, sans-serif",
+      fontFamily: "'Atkinson Hyperlegible Next', sans-serif",
     }}>
       <div style={{
         display: "flex", alignItems: "center", justifyContent: "space-between",
