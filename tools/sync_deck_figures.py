@@ -35,6 +35,7 @@ Only the standard library is used.
 
 import argparse
 import hashlib
+import html
 import io
 import json
 import posixpath
@@ -372,6 +373,66 @@ def render_png(svg_bytes, width):
         return out.read_bytes()
 
 
+# ------------------------------------------------------------------ alt text
+DECORATIVE_EXT = (
+    '<a:ext uri="{C183D7F6-B498-43B3-948B-1728B52AA6E4}"><adec:decorative '
+    'xmlns:adec="http://schemas.microsoft.com/office/drawing/2017/decorative" val="1"/></a:ext>'
+)
+
+
+def _cnvpr(deck, pic):
+    x = deck.data[pic.slide_part].decode()
+    a, b = pic.span
+    m = re.search(r"<p:cNvPr\b[^>]*?(?:/>|>.*?</p:cNvPr>)", x[a:b], re.S)
+    return x, a + m.start(), a + m.end(), m[0]
+
+
+def get_alt(deck, pic):
+    """(description, decorative) of a picture."""
+    _, _, _, el = _cnvpr(deck, pic)
+    descr = re.search(r'\bdescr="([^"]*)"', el.split(">", 1)[0])
+    return html.unescape(descr[1]) if descr else "", "adec:decorative" in el and 'val="1"' in el
+
+
+def set_alt(deck, pic, descr, decorative):
+    """Set a picture's description and decorative flag (None leaves the description as is)."""
+    x, a, b, el = _cnvpr(deck, pic)
+    head, rest = (el[:-2], "") if el.endswith("/>") else el.split(">", 1)
+    if descr is not None:
+        head = re.sub(r'\sdescr="[^"]*"', "", head)
+        if descr:
+            head += f' descr="{html.escape(descr, quote=True)}"'
+    rest = re.sub(r'<a:ext uri="\{C183D7F6-B498-43B3-948B-1728B52AA6E4\}">.*?</a:ext>', "", rest, flags=re.S)
+    if decorative:
+        if "<a:extLst>" in rest:
+            rest = rest.replace("<a:extLst>", "<a:extLst>" + DECORATIVE_EXT, 1)
+        else:
+            rest = "<a:extLst>" + DECORATIVE_EXT + "</a:extLst>" + (rest or "</p:cNvPr>")
+    rest = rest.replace("<a:extLst></a:extLst>", "")
+    new = head + "/>" if not rest or rest == "</p:cNvPr>" else head + ">" + rest
+    if new != el:
+        deck.data[pic.slide_part] = (x[:a] + new + x[b:]).encode()
+        deck.changed = True
+
+
+PLACEHOLDER_ALT = re.compile(
+    r"^\s*(undefined|image|picture|graphic|photo|screenshot|figure|untitled)?\s*\d*\s*$"
+    r"|\.(png|jpe?g|gif|svg|bmp|tiff?|emf|wmf)\s*$",
+    re.I,
+)
+
+
+def importable_alt(descr):
+    """A description worth keeping (not empty, "undefined", a file name, ...)."""
+    return descr.strip() if descr.strip() and not PLACEHOLDER_ALT.search(descr.strip()) else ""
+
+
+def wanted_alt(entry):
+    """(description to publish or None, decorative) from a manifest entry; drafts are not published."""
+    alt = entry.get("alt") if entry.get("alt_status", "reviewed") == "reviewed" else None
+    return alt, bool(entry.get("decorative"))
+
+
 # ------------------------------------------------------------------ manifest
 HEADER = """\
 # Pictures in the lecture decks and the source file each one is copied from.
@@ -380,8 +441,12 @@ HEADER = """\
 #
 # Edit a figure either in PowerPoint or in its source file; the pre-commit hook
 # (tools/install-hooks.sh) and CI copy the change to the other side.
-#   picture: "<slide id>/<creationId>" (both kept by PowerPoint across saves)
-#   slide:   position in the deck when the entry was made (for humans only)
+#   picture:    "<slide id>/<creationId>" (both kept by PowerPoint across saves)
+#   slide:      position in the deck when the entry was made (for humans only)
+#   alt:        the picture's description for screen readers (alt text)
+#   alt_status: "reviewed" (written into the deck) or "draft" (AI suggestion, kept
+#               here until a person approves it with tools/a11y/review_alt.py)
+#   decorative: true for purely decorative pictures (no description needed)
 """
 
 
@@ -406,8 +471,12 @@ def save_manifest(m):
             f"slide = {f['slide']}",
             f"picture = {q(f['picture'])}",
             f"source = {q(f['source'])}",
-            "",
         ]
+        if f.get("alt"):
+            out += [f"alt = {q(f['alt'])}", f"alt_status = {q(f.get('alt_status', 'reviewed'))}"]
+        if f.get("decorative"):
+            out.append("decorative = true")
+        out.append("")
     text = "\n".join(out)
     if not MANIFEST.exists() or MANIFEST.read_text() != text:
         MANIFEST.write_text(text)
@@ -535,9 +604,9 @@ def cmd_extract(args):
         if p.is_file() and p.suffix[1:].lower() in FOLDER:
             have.setdefault(sha1(p.read_bytes()), p.relative_to(REPO).as_posix())
 
-    found = []
+    found, deck_of = [], {}
     for path in decks():
-        deck = Deck(path)
+        deck = deck_of[path.name] = Deck(path)
         for pic in deck.pictures():
             if pic.media_rid:
                 part, data = deck.media(pic)
@@ -560,7 +629,13 @@ def cmd_extract(args):
             (REPO / rel).write_bytes(data)
             written(REPO / rel)
             have[h] = rel
-        m["figure"].append({"deck": name, "slide": pic.slide_no, "picture": pic.key, "source": have[h]})
+        entry = {"deck": name, "slide": pic.slide_no, "picture": pic.key, "source": have[h]}
+        descr, decorative = get_alt(deck_of[name], pic)
+        if importable_alt(descr):
+            entry.update(alt=importable_alt(descr), alt_status="reviewed")
+        if decorative:
+            entry["decorative"] = True
+        m["figure"].append(entry)
         known.add((name, pic.key))
         print(f"added    {name} slide {pic.slide_no}: {have[h]}")
         added += 1
@@ -694,6 +769,77 @@ def cmd_sync(mode, base=None):
                     f"{tag} {name} slide {pic.slide_no}: {f['source']} -> slide"
                     + (f" ({'; '.join(notes)})" if notes else "")
                 )
+        # Alt text and decorative flags: the manifest and the deck, in the same directions.
+        base_alts = {}
+        if mode == "auto" and base:
+            text = at_base(base, MANIFEST.relative_to(REPO).as_posix())
+            for e in tomllib.loads(text.decode()).get("figure", []) if text else []:
+                if e["deck"] == name:
+                    base_alts[e["picture"]] = wanted_alt(e)
+        for f in by_deck[name]:
+            for pic in deck.find(f["picture"]):
+                have_alt = get_alt(deck, pic)
+                want, want_deco = wanted_alt(f)
+                if have_alt[1] == want_deco and have_alt[0] == (want or ""):
+                    continue
+                if want is None and have_alt[0] and (mode == "sync" or f.get("alt") or not importable_alt(have_alt[0])):
+                    # The deck's text stays until a reviewed description replaces it: either
+                    # figures.toml holds an unreviewed draft, or the text is a placeholder
+                    # (lint_pptx reports those), or this is a forced sync.
+                    continue
+                if mode == "check":
+                    stale += 1
+                    what = "not in figures.toml (run pull)" if want is None else "differs from figures.toml"
+                    print(f"stale    {name} slide {pic.slide_no}: alt text {what}")
+                    continue
+                direction = {"sync": "push", "pull": "pull"}.get(mode)
+                if mode == "auto":
+                    if base is None:
+                        direction = "unresolved"
+                    else:
+                        old = base_deck.find(pic.key) if base_deck else []
+                        deck_changed = not old or get_alt(base_deck, old[0]) != have_alt
+                        man_changed = base_alts.get(pic.key, (None, False)) != (want, want_deco)
+                        direction = (
+                            "conflict"
+                            if deck_changed and man_changed
+                            else "pull"
+                            if deck_changed
+                            else "push"
+                            if man_changed
+                            else "unresolved"
+                        )
+                if direction == "push":
+                    set_alt(deck, pic, want, want_deco)
+                    print(f"alt      {name} slide {pic.slide_no}: figures.toml -> slide")
+                elif direction == "pull":
+                    if importable_alt(have_alt[0]):
+                        f.update(alt=importable_alt(have_alt[0]), alt_status="reviewed")
+                    f["decorative"] = have_alt[1]
+                    if not f["decorative"]:
+                        f.pop("decorative")
+                    manifest_changed = True
+                    print(f"alt      {name} slide {pic.slide_no}: slide -> figures.toml")
+                elif direction == "conflict":
+                    print(f"CONFLICT {name} slide {pic.slide_no}: alt text changed in both the slide and figures.toml")
+                    conflicts += 1
+                else:
+                    print(f"differs  {name} slide {pic.slide_no}: alt text (run `sync` or `pull`)")
+                    unresolved += 1
+
+        # Template images (logos, figures.toml `ignore`) are decorative.
+        ignore = set(m["ignore"])
+        tracked = set(source_of)
+        for pic in list(deck.pictures()):
+            if pic.key in tracked or not pic.media_rid:
+                continue
+            if sha1(deck.media(pic)[1]) in ignore and not get_alt(deck, pic)[1]:
+                if mode == "check":
+                    stale += 1
+                    continue
+                if mode in ("sync", "auto"):
+                    set_alt(deck, deck.find(pic.key)[0], None, True)
+
         if deck.changed:
             deck.save()
     if manifest_changed:

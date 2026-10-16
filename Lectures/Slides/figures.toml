@@ -4,8 +4,12 @@
 #
 # Edit a figure either in PowerPoint or in its source file; the pre-commit hook
 # (tools/install-hooks.sh) and CI copy the change to the other side.
-#   picture: "<slide id>/<creationId>" (both kept by PowerPoint across saves)
-#   slide:   position in the deck when the entry was made (for humans only)
+#   picture:    "<slide id>/<creationId>" (both kept by PowerPoint across saves)
+#   slide:      position in the deck when the entry was made (for humans only)
+#   alt:        the picture's description for screen readers (alt text)
+#   alt_status: "reviewed" (written into the deck) or "draft" (AI suggestion, kept
+#               here until a person approves it with tools/a11y/review_alt.py)
+#   decorative: true for purely decorative pictures (no description needed)
 
 # Images placed on many slides by the template (UIUC logos); never synced.
 ignore = [
@@ -38,18 +42,24 @@ deck = "L1.pptx"
 slide = 7
 picture = "277/{251A081B-19F6-1928-3E2F-F4E659BFC51D}"
 source = "Lectures/Figures/png/L1/slide007_1.png"
+alt = "C Program Icon SVG Vector & PNG Free Download | UXWing"
+alt_status = "draft"
 
 [[figure]]
 deck = "L1.pptx"
 slide = 8
 picture = "271/{F5188C12-6FFC-D65F-054A-721D1BA272A3}"
 source = "Lectures/Figures/png/L1/slide007_1.png"
+alt = "C Program Icon SVG Vector & PNG Free Download | UXWing"
+alt_status = "draft"
 
 [[figure]]
 deck = "L1.pptx"
 slide = 17
 picture = "287/{7C7351D6-EBBC-1027-7660-0184F9A6A06B}"
 source = "Lectures/Figures/png/L1/slide017_1.png"
+alt = "GitHub - shahzaneer/Git-and-Github-Fundamentals: All about Git Version  Controlling System and GitHub the web based git-repositories hosting  platform"
+alt_status = "draft"
 
 [[figure]]
 deck = "L2.pptx"
@@ -110,6 +120,8 @@ deck = "L3.pptx"
 slide = 19
 picture = "290/{AC7668CD-BA9C-41F4-D48B-CB43716E3FEA}"
 source = "Lectures/Figures/png/L3/slide019_2.png"
+alt = "16-to-1 mux"
+alt_status = "draft"
 
 [[figure]]
 deck = "L3.pptx"
@@ -242,42 +254,56 @@ deck = "L6-7.pptx"
 slide = 6
 picture = "313/{E085C5D8-D434-61DF-7AD5-ECFC5D5480E0}"
 source = "Lectures/Figures/png/L6-7/slide006_1.png"
+alt = "04 Principle and advantages of optical encoder | Tutorials | Rotation Angle  Sensors | Products | Asahi Kasei Microdevices (AKM)"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 8
 picture = "316/{2503CA4C-C9A0-28CA-2BEA-45E13830915E}"
 source = "Lectures/Figures/png/L6-7/slide008_1.png"
+alt = "Figure 2a. 4-slit incremental type rotary encoder"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 8
 picture = "316/{ABCBC115-5896-42BA-872A-0975D754F95D}"
 source = "Lectures/Figures/png/L6-7/slide008_2.png"
+alt = "Figure 2b. 8-slit incremental type rotary encoder"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 10
 picture = "315/{8FFC8881-B788-D82E-2842-B06E2B8DD89B}"
 source = "Lectures/Figures/gif/L6-7/slide010_1.gif"
+alt = "Figure 3a. Waveforms of phase A and B in clockwise"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 11
 picture = "320/{C2235EBB-6C90-DBE3-1B47-38AFD35D2604}"
 source = "Lectures/Figures/gif/L6-7/slide011_1.gif"
+alt = "Figure 3b. Waveforms of phase A and B in counterclockwise"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 12
 picture = "319/{D2EC7600-8AC7-F09B-1F53-AE9E5FDF7AFB}"
 source = "Lectures/Figures/gif/L6-7/slide010_1.gif"
+alt = "Figure 3a. Waveforms of phase A and B in clockwise"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 12
 picture = "319/{DBAADA90-402A-E9F4-1454-F003B9F016DD}"
 source = "Lectures/Figures/gif/L6-7/slide011_1.gif"
+alt = "Figure 3b. Waveforms of phase A and B in counterclockwise"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
@@ -308,12 +334,16 @@ deck = "L6-7.pptx"
 slide = 19
 picture = "327/{39F42D80-8E3C-7788-7EF7-17AEA313736D}"
 source = "Lectures/Figures/png/L6-7/slide019_1.png"
+alt = "Figure 4b. Absolute rotary encoder with 5 rows of slits"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
 slide = 21
 picture = "328/{660DFC84-6DC7-7D59-E703-23FA4CA73638}"
 source = "Lectures/Figures/gif/L6-7/slide021_1.gif"
+alt = "Figure 7. Parallel output signal and serial converted output signal"
+alt_status = "draft"
 
 [[figure]]
 deck = "L6-7.pptx"
@@ -488,6 +518,8 @@ deck = "L6-7.pptx"
 slide = 82
 picture = "398/{22E37C3B-ADD1-EBF6-4AF2-004DAC012C6F}"
 source = "Lectures/Figures/png/L6-7/slide082_1.png"
+alt = "PS1440P02BT : Detailed Information | Ceramic Switching / Heating, Piezo  Components, Contactors, Buzzers and Microphones - Piezoelectric Buzzers |  TDK Product Center"
+alt_status = "draft"
 
 [[figure]]
 deck = "L8-9.pptx"
@@ -596,12 +628,16 @@ deck = "L10.pptx"
 slide = 21
 picture = "327/{99E9D030-886D-7734-B32F-4BB8C199C523}"
 source = "Lectures/Figures/gif/L10/slide021_1.gif"
+alt = "How data flows in networks: Simplex, Half-Duplex, Full-Duplex | Anis HASSEN  posted on the topic | LinkedIn"
+alt_status = "draft"
 
 [[figure]]
 deck = "L10.pptx"
 slide = 21
 picture = "327/{CD66EAA8-F009-4E81-E5AB-3F7F4FC56A0D}"
 source = "Lectures/Figures/jpg/L10/slide021_2.jpeg"
+alt = "Half-duplex vs Full-duplex vs Simplex Transmission Mode"
+alt_status = "draft"
 
 [[figure]]
 deck = "L10.pptx"
@@ -716,30 +752,40 @@ deck = "L12.pptx"
 slide = 8
 picture = "420/{C0099A63-1F74-2E2F-FA77-FE4FC1DFDFF4}"
 source = "Lectures/Figures/png/L12/slide008_1.png"
+alt = "Figure 3. Acceleration associated with a single moving mass."
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 11
 picture = "421/{6041F7B9-5E30-C48D-9CF0-8BD0E9279BCC}"
 source = "Lectures/Figures/jpg/L12/slide011_1.jpeg"
+alt = "The Little Machines That are Making it Big - Physics Today"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 11
 picture = "421/{A3E81219-B5A3-D25A-A450-7ED9CF3F8F9F}"
 source = "Lectures/Figures/png/L12/slide011_3.png"
+alt = "Figure 6. A mechanical model of an actual accelerometer."
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 11
 picture = "421/{E430249B-F567-6199-F617-19C666074DD2}"
 source = "Lectures/Figures/jpg/L12/slide011_2.jpeg"
+alt = "Analytical study and compensation for temperature drifts of a bulk silicon  MEMS capacitive accelerometer - ScienceDirect"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 12
 picture = "424/{D3FF78EE-AC3F-93DB-9FC6-122F1A402E20}"
 source = "Lectures/Figures/png/L12/slide012_1.png"
+alt = "A Monolithic Three-Axis Accelerometer with Wafer-Level Package by CMOS MEMS  Process"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
@@ -752,36 +798,48 @@ deck = "L12.pptx"
 slide = 16
 picture = "427/{CB05BAB7-0766-30F5-0865-E7B4123DF48E}"
 source = "Lectures/Figures/gif/L12/slide016_1.gif"
+alt = "100:1 3D printed MEMS Gyroscope : r/3Dprinting"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 18
 picture = "431/{40184BF8-5A89-92BE-2236-599732502E12}"
 source = "Lectures/Figures/gif/L12/slide016_1.gif"
+alt = "100:1 3D printed MEMS Gyroscope : r/3Dprinting"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 20
 picture = "451/{957B35E0-A86B-C109-1016-CB738AD590B1}"
 source = "Lectures/Figures/gif/L12/slide016_1.gif"
+alt = "100:1 3D printed MEMS Gyroscope : r/3Dprinting"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 20
 picture = "451/{F18ED1C7-D745-C13F-7369-BC61283C12F6}"
 source = "Lectures/Figures/png/L12/slide020_1.png"
+alt = "Schematic Illustration of MEMS Vibratory Gyroscope | Download Scientific  Diagram"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 21
 picture = "430/{0D78ADC0-A2AC-BB77-CD8D-CC9F37AD820E}"
 source = "Lectures/Figures/gif/L12/slide021_2.gif"
+alt = "How cloud-based multiphysics simulations improve MEMS gyroscope design"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 21
 picture = "430/{BE5D9B58-09FD-B5F7-D59A-CD58A4C8DFD6}"
 source = "Lectures/Figures/gif/L12/slide021_1.gif"
+alt = "Getting Started with the MPU6050: Beginner-Friendly Guide with Visual  Explanations - Sensors - Arduino Forum"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
@@ -794,18 +852,24 @@ deck = "L12.pptx"
 slide = 25
 picture = "436/{1BF9D921-52E2-F515-06E7-EBE2FE1968D8}"
 source = "Lectures/Figures/png/L12/slide025_1.png"
+alt = "Illustration of a ferromagnetic MEMS magnetometer design. | Download  Scientific Diagram"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 26
 picture = "452/{349791BD-0831-E515-610E-3099F565FCBA}"
 source = "Lectures/Figures/png/L12/slide026_1.png"
+alt = "Sensors 09 06951f1"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
 slide = 26
 picture = "452/{6147A6F7-68D6-F85D-5E95-D5CD2F6F6982}"
 source = "Lectures/Figures/png/L12/slide026_2.png"
+alt = "Sensors 09 06951f4"
+alt_status = "draft"
 
 [[figure]]
 deck = "L12.pptx"
@@ -884,6 +948,8 @@ deck = "L13.pptx"
 slide = 19
 picture = "421/{848AF4E3-252A-1573-3205-F1DAD91D90E5}"
 source = "Lectures/Figures/jpg/L13/slide019_1.jpeg"
+alt = "Program vs Process vs Thread | Smit Shah"
+alt_status = "draft"
 
 [[figure]]
 deck = "L13.pptx"
@@ -920,6 +986,8 @@ deck = "L14.pptx"
 slide = 13
 picture = "428/{011725C8-59C4-03A3-48F2-633CF75A3A10}"
 source = "Lectures/Figures/jpg/L14/slide013_1.jpeg"
+alt = "Types of Distance Sensors and How to Select One? - Latest News from Seeed  Studio"
+alt_status = "draft"
 
 [[figure]]
 deck = "L14.pptx"
@@ -932,12 +1000,16 @@ deck = "L14.pptx"
 slide = 19
 picture = "437/{03EB3E49-9F9E-4275-AD28-CC209C190861}"
 source = "Lectures/Figures/gif/L14/slide019_2.gif"
+alt = "New Part Day: Very Cheap LIDAR | Hackaday"
+alt_status = "draft"
 
 [[figure]]
 deck = "L14.pptx"
 slide = 19
 picture = "437/{D3309F61-DBF8-ADD5-DDCC-7CAFCBCBDE1F}"
 source = "Lectures/Figures/gif/L14/slide019_1.gif"
+alt = "Things you need to know about LiDAR: the more lasers, the better? | Hesai"
+alt_status = "draft"
 
 [[figure]]
 deck = "L14.pptx"
@@ -1118,18 +1190,24 @@ deck = "L15.pptx"
 slide = 42
 picture = "455/{3FF978FE-3B23-FBD7-7C9B-C9235E17DCAB}"
 source = "Lectures/Figures/png/L15/slide042_1.png"
+alt = "The visualization interface showing the results of the ORB-SLAM and... |  Download Scientific Diagram"
+alt_status = "draft"
 
 [[figure]]
 deck = "L15.pptx"
 slide = 42
 picture = "455/{75E36511-A060-74B2-042C-98B852A9EFA4}"
 source = "Lectures/Figures/jpg/L15/slide042_2.jpeg"
+alt = "AprilTag"
+alt_status = "draft"
 
 [[figure]]
 deck = "L15.pptx"
 slide = 44
 picture = "457/{38F2D035-EEDF-B5B1-7F00-156C87F5E51B}"
 source = "Lectures/Figures/gif/L15/slide044_1.gif"
+alt = "iterative-closest-point-stanford-bunny-converging-iterations-point2point-point2plane"
+alt_status = "draft"
 
 [[figure]]
 deck = "L15.pptx"
@@ -1142,12 +1220,16 @@ deck = "L16.pptx"
 slide = 9
 picture = "421/{EF9E573E-BDFA-DA32-BAEC-9A7134E9912A}"
 source = "Lectures/Figures/jpg/L16/slide009_1.jpeg"
+alt = "Laser Systems Eye"
+alt_status = "draft"
 
 [[figure]]
 deck = "L16.pptx"
 slide = 10
 picture = "422/{B4CAD503-94E3-549E-60EF-2A1B9F6F673F}"
 source = "Lectures/Figures/jpg/L16/slide009_1.jpeg"
+alt = "Laser Systems Eye"
+alt_status = "draft"
 
 [[figure]]
 deck = "L16.pptx"
@@ -1280,6 +1362,8 @@ deck = "L17.pptx"
 slide = 6
 picture = "418/{16494730-091D-C1B6-F5BD-6F81EF76ADA1}"
 source = "Lectures/Figures/jpg/L17/slide006_1.jpeg"
+alt = "Book Cover"
+alt_status = "draft"
 
 [[figure]]
 deck = "L17.pptx"
@@ -1298,12 +1382,16 @@ deck = "L17.pptx"
 slide = 13
 picture = "424/{A0F68EDD-8402-D252-610E-D50621D0FAD5}"
 source = "Lectures/Figures/jpg/L17/slide013_2.jpeg"
+alt = "CCD and CMOS Technology"
+alt_status = "draft"
 
 [[figure]]
 deck = "L17.pptx"
 slide = 13
 picture = "424/{CE785DB6-441D-D3F4-8BB7-605AB4669079}"
 source = "Lectures/Figures/jpg/L17/slide013_1.jpeg"
+alt = "CMOS Image Sensors: How They Work in Digital Microscopy | Evident"
+alt_status = "draft"
 
 [[figure]]
 deck = "L17.pptx"
@@ -1700,6 +1788,8 @@ deck = "L22-23.pptx"
 slide = 6
 picture = "420/{16494730-091D-C1B6-F5BD-6F81EF76ADA1}"
 source = "Lectures/Figures/jpg/L17/slide006_1.jpeg"
+alt = "Book Cover"
+alt_status = "draft"
 
 [[figure]]
 deck = "L22-23.pptx"
@@ -2288,6 +2378,8 @@ deck = "L24-25.pptx"
 slide = 112
 picture = "598/{C96CED09-7FCB-36C7-6700-4F9AE2FC7B98}"
 source = "Lectures/Figures/gif/L24-25/slide112_1.gif"
+alt = "Graph SLAM: From Theory to Implementation"
+alt_status = "draft"
 
 [[figure]]
 deck = "L24-25.pptx"
@@ -2342,12 +2434,16 @@ deck = "L24-25.pptx"
 slide = 145
 picture = "636/{8FDC3884-5ECA-6F2F-63B2-30850521890B}"
 source = "Lectures/Figures/gif/L24-25/slide145_1.gif"
+alt = "How Does a Robot Recognize Where It's Been? (Place Recognition and Loop  Closure, Intuitively) | by Anushka Gangadhar Satav | Apr, 2026 | Medium"
+alt_status = "draft"
 
 [[figure]]
 deck = "L24-25.pptx"
 slide = 146
 picture = "640/{013150FE-7CE7-7D4F-C4C0-354BBE252DF6}"
 source = "Lectures/Figures/gif/L24-25/slide146_1.gif"
+alt = "Graph-based SLAM | Fan Yang"
+alt_status = "draft"
 
 [[figure]]
 deck = "L24-25.pptx"
@@ -2360,3 +2456,5 @@ deck = "L24-25.pptx"
 slide = 152
 picture = "638/{CFEE3E84-B35F-73C5-99D7-B2B41B3E8B51}"
 source = "Lectures/Figures/gif/L24-25/slide152_1.gif"
+alt = "Ouster OS-1 lidar and Google Cartographer Integration - Wil Selby"
+alt_status = "draft"
