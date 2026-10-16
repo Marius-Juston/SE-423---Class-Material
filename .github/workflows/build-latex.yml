@@ -51,7 +51,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
-      CACHE_VERSION: v13 # Bumped for tex4ebook (EPUB 3 handouts)
+      CACHE_VERSION: v14 # Bumped for collection-luatex (luatex85) and tex4ebook (EPUB 3 handouts)
 
       LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
@@ -260,6 +260,8 @@ jobs:
             make4ht \
             tex4ebook \
             tex4ht \
+            collection-luatex \
+            luatex85 \
             kastrup \
             luamml \
             unicode-math \
