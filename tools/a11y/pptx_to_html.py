@@ -12,7 +12,7 @@
 Writes <out>/<deck>.html (+ <deck>_files/ with the pictures): one section per slide
 with the slide title as a heading, text in reading order (bullets as nested lists),
 pictures with their alt text (decorative ones left out), tables with header cells,
-equations as MathML (pandoc's OMML reader), videos as links, and the speaker notes.
+equations as MathML (pandoc's OMML reader), videos as links, and the lecture notes.
 A slide PDF is a picture of the slides; this page is the version screen readers,
 reflow and zoom work best with.
 """
@@ -249,7 +249,7 @@ class DeckPage:
             body = SlidePage(self, slide, maths.get(no, {})).shapes(tree, title_sp)
             notes = dr.notes_text(slide)
             notes_html = (
-                "<details><summary>Speaker notes</summary>" + "".join(f"<p>{ESC(n)}</p>" for n in notes) + "</details>"
+                "<details><summary>Lecture notes</summary>" + "".join(f"<p>{ESC(n)}</p>" for n in notes) + "</details>"
                 if notes
                 else ""
             )

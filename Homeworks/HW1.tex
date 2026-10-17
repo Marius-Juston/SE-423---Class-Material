@@ -371,6 +371,8 @@ LED16 & 160 & GPF & GPFDAT & GPFSET & GPFCLEAR & GPFTOGGLE \\
 \caption{Push Button's GPIO Mapping and Control Registers}
 \label{tab:push_button_gpio_mapping}
 \renewcommand{\arraystretch}{1.15}
+% Row 1 is the header row (tagged as column headers in the PDF).
+\SETableHeaders{1}
 \begin{tabular}{cccc}
 \toprule
 \textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} \\
@@ -393,6 +395,8 @@ The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C+
 \label{tab:gpio_registers_output}
 \footnotesize
 \renewcommand{\arraystretch}{1.2}
+% Row 1 is the header row (tagged as column headers in the PDF).
+\SETableHeaders{1}
 \begin{tabular}{|p{0.13\columnwidth}|p{0.32\columnwidth}|p{0.42\columnwidth}|}
 \hline
 \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
@@ -425,6 +429,8 @@ Each GPIO pin, when configured as an input, has an internal pull-up resistor tha
 \label{tab:gpio_registers_input}
 \footnotesize
 \renewcommand{\arraystretch}{1.2}
+% Row 1 is the header row (tagged as column headers in the PDF).
+\SETableHeaders{1}
 \begin{tabular}{|p{0.09\columnwidth}|p{0.40\columnwidth}|p{0.4\columnwidth}|}
 \hline
 \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline

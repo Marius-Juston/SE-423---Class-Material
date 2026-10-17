@@ -2168,7 +2168,7 @@ deck = "L20-21.pptx"
 slide = 28
 picture = "439/{BF02FE44-DD7C-2BF2-7311-06C963C661F0}"
 source = "Lectures/Figures/svg/03_sensor_opinion.svg"
-alt = "Plot, titled \"1D Update (Conflicting Opinions)\": two Gaussian probability curves over position x from 0 to 15. The purple prediction is centered at x equals 8 and is wider and lower. The orange sensor measurement is centered at z equals 9.5 with variance 1.2, so it is narrower and taller. The curves overlap between about 8 and 10, showing that the prediction and the more certain sensor reading disagree on the position before they are fused."
+alt = "Plot, titled \"1D Update (Conflicting Opinions)\": two Gaussian probability curves over position x from 0 to 15. The pink prediction is centered at x equals 8 and is wider and lower. The dashed orange sensor measurement is centered at z equals 9.5 with variance 1.2, so it is narrower and taller. The curves overlap between about 8 and 10, showing that the prediction and the more certain sensor reading disagree on the position before they are fused."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2192,7 +2192,7 @@ deck = "L20-21.pptx"
 slide = 38
 picture = "473/{CD571A45-C401-F0E2-ABC0-41DDD883CAA2}"
 source = "Lectures/Figures/svg/MD_02_prediction.svg"
-alt = "Plot of the Kalman filter predict step on position X versus position Y axes. The old belief is a point at (2, 2) inside a narrow, tilted blue covariance ellipse; a slightly larger purple outline shows it transformed by F P F transpose. A motion arrow moves the mean to about (8, 5), where a much larger filled purple ellipse shows the predicted prior: x sub pred equals F x sub k minus 1 plus B u, and P sub pred equals F P sub k minus 1 F transpose plus Q. Prediction shifts the estimate and grows its uncertainty."
+alt = "Plot of the Kalman filter predict step on position X versus position Y axes. The old belief is a point at (2, 2) inside a narrow, tilted blue covariance ellipse; a slightly larger pink outline shows it transformed by F P F transpose. A motion arrow moves the mean to about (8, 5), where a much larger filled pink ellipse shows the predicted prior: x sub pred equals F x sub k minus 1 plus B u, and P sub pred equals F P sub k minus 1 F transpose plus Q. Prediction shifts the estimate and grows its uncertainty."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2200,7 +2200,7 @@ deck = "L20-21.pptx"
 slide = 40
 picture = "446/{7EA5D460-2371-5DDC-7B12-80A2B905D861}"
 source = "Lectures/Figures/svg/05_covariance_matrix.svg"
-alt = "Plot: 2D covariance of robot x and y position. Covariance matrix Sigma has sigma x squared equals 4.0, sigma y squared equals 3.0, and sigma x y equals sigma y x equals 2.5. A tilted 1-sigma ellipse is centered on the mean at (5, 5). Its long axis runs diagonally up-right, showing positive x-y correlation. Horizontal and vertical arrows mark sigma x and sigma y. A red arrow, square root of lambda 1 times v 1, marks the major axis along the tilt. A perpendicular green arrow, square root of lambda 2 times v 2, marks the minor axis."
+alt = "Plot: 2D covariance of robot x and y position. Covariance matrix Sigma has sigma x squared equals 4.0, sigma y squared equals 3.0, and sigma x y equals sigma y x equals 2.5. A tilted 1-sigma ellipse is centered on the mean at (5, 5). Its long axis runs diagonally up-right, showing positive x-y correlation. Horizontal and vertical arrows mark sigma x and sigma y. An orange-red arrow, square root of lambda 1 times v 1, marks the major axis along the tilt. A perpendicular green arrow, square root of lambda 2 times v 2, marks the minor axis."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2208,7 +2208,7 @@ deck = "L20-21.pptx"
 slide = 53
 picture = "474/{C258B433-0AD9-AB4A-4E5E-7067A7B3F22A}"
 source = "Lectures/Figures/svg/MD_03_sensor_opinion.svg"
-alt = "Plot titled \"MD Update (Transforming the Measurement),\" position X versus position Y. A large purple prediction uncertainty ellipse, tilted up and to the right, is centered near (8.2, 5). A smaller filled orange ellipse, the effective sensor belief at H inverse z sub k with covariance P sub meas, is centered near (12, 8) and only partly overlaps it. A gray line between the two centers is the residual, z sub k minus H x sub pred. The innovation covariance is S equals H P sub pred H transpose plus R."
+alt = "Plot titled \"MD Update (Transforming the Measurement),\" position X versus position Y. A large pink prediction uncertainty ellipse, tilted up and to the right, is centered near (8.2, 5). A smaller filled orange ellipse, the effective sensor belief at H inverse z sub k with covariance P sub meas, is centered near (12, 8) and only partly overlaps it. A gray line between the two centers is the residual, z sub k minus H x sub pred. The innovation covariance is S equals H P sub pred H transpose plus R."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2216,7 +2216,7 @@ deck = "L20-21.pptx"
 slide = 55
 picture = "475/{B7BD1292-1381-74C9-7D60-929C34529F92}"
 source = "Lectures/Figures/svg/MD_04_fused_update.svg"
-alt = "Plot of a Kalman filter update in X\u2013Y position. A large tilted purple prediction ellipse, centered near (8, 5), overlaps a smaller orange measurement ellipse near (12, 8). A green arrow labeled K times the innovation moves the estimate from the prediction center to a small filled green fused estimate near (11, 7.6), mostly inside the measurement ellipse. Annotations: Kalman gain K[0,0] equals 0.72; K equals P sub pred H transpose S inverse; P sub k equals (I minus K H) P sub pred."
+alt = "Plot of a Kalman filter update in X\u2013Y position. A large tilted pink prediction ellipse, centered near (8, 5), overlaps a smaller orange measurement ellipse near (12, 8). A green arrow labeled K times the innovation moves the estimate from the prediction center to a small filled green fused estimate near (11, 7.6), mostly inside the measurement ellipse. Annotations: Kalman gain K[0,0] equals 0.72; K equals P sub pred H transpose S inverse; P sub k equals (I minus K H) P sub pred."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2256,7 +2256,7 @@ deck = "L20-21.pptx"
 slide = 98
 picture = "507/{FB821CD5-ADF9-81BC-13BF-E2E66DCE4CCF}"
 source = "Lectures/Figures/svg/monte_carlo_ekf_lie.svg"
-alt = "Plot: Robot pose uncertainty after moving from the start at (0, 0) along a nominal update arrow to about (3.5, 3.5), axes are global x and y position. Monte Carlo particles form a curved banana-shaped arc, running from about (\u22125, 2) over the top near y = 5 and down to about (5, \u22124). The red EKF Cartesian 2-sigma ellipse is a straight tilted ellipse that misses much of the arc. The green Lie group SE(2) 2-sigma bound bends with the particles and fits the dense region better."
+alt = "Plot: Robot pose uncertainty after moving from the start at (0, 0) along a nominal update arrow to about (3.5, 3.5), axes are global x and y position. Monte Carlo particles form a curved banana-shaped arc, running from about (\u22125, 2) over the top near y = 5 and down to about (5, \u22124). The dashed orange-red EKF Cartesian 2-sigma ellipse is a straight tilted ellipse that misses much of the arc. The green Lie group SE(2) 2-sigma bound bends with the particles and fits the dense region better."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2840,7 +2840,7 @@ deck = "L24-25.pptx"
 slide = 46
 picture = "531/{24D571A1-D7AF-E1FF-EA34-3C42C1061DB3}"
 source = "Lectures/Figures/svg/p2p_icp_steps_5.svg"
-alt = "Plot titled \"Step 4: Translation t, t equals q bar minus R p bar\" on x-y axes from minus 1 to 6. The original source centroid p bar orig sits near (1.5, 0.6). A magenta vector R p bar runs from the origin to about (minus 0.6, 1.5). A green vector t runs from the tip of R p bar to the target centroid q bar at (3, 4). A cyan triangle with vertices near (1.7, 4), (3.7, 4.5) and (3.7, 3.5) is centered on q bar, labeled P aligned equals R times (P minus p bar) plus q bar."
+alt = "Plot titled \"Step 4: Translation t, t equals q bar minus R p bar\" on x-y axes from minus 1 to 6. The original source centroid p bar orig sits near (1.5, 0.6). A magenta vector R p bar runs from the origin to about (minus 0.6, 1.5). A black vector t runs from the tip of R p bar to the target centroid q bar at (3, 4). A cyan triangle with vertices near (1.7, 4), (3.7, 4.5) and (3.7, 3.5) is centered on q bar, labeled P aligned equals R times (P minus p bar) plus q bar."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2952,7 +2952,7 @@ deck = "L24-25.pptx"
 slide = 76
 picture = "562/{BDF95E64-54D0-046E-19A9-0F58B731CBDD}"
 source = "Lectures/Figures/svg/slide5_predict2.svg"
-alt = "Plot: Second prediction step of Monte Carlo localization on a 10 by 10 meter map with landmarks at (2,8), (8,8) and (8,2). Each particle is moved forward along a noisy arc, leaving gray trails. The particles split into a main cluster near (3.8, 4), matching the true robot pose at the end of a short red arc, and a second cluster near (3.4, 5.8), plus a few strays. The estimated mean pose, near (3.9, 4.7), lies between the clusters, slightly off the true pose."
+alt = "Plot: Second prediction step of Monte Carlo localization on a 10 by 10 meter map with landmarks at (2,8), (8,8) and (8,2). Each particle is moved forward along a noisy arc, leaving gray trails. The particles split into a main cluster near (3.8, 4), matching the true robot pose at the end of a short dark orange arc, and a second cluster near (3.4, 5.8), plus a few strays. The estimated mean pose, near (3.9, 4.7), lies between the clusters, slightly off the true pose."
 alt_status = "reviewed"
 
 [[figure]]
@@ -2960,7 +2960,7 @@ deck = "L24-25.pptx"
 slide = 77
 picture = "563/{8ABDE1BB-38AB-A455-03AD-25A978257A27}"
 source = "Lectures/Figures/svg/slide6_update2.svg"
-alt = "Plot: Particle filter after its second measurement update on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). Green range circles around each landmark intersect near (4, 4.2), where the true robot pose (red arrow) and estimated mean pose (purple arrow) nearly coincide, both heading up and to the right. Most particles form a dense cluster there, with a second cluster near (3.5, 5.8) and a few stragglers. Gray trails show particle paths. All particle weights fall low on the 0 to 0.005 color scale."
+alt = "Plot: Particle filter after its second measurement update on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). Green range circles around each landmark intersect near (4, 4.2), where the true robot pose (orange-red arrow) and estimated mean pose (black arrow) nearly coincide, both heading up and to the right. Most particles form a dense cluster there, with a second cluster near (3.5, 5.8) and a few stragglers. Gray trails show particle paths. All particle weights fall low on the 0 to 0.005 color scale."
 alt_status = "reviewed"
 
 [[figure]]

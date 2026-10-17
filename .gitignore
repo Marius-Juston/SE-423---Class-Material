@@ -503,8 +503,8 @@ venv.bak/
 # Rope project settings
 .ropeproject
 
-# mkdocs/Zensical documentation
-/site
+# (The Python template's "/site" rule for MkDocs output is left out: site/ is the
+# companion website's source here, and the rule silently ignored new files in it.)
 
 # mypy
 .mypy_cache/

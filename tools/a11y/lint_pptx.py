@@ -17,12 +17,16 @@ Rules:
   pptx/video-no-alt          video/audio placeholder without a description
   pptx/slide-no-title        slide without a title placeholder (or with an empty one);
                              counted per deck
-  pptx/table-no-header       table without a header row (tblPr firstRow)
+  pptx/table-no-header       data table (two or more rows) without a header row (tblPr firstRow)
   pptx/low-contrast          text whose colour and background are both known and have a
                              contrast ratio under 4.5:1 (3:1 for large text)
   pptx/duplicate-title       (warning) a slide title repeated in the same deck
-  pptx/small-text            (warning) text under 18 pt, counted per deck
-  pptx/embedded-video        (warning) embedded video: check it has captions
+  pptx/small-text            (warning) text under 18 pt, counted per deck; template text
+                             repeated on many slides (footers) and source links are
+                             incidental and not counted
+  pptx/embedded-video        (warning) embedded video: check it has captions; a silent
+                             video (its description says "no sound" or "silent") needs
+                             only its description (WCAG 1.2.1), so it is not flagged
 """
 
 import argparse
@@ -63,7 +67,16 @@ def lint(path, ignore):
     def finding(rule, message, where="", **kw):
         out.append(Finding("pptx", rel, rule, message, where=where, **kw))
 
-    for no, slide in dr.slides(prs):
+    # Template text repeated on many slides (footers such as "SYSTEMS ENGINEERING"):
+    # incidental, like a logotype, so not held to the size guideline.
+    seen = {}
+    all_slides = dr.slides(prs)
+    for _no, sl in all_slides:
+        for t in {" ".join(dr.text_of(sp).split()) for sp in dr.xp(sl._element, ".//p:sp")} - {""}:
+            seen[t] = seen.get(t, 0) + 1
+    boilerplate = {t for t, n in seen.items() if n >= max(3, len(all_slides) // 3) and len(t) < 60}
+
+    for no, slide in all_slides:
         sid = slide.slide_id
         root = slide._element
         title = dr.title_text(slide)
@@ -92,7 +105,8 @@ def lint(path, ignore):
             if dr.is_media(pic):
                 if not descr:
                     finding("pptx/video-no-alt", f"video on slide {no} has no description", where)
-                if dr.xp(pic, ".//p14:media"):
+                silent = re.search(r"\bno sound\b|\bsilent\b", descr, re.I)
+                if dr.xp(pic, ".//p14:media") and not silent:
                     finding(
                         "pptx/embedded-video",
                         f"embedded video on slide {no}: check it has captions",
@@ -114,8 +128,10 @@ def lint(path, ignore):
                 )
 
         # Tables.
+        # Data tables need a header row; a single-row table (a list of fields, e.g. a
+        # packet format) has no data under it, so it is described with alt text instead.
         for frame in dr.xp(root, ".//p:graphicFrame[.//a:tbl]"):
-            if not dr.xp(frame, ".//a:tbl/a:tblPr[@firstRow='1']"):
+            if len(dr.xp(frame, ".//a:tbl/a:tr")) > 1 and not dr.xp(frame, ".//a:tbl/a:tblPr[@firstRow='1']"):
                 finding(
                     "pptx/table-no-header",
                     f"table on slide {no} has no header row",
@@ -137,13 +153,18 @@ def lint(path, ignore):
             if dr.ph_type(el) in ("sldNum", "dt", "ftr") or bg in (None, dr.UNKNOWN):
                 continue
             low = False
+            incidental = " ".join(dr.text_of(el).split()) in boilerplate
             for run in dr.xp(el, ".//a:r"):
-                if not dr.text_of(run).strip():
+                text = dr.text_of(run).strip()
+                if not text:
                     continue
                 rpr = run.find(dr.q("a:rPr"))
                 sz = rpr.get("sz") if rpr is not None else None
                 size = int(sz) / 100 if sz else None
-                if size is not None and size < 18:
+                source_link = text.startswith(("http://", "https://", "www.")) or (
+                    rpr is not None and dr.xp(rpr, "./a:hlinkClick")
+                )
+                if size is not None and size < 18 and not incidental and not source_link:
                     small += 1
                 fg = theme.run_colour(rpr)
                 if fg and fg != dr.UNKNOWN:

@@ -607,6 +607,8 @@ jobs:
           fi
 
           find deploy_target -name "*-luamml-mathml.html" -not -path "*/.git/*" -delete
+          # Pages renamed or retired since an earlier deploy (deploys only add files).
+          rm -f deploy_target/path-planning.html
 
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
           if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then
@@ -643,7 +645,10 @@ jobs:
       # reviewed alt text in figures.toml or `% alt:` lines in the TikZ sources), and
       # the gallery entries in index.html (JSON-escaped).
       - name: Describe figures and fill the gallery
-        run: uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
+        run: |
+          uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
+          # Search index (slides + every described image) and web-viewable figure copies.
+          uv run --quiet --locked tools/a11y/search_index.py --root deploy_target
 
       - name: Set up accessibility checkers
         run: |

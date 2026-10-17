@@ -145,8 +145,13 @@ def main():
     if args.checked and published.exists():
         checked = json.loads(Path(args.checked).read_text())
         previous = json.loads(published.read_text())
-        # Keep earlier findings only for partially checked tools, on files not checked now.
-        findings += [f for f in previous if f["tool"] in checked and f["file"] not in set(checked[f["tool"]])]
+        # Keep earlier findings only for partially checked tools, on files not checked now
+        # that are still published (a removed page takes its findings with it).
+        findings += [
+            f
+            for f in previous
+            if f["tool"] in checked and f["file"] not in set(checked[f["tool"]]) and (site / f["file"]).exists()
+        ]
     published.parent.mkdir(parents=True, exist_ok=True)
     published.write_text(json.dumps(findings, indent=1) + "\n")
     now = dt.datetime.now(dt.UTC).strftime("%Y-%m-%d %H:%M UTC")

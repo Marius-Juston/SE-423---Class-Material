@@ -123,9 +123,36 @@
             .card-transition:hover, .btn-course:hover { transform: none; }
         }
 
-        /* Ensure TikZ SVGs (usually black lines) invert to white in dark mode */
-        .svg-preview { filter: none; }
-        .dark .svg-preview { filter: invert(0.9) hue-rotate(180deg); }
+        /* Search results and gallery cards (site/search.js) */
+        .fig-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr)); gap: 1rem; list-style: none; padding: 0; margin: .5rem 0 1rem; }
+        .fig-card figure { margin: 0; height: 100%; display: flex; flex-direction: column; background: #fff; border: 1px solid #e2e8f0; border-radius: .75rem; overflow: hidden; }
+        .dark .fig-card figure { background: #0f172a; border-color: #1e293b; }
+        /* Thumbnails always sit on white: line art and transparent figures stay readable in dark mode. */
+        .fig-thumb { display: flex; align-items: center; justify-content: center; height: 11rem; padding: .5rem; background: #fff; }
+        .fig-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; }
+        .fig-none { color: #334155; font-size: .875rem; font-style: italic; text-align: center; }
+        .fig-card figcaption { padding: .75rem; font-size: .875rem; line-height: 1.45; color: #1e293b; }
+        .dark .fig-card figcaption { color: #e2e8f0; }
+        .fig-where { font-weight: 700; margin: 0 0 .25rem; }
+        .fig-alt { margin: 0 0 .5rem; }
+        .fig-links a, .slide-hit a, .show-all { color: #0b3d91; font-weight: 700; text-decoration: underline; }
+        .dark .fig-links a, .dark .slide-hit a, .dark .show-all { color: #9db7e8; }
+        .slide-hits { list-style: none; padding: 0; margin: .5rem 0 1rem; display: grid; gap: .5rem; }
+        .slide-hit { background: #fff; border: 1px solid #e2e8f0; border-radius: .5rem; padding: .6rem .8rem; }
+        .dark .slide-hit { background: #0f172a; border-color: #1e293b; }
+        .slide-hit p { margin: .25rem 0 0; font-size: .875rem; color: #334155; }
+        .dark .slide-hit p { color: #cbd5e1; }
+        .slide-where { color: #475569; font-weight: 400; }
+        .dark .slide-where { color: #94a3b8; }
+        #search-results mark, #gallery-grid mark { background: #FCB316; color: #13294B; padding: 0 .1em; border-radius: .2em; }
+        .show-all { background: none; border: 0; padding: .25rem 0; cursor: pointer; font: inherit; }
+        #search-results h3 { font-size: 1.15rem; font-weight: 700; margin-top: 1rem; }
+        .dark #search-results h3 { color: #e2e8f0; }
+        .gallery-controls { display: flex; flex-wrap: wrap; gap: .75rem 1.25rem; align-items: end; margin-bottom: 1rem; }
+        .gallery-controls label { display: block; font-size: .8rem; font-weight: 700; color: #334155; margin-bottom: .2rem; }
+        .dark .gallery-controls label { color: #cbd5e1; }
+        .gallery-controls select, .gallery-controls input { min-height: 2.25rem; padding: .3rem .6rem; border: 1px solid #94a3b8; border-radius: .5rem; background: #fff; color: #0f172a; }
+        .dark .gallery-controls select, .dark .gallery-controls input { background: #0f172a; color: #e2e8f0; border-color: #475569; }
     </style>
 </head>
 <body class="min-h-screen relative">
@@ -189,7 +216,7 @@
 
             <div class="mt-8 flex justify-center">
                 <label for="pdfSearch" class="sr-only">Search course material</label>
-                <input type="search" id="pdfSearch" aria-describedby="search-status" placeholder="Search assignments, labs, lectures, or resources..." 
+                <input type="search" id="pdfSearch" aria-describedby="search-status" placeholder="Search lectures, slides, figures, assignments, or resources..." 
                        class="px-4 py-3 w-full max-w-2xl rounded-xl text-gray-900 dark:text-white dark:bg-slate-900 shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-500 border-0">
             </div>
             <p id="search-status" class="sr-only" role="status" aria-live="polite"></p>
@@ -212,14 +239,26 @@
                 </button>
             </div>
 
-            <div class="p-6 overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-950/50" tabindex="0" aria-label="Figures">
-                <ul id="gallery-grid" role="list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                </ul>
+            <div class="p-6 overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-950/50" tabindex="0" role="region" aria-label="Figures">
+                <div class="gallery-controls" role="group" aria-label="Filter figures">
+                    <div><label for="gallery-source">From</label>
+                        <select id="gallery-source"><option value="all">Everything</option><option value="lecture">Lectures</option><option value="homework">Homeworks</option><option value="lab">Labs</option></select></div>
+                    <div><label for="gallery-format">Type</label>
+                        <select id="gallery-format"><option value="all">All types</option><option value="svg">SVG (vector)</option><option value="png">PNG</option><option value="jpg">JPEG (photo)</option><option value="gif">GIF (animation)</option><option value="diagram">Diagrams in documents</option></select></div>
+                    <div><label for="gallery-filter">Search descriptions</label>
+                        <input type="search" id="gallery-filter" placeholder="e.g. encoder, Kalman"></div>
+                    <p id="gallery-status" role="status" aria-live="polite" class="text-sm text-slate-700 dark:text-slate-300"></p>
+                </div>
+                <div id="gallery-grid"></div>
             </div>
         </div>
     </dialog>
 
     <main id="main" tabindex="-1" class="container mx-auto px-4 py-12 flex-grow">
+        <section id="search-results" hidden aria-labelledby="search-results-title" class="mb-12">
+            <h2 id="search-results-title" class="text-2xl font-bold uiuc-blue dark:text-slate-100 border-b-2 border-uiuc-orange pb-2">Lectures and figures matching “<span id="search-results-query"></span>”</h2>
+            <div id="search-results-body"></div>
+        </section>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             
             <!-- Homework Section -->
@@ -749,24 +788,11 @@
             }).join('');
         }
 
-        // NEW: Render Gallery Logic
-        function renderGallery() {
-            const container = document.getElementById('gallery-grid');
-            // fig.alt comes from the SVG's <desc>/<title> (CI injection); file name otherwise.
-            container.innerHTML = data.figures.map(fig => `
-                <li>
-                <a href="${esc(fig.file)}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
-                    <div class="h-48 p-4 bg-slate-100 dark:bg-slate-900 flex items-center justify-center relative overflow-hidden">
-                        <img src="${esc(fig.file)}" alt="${esc(fig.alt || fig.title)}" loading="lazy" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
-                    </div>
-                    <div class="p-4 border-t border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${esc(fig.title)}</h3>
-                        <p class="text-[10px] uppercase mt-1 tracking-wider uiuc-orange-access font-semibold">SVG Vector<span class="sr-only"> (opens in a new tab)</span></p>
-                    </div>
-                </a>
-                </li>
-            `).join('');
-        }
+        // Gallery fallback (local preview without search-index.json): the SVGs injected by CI.
+        window.SE423_FALLBACK_FIGURES = data.figures.map((f, i) => ({
+            kind: 'image', id: `svg${i}`, alt: f.alt || f.title, title: f.title, where: 'Lecture figure',
+            link: f.file, thumb: f.file, full: f.file, format: 'svg', group: 'lecture'
+        }));
 
         // Figure gallery: native modal dialog. showModal() makes the rest of the page inert
         // (focus stays inside), Esc closes it and focus returns to the opening button.
@@ -774,6 +800,7 @@
         function toggleGallery(show) {
             if (show) {
                 galleryDialog.showModal();
+                window.SE423Search.renderGallery();
                 document.body.classList.add('modal-active'); // no background scroll
             } else {
                 galleryDialog.close();
@@ -788,7 +815,6 @@
         renderList('hw-list', data.hw);
         renderList('labview-list', data.labview);
         renderList('lab-list', data.labs);
-        renderGallery();
 
         // Lecture format (radio group; arrow keys move between options)
         document.querySelectorAll('input[name="lecture-format"]').forEach(radio => {
@@ -801,7 +827,6 @@
         });
 
         // Search Logic
-        const searchStatus = document.getElementById('search-status');
         let searchTimer;
         function applySearch() {
             const term = document.getElementById('pdfSearch').value.toLowerCase();
@@ -812,13 +837,12 @@
                 item.style.display = match ? 'flex' : 'none';
                 shown += match;
             });
-            // Announce the result count once typing pauses (screen readers).
+            // Slide and figure matches (site/search.js), announced once typing pauses.
             clearTimeout(searchTimer);
-            searchTimer = setTimeout(() => {
-                searchStatus.textContent = term ? `${shown} of ${items.length} items match` : '';
-            }, 500);
+            searchTimer = setTimeout(() => window.SE423Search.update(term, shown, items.length), 300);
         }
         document.getElementById('pdfSearch').addEventListener('input', applySearch);
     </script>
+<script src="search.js" defer></script>
 </body>
 </html>
