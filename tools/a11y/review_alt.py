@@ -35,6 +35,7 @@ import sync_deck_figures as sdf  # noqa: E402
 from draft_alt_text import open_deck, slide_context  # noqa: E402
 
 LOCK = threading.Lock()
+ON_PAGE = set()  # sources shown on the review page; decisions on them can be changed
 
 
 def drafts():
@@ -47,6 +48,7 @@ def drafts():
 
 def page():
     groups = drafts()
+    ON_PAGE.update(groups)
     decks, cards = {}, []
     for i, (source, entries) in enumerate(sorted(groups.items(), key=lambda kv: sdf.natural(kv[0]))):
         e = entries[0]
@@ -142,10 +144,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return self.send(400, "empty alt text: write a description or mark it decorative")
         with LOCK:
             m = sdf.load_manifest()
+            if req.get("source") not in ON_PAGE:
+                return self.send(400, "not a picture on this review page; reload it")
+            # Any earlier decision made on this page (approved or decorative) is replaced,
+            # so a picture marked decorative can still get alt text, and vice versa.
             for f in m["figure"]:
-                if f["source"] != req.get("source") or f.get("alt_status") != "draft":
+                if f["source"] != req.get("source"):
                     continue
                 if action == "approve":
+                    f.pop("decorative", None)
                     f.update(alt=alt, alt_status="reviewed")
                 elif action == "decorative":
                     f.pop("alt", None)
