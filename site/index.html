@@ -646,6 +646,10 @@
         };
 
         let currentFormat = 'pdf';
+        const LECTURE_FORMATS = ['pdf', 'pptx', 'html'];
+
+        // Escape text before it goes into HTML built from template strings.
+        const esc = (v) => String(v).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
         function updateLectureUI() {
             const container = document.getElementById('lecture-list');
@@ -662,15 +666,15 @@
                 const label = isHtmlFormat ? 'Interactive page' : formatLabel[formatToUse];
 
                 return `
-                    <a href="${url}" target="_blank" aria-label="${item.title}, ${label} (opens in a new tab)" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${item.title.toLowerCase()},${item.topic.toLowerCase()}">
+                    <a href="${esc(url)}" target="_blank" aria-label="${esc(item.title)}, ${esc(label)} (opens in a new tab)" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${esc(item.title.toLowerCase())},${esc(item.topic.toLowerCase())}">
                         <div class="${iconColor} mb-2" aria-hidden="true">
                             ${formatToUse === 'pdf' ? 
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" /><path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>` :
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" /><path d="M6 10h8v2H6v-2zm0 4h8v2H6v-2z" /></svg>`
                             }
                         </div>
-                        <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${item.title}</span>
-                        <span class="text-[10px] text-gray-600 mt-1 uppercase font-semibold">${label}</span>
+                        <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${esc(item.title)}</span>
+                        <span class="text-[10px] text-gray-600 mt-1 uppercase font-semibold">${esc(label)}</span>
                     </a>
                 `;
             }).join('');
@@ -751,12 +755,12 @@
             // fig.alt comes from the SVG's <desc>/<title> (CI injection); file name otherwise.
             container.innerHTML = data.figures.map(fig => `
                 <li>
-                <a href="${fig.file}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
+                <a href="${esc(fig.file)}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
                     <div class="h-48 p-4 bg-slate-100 dark:bg-slate-900 flex items-center justify-center relative overflow-hidden">
-                        <img src="${fig.file}" alt="${fig.alt || fig.title}" loading="lazy" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                        <img src="${esc(fig.file)}" alt="${esc(fig.alt || fig.title)}" loading="lazy" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="p-4 border-t border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${fig.title}</h3>
+                        <h3 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${esc(fig.title)}</h3>
                         <p class="text-[10px] uppercase mt-1 tracking-wider uiuc-orange-access font-semibold">SVG Vector<span class="sr-only"> (opens in a new tab)</span></p>
                     </div>
                 </a>
@@ -789,7 +793,8 @@
         // Lecture format (radio group; arrow keys move between options)
         document.querySelectorAll('input[name="lecture-format"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
-                currentFormat = e.target.value;
+                // Only known formats (the value comes from the page, so never trust it).
+                currentFormat = LECTURE_FORMATS.includes(e.target.value) ? e.target.value : 'pdf';
                 updateLectureUI();
                 applySearch();
             });
