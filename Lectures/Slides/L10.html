@@ -103,7 +103,7 @@ nav ol { columns: 2 18rem; }
 <li><strong>Radiative:</strong> electromagnetic coupling occurs when source and victim are separated by a large distance. Source and victim act as radio antennas: the source emits or radiates an electromagnetic wave which is picked up or received by the victim.
 </li></ul>
 <p><a href='https://en.wikipedia.org/wiki/Electromagnetic_interference'>https://en.wikipedia.org/wiki/Electromagnetic_interference</a></p>
-<figure><img src='L10_files/7e90440738f8.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/7e90440738f8.svg' alt='Block diagram of the four ways interference couples from a Source block (left) to a Victim block (right). Radiative: an antenna on the source emits waves across open space toward the victim. Inductive: the source connects to a pair of coupled coils, like a transformer, with one side grounded. Conductive: a wire runs from the coils along the bottom to the victim&#x27;s side. Capacitive: that wire reaches the victim through a capacitor.' loading='lazy'></figure>
 <p>Air acts as a conductor as well</p>
 
 </section>
@@ -138,14 +138,14 @@ nav ol { columns: 2 18rem; }
 <p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I_{1}(t)</annotation></semantics></math> be the time-varying current for. Assuming it is a long, straight wire, we use Ampere’s Law (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∮</mo><mrow></mrow><mrow></mrow></msubsup><mrow><mi mathvariant="bold-italic">𝑩</mi><mo>⋅</mo><mi mathvariant="double-struck">𝕕</mi><mi mathvariant="bold-italic">𝒍</mi></mrow><mo>=</mo><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\oint_{}^{}{{\mathbf{B}} \cdot \mathbb{d}{\mathbf{l}}} = \mu_{0}I_{enc}</annotation></semantics></math>) to find the magnetic field at radial distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">B(r,t) = \frac{\mu_{0}I_{1}(t)}{2\pi r}\widehat{\phi}</annotation></semantics></math></p>
 <p>(there <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_{0}</annotation></semantics></math>, is the permeability of free space and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{\phi}</annotation></semantics></math> represents the flux)</p>
-<figure><img src='L10_files/73305232af29.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/73305232af29.svg' alt='Two circuits share a grounded conducting plane. Each has an AC voltage source and a source resistor at one end, a long wire running parallel to the plane, and a load resistor at the far end that returns to the plane. A circular magnetic field H, with arrows showing its direction, wraps around the upper circuit&#x27;s wire and passes through the loop formed by the neighboring circuit&#x27;s wire and the plane, coupling the two circuits inductively.' loading='lazy'></figure>
 
 </section>
 <section id='s11' aria-labelledby='h11'>
 <h2 id='h11'><span class='num'>11.</span> Serial Communication – Interferences - Inductive</h2>
 <p>If the victim wire forms a rectangular loop ( not often the case but good enough for showing this specific case), with it’s return path. Having a length <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>l</mi><annotation encoding="application/x-tex">l</annotation></semantics></math> and distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mn>1</mn></msub><annotation encoding="application/x-tex">r_{1}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mn>2</mn></msub><annotation encoding="application/x-tex">r_{2}</annotation></semantics></math> from the source wire. The magnetic flux <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Phi_{B}</annotation></semantics></math>, though this loop is the surface integral of the magnetic field.</p>
 <p>Animate this!</p>
-<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Diagram: A vertical source wire carries current I sub 1 of t upward, surrounded by circular magnetic field lines, B of r, t equals mu naught I sub 1 of t over 2 pi r, in the phi-hat direction. To its right, a rectangular victim loop of height l spans radial distances r sub 1 to r sub 2 from the wire. The field passes into the page through the loop area S, with area element d A equals d r d z.' loading='lazy'></figure>
 
 </section>
 <section id='s12' aria-labelledby='h12'>
@@ -156,7 +156,7 @@ nav ol { columns: 2 18rem; }
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><msubsup><mo>∫</mo><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>l</mi><msub><mi>d</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \int_{r_{1}}^{r_{2}}\left( \frac{\mu_{0}I_{1}(t)}{2\pi r} \right)ld_{r}</annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mrow><mi>l</mi><mi>I</mi></mrow><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></msubsup><mrow><mfrac><mn>1</mn><mi>r</mi></mfrac><mspace width="0.222em"></mspace><msub><mi>d</mi><mi>r</mi></msub></mrow></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \frac{\mu_{0}{lI}_{1}(t)}{2\pi}\int_{r_{1}}^{r_{2}}{\frac{1}{r}\ d_{r}}</annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mrow><mi>l</mi><mi>I</mi></mrow><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mfrac><msub><mi>r</mi><mn>2</mn></msub><msub><mi>r</mi><mn>1</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \frac{\mu_{0}{lI}_{1}(t)}{2\pi r}\ln\frac{r_{2}}{r_{1}}</annotation></semantics></math></p>
-<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Diagram: A vertical source wire carries current I sub 1 of t upward, surrounded by circular magnetic field lines, B of r, t equals mu naught I sub 1 of t over 2 pi r, in the phi-hat direction. To its right, a rectangular victim loop of height l spans radial distances r sub 1 to r sub 2 from the wire. The field passes into the page through the loop area S, with area element d A equals d r d z.' loading='lazy'></figure>
 
 </section>
 <section id='s13' aria-labelledby='h13'>
@@ -165,7 +165,7 @@ nav ol { columns: 2 18rem; }
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mrow><mi>d</mi><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">V_{noise} = - \frac{d{\mathit{Φ}}_{B}}{dt}</annotation></semantics></math></p>
 <p>Substituting we get:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><mi>l</mi></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mrow><mfrac><msub><mi>r</mi><mn>2</mn></msub><msub><mi>r</mi><mn>1</mn></msub></mfrac><mo>×</mo><mfrac><mrow><mi>d</mi><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow></mrow><annotation encoding="application/x-tex">V_{noise} = - \frac{\mu_{0}l}{2\pi r}\ln{\frac{r_{2}}{r_{1}} \times \frac{dI_{1}(t)}{dt}}</annotation></semantics></math></p>
-<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Diagram: A vertical source wire carries current I sub 1 of t upward, surrounded by circular magnetic field lines, B of r, t equals mu naught I sub 1 of t over 2 pi r, in the phi-hat direction. To its right, a rectangular victim loop of height l spans radial distances r sub 1 to r sub 2 from the wire. The field passes into the page through the loop area S, with area element d A equals d r d z.' loading='lazy'></figure>
 
 </section>
 <section id='s14' aria-labelledby='h14'>
@@ -197,7 +197,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> Serial Communication – Multiple Devices</h2>
-<figure><img src='L10_files/130b9bcde414.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/130b9bcde414.svg' alt='Four antenna configurations between a transmitter (Tx) and receiver (Rx), named by antenna count. SISO, single input single output: one transmit antenna, one receive antenna. SIMO, single input multiple output: one transmit antenna, several receive antennas. MISO, multiple input single output: several transmit antennas, one receive antenna. MIMO, multiple input multiple output: several antennas on both ends. &quot;Input&quot; refers to the transmit side and &quot;output&quot; to the receive side.' loading='lazy'></figure>
 <p><a href='https://commons.wikimedia.org/wiki/File:Prinzip_MIMO.svg'>https://commons.wikimedia.org/wiki/File:Prinzip_MIMO.svg</a></p>
 
 </section>
@@ -225,9 +225,9 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> Serial Communication – Simplex vs Half-Duplex vs Full-Duplex</h2>
-<figure><img src='L10_files/e6bfb79ae890.gif' alt='How data flows in networks: Simplex, Half-Duplex, Full-Duplex | Anis HASSEN  posted on the topic | LinkedIn' loading='lazy'></figure>
+<figure><img src='L10_files/e6bfb79ae890.gif' alt='Three panels compare communication modes between Device A and Device B, each joined by a single line. Simplex: only Device A has a signal dot, so data flows one way, A to B. Half-duplex: also a single dot at Device A, representing one direction at a time, with the link able to reverse. Full-duplex: dots at both Device A and Device B, so both send simultaneously.' loading='lazy'></figure>
 <p><a href='https://www.linkedin.com/posts/anis-hassen_communication-modes-simplified-ever-activity-7310553982957948928-FHnT/'>https://www.linkedin.com/posts/anis-hassen_communication-modes-simplified-ever-activity-7310553982957948928-FHnT/</a></p>
-<figure><img src='L10_files/aeed0014f172.jpg' alt='Half-duplex vs Full-duplex vs Simplex Transmission Mode' loading='lazy'></figure>
+<figure><img src='L10_files/aeed0014f172.jpg' alt='Three rows compare transmission modes between pairs of walkie-talkies. Simplex: data flows only left to right; the return direction is blocked. Half-duplex: data can flow in either direction, but only one direction at a time, left to right or right to left. Full-duplex: data flows in both directions simultaneously.' loading='lazy'></figure>
 <p><a href='https://www.qsfptek.com/qt-news/half-duplex-vs-full-duplex-vs-simplex-transmission-mode.html?srsltid=AfmBOopvEYPNWR3lh3_nh46jJxnYWESqNo07pANJhJ3pTBwkhLByDD5J'>https://www.qsfptek.com/qt-news/half-duplex-vs-full-duplex-vs-simplex-transmission-mode.html?srsltid=AfmBOopvEYPNWR3lh3_nh46jJxnYWESqNo07pANJhJ3pTBwkhLByDD5J</a></p>
 
 </section>
@@ -274,7 +274,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h26'><span class='num'>26.</span> Serial Communication – SCI / UART</h2>
 <p><strong>Asynchronous</strong>: No shared clock wire. Timing relies on agreed-upon Baud Rate.</p>
 <p>init_serialSCIA(&amp;SerialA,115200);</p>
-<figure><img src='L10_files/259883a97376.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/259883a97376.svg' alt='Timing diagram of two SCI (serial communication interface) data frames from Figure 19-3. The line idles high, then a low start bit is followed by eight data bits sent LSB first through MSB, an optional parity bit, and a high stop bit back to idle. Top frame is idle-line mode, for normal nonmultiprocessor communication. Bottom frame is address-bit mode, which inserts an extra address/data bit after the MSB, before parity, to mark whether the frame carries an address or data.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
@@ -301,7 +301,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s29' aria-labelledby='h29'>
 <h2 id='h29'><span class='num'>29.</span> Serial Communication - SPI</h2>
-<figure><img src='L10_files/9bdf3df9ed59.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/9bdf3df9ed59.svg' alt='Block diagram of the SPI module&#x27;s CPU interface. The CPU&#x27;s SYSCLK feeds a low-speed prescaler, producing LSPCLK, which is ANDed with an enable bit from register PCLKCR8 to form the SPI bit clock. SYSCLK and the reset signal SYSRS also go directly to the SPI. The SPI exchanges SPISIMO, SPISOMI, SPICLK and SPISTE-bar (active low) with the GPIO mux. It sends interrupts SPIINT and SPITXINT to the PIE and DMA requests SPIRXDMA and SPITXDMA to the DMA. CPU, SPI, PIE and DMA share a peripheral bus.' loading='lazy'></figure>
 
 </section>
 <section id='s30' aria-labelledby='h30'>
@@ -357,7 +357,7 @@ nav ol { columns: 2 18rem; }
 <section id='s35' aria-labelledby='h35'>
 <h2 id='h35'><span class='num'>35.</span> Serial Communication - SPI</h2>
 <p><a href='https://en.wikipedia.org/wiki/Serial_Peripheral_Interface'>https://en.wikipedia.org/wiki/Serial_Peripheral_Interface</a></p>
-<figure><img src='L10_files/1f4672cd270c.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/1f4672cd270c.gif' alt='SPI data exchange between a Master and a Slave, each with an empty 8-bit shift register above a memory array. The master&#x27;s memory holds bytes M0 to M7; the slave&#x27;s holds S0 to S15. SCK and MOSI run from master to slave, entering the slave register&#x27;s left end. MISO runs from the slave register&#x27;s rightmost bit back to the master register&#x27;s leftmost bit. The two registers form a loop, so each clock pulse shifts one bit each way, swapping register contents.' loading='lazy'></figure>
 
 </section>
 <section id='s36' aria-labelledby='h36'>
@@ -410,14 +410,14 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s39' aria-labelledby='h39'>
 <h2 id='h39'><span class='num'>39.</span> SPI</h2>
-<figure><img src='L10_files/3f706f4edce5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/3f706f4edce5.svg' alt='Timing diagram: TI&#x27;s four SPI clock modes over an 8-bit transfer. Rising edge without delay idles low and rises at each cycle start; with delay, it rises mid-cycle. Falling edge without delay idles high and falls at each cycle start; with delay, it falls mid-cycle. The data line (SPISIMO/SPISOMI) changes at cycle boundaries, sending the MSB in cycle 1 through the LSB in cycle 8. Active-low SPISTE stays low for the whole byte, and receive latch points fall mid-cycle.' loading='lazy'></figure>
 <table><thead><tr><th scope='col'>Polarity</th><th scope='col'>Phase</th></tr></thead><tbody><tr><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td></tr></tbody></table>
 
 </section>
 <section id='s40' aria-labelledby='h40'>
 <h2 id='h40'><span class='num'>40.</span> SPI</h2>
 <p>What is this registry?</p>
-<figure><img src='L10_files/9e49ef1f9cde.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/9e49ef1f9cde.svg' alt='Block diagram of TI SPI module in master mode. Words from a 16-level TX FIFO pass through SPITXBUF into the SPIDAT shift register, which shifts out on SPISIMO when TALK is enabled. Incoming bits on SPISOMI (or SPISIMO in three-wire mode, selected by TRIWIRE) shift back into SPIDAT, then go through SPIRXBUF to a 16-level RX FIFO. A state-control block clocked by LSPCLK, configured by CLKPOLARITY, CLK_PHASE, SPICHAR and SPIBRR, drives the SPICLK output and the active-low SPISTE enable.' loading='lazy'></figure>
 
 </section>
 <section id='s41' aria-labelledby='h41'>
@@ -450,12 +450,12 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s45' aria-labelledby='h45'>
 <h2 id='h45'><span class='num'>45.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/780e51122d40.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/780e51122d40.svg' alt='Circuit: an I2C bus of two shared lines, serial data (SDA) and serial clock (SCL), each tied to V sub DD through its own pullup resistor. Four devices connect in parallel to both lines: a 28x I2C module, an I2C EPROM, an I2C controller, and a second 28x I2C module. Every device shares the same two wires, so many modules can communicate over just two signals.' loading='lazy'></figure>
 
 </section>
 <section id='s46' aria-labelledby='h46'>
 <h2 id='h46'><span class='num'>46.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/77123d734e8d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/77123d734e8d.svg' alt='Block diagram of the TI I2C module. Bidirectional SDA and SCL pins connect to the module. To transmit, the CPU writes over the peripheral bus to I2CDXR (or through the TX FIFO), which loads the I2CXSR shift register that drives SDA. To receive, SDA shifts into I2CRSR, then I2CDRR, which the bus reads directly or via the RX FIFO. TX and RX FIFO interrupts are ORed into a FIFO interrupt to the CPU/PIE. Control/status registers sit on the bus. A clock synchronizer, prescaler, noise filters and arbitrator support the link. Seven interrupt sources combine into I2C INT to the CPU/PIE.' loading='lazy'></figure>
 
 </section>
 <section id='s47' aria-labelledby='h47'>
@@ -476,8 +476,8 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s48' aria-labelledby='h48'>
 <h2 id='h48'><span class='num'>48.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/59908c4bb78b.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L10_files/9e5a82b9a94f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/59908c4bb78b.svg' alt='Timing diagram of an I2C transfer with 7-bit address and 8-bit data on lines SDA and SCL. START: SDA falls while SCL is high. Seven address bits follow, MSB first, then the R/W-bar bit on clock 8 and the slave&#x27;s acknowledge (SDA held low) on clock 9. Eight data bits follow, then a ninth-clock acknowledge or no-acknowledge from the receiver. STOP: SDA rises while SCL is high. SDA changes only while SCL is low.' loading='lazy'></figure>
+<figure><img src='L10_files/9e5a82b9a94f.svg' alt='I2C 7-bit addressing frame format (FDF equals 0, XA equals 0 in I2CMDR), fields in order with bit widths: start bit S (1 bit), 7-bit slave address, R slash W bar (1 bit), ACK (1 bit), Data (n bits), ACK (1 bit), Data (n bits), ACK (1 bit), stop bit P (1 bit). Each data byte is followed by an acknowledge bit.' loading='lazy'></figure>
 <p>R/W=0: The I2C master writes (transmits) data to the addressed slave.</p>
 <p>R/W=1: The I2C master reads (receives) data from the slave.</p>
 
@@ -493,7 +493,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s50' aria-labelledby='h50'>
 <h2 id='h50'><span class='num'>50.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/9cbb80b62518.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/9cbb80b62518.svg' alt='Frame diagram of I2C 10-bit addressing (FDF equals 0, XA equals 1 in I2CMDR), fields in order with bit widths: Start bit; 7 bits &quot;1 1 1 1 0 x x&quot;, where x x are the 2 most significant address bits; 1 read/not-write bit; ACK; 8 bits holding the 8 least significant bits of the slave address; ACK; n data bits; ACK; Stop bit.' loading='lazy'></figure>
 
 </section>
 <section id='s51' aria-labelledby='h51'>
@@ -506,7 +506,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s52' aria-labelledby='h52'>
 <h2 id='h52'><span class='num'>52.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/190b78e49d6f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/190b78e49d6f.svg' alt='Timing diagram: I2C arbitration between two master-transmitters, with traces for the SCL clock, data from device 1, data from device 2, and the SDA bus line. Both devices send 1 then 0, so SDA matches both. On the third bit, device 1 releases SDA high for a 1 while device 2 drives 0. Because the line is wired-AND, SDA stays low. Device 1 sees the mismatch, loses arbitration and switches off. Device 2 drives SDA through its full sequence: 1, 0, 0, 1, 0, 1.' loading='lazy'></figure>
 
 </section>
 <section id='s53' aria-labelledby='h53'>
@@ -542,7 +542,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s56' aria-labelledby='h56'>
 <h2 id='h56'><span class='num'>56.</span> Serial Communication – I2C</h2>
-<figure><img src='L10_files/649ada7bf124.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/649ada7bf124.svg' alt='Timing diagram: Synchronization of two I2C clock generators during arbitration. Device 1 pulls SCL low first, and the bus line goes low immediately. Device 2 goes low later and releases later. When device 1 releases its clock high, the bus stays low because device 2 still holds it, so device 1 enters a wait state. The bus goes high only when device 2 releases, starting the HIGH period for both. Both then pull low together. The wired-AND bus follows the longest low and shortest high.' loading='lazy'></figure>
 
 </section>
 <section id='s57' aria-labelledby='h57'>

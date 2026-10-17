@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Slide7 Resample2</title><desc id="fig-desc">Plot: Monte Carlo localization after the second resampling step, on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). A gray path traces the robot&#x27;s motion from about (2.4, 2) up and to the right. The particles have collapsed into a tight cluster near (4, 4). The estimated pose (particle mean) nearly coincides with the true robot pose, and both point up and to the right, showing that the filter has converged.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

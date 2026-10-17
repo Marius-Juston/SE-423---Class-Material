@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Slide1 Init</title><desc id="fig-desc">Plot: Global initialization of Monte Carlo localization in a 10 by 10 meter area, where belief of x sub 0 equals 1 over the size of X. About a thousand particles, each an arrow with a random heading, are spread uniformly over the whole map. Landmarks sit at (2, 8), (8, 8) and (8, 2). The true robot pose is near (2, 2) facing up-right, while the particle mean is near the center (5, 4.5) facing down-right, so before any measurements the estimate says nothing about the robot&#x27;s real location.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

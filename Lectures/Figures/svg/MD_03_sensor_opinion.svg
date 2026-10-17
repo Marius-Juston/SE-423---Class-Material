@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">MD 03 Sensor Opinion</title><desc id="fig-desc">Plot titled &quot;MD Update (Transforming the Measurement),&quot; position X versus position Y. A large purple prediction uncertainty ellipse, tilted up and to the right, is centered near (8.2, 5). A smaller filled orange ellipse, the effective sensor belief at H inverse z sub k with covariance P sub meas, is centered near (12, 8) and only partly overlaps it. A gray line between the two centers is the residual, z sub k minus H x sub pred. The innovation covariance is S equals H P sub pred H transpose plus R.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

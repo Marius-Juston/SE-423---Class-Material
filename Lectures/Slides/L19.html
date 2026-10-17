@@ -91,7 +91,7 @@ nav ol { columns: 2 18rem; }
 <p>What was the output path returned?</p>
 <p>The output path was a sequence of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y)</annotation></semantics></math> waypoints.</p>
 <p>In lecture 15, we however, define the robot’s pose <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p\  = \ (x,\ y,\ \theta)</annotation></semantics></math> in the global frame which moves using the linear velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math> and angular <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math>.</p>
-<figure><img src='L19_files/86eb85e1b87d.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/86eb85e1b87d.png' alt='Grid map in which every open cell holds an arrow pointing back toward the neighbor it was reached from, forming a flow field that leads to the start, a red star-shaped character at left center. Three gray walls block the grid: a tall one at left, one in the middle, and an L-shape at upper right. A purple path, traced by following the arrows back from the goal X tucked inside the L, climbs in steps over the middle wall, runs right beneath the L, and wraps around its end to the goal.' loading='lazy'></figure>
 
 </section>
 <section id='s7' aria-labelledby='h7'>
@@ -151,7 +151,7 @@ v \\
 </section>
 <section id='s10' aria-labelledby='h10'>
 <h2 id='h10'><span class='num'>10.</span> Path Planning</h2>
-<figure><img src='L19_files/05e5ea11b3ed.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/05e5ea11b3ed.svg' alt='Diagram: tracking error for a differential-drive robot following a path segment from p sub k (x sub k, y sub k) to p sub k plus 1 (x sub k plus 1, y sub k plus 1). The segment makes angle theta sub r with the X axis, and its endpoint is the reference (x sub r, y sub r, v sub r, omega sub r). The robot sits at (x, y) with heading theta. Vector d equals x sub r minus x, y sub r minus y points from robot to target and splits into e sub x along the robot&#x27;s x axis and e sub y along its y axis. e sub theta is the angle between robot heading and path direction.' loading='lazy'></figure>
 
 </section>
 <section id='s11' aria-labelledby='h11'>
@@ -188,7 +188,7 @@ v \\
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> Path Planning</h2>
-<figure><img src='L19_files/8309719884b3.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/8309719884b3.gif' alt='Plot: a 20 by 20 map with a horizontal wall at y equals 10 that has a narrow gap near x equals 15. The A star path (red dashed) runs diagonally from the start at (2, 2) to (9, 9), follows y equals 9 under the wall to x equals 14, passes up through the gap, then zigzags diagonally and vertically to the goal at (18, 18). The robot (green, with a heading line) has just left the start, steering toward its current target waypoint at (3, 3) on the path.' loading='lazy'></figure>
 
 </section>
 <section id='s15' aria-labelledby='h15'>
@@ -210,7 +210,7 @@ v \\
 </section>
 <section id='s17' aria-labelledby='h17'>
 <h2 id='h17'><span class='num'>17.</span> Path Planning</h2>
-<figure><img src='L19_files/c815a30d3f87.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/c815a30d3f87.svg' alt='Plot: Three-dimensional configuration space for robot path planning, with X and Y position axes from 0 to 6 and orientation theta as the vertical axis, stacked as three grid layers at 0, 90 and 180 degrees. A path runs from Start (1, 1, 0 degrees) to Goal (5, 5, 0 degrees). Horizontal segments within a layer are moves between grid cells, and vertical segments are turns in place to the next orientation. The path climbs from the 0-degree layer through 90 degrees to the 180-degree layer, where the goal marker is drawn even though it is labeled 0 degrees.' loading='lazy'></figure>
 
 </section>
 <section id='s18' aria-labelledby='h18'>
@@ -252,18 +252,18 @@ v \\
 <h2 id='h22'><span class='num'>22.</span> Hybrid A*</h2>
 <p>Hybrid A* uses a discrete 3D grid <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y,\theta)</annotation></semantics></math> purely for spatial hashing (to know if an area was visited). However, the actual coordinates stored in the nodes are continuous floating-point values.</p>
 <p>This guarantees that the generated path is physically drivable and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mn>1</mn></msup><annotation encoding="application/x-tex">C^{1}</annotation></semantics></math> continuous (smooth).There are no impossible 90-degree instantaneous turns!</p>
-<figure><img src='L19_files/85cfb3f0fae3.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/85cfb3f0fae3.svg' alt='Side-by-side comparison of node expansion. In A*, popped cell x sub n expands with straight arrows to grid-cell centers above, left and right (x sub n plus 1, superscripts 1 to 3), which are marked opened. In Hybrid A*, state s sub n equals (x sub n, theta sub n), a continuous point in a popped cell, expands along three curved, drivable arcs (left, straight, right) to continuous points s sub n plus 1 inside the three cells ahead.' loading='lazy'></figure>
 
 </section>
 <section id='s23' aria-labelledby='h23'>
 <h2 id='h23'><span class='num'>23.</span> Hybrid A*</h2>
 <p>Computing the cost of each state is relatively similar. We determine the cost by considering the length of the arcs between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mi>n</mi></msub><annotation encoding="application/x-tex">s_{n}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>n</mi><mo>+</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">s_{n + 1}</annotation></semantics></math></p>
-<figure><img src='L19_files/85cfb3f0fae3.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/85cfb3f0fae3.svg' alt='Side-by-side comparison of node expansion. In A*, popped cell x sub n expands with straight arrows to grid-cell centers above, left and right (x sub n plus 1, superscripts 1 to 3), which are marked opened. In Hybrid A*, state s sub n equals (x sub n, theta sub n), a continuous point in a popped cell, expands along three curved, drivable arcs (left, straight, right) to continuous points s sub n plus 1 inside the three cells ahead.' loading='lazy'></figure>
 
 </section>
 <section id='s24' aria-labelledby='h24'>
 <h2 id='h24'><span class='num'>24.</span> Hybrid A*</h2>
-<figure><img src='L19_files/452ccb0be6e7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/452ccb0be6e7.svg' alt='Hybrid A* search on an occupancy grid with a large square obstacle in the center and a horizontal bar obstacle at lower right. From start S at top left, facing right, the search expands a tree of short motion primitives (straight segments and left and right turning arcs) that spreads around both sides of the large obstacle. The final smooth, drivable path curves from S, runs diagonally past the left and lower side of the large obstacle, then turns to run straight right beneath the bar to goal G, arriving with the required rightward heading.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>
@@ -284,7 +284,7 @@ v \\
 <p>This is simply a standard 2D grid A* (or Dijkstra&#x27;s) running in the background!</p>
 <p>It calculates the distance to the goal avoiding all walls.</p>
 <p>It prevents the kinematic search from getting stuck in dead ends. Because it&#x27;s 2D, it computes very quickly.</p>
-<figure><img src='L19_files/e3908f6634c1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/e3908f6634c1.svg' alt='Two-panel figure of a car at start x sub s inside a U-shaped obstacle that opens to the left, with goal x sub g to the upper right. Left: the constrained heuristic, a minimum-turning-radius r curve, runs straight through the obstacle wall to the goal, badly underestimating the cost by ignoring obstacles. Right: on a 2D grid, shaded cells trace the obstacle-aware heuristic path out of the U&#x27;s open side, over the top, and right to the goal, accounting for obstacles and dead ends.' loading='lazy'></figure>
 <p><a href='https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1057261&amp;dswid=4852'>https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1057261&amp;dswid=4852</a></p>
 
 </section>
@@ -293,7 +293,7 @@ v \\
 <p>This heuristic ignores all obstacles but calculates the mathematical shortest path for a vehicle with a minimum turning radius.</p>
 <p>If the robot needs to arrive at the goal facing a specific direction, it computes the required curves.</p>
 <p>These optimal obstacle-free paths are called <strong>Dubins</strong><strong> curves </strong>or <strong>Reeds-Shepp</strong> curves.</p>
-<figure><img src='L19_files/e3908f6634c1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/e3908f6634c1.svg' alt='Two-panel figure of a car at start x sub s inside a U-shaped obstacle that opens to the left, with goal x sub g to the upper right. Left: the constrained heuristic, a minimum-turning-radius r curve, runs straight through the obstacle wall to the goal, badly underestimating the cost by ignoring obstacles. Right: on a 2D grid, shaded cells trace the obstacle-aware heuristic path out of the U&#x27;s open side, over the top, and right to the goal, accounting for obstacles and dead ends.' loading='lazy'></figure>
 <p><a href='https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1057261&amp;dswid=4852'>https://kth.diva-portal.org/smash/record.jsf?pid=diva2%3A1057261&amp;dswid=4852</a></p>
 
 </section>
@@ -314,9 +314,9 @@ v \\
 <section id='s30' aria-labelledby='h30'>
 <h2 id='h30'><span class='num'>30.</span> Hybrid A* - Dubins curves</h2>
 <p><a href='https://en.wikipedia.org/wiki/Dubins_path'>https://en.wikipedia.org/wiki/Dubins_path</a></p>
-<figure><img src='L19_files/389c20d706e2.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L19_files/fd24adec3593.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L19_files/77d62ed0b663.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/389c20d706e2.svg' alt='Dubins path of type RSL (right, straight, left) from start pose A to goal pose B, each with an arrow showing its heading direction. The car leaves A turning right along a minimum-radius circle, follows a straight segment tangent to both circles, then turns left along a second minimum-radius circle to arrive at B with the required heading.' loading='lazy'></figure>
+<figure><img src='L19_files/fd24adec3593.svg' alt='Dubins path example of type RSR (right turn, straight, right turn): start A on a left circle, heading up and to the right. The path turns right (clockwise) along the top of that circle to a tangent point, follows a straight line along the common upper tangent to a second, equal-radius circle, then turns right again down that circle&#x27;s right side to goal B, which heads down and to the left.' loading='lazy'></figure>
+<figure><img src='L19_files/77d62ed0b663.svg' alt='Dubins LRL path built from three touching circles of equal minimum turning radius. Starting at pose A, heading down-left on the right circle, the path turns left along that circle to where it touches the lower-left circle. It then turns right, sweeping most of the way around the lower-left circle to where it touches the upper circle. Finally it turns left along the upper circle to goal pose B, heading up-right.' loading='lazy'></figure>
 <p>RSL</p>
 <p>RSR</p>
 <p>LRL</p>
@@ -341,8 +341,8 @@ v \\
 </section>
 <section id='s33' aria-labelledby='h33'>
 <h2 id='h33'><span class='num'>33.</span> Hybrid A* - Reeds-Shepp Curves</h2>
-<figure><img src='L19_files/907827d6acdd.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L19_files/4b6382ac571f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/907827d6acdd.svg' alt='A car-like robot&#x27;s Reeds-Shepp path between two vehicle poses, drawn as rectangles at lower left and upper right. From the lower pose, a short arc curves up and left to a sharp cusp, where the vehicle switches between forward and reverse. A long arc then sweeps down, right, and up to the upper pose. This shows that Reeds-Shepp curves, unlike Dubins curves, allow reversing, joining minimum-radius arcs at direction changes.' loading='lazy'></figure>
+<figure><img src='L19_files/4b6382ac571f.svg' alt='A Reeds-Shepp path joining two car poses, drawn as rectangles. From the start pose at lower left, the car drives down and to the right along an arc to a sharp cusp at the bottom, where it switches between forward and reverse. It then follows a long curve up and to the right, ending aligned with the goal pose at upper right. The path is built from arcs with one direction reversal.' loading='lazy'></figure>
 
 </section>
 <section id='s34' aria-labelledby='h34'>
@@ -488,7 +488,7 @@ a_{f}
 </section>
 <section id='s46' aria-labelledby='h46'>
 <h2 id='h46'><span class='num'>46.</span> Trajectory Planning</h2>
-<figure><img src='L19_files/a8da7ce7ad05.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L19_files/a8da7ce7ad05.svg' alt='Block diagram of an autonomous navigation pipeline. Perception and mapping passes an Octomap or costmap to path planning (Hybrid A star on state x, y, theta with a bicycle model and steering-constrained node expansion), which outputs a geometric path of poses. Trajectory planning optimizes for smoothness under velocity and acceleration limits using polynomials or splines, producing reference trajectory s sub ref of t equals x, y, theta, v, omega, a, kappa. A tracking controller (MPC or pure pursuit) minimizes tracking error and sends commanded v and omega to the vehicle plant, which feeds back state x, y, theta, v, omega.' loading='lazy'></figure>
 
 </section>
 <section id='s47' aria-labelledby='h47'>

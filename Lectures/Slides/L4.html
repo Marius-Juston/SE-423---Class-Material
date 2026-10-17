@@ -116,7 +116,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s11' aria-labelledby='h11'>
 <h2 id='h11'><span class='num'>11.</span> ASCII</h2>
-<figure><img src='L4_files/b5b47712caa2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/b5b47712caa2.svg' alt='Table: the 128 ASCII codes, decimal 0 to 127, each given in hexadecimal, 7-bit binary, octal and as its character. Codes 0 to 31 are control characters, such as null, line feed (10) and carriage return (13). 32 is space. Digits 0 to 9 are 48 to 57 (hex 30 to 39). Uppercase A to Z are 65 to 90 (hex 41 to 5A). Lowercase a to z are 97 to 122 (hex 61 to 7A), 32 above uppercase. 127 is DEL.' loading='lazy'></figure>
 <p>If there are less than 7 bits, just put 0s in front of the binary representation</p>
 <p><a href='https://commons.wikimedia.org/wiki/File:ASCII-Table.svg'>https://commons.wikimedia.org/wiki/File:ASCII-Table.svg</a></p>
 
@@ -125,7 +125,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h12'><span class='num'>12.</span> printf and sprintf</h2>
 <p>We want to write content to the output stream ( the stream can be your console output, serial communication, a file, a string ). The function sprintf, outputs to a buffer, printf outputs to the default output stream.</p>
 <p>serial_printf(&amp;SerialA,&quot;Num Timer2:%ld Num SerialRX: %ld\r\n&quot;,CpuTimer2.InterruptCount,numRXA);</p>
-<figure><img src='L4_files/5861b20a400d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/5861b20a400d.svg' alt='Table of C function prototypes from stdio.h, all returning int and taking a format string followed by variable arguments: printf writes to standard output; fprintf adds a FILE pointer stream; sprintf adds a char pointer buffer; snprintf (C99) adds a buffer plus a size_t buffer size. C11 adds bounds-checked versions printf_s, fprintf_s, sprintf_s and snprintf_s, the latter two taking an rsize_t buffer size. Since C99, pointer parameters are marked restrict.' loading='lazy'></figure>
 <p><a href='https://en.cppreference.com/w/c/io/fprintf.html'>https://en.cppreference.com/w/c/io/fprintf.html</a></p>
 
 </section>
@@ -152,15 +152,15 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> printf and sprint – format – specifier &amp; length</h2>
-<figure><img src='L4_files/69cb4305bdd9.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L4_files/92ab32c976e0.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/69cb4305bdd9.svg' alt='Table of printf conversion specifiers with example output: d or i, signed decimal (392); u, unsigned decimal (7235); o, octal (610); x or X, hex lower or upper (7fa, 7FA); f or F, floating point (392.65); e or E, scientific (3.9265e+2); g or G, shortest of e or f (392.65); a or A, hex floating point (-0xc.90fep-2); c, character (a); s, string (sample); p, pointer address (b8000000); n, prints nothing but stores the character count so far through a signed int pointer; percent percent prints a single percent sign.' loading='lazy'></figure>
+<figure><img src='L4_files/92ab32c976e0.svg' alt='Table: argument type expected by printf for each length modifier and specifier. With no length: d/i int; u/o/x/X unsigned int; f/F/e/E/g/G/a/A double; c int; s char pointer; p void pointer; n int pointer. hh gives signed or unsigned char; h short or unsigned short; l long or unsigned long, plus wint_t for c and wchar_t pointer for s; ll long long or unsigned long long; j intmax_t or uintmax_t; z size_t; t ptrdiff_t. L applies only to floating specifiers, giving long double. For n, each length takes a pointer to the matching signed type.' loading='lazy'></figure>
 <p>%[flags][width][.precision]<strong>[length]</strong><strong>specifier</strong></p>
 <p><a href='https://cplusplus.com/reference/cstdio/printf/'>https://cplusplus.com/reference/cstdio/printf/</a></p>
 
 </section>
 <section id='s15' aria-labelledby='h15'>
 <h2 id='h15'><span class='num'>15.</span> printf and sprint – format – additional flags</h2>
-<figure><img src='L4_files/b9e776ad1ac5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/b9e776ad1ac5.svg' alt='Three reference tables of printf format sub-specifiers. Flags: minus left-justifies; plus always prints a sign; space puts a blank before positive values; # adds 0, 0x or 0X prefixes for o, x, X, or forces a decimal point for floating formats; 0 pads with zeros instead of spaces. Width: a number sets the minimum field width, padded with spaces and never truncated; star takes the width from an extra int argument. Precision: dot number sets minimum digits for integers, digits after the decimal point for f and e (default 6), maximum significant digits for g, and maximum characters for s; dot star takes it from an argument.' loading='lazy'></figure>
 <p>%<strong>[flags]</strong><strong>[width]</strong><strong>[.precision]</strong>[length]specifier</p>
 <p><a href='https://cplusplus.com/reference/cstdio/printf/'>https://cplusplus.com/reference/cstdio/printf/</a></p>
 
@@ -185,7 +185,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> SCI</h2>
-<figure><img src='L4_files/259883a97376.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/259883a97376.svg' alt='Timing diagram of two SCI (serial communication interface) data frames from Figure 19-3. The line idles high, then a low start bit is followed by eight data bits sent LSB first through MSB, an optional parity bit, and a high stop bit back to idle. Top frame is idle-line mode, for normal nonmultiprocessor communication. Bottom frame is address-bit mode, which inserts an extra address/data bit after the MSB, before parity, to mark whether the frame carries an address or data.' loading='lazy'></figure>
 
 </section>
 <section id='s19' aria-labelledby='h19'>
@@ -216,7 +216,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> SCI</h2>
-<figure><img src='L4_files/1b1c65357ae5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/1b1c65357ae5.svg' alt='Block diagram of the SCI&#x27;s connections inside the microcontroller. The CPU&#x27;s SYSCLK feeds a low-speed prescaler; its output, LSPCLK, is ANDed with an enable bit in register PCLKCR7 to form the SCI bit clock. SYSCLK and the active-low system reset, SYSRS bar, also go directly to the SCI. The SCI&#x27;s registers sit on the peripheral bus shared with the CPU and PIE. The SCI sends SCITXD to the GPIO mux, receives SCIRXD from it, and signals RXINT and TXINT interrupts to the PIE.' loading='lazy'></figure>
 
 </section>
 <section id='s22' aria-labelledby='h22'>
@@ -232,7 +232,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s24' aria-labelledby='h24'>
 <h2 id='h24'><span class='num'>24.</span> Hardware Interrupts (Timer)</h2>
-<figure><img src='L4_files/b405c214a0f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/b405c214a0f9.svg' alt='Block diagram: TI CPU-Timer. An AND gate passes SYSCLKOUT to a 16-bit prescale counter only while TCR.4, the timer stop bit, is 0. Each time the prescaler borrows (underflows), it reloads from the 16-bit divide-down register TDDRH:TDDR and decrements the 32-bit counter TIMH:TIM. When that counter borrows, it asserts the interrupt TINT (active low) and reloads from the 32-bit period register PRDH:PRD. OR gates also force both reloads on Reset or Timer reload.' loading='lazy'></figure>
 <p>OR</p>
 <p>AND</p>
 <p>NOT</p>
@@ -240,7 +240,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s25' aria-labelledby='h25'>
 <h2 id='h25'><span class='num'>25.</span> Hardware Interrupts (Timer)</h2>
-<figure><img src='L4_files/dc7e7f506877.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/dc7e7f506877.svg' alt='Block diagram of how the three CPU timers interrupt the 28x CPU. TIMER0&#x27;s interrupt, TINT0, goes through the PIE (peripheral interrupt expansion) block, which feeds CPU interrupt lines INT1 through INT12. TIMER1&#x27;s TINT1 connects directly to INT13, and TIMER2&#x27;s TINT2 connects directly to INT14. Notes: the timer registers sit on the C28x memory bus, and the timers are synchronized to SYSCLKOUT.' loading='lazy'></figure>
 <details><summary>Speaker notes</summary><p>Timer 0</p><p>TINT0</p><p>INT1–INT12 via PIE</p><p>Timer 1</p><p>TINT1</p><p>INT13 (direct)</p><p>Timer 2</p><p>TINT2</p><p>INT14 (direct)</p><p>The Peripheral Interrupt Expansion (PIE) is an interrupt router.</p><p>It:</p><p>Takes many peripheral interrupts</p><p>Maps them to CPU interrupt vectors</p><p>Timer 0 is routed through the PIE because:</p><p>It is commonly used for application-level tasks</p><p>It supports prioritization and masking</p><p>Software Consequence</p><p>To use Timer 0:</p><p>Enable the timer interrupt</p><p>Enable the PIE group</p><p>Enable the CPU interrupt</p><p>Acknowledge the PIE inside the ISR</p><p>This makes Timer 0 ideal for:</p><p>Control loops</p><p>Scheduling</p><p>RTOS ticks</p><p>Timers 1 and 2 Bypass the PIE</p><p>Timer 1 → INT13Timer 2 → INT14</p><p>These are dedicated CPU interrupts.</p><p>Why?</p><p>They are intended for:</p><p>High-priority system tasks</p><p>Real-time services</p><p>Deterministic timing</p><p>They:</p><p>Have lower latency</p><p>Are simpler to configure</p><p>Are harder to misuse accidentally</p></details>
 </section>
 <section id='s26' aria-labelledby='h26'>
@@ -271,7 +271,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h28'><span class='num'>28.</span> Interrupts</h2>
 <p>All the interrupt options are available inside the PIE Vector Table inside <a href='https://github.com/COECSL/SE423Spring26/blob/main/C2000Ware_4_01_00_00/device_support/f2837xd/common/source/F2837xD_PieVect.c'>F2837xD_pievect.h</a></p>
 <p>Table 3-2 shows the PIE group and channel assignments for each peripheral interrupt. Each row is a group, and each column is a channel within that group. When multiple interrupts are pending, the lowest-numbered channel is the lowest-numbered group is serviced first. Thus, the interrupts at the top of the table have the highest priority, and the interrupts at the bottom have the lowest priority.</p>
-<figure><img src='L4_files/0e17db4bbfa2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/0e17db4bbfa2.svg' alt='Table 3-2, PIE Channel Mapping: 12 groups (INT1 to INT12) by 16 channels; dashes mark reserved slots. INT1: ADC A to D, XINT1 and 2, TIMER0 at channel 7, WAKE, IPC0 to 3. INT2: ePWM1 to 12 trip zone. INT3: ePWM1 to 12. INT4: eCAP1 to 6. INT5: eQEP1 to 3, CLB1 to 4, SD1 and 2. INT6: SPI A to C and McBSP A and B, receive and transmit. INT7: DMA channels 1 to 6. INT8: I2C A and B, SCI C and D, uPP A. INT9: SCI A and B, CAN A and B, USB A. INT10: ADC A to D events and interrupts. INT11: CLA1 tasks 1 to 8. INT12: XINT3 to 5, VCU, FPU and CLA overflow and underflow, memory errors, and PLL slips.' loading='lazy'></figure>
 
 </section>
 <section id='s29' aria-labelledby='h29'>

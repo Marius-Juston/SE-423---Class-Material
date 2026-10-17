@@ -10,7 +10,7 @@
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   xmlns:svg="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">April Tag Transformed</title><desc id="fig-desc">Perspective view of a flat black-and-white AprilTag with a 3D coordinate frame at its center: the X and Y axes lie in the plane of the tag, and the Z axis points straight out of the tag&#x27;s surface. This is the tag pose recovered from a single image, the orientation that the columns of K inverse times H describe.</desc>
   <sodipodi:namedview
      id="namedview14"
      pagecolor="#505050"

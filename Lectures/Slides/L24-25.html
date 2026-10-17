@@ -272,7 +272,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> SLAM</h2>
-<figure><img src='L24-25_files/9cebf6684d12.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/9cebf6684d12.svg' alt='Flowchart: LiDAR-inertial SLAM pipeline split into a high-frequency front-end and a low-frequency back-end. Front-end: IMU or odometry interrupts at 100 Hz or more feed IMU preintegration (delta v, delta p, delta R), then motion model prediction, x sub t equals f of x sub t minus 1, u sub t, which publishes a fast pose to the local planner and control. A check asks whether a 10 Hz LiDAR scan is ready; if not, the loop returns to the next IMU interrupt. If so, the back-end runs: point cloud deskewing and voxel filtering (using the motion estimate for un-distortion), scan-to-local-map matching by ICP or NDT, then factor graph optimization with iSAM2 or GTSAM using odometry factors. A map manager handles the local window and global map, feeding the local map back to matching and loop closure factors back to the optimizer. It publishes the global map and a corrected pose, which feeds back to the motion model as drift correction.' loading='lazy'></figure>
 
 </section>
 <section id='s19' aria-labelledby='h19'>
@@ -329,7 +329,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s23' aria-labelledby='h23'>
 <h2 id='h23'><span class='num'>23.</span> SLAM</h2>
-<figure><img src='L24-25_files/21794c13c90e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/21794c13c90e.svg' alt='Three-step diagram of one-dimensional scan matching. Step 1: the robot at global position 0 measures a wall at 5 meters, q equals 5; its local frame matches the global frame. Step 2: the robot moves plus 2 meters to position 2, and its local frame shifts with it; it remeasures the wall at p equals 3. Step 3: the new scan point p is aligned to the previous map point q by finding the shift t: 3 plus t equals 5, so t equals 2, which recovers the robot&#x27;s movement.' loading='lazy'></figure>
 
 </section>
 <section id='s24' aria-labelledby='h24'>
@@ -395,7 +395,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s28' aria-labelledby='h28'>
 <h2 id='h28'><span class='num'>28.</span> ICP</h2>
-<figure><img src='L24-25_files/807b30692e4e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/807b30692e4e.svg' alt='Three-panel ICP example in the x-y plane, with blue circles as target points Q1 to Q3 and red squares as source points P1 to P3. Iteration 1: each P is paired with its nearest Q, so P1 and P2 both match Q2, P3 matches Q3, and Q1 is unmatched. After applying transform T1, the moved points P1&#x27;, P2&#x27; and P3&#x27; sit closer and re-pair one-to-one with Q1, Q2 and Q3. At convergence, the final source points lie on the targets, with total error below threshold.' loading='lazy'></figure>
 
 </section>
 <section id='s29' aria-labelledby='h29'>
@@ -416,7 +416,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s30' aria-labelledby='h30'>
 <h2 id='h30'><span class='num'>30.</span> ICP</h2>
-<figure><img src='L24-25_files/807b30692e4e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/807b30692e4e.svg' alt='Three-panel ICP example in the x-y plane, with blue circles as target points Q1 to Q3 and red squares as source points P1 to P3. Iteration 1: each P is paired with its nearest Q, so P1 and P2 both match Q2, P3 matches Q3, and Q1 is unmatched. After applying transform T1, the moved points P1&#x27;, P2&#x27; and P3&#x27; sit closer and re-pair one-to-one with Q1, Q2 and Q3. At convergence, the final source points lie on the targets, with total error below threshold.' loading='lazy'></figure>
 
 </section>
 <section id='s31' aria-labelledby='h31'>
@@ -563,7 +563,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>Initial Point Clouds P (blue, offset triangle) and Q (red, offset and rotated triangle), with their calculated centroids <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mover><mi>p</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\overline{p}\text{)}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mover><mi>q</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\overline{q}\text{)}</annotation></semantics></math> marked and vectors from the origin shown
 </li></ul>
-<figure><img src='L24-25_files/b63afe8d41f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/b63afe8d41f9.svg' alt='Plot on x-y axes from minus 1 to 6, step 1 of point-to-point ICP: computing centroids. Blue point cloud P is a triangle with vertices at (1, 0), (2, 0) and (1.5, 2); its centroid p bar is at about (1.5, 0.67). Red point cloud Q is a triangle with vertices near (1.67, 4), (3.67, 4.5) and (3.67, 3.5); its centroid q bar is at (3, 4). Arrows from the origin point to each centroid.' loading='lazy'></figure>
 
 </section>
 <section id='s43' aria-labelledby='h43'>
@@ -571,7 +571,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>Visualization of Step 2 conceptually centering both point clouds at the global origin to compute the cross-covariance matrix H using the relative positions of points to their respective centroids
 </li></ul>
-<figure><img src='L24-25_files/d16519f384d6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/d16519f384d6.svg' alt='Plot on centered axes x prime and y prime: both triangles now have their centroids at the origin. Blue P prime points up, with vertices near (0, 1.33), (minus 0.5, minus 0.67) and (0.5, minus 0.67). Red Q prime points left, with vertices near (minus 1.33, 0), (0.67, 0.5) and (0.67, minus 0.5). Q prime is P prime rotated 90 degrees counterclockwise, so only rotation remains. Caption: H equals the sum over i of (p sub i minus p bar) times (q sub i minus q bar) transpose.' loading='lazy'></figure>
 
 </section>
 <section id='s44' aria-labelledby='h44'>
@@ -579,7 +579,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>Visualization of Step 3 SVD decomposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mi>H</mi><mo>=</mo><mi>U</mi><mi mathvariant="normal">Σ</mi><msup><mi>V</mi><mi>T</mi></msup><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}H = U\Sigma V^{T}\text{)}</annotation></semantics></math>, showing the orthogonal singular vectors U and V as principal axes in the centered frames of reference for P and Q respectively, with illustrative singular values <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><msub><mi>σ</mi><mi>i</mi></msub><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\sigma_{i}\text{)}</annotation></semantics></math> indicating the scale of variance along these directions.
 </li></ul>
-<figure><img src='L24-25_files/4a97b8be154c.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/4a97b8be154c.svg' alt='Two side-by-side plots of centered triangles. In P-space, a tall triangle with its apex at about (0, 1.3) and base vertices near (±0.5, −0.65) has u sub 1 (sigma sub 1) pointing up the y sub P axis, along its long dimension, and the shorter u sub 2 (sigma sub 2) pointing along positive x sub P. In Q-space, the same triangle appears rotated about 90 degrees, with its apex at about (−1.3, 0). v sub 1 points along negative x sub Q toward that apex, and v sub 2 points along negative y sub Q, so the matching axes reveal the rotation between frames.' loading='lazy'></figure>
 
 </section>
 <section id='s45' aria-labelledby='h45'>
@@ -587,7 +587,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>Visualizing Step 4 rotation part, showing how the rotation matrix R is conceptually applied to the centered point cloud P&#x27; to align its principal axes with those of centered Q&#x27;, resulting in the rotated, centered shape P&#x27;&#x27;.
 </li></ul>
-<figure><img src='L24-25_files/f712a324e457.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/f712a324e457.svg' alt='Plot titled Step 4: Rotation R, R equals V U transpose, on x double prime and y double prime axes from minus 2 to 2. A faint purple centered triangle points up, with apex near (0, 1.33) and base corners near (minus 0.5, minus 0.67) and (0.5, minus 0.67). A curved cyan arrow labeled &quot;R (on centered)&quot; sweeps 90 degrees counterclockwise to a cyan triangle labeled P double prime equals R of P prime, now pointing left, with apex near (minus 1.33, 0) and corners near (0.67, plus or minus 0.5).' loading='lazy'></figure>
 
 </section>
 <section id='s46' aria-labelledby='h46'>
@@ -595,7 +595,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>Visualizing the Step 4 translation vector calculation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>=</mo><mtext mathvariant="normal">(</mtext><mover><mi>q</mi><mo accent="true">¯</mo></mover><mo>−</mo><mi>R</mi><mover><mi>p</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">t = \text{(}\overline{q} - R\overline{p}\text{)}</annotation></semantics></math>. The vector t shifts the rotated source centroid <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mi>R</mi><mover><mi>p</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}R\overline{p}\text{)}</annotation></semantics></math>directly to the target centroid <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mover><mi>q</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\overline{q}\text{)}</annotation></semantics></math>. Conceptual perfect shape alignment (cyan filled triangle) is shown centered on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><mover><mi>q</mi><mo accent="true">¯</mo></mover><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\overline{q}\text{)}</annotation></semantics></math>, aligning with the original Q shape.
 </li></ul>
-<figure><img src='L24-25_files/2e9affd1aeeb.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/2e9affd1aeeb.svg' alt='Plot titled &quot;Step 4: Translation t, t equals q bar minus R p bar&quot; on x-y axes from minus 1 to 6. The original source centroid p bar orig sits near (1.5, 0.6). A magenta vector R p bar runs from the origin to about (minus 0.6, 1.5). A green vector t runs from the tip of R p bar to the target centroid q bar at (3, 4). A cyan triangle with vertices near (1.7, 4), (3.7, 4.5) and (3.7, 3.5) is centered on q bar, labeled P aligned equals R times (P minus p bar) plus q bar.' loading='lazy'></figure>
 
 </section>
 <section id='s47' aria-labelledby='h47'>
@@ -640,7 +640,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s50' aria-labelledby='h50'>
 <h2 id='h50'><span class='num'>50.</span> Variant 1: Point-to-Point ICP (“Vanilla”)</h2>
-<figure><img src='L24-25_files/df8d7f59543c.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/df8d7f59543c.svg' alt='Two-panel figure of a robot in a featureless corridor. (A) At time t, the robot moves forward between two parallel walls, and its scan points are evenly spaced along each wall. (B) At t plus 1, the new scan points are shifted along the walls by the actual forward drift delta x. The point-to-point match vectors, however, run sideways, perpendicular to the walls. The repeating wall points leave forward motion unconstrained, so ICP cannot recover delta x.' loading='lazy'></figure>
 
 </section>
 <section id='s51' aria-labelledby='h51'>
@@ -671,8 +671,8 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s53' aria-labelledby='h53'>
 <h2 id='h53'><span class='num'>53.</span> Variant 2: Point-to-Line ICP (PL-ICP)</h2>
-<figure><img src='L24-25_files/ce7c49b4b97f.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L24-25_files/b4dbc9863ebd.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/ce7c49b4b97f.svg' alt='Plot, Step 1 of point-to-line ICP: identify correspondences and target normals n sub i. A blue source scan P lies above a red target curve Q. Gray lines pair source points (0.5, 3.5), (2.5, 4.5) and (4.5, 4) with target points (1, 1), (3, 2) and (5, 1.5). Each target point has a faint tangent line and a red normal arrow perpendicular to it: n sub 1 points up-left, n sub 2 straight up, and n sub 3 up and slightly right.' loading='lazy'></figure>
+<figure><img src='L24-25_files/b4dbc9863ebd.svg' alt='Plot, Step 5 of point-to-line ICP, apply transform and update, then iterate. The scan&#x27;s original position, a faint blue curve between y equals 3 and 4.5, has been transformed down onto the red reference curve, whose points are at (1, 1), (3, 2) and (5, 1.5) with faint tangent lines through them. The aligned cyan scan, P sub aligned, has points near (0.5, 0.5), (2.5, 2) and (4.5, 1.6) that lie on those tangent lines but not on the red points. A note reads: points align to structure, not necessarily exact pairs.' loading='lazy'></figure>
 
 </section>
 <section id='s54' aria-labelledby='h54'>
@@ -716,7 +716,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </li></ul>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><munderover><mo>∑</mo><mi>i</mi><mrow></mrow></munderover><mrow><msubsup><mi>d</mi><mi>i</mi><mi>⊤</mi></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>C</mi><msub><mi>q</mi><mi>i</mi></msub></msub><mo>+</mo><mi>R</mi><mo>⋅</mo><msub><mi>C</mi><msub><mi>p</mi><mi>i</mi></msub></msub><mo>⋅</mo><msup><mi>R</mi><mi>⊤</mi></msup><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup><msub><mi>d</mi><mi>i</mi></msub></mrow></mrow><annotation encoding="application/x-tex">E(R,t) = \sum_{i}^{}{d_{i}^{\top}\left( C_{q_{i}} + R \cdot C_{p_{i}} \cdot R^{\top} \right)^{- 1}d_{i}}</annotation></semantics></math></p>
 <p>We minimize the “Mahalanobis distance” (just look it up, but it’s just the equation above).</p>
-<figure><img src='L24-25_files/30d3b83396ad.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/30d3b83396ad.svg' alt='Two-panel figure. (A) Probabilistic surface modeling: a red source curve and a blue target curve, each with a point p sub i or q sub i surrounded by a thin ellipse elongated along the curve, its covariance C sub i sup p or C sub i sup q. (B) Plane-to-plane alignment: the transformed point T times p sub i is joined to q sub i by d sub i equals q sub i minus T p sub i. A larger combined ellipse shows the cost to minimize: d sub i transpose times the inverse of C sub i sup q plus R C sub i sup p R transpose, times d sub i.' loading='lazy'></figure>
 
 </section>
 <section id='s57' aria-labelledby='h57'>
@@ -752,7 +752,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>The target point cloud (Q) is placed into a regular spatial grid (voxels in 3D, squares in 2D). Cells with fewer than a minimum number of points (e.g., 3 points) are usually ignored to prevent mathematical instability
 </li></ul>
-<figure><img src='L24-25_files/bc52dc30c0aa.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/bc52dc30c0aa.svg' alt='Plot titled Step 1: Space Subdivision (Voxelization): a 2D x–y plane from 0 to 6 divided into a 3 by 3 grid of 2-unit squares. The red target point cloud Q forms a line rising diagonally from about (2.3, 2.3) to (3.7, 3.7), then running roughly level near y equals 2.8 from x equals 4.3 to 5.7. The square spanning x 2 to 4, y 2 to 4 holds five points and is labeled Active Cell. The next square to the right also holds five points. The bottom-left square has no points and is labeled Empty Cell.' loading='lazy'></figure>
 
 </section>
 <section id='s60' aria-labelledby='h60'>
@@ -760,7 +760,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>For every active cell, the sample mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi mathvariant="bold-italic">𝝁</mi><mi mathvariant="bold-italic">𝒊</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left( {\mathbf{μ}}_{\mathbf{i}} \right)</annotation></semantics></math> and covariance matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi mathvariant="bold">𝚺</mi><mi mathvariant="bold-italic">𝒊</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left( \mathbf{\Sigma}_{\mathbf{i}} \right)</annotation></semantics></math> of the target points are calculated. This transforms the discrete point cloud into a piecewise continuous set of multi-variate Gaussian probability distributions (represented here by covariance ellipses).
 </li></ul>
-<figure><img src='L24-25_files/eba50820eed5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/eba50820eed5.svg' alt='Plot titled Step 2, Calculate Local Probability Density Functions: an x-y grid from 0 to 6 divided into 2-by-2 cells. In the cell spanning x 2 to 4, points run diagonally from about (2.3, 2.3) to (3.7, 3.7), so their ellipse is tilted along that diagonal, centered at mean mu sub 1 near (3, 3). In the cell spanning x 4 to 6, points lie nearly level around y equals 2.8, so their ellipse is flat and horizontal, centered at mu sub 2 near (5, 2.8). Label: N of q given mu sub i, Sigma sub i.' loading='lazy'></figure>
 
 </section>
 <section id='s61' aria-labelledby='h61'>
@@ -768,7 +768,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>The source point cloud (P) is projected into the voxel grid using its initial, unoptimized transformation. We determine which spatial cell each source point falls into (or its nearest neighbors if using smoothed NDT).
 </li></ul>
-<figure><img src='L24-25_files/ab8c79e39b85.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/ab8c79e39b85.svg' alt='Plot of the NDT voxel grid, x and y from 0 to 6 with 2-unit cells. Six blue source points P form a shallow arc between y equals 4 and 5, from x equals 1.5 to 4.8. About two units below, two pink Gaussian ellipses mark the target distributions: one tilted diagonally in the cell x 2 to 4, y 2 to 4, and one flat and horizontal in the cell x 4 to 6, y 2 to 4. The point p sub k, at about (2.5, 5), is circled, with an arrow to the tilted ellipse labeled &quot;Evaluate p of p sub k based&quot; on that distribution. The initial pose leaves the source cloud misaligned above the target.' loading='lazy'></figure>
 
 </section>
 <section id='s62' aria-labelledby='h62'>
@@ -776,7 +776,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>NDT entirely drops discrete pairs. Instead, it evaluates the probability density of the target cell at the location of the transformed source point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">(</mtext><msubsup><mi mathvariant="bold-italic">𝒙</mi><mi mathvariant="bold-italic">𝒊</mi><mo>′</mo></msubsup><mtext mathvariant="normal">)</mtext></mrow><annotation encoding="application/x-tex">\text{(}\mathbf{x}_{\mathbf{i}}&#39;\text{)}</annotation></semantics></math>. The objective function is to maximize the sum of these probabilities for all source points across the grid.
 </li></ul>
-<figure><img src='L24-25_files/9fce9f2c8681.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/9fce9f2c8681.svg' alt='Plot of NDT score evaluation, zoomed on cell 1 (x and y from about 2 to 4). Nested red ellipses show the cell&#x27;s Gaussian, centered at mean mu sub i at (3, 3) and elongated diagonally from lower left to upper right. The transformed point x prime sub i equals T of p sub i comma u sits near (2.4, 3.8), linked to the mean by the vector x prime sub i minus mu sub i. It lies across the narrow axis, outside the contours, so its density is low. Score: s of p sub i is proportional to exp of minus one half times (x prime sub i minus mu sub i) transpose times Sigma sub i inverse times (x prime sub i minus mu sub i).' loading='lazy'></figure>
 
 </section>
 <section id='s63' aria-labelledby='h63'>
@@ -784,7 +784,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <ul>
 <li>An optimization algorithm (typically Newton&#x27;s Method) calculates the Hessian and gradient of the objective function to update the transformation parameters (rotation and translation). The source cloud &quot;falls&quot; into the high-probability valleys defined by the target&#x27;s Gaussian mixture.
 </li></ul>
-<figure><img src='L24-25_files/37b754ba9e59.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/37b754ba9e59.svg' alt='Plot on an x–y grid from 0 to 6: faint source points at about (1.5, 4), (2, 4.5) and (2.5, 5) sit above the target. Green arrows labeled delta T carry them down and to the right into a red Gaussian ellipse tilted along the line from (2.5, 2.5) to (3.5, 3.5), where the aligned points P sub aligned lie. A second, nearly horizontal ellipse holds target points near y equals 2.7 between x equals 4.5 and 5.8.' loading='lazy'></figure>
 
 </section>
 <section id='s64' aria-labelledby='h64'>
@@ -919,37 +919,37 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s72' aria-labelledby='h72'>
 <h2 id='h72'><span class='num'>72.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/47faaa8e18a7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/47faaa8e18a7.svg' alt='Plot: Global initialization of Monte Carlo localization in a 10 by 10 meter area, where belief of x sub 0 equals 1 over the size of X. About a thousand particles, each an arrow with a random heading, are spread uniformly over the whole map. Landmarks sit at (2, 8), (8, 8) and (8, 2). The true robot pose is near (2, 2) facing up-right, while the particle mean is near the center (5, 4.5) facing down-right, so before any measurements the estimate says nothing about the robot&#x27;s real location.' loading='lazy'></figure>
 
 </section>
 <section id='s73' aria-labelledby='h73'>
 <h2 id='h73'><span class='num'>73.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/8534020634ee.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/8534020634ee.svg' alt='Plot titled &quot;Action / Prediction Step&quot; with the equation: bel bar of x sub t equals the integral of p of x sub t given u sub t and x sub t minus 1, times bel of x sub t minus 1, d x sub t minus 1. On a 10 by 10 meter map with landmark stars near (2, 8), (8, 8) and (8, 2), hundreds of particles spread uniformly in random headings each move along a gray one-second arc. The true robot pose sits near (3.3, 4) heading up-right. The particle mean, near (5.5, 4.3) heading up-left, is far from it, so prediction alone does not localize the robot.' loading='lazy'></figure>
 
 </section>
 <section id='s74' aria-labelledby='h74'>
 <h2 id='h74'><span class='num'>74.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/02243f46b31b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/02243f46b31b.svg' alt='Plot of the measurement (update) step, with weight correction: w sub t superscript m equals eta times exp of the sum of log p of z sub t given x sub t superscript m. In a 10 by 10 meter map with landmarks at (2,8), (8,8) and (8,2), green range circles around the landmarks intersect near the true robot pose at about (3,3). Hundreds of particles spread across the map have near-zero weight. Only particles near the intersection score high, one at about 0.65. The estimated mean pose lies close to the true pose.' loading='lazy'></figure>
 
 </section>
 <section id='s75' aria-labelledby='h75'>
 <h2 id='h75'><span class='num'>75.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/1310a53b20fe.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/1310a53b20fe.svg' alt='Plot: Resampling step of Monte Carlo localization, x sub t superscript m drawn from the weighted set of x sub t superscript i, w sub t superscript i. On a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2), six surviving particles cluster between x equals 1.5 and 4, y equals 3 and 5.5, all heading up and to the right, with trails from the lower left. The estimated mean pose, near (3.2, 4.2), lies close to the true robot pose, near (3.1, 3.4).' loading='lazy'></figure>
 
 </section>
 <section id='s76' aria-labelledby='h76'>
 <h2 id='h76'><span class='num'>76.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/80afaddb2d56.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/80afaddb2d56.svg' alt='Plot: Second prediction step of Monte Carlo localization on a 10 by 10 meter map with landmarks at (2,8), (8,8) and (8,2). Each particle is moved forward along a noisy arc, leaving gray trails. The particles split into a main cluster near (3.8, 4), matching the true robot pose at the end of a short red arc, and a second cluster near (3.4, 5.8), plus a few strays. The estimated mean pose, near (3.9, 4.7), lies between the clusters, slightly off the true pose.' loading='lazy'></figure>
 
 </section>
 <section id='s77' aria-labelledby='h77'>
 <h2 id='h77'><span class='num'>77.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/d64adc5f9725.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/d64adc5f9725.svg' alt='Plot: Particle filter after its second measurement update on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). Green range circles around each landmark intersect near (4, 4.2), where the true robot pose (red arrow) and estimated mean pose (purple arrow) nearly coincide, both heading up and to the right. Most particles form a dense cluster there, with a second cluster near (3.5, 5.8) and a few stragglers. Gray trails show particle paths. All particle weights fall low on the 0 to 0.005 color scale.' loading='lazy'></figure>
 
 </section>
 <section id='s78' aria-labelledby='h78'>
 <h2 id='h78'><span class='num'>78.</span> Monte Carlo Localization – The Idea</h2>
-<figure><img src='L24-25_files/4c6188ec02e3.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/4c6188ec02e3.svg' alt='Plot: Monte Carlo localization after the second resampling step, on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). A gray path traces the robot&#x27;s motion from about (2.4, 2) up and to the right. The particles have collapsed into a tight cluster near (4, 4). The estimated pose (particle mean) nearly coincides with the true robot pose, and both point up and to the right, showing that the filter has converged.' loading='lazy'></figure>
 
 </section>
 <section id='s79' aria-labelledby='h79'>
@@ -1032,7 +1032,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <li>P(mᵢ) = 0.5 → unknown, never observed.
 </li></ul>
 <p>The cells are independent by assumption (each updated separately - this is a simplification)</p>
-<figure><img src='L24-25_files/1f4cbe72518b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/1f4cbe72518b.svg' alt='Occupancy grid: a robot on the left fires a fan of about a dozen red range-sensor rays to the right. Each ray ends at a black cell where it hit an obstacle, forming a jagged wall, and these cells get occupancy probability 0.95. Cells the rays pass through are white with probability 0.05, meaning free. All unobserved cells, including those behind the wall, stay gray at 0.5. The legend labels each value as p sub z sub k plus 1 of O sub k plus 1 given z sub k plus 1.' loading='lazy'></figure>
 
 </section>
 <section id='s85' aria-labelledby='h85'>
@@ -1086,8 +1086,8 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s89' aria-labelledby='h89'>
 <h2 id='h89'><span class='num'>89.</span> The World</h2>
-<figure><img src='L24-25_files/644fbfd0540d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L24-25_files/b024082887fe.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/644fbfd0540d.svg' alt='Plot: An S-shaped curve on axes running from 0 to 1, rising from (0, 0) through (0.5, 0.5) to (1, 1). It is nearly vertical at both ends and nearly flat with a gentle slope through the middle. This is the shape of the log-odds (logit) function: it changes slowly for probabilities near 0.5 and grows steeply as probability approaches 0 or 1.' loading='lazy'></figure>
+<figure><img src='L24-25_files/b024082887fe.svg' alt='Plot of the log-odds transformation: x axis is probability from 0 to 1, y axis is log-odds from minus 2 to 2. The curve rises monotonically through zero at probability 0.5, is nearly linear in the middle, reaches about plus 1 near 0.9 and minus 1 near 0.1, and approaches minus infinity at 0 and plus infinity at 1, shown as dashed vertical asymptotes. Probabilities in the open interval 0 to 1 thus map onto the whole real line.' loading='lazy'></figure>
 <p>Log-Odd transformation</p>
 <p>Log-Odd inverse transformation</p>
 
@@ -1168,7 +1168,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <p>Given start (robot pose cell) and end (hit cell), it efficiently enumerates every cell between them to represent a discretized straight line.</p>
 <p>Each enumerated cell gets the “FREE space” log-odds update; the final cell gets “HIT”.</p>
 <p>At 360 beams per scan × 10 Hz × thousands of cells per beam, speed matters enormously.</p>
-<figure><img src='L24-25_files/6545207ca60a.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/6545207ca60a.svg' alt='Grid illustration of Bresenham&#x27;s line algorithm: a straight line runs from a start cell near the upper left to an end cell near the lower right, sloping down about 4 cells over 10 columns. The 11 cells it passes through are shaded, exactly one per column, forming a staircase of horizontal runs two or three cells long, each stepping down one row. This shows how a beam&#x27;s continuous path becomes a discrete set of grid cells.' loading='lazy'></figure>
 
 </section>
 <section id='s97' aria-labelledby='h97'>
@@ -1244,8 +1244,8 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <section id='s101' aria-labelledby='h101'>
 <h2 id='h101'><span class='num'>101.</span> The World</h2>
 <p><a href='https://link.springer.com/chapter/10.1007/978-3-030-20867-7_30'>https://link.springer.com/chapter/10.1007/978-3-030-20867-7_30</a></p>
-<figure><img src='L24-25_files/963b5ae2e93b.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L24-25_files/44ba3f1f68cd.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/963b5ae2e93b.png' alt='Point cloud: a 3D lidar scan of a city street, colored by semantic class. The road surface is purple, trees are yellow, fences and low railings are teal, a street lamp and poles are blue, and a parked car and a bush are light green. It illustrates how a robot&#x27;s sensors capture the surrounding world as labeled 3D points.' loading='lazy'></figure>
+<figure><img src='L24-25_files/44ba3f1f68cd.png' alt='3D voxel occupancy map of an outdoor street scene, built from range-sensor data, where space is divided into small cubes marked occupied. Recognizable blocky shapes include a flat road surface, two parked cars, a long wall, lamp posts, bushes, and large tree canopies. It illustrates how a robot can represent the world as a volumetric grid for mapping and navigation.' loading='lazy'></figure>
 
 </section>
 <section id='s102' aria-labelledby='h102'>
@@ -1311,8 +1311,8 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 </section>
 <section id='s106' aria-labelledby='h106'>
 <h2 id='h106'><span class='num'>106.</span> The World</h2>
-<figure><img src='L24-25_files/662a801827bc.jpg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L24-25_files/614f163230b6.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/662a801827bc.jpg' alt='Two side-by-side laser-scan maps of the same corridor junction, with a 2 m scale bar and the robot&#x27;s path in gray. Scans from two passes are shown in red and blue. In (a), without loop closure, the passes are offset by up to about a meter, producing doubled, misaligned walls. In (b), with loop closure, the red and blue walls overlap into a single consistent map, showing how loop closure corrects accumulated drift.' loading='lazy'></figure>
+<figure><img src='L24-25_files/614f163230b6.jpg' alt='Two-panel figure illustrating scan matching for robot pose correction. Left: a green wall outline scanned at the Start position and a blue outline scanned at the End position are misaligned, rotated and shifted, because the End pose from dead reckoning (dashed path) is wrong. Right: after the blue scan is rotated and translated to match the green one, the outlines overlap closely and the corrected robot position is marked &quot;update_End&quot;.' loading='lazy'></figure>
 <p><a href='https://www.sciencedirect.com/science/article/pii/S1568494619302339'>https://www.sciencedirect.com/science/article/pii/S1568494619302339</a> (Sorry for the horrible image quality!)</p>
 
 </section>
@@ -1378,14 +1378,14 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <p>Each edge is a “spring” with a natural length (the measurement) and a stiffness (the confidence)</p>
 <p>A loop closure is a new edge that suddenly pulls two distant nodes together</p>
 <p>When the graph is “relaxed” to minimum energy, all edge tensions are balanced - and that&#x27;s the optimal trajectory</p>
-<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Pose graph: seven robot poses, x sub 1 through x sub 7, each drawn with its own coordinate frame whose orientation changes along the path. Dotted arrow edges link consecutive poses, each labeled with a relative translation and rotation, Delta sub i j comma R sub i j: x sub 1 to x sub 2, to x sub 3, up to x sub 4, back left to x sub 5, x sub 6, and x sub 7. One extra edge, Delta sub 52 comma R sub 52, runs from x sub 5 back down to x sub 2, forming a loop closure.' loading='lazy'></figure>
 <p><a href='https://dellaert.github.io/files/Carlone16tro.pdf'>https://dellaert.github.io/files/Carlone16tro.pdf</a></p>
 
 </section>
 <section id='s112' aria-labelledby='h112'>
 <h2 id='h112'><span class='num'>112.</span> The Pose Graph</h2>
 <p>https://federicosarrocco.com/blog/graph-slam-tutorial</p>
-<figure><img src='L24-25_files/c9b49405e5df.gif' alt='Graph SLAM: From Theory to Implementation' loading='lazy'></figure>
+<figure><img src='L24-25_files/c9b49405e5df.gif' alt='Plot titled &quot;Optimization Step 0&quot;: the unoptimized initial pose graph. Blue nodes joined by a blue line trace the robot trajectory in a back-and-forth lawnmower pattern, starting at (0, 0) and covering five rows from x of 0 to about 95, at y of about 0, 10, 20, 30 and 40, ending near (93, 45). The path is jagged from odometry drift. Light green edges are constraints linking poses within and between adjacent rows, plus a few long diagonal links, such as one from the start pose to the end.' loading='lazy'></figure>
 
 </section>
 <section id='s113' aria-labelledby='h113'>
@@ -1396,7 +1396,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <p>Keyframing bounds the graph size, keeping optimization real-time</p>
 <p>A typical 30-minute mission produces 500-2000 nodes - tractable for modern CPUs</p>
 <p>Each node can also anchor a submap, making the graph a skeleton of the world</p>
-<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Pose graph: seven robot poses, x sub 1 through x sub 7, each drawn with its own coordinate frame whose orientation changes along the path. Dotted arrow edges link consecutive poses, each labeled with a relative translation and rotation, Delta sub i j comma R sub i j: x sub 1 to x sub 2, to x sub 3, up to x sub 4, back left to x sub 5, x sub 6, and x sub 7. One extra edge, Delta sub 52 comma R sub 52, runs from x sub 5 back down to x sub 2, forming a loop closure.' loading='lazy'></figure>
 <p><a href='https://dellaert.github.io/files/Carlone16tro.pdf'>https://dellaert.github.io/files/Carlone16tro.pdf</a></p>
 
 </section>
@@ -1414,7 +1414,7 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <p>Each edge also carries an <strong>information matrix</strong> - the spring stiffness</p>
 <p>High information = stiff spring (trustworthy edge).</p>
 <p>Low information = loose spring (noisy edge).</p>
-<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/1f2e7dfc0a71.svg' alt='Pose graph: seven robot poses, x sub 1 through x sub 7, each drawn with its own coordinate frame whose orientation changes along the path. Dotted arrow edges link consecutive poses, each labeled with a relative translation and rotation, Delta sub i j comma R sub i j: x sub 1 to x sub 2, to x sub 3, up to x sub 4, back left to x sub 5, x sub 6, and x sub 7. One extra edge, Delta sub 52 comma R sub 52, runs from x sub 5 back down to x sub 2, forming a loop closure.' loading='lazy'></figure>
 <p><a href='https://dellaert.github.io/files/Carlone16tro.pdf'>https://dellaert.github.io/files/Carlone16tro.pdf</a></p>
 
 </section>
@@ -1447,14 +1447,14 @@ x_{t} &amp; y_{t} &amp; \theta_{t}
 <p>Every sensor reading - LiDAR match, odometry, GPS, IMU becomes a factor</p>
 <p>Now we can fuse many heterogeneous sensors in one graph!</p>
 <p>GTSAM and Ceres libraries are built around this abstraction - and it&#x27;s the industry standard today</p>
-<figure><img src='L24-25_files/aa7028d1a1e9.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/aa7028d1a1e9.png' alt='Plot: a factor graph from a 2D SLAM problem. About 95 numbered robot poses (cyan, 0 to 94) form a trajectory that starts at the bottom left, arches up to a peak right of center, then descends steeply on the right. Around 45 numbered landmarks (dark blue) are scattered nearby. Gray lines link each landmark to the poses that observed it, with small black dots marking measurement factors along those lines. Consecutive poses are chained by odometry factors.' loading='lazy'></figure>
 <p><a href='https://gtsam.org/2020/06/01/factor-graphs.html'>https://gtsam.org/2020/06/01/factor-graphs.html</a></p>
 
 </section>
 <section id='s118' aria-labelledby='h118'>
 <h2 id='h118'><span class='num'>118.</span> The Factor Graphs</h2>
-<figure><img src='L24-25_files/e663bb71c513.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L24-25_files/69f4c4e5e53d.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/e663bb71c513.png' alt='Plot: Landmark-based SLAM result from the GTSAM tutorial, x from about 0 to 58 and y from 0 to 35. A green chain of robot pose estimates starts near the origin, rises to about (42, 27), then curves down to about (53, 8). Each pose has an elongated uncertainty ellipse that grows larger toward the end of the path. Scattered blue asterisks mark estimated landmark positions, each with its own blue covariance ellipse; landmarks far from the path have larger ellipses.' loading='lazy'></figure>
+<figure><img src='L24-25_files/69f4c4e5e53d.png' alt='Plot of a 2D pose SLAM result from the GTSAM tutorial, axes in meters from about minus 10 to 5 horizontally and minus 5 to 7 vertically. The green line is the drifting initial odometry estimate. The blue line is the optimized trajectory, with an uncertainty ellipse at each pose. The robot starts near the origin, loops through squares to the left, and its ellipses grow large with distance traveled. On the right, a square path traversed repeatedly has loop closures, so its ellipses stay tiny.' loading='lazy'></figure>
 <p><a href='https://gtsam.org/tutorials/intro.html'>https://gtsam.org/tutorials/intro.html</a></p>
 
 </section>
@@ -1686,7 +1686,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 </section>
 <section id='s136' aria-labelledby='h136'>
 <h2 id='h136'><span class='num'>136.</span> Detecting Loop Closure</h2>
-<figure><img src='L24-25_files/efe5ec454a87.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/efe5ec454a87.svg' alt='Software architecture diagram of the SLAM system. External C/C++ LiDAR and odometry processes write to shared memory (/lslam_lidar: 228 by 2 float32 points per sweep; /lslam_odom: x, y, theta) and signal Python reader threads via semaphores. Readers feed lidar_q and odom_buffer to the SLAM main loop, which updates the iSAM2 factor graph. The main loop sends new keyframe indices through loop_in_q to a LoopClosureWorker thread. The worker reads keyframe scans and poses under slam_lock and returns relative pose and RMSE through loop_out_q.' loading='lazy'></figure>
 
 </section>
 <section id='s137' aria-labelledby='h137'>
@@ -1737,7 +1737,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 <h2 id='h141'><span class='num'>141.</span> Detecting Loop Closure – Scan-Match Scoring</h2>
 <p>The Huber loss is a very common robust loss metric that ensures that we do not give too much weight to large errors,</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>i</mi><mi>f</mi><mo stretchy="false" form="prefix">|</mo><mi>e</mi><mo stretchy="false" form="prefix">|</mo><mo>&lt;</mo><mi>δ</mi><mo>,</mo><mi>e</mi><mi>l</mi><mi>s</mi><mi>e</mi><mfrac><mi>δ</mi><mrow><mo stretchy="false" form="prefix">|</mo><mi>e</mi><mo stretchy="false" form="prefix">|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">w(e) = 1,\ if|e| &lt; \delta,else\frac{\delta}{|e|}</annotation></semantics></math></p>
-<figure><img src='L24-25_files/cd3598b85eef.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/cd3598b85eef.svg' alt='Plot of loss versus error from minus 4 to 4. A blue parabola, one half x squared, rises to 8 at both ends. A green Huber loss curve matches the parabola between minus 1 and 1, then continues as straight lines growing linearly, reaching only 3.5 at plus and minus 4. Large errors are therefore penalized far less than under squared loss.' loading='lazy'></figure>
 
 </section>
 <section id='s142' aria-labelledby='h142'>
@@ -1762,7 +1762,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 </section>
 <section id='s144' aria-labelledby='h144'>
 <h2 id='h144'><span class='num'>144.</span> Detecting Loop Closure – Scan-Match Scoring</h2>
-<figure><img src='L24-25_files/b1beecec481e.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/b1beecec481e.png' alt='Plot: top-down SLAM map titled &quot;Real-time SLAM through SHM+sem, 196 keyframes, 95 loops,&quot; axes in meters from about minus 12 to 12. The robot drives a square loop from minus 4 to 4. Its optimized trajectory (blue) almost exactly overlays the ground truth (green dashed), showing loop closures removed drift. Lidar points form sharp walls: a 24-meter outer square, a central 6-meter box, and several interior wall segments. A few curved arcs of stray gray points remain.' loading='lazy'></figure>
 
 </section>
 <section id='s145' aria-labelledby='h145'>
@@ -1773,7 +1773,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 <p>To minimize total energy, it distributes the correction proportionally across <strong>every</strong> pose in the loop</p>
 <p>The result: the entire trajectory &#x27;snaps&#x27; into global consistency in a handful of iterations</p>
 <p>Double walls collapse into single walls, curved corridors straighten, the map becomes useful again!</p>
-<figure><img src='L24-25_files/5e98bc7aa3e9.gif' alt='How Does a Robot Recognize Where It&#x27;s Been? (Place Recognition and Loop  Closure, Intuitively) | by Anushka Gangadhar Satav | Apr, 2026 | Medium' loading='lazy'></figure>
+<figure><img src='L24-25_files/5e98bc7aa3e9.gif' alt='Plot: graph-based SLAM at iteration 0, with an initial error of about 138.9 million. Blue x&#x27;s mark robot poses in x-y coordinates, spanning x from about −28 to 9 and y from about −13 to 14. Before optimization, the drifted trajectory forms disjointed, misaligned rectangular loops. Dense green loop-closure edges stretch long distances between poses that should coincide, showing the large accumulated drift the solver must correct.' loading='lazy'></figure>
 <p><a href='https://medium.com/@anushkasatav07/how-does-a-robot-recognize-where-its-been-place-recognition-and-loop-closure-intuitively-f5e3e3e6346e'>https://medium.com/@anushkasatav07/how-does-a-robot-recognize-where-its-been-place-recognition-and-loop-closure-intuitively-f5e3e3e6346e</a></p>
 
 </section>
@@ -1785,7 +1785,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 <p>By distributing proportionally, each intermediate pose moves by a small amount</p>
 <p>Local relationships (each short-range edge) remain nearly satisfied - we preserve local accuracy</p>
 <p>This is why L-M minimizes the sum of squared errors: it naturally spreads the blame</p>
-<figure><img src='L24-25_files/83323e77dee7.gif' alt='Graph-based SLAM | Fan Yang' loading='lazy'></figure>
+<figure><img src='L24-25_files/83323e77dee7.gif' alt='Plot: graph-based SLAM pose graph at iteration 0, before optimization, with a title giving an initial error of about 1.8 million. Blue x markers trace a robot trajectory around a roughly square loop spanning x from about minus 10 to 15 and y from about 3 to minus 24. Repeated passes are smeared and misaligned, with short spurs sticking out, and dense green constraint edges crisscross between the inconsistent poses, especially along the loop&#x27;s sides.' loading='lazy'></figure>
 <p><a href='https://yangfan.github.io/projects/SLAM/Graph-based-slam'>https://yangfan.github.io/projects/SLAM</a><a href='https://yangfan.github.io/projects/SLAM/Graph-based-slam'>/Graph-based-slam</a></p>
 
 </section>
@@ -1810,7 +1810,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 <p>When the robot crosses the edge of the current submap, it <strong>freezes</strong> it and starts a new one</p>
 <p>Each submap is independent - no information is shared across boundaries during construction</p>
 <p>Critically: each submap is <strong>anchored to a node</strong> in the pose graph</p>
-<figure><img src='L24-25_files/cf6f27c70b4b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L24-25_files/cf6f27c70b4b.svg' alt='Four-panel comparison of one global grid versus submaps for loop closure. (a) A single occupancy grid: the robot path runs from start o around to end c, but accumulated drift leaves a misaligned wall and gap alpha, so correction is ambiguous (A or B). (b) The resulting 3D point cloud is smeared and doubled. (c) The same path covered by small, overlapping, rotated submaps anchored to path nodes; after loop closure, the submaps shift rigidly so c meets o. (d) The resulting point cloud is clean and consistent.' loading='lazy'></figure>
 <p><a href='https://www.cs.cmu.edu/~kaess/pub/Ho18iros.pdf'>https://www.cs.cmu.edu/~kaess/pub/Ho18iros.pdf</a></p>
 
 </section>
@@ -1832,7 +1832,7 @@ R_{z}^{\top}R_{i}^{\top} &amp; \begin{bmatrix}
 </section>
 <section id='s152' aria-labelledby='h152'>
 <h2 id='h152'><span class='num'>152.</span> Detecting Loop Closure</h2>
-<figure><img src='L24-25_files/1382aed40885.gif' alt='Ouster OS-1 lidar and Google Cartographer Integration - Wil Selby' loading='lazy'></figure>
+<figure><img src='L24-25_files/1382aed40885.gif' alt='Screenshot: a Google Cartographer occupancy grid map built from Ouster OS-1 lidar scans, with white explored free space on a gray unknown background. A circular scanned region on the left, outlined in green current-scan hits, connects to a rectangular room on the right by a purple and yellow trajectory: the robot&#x27;s path as it returns toward previously mapped space, where Cartographer can match new scans to the old map to detect a loop closure.' loading='lazy'></figure>
 <p><a href='https://wilselby.com/2019/06/ouster-os-1-lidar-and-google-cartographer-integration/'>https://wilselby.com/2019/06/ouster-os-1-lidar-and-google-cartographer-integration/</a></p>
 
 </section>

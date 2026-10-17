@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Slide6 Update2</title><desc id="fig-desc">Plot: Particle filter after its second measurement update on a 10 by 10 meter map with landmarks at (2, 8), (8, 8) and (8, 2). Green range circles around each landmark intersect near (4, 4.2), where the true robot pose (red arrow) and estimated mean pose (purple arrow) nearly coincide, both heading up and to the right. Most particles form a dense cluster there, with a second cluster near (3.5, 5.8) and a few stragglers. Gray trails show particle paths. All particle weights fall low on the 0 to 0.005 color scale.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

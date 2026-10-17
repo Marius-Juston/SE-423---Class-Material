@@ -60,5 +60,32 @@
     "warning": 6706
    }
   }
+ },
+ {
+  "date": "2026-10-17",
+  "errors": 179,
+  "warnings": 51279,
+  "by_tool": {
+   "cvd": {
+    "error": 0,
+    "warning": 30
+   },
+   "html": {
+    "error": 98,
+    "warning": 0
+   },
+   "latex": {
+    "error": 0,
+    "warning": 8
+   },
+   "pdf": {
+    "error": 0,
+    "warning": 44535
+   },
+   "pptx": {
+    "error": 81,
+    "warning": 6706
+   }
+  }
  }
 ]

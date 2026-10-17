@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Monte Carlo Only</title><desc id="fig-desc">Scatter plot: thousands of Monte Carlo particles, labeled the true distribution, plotted as global X position versus global Y position. They form a curved, banana-shaped arc rather than an elliptical Gaussian cloud. The arc starts sparse near X minus 5, Y 2, rises to about Y 5 around X 0 to 1, and bends down through X 3, Y 4 to X 5, Y 0. It is densest between those last two points and thins into a tail near X 2 to 4, Y minus 4 to minus 5.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

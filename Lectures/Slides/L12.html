@@ -94,7 +94,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s8' aria-labelledby='h8'>
 <h2 id='h8'><span class='num'>8.</span> Accelerometer</h2>
-<figure><img src='L12_files/71518cefaf13.png' alt='Figure 3. Acceleration associated with a single moving mass.' loading='lazy'></figure>
+<figure><img src='L12_files/71518cefaf13.png' alt='Diagram: a movable mass sits between upper and lower fixed electrodes and moves along X, held by springs to the silicon substrate above and below. The gaps d1 (upper) and d2 (lower) form two variable capacitors, C1 and C2 (both labeled C2 in the figure). Table: d1 greater than d2 means motion down and C1 less than C2; d1 less than d2 means motion up and C1 greater than C2; d1 equal to d2 means no motion and C1 equals C2.' loading='lazy'></figure>
 <p><a href='https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html'>https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html</a></p>
 <p>A MEMS (Micro-Electro-Mechanical Systems) accelerometer measure linear acceleration.</p>
 <p>Accelerometers work like a weight suspended by springs. When the mass is moved you measure the displacement, the springs bring it back to the center.</p>
@@ -124,17 +124,17 @@ nav ol { columns: 2 18rem; }
 <h2 id='h11'><span class='num'>11.</span> Accelerometer</h2>
 <p>You keep stacking these to remove the noise to get more accurate readings. In turn we get the following internal system. It is incredible how small these are!</p>
 <p>How many axis can the following accelerometers measure?</p>
-<figure><img src='L12_files/2b4be7620088.jpg' alt='The Little Machines That are Making it Big - Physics Today' loading='lazy'></figure>
+<figure><img src='L12_files/2b4be7620088.jpg' alt='Photo: Scanning electron micrograph of a MEMS capacitive accelerometer etched into a silicon chip, with a 100 micrometer scale bar; the whole structure is roughly 350 micrometers wide. A central rectangular proof mass, perforated with a grid of small holes, is suspended by folded springs anchored at its left and right ends. Rows of interdigitated comb fingers line its top and bottom edges, all oriented the same way, suggesting sensing along a single in-plane axis.' loading='lazy'></figure>
 <p><a href='https://physicstoday.aip.org/features/the-little-machines-that-are-making-it-big'>https://physicstoday.aip.org/features/the-little-machines-that-are-making-it-big</a></p>
-<figure><img src='L12_files/c2cdb494c33d.jpg' alt='Analytical study and compensation for temperature drifts of a bulk silicon  MEMS capacitive accelerometer - ScienceDirect' loading='lazy'></figure>
+<figure><img src='L12_files/c2cdb494c33d.jpg' alt='Electron micrograph of a bulk-silicon MEMS capacitive accelerometer on a glass substrate. A long perforated proof mass runs down the center, held at each end by folded beams attached to an anchor. Along both sides, its interdigitated comb fingers mesh with fingers on fixed side anchors, forming comb capacitors. When the proof mass moves, finger overlap and gap change, changing capacitance. All the fingers run in the same direction.' loading='lazy'></figure>
 <p><a href='https://www.sciencedirect.com/science/article/pii/S0924424716300267'>https://www.sciencedirect.com/science/article/pii/S0924424716300267</a></p>
-<figure><img src='L12_files/e0b90334baa3.png' alt='Figure 6. A mechanical model of an actual accelerometer.' loading='lazy'></figure>
+<figure><img src='L12_files/e0b90334baa3.png' alt='Diagram: MEMS capacitive accelerometer on a silicon substrate. A central movable mass hangs from suspension beams attached to four corner anchors. Comb-like moving electrodes extend from both sides of the mass and interleave with fixed electrodes connected to capacitance-sensing blocks on the left and right. When acceleration shifts the mass sideways, the gaps between moving and fixed electrodes change, changing the measured capacitance. The electrodes are arranged to sense motion along the left-right axis.' loading='lazy'></figure>
 <p><a href='https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html'>https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html</a></p>
 
 </section>
 <section id='s12' aria-labelledby='h12'>
 <h2 id='h12'><span class='num'>12.</span> Accelerometer</h2>
-<figure><img src='L12_files/bfe41ab6e3b9.png' alt='A Monolithic Three-Axis Accelerometer with Wafer-Level Package by CMOS MEMS  Process' loading='lazy'></figure>
+<figure><img src='L12_files/bfe41ab6e3b9.png' alt='Electron micrographs of a single-chip three-axis MEMS accelerometer. (a) The whole chip, about 1 millimeter scale, holding separate z-, x- and y-axis sensors beside on-chip sensing circuits. (b) Close-up of an in-plane sensor, 300 micrometer scale: a perforated proof mass suspended by springs and surrounded by interleaved comb fingers, with a shock-stop beam that limits travel under excessive acceleration and self-test comb fingers. (c) The z-axis sensor, 500 micrometer scale: a perforated suspended plate with two solid square masses that moves out of plane.' loading='lazy'></figure>
 <p>Think of the z-axis as a trampoline!</p>
 <p>What happens if you have too large of an acceleration (think of the combs)?</p>
 <p>An accelerometer that is sitting still on a desk reads _g pointing upwards.</p>
@@ -160,13 +160,13 @@ nav ol { columns: 2 18rem; }
 <p>How many does the accelerometer handle?</p>
 <p>3: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y,\ z)</annotation></semantics></math></p>
 <p>We are missing the angular DOF!</p>
-<figure><img src='L12_files/bb7fe0637e32.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/bb7fe0637e32.svg' alt='Coordinate frame: X points right, Y points up, and Z points out toward the viewer. A curved arrow around each axis marks a rotation: theta sub x about X, theta sub y about Y, and theta sub z about Z, each following the right-hand rule. These three rotations are the angular degrees of freedom that an accelerometer does not measure and a gyroscope does, completing the six degrees of freedom in 3D.' loading='lazy'></figure>
 
 </section>
 <section id='s16' aria-labelledby='h16'>
 <h2 id='h16'><span class='num'>16.</span> Gyroscope</h2>
 <p>A MEMS Gyroscope does not use a spinning wheel like classical mechanical gyroscopes. Similarly, you have a tiny mass that is moving when rotating. If the device start rotating, the moving mass experiences a sideways force.</p>
-<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='Photo: hand-held, scaled 3D-printed model of a MEMS gyroscope. A central slotted proof mass sits inside a square frame, linked by thin serpentine spring flexures. The frame is in turn suspended from the outer border by more folded springs on each side. A finger pushes the mass to show it can vibrate along one axis. The second set of springs lets it shift sideways, which is how rotation produces the detectable sideways (Coriolis) motion.' loading='lazy'></figure>
 <p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
 
 </section>
@@ -184,7 +184,7 @@ nav ol { columns: 2 18rem; }
 <p>The inner mass is electrically forced to vibrate continuously back and force along the x-axis at a resonant frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ω</mi><mi>r</mi></msub><annotation encoding="application/x-tex">\omega_{r}</annotation></semantics></math>. The instantaneous velocity is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>.</p>
 <p>When an angular velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><annotation encoding="application/x-tex">\Omega_{z}</annotation></semantics></math>, along the z-axis, is applied, the Coriolis force acting along the y-axis is generated.</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>C</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><mi>−</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>m</mi><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><mo>×</mo><mspace width="0.222em"></mspace><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F_{C}\  = - \ 2m(\Omega_{z} \times \ v)</annotation></semantics></math></p>
-<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='Photo: hand-held, scaled 3D-printed model of a MEMS gyroscope. A central slotted proof mass sits inside a square frame, linked by thin serpentine spring flexures. The frame is in turn suspended from the outer border by more folded springs on each side. A finger pushes the mass to show it can vibrate along one axis. The second set of springs lets it shift sideways, which is how rotation produces the detectable sideways (Coriolis) motion.' loading='lazy'></figure>
 <p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
 
 </section>
@@ -200,23 +200,23 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s20' aria-labelledby='h20'>
 <h2 id='h20'><span class='num'>20.</span> Gyroscope</h2>
-<figure><img src='L12_files/606ace8bbe77.png' alt='Schematic Illustration of MEMS Vibratory Gyroscope | Download Scientific  Diagram' loading='lazy'></figure>
+<figure><img src='L12_files/606ace8bbe77.png' alt='Schematic of a MEMS vibratory gyroscope with two nested frames. A green inner frame, suspended inside a red outer frame by four blue drive springs, is vibrated along the horizontal drive axis by interdigitated drive combs. The outer frame is anchored by sense springs at its corners and carries sense combs at the top and bottom. Rotation about the axis normal to the chip produces Coriolis motion along the vertical sense axis, which the sense combs detect as a capacitance change.' loading='lazy'></figure>
 <p><a href='https://www.semanticscholar.org/paper/Modeling-and-simulation-of-the-MEMS-vibratory-Patel-McCluskey/8dec6605fc5b603df07d74f7b9eb6875b2c17c3a'>https://www.semanticscholar.org/paper/Modeling-and-simulation-of-the-MEMS-vibratory-Patel-McCluskey/8dec6605fc5b603df07d74f7b9eb6875b2c17c3a</a></p>
-<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='Photo: hand-held, scaled 3D-printed model of a MEMS gyroscope. A central slotted proof mass sits inside a square frame, linked by thin serpentine spring flexures. The frame is in turn suspended from the outer border by more folded springs on each side. A finger pushes the mass to show it can vibrate along one axis. The second set of springs lets it shift sideways, which is how rotation produces the detectable sideways (Coriolis) motion.' loading='lazy'></figure>
 <p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
 
 </section>
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> Gyroscope</h2>
-<figure><img src='L12_files/21de57f5a75b.gif' alt='Getting Started with the MPU6050: Beginner-Friendly Guide with Visual  Explanations - Sensors - Arduino Forum' loading='lazy'></figure>
+<figure><img src='L12_files/21de57f5a75b.gif' alt='Four-panel MEMS illustration from the MPU6050 sensor. Figures 1 to 3 show the gyroscope: four proof masses, M1 to M4, arranged around a central anchor, sensing rotation about the Y axis (pitch, Fig. 1), the X axis (roll, Fig. 2) and the Z axis (yaw, Fig. 3); each rotation tilts or deflects a different pair of masses. Fig. 4 shows the accelerometer: a central proof mass on spring suspensions, with comb fingers interleaved with fixed electrodes to measure displacement capacitively.' loading='lazy'></figure>
 <p><a href='https://forum.arduino.cc/t/getting-started-with-the-mpu6050-beginner-friendly-guide-with-visual-explanations/1364064'>https://forum.arduino.cc/t/getting-started-with-the-mpu6050-beginner-friendly-guide-with-visual-explanations/1364064</a></p>
-<figure><img src='L12_files/50e658a84840.gif' alt='How cloud-based multiphysics simulations improve MEMS gyroscope design' loading='lazy'></figure>
+<figure><img src='L12_files/50e658a84840.gif' alt='Simulation of a MEMS gyroscope structure: two perforated proof masses, colored red and blue to show displacement in opposite directions, move in antiphase. Each mass has comb fingers interleaved with fixed comb electrodes for electrostatic drive and capacitive sensing. A thin suspension frame anchored to the substrate links them. When the chip rotates, the Coriolis force deflects the vibrating masses, and the capacitance change reveals the angular rate.' loading='lazy'></figure>
 <p><a href='https://quanscient.com/blog/enhancing-mems-gyroscope-design'>https://quanscient.com/blog/enhancing-mems-gyroscope-design</a></p>
 
 </section>
 <section id='s22' aria-labelledby='h22'>
 <h2 id='h22'><span class='num'>22.</span> Gyroscope</h2>
-<figure><img src='L12_files/08dd755068eb.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/08dd755068eb.png' alt='Photo: scanning electron micrograph of an uncapped six-axis IMU MEMS die, 2.85 millimeters across at 115 times magnification, labeled &quot;MEMS_Accel_Bottom.&quot; Along the top are two small square structures with central masses on folded springs, plus a damaged region at upper right. Below are three large rectangular structures: two with nested, symmetric frames and suspended masses, and one with a large dark proof mass flanked above and below by dense arrays of comb-finger electrodes.' loading='lazy'></figure>
 <p><a href='https://www.printables.com/model/413667-mems-model-six-axis-imu-device'>https://www.printables.com/model/413667-mems-model-six-axis-imu-device</a></p>
 <p>What is this? The gyros or accelerometers?</p>
 <p>What is this? The gyros or accelerometers?</p>
@@ -238,15 +238,15 @@ nav ol { columns: 2 18rem; }
 <section id='s25' aria-labelledby='h25'>
 <h2 id='h25'><span class='num'>25.</span> Magnetometer</h2>
 <p>The magnetic field acts like a counterbalance and you measure the torque</p>
-<figure><img src='L12_files/30636b12adec.png' alt='Illustration of a ferromagnetic MEMS magnetometer design. | Download  Scientific Diagram' loading='lazy'></figure>
+<figure><img src='L12_files/30636b12adec.png' alt='Ferromagnetic MEMS magnetometer: a bar magnet, south pole on the left and north on the right, sits on a plate suspended by a torsion beam running perpendicular to the magnet&#x27;s length. An upward external magnetic field exerts a magnetic torque that tips the north end up and the south end down to align with the field. The twisted torsion beam produces an opposing mechanical torque, so measuring the beam&#x27;s twist gives the field strength.' loading='lazy'></figure>
 <p><a href='https://www.researchgate.net/figure/llustration-of-a-ferromagnetic-MEMS-magnetometer-design_fig18_255663586'>https://www.researchgate.net/figure/llustration-of-a-ferromagnetic-MEMS-magnetometer-design_fig18_255663586</a></p>
 
 </section>
 <section id='s26' aria-labelledby='h26'>
 <h2 id='h26'><span class='num'>26.</span> Magnetometer</h2>
 <p><a href='https://www.mdpi.com/1424-8220/9/9/6951'>https://www.mdpi.com/1424-8220/9/9/6951</a></p>
-<figure><img src='L12_files/0925d6d21ffe.png' alt='Sensors 09 06951f1' loading='lazy'></figure>
-<figure><img src='L12_files/f4343d979a43.png' alt='Sensors 09 06951f4' loading='lazy'></figure>
+<figure><img src='L12_files/0925d6d21ffe.png' alt='3D model of a MEMS resonant magnetometer: a rectangular low-resistivity silicon resonator plate carries a planar spiral coil on its top surface. Two torsional beams on opposite sides suspend the plate above a capacitance plate on a glass substrate, with X, Y, Z axes marked. Current in the coil interacts with the magnetic field to produce a Lorentz-force torque that twists the plate about the beams, and the resulting change in gap is sensed capacitively.' loading='lazy'></figure>
+<figure><img src='L12_files/f4343d979a43.png' alt='Scanning electron micrograph of a MEMS magnetometer chip, about 2 millimeters across (scale bar 1 millimeter, 60x magnification). A central perforated rectangular plate carries a planar spiral coil of about ten turns. The plate is suspended at its left and right edges by short beams anchored to the frame, with rectangular structures on each side and gold wire bonds at the corners carrying current and signals. Current in the coil interacts with an external magnetic field, producing a force that deflects the plate.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
@@ -291,7 +291,7 @@ nav ol { columns: 2 18rem; }
 <p>There are 2 components for this sensor, writing configurations vs reading data. This is encoded inside the SPI data. We separate the message into 2 8-bit parts.</p>
 <p>The <strong>address (top 8-bits)</strong>: Says if we are trying to read/write and from where (accel vs gyro)</p>
 <p>The <strong>data (bottom 8-bits)</strong>: what we are trying to send to write to that address (ignored if reading)</p>
-<figure><img src='L12_files/9f7616e6320b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/9f7616e6320b.svg' alt='Bit-layout tables for the two bytes of the SPI message. Address byte, MSB to LSB: the read/write bit, then address bits A6 down to A0. Data byte, MSB to LSB: data bits D7 down to D0.' loading='lazy'></figure>
 <p>16-bit message</p>
 <p>The address</p>
 <p>The data</p>
@@ -302,7 +302,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s32' aria-labelledby='h32'>
 <h2 id='h32'><span class='num'>32.</span> IMU</h2>
-<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Table: IMU register map with columns for hex and decimal address, register name, access (R or R/W), and bits 7 to 0, covering addresses 0x35 to 0x4D (53 to 77). Accelerometer X, Y, Z outputs occupy 0x3B to 0x40, temperature 0x41 to 0x42, and gyroscope X, Y, Z 0x43 to 0x48. All are read-only, and each 16-bit reading is split into a high-byte register (bits 15 to 8) followed by a low-byte register (bits 7 to 0). Interrupt configuration (0x37) and enable (0x38) registers are R/W with individual flag bits.' loading='lazy'></figure>
 <p>The address</p>
 <p>If you can read / write to this address</p>
 <p>Data is split into 8-bit high and low bits</p>
@@ -352,7 +352,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s37' aria-labelledby='h37'>
 <h2 id='h37'><span class='num'>37.</span> IMU</h2>
-<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Table: IMU register map with columns for hex and decimal address, register name, access (R or R/W), and bits 7 to 0, covering addresses 0x35 to 0x4D (53 to 77). Accelerometer X, Y, Z outputs occupy 0x3B to 0x40, temperature 0x41 to 0x42, and gyroscope X, Y, Z 0x43 to 0x48. All are read-only, and each 16-bit reading is split into a high-byte register (bits 15 to 8) followed by a low-byte register (bits 7 to 0). Interrupt configuration (0x37) and enable (0x38) registers are R/W with individual flag bits.' loading='lazy'></figure>
 <p>Start reading (sent 8-bit start address)</p>
 <p>Continue reading 16-bits</p>
 <p>Continue reading 16-bits</p>
@@ -389,7 +389,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s39' aria-labelledby='h39'>
 <h2 id='h39'><span class='num'>39.</span> IMU</h2>
-<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Table: IMU register map with columns for hex and decimal address, register name, access (R or R/W), and bits 7 to 0, covering addresses 0x35 to 0x4D (53 to 77). Accelerometer X, Y, Z outputs occupy 0x3B to 0x40, temperature 0x41 to 0x42, and gyroscope X, Y, Z 0x43 to 0x48. All are read-only, and each 16-bit reading is split into a high-byte register (bits 15 to 8) followed by a low-byte register (bits 7 to 0). Interrupt configuration (0x37) and enable (0x38) registers are R/W with individual flag bits.' loading='lazy'></figure>
 <p>SpibRegs.SPITXBUF = ((0x8000) | (0x3C00));</p>
 <p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
 <p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
@@ -397,13 +397,13 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s40' aria-labelledby='h40'>
 <h2 id='h40'><span class='num'>40.</span> SPI</h2>
-<figure><img src='L12_files/3f706f4edce5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/3f706f4edce5.svg' alt='Timing diagram: TI&#x27;s four SPI clock modes over an 8-bit transfer. Rising edge without delay idles low and rises at each cycle start; with delay, it rises mid-cycle. Falling edge without delay idles high and falls at each cycle start; with delay, it falls mid-cycle. The data line (SPISIMO/SPISOMI) changes at cycle boundaries, sending the MSB in cycle 1 through the LSB in cycle 8. Active-low SPISTE stays low for the whole byte, and receive latch points fall mid-cycle.' loading='lazy'></figure>
 <table><thead><tr><th scope='col'>Polarity</th><th scope='col'>Phase</th></tr></thead><tbody><tr><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td></tr></tbody></table>
 
 </section>
 <section id='s41' aria-labelledby='h41'>
 <h2 id='h41'><span class='num'>41.</span> IMU</h2>
-<figure><img src='L12_files/a00296090d43.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L12_files/a00296090d43.svg' alt='Timing diagram: MPU9250 SPI read of accelerometer Y and Z as three 16-bit transfers, MSB first, labeled clock polarity 0 and phase 1. Slave select goes low for the whole read, about 54 microseconds. The clock idles low, with 16 pulses per transfer; dashed lines mark sampling on each falling edge. MOSI sends 0xBC00 (start address with read bit), then 0x0000 twice. MISO returns nothing plus ACCEL_XOUT_L (discarded), then ACCEL_YOUT_H and L, then ACCEL_ZOUT_H and L.' loading='lazy'></figure>
 <p>What is the clock polarity?</p>
 <p>What is the clock phase?</p>
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">MD 04 Fused Update</title><desc id="fig-desc">Plot of a Kalman filter update in X–Y position. A large tilted purple prediction ellipse, centered near (8, 5), overlaps a smaller orange measurement ellipse near (12, 8). A green arrow labeled K times the innovation moves the estimate from the prediction center to a small filled green fused estimate near (11, 7.6), mostly inside the measurement ellipse. Annotations: Kalman gain K[0,0] equals 0.72; K equals P sub pred H transpose S inverse; P sub k equals (I minus K H) P sub pred.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

@@ -92,7 +92,7 @@ nav ol { columns: 2 18rem; }
 <li>It is containerized very nicely, has lots of pictures, diagrams. Each section takes 5 minutes to read.
 </li></ul>
 <p><strong>All the material and pictures were taken there today</strong></p>
-<figure><img src='L22-23_files/1558f8a15d76.jpg' alt='Book Cover' loading='lazy'></figure>
+<figure><img src='L22-23_files/1558f8a15d76.jpg' alt='Cover of the textbook Foundations of Computer Vision by Antonio Torralba, Phillip Isola, and William T. Freeman, decorated with a mosaic of colored pixel squares.' loading='lazy'></figure>
 
 </section>
 <section id='s7' aria-labelledby='h7'>
@@ -112,7 +112,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s9' aria-labelledby='h9'>
 <h2 id='h9'><span class='num'>9.</span> The 3D to 2D project</h2>
-<figure><img src='L22-23_files/21e9e5f7c630.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/21e9e5f7c630.svg' alt='Orthographic projection: an L-shaped step block lies along the Z axis of a world frame with axes X, Y, Z. Parallel lines run from each corner of the block straight back along Z to a gray projection plane, where the block appears as a same-size L-shaped outline in image axes x and y. Image x equals world X and image y equals world Y, so depth Z is lost and distance does not change the projected size.' loading='lazy'></figure>
 <p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
 
 </section>
@@ -126,7 +126,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h11'><span class='num'>11.</span> The Pinhole Camera Model</h2>
 <p><strong>World coordinates</strong>: Let the origin of a World Cartesian coordinate system be the camera’s pinhole.</p>
 <p>The coordinates of 3D position of a point, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, in the world will be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P\  = \ (X,\ Y,\ Z)</annotation></semantics></math>, where the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> axis is perpendicular to the camera’s sensing plane (projection plane).</p>
-<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Diagram: a pinhole camera drawn as a box with the projection plane at its back face and the pinhole, or camera center, on its front face. The pinhole is the origin of the world X, Y, Z axes: Y points up, X points diagonally, and Z points straight out of the camera along the optical, or principal, axis. The distance from the pinhole back to the projection plane is labeled f, the focal length.' loading='lazy'></figure>
 <p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
 
 </section>
@@ -135,7 +135,7 @@ nav ol { columns: 2 18rem; }
 <p><strong>Camera coordinates </strong>in the <strong>virtual camera plane.</strong></p>
 <p>The camera projection plane is behind the pinhole and at a distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> of the origin.</p>
 <p>Because the rays get inverted through the pinhole, it is useful to reflect the project plane so that the coordinates are easier to understand</p>
-<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Diagram: a pinhole camera drawn as a box with the projection plane at its back face and the pinhole, or camera center, on its front face. The pinhole is the origin of the world X, Y, Z axes: Y points up, X points diagonally, and Z points straight out of the camera along the optical, or principal, axis. The distance from the pinhole back to the projection plane is labeled f, the focal length.' loading='lazy'></figure>
 <p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
 
 </section>
@@ -143,13 +143,13 @@ nav ol { columns: 2 18rem; }
 <h2 id='h13'><span class='num'>13.</span> The Pinhole Camera Model</h2>
 <p><strong>Image coordinates</strong>, are typically measured in pixels.</p>
 <p>Both the camera coordinate system <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math> and the image coordinate system <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(n,\ m)</annotation></semantics></math>  are related by an affine transform as we will discuss later.</p>
-<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Diagram: a pinhole camera drawn as a box with the projection plane at its back face and the pinhole, or camera center, on its front face. The pinhole is the origin of the world X, Y, Z axes: Y points up, X points diagonally, and Z points straight out of the camera along the optical, or principal, axis. The distance from the pinhole back to the projection plane is labeled f, the focal length.' loading='lazy'></figure>
 <p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
 
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> The 3D to 2D project</h2>
-<figure><img src='L22-23_files/1fede8ee0e95.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/1fede8ee0e95.svg' alt='Pinhole camera model in two panels. (a) World coordinates X, Y, Z have their origin at the pinhole, with Z as the optical axis. A ray from 3D point P passes through the pinhole and lands at point p on a projection plane a distance f behind it, where the image is inverted. An equivalent virtual camera plane a distance f in front shows p upright. (b) On the virtual plane, camera coordinates x, y originate at the plane&#x27;s center, with x pointing left. Image coordinates n, m originate at the bottom-left corner.' loading='lazy'></figure>
 <p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
 
 </section>
@@ -168,7 +168,7 @@ nav ol { columns: 2 18rem; }
 <p>Under perspective projection, distant objects become smaller, through the inverse scaling by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>.</p>
 <p>The perspective projection equations apply not just to pinhole cameras but to most lens-based cameras, and human vision as well. The pixel coordinated can be computed as,</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>a</mi><mi>x</mi><mo>+</mo><msub><mi>n</mi><mn>0</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>m</mi><mo>=</mo><mi>a</mi><mi>y</mi><mo>+</mo><msub><mi>m</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">n = - ax + n_{0},\ \ m = ay + m_{0}</annotation></semantics></math></p>
-<figure><img src='L22-23_files/795fb9ef842f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/795fb9ef842f.svg' alt='Pinhole camera geometry: a 3D point at coordinates X, Y, Z in front of the camera center projects through the center onto an image plane a focal distance f behind it, landing at image point x, y, flipped. Two pairs of similar triangles, green for the horizontal coordinates and blue for the vertical, show that x over f equals X over Z and y over f equals Y over Z. So x equals f X over Z and y equals f Y over Z.' loading='lazy'></figure>
 
 </section>
 <section id='s17' aria-labelledby='h17'>
@@ -271,7 +271,7 @@ y
 <section id='s24' aria-labelledby='h24'>
 <h2 id='h24'><span class='num'>24.</span> The Pinhole Camera Model</h2>
 <p>We need to account for the perspective projection of the point, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, described in camera coordinates, to pixel coordinates in the sensor plane of the camera.</p>
-<figure><img src='L22-23_files/8a978d5065a5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/8a978d5065a5.svg' alt='Pinhole camera geometry: camera center at the origin of camera axes X sub c, Y sub c and Z sub c, with Z sub c the optical or principal axis. A ray from point P on a house passes through a virtual image plane in front of the center, which has its own x and y axes, then through the camera center. It lands on the sensor behind the center, at focal length f. The sensor is an M by N pixel grid of width w, and the house appears on it inverted.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>
@@ -319,21 +319,21 @@ a &amp; 0 &amp; c_{x} &amp; 0 \\
 <p>In all our previous examples, we have been assuming that the camera origin was located at the origin of the world coordinate system with the optical axis aligned with the world</p>
 <p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>-axis.</p>
 <p>In practice, there will be many situations where placing the camera at a special position will be more convenient.</p>
-<figure><img src='L22-23_files/9ab153f9d5af.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/9ab153f9d5af.svg' alt='Two-part figure. (a) Photo: a world coordinate frame with axes X, Y and Z sits on a tabletop among red, blue and green blocks. A camera on a tripod views the scene from a distance and off to one side, with its line of sight at angle theta from the world Z axis. The camera&#x27;s screen shows 2D image axes x and y. (b) The camera&#x27;s view: the world axes appear tilted, with Z pointing toward the viewer, illustrating a camera that is neither at nor aligned with the world origin.' loading='lazy'></figure>
 
 </section>
 <section id='s30' aria-labelledby='h30'>
 <h2 id='h30'><span class='num'>30.</span> The Pinhole Camera Model</h2>
 <p>Let’s say that our camera has its camera center displaced by vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> and the axes are rotated by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mi>⊤</mi></msup><annotation encoding="application/x-tex">R^{\top}</annotation></semantics></math> with respect to the world-coordinates system.</p>
 <p>We are now given a point in the world <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mi>w</mi></msub><annotation encoding="application/x-tex">P_{w}</annotation></semantics></math>, with its coordinates are described in terms of the world-coordinate system. Our goal is to find how that point projects into the image captured by the camera.</p>
-<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Sketch of camera and world coordinate frames: a person holds a camera whose red camera axes X sub c, Y sub c, Z sub c are rotated by R relative to green world axes X sub w, Y sub w, Z sub w at the lower right. Vector T runs from the world origin to the camera center. A point P on a figure seated at a table is reached by vector P sub w from the world origin and by vector P sub c from the camera.' loading='lazy'></figure>
 
 </section>
 <section id='s31' aria-labelledby='h31'>
 <h2 id='h31'><span class='num'>31.</span> The Pinhole Camera Model</h2>
 <p>Based on coordinate transformations of the camera, we can describe the transformation as,</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>c</mi></msub><mo>=</mo><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mi>W</mi></msub><mo>−</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>R</mi><msub><mi>P</mi><mi>W</mi></msub><mo>−</mo><mi>R</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">P_{c} = R\left( P_{W} - T \right) = RP_{W} - RT</annotation></semantics></math></p>
-<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Sketch of camera and world coordinate frames: a person holds a camera whose red camera axes X sub c, Y sub c, Z sub c are rotated by R relative to green world axes X sub w, Y sub w, Z sub w at the lower right. Vector T runs from the world origin to the camera center. A point P on a figure seated at a table is reached by vector P sub w from the world origin and by vector P sub c from the camera.' loading='lazy'></figure>
 
 </section>
 <section id='s32' aria-labelledby='h32'>
@@ -360,7 +360,7 @@ R &amp; - RT \\
 </section>
 <section id='s34' aria-labelledby='h34'>
 <h2 id='h34'><span class='num'>34.</span> The Pinhole Camera Model</h2>
-<figure><img src='L22-23_files/07abd8a94e63.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/07abd8a94e63.svg' alt='Diagram of the full pinhole projection chain, with the equation p equals K times the matrix [R, minus R T; 0 transpose, 1] times P sub w. A world point P, located by vector P sub w from the world frame, is related to the camera frame by rotation R and translation T. The green extrinsic matrix converts world coordinates to camera coordinates. The red intrinsic matrix K then projects along a ray through the camera center to image point p, inverted on the image plane.' loading='lazy'></figure>
 
 </section>
 <section id='s35' aria-labelledby='h35'>
@@ -374,9 +374,9 @@ R &amp; - RT \\
 </section>
 <section id='s36' aria-labelledby='h36'>
 <h2 id='h36'><span class='num'>36.</span> The Pinhole Camera Model</h2>
-<figure><img src='L22-23_files/05373dec9555.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/6597b58fc069.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/e6468003f9dc.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/05373dec9555.svg' alt='Grid illustrating barrel distortion: the center horizontal and vertical lines stay straight, while lines farther from the center bow increasingly outward, so the grid bulges as if wrapped around a sphere and magnification decreases toward the edges.' loading='lazy'></figure>
+<figure><img src='L22-23_files/6597b58fc069.svg' alt='Pincushion distortion: a square grid whose straight lines bow inward toward the center, so the corners appear stretched outward. Distortion grows with distance from the image center, while the central horizontal and vertical lines stay straight.' loading='lazy'></figure>
+<figure><img src='L22-23_files/e6468003f9dc.svg' alt='Mustache distortion: a square grid whose central lines stay straight, while the other lines bulge outward near the center like barrel distortion and then flatten back toward the image edges like pincushion distortion, giving each line a wavy, handlebar-mustache shape.' loading='lazy'></figure>
 <p>Barrel</p>
 <p>Pincushion</p>
 <p>Mustache</p>
@@ -402,7 +402,7 @@ R &amp; - RT \\
 <p>The observer measures the angle <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\alpha.</annotation></semantics></math> You can derive the distance using simple trigonometric relation.</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mfrac><mi>h</mi><mrow><mrow><mi mathvariant="normal">tan</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">d = \frac{h}{\tan(\alpha)}</annotation></semantics></math></p>
 <p>This method is not very accurate and might require high observation points, which might not be available, but it allows as to estimate with a single observation point.</p>
-<figure><img src='L22-23_files/ce909a60e1eb.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/ce909a60e1eb.svg' alt='Diagram: an observer stands on a hilltop at height h above the base. A horizontal sight line extends from the observer&#x27;s eye, and a second line slopes down to a boat on the water at angle alpha below that horizontal. The same angle alpha appears at the boat. The height h, the line of sight, and the unknown horizontal distance d along the ground to the boat form a right triangle, so d equals h divided by tangent of alpha.' loading='lazy'></figure>
 
 </section>
 <section id='s40' aria-labelledby='h40'>
@@ -412,28 +412,28 @@ R &amp; - RT \\
 <p>Then we can apply the following relation:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>t</mi><mfrac><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mi>α</mi><mo>+</mo><mi>β</mi></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">d = t\frac{\sin(\alpha)\sin(\beta)}{\sin{\alpha + \beta}}</annotation></semantics></math></p>
 <p>This method is called <strong>triangulation</strong>. For it to work we need a large distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> so that the angles are significantly different from 90 degrees.</p>
-<figure><img src='L22-23_files/d19ca382363f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/d19ca382363f.svg' alt='Triangulation diagram: two observation points on a coastline are joined by a baseline of length t. Lines run from each point to a sailboat offshore. Angle alpha is measured at the first point and angle beta at the second, each between the baseline and the line to the boat. The unknown distance d runs from the baseline to the boat, perpendicular to the baseline, marked with a right-angle symbol.' loading='lazy'></figure>
 
 </section>
 <section id='s41' aria-labelledby='h41'>
 <h2 id='h41'><span class='num'>41.</span> Stereo Vision</h2>
 <p>Stereo vision uses two cameras separated by a known baseline distance. By observing the same 3D point from two different views, we can triangulate its position.</p>
 <p>When observing the world with two eyes we get two different views of the world. The relative displacement of features across the two images (<strong>parallax effect</strong>) is related to the distance between the observer and the observed scene.</p>
-<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Diagram of stereo camera geometry in two parts. (a) 3D view: left and right cameras, each with X, Y, Z axes, separated by baseline T. Each has an image plane at focal length f, where point P projects to image coordinates x sub L and x sub R. (b) Top view: lines from both camera centers to P form a large triangle of unknown depth Z. It contains a similar, smaller triangle at height f between the two projections, so the disparity, x sub L minus x sub R, determines Z.' loading='lazy'></figure>
 
 </section>
 <section id='s42' aria-labelledby='h42'>
 <h2 id='h42'><span class='num'>42.</span> Stereo Vision</h2>
 <p>A simple way to triangulate the depth, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>, of a point visible in both images is through similar triangles. The two triangles shown in are similar (same angles), and so the ratios of their height to base must be the same. Thus we have:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>T</mi><mo>+</mo><msub><mi>x</mi><mi>r</mi></msub><mo>−</mo><msub><mi>x</mi><mi>L</mi></msub></mrow><mrow><mi>Z</mi><mo>−</mo><mi>f</mi></mrow></mfrac><mo>=</mo><mfrac><mi>T</mi><mi>Z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{T + x_{r} - x_{L}}{Z - f} = \frac{T}{Z}</annotation></semantics></math></p>
-<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Diagram of stereo camera geometry in two parts. (a) 3D view: left and right cameras, each with X, Y, Z axes, separated by baseline T. Each has an image plane at focal length f, where point P projects to image coordinates x sub L and x sub R. (b) Top view: lines from both camera centers to P form a large triangle of unknown depth Z. It contains a similar, smaller triangle at height f between the two projections, so the disparity, x sub L minus x sub R, determines Z.' loading='lazy'></figure>
 
 </section>
 <section id='s43' aria-labelledby='h43'>
 <h2 id='h43'><span class='num'>43.</span> Stereo Vision</h2>
 <p>Solving for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> we get that:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mo>=</mo><mfrac><mrow><mi>f</mi><mi>T</mi></mrow><mrow><msub><mi>x</mi><mi>L</mi></msub><mo>−</mo><msub><mi>x</mi><mi>R</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">Z = \frac{fT}{x_{L} - x_{R}}</annotation></semantics></math></p>
-<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Diagram of stereo camera geometry in two parts. (a) 3D view: left and right cameras, each with X, Y, Z axes, separated by baseline T. Each has an image plane at focal length f, where point P projects to image coordinates x sub L and x sub R. (b) Top view: lines from both camera centers to P form a large triangle of unknown depth Z. It contains a similar, smaller triangle at height f between the two projections, so the disparity, x sub L minus x sub R, determines Z.' loading='lazy'></figure>
 
 </section>
 <section id='s44' aria-labelledby='h44'>
@@ -468,9 +468,9 @@ R &amp; - RT \\
 </section>
 <section id='s48' aria-labelledby='h48'>
 <h2 id='h48'><span class='num'>48.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/dd9087d522af.jpg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/adb1d7ef54e0.jpg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/9ab4beed920f.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/dd9087d522af.jpg' alt='Photo: an office with detected feature points marked as green dots for stereo matching. Points cluster densely on high-texture areas such as the bookshelf, potted plant, desk clutter and window edges, while plain walls, the table top and the floor have almost none. Circled regions highlight sparse coverage: a small framed picture on the wall with only one point (red), the upper window corner with a few points (blue), and a chair back with a few points (yellow).' loading='lazy'></figure>
+<figure><img src='L22-23_files/adb1d7ef54e0.jpg' alt='Photo: An office scene overlaid with green dots marking detected feature points for stereo matching. Points cluster densely on textured areas such as the bookshelves, potted plants, desk clutter and window frame edges, while plain walls, ceiling, floor and the round table have almost none. Three circled regions show sparse features: a wall painting with only three points (red), the top of the window (blue), and a perforated chair back (yellow).' loading='lazy'></figure>
+<figure><img src='L22-23_files/9ab4beed920f.jpg' alt='Grayscale depth (disparity) map from stereo vision of a cluttered indoor tabletop. Brightness encodes distance: a round object in the bottom foreground is brightest (nearest), cylindrical containers and boxes on the table are mid-gray, and the back wall, cabinets, and dark doorway are darkest (farthest). Object edges appear smooth and blurred, typical of a computed depth estimate.' loading='lazy'></figure>
 
 </section>
 <section id='s49' aria-labelledby='h49'>
@@ -537,32 +537,32 @@ R &amp; - RT \\
 <h2 id='h54'><span class='num'>54.</span> Stereo Vision</h2>
 <p>Until now we have considered only the case where the two cameras are parallel, but in general the two images will be produced by cameras that can have arbitrary orientations.</p>
 <p>Does the disparity relation still match if the cameras have different orientations?</p>
-<figure><img src='L22-23_files/92157aee329e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/92157aee329e.svg' alt='Diagram: Camera 1 and Camera 2 view a scene from differently oriented image planes, each with its own two-axis coordinate frame, and are related by a rotation R and translation T. A single point p sub 1 is marked in Camera 1&#x27;s image. Camera 2&#x27;s image holds several candidate points, three labeled &quot;p sub 2 ?&quot;. This illustrates the correspondence problem: with arbitrary orientations, it is unclear which point in the second image matches p sub 1.' loading='lazy'></figure>
 
 </section>
 <section id='s55' aria-labelledby='h55'>
 <h2 id='h55'><span class='num'>55.</span> Stereo Vision</h2>
 <p>Assume we know the intrinsic and extrinsic parameters for both cameras, and we thus know the generic translation and rotation.  How do we find the point produced form one image to another?</p>
 <p>Are there any geometric constraints that can help us to identify candidate matches?</p>
-<figure><img src='L22-23_files/92157aee329e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/92157aee329e.svg' alt='Diagram: Camera 1 and Camera 2 view a scene from differently oriented image planes, each with its own two-axis coordinate frame, and are related by a rotation R and translation T. A single point p sub 1 is marked in Camera 1&#x27;s image. Camera 2&#x27;s image holds several candidate points, three labeled &quot;p sub 2 ?&quot;. This illustrates the correspondence problem: with arbitrary orientations, it is unclear which point in the second image matches p sub 1.' loading='lazy'></figure>
 
 </section>
 <section id='s56' aria-labelledby='h56'>
 <h2 id='h56'><span class='num'>56.</span> Stereo Vision</h2>
 <p>We know that the observed point in camera 1, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math>, corresponds to a 3D point that lies within the ray that connects the camera 1 origin and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math> (shown in red). Therefore <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>2</mn></msub><annotation encoding="application/x-tex">p_{2}</annotation></semantics></math> must be constrained to constrained to be within the line that results of projecting the ray into camera 2.</p>
-<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Diagram: epipolar constraint. Two cameras, related by rotation R and translation T, each view the scene through an image plane. Point p sub 1 in camera 1&#x27;s image defines a red ray from camera 1&#x27;s center into the scene. Several candidate 3D points along that ray project into camera 2&#x27;s image at different locations, all lying on one red line there, the epipolar line. The matching point p sub 2, marked with a question mark, must lie on that line.' loading='lazy'></figure>
 
 </section>
 <section id='s57' aria-labelledby='h57'>
 <h2 id='h57'><span class='num'>57.</span> Stereo Vision</h2>
 <p>The first point is the projection of the camera center of camera 1 into the camera 2 plane.</p>
-<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Diagram: epipolar constraint. Two cameras, related by rotation R and translation T, each view the scene through an image plane. Point p sub 1 in camera 1&#x27;s image defines a red ray from camera 1&#x27;s center into the scene. Several candidate 3D points along that ray project into camera 2&#x27;s image at different locations, all lying on one red line there, the epipolar line. The matching point p sub 2, marked with a question mark, must lie on that line.' loading='lazy'></figure>
 
 </section>
 <section id='s58' aria-labelledby='h58'>
 <h2 id='h58'><span class='num'>58.</span> Stereo Vision</h2>
 <p>The second point is the projection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math> into the camera 2 plane. Since we know the intrinsic and extrinsic parameters, we can easily compute these points. We have just reduced a massive 2D search problem into a simple 1D line search!</p>
-<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Diagram: epipolar constraint. Two cameras, related by rotation R and translation T, each view the scene through an image plane. Point p sub 1 in camera 1&#x27;s image defines a red ray from camera 1&#x27;s center into the scene. Several candidate 3D points along that ray project into camera 2&#x27;s image at different locations, all lying on one red line there, the epipolar line. The matching point p sub 2, marked with a question mark, must lie on that line.' loading='lazy'></figure>
 
 </section>
 <section id='s59' aria-labelledby='h59'>
@@ -570,12 +570,12 @@ R &amp; - RT \\
 <p>The <strong>epipolar plane </strong>is the plane that contains the two camera origins and a 3D point,</p>
 <p>The <strong>epipolar lines </strong>are the intersection between the epipolar plane and the camera planes. When the point  moves in space, the epipolar plane and epipolar lines change.</p>
 <p>The <strong>epipoles</strong> are the intersection points between the line that connects both camera origins and the camera planes. Therefore, all the <strong>epipolar</strong> lines intersect at the <strong>same epipoles</strong>.</p>
-<figure><img src='L22-23_files/29820203bcd0.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/29820203bcd0.svg' alt='Diagram: epipolar geometry for two cameras with centers O sub 1 and O sub 2, joined by a dashed baseline. Rays from each center to 3D point P form a yellow triangle, the epipolar plane. Point P projects to p sub 1 and p sub 2 on the two image planes. The baseline pierces the image planes at epipoles e sub 1 and e sub 2. In each image, the epipolar line runs through the projected point and the epipole, where the plane cuts the image.' loading='lazy'></figure>
 
 </section>
 <section id='s60' aria-labelledby='h60'>
 <h2 id='h60'><span class='num'>60.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/b0556f249bd8.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/b0556f249bd8.svg' alt='Matching exercise: six red and blue camera-pair setups (A to F) and six pairs of epipolar-line patterns (1 to 6). A: one camera stacked above the other, matching parallel vertical lines (2). B: cameras verged toward each other, lines fanning toward distant epipoles (5). C: cameras rotated differently, lines parallel in one image and radiating from an edge point in the other (4). D: side-by-side parallel cameras, parallel horizontal lines (6). E: one camera ahead of the other along the viewing direction, lines radiating from image centers (3). F: cameras facing each other, lines radiating from inner edges (1).' loading='lazy'></figure>
 <p>A-2, B-5, C-4, D-6, E-3, F-1</p>
 
 </section>
@@ -634,9 +634,9 @@ R &amp; - RT \\
 </section>
 <section id='s67' aria-labelledby='h67'>
 <h2 id='h67'><span class='num'>67.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/1d7308828f0f.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/9e5315235ad0.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/22701af8a90c.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/1d7308828f0f.svg' alt='Photo: an ArUco fiducial marker, a square with a thick black border around a four by four grid of black and white cells that encodes the marker&#x27;s ID. Reading rows top to bottom, with B for black and W for white: B W W W; W B B W; W B W B; B W W B. A camera can detect this pattern to identify the marker and estimate its position and orientation.' loading='lazy'></figure>
+<figure><img src='L22-23_files/9e5315235ad0.svg' alt='Photo: A square black-and-white fiducial marker in the AprilTag style, made of a grid of black and white cells. A solid black square border surrounds a white interior holding a small pattern of black cells, and more black and white cells around the outside of the border encode the tag&#x27;s identity. A camera system can detect such a printed marker and estimate its position and orientation, for example to locate a target or calibrate cameras.' loading='lazy'></figure>
+<figure><img src='L22-23_files/22701af8a90c.svg' alt='Example ArUco fiducial marker, a square with a thick black border around a 5 by 5 grid of black and white cells that encodes the marker&#x27;s ID. A camera can detect it and estimate its position and orientation. Row by row, with B for black and W for white: W B W B W; B W B W W; W B B W B; W W W W W; W B B B W.' loading='lazy'></figure>
 
 </section>
 <section id='s68' aria-labelledby='h68'>
@@ -669,9 +669,9 @@ R &amp; - RT \\
 0 &amp; 1 &amp; 0 \\
 0 &amp; 0 &amp; 1
 \end{bmatrix}</annotation></semantics></math></p>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
 
 </section>
 <section id='s70' aria-labelledby='h70'>
@@ -695,18 +695,18 @@ sin(\theta) &amp; cos(\theta) &amp; 0 \\
 0.5 &amp; 1 &amp; 0 \\
 0 &amp; 0 &amp; 1
 \end{bmatrix}</annotation></semantics></math></p>
-<figure><img src='L22-23_files/e9e38b993aa6.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f29bee907d10.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/c8a67a3ab758.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/e9e38b993aa6.svg' alt='Checkerboard calibration pattern of 8 rows by 8 columns of rectangular squares, viewed straight on with no perspective distortion. The left four columns alternate black and white; in the right four columns the white squares are shaded gray, setting that half apart.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f29bee907d10.svg' alt='A black-and-white checkerboard calibration pattern rotated about 30 degrees within the image plane. Its squares stay square and equal in size, with no skew or perspective distortion. The light squares are white in the lower-left half of the board and gray in the upper-right half, split along a diagonal.' loading='lazy'></figure>
+<figure><img src='L22-23_files/c8a67a3ab758.svg' alt='A checkerboard grid skewed into a parallelogram: each row keeps its horizontal edges and width but is shifted farther right than the row below, so the originally vertical column edges all slant to the right at the same angle. Square areas and row spacing are unchanged. On the right portion of the board, the light squares are shaded gray instead of white.' loading='lazy'></figure>
 
 </section>
 <section id='s71' aria-labelledby='h71'>
 <h2 id='h71'><span class='num'>71.</span> Stereo Vision</h2>
 <p>Applying starching and skewing can transform squares into trapezoids, which follows the  perspective transform.</p>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='An 8 by 8 black-and-white checkerboard calibration pattern in which the light squares in the right half are gray instead of white, so the square grid pattern is unchanged while the intensity differs between the two halves.' loading='lazy'></figure>
 
 </section>
 <section id='s72' aria-labelledby='h72'>
@@ -715,34 +715,34 @@ sin(\theta) &amp; cos(\theta) &amp; 0 \\
 <p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> encapsulates the camera&#x27;s projection, we can decompose it into our <strong>extrinsic rotation</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> and <strong>translation</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> matrices.</p>
 <p>If we multiply the homography by the inverse of our camera&#x27;s intrinsic matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="bold-italic">𝑲</mi><mrow><mi>−</mi><mn mathvariant="bold">𝟏</mn></mrow></msup><annotation encoding="application/x-tex">\mathbf{K}^{- \mathbf{1}}</annotation></semantics></math>, the columns of the resulting matrix give us the exact 3D orientation of the tag in the world.</p>
 <p>We have just achieved retrieving the 3D coordinates without needing a stereo camera pair!</p>
-<figure><img src='L22-23_files/265b6b549ea6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/265b6b549ea6.svg' alt='Perspective view of a flat black-and-white AprilTag with a 3D coordinate frame at its center: the X and Y axes lie in the plane of the tag, and the Z axis points straight out of the tag&#x27;s surface. This is the tag pose recovered from a single image, the orientation that the columns of K inverse times H describe.' loading='lazy'></figure>
 
 </section>
 <section id='s73' aria-labelledby='h73'>
 <h2 id='h73'><span class='num'>73.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/5ee7291511c7.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/5ee7291511c7.png' alt='Photo: a small square black-and-white fiducial marker (an ArUco/AprilTag-style binary grid) printed at the center of a white sheet of paper on a desk, photographed from an oblique angle so the square appears as a skewed quadrilateral. This perspective distortion is what lets a camera estimate the marker&#x27;s position and orientation.' loading='lazy'></figure>
 
 </section>
 <section id='s74' aria-labelledby='h74'>
 <h2 id='h74'><span class='num'>74.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/d1de972bcc07.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/d1de972bcc07.png' alt='Photo: a small black-and-white square fiducial marker (ArUco-style tag) printed on a sheet of paper lying on a desk, viewed at an oblique angle. Its estimated 3D pose is overlaid as coordinate axes at the marker center: red x and green y axes lie in the plane of the paper, and the blue z axis points straight up, normal to the paper. This illustrates recovering a marker&#x27;s position and orientation from a camera image.' loading='lazy'></figure>
 
 </section>
 <section id='s75' aria-labelledby='h75'>
 <h2 id='h75'><span class='num'>75.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Photo: a small black-and-white square fiducial marker (ArUco-style) lies on a sheet of paper on a desk, viewed at an angle. A green wireframe cube is drawn on the camera image, its base aligned with the marker&#x27;s edges and rising out of the page. This shows that the camera&#x27;s 3D pose relative to the marker has been estimated, so virtual 3D geometry can be projected correctly into the image.' loading='lazy'></figure>
 
 </section>
 <section id='s76' aria-labelledby='h76'>
 <h2 id='h76'><span class='num'>76.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/00a2eac39f9c.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Photo: a small black-and-white square fiducial marker (ArUco-style) lies on a sheet of paper on a desk, viewed at an angle. A green wireframe cube is drawn on the camera image, its base aligned with the marker&#x27;s edges and rising out of the page. This shows that the camera&#x27;s 3D pose relative to the marker has been estimated, so virtual 3D geometry can be projected correctly into the image.' loading='lazy'></figure>
+<figure><img src='L22-23_files/00a2eac39f9c.png' alt='3D plot of a stereo camera setup, with X and Y axes from minus 300 to 300 millimeters and Z from 0 to 300 millimeters. Two red wireframe pyramids represent a pair of cameras mounted side by side, a short baseline apart, about 50 to 75 millimeters above the ground and angled toward a small green box resting on the ground plane near the origin. The box is the object both cameras view to triangulate its 3D position.' loading='lazy'></figure>
 
 </section>
 <section id='s77' aria-labelledby='h77'>
 <h2 id='h77'><span class='num'>77.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/d708d76e325a.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L22-23_files/81f16b603180.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/d708d76e325a.png' alt='Screenshot: a camera views a fiducial marker (black-and-white square tag, ArUco-style) on a sheet of paper on a table, seen at an oblique angle. Software has estimated the marker&#x27;s 3D pose and drawn a green wireframe cube on it. The cube&#x27;s base is aligned with the marker and its edges rise in correct perspective. This shows that the camera&#x27;s position and orientation relative to the marker can be recovered from a single image.' loading='lazy'></figure>
+<figure><img src='L22-23_files/81f16b603180.png' alt='3D plot of a position trajectory measured with stereo vision, with X and Y axes from minus 300 to 300 mm and Z from 0 to 300 mm. A blue path starts near the center at about 50 mm height, loops outward and upward, and ends at about 200 mm height, where a red outline marks the tracked object&#x27;s final pose. A small green box sits on the floor near the origin as a reference object.' loading='lazy'></figure>
 
 </section>
 <section id='s78' aria-labelledby='h78'>
@@ -802,7 +802,7 @@ sin(\theta) &amp; cos(\theta) &amp; 0 \\
 <section id='s81' aria-labelledby='h81'>
 <h2 id='h81'><span class='num'>81.</span> Stereo Vision</h2>
 <p>What building is closer? Why do you think so?</p>
-<figure><img src='L22-23_files/4ef283362a67.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/4ef283362a67.svg' alt='Line drawing of a city street in perspective, used to prompt reasoning about depth cues. Rectangular buildings of varying height recede toward a central vanishing area, with nearer buildings overlapping and hiding parts of those behind them. A wide low block sits at lower left in front of a tall building. At lower right, rows of cylindrical posts are large and low in the frame, while similar posts farther down the street are drawn smaller and higher.' loading='lazy'></figure>
 
 </section>
 <section id='s82' aria-labelledby='h82'>
@@ -826,7 +826,7 @@ Z_{0} + tD_{z}
 </section>
 <section id='s84' aria-labelledby='h84'>
 <h2 id='h84'><span class='num'>84.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/282fbce7f688.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/282fbce7f688.svg' alt='Diagram: a pinhole camera at the origin (axes X, Y, Z) views a 3D point moving along a straight line, P sub t minus 1, P sub t, P sub t plus 1, P sub t plus 2, with each step equal to displacement vector D. Rays through the image plane project these to p sub t minus 1 through p sub t plus 2, which crowd closer together along the image line and converge toward the vanishing point v, where the ray parallel to D meets the image plane.' loading='lazy'></figure>
 
 </section>
 <section id='s85' aria-labelledby='h85'>
@@ -850,7 +850,7 @@ f\frac{D_{y}}{D_{z}}
 <h2 id='h86'><span class='num'>86.</span> Stereo Vision</h2>
 <p>Each group of parallel lines converges to a different vanishing point. Lines that are parallel to the camera plane remain parallel as they converge to a vanishing point in infinity.</p>
 <p>Vanishing points are very useful to recover the missing depth of the scene as we will see later. The human visual system also makes use of vanishing points for 3D perception</p>
-<figure><img src='L22-23_files/e78ad5441db6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/e78ad5441db6.svg' alt='Perspective diagram in two panels, each with a camera (green axes) and a vertical image plane. (a) A ground grid aligned with the camera: red lines running along the viewing direction project to image lines that meet at one vanishing point v at the camera&#x27;s eye level, while blue lines parallel to the image plane stay parallel in the image. (b) The grid rotated relative to the camera: both red and blue families are oblique, and each converges to its own vanishing point v on the image plane.' loading='lazy'></figure>
 
 </section>
 <section id='s87' aria-labelledby='h87'>
@@ -868,7 +868,7 @@ D \\
 <section id='s88' aria-labelledby='h88'>
 <h2 id='h88'><span class='num'>88.</span> Stereo Vision</h2>
 <p>Any 3D plane becomes a half-plane in the image and has a horizon line. The horizon line is the line that passes by all the vanishing points of all the lines contained in the plane.</p>
-<figure><img src='L22-23_files/a0a74c127b86.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/a0a74c127b86.png' alt='Photo of a plaza with arcaded yellow buildings and café tables, annotated to show vanishing points. Three families of parallel lines in the ground plane, drawn in blue, yellow and green along the paving, each converge to their own vanishing point. A red horizon line passes through all three points, two of them far outside the photo. Black dashed lines along the building&#x27;s floors also converge near the right vanishing point.' loading='lazy'></figure>
 
 </section>
 <section id='s89' aria-labelledby='h89'>
@@ -881,12 +881,12 @@ D \\
 </section>
 <section id='s90' aria-labelledby='h90'>
 <h2 id='h90'><span class='num'>90.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/3200636f048a.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/3200636f048a.svg' alt='Perspective view of a ground plane with two families of parallel lines, which converge in the image to two vanishing points on the horizon. Lines l sub 1 and l sub 2 meet at vanishing point l sub 1 cross l sub 2 on the right; lines l sub 3 and l sub 4 meet at l sub 3 cross l sub 4 on the left. The horizon line through both points is h equals open paren l sub 1 cross l sub 2 close paren cross open paren l sub 3 cross l sub 4 close paren.' loading='lazy'></figure>
 
 </section>
 <section id='s91' aria-labelledby='h91'>
 <h2 id='h91'><span class='num'>91.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/4a35277d1b82.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/4a35277d1b82.png' alt='Photo of an office corner with three families of parallel scene edges highlighted to show vanishing points. Blue edges along the desk and shelf tops, parallel to world axis X sub w, extend left to meet at vanishing point v sub 1. Green edges along the bookshelf, parallel to Z sub w, converge at v sub 2 on the right. Red vertical edges of the bookshelf and doorframe, parallel to Y sub w, converge far below the image at v sub 3.' loading='lazy'></figure>
 
 </section>
 <section id='s92' aria-labelledby='h92'>
@@ -911,7 +911,7 @@ D \\
 </li></ul>
 <p>Anything else?</p>
 <p>The cross-ratio is one of these!</p>
-<figure><img src='L22-23_files/99aa2abdb682.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/99aa2abdb682.svg' alt='Four points, P sub 1 through P sub 4, lying in order along one straight line with uneven spacing: P sub 2 to P sub 3 is the widest gap. The cross-ratio is computed from the distances between four such collinear points, and it stays the same under perspective projection.' loading='lazy'></figure>
 
 </section>
 <section id='s94' aria-labelledby='h94'>
@@ -920,12 +920,12 @@ D \\
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub><mo>,</mo><msub><mi>P</mi><mn>4</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>3</mn></msub><mo>−</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>4</mn></msub><mo>−</mo><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow><mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>3</mn></msub><mo>−</mo><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>4</mn></msub><mo>−</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">CR\left( P_{1},P_{2},P_{3},P_{4} \right) = \frac{\left| P_{3} - P_{1} \right|\left| P_{4} - P_{2} \right|}{\left| P_{3} - P_{2} \right|\left| P_{4} - P_{1} \right|}</annotation></semantics></math></p>
 <p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mi>i</mi></msub><mo>−</mo><msub><mi>P</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">\left| P_{i} - P_{j} \right|</annotation></semantics></math> is the Euclidian distance between the points using heterogeneous coordinates.</p>
 <p>The order maters!</p>
-<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Geometric construction illustrating that the cross-ratio is projectively invariant: four lines radiate from a center point O, and three different red transversal lines cut them at point sets P1 to P4, Q1 to Q4, and R1 to R4. The third transversal is parallel to the line through P1 and Q1, so R1 lies at infinity. The cross-ratio is the same for every set of four collinear points, even when one point is at infinity.' loading='lazy'></figure>
 
 </section>
 <section id='s95' aria-labelledby='h95'>
 <h2 id='h95'><span class='num'>95.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/062d82314e3f.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/062d82314e3f.png' alt='Three photos of the same ruler on a wooden floor, taken from different viewpoints: straight on, steeply angled in perspective, and tilted. Four collinear points, P1 to P4, are marked along the ruler&#x27;s edge at the same ruler positions in every photo. Perspective changes the apparent spacing between the points in each view, yet the points&#x27; cross-ratio stays unchanged, illustrating that it is invariant under projection.' loading='lazy'></figure>
 <p>All these have the same cross-ratio (you can check that it is 1.6 for all 3 images)!</p>
 
 </section>
@@ -934,7 +934,7 @@ D \\
 <p>When one of the points is at infinity, all the terms that contain that point are cancelled out (this can also be seen by taking a limit). In the case of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_{1}</annotation></semantics></math>, we get the cross-ratio of:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub><mo>,</mo><msub><mi>P</mi><mn>4</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>R</mi><mn>4</mn></msub><mo>−</mo><msub><mi>R</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>R</mi><mn>3</mn></msub><mo>−</mo><msub><mi>R</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">CR\left( P_{1},P_{2},P_{3},P_{4} \right) = \frac{\left| R_{4} - R_{2} \right|}{\left| R_{3} - R_{2} \right|}</annotation></semantics></math></p>
 <p>This cross-ratios value is equal to those of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>!</p>
-<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Geometric construction illustrating that the cross-ratio is projectively invariant: four lines radiate from a center point O, and three different red transversal lines cut them at point sets P1 to P4, Q1 to Q4, and R1 to R4. The third transversal is parallel to the line through P1 and Q1, so R1 lies at infinity. The cross-ratio is the same for every set of four collinear points, even when one point is at infinity.' loading='lazy'></figure>
 
 </section>
 <section id='s97' aria-labelledby='h97'>
@@ -947,12 +947,12 @@ D \\
 </section>
 <section id='s98' aria-labelledby='h98'>
 <h2 id='h98'><span class='num'>98.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/56bdb50d6cdf.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/56bdb50d6cdf.png' alt='Photo of an office annotated for measuring height from a single image. The bookshelf&#x27;s vertical edge, line l sub 3, runs from ground point g sub b to top t sub b, with known height 197 cm. The desk edge runs from g sub d to t sub d, with unknown height. Red line l sub 1 joins g sub d and g sub b and meets the green horizon line h at point a. Line l sub 2 from a through t sub d crosses the bookshelf edge at b, transferring the desk height onto the bookshelf. Vertical lines converge toward vanishing point v sub 3 below the image.' loading='lazy'></figure>
 
 </section>
 <section id='s99' aria-labelledby='h99'>
 <h2 id='h99'><span class='num'>99.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/b51da2804f96.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/b51da2804f96.svg' alt='Diagram: measuring height from a single image using the cross ratio. A vertical world line, a 197 cm bookshelf, rises from ground point P2 to top P4, with P3 at the unknown desk height and P1 at infinity straight down. Rays from the camera center project these onto the image plane as p2 (ground, g sub b), p3 (b), p4 (top, t sub b), and p1, the vertical vanishing point v sub 3. Because cross ratios are preserved under projection, the image points and the known 197 cm give the desk height.' loading='lazy'></figure>
 
 </section>
 <section id='s100' aria-labelledby='h100'>
@@ -965,7 +965,7 @@ D \\
 </section>
 <section id='s101' aria-labelledby='h101'>
 <h2 id='h101'><span class='num'>101.</span> Stereo Vision</h2>
-<figure><img src='L22-23_files/ff859050ae3b.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/ff859050ae3b.png' alt='Annotated office photo illustrating height measurement from a single image. A green horizon line h runs across the room, and the bookshelf&#x27;s vertical edge l3 runs from its base g sub b to its top t sub b, heading toward a vertical vanishing point v sub 3 below. The bookshelf is 197 cm tall, and a desk 73 cm tall holds a bottle of unknown height. Red lines l1 and l2 run from the bottle&#x27;s base g sub e and top t sub e to point a on the horizon, crossing the bookshelf edge at b and c. This transfers the bottle&#x27;s base and top heights onto the bookshelf, where its known height lets the bottle&#x27;s height be computed.' loading='lazy'></figure>
 
 </section>
 <section id='s102' aria-labelledby='h102'>

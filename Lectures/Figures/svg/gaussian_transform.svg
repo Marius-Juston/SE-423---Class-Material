@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1080pt" height="360pt" viewBox="0 0 1080 360" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="1080pt" height="360pt" viewBox="0 0 1080 360" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Gaussian Transform</title><desc id="fig-desc">Three histograms showing why the Extended Kalman Filter is needed. First, Gaussian samples centered at 0, spanning about minus 4 to 4. Second, the same samples after the linear transform 2x: still a bell-shaped Gaussian centered at 0, but twice as wide, spanning about minus 8 to 8. Third, after the nonlinear transform sine of x: confined to minus 1 to 1, nearly flat in the middle with tall spikes at both ends, so it is no longer Gaussian.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

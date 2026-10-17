@@ -78,7 +78,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s6' aria-labelledby='h6'>
 <h2 id='h6'><span class='num'>6.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Block diagram of processes linked by POSIX shared memory. A central hub process, serial_COMandOpti, exchanges data with the RedBoard F28379D over serial or UDP. LVCOMApp (TCP/IP server) and the hub trade 32 chars and 8 floats each way. LinuxCMDApp (CLI) sends the hub 44 chars and 11 floats. The hub sends AstarApp (path planner) robot pose, destination row and column, and a condensed map, and receives an 81-char path. ladar_server (UART) writes 228 lidar distances. Every write is signaled with sem_post on a matching named semaphore.' loading='lazy'></figure>
 
 </section>
 <section id='s7' aria-labelledby='h7'>
@@ -123,14 +123,14 @@ nav ol { columns: 2 18rem; }
 <section id='s11' aria-labelledby='h11'>
 <h2 id='h11'><span class='num'>11.</span> Threads &amp; Processes</h2>
 <p><a href='https://www.youtube.com/watch?v=7ge7u5VUSbE'>https://www.youtube.com/watch?v=7ge7u5VUSbE</a></p>
-<figure><img src='L13_files/0b1b05d24df2.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L13_files/08b470ce08c4.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/0b1b05d24df2.png' alt='Diagram: memory layout of a process, shown as a vertical column divided top to bottom into four regions: text, data, heap, and stack, with unused memory above and below. Text and data are bracketed together and highlighted as the program, while heap and stack are separate regions outside the program portion. The heap is the largest region.' loading='lazy'></figure>
+<figure><img src='L13_files/08b470ce08c4.png' alt='Diagram: an executable file shown as a column of 8-bit binary words, split into two sections. The upper ten words are bracketed as CPU instructions and the lower five words as data. A larger bracket around both labels the whole as an executable file, illustrating that a program on disk is machine instructions plus data, all stored as binary.' loading='lazy'></figure>
 
 </section>
 <section id='s12' aria-labelledby='h12'>
 <h2 id='h12'><span class='num'>12.</span> Threads &amp; Processes</h2>
 <p><a href='https://www.youtube.com/watch?v=7ge7u5VUSbE'>https://www.youtube.com/watch?v=7ge7u5VUSbE</a></p>
-<figure><img src='L13_files/f71fc6482845.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/f71fc6482845.png' alt='Screenshot from the linked video: a memory column holds two separate process memory regions with unused memory above, between, and below them. Each region contains, top to bottom, TEXT (executable code), then DATA, HEAP, and STACK (labeled process data). Process 1&#x27;s region is larger mainly because its heap is much bigger than Process 2&#x27;s. On the left, the video creator&#x27;s script notes explain that text and data are fixed-size, while heap and stack hold runtime data, making a loaded program a process.' loading='lazy'></figure>
 
 </section>
 <section id='s13' aria-labelledby='h13'>
@@ -160,13 +160,13 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s16' aria-labelledby='h16'>
 <h2 id='h16'><span class='num'>16.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/71aecd3f9c16.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/71aecd3f9c16.png' alt='Diagram: two single-threaded processes side by side, each completely separate. Each process has its own code, heap and files, plus one thread with its own registers, program counter and stack. Nothing is shared between the two processes.' loading='lazy'></figure>
 <p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/</a></p>
 
 </section>
 <section id='s17' aria-labelledby='h17'>
 <h2 id='h17'><span class='num'>17.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/18153db5066d.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/18153db5066d.png' alt='Diagram comparing two processes. Left, a single-threaded process: code, heap, and files sit above one set of registers, program counter, and stack, used by a single thread. Right, a multithreaded process with 3 threads: the code, heap, and files are shared by all threads, but each thread has its own registers, program counter, and stack.' loading='lazy'></figure>
 <p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/</a></p>
 
 </section>
@@ -218,7 +218,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s19' aria-labelledby='h19'>
 <h2 id='h19'><span class='num'>19.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/385f55a2fe38.jpg' alt='Program vs Process vs Thread | Smit Shah' loading='lazy'></figure>
+<figure><img src='L13_files/385f55a2fe38.jpg' alt='Infographic: a program is a file of instructions on disk, such as Microsoft Word.app in an applications folder. When run, it becomes a process in RAM, shown in Task Manager as Microsoft Word using 0% CPU and 158.1 MB memory alongside Firefox and Chrome. Flow: (1) program on disk holds instructions 1 through n; (2) one program can launch several processes in RAM; (3) each process contains one or more threads.' loading='lazy'></figure>
 
 </section>
 <section id='s20' aria-labelledby='h20'>
@@ -280,7 +280,7 @@ nav ol { columns: 2 18rem; }
 <li>OS-mediated streams or interrupts.
 </li></ul>
 </li></ul>
-<figure><img src='L13_files/cbd988a0d5bb.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/cbd988a0d5bb.png' alt='Two memory-layout diagrams comparing IPC methods. Left, message passing: process A and process B at the top of memory each send arrows down to a message queue in the kernel region, holding messages m sub 0 through m sub n, so data travels through the OS. Right, shared memory: a shared memory region sits between process A and process B, and both point directly into it, with the kernel separate below and not in the data path.' loading='lazy'></figure>
 <p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/interprocess/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/interprocess/</a></p>
 
 </section>
@@ -340,7 +340,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s26' aria-labelledby='h26'>
 <h2 id='h26'><span class='num'>26.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Block diagram of processes linked by POSIX shared memory. A central hub process, serial_COMandOpti, exchanges data with the RedBoard F28379D over serial or UDP. LVCOMApp (TCP/IP server) and the hub trade 32 chars and 8 floats each way. LinuxCMDApp (CLI) sends the hub 44 chars and 11 floats. The hub sends AstarApp (path planner) robot pose, destination row and column, and a condensed map, and receives an 81-char path. ladar_server (UART) writes 228 lidar distances. Every write is signaled with sem_post on a matching named semaphore.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
@@ -406,7 +406,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s31' aria-labelledby='h31'>
 <h2 id='h31'><span class='num'>31.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Block diagram of processes linked by POSIX shared memory. A central hub process, serial_COMandOpti, exchanges data with the RedBoard F28379D over serial or UDP. LVCOMApp (TCP/IP server) and the hub trade 32 chars and 8 floats each way. LinuxCMDApp (CLI) sends the hub 44 chars and 11 floats. The hub sends AstarApp (path planner) robot pose, destination row and column, and a condensed map, and receives an 81-char path. ladar_server (UART) writes 228 lidar distances. Every write is signaled with sem_post on a matching named semaphore.' loading='lazy'></figure>
 
 </section>
 <section id='s32' aria-labelledby='h32'>
@@ -567,7 +567,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s41' aria-labelledby='h41'>
 <h2 id='h41'><span class='num'>41.</span> Threads &amp; Processes</h2>
-<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Block diagram of processes linked by POSIX shared memory. A central hub process, serial_COMandOpti, exchanges data with the RedBoard F28379D over serial or UDP. LVCOMApp (TCP/IP server) and the hub trade 32 chars and 8 floats each way. LinuxCMDApp (CLI) sends the hub 44 chars and 11 floats. The hub sends AstarApp (path planner) robot pose, destination row and column, and a condensed map, and receives an 81-char path. ladar_server (UART) writes 228 lidar distances. Every write is signaled with sem_post on a matching named semaphore.' loading='lazy'></figure>
 
 </section>
 <section id='s42' aria-labelledby='h42'>

@@ -140,7 +140,7 @@ nav ol { columns: 2 18rem; }
 <p>Instead of saying robot is exactly at “X = 5”, we want to say “We are 90% sure that the robot is near X=5”.</p>
 <p>We represent our state as a probability distribution.</p>
 <p>We use the Gaussian (Normal) Distribution, defined by a mean (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>) and variance (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^{2}</annotation></semantics></math>).</p>
-<figure><img src='L20-21_files/bfd67c9c0515.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/bfd67c9c0515.svg' alt='Plot: standard normal bell curve, probability density on the vertical axis peaking at about 0.4 at the mean, horizontal axis in standard deviations from minus 3 sigma to 3 sigma. Shaded bands show the probability in each interval: 34.1% between the mean and 1 sigma on each side, 13.6% between 1 and 2 sigma, 2.1% between 2 and 3 sigma, and 0.1% beyond 3 sigma. About 68% lies within 1 sigma and 95% within 2 sigma.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Normal_distribution'>https://en.wikipedia.org/wiki/Normal_distribution</a></p>
 
 </section>
@@ -156,7 +156,7 @@ nav ol { columns: 2 18rem; }
 <section id='s12' aria-labelledby='h12'>
 <h2 id='h12'><span class='num'>12.</span> Sensor Fusion</h2>
 <p>Which sensor would you trust more?</p>
-<figure><img src='L20-21_files/1c4109eb461a.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/1c4109eb461a.svg' alt='Plot: two Gaussian probability curves for a robot&#x27;s x position. The red &quot;high uncertainty&quot; curve is centered at 0 and is wide and flat, peaking near 0.27 with a standard deviation of about 1.5. The blue &quot;low uncertainty&quot; curve is centered at 2 and is narrow and tall, peaking near 0.8 with a standard deviation of about 0.5. The narrower blue estimate is the more trustworthy sensor reading.' loading='lazy'></figure>
 
 </section>
 <section id='s13' aria-labelledby='h13'>
@@ -174,7 +174,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s15' aria-labelledby='h15'>
 <h2 id='h15'><span class='num'>15.</span> Sensor Fusion</h2>
-<figure><img src='L20-21_files/00e90307a998.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/00e90307a998.svg' alt='Kalman filter cycle: prior state estimate x hat sub k minus 1 given k minus 1, with covariance P sub k minus 1 given k minus 1 (a wide, tilted uncertainty ellipse), goes through a prediction step based on a physical model to give x hat sub k given k minus 1 and P sub k given k minus 1. An update step compares this prediction to measurements y sub k (a small round uncertainty region), producing x hat sub k given k and P sub k given k. That output estimate has a smaller ellipse, and k becomes k plus 1 to repeat.' loading='lazy'></figure>
 
 </section>
 <section id='s16' aria-labelledby='h16'>
@@ -220,7 +220,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s22' aria-labelledby='h22'>
 <h2 id='h22'><span class='num'>22.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/0aef1e961fc7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/0aef1e961fc7.svg' alt='Plot: initial belief about position as a Gaussian with mean 4.0 and variance 1.0, shown as a filled bell curve peaking at x equals 4. Nearly all probability lies between about x equals 1 and 7 on a position axis running from 0 to 15. This is the starting estimate before the predict step is applied.' loading='lazy'></figure>
 
 </section>
 <section id='s23' aria-labelledby='h23'>
@@ -235,7 +235,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s24' aria-labelledby='h24'>
 <h2 id='h24'><span class='num'>24.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/f5c937c7fac5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/f5c937c7fac5.svg' alt='Plot: one-dimensional Kalman predict step over position x from 0 to 14. The old belief is a narrow, tall Gaussian centered at x equals 4. An arrow labeled plus u equals 4 shifts it to the prediction, a shaded Gaussian centered at 8 with variance 2.5. The prediction is wider and lower than the old belief, showing that the motion command moves the mean while added process noise increases the uncertainty.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>
@@ -264,7 +264,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s28' aria-labelledby='h28'>
 <h2 id='h28'><span class='num'>28.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/23ad32167604.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/23ad32167604.svg' alt='Plot, titled &quot;1D Update (Conflicting Opinions)&quot;: two Gaussian probability curves over position x from 0 to 15. The purple prediction is centered at x equals 8 and is wider and lower. The orange sensor measurement is centered at z equals 9.5 with variance 1.2, so it is narrower and taller. The curves overlap between about 8 and 10, showing that the prediction and the more certain sensor reading disagree on the position before they are fused.' loading='lazy'></figure>
 
 </section>
 <section id='s29' aria-labelledby='h29'>
@@ -277,7 +277,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s30' aria-labelledby='h30'>
 <h2 id='h30'><span class='num'>30.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/c6b070cd70f6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/c6b070cd70f6.svg' alt='Plot of probability versus position x from 0 to 14, with three bell curves. The prediction is wide and low, centered at 8. The sensor reading is narrower and taller, centered near 9.5. Their product, the fused estimate, is the tallest and narrowest curve, with mean 9.01 and variance 0.81. It lies between the two, closer to the more certain sensor, with Kalman gain K equal to 0.68. Fusing yields less uncertainty than either input alone.' loading='lazy'></figure>
 
 </section>
 <section id='s31' aria-labelledby='h31'>
@@ -320,7 +320,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s36' aria-labelledby='h36'>
 <h2 id='h36'><span class='num'>36.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/0ed200bb7de7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/0ed200bb7de7.svg' alt='Plot titled &quot;MD Initial Belief (The State Vector)&quot;: the initial belief x sub 0 is a filled ellipse centered near position X equals 2, Y equals 2, spanning about minus 0.5 to 4.5 on both axes and tilted at roughly 45 degrees, indicating positive correlation between x and y uncertainty. Annotations: bold x equals x, y transpose; bold P equals the matrix with rows sigma x squared, sigma x y and sigma y x, sigma y squared. Axes run X from minus 2 to 16 and Y from minus 2 to 10.' loading='lazy'></figure>
 
 </section>
 <section id='s37' aria-labelledby='h37'>
@@ -333,7 +333,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s38' aria-labelledby='h38'>
 <h2 id='h38'><span class='num'>38.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/09791d249b78.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/09791d249b78.svg' alt='Plot of the Kalman filter predict step on position X versus position Y axes. The old belief is a point at (2, 2) inside a narrow, tilted blue covariance ellipse; a slightly larger purple outline shows it transformed by F P F transpose. A motion arrow moves the mean to about (8, 5), where a much larger filled purple ellipse shows the predicted prior: x sub pred equals F x sub k minus 1 plus B u, and P sub pred equals F P sub k minus 1 F transpose plus Q. Prediction shifts the estimate and grows its uncertainty.' loading='lazy'></figure>
 
 </section>
 <section id='s39' aria-labelledby='h39'>
@@ -347,7 +347,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s40' aria-labelledby='h40'>
 <h2 id='h40'><span class='num'>40.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/b32c85cb6672.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/b32c85cb6672.svg' alt='Plot: 2D covariance of robot x and y position. Covariance matrix Sigma has sigma x squared equals 4.0, sigma y squared equals 3.0, and sigma x y equals sigma y x equals 2.5. A tilted 1-sigma ellipse is centered on the mean at (5, 5). Its long axis runs diagonally up-right, showing positive x-y correlation. Horizontal and vertical arrows mark sigma x and sigma y. A red arrow, square root of lambda 1 times v 1, marks the major axis along the tilt. A perpendicular green arrow, square root of lambda 2 times v 2, marks the minor axis.' loading='lazy'></figure>
 
 </section>
 <section id='s41' aria-labelledby='h41'>
@@ -464,7 +464,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s53' aria-labelledby='h53'>
 <h2 id='h53'><span class='num'>53.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/cafa139bf165.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/cafa139bf165.svg' alt='Plot titled &quot;MD Update (Transforming the Measurement),&quot; position X versus position Y. A large purple prediction uncertainty ellipse, tilted up and to the right, is centered near (8.2, 5). A smaller filled orange ellipse, the effective sensor belief at H inverse z sub k with covariance P sub meas, is centered near (12, 8) and only partly overlaps it. A gray line between the two centers is the residual, z sub k minus H x sub pred. The innovation covariance is S equals H P sub pred H transpose plus R.' loading='lazy'></figure>
 
 </section>
 <section id='s54' aria-labelledby='h54'>
@@ -480,7 +480,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s55' aria-labelledby='h55'>
 <h2 id='h55'><span class='num'>55.</span> Sensor Fusion – Predict Step</h2>
-<figure><img src='L20-21_files/d45308a786a5.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/d45308a786a5.svg' alt='Plot of a Kalman filter update in X–Y position. A large tilted purple prediction ellipse, centered near (8, 5), overlaps a smaller orange measurement ellipse near (12, 8). A green arrow labeled K times the innovation moves the estimate from the prediction center to a small filled green fused estimate near (11, 7.6), mostly inside the measurement ellipse. Annotations: Kalman gain K[0,0] equals 0.72; K equals P sub pred H transpose S inverse; P sub k equals (I minus K H) P sub pred.' loading='lazy'></figure>
 
 </section>
 <section id='s56' aria-labelledby='h56'>
@@ -698,12 +698,12 @@ v
 </section>
 <section id='s77' aria-labelledby='h77'>
 <h2 id='h77'><span class='num'>77.</span> Extended Kalman Filter</h2>
-<figure><img src='L20-21_files/a2fab4ed8a5f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/a2fab4ed8a5f.svg' alt='Three histograms showing why the Extended Kalman Filter is needed. First, Gaussian samples centered at 0, spanning about minus 4 to 4. Second, the same samples after the linear transform 2x: still a bell-shaped Gaussian centered at 0, but twice as wide, spanning about minus 8 to 8. Third, after the nonlinear transform sine of x: confined to minus 1 to 1, nearly flat in the middle with tall spikes at both ends, so it is no longer Gaussian.' loading='lazy'></figure>
 
 </section>
 <section id='s78' aria-labelledby='h78'>
 <h2 id='h78'><span class='num'>78.</span> Extended Kalman Filter</h2>
-<figure><img src='L20-21_files/b2787dbee3b8.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/b2787dbee3b8.svg' alt='Scatter plot: thousands of Monte Carlo particles, labeled the true distribution, plotted as global X position versus global Y position. They form a curved, banana-shaped arc rather than an elliptical Gaussian cloud. The arc starts sparse near X minus 5, Y 2, rises to about Y 5 around X 0 to 1, and bends down through X 3, Y 4 to X 5, Y 0. It is densest between those last two points and thins into a tail near X 2 to 4, Y minus 4 to minus 5.' loading='lazy'></figure>
 
 </section>
 <section id='s79' aria-labelledby='h79'>
@@ -718,7 +718,7 @@ v
 </section>
 <section id='s80' aria-labelledby='h80'>
 <h2 id='h80'><span class='num'>80.</span> Extended Kalman Filter</h2>
-<figure><img src='L20-21_files/491b1dca5058.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/491b1dca5058.svg' alt='Plot: Robot position uncertainty after a motion step, global X versus Y. From a start pose at the origin, a nominal update arrow points to about (3.5, 3.5). Thousands of Monte Carlo particles form a curved banana-shaped arc of radius about 5 around the start, running from (−5, 2) over the top to (5, −4). The EKF two-sigma ellipse, centered at the nominal point and tilted along the arc&#x27;s tangent, covers only the middle of the arc. Its linearization misses the curvature and much of the true spread.' loading='lazy'></figure>
 
 </section>
 <section id='s81' aria-labelledby='h81'>
@@ -795,7 +795,7 @@ v
 </section>
 <section id='s88' aria-labelledby='h88'>
 <h2 id='h88'><span class='num'>88.</span> Extended Kalman Filter</h2>
-<figure><img src='L20-21_files/491b1dca5058.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/491b1dca5058.svg' alt='Plot: Robot position uncertainty after a motion step, global X versus Y. From a start pose at the origin, a nominal update arrow points to about (3.5, 3.5). Thousands of Monte Carlo particles form a curved banana-shaped arc of radius about 5 around the start, running from (−5, 2) over the top to (5, −4). The EKF two-sigma ellipse, centered at the nominal point and tilted along the arc&#x27;s tangent, covers only the middle of the arc. Its linearization misses the curvature and much of the true spread.' loading='lazy'></figure>
 
 </section>
 <section id='s89' aria-labelledby='h89'>
@@ -884,7 +884,7 @@ r \\
 </section>
 <section id='s98' aria-labelledby='h98'>
 <h2 id='h98'><span class='num'>98.</span> Extended Kalman Filter</h2>
-<figure><img src='L20-21_files/c952bdd7a0af.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L20-21_files/c952bdd7a0af.svg' alt='Plot: Robot pose uncertainty after moving from the start at (0, 0) along a nominal update arrow to about (3.5, 3.5), axes are global x and y position. Monte Carlo particles form a curved banana-shaped arc, running from about (−5, 2) over the top near y = 5 and down to about (5, −4). The red EKF Cartesian 2-sigma ellipse is a straight tilted ellipse that misses much of the arc. The green Lie group SE(2) 2-sigma bound bends with the particles and fits the dense region better.' loading='lazy'></figure>
 
 </section>
 <section id='s99' aria-labelledby='h99'>

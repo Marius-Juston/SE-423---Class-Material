@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">MD 01 Initial Belief</title><desc id="fig-desc">Plot titled &quot;MD Initial Belief (The State Vector)&quot;: the initial belief x sub 0 is a filled ellipse centered near position X equals 2, Y equals 2, spanning about minus 0.5 to 4.5 on both axes and tilted at roughly 45 degrees, indicating positive correlation between x and y uncertainty. Annotations: bold x equals x, y transpose; bold P equals the matrix with rows sigma x squared, sigma x y and sigma y x, sigma y squared. Axes run X from minus 2 to 16 and Y from minus 2 to 10.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

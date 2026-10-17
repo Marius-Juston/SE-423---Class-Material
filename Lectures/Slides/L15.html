@@ -115,7 +115,7 @@ nav ol { columns: 2 18rem; }
 <p>The <strong>body frame</strong> is typically the frame where you define the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y,\ \theta)</annotation></semantics></math> of the robot.</p>
 <p>So, we need to translate the sensor frames to the body frame, and then the body frame to the global frame.</p>
 <p>If the robot to the right moves “forward 1 meter”, does its local x coordinate increase or it’s y? What about it’s world x, y coordinates?</p>
-<figure><img src='L15_files/2dfaf60161b1.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/2dfaf60161b1.png' alt='Left, photo: a four-wheeled mobile robot with a tall sensor tower. From top: Bumblebee stereo camera at 126 cm, Wi-Fi router, tilted laser at about 60 cm, PC, and frontal and back lasers near 35 cm. Body-frame axes at its base show x (red) pointing forward toward the frontal laser, y (blue) to the side, and z (green) up. Right, frame tree: frames bumblebee, laservtcal, laserfront and laserback, each offset and rotated differently, all linked to base_link.' loading='lazy'></figure>
 <p><a href='https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1671673/full'>https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1671673/full</a></p>
 
 </section>
@@ -125,7 +125,7 @@ nav ol { columns: 2 18rem; }
 <p>Let the <strong>Body Frame </strong>be defined by axes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mi>B</mi></msub><annotation encoding="application/x-tex">X_{B}</annotation></semantics></math> (pointing forward) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Y</mi><mi>B</mi></msub><annotation encoding="application/x-tex">Y_{B}</annotation></semantics></math> (pointing left) with origin <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mi>B</mi></msub><annotation encoding="application/x-tex">O_{B}</annotation></semantics></math>.</p>
 <p>The robot’s pose in the world is defined by its position and it’s heading angle.</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p = (x,y,\theta)</annotation></semantics></math></p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Differential_wheeled_robot'>https://en.wikipedia.org/wiki/Differential_wheeled_robot</a></p>
 
 </section>
@@ -142,7 +142,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s13' aria-labelledby='h13'>
 <h2 id='h13'><span class='num'>13.</span> Localization – 2D Translation (Shifting)</h2>
-<figure><img src='L15_files/b41406158e1b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/b41406158e1b.svg' alt='Diagram: A world frame with origin O, X axis to the right and Y axis up. A two-wheeled robot, a rectangular body with wheels above and below, sits at position x, y, marked by dashed projections onto the axes. A body frame with axes X sub B and Y sub B is attached at the robot&#x27;s center, parallel to the world X and Y axes. This illustrates a pure translation of the body frame from the world origin, with no rotation.' loading='lazy'></figure>
 <p><strong>T</strong></p>
 <p><strong>P</strong><strong>r</strong></p>
 <p><strong>P</strong><strong>w</strong></p>
@@ -159,7 +159,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s15' aria-labelledby='h15'>
 <h2 id='h15'><span class='num'>15.</span> Localization – 2D Translation (Shifting)</h2>
-<figure><img src='L15_files/ad8f93669c5f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/ad8f93669c5f.svg' alt='Top view of a two-wheeled robot showing a world frame and a body frame that share an origin at the robot&#x27;s center. The world X axis points up and the world Y axis points right. The body axis X sub B points forward, perpendicular to the wheel axle, and Y sub B runs along the axle. The body frame is rotated counterclockwise by the angle phi, measured from the world Y axis to X sub B.' loading='lazy'></figure>
 <p><strong>r</strong></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\mathbf{α}</annotation></semantics></math></p>
 
@@ -246,7 +246,7 @@ y_{R} \\
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><msub><mi>ν</mi><mi>L</mi></msub><mo>+</mo><msub><mi>ν</mi><mi>R</mi></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">V\  = \ \frac{\nu_{L} + \nu_{R}}{2}</annotation></semantics></math></p>
 <p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ν</mi><mi>L</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>ν</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">\nu_{L}\  = \nu_{R}</annotation></semantics></math>, what is the robot doing?</p>
 <p>The robot goes forward!</p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 
 </section>
 <section id='s23' aria-labelledby='h23'>
@@ -255,7 +255,7 @@ y_{R} \\
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mfrac><mrow><msub><mi>ν</mi><mi>R</mi></msub><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow><mi>b</mi></mfrac></mrow><annotation encoding="application/x-tex">\omega = \frac{\nu_{R} - \ \nu_{L}}{b}</annotation></semantics></math></p>
 <p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ν</mi><mi>L</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><msub><mrow><mi>−</mi><mi>ν</mi></mrow><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">\nu_{L}\  = {- \nu}_{R}</annotation></semantics></math>, what is the robot doing?</p>
 <p>The robot rotates in place (a zero-radius turn).</p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 
 </section>
 <section id='s24' aria-labelledby='h24'>
@@ -265,7 +265,7 @@ y_{R} \\
 <p>Following the angular velocity equation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mi>r</mi><mi>ν</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">\omega = r\nu\ </annotation></semantics></math>, we have,</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mo>+</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ν</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\omega = \left( R + \frac{b}{2} \right)\nu_{r}</annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mo>−</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ν</mi><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">\omega = \left( R - \frac{b}{2} \right)\nu_{l}</annotation></semantics></math></p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>
@@ -276,7 +276,7 @@ y_{R} \\
 <p>Very simple!</p>
 <p>When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>∞</mi></mrow><annotation encoding="application/x-tex">R\  = \ \infty</annotation></semantics></math>, what is the robot doing?</p>
 <p>When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">R\  = \ 0</annotation></semantics></math>, what is the robot doing?</p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 
 </section>
 <section id='s26' aria-labelledby='h26'>
@@ -288,7 +288,7 @@ y_{R} \\
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>φ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>φ</mi><mi>t</mi></msub><mo>+</mo><msub><mi>ω</mi><mi>t</mi></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\varphi_{t + 1} = \varphi_{t} + \omega_{t}\Delta t</annotation></semantics></math></p>
 <p>There we go!</p>
 <p>We now have 2 ways to get the robot’s position, integrating the <strong>IMU</strong> or integrating the <strong>wheel encoder</strong> information!</p>
-<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Diagram: Differential-drive robot in a world frame with axes X and Y and origin O. The robot&#x27;s center sits at position x, y. Its body frame has X sub B pointing forward along the velocity V, rotated by heading angle phi from the world X axis, and Y sub B pointing left. Two wheels of radius r are separated by track width b and have speeds v sub L and v sub R. The robot rotates at angular rate omega about the instantaneous center of rotation, ICR, at distance R along the Y sub B axis.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
@@ -296,8 +296,8 @@ y_{R} \\
 <p>There are multiple ways of integrating; however, we can get a slightly more accurate result depending on how we do it.</p>
 <p>Specifically, instead of doing the Riemann sum (rectangle rule) we can do the Trapezoidal rule. In lab <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>, represents the heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f( \cdot )</annotation></semantics></math>, represents the gyro reading.</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>t</mi></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x_{t} = x_{t - 1} + \frac{1}{2}\left( f(x_{t}) + f(x_{t - 1}) \right)\mathrm{\Delta}t</annotation></semantics></math></p>
-<figure><img src='L15_files/d9ed0a680bb1.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L15_files/74b00b98ab05.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/d9ed0a680bb1.svg' alt='Plot: trapezoidal-rule integration of a curve f that rises to a peak and falls. The area under it is split into shaded trapezoids of equal width p, whose tops are straight lines joining sample points on the curve. One trapezoid, S sub i, spans x sub i to x sub i plus 1, with parallel sides f of x sub i and f of x sub i plus 1. Its area is p times the quantity f of x sub i plus f of x sub i plus 1, over 2. The trapezoid tops follow the curve closely.' loading='lazy'></figure>
+<figure><img src='L15_files/74b00b98ab05.svg' alt='Plot: the red curve y equals x cubed rises from 0 at x equals 0 to 8 at x equals 2. Blue left-Riemann rectangles of width 0.5 sit beneath it with heights 0, 0.125, 1, and 3.375, each taken from the curve&#x27;s value at the left edge of its interval. The rectangles leave large gaps below the steepening curve, so the rectangle rule underestimates the integral. This error motivates using the trapezoidal rule instead.' loading='lazy'></figure>
 
 </section>
 <section id='s28' aria-labelledby='h28'>
@@ -332,7 +332,7 @@ y_{R} \\
 </li>
 <li>Constant accelerometer bias
 </li></ul>
-<figure><img src='L15_files/40f2db52e56b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/40f2db52e56b.svg' alt='Plot: bell-shaped probability density curve over measured value. A black dashed line marks the true value, and a red dashed line at the curve&#x27;s peak (the mean measurement) sits to its right; the gap between them is labeled systematic error, a constant offset. A blue arrow from the peak out to the curve&#x27;s side is labeled random error, representing the spread of measurements around their mean.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Observational_error'>https://en.wikipedia.org/wiki/Observational_error</a></p>
 
 </section>
@@ -355,7 +355,7 @@ y_{R} \\
 </li>
 <li>Loose components
 </li></ul>
-<figure><img src='L15_files/40f2db52e56b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/40f2db52e56b.svg' alt='Plot: bell-shaped probability density curve over measured value. A black dashed line marks the true value, and a red dashed line at the curve&#x27;s peak (the mean measurement) sits to its right; the gap between them is labeled systematic error, a constant offset. A blue arrow from the peak out to the curve&#x27;s side is labeled random error, representing the spread of measurements around their mean.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Observational_error'>https://en.wikipedia.org/wiki/Observational_error</a></p>
 
 </section>
@@ -393,13 +393,13 @@ y_{R} \\
 </section>
 <section id='s35' aria-labelledby='h35'>
 <h2 id='h35'><span class='num'>35.</span> Errors</h2>
-<figure><img src='L15_files/c8e8d653bac7.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/c8e8d653bac7.svg' alt='Plot titled &quot;White Noise (sigma equals 1) vs Time&quot;: dozens of simulated traces of accumulated (integrated) white noise, angle in degrees versus time from 0 to 300 seconds. All traces start at 0 and wander randomly, spreading wider over time, about plus or minus 10 degrees by 25 seconds and up to plus or minus 40 degrees by 250 to 300 seconds. This shows how summing small random errors produces unbounded drift that grows with time.' loading='lazy'></figure>
 
 </section>
 <section id='s36' aria-labelledby='h36'>
 <h2 id='h36'><span class='num'>36.</span> Errors</h2>
-<figure><img src='L15_files/9f7b1dd8f530.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L15_files/2790673f3972.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/9f7b1dd8f530.svg' alt='Plot: white noise mean versus time over 0 to 300 seconds, y axis labeled &quot;Radians (degrees).&quot; A flat line marks the expected noise mean of zero. The measured mean dips to about minus 0.1 in the first few seconds, rises to about 0.4 by 45 seconds, then wanders between roughly 0.3 and 0.6 until about 240 seconds, ending near 0.28. It never settles back to zero, showing a persistent, drifting error.' loading='lazy'></figure>
+<figure><img src='L15_files/2790673f3972.svg' alt='Plot: standard deviation of integrated white noise versus time, 0 to 300 seconds, with angle on the vertical axis (labeled &quot;radians (degrees)&quot;). The expected curve, sigma times the square root of t with sigma equal to 1, rises steeply at first and then more slowly, reaching about 17.3 at 300 seconds. The measured white-noise standard deviation closely tracks it, falling slightly below to about 16.5 by the end. This shows that integrated sensor noise causes error to grow with the square root of time.' loading='lazy'></figure>
 
 </section>
 <section id='s37' aria-labelledby='h37'>
@@ -460,9 +460,9 @@ y_{R} \\
 </section>
 <section id='s42' aria-labelledby='h42'>
 <h2 id='h42'><span class='num'>42.</span> SLAM</h2>
-<figure><img src='L15_files/51419be1ce06.png' alt='The visualization interface showing the results of the ORB-SLAM and... |  Download Scientific Diagram' loading='lazy'></figure>
+<figure><img src='L15_files/51419be1ce06.png' alt='Comparison of two monocular SLAM runs in the same low-texture hallway. Top: point-only ORB-SLAM builds a sparse point map and a camera trajectory along three sides of a loop, then fails; its camera view of a plain corridor reads &quot;Track lost. Trying to relocalize.&quot; Bottom: PSL-SLAM, using points plus structure lines, tracks the full closed rectangular loop. Its camera view shows many detected line and point features on the walls and ceiling, with 219 keyframes, 8048 map points, and 377 matches.' loading='lazy'></figure>
 <p><a href='https://www.researchgate.net/publication/355183350_PSL-SLAM_a_monocular_SLAM_system_using_points_and_structure_lines_in_Manhattan_World'>https://www.researchgate.net/publication/355183350_PSL-SLAM_a_monocular_SLAM_system_using_points_and_structure_lines_in_Manhattan_World</a></p>
-<figure><img src='L15_files/fd424ae8d986.jpg' alt='AprilTag' loading='lazy'></figure>
+<figure><img src='L15_files/fd424ae8d986.jpg' alt='Photo: about ten small white four-wheeled robots with antennas and cameras parked on a park path and lawn, each with black-and-white AprilTag markers on its sides and top. An enlarged inset shows one AprilTag, a square grid of black and white cells with a black border that cameras can detect to identify each robot and estimate its position and orientation.' loading='lazy'></figure>
 <p><a href='https://april.eecs.umich.edu/software/apriltag'>https://april.eecs.umich.edu/software/apriltag</a></p>
 
 </section>
@@ -480,9 +480,9 @@ y_{R} \\
 </section>
 <section id='s44' aria-labelledby='h44'>
 <h2 id='h44'><span class='num'>44.</span> SLAM</h2>
-<figure><img src='L15_files/bec076b3247c.gif' alt='iterative-closest-point-stanford-bunny-converging-iterations-point2point-point2plane' loading='lazy'></figure>
+<figure><img src='L15_files/bec076b3247c.gif' alt='Two side-by-side panels comparing point-to-point and point-to-plane Iterative Closest Point (ICP) scan matching on the Stanford bunny point cloud, both at iteration 0. In each, a red source scan and a blue target scan of the bunny are offset and rotated relative to each other, showing the initial misalignment that ICP iteratively corrects; the starting misalignment is identical in both panels.' loading='lazy'></figure>
 <p><a href='https://learnopencv.com/iterative-closest-point-icp-explained/'>https://learnopencv.com/iterative-closest-point-icp-explained/</a></p>
-<figure><img src='L15_files/5451ec415048.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/5451ec415048.gif' alt='Plot: iterative closest point (ICP) alignment at iteration 0, mean error not yet computed. Red source points A, the set to be moved, trace one sine-wave period from (0, 0) up to about 1 near x = 1.4, down to about minus 1 near x = 4.9, and back to 0 at x = 6.3. Blue target points B form the same wave shape, rotated counterclockwise and shifted up and right, running from about (2.1, 0.3) to (7.6, 3.2). ICP must find the rotation and translation that align A onto B.' loading='lazy'></figure>
 
 </section>
 <section id='s45' aria-labelledby='h45'>

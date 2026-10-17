@@ -102,7 +102,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li>Weights (Costs) - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w(e)</annotation></semantics></math>: Distance, time, energy or terrain difficult to traverse specific edge
 </li></ul>
-<figure><img src='L18_files/f461f18d248c.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/f461f18d248c.svg' alt='Example undirected, unweighted graph with six numbered nodes and seven edges: 6–4, 4–5, 4–3, 5–1, 5–2, 1–2, and 3–2. Node 6 connects only to node 4, while nodes 4, 5, 3, 2 and 1 form loops, so several alternate paths exist between them.' loading='lazy'></figure>
 
 </section>
 <section id='s9' aria-labelledby='h9'>
@@ -110,9 +110,9 @@ nav ol { columns: 2 18rem; }
 <ul>
 <li>An undirected (or simple) graph has edges that are bi-directions, you can to and from vertices where nodes are connected
 </li></ul>
-<figure><img src='L18_files/230fc044cc5f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/230fc044cc5f.svg' alt='Undirected graph of three unlabeled nodes in a triangle: bidirectional edges connects the top-left node to the top-right, the top-right to the bottom node and the bottom node to the top-left node.' loading='lazy'></figure>
 <p>A directed graph has edges that have a direction, you can only go from “a” to “b” and not “b” to “a”</p>
-<figure><img src='L18_files/f2029dafe199.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/f2029dafe199.svg' alt='Directed graph of three unlabeled nodes in a triangle: one-way edges run from the top-left node to the top-right node and from the bottom node to the top-left node, while the edge between the bottom and top-right nodes has arrows at both ends, so it can be traveled either way.' loading='lazy'></figure>
 <p>What type would you likely use in robotic applications?</p>
 
 </section>
@@ -145,7 +145,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> Graphs</h2>
-<figure><img src='L18_files/fbbbf86c48cb.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/fbbbf86c48cb.svg' alt='Three grid graphs, each indexed by coordinates (u, v) along basis vectors e sub u (horizontal) and e sub v. Left: a square grid of 4 by 4 nodes labeled (u sub 0, v sub 0) through (u sub 3, v sub 3), with e sub v vertical, so each node links to four neighbors. Center: a hexagonal grid of 3 by 3 cells labeled (u sub 0, v sub 0) through (u sub 2, v sub 2), with e sub v tilted 60 degrees. Right: a triangular lattice of 4 by 4 nodes forming a parallelogram, with e sub v at 60 degrees, so each node connects to up to six neighbors.' loading='lazy'></figure>
 
 </section>
 <section id='s15' aria-labelledby='h15'>
@@ -153,7 +153,7 @@ nav ol { columns: 2 18rem; }
 <p>In grid spaces, we have something called connectivity, the most used is 4-connected neighbors and 8-connected components.</p>
 <p>Neighbor connectivity informs us which neighbors we could potentially reach at the next time step.</p>
 <p>Which is 4-connected neighbors?</p>
-<figure><img src='L18_files/cce91ba98e5c.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/cce91ba98e5c.svg' alt='Two 3 by 3 grids, each with a black center cell representing the current cell, and gray cells marking its valid neighbors. In the left grid, all eight surrounding cells are gray, including the diagonals. In the right grid, only the four cells directly above, below, left, and right of the center are gray, and the four corner cells are white.' loading='lazy'></figure>
 <p>4 Valid neighbor</p>
 
 </section>
@@ -188,7 +188,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s19' aria-labelledby='h19'>
 <h2 id='h19'><span class='num'>19.</span> Graphs</h2>
-<figure><img src='L18_files/5fa70c022286.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/5fa70c022286.svg' alt='Visibility graph for robot path planning: two shaded polygon obstacles, a triangle on the left and a larger seven-sided polygon on the right, with their corners as nodes plus green start and end nodes. Thin lines join every pair of nodes that can see each other without crossing an obstacle. A highlighted shortest path runs from start to the triangle&#x27;s top corner, along the triangle&#x27;s edge, across to the polygon&#x27;s left corner, down its lower-left edge to its bottom corner, then straight to end.' loading='lazy'></figure>
 
 </section>
 <section id='s20' aria-labelledby='h20'>
@@ -202,7 +202,7 @@ nav ol { columns: 2 18rem; }
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> Graphs</h2>
 <p>Because we work on rectangular grids, we can define different <strong>distance metrics</strong>.</p>
-<figure><img src='L18_files/8aed7b4be053.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/8aed7b4be053.svg' alt='Grid of six by six city blocks with start and end points at opposite corners and four routes between them. Red goes straight up 6 blocks, then right 6. Blue climbs a staircase of alternating one-block steps right and up. Yellow goes right 5, up 2, right 1, then up 4. Green cuts straight across diagonally, a length of 6 root 2, about 8.5 blocks. Every route along the streets totals 12 blocks, showing that Manhattan distance is the same for all of them.' loading='lazy'></figure>
 <p>We are traveling on this grid, order which is the shortest path distance-wise?</p>
 <p>Which gives the closest travel distance when traveling on the grid?</p>
 <p>The green is the shortest (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">6\sqrt{2}</annotation></semantics></math>), all the others are the same distance (12)</p>
@@ -284,7 +284,7 @@ nav ol { columns: 2 18rem; }
 <p>Now <strong>came_from</strong> for each location points to the place where we came from.</p>
 <p>They form a “flow field” and act like “<strong>breadcrumbs</strong>”.</p>
 <p>They’re enough to reconstruct the entire path!</p>
-<figure><img src='L18_files/86eb85e1b87d.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/86eb85e1b87d.png' alt='Grid map in which every open cell holds an arrow pointing back toward the neighbor it was reached from, forming a flow field that leads to the start, a red star-shaped character at left center. Three gray walls block the grid: a tall one at left, one in the middle, and an L-shape at upper right. A purple path, traced by following the arrows back from the goal X tucked inside the L, climbs in steps over the middle wall, runs right beneath the L, and wraps around its end to the goal.' loading='lazy'></figure>
 
 </section>
 <section id='s30' aria-labelledby='h30'>
@@ -333,8 +333,8 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s34' aria-labelledby='h34'>
 <h2 id='h34'><span class='num'>34.</span> Path Planning – Movement Cost</h2>
-<figure><img src='L18_files/4cf79e409c73.png' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L18_files/282b2a0d92ee.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/4cf79e409c73.png' alt='Grid map: Dijkstra&#x27;s algorithm partway through, expanding from a start tile (red star) on the left toward a goal (X) on the right. Some tiles are green forest with a higher movement cost. Cost contour lines form diamonds around the start, then stretch vertically and bunch together where they meet the forest, because expansion slows on costly tiles. The blue-outlined frontier edges the explored region near the forest, and the goal has not yet been reached.' loading='lazy'></figure>
+<figure><img src='L18_files/282b2a0d92ee.png' alt='Grid map for Dijkstra&#x27;s algorithm: a start cell on the left and a goal X on the right, with patches of green forest tiles that cost more to cross than plain tiles. The explored region grows outward from the start in nested diamond-shaped equal-cost contours. The frontier, outlined in blue, has reached the edge of the forest but advances slowly into it, showing how movement cost, unlike breadth-first search, makes exploration spread unevenly and favor cheaper terrain.' loading='lazy'></figure>
 <p>Dijkstra’s Algorithm</p>
 <p>Breadth First Search</p>
 
@@ -344,7 +344,7 @@ nav ol { columns: 2 18rem; }
 <p>Less obviously, we may end up <strong>visiting a location multiple times</strong>, with different costs, so we need to alter the logic a little bit.</p>
 <p>This is because you can have 2 paths to reach one node with the same unit distance but different costs.</p>
 <p>Instead of adding a location to the frontier if the location has never been reached, we’ll add it if the new path to the location is <strong>better than the best previous path</strong>.</p>
-<figure><img src='L18_files/c16a53e142d3.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/c16a53e142d3.svg' alt='Weighted directed graph of four nodes. A to B costs 5, A to C costs 1, C to B costs 2, and B to D costs 1. The path A to C to B is highlighted, costing 3 in total. That is cheaper than the direct edge A to B at cost 5, so B is reached first at cost 5 and later by a better path at cost 3, and must be updated in the frontier.' loading='lazy'></figure>
 
 </section>
 <section id='s36' aria-labelledby='h36'>

@@ -113,7 +113,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s8' aria-labelledby='h8'>
 <h2 id='h8'><span class='num'>8.</span> Digital Outputs</h2>
-<figure><img src='L3_files/a06650368c02.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L3_files/a06650368c02.svg' alt='Table: GPIO mux selection for the F28379D LaunchPad, listing for each pin (GPIO0 through GPIO34 and beyond) its ME461 default use, LaunchPad header pin, and peripheral functions by mux index. Index 0, 4, 8 or 12 selects plain GPIO. Indices 1 to 3 set GPyGMUX to 00b and GPyMUX to 01b, 10b or 11b; indices 5 to 7 use GPyGMUX 01b; index 15 uses 11b and 11b. For example, GPIO0 at index 1 is EPWM1A on pin 40/J4.10. GPIO22 is LED1 on pin 8/J1.8, GPIO31 is the board blue LED, and GPIO34 is the board red LED.' loading='lazy'></figure>
 
 </section>
 <section id='s9' aria-labelledby='h9'>
@@ -178,7 +178,7 @@ nav ol { columns: 2 18rem; }
 </li></ul>
 <p>This is all internal on the Red Board, makes it cleaner!</p>
 <p>You don’t need to understand this, just put it in code!</p>
-<figure><img src='L3_files/d5e1854f8a79.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L3_files/d5e1854f8a79.svg' alt='Two circuits. Top, pull-up: a resistor runs from V sub CC down to a node that feeds the digital input, and a switching device connects that node to V sub SS (ground or another low-impedance source). Bottom, pull-down: the switching device runs from V sub CC (or another low-impedance source) down to the input node, and a resistor connects that node to V sub SS. In each, the resistor sets the default level and the closed switch drives the input to the opposite rail.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Pull-up_resistor'>https://en.wikipedia.org/wiki/Pull-up_resistor</a></p>
 
 </section>
@@ -222,7 +222,7 @@ nav ol { columns: 2 18rem; }
 <p>A more detailed video <a href='https://www.youtube.com/watch?v=S7jrirsfkNw'>here</a>.</p>
 <p>You don’t need to understand this, just put it in code!</p>
 <p>Push-Pull - Output</p>
-<figure><img src='L3_files/49ca52ad4458.png' alt='undefined' loading='lazy'></figure>
+<figure><img src='L3_files/49ca52ad4458.png' alt='Circuit: push-pull output stage driven by an operational amplifier. The input goes to the op-amp&#x27;s plus input, and the op-amp output drives the joined bases of two complementary transistors. The upper transistor&#x27;s collector connects to the positive supply and pulls the output up; the lower one connects to the negative supply and pulls it down. Their emitters join at the output, which drives a load to ground and feeds back to the op-amp&#x27;s minus input.' loading='lazy'></figure>
 <p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
 <p>NMOS</p>
 <p>PMOS</p>
@@ -240,7 +240,7 @@ nav ol { columns: 2 18rem; }
 </li></ul>
 <p>So, for outputs, pull-ups are electrically irrelevant and often harmful.</p>
 <p>Push-Pull - Output</p>
-<figure><img src='L3_files/49ca52ad4458.png' alt='undefined' loading='lazy'></figure>
+<figure><img src='L3_files/49ca52ad4458.png' alt='Circuit: push-pull output stage driven by an operational amplifier. The input goes to the op-amp&#x27;s plus input, and the op-amp output drives the joined bases of two complementary transistors. The upper transistor&#x27;s collector connects to the positive supply and pulls the output up; the lower one connects to the negative supply and pulls it down. Their emitters join at the output, which drives a load to ground and feeds back to the op-amp&#x27;s minus input.' loading='lazy'></figure>
 <p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
 <p>NMOS</p>
 <p>PMOS</p>
@@ -293,7 +293,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li>Thus, unpredictable control behavior
 </li></ul>
-<figure><img src='L3_files/d5e1854f8a79.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L3_files/d5e1854f8a79.svg' alt='Two circuits. Top, pull-up: a resistor runs from V sub CC down to a node that feeds the digital input, and a switching device connects that node to V sub SS (ground or another low-impedance source). Bottom, pull-down: the switching device runs from V sub CC (or another low-impedance source) down to the input node, and a resistor connects that node to V sub SS. In each, the resistor sets the default level and the closed switch drives the input to the opposite rail.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Pull-up_resistor'>https://en.wikipedia.org/wiki/Pull-up_resistor</a></p>
 
 </section>
@@ -329,8 +329,8 @@ nav ol { columns: 2 18rem; }
 <section id='s19' aria-labelledby='h19'>
 <h2 id='h19'><span class='num'>19.</span> What is the Pin Multiplexer (PinMux)</h2>
 <p>This is a hardware switch that selects which peripheral controls a pin:</p>
-<figure><img src='L3_files/8e272f5d0a1f.png' alt='undefined' loading='lazy'></figure>
-<figure><img src='L3_files/629d96774205.png' alt='16-to-1 mux' loading='lazy'></figure>
+<figure><img src='L3_files/8e272f5d0a1f.png' alt='Diagram: a two-input multiplexer is equivalent to a switch. On the left, the multiplexer symbol has inputs I sub 0 and I sub 1, a select input &quot;sel&quot; at the bottom, and one output &quot;out.&quot; On the right, the equivalent is a single-pole switch whose lever connects out to either I sub 0 or I sub 1, positioned by sel through a dashed mechanical link; here it is connected to I sub 0.' loading='lazy'></figure>
+<figure><img src='L3_files/629d96774205.png' alt='16-to-1 multiplexer symbol: sixteen inputs labeled A through P enter the top, numbered 0 (A) through 15 (P). Four select lines, S sub 0 through S sub 3, enter the right side, and a single output Z exits the bottom. The 4-bit select value chooses which one input is connected to Z, just as the PinMux chooses which peripheral drives a pin.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Multiplexer'>https://en.wikipedia.org/wiki/Multiplexer</a></p>
 
 </section>
@@ -358,7 +358,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> Pin Mux</h2>
-<figure><img src='L3_files/14956ca0b648.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L3_files/14956ca0b648.svg' alt='Block diagram of the logic behind one GPIO pin. Input path: the pin, with an optional pull-up (GPyPUD), passes through an input buffer, optional inversion (GPyINV) and qualification (sync, 3-sample, 6-sample or async). It then feeds the GPyDAT read registers, the Input XBAR and the peripherals. Output path: a mux selected by GPyGMUX:GPyMUX codes 00:00 through 11:xx picks GPIO data (from CPU1, CPU2 or CLA registers via GPyCSEL) or peripherals A through L, then drives the pin through open-drain logic (GPyODR).' loading='lazy'></figure>
 <p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
 <p>PinMux has 12 inputs, requires how many bits in the selector?</p>
 <details><summary>Speaker notes</summary><p>If a student wants to help me create the animation. I would love your help!!! It takes a lot of time to make these things work!</p><p>Group mux = G</p><p>There are 8 groups, 0,</p></details>

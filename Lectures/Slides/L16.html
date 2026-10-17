@@ -118,7 +118,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li>Almost all types of laser lights can harm your eyes, but the various components of the human eye react more strongly with some light wavelengths.
 </li></ul>
-<figure><img src='L16_files/73ca67592cff.jpg' alt='Laser Systems Eye' loading='lazy'></figure>
+<figure><img src='L16_files/73ca67592cff.jpg' alt='Diagram: cross section of the human eye. Light rays from a candle pass through the cornea, pupil and lens, which focus them so they cross inside the eye and form an inverted image of the candle on the retina at the back of the eye, next to the optic nerve. Also labeled are the iris, ciliary muscle, ligaments, the liquid behind the cornea, and the jelly filling the eyeball.' loading='lazy'></figure>
 <p><a href='https://www.laserax.com/blog/laser-safety-laser-classes-explained'>https://www.laserax.com/blog/laser-safety-laser-classes-explained</a></p>
 
 </section>
@@ -135,7 +135,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li><strong>Different goggles absorb different lights</strong>, so you need to wear the right goggles for your laser class.
 </li></ul>
-<figure><img src='L16_files/73ca67592cff.jpg' alt='Laser Systems Eye' loading='lazy'></figure>
+<figure><img src='L16_files/73ca67592cff.jpg' alt='Diagram: cross section of the human eye. Light rays from a candle pass through the cornea, pupil and lens, which focus them so they cross inside the eye and form an inverted image of the candle on the retina at the back of the eye, next to the optic nerve. Also labeled are the iris, ciliary muscle, ligaments, the liquid behind the cornea, and the jelly filling the eyeball.' loading='lazy'></figure>
 <p><a href='https://www.laserax.com/blog/laser-safety-laser-classes-explained'>https://www.laserax.com/blog/laser-safety-laser-classes-explained</a></p>
 
 </section>
@@ -187,8 +187,8 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s15' aria-labelledby='h15'>
 <h2 id='h15'><span class='num'>15.</span> LiDAR</h2>
-<figure><img src='L16_files/49ccbe866f13.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L16_files/c88c3efbb5ec.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/49ccbe866f13.svg' alt='Top-view scan diagram of the Hokuyo URG-04LX laser rangefinder: from the sensor at the center, rays fan out over a 240 degree detection area facing forward, with a maximum range of 4000 millimeters. The remaining 120 degree wedge behind the sensor is a non-radiated blind zone. Labels give power as 5 volts DC and the interface as RS-232C or USB.' loading='lazy'></figure>
+<figure><img src='L16_files/c88c3efbb5ec.png' alt='Photo: Hokuyo URG-04LX laser rangefinder, a small 2D scanning LiDAR. It has a compact gray base topped by a dark cylindrical window labeled &quot;Hokuyo URG,&quot; where the laser spins to sweep distance measurements around the sensor. A coiled black cable ends in loose, color-coded bare wires for power and data connections.' loading='lazy'></figure>
 <p><a href='https://www.robotshop.com/products/hokuyo-urg-04lx-laser-rangefinder'>https://www.robotshop.com/products/hokuyo-urg-04lx-laser-rangefinder</a></p>
 
 </section>
@@ -239,8 +239,8 @@ nav ol { columns: 2 18rem; }
 <li>Done as:
 </li></ul>
 <p>serial_sendSCIC(&amp;SerialC, &quot;V\n&quot;, 2);</p>
-<figure><img src='L16_files/05965160db37.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L16_files/fdd7d3aeeae1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/05965160db37.svg' alt='Message format table for the version command. Host to sensor: the character V (hex 56) followed by line feed or carriage return. Sensor to host: an echoed V (hex 56), then Status, Vendor Information, Product Information, Firmware Version, Protocol Version, and Sensor Serial Number, each line ending in line feed. The final line ends with two line feeds, marking the end of the response.' loading='lazy'></figure>
+<figure><img src='L16_files/fdd7d3aeeae1.svg' alt='Example response to the V command, each line ending in a line feed: V echoed back; status 0; VEND: Hokuyo Automatic Co., Ltd.; PROD: SOKUIKI Sensor URG-X002; FIRM: 0.01.22a, dated 2004/12/27; PROT: 00001, SCIP 1.0; SERI: H0400000. The final line ends with two line feeds, marking the end of the reply.' loading='lazy'></figure>
 
 </section>
 <section id='s19' aria-labelledby='h19'>
@@ -255,7 +255,7 @@ nav ol { columns: 2 18rem; }
 </li></ul>
 <p>serial_sendSCIC(&amp;SerialC, &quot;L0\n&quot;, 3); // Turn LiDAR off</p>
 <p>serial_sendSCIC(&amp;SerialC, &quot;L1\n&quot;, 3); // Turn LiDAR on</p>
-<figure><img src='L16_files/562c9da34b79.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/562c9da34b79.svg' alt='Packet format for the laser illumination command. Host to sensor: three fields, the character L (hex 4C), a one-byte control code, then a line feed or carriage return. Sensor to host reply: L (hex 4C), the same one-byte control code, line feed, a status field, line feed, line feed.' loading='lazy'></figure>
 
 </section>
 <section id='s20' aria-labelledby='h20'>
@@ -272,7 +272,7 @@ nav ol { columns: 2 18rem; }
 <p>uint16_t S_len = 19;</p>
 <p>serial_sendSCIC(&amp;SerialC, S_command, S_len);</p>
 <p>The baud rate set here is, 115200</p>
-<figure><img src='L16_files/41a252b74dad.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/41a252b74dad.svg' alt='Message formats for the LiDAR baud-rate command. Host to sensor: the character &#x27;S&#x27; (hex 53), then the baud rate as 6 ASCII digits, then a 7-digit reserved area, ending with LF or CR. Sensor to host: the echo repeats &#x27;S&#x27;, the 6-digit baud rate and the 7-digit reserved area, then adds a Status field and ends with two LF characters.' loading='lazy'></figure>
 
 </section>
 <section id='s21' aria-labelledby='h21'>
@@ -312,7 +312,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li><strong>Cluster Count </strong>(0-99): Number of neighboring points that are grouped as a cluster.
 </li></ul>
-<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Table: format of the G command sent from host to sensor. Fields in order: the character &#x27;G&#x27; (hex 47), the starting point as 3 digits, the end point as 3 digits, and the cluster count as 2 digits, terminated by a line feed or carriage return.' loading='lazy'></figure>
 
 </section>
 <section id='s23' aria-labelledby='h23'>
@@ -326,8 +326,8 @@ nav ol { columns: 2 18rem; }
 <p>‘725’ = 725th step</p>
 <p>What is the cluster count?</p>
 <p>‘03’ = group 3</p>
-<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Table: format of the G command sent from host to sensor. Fields in order: the character &#x27;G&#x27; (hex 47), the starting point as 3 digits, the end point as 3 digits, and the cluster count as 2 digits, terminated by a line feed or carriage return.' loading='lazy'></figure>
+<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Upward-pointing arrow, likely marking the LiDAR&#x27;s forward direction, the center of its minus 120 to plus 120 degree scan; no other detail of the figure is visible.' loading='lazy'></figure>
 
 </section>
 <section id='s24' aria-labelledby='h24'>
@@ -338,8 +338,8 @@ nav ol { columns: 2 18rem; }
 <p>How many datapoints are we expecting then based on the command?</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>E</mi><mi>n</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>e</mi><mi>p</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>e</mi><mi>p</mi></mrow><mrow><mi>C</mi><mi>l</mi><mi>u</mi><mi>s</mi><mi>t</mi><mi>e</mi><mi>r</mi><mspace width="0.222em"></mspace><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{End\ step\  - \ start\ step}{Cluster\ count}\  + \ 1</annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>725</mn><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mn>44</mn></mrow><mn>3</mn></mfrac><mspace width="0.222em"></mspace><mo>+</mo><mn>1</mn><mo>=</mo><mn>228</mn></mrow><annotation encoding="application/x-tex">\frac{725\  - \ 44}{3}\  + 1 = 228</annotation></semantics></math></p>
-<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Table: format of the G command sent from host to sensor. Fields in order: the character &#x27;G&#x27; (hex 47), the starting point as 3 digits, the end point as 3 digits, and the cluster count as 2 digits, terminated by a line feed or carriage return.' loading='lazy'></figure>
+<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Upward-pointing arrow, likely marking the LiDAR&#x27;s forward direction, the center of its minus 120 to plus 120 degree scan; no other detail of the figure is visible.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>
@@ -347,7 +347,7 @@ nav ol { columns: 2 18rem; }
 <ul>
 <li>Sensor measures the distance in the range 20 mm to 4095 mm. If the distance is less than 20 mm, we can encode an error into the distance measurement.
 </li></ul>
-<figure><img src='L16_files/de116d43f385.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/de116d43f385.svg' alt='Table of LiDAR error codes, values 0 to 19, reported in place of a distance below 20 mm. Code 0: object possibly at 22 m. Codes 1 to 5: reflected light has low intensity. Code 6: object possibly at 5.7 m. Code 7: distance data on the preceding and succeeding steps have errors. Code 9: same step had an error in the last two scans. Code 16: object possibly in the range 4096 mm. Code 18: unspecified. Code 19: non-measurable distance. Codes 8, 10 to 15, and 17: others.' loading='lazy'></figure>
 
 </section>
 <section id='s26' aria-labelledby='h26'>
@@ -355,8 +355,8 @@ nav ol { columns: 2 18rem; }
 <ul>
 <li>We implement the reading of the data as a state machine,
 </li></ul>
-<figure><img src='L16_files/5979dce09daa.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/5979dce09daa.svg' alt='Table: sensor-to-host reply format for the LiDAR &#x27;G&#x27; distance command. The first line is &#x27;G&#x27; (hex 47), a 3-digit starting point, 3-digit end point, 2-digit cluster count, then line feed (LF). Next comes a Status line ending in LF. Data blocks 1 through N minus 1 follow, each 64 bytes ending in LF. The final data block N has n bytes and ends with two LFs, which marks the end of the message.' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='State diagram of the LiDAR receive interrupt. State 0 waits for the character &#x27;G&#x27;, then moves to State 1, which counts header bytes, loops while the count is under 11, and returns to State 0 if the 11th byte isn&#x27;t &#x27;0&#x27;. After 12 header bytes, distance bytes alternate between two states. High byte: temp equals RXC minus 0x30, shifted left 6. Low byte: dist equals temp plus RXC minus 0x30. A dist of 0 or 6 becomes MAX, 16 becomes 4096, and the result is stored in the ping/pong array. Each linefeed increments a counter. The second linefeed ends the stream, triggers SWI2, toggles the ping/pong flag, and returns to State 0.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
@@ -368,7 +368,7 @@ nav ol { columns: 2 18rem; }
 <p>G_count = 1;</p>
 <p>}</p>
 <p>}</p>
-<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='State diagram of the LiDAR receive interrupt. State 0 waits for the character &#x27;G&#x27;, then moves to State 1, which counts header bytes, loops while the count is under 11, and returns to State 0 if the 11th byte isn&#x27;t &#x27;0&#x27;. After 12 header bytes, distance bytes alternate between two states. High byte: temp equals RXC minus 0x30, shifted left 6. Low byte: dist equals temp plus RXC minus 0x30. A dist of 0 or 6 becomes MAX, 16 becomes 4096, and the result is stored in the ping/pong array. Each linefeed increments a counter. The second linefeed ends the stream, triggers SWI2, toggles the ping/pong flag, and returns to State 0.' loading='lazy'></figure>
 
 </section>
 <section id='s28' aria-labelledby='h28'>
@@ -387,7 +387,7 @@ nav ol { columns: 2 18rem; }
 <p>dis_index = 0;</p>
 <p>}</p>
 <p>}</p>
-<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='State diagram of the LiDAR receive interrupt. State 0 waits for the character &#x27;G&#x27;, then moves to State 1, which counts header bytes, loops while the count is under 11, and returns to State 0 if the 11th byte isn&#x27;t &#x27;0&#x27;. After 12 header bytes, distance bytes alternate between two states. High byte: temp equals RXC minus 0x30, shifted left 6. Low byte: dist equals temp plus RXC minus 0x30. A dist of 0 or 6 becomes MAX, 16 becomes 4096, and the result is stored in the ping/pong array. Each linefeed increments a counter. The second linefeed ends the stream, triggers SWI2, toggles the ping/pong flag, and returns to State 0.' loading='lazy'></figure>
 
 </section>
 <section id='s29' aria-labelledby='h29'>
@@ -410,7 +410,7 @@ nav ol { columns: 2 18rem; }
 <p>LADARpingpong = 1-LADARpingpong;</p>
 <p>}</p>
 <p>}</p>
-<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='State diagram of the LiDAR receive interrupt. State 0 waits for the character &#x27;G&#x27;, then moves to State 1, which counts header bytes, loops while the count is under 11, and returns to State 0 if the 11th byte isn&#x27;t &#x27;0&#x27;. After 12 header bytes, distance bytes alternate between two states. High byte: temp equals RXC minus 0x30, shifted left 6. Low byte: dist equals temp plus RXC minus 0x30. A dist of 0 or 6 becomes MAX, 16 becomes 4096, and the result is stored in the ping/pong array. Each linefeed increments a counter. The second linefeed ends the stream, triggers SWI2, toggles the ping/pong flag, and returns to State 0.' loading='lazy'></figure>
 
 </section>
 <section id='s30' aria-labelledby='h30'>
@@ -442,7 +442,7 @@ nav ol { columns: 2 18rem; }
 <p>dis_index += 1;</p>
 <p>get_dis_first = 1;</p>
 <p>}</p>
-<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='State diagram of the LiDAR receive interrupt. State 0 waits for the character &#x27;G&#x27;, then moves to State 1, which counts header bytes, loops while the count is under 11, and returns to State 0 if the 11th byte isn&#x27;t &#x27;0&#x27;. After 12 header bytes, distance bytes alternate between two states. High byte: temp equals RXC minus 0x30, shifted left 6. Low byte: dist equals temp plus RXC minus 0x30. A dist of 0 or 6 becomes MAX, 16 becomes 4096, and the result is stored in the ping/pong array. Each linefeed increments a counter. The second linefeed ends the stream, triggers SWI2, toggles the ping/pong flag, and returns to State 0.' loading='lazy'></figure>
 
 </section>
 <section id='s31' aria-labelledby='h31'>
@@ -501,7 +501,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s34' aria-labelledby='h34'>
 <h2 id='h34'><span class='num'>34.</span> LiDAR – Distance Data Acquisition</h2>
-<figure><img src='L16_files/8dfbe8084439.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/8dfbe8084439.svg' alt='Table 3-2, PIE Channel Mapping, for the TI F28379D: a grid of 12 PIE groups (INT1.y to INT12.y) by 16 channels (INTx.1 to INTx.16), giving the peripheral interrupt at each position; dashes are reserved. Serial receive and transmit interrupts relevant to reading LiDAR data are SCIA_RX at INT9.1, SCIA_TX at INT9.2, SCIB_RX at INT9.3, SCIB_TX at INT9.4, SCIC_RX at INT8.5, SCIC_TX at INT8.6, SCID_RX at INT8.7 and SCID_TX at INT8.8. DMA channels 1 to 6 occupy INT7.1 to INT7.6.' loading='lazy'></figure>
 
 </section>
 <section id='s35' aria-labelledby='h35'>

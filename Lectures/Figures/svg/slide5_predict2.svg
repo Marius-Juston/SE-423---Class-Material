@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Slide5 Predict2</title><desc id="fig-desc">Plot: Second prediction step of Monte Carlo localization on a 10 by 10 meter map with landmarks at (2,8), (8,8) and (8,2). Each particle is moved forward along a noisy arc, leaving gray trails. The particles split into a main cluster near (3.8, 4), matching the true robot pose at the end of a short red arc, and a second cluster near (3.4, 5.8), plus a few strays. The estimated mean pose, near (3.9, 4.7), lies between the clusters, slightly off the true pose.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="648pt" height="504pt" viewBox="0 0 648 504" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Slide2 Predict</title><desc id="fig-desc">Plot titled &quot;Action / Prediction Step&quot; with the equation: bel bar of x sub t equals the integral of p of x sub t given u sub t and x sub t minus 1, times bel of x sub t minus 1, d x sub t minus 1. On a 10 by 10 meter map with landmark stars near (2, 8), (8, 8) and (8, 2), hundreds of particles spread uniformly in random headings each move along a gray one-second arc. The true robot pose sits near (3.3, 4) heading up-right. The particle mean, near (5.5, 4.3) heading up-left, is far from it, so prediction alone does not localize the robot.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="605.16pt" height="457.92pt" viewBox="0 0 605.16 457.92" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="605.16pt" height="457.92pt" viewBox="0 0 605.16 457.92" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Lidar Grid</title><desc id="fig-desc">Occupancy grid: a robot on the left fires a fan of about a dozen red range-sensor rays to the right. Each ray ends at a black cell where it hit an obstacle, forming a jagged wall, and these cells get occupancy probability 0.95. Cells the rays pass through are white with probability 0.05, meaning free. All unobserved cells, including those behind the wall, stay gray at 0.5. The legend labels each value as p sub z sub k plus 1 of O sub k plus 1 given z sub k plus 1.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

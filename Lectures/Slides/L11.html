@@ -92,7 +92,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h7'><span class='num'>7.</span> PID Controller</h2>
 <p>The PID controller is split into 3 parts, as its name states. While each of the terms contribute to improving the output, it is not necessary to use all of them at once.</p>
 <p>As the PID controller is a closed-loop controller the input is an error signal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e(t)\  = \ r(t)\  - \ y(t)</annotation></semantics></math>, which represents the reference “what you want to be doing” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">r(t)</annotation></semantics></math> and the currently measured input “what you are doing now” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y(t)</annotation></semantics></math></p>
-<figure><img src='L11_files/3a6099cef1ac.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/3a6099cef1ac.svg' alt='Block diagram: the reference r of t minus the fed-back output y of t gives the error e of t, which feeds three parallel branches: P, K sub p times e of t; I, K sub i times the integral from 0 to t of e of tau d tau; and D, K sub d times d e of t over d t. The three outputs are summed into the control signal u of t, which drives the plant or process to produce y of t.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller'>https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller</a></p>
 
 </section>
@@ -180,7 +180,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> PID Controller</h2>
-<figure><img src='L11_files/6bb26bcd8fa3.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/6bb26bcd8fa3.png' alt='Block diagram: clamping integrator anti-windup in a PID controller. Integrator anti-windup keeps the integrated value from growing past a limit; clamping, which turns the integrator off, is highlighted over back-calculation and observer methods. Error feeds proportional, derivative, and integrator blocks whose sum passes a clamping saturation limit to become the actuator command, then the saturating actuator. A switch feeds the integrator 0 instead of error when both hold: the output is saturating (pre- and post-limit values differ), AND the error has the same sign as the controller output.' loading='lazy'></figure>
 <p><a href='https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html'>https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html</a></p>
 
 </section>
@@ -191,7 +191,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s16' aria-labelledby='h16'>
 <h2 id='h16'><span class='num'>16.</span> PID Controller</h2>
-<figure><img src='L11_files/9927b256ed0c.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/9927b256ed0c.png' alt='Flowchart: PID tuning guide. If the system is not well-behaved (highly nonlinear, open-loop unstable, lots of delay, or non-minimum phase), use advanced methods. If it is well-behaved and you have a model, go to model-based tuning. If you have hardware, you can tweak gains directly, derive a model from first principles, or run an input sequence. An input sequence leads to system identification (then model-based tuning), heuristic initial guesses, or automatic tuning. Model-based tuning uses automatic tuning or manual methods (pole placement, loop shaping, heuristics). All paths end with tweaking gains manually.' loading='lazy'></figure>
 <p><a href='https://www.mathworks.com/videos/understanding-pid-control-part-4-a-pid-tuning-guide-1531124725727.html'>https://www.mathworks.com/videos/understanding-pid-control-part-4-a-pid-tuning-guide-1531124725727.html</a></p>
 
 </section>
@@ -216,7 +216,7 @@ nav ol { columns: 2 18rem; }
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> PID Controller</h2>
 <table><thead><tr><th scope='col'>Parameter</th><th scope='col'>Rise time</th><th scope='col'>Overshoot</th><th scope='col'>Settling time</th><th scope='col'>Steady-state error</th><th scope='col'>Stability</th></tr></thead><tbody><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>P</mi></msub><annotation encoding="application/x-tex">K_{P}</annotation></semantics></math></td><td>Decrease</td><td>Increase</td><td>Small change</td><td>Decrease</td><td>Degrade</td></tr><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>I</mi></msub><annotation encoding="application/x-tex">K_{I}</annotation></semantics></math></td><td>Decrease</td><td>Increase</td><td>Increase</td><td>Eliminate</td><td>Degrade</td></tr><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math></td><td>Minor change</td><td>Decrease</td><td>Decrease</td><td>No effect in theory</td><td>Improve if <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math> small</td></tr></tbody></table>
-<figure><img src='L11_files/eb58c09ca364.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/eb58c09ca364.gif' alt='Plot: closed-loop step response with K sub p equals 1, K sub i equals 0, K sub d equals 0 (proportional control only), over time t from 0 to 8. The output rises to a peak of about 0.57 near t equals 2.5, then settles around 0.42. It never reaches the setpoint of 1, shown as a dashed line, leaving a large steady-state error.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller#Manual_tuning'>https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller#Manual_tuning</a></p>
 
 </section>
@@ -228,7 +228,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s20' aria-labelledby='h20'>
 <h2 id='h20'><span class='num'>20.</span> PID Controller – Lab 5</h2>
-<figure><img src='L11_files/789404c40ae8.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/789404c40ae8.svg' alt='Block diagram: one desired-velocity input feeds two identical PI loops, one per motor. In each loop, measured velocity (v2 for the right motor, v1 for the left) is subtracted from the desired velocity to form error e2 or e1. The error passes through gain Kp and, in parallel, through an integrator (1 over s) and gain Ki; these sum, then a friction_comp block driven by the measured velocity is added to produce control effort u2 or u1 to the motor, whose output velocity feeds back.' loading='lazy'></figure>
 <p>We have 2 PI controllers for setting the motors to the desired velocity</p>
 <p>We computed the velocities from last lab</p>
 <p>Technically not necessary since this is a feedback controller but helps with improving performance</p>
@@ -237,7 +237,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s21' aria-labelledby='h21'>
 <h2 id='h21'><span class='num'>21.</span> PID Controller</h2>
-<figure><img src='L11_files/25740b73865b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L11_files/25740b73865b.svg' alt='Block diagram: the desired velocity drives two parallel PI loops, one per motor. Right loop: e2 equals desired velocity minus v2 minus Kp_turn times e_steer. Left loop: e1 equals desired velocity minus v1 plus Kp_turn times e_steer. In each loop, Kp times the error plus Ki times the integral of the error, plus a friction compensation term based on that wheel&#x27;s velocity, gives u2 for right_motor or u1 for left_motor. Steering error: e_steer equals turn command plus v2 minus v1.' loading='lazy'></figure>
 <p>We have 2 PI controllers for setting the motors to the desired velocity</p>
 <p>We have a desired velocity we want the robot to go at</p>
 <p>We have a desired turn rate we want the robot to go at</p>

@@ -10,7 +10,7 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
-   xmlns:svg="http://www.w3.org/2000/svg">
+   xmlns:svg="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Left Riemann Sum</title><desc id="fig-desc">Plot: the red curve y equals x cubed rises from 0 at x equals 0 to 8 at x equals 2. Blue left-Riemann rectangles of width 0.5 sit beneath it with heights 0, 0.125, 1, and 3.375, each taken from the curve&#x27;s value at the left edge of its interval. The rectangles leave large gaps below the steepening curve, so the rectangle rule underestimates the integral. This error motivates using the trapezoidal rule instead.</desc>
   <sodipodi:namedview
      id="namedview226"
      pagecolor="#ffffff"

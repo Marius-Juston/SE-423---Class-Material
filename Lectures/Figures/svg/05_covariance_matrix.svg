@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">05 Covariance Matrix</title><desc id="fig-desc">Plot: 2D covariance of robot x and y position. Covariance matrix Sigma has sigma x squared equals 4.0, sigma y squared equals 3.0, and sigma x y equals sigma y x equals 2.5. A tilted 1-sigma ellipse is centered on the mean at (5, 5). Its long axis runs diagonally up-right, showing positive x-y correlation. Horizontal and vertical arrows mark sigma x and sigma y. A red arrow, square root of lambda 1 times v 1, marks the major axis along the tilt. A perpendicular green arrow, square root of lambda 2 times v 2, marks the minor axis.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

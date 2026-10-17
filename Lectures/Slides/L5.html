@@ -107,14 +107,14 @@ nav ol { columns: 2 18rem; }
 <h2 id='h7'><span class='num'>7.</span> DAC – R-2R resistor ladder</h2>
 <p>A voltage mode resistor R-2R resistor ladder network.</p>
 <p>If the image is still here, I did not have time to make an animation</p>
-<figure><img src='L5_files/4e83c0c2dbf6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/4e83c0c2dbf6.svg' alt='Circuit: R-2R ladder DAC. A horizontal chain of nodes is joined by series resistors R. The leftmost node connects to ground through a 2R resistor. Each node also connects upward through its own 2R resistor to a digital bit input, a sub 0 at the grounded end through a sub n minus 1 at the right end, with dots marking the repeated middle stages. The rightmost node, fed by a sub n minus 1, is the output V sub out.' loading='lazy'></figure>
 <p>It produces an analog output voltage from the digital integer <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> composed of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>  bits: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">a_{n - 1}</annotation></semantics></math> (most significant bit, MSB) through bit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>0</mn></msub><annotation encoding="application/x-tex">a_{0}</annotation></semantics></math> (least significant bit, LSB).</p>
 <p><a href='https://en.wikipedia.org/wiki/Resistor_ladder'>https://en.wikipedia.org/wiki/Resistor_ladder</a></p>
 
 </section>
 <section id='s8' aria-labelledby='h8'>
 <h2 id='h8'><span class='num'>8.</span> DAC – Buffered</h2>
-<figure><img src='L5_files/2e8d8ee90e58.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/2e8d8ee90e58.svg' alt='Block diagram of the buffered 12-bit DAC module. The value written to shadow register DACVALS is copied into active register DACVALA either on the next SYSCLK (LOADMODE 0) or on an ePWM sync event chosen by SYNCSEL from EPWM1 through EPWMn (LOADMODE 1). DACVALA drives the 12-bit DAC, whose reference is selected by DACREFSEL as VDAC or VREFHI. The DAC output passes through a buffer amplifier, powered from VDDA and VSSA, to the DACOUT pin, which has a pull-down resistor R sub PD to VSSA.' loading='lazy'></figure>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>D</mi><mi>A</mi><mi>C</mi><mi>V</mi><mi>A</mi><mi>L</mi><mi>A</mi><mo>×</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>R</mi><mi>E</mi><mi>F</mi></mrow><mn>4096</mn></mfrac><mo>=</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>O</mi><mi>U</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">\frac{DACVALA \times DACREF}{4096} = DACOUT</annotation></semantics></math></p>
 <p>Pull-down resistor</p>
 
@@ -144,7 +144,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s10' aria-labelledby='h10'>
 <h2 id='h10'><span class='num'>10.</span> DAC – For later reference</h2>
-<figure><img src='L5_files/c57b81ea61aa.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/c57b81ea61aa.svg' alt='Block diagram: TI ePWM time-base submodule (Figure 15-5). SYSCLK passes through the EPWMCLK prescaler and TBCTL clock prescaler (HSPCLKDIV, CLKDIV) to produce TBCLK, which drives the 16-bit up/down counter TBCTR, with mode set by TBCTL CTRMODE. A comparator against the shadowed period register TBPRD generates CTR equals PRD and resets the counter. When PHSEN is enabled, a sync input loads the phase register TBPHS into the counter. Multiplexers select which counter events drive the sync outputs EPWMxSYNCO and EPWMxSYNCPER.' loading='lazy'></figure>
 
 </section>
 <section id='s11' aria-labelledby='h11'>
@@ -176,7 +176,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li><strong>Quantizing</strong>: The ADC circuitry measures the stored charge against a reference
 </li></ul>
-<figure><img src='L5_files/244006809f91.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/244006809f91.svg' alt='Circuit: single-ended ADC input model. An AC source with series source resistance R sub s connects to pin ADCINx; its return goes to pin VREFLO, which is grounded. Inside the ADC, parasitic capacitance C sub p sits across the input. A sampling switch, then on-resistance R sub on, connects the input to hold capacitor C sub h, which charges to the input voltage while the switch is closed.' loading='lazy'></figure>
 
 </section>
 <section id='s14' aria-labelledby='h14'>
@@ -239,7 +239,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h16'><span class='num'>16.</span> ADC</h2>
 <p>Not every channel may be pinned out from all ADCs. Check the datasheet for your device to</p>
 <p>determine which channels are available!</p>
-<figure><img src='L5_files/851fb503a302.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/851fb503a302.svg' alt='Table of LaunchPad ADC and DAC pins: header pins 23 to 30 (J3.3 to J3.10) and 63 to 70 (J7.3 to J7.10) carry ADC channels A0 to A5, B2 to B5, C2 to C5, IN14 and IN15, most shared with comparator inputs. DAC A shares pin 30 (ADCINA0) and DAC B shares pin 70 (ADCINA1). Joystick Y uses ADCINA3, joystick X uses ADCINA2, and the microphone uses ADCINB4. ADCIND0 to D3 are on J21 pins 1, 3, 5 and 7; ADCIND4 and D5 go to solder BNC connectors.' loading='lazy'></figure>
 
 </section>
 <section id='s17' aria-labelledby='h17'>
@@ -252,13 +252,13 @@ nav ol { columns: 2 18rem; }
 </li>
 <li><strong>Differential</strong> signaling mode is advantageous because noise encountered on both inputs will be largely cancelled. Allowing for higher 16-bit precision.
 </li></ul>
-<figure><img src='L5_files/f7cf9f49d3c1.svg' alt='Picture without a description' loading='lazy'></figure>
-<figure><img src='L5_files/244006809f91.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/f7cf9f49d3c1.svg' alt='Circuit: differential ADC input model. An AC source drives pins ADCINxP and ADCINxN, each through its own source resistance R sub s. Inside the ADC, each input line has a parasitic capacitor C sub p to VSSA (analog ground). Each line then passes through a sampling switch and on-resistance R sub on to opposite ends of a single hold capacitor C sub h. C sub h therefore samples the difference between the two inputs.' loading='lazy'></figure>
+<figure><img src='L5_files/244006809f91.svg' alt='Circuit: single-ended ADC input model. An AC source with series source resistance R sub s connects to pin ADCINx; its return goes to pin VREFLO, which is grounded. Inside the ADC, parasitic capacitance C sub p sits across the input. A sampling switch, then on-resistance R sub on, connects the input to hold capacitor C sub h, which charges to the input voltage while the switch is closed.' loading='lazy'></figure>
 
 </section>
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> ADC - Calculate</h2>
-<figure><img src='L5_files/6aff0dadcf9b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/6aff0dadcf9b.svg' alt='Two tables of ADC conversion formulas. 12-bit mode, single-ended only (differential invalid): ADCRESULT is 0 when ADCIN is at or below VREFLO, 4095 when at or above VREFHI, otherwise 4096 times (ADCIN minus VREFLO) over (VREFHI minus VREFLO). 16-bit mode, differential only (single-ended invalid): ADCRESULT is 0 when ADCINP minus ADCINN is at or below negative VREFHI, 65535 when at or above VREFHI, otherwise 65536 times (ADCINP minus ADCINN plus VREFHI) over 2 VREFHI.' loading='lazy'></figure>
 
 </section>
 <section id='s19' aria-labelledby='h19'>
@@ -284,7 +284,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s20' aria-labelledby='h20'>
 <h2 id='h20'><span class='num'>20.</span> ADC – SAR (Successive Approximation Register)</h2>
-<figure><img src='L5_files/249ab6678715.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/249ab6678715.gif' alt='Block diagram of a 4-bit successive-approximation ADC: a clocked control block sets DAC bits 3 to 0; the DAC output feeds the comparator&#x27;s minus input, V in (here 0 volts) feeds the plus input, and the comparator output feeds back to control. Below, an empty voltage-versus-time plot shows only V in at 0 volts. A table lists the step size for each bit: 5 V times one half is 2.5 V, one quarter 1.25 V, one eighth 0.625 V, one sixteenth 0.3125 V, down to one over 1024, 0.0049 V.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Successive-approximation_ADC'>https://en.wikipedia.org/wiki/Successive-approximation_ADC</a></p>
 
 </section>
@@ -318,7 +318,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s24' aria-labelledby='h24'>
 <h2 id='h24'><span class='num'>24.</span> SOC – Trigger Sources</h2>
-<figure><img src='L5_files/2a19e3d6a6f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/2a19e3d6a6f9.svg' alt='Five-panel TI figure &quot;High Priority Example&quot; with SOCPRIORITY equals 4: SOC0 to SOC3 are fixed high priority, SOC4 to SOC15 form a clockwise round-robin wheel around RRPOINTER. A: after reset, pointer defaults to 16, so SOC4 is first; SOC7 triggers and converts. B: pointer moves to 7, so SOC8 is first. C: SOC2 and SOC12 trigger together; high-priority SOC2 converts first while SOC12 waits. D: pointer stays at 7 while SOC12 converts. E: pointer moves to 12, so SOC13 is first.' loading='lazy'></figure>
 
 </section>
 <section id='s25' aria-labelledby='h25'>

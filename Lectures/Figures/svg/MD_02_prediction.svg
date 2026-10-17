@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="432pt" viewBox="0 0 720 432" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">MD 02 Prediction</title><desc id="fig-desc">Plot of the Kalman filter predict step on position X versus position Y axes. The old belief is a point at (2, 2) inside a narrow, tilted blue covariance ellipse; a slightly larger purple outline shows it transformed by F P F transpose. A motion arrow moves the mean to about (8, 5), where a much larger filled purple ellipse shows the predicted prior: x sub pred equals F x sub k minus 1 plus B u, and P sub pred equals F P sub k minus 1 F transpose plus Q. Prediction shifts the estimate and grows its uncertainty.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>

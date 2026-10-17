@@ -159,7 +159,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s12' aria-labelledby='h12'>
 <h2 id='h12'><span class='num'>12.</span> IR Sensor</h2>
-<figure><img src='L14_files/b49cb3b5fe6d.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/b49cb3b5fe6d.jpg' alt='Photo: Sharp GP2Y0A41SK0F infrared distance sensor (4 to 30 centimeter range), a small black module with mounting holes at each end and two round lenses stacked vertically, one for the IR LED emitter and one for the light detector, as labeled on the slide. A white connector on its side leads to three wires: red for power, black for ground, and yellow for the analog distance output.' loading='lazy'></figure>
 <p>Light detector</p>
 <p>LED</p>
 <p>Basic operation principle:</p>
@@ -204,7 +204,7 @@ nav ol { columns: 2 18rem; }
 </li></ul>
 <p>Typical Range:</p>
 <p>2 to 80 cm</p>
-<figure><img src='L14_files/c9c388d3ecb5.jpg' alt='Types of Distance Sensors and How to Select One? - Latest News from Seeed  Studio' loading='lazy'></figure>
+<figure><img src='L14_files/c9c388d3ecb5.jpg' alt='Triangulation in an IR distance sensor: an IR LED shines a beam straight up through a lens onto an object. The scattered reflection returns at an angle through a second lens beside it and lands on a position-sensitive IR detector. A near object&#x27;s reflection arrives at a steeper angle and lands farther along the detector than a far object&#x27;s, so the spot&#x27;s position on the detector indicates distance.' loading='lazy'></figure>
 <p><a href='https://www.seeedstudio.com/blog/2019/12/23/distance-sensors-types-and-selection-guide/?srsltid=AfmBOoqqTzG5IXwUkxoz5_Zqd1hbp99oPKSt_J4rwNNXKZuSm4sWI-MF'>https://www.seeedstudio.com/blog/2019/12/23/distance-sensors-types-and-selection-guide/?srsltid=AfmBOoqqTzG5IXwUkxoz5_Zqd1hbp99oPKSt_J4rwNNXKZuSm4sWI-MF</a></p>
 
 </section>
@@ -238,7 +238,7 @@ nav ol { columns: 2 18rem; }
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>e</mi><mi>c</mi><mi>e</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>S</mi><mi>i</mi><mi>g</mi><mi>n</mi><mi>a</mi><mi>l</mi><mspace width="0.222em"></mspace><mo>∝</mo><mfrac><mn>1</mn><msup><mi>r</mi><mn>4</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">Received\ Signal\  \propto \frac{1}{r^{4}}</annotation></semantics></math></p>
 <p>So, to see very far and be able to remove noise you need an extremely powerful LED!</p>
 <p>Same goes for most active sensors such as Radar / Sonar / LiDAR!</p>
-<figure><img src='L14_files/4dfc21e470bb.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/4dfc21e470bb.jpg' alt='Illustration of the inverse-square law: a source of power P radiates through a cone, so intensity on a sphere of radius r is I equals P over 4 pi r squared. The patch of area A at distance r spreads over 4 patches at 2r and 9 patches at 3r, so intensity drops to I over 4 and I over 9. Doubling the distance spreads the energy over four times the area, giving one-fourth the intensity.' loading='lazy'></figure>
 <p><a href='https://www.jpl.nasa.gov/edu/resources/lesson-plan/collecting-light-inverse-square-law-demo/'>https://www.jpl.nasa.gov/edu/resources/lesson-plan/collecting-light-inverse-square-law-demo/</a></p>
 
 </section>
@@ -296,8 +296,8 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s19' aria-labelledby='h19'>
 <h2 id='h19'><span class='num'>19.</span> LiDAR</h2>
-<figure><img src='L14_files/fdb322a87b6b.gif' alt='Things you need to know about LiDAR: the more lasers, the better? | Hesai' loading='lazy'></figure>
-<figure><img src='L14_files/2ea3513ce74f.gif' alt='New Part Day: Very Cheap LIDAR | Hackaday' loading='lazy'></figure>
+<figure><img src='L14_files/fdb322a87b6b.gif' alt='Rendering of a cylindrical spinning LiDAR sensor: a metal base and cap around a dark rotating window, with a red laser beam emitted horizontally from the window. The head rotates to sweep the beam around the sensor and measure distances in all directions.' loading='lazy'></figure>
+<figure><img src='L14_files/2ea3513ce74f.gif' alt='Photo: An inexpensive 2D scanning LiDAR module. A round black sensor head sits on a teardrop-shaped circuit-board base, with a small DC motor at the narrow end that spins the head so its laser rangefinder sweeps a full 360-degree circle. A multi-wire cable connects at the side for power and data.' loading='lazy'></figure>
 <p><a href='https://hackaday.com/2017/04/20/new-part-day-very-cheap-lidar/'>https://hackaday.com/2017/04/20/new-part-day-very-cheap-lidar/</a></p>
 <p><a href='https://www.hesaitech.com/things-you-need-to-know-about-lidar-the-more-lasers-the-better/'>https://www.hesaitech.com/things-you-need-to-know-about-lidar-the-more-lasers-the-better/</a></p>
 
@@ -325,7 +325,7 @@ nav ol { columns: 2 18rem; }
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> = measured round-trip time
 </li></ul>
 <p>Why is there a division by 2 in the equation?</p>
-<figure><img src='L14_files/b208fbe3763a.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/b208fbe3763a.svg' alt='Time-of-flight diagram: a laser emitter sends a pulse across distance d to a target, which reflects it back to a receiver beside the emitter. The time t, marked between emission and reception, spans the full round trip out and back. The resulting equation is d equals c times t, divided by 2, where c is the speed of light.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Time-of-flight_camera'>https://en.wikipedia.org/wiki/Time-of-flight_camera</a></p>
 
 </section>
@@ -350,7 +350,7 @@ nav ol { columns: 2 18rem; }
 <ul>
 <li>In addition, if you are not far enough your receiver cannot see the signal
 </li></ul>
-<figure><img src='L14_files/69540bd73fe6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/69540bd73fe6.svg' alt='Diagram: a laser mounted above a sensor, separated by a small offset. The laser&#x27;s narrow red beam and the sensor&#x27;s wide blue field of view diverge from different points and overlap only beyond a certain distance. At a near target plane, 1, the red laser spot falls just above the sensor&#x27;s circular view, so the return is not seen. At a farther plane, 2, the laser spot lies inside the sensor&#x27;s view, so it is detected. This sets the minimum sensing distance.' loading='lazy'></figure>
 <p><a href='https://www.ti.com/lit/ug/tiducm1b/tiducm1b.pdf'>https://www.ti.com/lit/ug/tiducm1b/tiducm1b.pdf</a></p>
 
 </section>
@@ -406,7 +406,7 @@ nav ol { columns: 2 18rem; }
 <ul>
 <li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>0</mn></msub><annotation encoding="application/x-tex">t_{0}</annotation></semantics></math> = the pulse width.
 </li></ul>
-<figure><img src='L14_files/cc97241e2639.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/cc97241e2639.svg' alt='Timing diagram of pulsed time-of-flight ranging, shown in two cases. A light source emits pulses of width t toward a target at distance d, and the reflection returns to a sensor. In case 1, the received pulse train is sampled by two consecutive gates, q sub 1 and q sub 2, each one pulse width long; the split of returned light between them encodes the delay. Case 2 adds a second gate pair, q sub 3 and q sub 4, offset by half a pulse width, giving additional phase samples of the same return.' loading='lazy'></figure>
 
 </section>
 <section id='s26' aria-labelledby='h26'>
@@ -414,12 +414,12 @@ nav ol { columns: 2 18rem; }
 <p>Given a long pulse width, it is possible to receive multiple returns.</p>
 <p>Which can help with additional information in the environment allowing you to enter different materials.</p>
 <p><a href='https://iopscience.iop.org/article/10.1088/1361-6501/abc867'>https://iopscience.iop.org/article/10.1088/1361-6501/abc867</a></p>
-<figure><img src='L14_files/0ef57a5c46bc.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/0ef57a5c46bc.jpg' alt='Diagram: a LiDAR beam widens as it travels down through a tall tree, a small tree, and onto the ground, with time or range increasing downward. Five echoes occur at the canopy top (first), two branch layers (second, third), the small tree (fourth), and the ground (last). The discrete-return column records only these five points. The full-waveform column records continuous return intensity, with peaks at the same depths: the strongest at the canopy top, smaller ones below, and a narrow peak at the ground.' loading='lazy'></figure>
 
 </section>
 <section id='s27' aria-labelledby='h27'>
 <h2 id='h27'><span class='num'>27.</span> LiDAR</h2>
-<figure><img src='L14_files/54cbc8d97a14.gif' alt='undefined' loading='lazy'></figure>
+<figure><img src='L14_files/54cbc8d97a14.gif' alt='Three-panel illustration of LiDAR scanning. Top: a LiDAR unit whose laser bounces off an angled mirror inside, with an arrow showing the mirror spinning to sweep the beam. Middle: top-down view of a walled rectangular room with the LiDAR near the top wall, its beam hitting the left wall, and a round obstacle in the lower right. Bottom: the resulting point cloud so far, with the LiDAR as a dot and a column of plus-sign points marking the detected left wall.' loading='lazy'></figure>
 <p><a href='https://en.wikipedia.org/wiki/Lidar'>https://en.wikipedia.org/wiki/Lidar</a></p>
 <p>By rapidly spinning the laser via a motor, we can generate a dense 2D or 3D map of the environment.</p>
 <p>Given that we know the constant rate of turn, we thus know where each pulse will be located radially and the distance returned. We can thus generate a <strong>point cloud</strong>.</p>
@@ -445,7 +445,7 @@ nav ol { columns: 2 18rem; }
 <section id='s30' aria-labelledby='h30'>
 <h2 id='h30'><span class='num'>30.</span> Wall Following</h2>
 <p>For this robot it might not be extremely critical; however, think about fighter jets, they have lots of different sensors all working at different speeds and requiring different priorities. Any delay could be catastrophic!</p>
-<figure><img src='L14_files/f8e3a58e7ef0.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/f8e3a58e7ef0.svg' alt='Block diagram and delay tables for a fighter-jet flight control (FC) system running a 10 ms, 100 Hz frame. IMU (600 Hz) feeds NAV processing over RS422, then dual-port RAM to the FC. Alpha and beta vanes feed an RIU over analog, then 1553 to the FC. The FC commands elevon, thrust-vector and nosewheel-steering actuators over RS422, and gear brake actuators over 1553. Feedback delays: IMU 1 to 2.7 ms, vanes up to 20 ms. Command delays: control surfaces 6 to 7.7 ms, brakes 6 to 16 ms.' loading='lazy'></figure>
 <p>ME 547 Robust and Adaptive Controller – Week 1 Review 2025 slides</p>
 
 </section>
@@ -471,7 +471,7 @@ nav ol { columns: 2 18rem; }
 <p>Processing 228 trigonometric projections (calculating sines and cosines) is computationally heavy, so we extract strategic named sub-vectors to govern navigation.</p>
 <p>These represent key regions of interest such as “front”, “left front”, “right front”.</p>
 <p>Why do we extract the minimum of a 5-point cluster rather than simply trusting a single laser ray or taking the mean?</p>
-<figure><img src='L14_files/9deb27ec654a.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/9deb27ec654a.svg' alt='Diagram: top-down view of the LiDAR scan pattern. The LiDAR sits at the center, and distance rays fan outward every 15 degrees across a 240-degree sector centered on the forward direction (pointing right), from 120 degrees on one side to 120 degrees on the other. A 120-degree wedge directly behind the sensor is not scanned.' loading='lazy'></figure>
 <p>Front</p>
 <p>Left Front</p>
 <p>Right Front</p>
@@ -517,7 +517,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s37' aria-labelledby='h37'>
 <h2 id='h37'><span class='num'>37.</span> Wall Following – State Machine</h2>
-<figure><img src='L14_files/fcf292e62a57.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/fcf292e62a57.svg' alt='State diagram, two states. Start enters State 1, Right Wall Follow: v equals v sub forward velocity, omega equals K sub p times the quantity d sub ref minus d sub right. It moves to State 2, Left Turn, when d sub front is greater than d sub stop thresh. State 2 sets v equals v sub front turn, omega equals K sub front times the quantity 14.5 minus d sub front. It returns to State 1 when d sub front is less than d sub start thresh.' loading='lazy'></figure>
 
 </section>
 <section id='s38' aria-labelledby='h38'>
@@ -526,18 +526,18 @@ nav ol { columns: 2 18rem; }
 <p>To prevent this, we ensure a robust enough “<strong>deadband / hysteresis</strong>” zone into the transition boundaries.</p>
 <p>A <strong>deadband</strong> zone typically represents an inactive region where no action is taken.</p>
 <p>For example, instead of setting a velocity of close to zero, just set it to zero to reduce power consumption and potential small noise or backlash. When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>v</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.222em"></mspace><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|v|\  &lt; \varepsilon</annotation></semantics></math>, set <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">v\  = \ 0</annotation></semantics></math>.</p>
-<figure><img src='L14_files/a9065b2867a3.png' alt='undefined' loading='lazy'></figure>
+<figure><img src='L14_files/a9065b2867a3.png' alt='Plot: deadband function, output versus input, both axes from minus 1 to 1. The input is a solid diagonal line, output equals input. The dashed output follows that line except between minus 0.5 and 0.5, where it is held at zero, jumping vertically to zero at plus and minus 0.5. Inputs smaller than 0.5 in magnitude produce no output; larger inputs pass through unchanged.' loading='lazy'></figure>
 <details><summary>Speaker notes</summary><p>Zeno behavior means “the system makes an infinite number of jumps, in finite time”</p></details>
 </section>
 <section id='s39' aria-labelledby='h39'>
 <h2 id='h39'><span class='num'>39.</span> Wall Following – State Machine</h2>
 <p><strong>Hysteresis </strong>is path-dependent, where the output relies on whether the variable is rising or falling.</p>
-<figure><img src='L14_files/788aced47ea1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/788aced47ea1.svg' alt='Plot of output versus input showing a hysteresis loop. A straight diagonal line marks the ideal one-to-one response. As input increases, the output follows a lower curve below the line; as input decreases, it returns along an upper curve above it. Both curves meet at the minimum and maximum. A vertical line at one input value crosses both curves at different outputs, and the vertical gap between them is labeled hysteresis.' loading='lazy'></figure>
 
 </section>
 <section id='s40' aria-labelledby='h40'>
 <h2 id='h40'><span class='num'>40.</span> Wall Following – State Machine</h2>
-<figure><img src='L14_files/fcf292e62a57.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/fcf292e62a57.svg' alt='State diagram, two states. Start enters State 1, Right Wall Follow: v equals v sub forward velocity, omega equals K sub p times the quantity d sub ref minus d sub right. It moves to State 2, Left Turn, when d sub front is greater than d sub stop thresh. State 2 sets v equals v sub front turn, omega equals K sub front times the quantity 14.5 minus d sub front. It returns to State 1 when d sub front is less than d sub start thresh.' loading='lazy'></figure>
 <p>In this case we do not authorize the return to State 2 until <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>f</mi><mi>r</mi><mi>o</mi><mi>n</mi><mi>t</mi></mrow></msub><mspace width="0.222em"></mspace><mo>&gt;</mo><mspace width="0.222em"></mspace><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>o</mi><mi>p</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">d_{front}\  &gt; \ d_{stop\_ thresh}\ </annotation></semantics></math>where the stop threshold is strictly greater than the start threshold, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>o</mi><mi>p</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub><mspace width="0.222em"></mspace><mo>&gt;</mo><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{stop\_ thresh}\  &gt; d_{start\_ thresh}</annotation></semantics></math>.</p>
 <p>If the start threshold is 1.0 meter and the stop threshold is 1.5 meters. What state is the robot in at 1.2 meters?</p>
 <p>It just <strong>stays at its current state</strong>! It has not reached on of the transition threshold yet!</p>
@@ -566,7 +566,7 @@ nav ol { columns: 2 18rem; }
 </li></ul>
 <p>The some of the code can be found <a href='https://github.com/ukmars/mazerunner-core/blob/main/mazerunner-core/maze.h'>here</a>.</p>
 <p><a href='https://hackaday.com/2008/11/26/vacuum-micromouse/'>https://hackaday.com/2008/11/26/vacuum-micromouse/</a></p>
-<figure><img src='L14_files/f7031846546e.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/f7031846546e.png' alt='Photo: a palm-sized micromouse maze-solving robot built on a red oval circuit board, with two black drive wheels on DC motors, a large square microcontroller chip, a small green gyroscope breakout board, and pairs of infrared sensors angled outward at the front. A round white disc with a black patterned ring sits on top above the wheels. Together these show the IR sensors, gyroscope, encoders, motors and microcontroller listed on the slide packed into one compact robot.' loading='lazy'></figure>
 
 </section>
 <section id='s43' aria-labelledby='h43'>
@@ -576,7 +576,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s44' aria-labelledby='h44'>
 <h2 id='h44'><span class='num'>44.</span> Wall Following – State Machine</h2>
-<figure><img src='L14_files/bbabf95083b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L14_files/bbabf95083b2.svg' alt='State diagram of a maze robot. From power on, State 0 (Idle/Calibrate: stopped, zero IMU, init SLAM) goes to State 1 (Search Forward: v equals v sub search, omega equals K sub p times d sub ref minus d sub side) on pushbutton with IMU ready. After one cell of encoder distance, State 4 (SLAM and flood-fill) chooses: forward back to State 1; left/right to State 2, a 90° gyro pivot, omega equals K sub t times theta sub target minus theta sub gyro, returning when heading error is near zero; dead end to State 3, a saturated 180° U-turn, returning at 180°; or center reached to State 5 (Goal Reached: optimize diagonal path). A second button starts State 6, Speed Sprint at v max, alternating with State 7, High-G Curve with vacuum fan, when distance error falls below braking distance. Finish line or collision triggers State 8, Hard Deceleration, returning to State 0 once stopped.' loading='lazy'></figure>
 
 </section>
 <section id='s45' aria-labelledby='h45'>

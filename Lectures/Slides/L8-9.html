@@ -167,7 +167,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s14' aria-labelledby='h14'>
 <h2 id='h14'><span class='num'>14.</span> FFT Code</h2>
-<figure><img src='L8-9_files/88108b78b3f6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/88108b78b3f6.svg' alt='Block diagram of the dual-core TI C2000 DMA system. Each CPU has its own DMA controller with six channels. Trigger sources include ADC interrupts, SDFM flags, ePWM SOCA/SOCB, McBSP and SPI events, XINT inputs and CPU timers, chosen through DMACHSRCSEL registers. Separate DMA buses give each DMA a data path to ADC results, the global shared and message RAMs, McBSP, SPI, SDFM, ePWM and EMIF, alongside each CPU&#x27;s own bus. DMA channel interrupts one through six go to each CPU&#x27;s PIE.' loading='lazy'></figure>
 
 </section>
 <section id='s15' aria-labelledby='h15'>
@@ -208,12 +208,12 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s17' aria-labelledby='h17'>
 <h2 id='h17'><span class='num'>17.</span> FFT Code – Ping Pong Buffer</h2>
-<figure><img src='L8-9_files/208b1399a079.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/208b1399a079.svg' alt='Diagram: the single-buffer scheme that a ping-pong buffer improves on, shown as two phases. In both, an analog voltage feeds the ADC, then the DMA controller, then one data buffer. In phase one (write), the DMA controller fills the buffer and no data processing can occur. In phase two (processing), the full buffer is processed while the DMA controller waits, so sampling and processing cannot overlap.' loading='lazy'></figure>
 <details><summary>Speaker notes</summary><p>All shadow registers are copied to active registers.</p></details>
 </section>
 <section id='s18' aria-labelledby='h18'>
 <h2 id='h18'><span class='num'>18.</span> FFT Code – Ping Pong Buffer</h2>
-<figure><img src='L8-9_files/9655ffb21847.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/9655ffb21847.svg' alt='Three-stage ping-pong buffering sequence: analog voltage feeds an ADC, whose samples go through a DMA controller into one of two buffers, Ping or Pong. Initially, DMA fills the Ping buffer while Pong is empty. Next, Ping is full and handed off for data processing while DMA writes to Pong. Then Pong is ready for processing while DMA writes to Ping again. The roles keep alternating, so sampling continues uninterrupted while the CPU processes the other buffer.' loading='lazy'></figure>
 <p>If this is not animated, I did not have the time to create it.</p>
 <details><summary>Speaker notes</summary><p>All shadow registers are copied to active registers.</p></details>
 </section>
@@ -443,22 +443,22 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s34' aria-labelledby='h34'>
 <h2 id='h34'><span class='num'>34.</span> FIR Filter – Nyquist frequency</h2>
-<figure><img src='L8-9_files/166e5f831577.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/166e5f831577.svg' alt='Three stacked panels illustrating aliasing. Top: an original sine wave of about four cycles. Middle: the same wave sampled at 1 times f sub 0, once per cycle, so every sample lands at the same point (a rising zero crossing) and all samples have the same value. Bottom: the reconstructed signal is a flat horizontal line, showing that sampling at the signal&#x27;s own frequency loses the oscillation entirely.' loading='lazy'></figure>
 
 </section>
 <section id='s35' aria-labelledby='h35'>
 <h2 id='h35'><span class='num'>35.</span> FIR Filter – Nyquist frequency</h2>
-<figure><img src='L8-9_files/b06ce2f732ef.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/b06ce2f732ef.svg' alt='Three stacked traces illustrating aliasing. Top: original sine wave, about four cycles. Middle: the same sine sampled at 1.5 times f sub 0, below the Nyquist rate of 2 times f sub 0, giving only seven samples (red markers) joined by straight lines. Bottom: the reconstructed signal from those samples, a zigzag with only two cycles over the same span, so it appears at half the original frequency (0.5 times f sub 0), a false alias rather than the true signal.' loading='lazy'></figure>
 
 </section>
 <section id='s36' aria-labelledby='h36'>
 <h2 id='h36'><span class='num'>36.</span> FIR Filter – Nyquist frequency</h2>
-<figure><img src='L8-9_files/2bd36665379e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/2bd36665379e.svg' alt='Three stacked plots illustrating sampling at the Nyquist rate. Top, &quot;Original Signal&quot;: a sine wave of frequency f sub 0 over about four cycles. Middle, &quot;Signal sampled at 2 times f sub 0&quot;: the same sine with two samples per cycle, one at each peak and one at each trough, joined by straight lines. Bottom, &quot;Reconstructed Signal&quot;: a triangle wave with the same frequency and amplitude, showing that the frequency is preserved but the smooth shape is only roughly approximated.' loading='lazy'></figure>
 
 </section>
 <section id='s37' aria-labelledby='h37'>
 <h2 id='h37'><span class='num'>37.</span> FIR Filter – Nyquist frequency</h2>
-<figure><img src='L8-9_files/32f368035ddb.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/32f368035ddb.svg' alt='Three stacked plots illustrating sampling well above the Nyquist rate. Top: original sinusoid of frequency f sub 0, about four cycles. Middle: the same sinusoid sampled at 8 times f sub 0, with eight sample points per cycle marked on the curve. Bottom: the reconstructed signal, formed by connecting the samples with straight lines, is slightly angular but closely matches the original&#x27;s shape and frequency, showing that sampling far above twice f sub 0 preserves the signal.' loading='lazy'></figure>
 
 </section>
 <section id='s38' aria-labelledby='h38'>
@@ -481,7 +481,7 @@ nav ol { columns: 2 18rem; }
 <p>Wn = 0.2;</p>
 <p>b = fir1(Order, Wn, &#x27;low&#x27;);</p>
 <p>freqz(b,1,512)</p>
-<figure><img src='L8-9_files/9b942779ec29.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/9b942779ec29.svg' alt='Plot: freqz frequency response of the 21st-order FIR low-pass filter, with normalized frequency from 0 to 1 times pi radians per sample. Magnitude stays near 0 dB up to about 0.1, is about minus 6 dB at the 0.2 cutoff, and falls steeply to a null near 0.37. Stopband sidelobes stay near minus 55 to minus 60 dB. Phase decreases linearly from 0 to about minus 700 degrees, showing linear phase in the passband, then jumps about 180 degrees at each stopband null, forming a sawtooth.' loading='lazy'></figure>
 
 </section>
 <section id='s41' aria-labelledby='h41'>
@@ -491,7 +491,7 @@ nav ol { columns: 2 18rem; }
 <p>Wn = 0.3;</p>
 <p>b = fir1(Order, Wn, &#x27;high&#x27;);</p>
 <p>freqz(b,1,512)</p>
-<figure><img src='L8-9_files/7a1db389306e.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/7a1db389306e.svg' alt='Plot: freqz magnitude and phase response of the 22nd-order high-pass FIR filter versus normalized frequency, 0 to 1 times pi radians per sample. Magnitude: a stopband below about 0.15 sits near minus 50 to minus 60 dB, with nulls near 0.05 and 0.145. The response rises steeply through about minus 6 dB at the 0.3 cutoff and is flat at 0 dB from about 0.4 to 1. Phase: a straight line falling from 0 to about minus 1600 degrees, showing linear phase, with small upward jumps only at the stopband nulls.' loading='lazy'></figure>
 
 </section>
 <section id='s42' aria-labelledby='h42'>
@@ -501,12 +501,12 @@ nav ol { columns: 2 18rem; }
 <p>Wn = [0.35 0.65];</p>
 <p>b = fir1(Order, Wn , ‘bandpass&#x27;);</p>
 <p>freqz(b,1,512)</p>
-<figure><img src='L8-9_files/4a4f9b544006.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/4a4f9b544006.svg' alt='Plot: freqz output for the 21st-order band-pass FIR filter. Magnitude in dB versus normalized frequency, 0 to 1 times pi: a rounded passband peaking at 0 dB at 0.5, falling to about minus 40 dB by 0.2 and 0.8, with stopband sidelobes near minus 45 to minus 60 dB. Phase falls linearly from 0 to about minus 1150 degrees, with small upward jumps at the magnitude nulls near 0.05, 0.16, 0.82 and 0.91, confirming linear phase.' loading='lazy'></figure>
 
 </section>
 <section id='s43' aria-labelledby='h43'>
 <h2 id='h43'><span class='num'>43.</span> FIR Code</h2>
-<figure><img src='L8-9_files/981208637826.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L8-9_files/981208637826.svg' alt='Plots: an FIR filter demo in four rows, with the time-domain signal (amplitude versus time, 0 to 150 s) on the left and the spectrum (normalized frequency, 0 to 1 times pi rad per sample) on the right. The input mixes tones at 0.1, 0.25, 0.5 and 0.8 pi. The low-pass filter (passband 0 to 0.2) keeps 0.1 and gives a smooth wave. The high-pass filter (0.3 to 1) keeps 0.5 and 0.8. The band-pass filter (0.35 to 0.65) keeps only 0.5, a steady sinusoid. Each output starts with a brief transient.' loading='lazy'></figure>
 
 </section>
 <section id='s44' aria-labelledby='h44'>

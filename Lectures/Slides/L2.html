@@ -27,7 +27,7 @@ nav ol { columns: 2 18rem; }
 <section id='s1' aria-labelledby='h1'>
 <h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston</h2>
 <p>Monday, January 26th, 2026</p>
-<figure><img src='L2_files/0564a09f2221.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L2_files/0564a09f2221.png' alt='Cartoon: a person bundled in a puffy coat, scarf, and pom-pom hat stands frozen in a block of ice beside a small wheeled robot with googly eyes, also encased in ice, a lighthearted nod to the frigid late-January weather.' loading='lazy'></figure>
 <details><summary>Speaker notes</summary><p>Well I hope that most of your classes have been cancled or are on Zoom</p><p>Did all of you get my Canvas email or do I need to it through email? Or announcements?</p></details>
 </section>
 <section id='s2' aria-labelledby='h2'>
@@ -344,7 +344,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s23' aria-labelledby='h23'>
 <h2 id='h23'><span class='num'>23.</span> What is a timer?</h2>
-<figure><img src='L2_files/b405c214a0f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L2_files/b405c214a0f9.svg' alt='Block diagram: TI CPU-Timer. An AND gate passes SYSCLKOUT to a 16-bit prescale counter only while TCR.4, the timer stop bit, is 0. Each time the prescaler borrows (underflows), it reloads from the 16-bit divide-down register TDDRH:TDDR and decrements the 32-bit counter TIMH:TIM. When that counter borrows, it asserts the interrupt TINT (active low) and reloads from the 32-bit period register PRDH:PRD. OR gates also force both reloads on Reset or Timer reload.' loading='lazy'></figure>
 <p>OR</p>
 <p>AND</p>
 <p>NOT</p>
@@ -379,7 +379,7 @@ nav ol { columns: 2 18rem; }
 </section>
 <section id='s26' aria-labelledby='h26'>
 <h2 id='h26'><span class='num'>26.</span> What is a timer?</h2>
-<figure><img src='L2_files/dc7e7f506877.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L2_files/dc7e7f506877.svg' alt='Block diagram of how the three CPU timers interrupt the 28x CPU. TIMER0&#x27;s interrupt, TINT0, goes through the PIE (peripheral interrupt expansion) block, which feeds CPU interrupt lines INT1 through INT12. TIMER1&#x27;s TINT1 connects directly to INT13, and TIMER2&#x27;s TINT2 connects directly to INT14. Notes: the timer registers sit on the C28x memory bus, and the timers are synchronized to SYSCLKOUT.' loading='lazy'></figure>
 <details><summary>Speaker notes</summary><p>Timer 0</p><p>TINT0</p><p>INT1–INT12 via PIE</p><p>Timer 1</p><p>TINT1</p><p>INT13 (direct)</p><p>Timer 2</p><p>TINT2</p><p>INT14 (direct)</p><p>The Peripheral Interrupt Expansion (PIE) is an interrupt router.</p><p>It:</p><p>Takes many peripheral interrupts</p><p>Maps them to CPU interrupt vectors</p><p>Timer 0 is routed through the PIE because:</p><p>It is commonly used for application-level tasks</p><p>It supports prioritization and masking</p><p>Software Consequence</p><p>To use Timer 0:</p><p>Enable the timer interrupt</p><p>Enable the PIE group</p><p>Enable the CPU interrupt</p><p>Acknowledge the PIE inside the ISR</p><p>This makes Timer 0 ideal for:</p><p>Control loops</p><p>Scheduling</p><p>RTOS ticks</p><p>Timers 1 and 2 Bypass the PIE</p><p>Timer 1 → INT13Timer 2 → INT14</p><p>These are dedicated CPU interrupts.</p><p>Why?</p><p>They are intended for:</p><p>High-priority system tasks</p><p>Real-time services</p><p>Deterministic timing</p><p>They:</p><p>Have lower latency</p><p>Are simpler to configure</p><p>Are harder to misuse accidentally</p></details>
 </section>
 <section id='s27' aria-labelledby='h27'>

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
   "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1">
+<svg xmlns:xlink="http://www.w3.org/1999/xlink" width="720pt" height="720pt" viewBox="0 0 720 720" xmlns="http://www.w3.org/2000/svg" version="1.1" role="img" aria-labelledby="fig-title fig-desc"><title id="fig-title">Monte Carlo Ekf Lie</title><desc id="fig-desc">Plot: Robot pose uncertainty after moving from the start at (0, 0) along a nominal update arrow to about (3.5, 3.5), axes are global x and y position. Monte Carlo particles form a curved banana-shaped arc, running from about (−5, 2) over the top near y = 5 and down to about (5, −4). The red EKF Cartesian 2-sigma ellipse is a straight tilted ellipse that misses much of the arc. The green Lie group SE(2) 2-sigma bound bends with the particles and fits the dense region better.</desc>
  <metadata>
   <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
    <cc:Work>
