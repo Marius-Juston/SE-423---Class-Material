@@ -96,6 +96,7 @@ jobs:
             Lectures/Slides/figures.toml
             tools/sync_deck_figures.py
             tools/a11y/pptx_to_html.py
+            tools/a11y/tag_slide_pdf.py
 
       - name: List all changed files
         env:
@@ -132,7 +133,7 @@ jobs:
             fi
             # Decks that embed a changed figure source must be re-exported too
             # (every deck when the manifest or the sync tool itself changed).
-            if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py|tools/a11y/pptx_to_html\.py'; then
+            if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py|tools/a11y/(pptx_to_html|tag_slide_pdf)\.py'; then
               PPTX="$PPTX $(find Lectures/Slides -name 'L*.pptx' | tr '\n' ' ')"
             else
               PPTX="$PPTX $(uv run --quiet --locked tools/sync_deck_figures.py decks $CHANGED)"
