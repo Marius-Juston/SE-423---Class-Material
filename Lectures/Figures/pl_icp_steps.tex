@@ -90,16 +90,16 @@
 \draw[black!40!white, ->, thick, dashed] (axis cs:2.5,4.5) -- (axis cs:3,2) node[midway, sloped, above] {P2P Error};
 
 % Point-to-Plane Error (Projection onto Normal)
-\draw[green!70!black, ->, ultra thick] (axis cs:2.5,4.5) -- (axis cs:2.5,2);
-\draw[green!70!black, thick] (axis cs:2.5,2.2) -- (axis cs:2.7,2.2) -- (axis cs:2.7,2); % Right angle square
-\node[green!70!black, anchor=west] at (axis cs:2.5, 3.25) {PL-ICP Error: \(((p_i - q_i) \cdot n_i)\)};
+\draw[black, ->, ultra thick] (axis cs:2.5,4.5) -- (axis cs:2.5,2);
+\draw[black, thick] (axis cs:2.5,2.2) -- (axis cs:2.7,2.2) -- (axis cs:2.7,2); % Right angle square
+\node[black, anchor=west] at (axis cs:2.5, 3.25) {PL-ICP Error: \(((p_i - q_i) \cdot n_i)\)};
 
 % Sliding visualization
-\draw[cyan, <->, thick] (axis cs:2, 2.1) -- (axis cs:4, 2.1) node[anchor=south west, text=cyan, font=\small] {Zero-cost "sliding" zone};
+\draw[cyan!60!black, <->, thick] (axis cs:2, 2.1) -- (axis cs:4, 2.1) node[anchor=south west, text=cyan!60!black, font=\small] {Zero-cost "sliding" zone};
 
 \end{axis}
 \end{tikzpicture}
-\caption{Step 2: The core difference. Standard ICP penalizes the direct distance to \(q_i\) (dashed black line). PL-ICP only penalizes the perpendicular distance to the tangent plane (solid green line), allowing points to freely slide horizontally, reducing local minima.}
+\caption{Step 2: The core difference. Standard ICP penalizes the direct distance to \(q_i\) (dashed black line). PL-ICP only penalizes the perpendicular distance to the tangent plane (solid black line), allowing points to freely slide horizontally, reducing local minima.}
 \label{fig:error_metric}
 \end{figure}
 
@@ -140,8 +140,8 @@
 \draw[orange, ->, thick] (axis cs:3.5, 3.5) -- (axis cs:4.5, 2) node[midway, right] {+\(\theta \times p_i\)};
 
 % Final Transformed Point
-\addplot[mark=*, green!70!black, only marks, mark size=3pt] coordinates {(4.5, 2)} node[anchor=north west] {\(p_i'\)};
-\draw[green!70!black, ->, ultra thick, bend right=20] (axis cs:2.5, 4.5) to node[midway, left] {Linearized Transform} (axis cs:4.5, 2);
+\addplot[mark=*, black, only marks, mark size=3pt] coordinates {(4.5, 2)} node[anchor=north west] {\(p_i'\)};
+\draw[black, ->, ultra thick, bend right=20] (axis cs:2.5, 4.5) to node[midway, left] {Linearized Transform} (axis cs:4.5, 2);
 
 \node[font=\small, anchor=west] at (axis cs: -0.5, 5.5) {\(E = \sum_i \left( (p_i + \theta \times p_i + t - q_i) \cdot n_i \right)^2\)};
 
@@ -181,11 +181,11 @@
 
 \node[font=\small, anchor=north] at (axis cs:3, 1) {System solved using standard Least Squares (e.g., Cholesky or SVD of A)};
 \node[font=\small, text=blue, anchor=south] at (axis cs:1, 4) {Geometry matrix \(A\)};
-\node[font=\small, text=green!70!black, anchor=south] at (axis cs:3, 4) {State \(x\)};
+\node[font=\small, text=black, anchor=south] at (axis cs:3, 4) {State \(x\)};
 \node[font=\small, text=red, anchor=south] at (axis cs:5, 4) {Error \(b\)};
 
 \draw[->, blue, thick] (axis cs:1, 3.8) -- (axis cs:1.8, 3.2);
-\draw[->, green!70!black, thick] (axis cs:3, 3.8) -- (axis cs:3, 3.2);
+\draw[->, black, thick] (axis cs:3, 3.8) -- (axis cs:3, 3.2);
 \draw[->, red, thick] (axis cs:5, 3.8) -- (axis cs:4.2, 3.2);
 
 \end{axis}
@@ -222,9 +222,9 @@
 % Original Source P (very faint)
 \addplot[blue!20!white, thick, smooth, mark=none] coordinates {(0,3) (0.5,3.5) (2.5,4.5) (4.5,4) (5,3.7)};
 
-% Transformed Source P' (cyan, snapped to tangents but NOT exactly on q_i)
-\addplot[mark=*, cyan, only marks, mark size=2.5pt] coordinates {(0.5,0.5) (2.5,2) (4.5,1.625)} node[anchor=south] at (2.5,2) {\(P_{aligned}\)};
-\addplot[cyan, ultra thick, smooth, mark=none] coordinates {(0,0) (0.5,0.5) (2.5,2) (4.5,1.625) (5,1.5)};
+% Transformed Source P' (cyan!60!black, snapped to tangents but NOT exactly on q_i)
+\addplot[mark=*, cyan!60!black, only marks, mark size=2.5pt] coordinates {(0.5,0.5) (2.5,2) (4.5,1.625)} node[anchor=south] at (2.5,2) {\(P_{aligned}\)};
+\addplot[cyan!60!black, ultra thick, smooth, mark=none] coordinates {(0,0) (0.5,0.5) (2.5,2) (4.5,1.625) (5,1.5)};
 
 % Emphasize the slide
 \draw[orange, ->, thick, dotted] (axis cs:1,1) -- (axis cs:0.5,0.5); 
@@ -235,7 +235,7 @@
 
 \end{axis}
 \end{tikzpicture}
-\caption{Step 5: Visualizing the final aligned point cloud (cyan). Because the metric minimized point-to-plane distance, the cyan points map exactly onto the mathematical surfaces defined by Q's normals, but they do not need to correspond exactly to the discrete red points (\(q_i\)). This is the "sliding" characteristic of PL-ICP.}
+\caption{Step 5: Visualizing the final aligned point cloud (cyan!60!black). Because the metric minimized point-to-plane distance, the cyan!60!black points map exactly onto the mathematical surfaces defined by Q's normals, but they do not need to correspond exactly to the discrete red points (\(q_i\)). This is the "sliding" characteristic of PL-ICP.}
 \label{fig:final}
 \end{figure}
 

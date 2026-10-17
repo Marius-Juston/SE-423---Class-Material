@@ -114,8 +114,8 @@
 \draw[blue!30!white, thin, dashed] (axis cs:-0.5,-0.666) -- (axis cs:0.5,-0.666) -- (axis cs:0, 1.333) -- cycle;
 
 % Orthogonal Singular Vectors U (illustrative, not precise for these specific points)
-\draw[green!70!black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0, 1.5) node[anchor=south] {\(u_1\) (\(\sigma_1\))};
-\draw[green!70!black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0.8, 0) node[anchor=west] {\(u_2\) (\(\sigma_2\))};
+\draw[black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0, 1.5) node[anchor=south] {\(u_1\) (\(\sigma_1\))};
+\draw[black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0.8, 0) node[anchor=west] {\(u_2\) (\(\sigma_2\))};
 
 \end{axis}
 \end{tikzpicture}
@@ -138,8 +138,8 @@
 \draw[red!30!white, thin, dashed] (axis cs:0.66, -0.5) -- (axis cs:0.66, 0.5) -- (axis cs:-1.33, 0) -- cycle;
 
 % Orthogonal Singular Vectors V (illustrative, aligned relative to Q' similarly to U for P', but rotated)
-\draw[green!70!black, ->, ultra thick] (axis cs:0,0) -- (axis cs:-1.8, 0) node[anchor=south] {\(v_1\) (\(\sigma_1\))};
-\draw[green!70!black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0, -0.8) node[anchor=west] {\(v_2\) (\(\sigma_2\))};
+\draw[black, ->, ultra thick] (axis cs:0,0) -- (axis cs:-1.8, 0) node[anchor=south] {\(v_1\) (\(\sigma_1\))};
+\draw[black, ->, ultra thick] (axis cs:0,0) -- (axis cs:0, -0.8) node[anchor=west] {\(v_2\) (\(\sigma_2\))};
 
 \end{axis}
 \end{tikzpicture}
@@ -168,13 +168,13 @@
 \draw[blue!30!white, thin, dashed] (axis cs:-0.5,-0.666) -- (axis cs:0.5,-0.666) -- (axis cs:0, 1.333) -- cycle;
 
 % Show Rotation Action (Conceptually align U with V from previous step)
-\draw[->, cyan, ultra thick, bend left=45] (axis cs: -0.2, 1.4) to node[midway, above left, cyan] {R (on centered)} (axis cs: -1.4, 0.2);
+\draw[->, cyan!60!black, ultra thick, bend left=45] (axis cs: -0.2, 1.4) to node[midway, above left, cyan!60!black] {R (on centered)} (axis cs: -1.4, 0.2);
 
-% Rotated Centered P'' = R(P') (show new position/orientation in different color, e.g., cyan)
+% Rotated Centered P'' = R(P') (show new position/orientation in different color, e.g., cyan!60!black)
 % Apply 90deg CCW rotation to centered P': (-0.5,-0.666)->(0.666,-0.5), (0.5,-0.666)->(0.666,0.5), (0,1.333)->(-1.333,0)
-\addplot[mark=*, cyan, only marks, mark size=2pt] coordinates {(0.666,-0.5) (0.666,0.5) (-1.333,0)};
-\draw[cyan, thick] (axis cs:0.666,-0.5) -- (axis cs:0.666,0.5) -- (axis cs:-1.333,0) -- cycle;
-\node[cyan, font=\large] at (axis cs: -0.8, -0.4) {P'' = R(P')};
+\addplot[mark=*, cyan!60!black, only marks, mark size=2pt] coordinates {(0.666,-0.5) (0.666,0.5) (-1.333,0)};
+\draw[cyan!60!black, thick] (axis cs:0.666,-0.5) -- (axis cs:0.666,0.5) -- (axis cs:-1.333,0) -- cycle;
+\node[cyan!60!black, font=\large] at (axis cs: -0.8, -0.4) {P'' = R(P')};
 
 % Target Centered Q' (faint red dashed, shows perfect shape alignment)
 \addplot[mark=*, red!20!white, only marks, mark size=1.5pt] coordinates {(0.66, -0.5) (0.66, 0.5) (-1.33, 0)};
@@ -217,21 +217,21 @@
 \node[red] at (axis cs:3.3, 4) {\(\bar{q}\)};
 
 % Translation vector t = q_bar - R(p_bar) (draw vector from R(p_bar) to q_bar)
-\draw[green!70!black, ->, ultra thick] (axis cs:-0.666, 1.5) -- (axis cs:3, 4) node[midway, sloped, below, font=\small] {\(t = \bar{q} - R\bar{p}\)};
-\node[green!70!black] at (axis cs: 1, 3) {t};
+\draw[black, ->, ultra thick] (axis cs:-0.666, 1.5) -- (axis cs:3, 4) node[midway, sloped, below, font=\small] {\(t = \bar{q} - R\bar{p}\)};
+\node[black] at (axis cs: 1, 3) {t};
 
 % --- Conceptual Final Perfect Alignment (Show result) ---
-% Shift rotated, centered shape P'' (Fig 4, cyan) by q_bar to q_bar position.
-\addplot[mark=*, cyan, only marks, mark size=2.5pt, fill=green!30!cyan] coordinates {(3.666,3.5) (3.666,4.5) (1.666,4)};
-\draw[cyan, thick, fill=green!10!cyan, fill opacity=0.5] (axis cs:3.666,3.5) -- (axis cs:3.666,4.5) -- (axis cs:1.666,4) -- cycle;
-\node[cyan, font=\large] at (axis cs: 3, 5) {\(P_{aligned} = R(P-\bar{p}) + \bar{q}\)};
+% Shift rotated, centered shape P'' (Fig 4, cyan!60!black) by q_bar to q_bar position.
+\addplot[mark=*, cyan!60!black, only marks, mark size=2.5pt, fill=cyan!60!black] coordinates {(3.666,3.5) (3.666,4.5) (1.666,4)};
+\draw[cyan!60!black, thick, fill=cyan!60!black, fill opacity=0.5] (axis cs:3.666,3.5) -- (axis cs:3.666,4.5) -- (axis cs:1.666,4) -- cycle;
+\node[cyan!60!black, font=\large] at (axis cs: 3, 5) {\(P_{aligned} = R(P-\bar{p}) + \bar{q}\)};
 
 % original Q for comparison (faint dashed red)
 \draw[red!20!white, thin, dashed] (axis cs:3.66,3.5) -- (axis cs:3.66,4.5) -- (axis cs:1.66,4) -- cycle;
 
 \end{axis}
 \end{tikzpicture}
-\caption{Visualizing the Step 4 translation vector calculation t = \(\bar{q} - R\bar{p}\). The vector t shifts the rotated source centroid \(R\bar{p}\) directly to the target centroid \(\bar{q}\). Conceptual perfect shape alignment (cyan filled triangle) is shown centered on \(\bar{q}\), aligning with the original Q shape.}
+\caption{Visualizing the Step 4 translation vector calculation t = \(\bar{q} - R\bar{p}\). The vector t shifts the rotated source centroid \(R\bar{p}\) directly to the target centroid \(\bar{q}\). Conceptual perfect shape alignment (cyan!60!black filled triangle) is shown centered on \(\bar{q}\), aligning with the original Q shape.}
 \label{fig:translation}
 \end{figure}
 
