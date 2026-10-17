@@ -32,9 +32,11 @@
       background: "var(--bg-1)",
       border: "1px solid var(--line)",
       borderRadius: 8
-    } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12, minHeight: 28 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6, alignItems: "center" } }, /* @__PURE__ */ React.createElement(
+    } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, minHeight: 28 } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6, alignItems: "center" } }, /* @__PURE__ */ React.createElement(
       "button",
       {
+        type: "button",
+        "aria-label": "Previous stage",
         onClick: () => setStageIdx(Math.max(0, stageIdx - 1)),
         style: btnStyle
       },
@@ -42,6 +44,8 @@
     ), /* @__PURE__ */ React.createElement(
       "button",
       {
+        type: "button",
+        "aria-label": "Next stage",
         onClick: () => setStageIdx(Math.min(stages.length - 1, stageIdx + 1)),
         style: btnStyle
       },
@@ -52,7 +56,8 @@
       color: "var(--text-3)",
       minWidth: 70
     } }, "stage ", stageIdx + 1, " / ", stages.length), /* @__PURE__ */ React.createElement("div", { style: {
-      flex: 1,
+      flex: "1 1 200px",
+      minWidth: 0,
       display: "flex",
       gap: 4,
       overflowX: "auto",
@@ -83,7 +88,7 @@
         " \xB7 ",
         s.id
       );
-    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": playing ? "Pause" : "Play", onClick: () => setPlaying((p) => !p), style: {
+    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": playing ? "Pause" : "Play", onClick: () => setPlaying((p) => !p), style: {
       ...btnStyle,
       width: 36,
       background: playing ? "var(--cyan)" : "var(--bg-3)",
@@ -105,7 +110,8 @@
         value: step,
         onChange: (e) => setStep(parseInt(e.target.value)),
         style: {
-          flex: 1,
+          flex: "1 1 160px",
+          minWidth: 0,
           accentColor: "oklch(0.80 0.13 220)",
           height: 6
         }

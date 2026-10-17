@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 31 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -24,8 +25,8 @@ credit if you did not complete the assignment. Make sure to ask questions if you
 <h3 class='likesectionHead' id='exercise-1-temperature-'> <a id='x1-1000'></a>Exercise 1: Temperature </h3>
 <p id='exercise-1-temperature'><a id='Q1-1-2'></a>
 <!-- l. 35 --></p><p class='noindent'>Read through at least the first two sections at the site <a class='url' href='http://www.ni.com/gettingstarted/labviewbasics'><span class='rm-lmtt-10x-x-109'>http://www.ni.com/gettingstarted/labviewbasics</span></a> <span class='rm-lmri-10x-x-109'>LABVIEW
-Environment Basics and Dataflow Programming Basics </span>and watch at least the first two videos and the tenth video at the
                                                                                                        
+Environment Basics and Dataflow Programming Basics </span>and watch at least the first two videos and the tenth video at the
 site <a class='url' href='https://www.youtube.com/playlist?list=PLB968815D7BB78F9C'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/playlist?list=PLB968815D7BB78F9C</span></a>
 </p><!-- l. 37 --><p class='indent'>   Reproduce (does not have to be exactly the same) the Fahrenheit to Celsius LABVIEW program that <span class='rm-lmbx-10x-x-109'>uses a loop
 structure </span>to continuously run until a Stop button is pressed. Add some bells and whistles if you would like.
@@ -99,8 +100,8 @@ the prior polling implementation.' height='258' src='Homeworks/Figures/LabVIEW1/
    
 <h3 class='likesectionHead' id='exercise-4-multidimensional-array-'>  <a id='x1-4000'></a>Exercise 4: Multi-dimensional array </h3>
 <p id='exercise-4-multidimensional-array'><a id='Q1-1-11'></a>
-<!-- l. 96 --></p><p class='noindent'>Read through the Array and Clusters Tutorial at <a class='url' href='https://www.youtube.com/watch?v=rzOT1zXBDiE'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=rzOT1zXBDiE</span></a>
-and <a class='url' href='https://www.youtube.com/watch?v=_GlQ1riWjPc&amp;list=PLB968815D7BB78F9C'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=_GlQ1riWjPc&amp;list=PLB968815D7BB78F9C</span></a>. Then reproduce
+<!-- l. 96 --></p><p class='noindent'>Read through the Array and Clusters Tutorial at <a class='url' href='https://www.youtube.com/watch?v=rzOT1zXBDiE'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=rzOT1zXBDiE</span></a> and
+<a class='url' href='https://www.youtube.com/watch?v=_GlQ1riWjPc&amp;list=PLB968815D7BB78F9C'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=_GlQ1riWjPc&amp;list=PLB968815D7BB78F9C</span></a>. Then reproduce
 the following exercises. See how a “for loop” can create a multidimensional array and use the
 Index Array to pull out a single row, a single column, and a single element. Sine is found under
 Mathematics<!-- l. 97 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Elementary<!-- l. 97 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Trig
@@ -111,7 +112,7 @@ Mathematics<!-- l. 97 --><math display='inline'><mrow> <mo class='MathClass-rel'
                                                                                                        
                                                                                                        
 <!-- l. 106 --><p class='noindent' id='building-a-2d-array-with-nested-for-loops'><img alt='LabVIEW block diagram building a 2-D array with nested For loops that fill each element with a sine value, then
-using Index Array nodes to extract a single row, a single column, and a single element from the resulting matrix.' height='693' src='Homeworks/Figures/LabVIEW1/Picture4.png' width='542' /> <a id='x1-4001r4'></a>
+using Index Array nodes to extract a single row, a single column, and a single element from the resulting matrix.' height='549' src='Homeworks/Figures/LabVIEW1/Picture4.png' width='429' /> <a id='x1-4001r4'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Building a 2-D array with nested For loops                                                       </span></figcaption><!-- tex4ht:label?: x1-4001r4  -->
                                                                                                        

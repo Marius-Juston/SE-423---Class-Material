@@ -15,9 +15,31 @@ h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(-
 figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
 table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
 details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
-math[display=block] { margin:.5rem 0; max-width:100%; }
+math[display=block] { margin:.5rem 0; }
+/* Reflow (WCAG 1.4.10, 320 px): long words and URLs wrap; tables and equations,
+   which cannot reflow, scroll sideways in their own box. */
+body { overflow-wrap:break-word; }
+.scroll-x, math[display=block] { overflow-x:auto; overflow-y:hidden; max-width:100%; }
+.math-inline { display:inline-block; vertical-align:middle; }
 nav ol { columns: 2 18rem; }
-</style></head>
+</style><script>
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.scroll-x, math[display=block]');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      if (el.tagName !== 'math' && !el.classList.contains('math-inline')) {
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Table (scrolls sideways)');
+      }
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
+</script></head>
 <body><a class="skip" href="#main">Skip to the slides</a>
 <header><h1>L1: SE 423: Introduction to MechatronicsLecture 1: IntroductionMarius Juston</h1>
 <p>Text version of the lecture slides, one section per slide.

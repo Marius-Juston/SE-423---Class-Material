@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 32 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -24,8 +25,8 @@
 <p id='exercise-1-state-machine-part-3'><a id='Q1-1-2'></a>
 <!-- l. 36 --></p><p class='noindent'>For this assignment, I would like you to expand on the state machine and pseudocode of HW #3 and HW #4. I would like
 you to think about the state transition diagram for collecting a brightly colored blue golf ball or an orange golf ball. The
-vision code you will learn will easily find these two bright colors. In Lab 7, you will also program the robot to follow these
                                                                                                        
+vision code you will learn will easily find these two bright colors. In Lab 7, you will also program the robot to follow these
 bright colors. So when the robot sees one of the golf balls on the ground, it will be able to drive towards it. One big issue is
 that you have to drive the robot over the golf ball to collect it. In part of your state machine, the robot’s camera will not
 detect the bright color. How do you handle this? Also, you will want to record the golf ball’s X and Y positions.

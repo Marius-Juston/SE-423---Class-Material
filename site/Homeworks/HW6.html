@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -25,12 +26,11 @@
 the code has been given to you. Your job is either to fill in the blank with some code or add some comments indicating
 that you understand the algorithm. I suggest you perform this homework exercise in the lab. The lab PCs have the correct
 version of Microsoft Visual Studio 2022 installed. All the code and project files you need for this problem are posted at the
-course website <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip</span></a>. Download this zip file and unzip it into a
                                                                                                        
+course website <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/astarhw6.zip</span></a>. Download this zip file and unzip it into a
 folder.
 </p><!-- l. 35 --><p class='indent'>   Perform the following:
-     
-</p>
+</p>     
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-1002x1'>In this project’s directory, you will find the executable file “<span class='obeylines-h'><code class='verb'>astarDemo.exe</code></span>.” This is given to you to see
 how the program should run when you fill in the required code. Run “astarDemo.exe” and play around with
@@ -63,9 +63,9 @@ not just the error.</li></ol>
 <!-- l. 46 --></p><p class='noindent'>The goal of this problem is to give you experience with the Kalman filter and to help you understand how it is helping
 with the robot’s navigation. Given a set of actual data collected during a run of the robot car, your goal is to find a Q and
 R matrix that makes the Kalman filter fuse the dead-reckoning data from the wheel encoders and rate gyro with the
+                                                                                                       
+                                                                                                       
 OptiTrack data. The “ideal” merge of this data is not to track precisely the OptiTrack data. It should definitely be close
-                                                                                                       
-                                                                                                       
 to the OptiTrack data, but filter it so that significant errors are not precisely followed. The OptiTrack’s resolution is
 <!-- l. 46 --><math display='inline'><mo class='MathClass-bin' stretchy='false'>±</mo></math> 2cm,
 and it is possible (but not very often) for the OptiTrack to send incorrect measurements. I purposely added a 1-tile error
@@ -84,9 +84,10 @@ This can be done using the “<span class='obeylines-h'><code class='verb'>load<
 of the MATLAB window.
 </li>
 <li class='enumerate' id='x1-2004x2'>     
-<!-- l. 52 --><p class='noindent'>A Matlab script file that gives you most of what you need for the code for this problem, <span class='obeylines-h'><code class='verb'>KalmanFilterHWProblem.m</code></span>
-located <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/HW6.htm'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/HW6.htm</span></a>. You will need to make two modifications to
-this file: (1) adding the Kalman equations to the large for loop, and (2) assigning values to the <!-- l. 52 --><math display='inline'><mi>Q</mi></math>
+<!-- l. 52 --><p class='noindent'>A  Matlab  script  file  that  gives  you  most  of  what  you  need  for  the  code  for  this  problem,
+<span class='obeylines-h'><code class='verb'>KalmanFilterHWProblem.m</code></span> located <a class='url' href='http://coecsl.ece.illinois.edu/se423/hw/HW6.htm'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/hw/HW6.htm</span></a>. You will need
+to make two modifications to this file: (1) adding the Kalman equations to the large for loop, and (2) assigning
+values to the <!-- l. 52 --><math display='inline'><mi>Q</mi></math>
 and <!-- l. 52 --><math display='inline'><mi>R</mi></math>
 matrices used in the filter.
 </p>     
@@ -185,14 +186,17 @@ pairs that you chose, and somewhere in the plot, the value of the <!-- l. 85 -->
 and <!-- l. 85 --><math display='inline'><mi>R</mi></math>
 matrices.
 </li>
-<li class='itemize'>Three plots showing the zoomed in discontinuity in the OptiTrack data associated with the previous <!-- l. 86 --><math display='inline'><mi>Q</mi></math>
+<li class='itemize'>Three  plots  showing  the  zoomed  in  discontinuity  in  the  OptiTrack  data  associated  with  the  previous
+<!-- l. 86 --><math display='inline'><mi>Q</mi></math>
 and <!-- l. 86 --><math display='inline'><mi>R</mi></math>
 pairs.</li></ul>
    
 <h4 class='subsectionHead' id='kalman-equations'><span class='titlemark'>0.1   </span>   <a id='x1-30000.1'></a>Kalman Equations</h4>
 <!-- l. 90 --><p class='noindent'>For the robot car:
-</p><!-- tex4ht:inline --><!-- l. 98 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='none none none none none none none none none none none' style=''>
-       <mtr><mtd class='align-odd' columnalign='right'><mi>F</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>0</mn></mtd>
+<!-- tex4ht:inline --></p><!-- l. 91 --><math display='block'><mrow>
+<mtable class='gather-star' displaystyle='true' rowlines='none none none none none none none none none none none none' style=''>
+<mtr> 
+<mtd><mi>F</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>0</mn></mtd>
 </mtr>  <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd></mtr> <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                                     </mrow><mo fence='true' form='postfix'>]</mo></mrow><mo class='MathClass-punc' stretchy='false'>,</mo><mi>B</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mi class='loglike'>cos</mi><mo>⁡<!-- FUNCTION APPLICATION --></mo><!-- nolimits --><mo class='MathClass-open' stretchy='false'>(</mo><msub><mrow><mi>𝜃</mi></mrow><mrow><mi>k</mi></mrow></msub><mo class='MathClass-close' stretchy='false'>)</mo><mi mathvariant='normal'>Δ</mi><mi>t</mi> </mtd>
              <mtd class='array-td' columnalign='center'>  <mn>0</mn>  </mtd>
 </mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mi class='loglike'>sin</mi><mo>⁡<!-- FUNCTION APPLICATION --></mo><!-- nolimits --><mo class='MathClass-open' stretchy='false'>(</mo><msub><mrow><mi>𝜃</mi></mrow><mrow><mi>k</mi></mrow></msub><mo class='MathClass-close' stretchy='false'>)</mo><mi mathvariant='normal'>Δ</mi><mi>t</mi> </mtd><mtd class='array-td' columnalign='center'>  <mn>0</mn>  </mtd>
@@ -201,16 +205,22 @@ pairs.</li></ul>
 <mtd class='array-td' columnalign='center'> <mi mathvariant='normal'>Δ</mi><mi>t</mi> </mtd>
 </mtr>    
 <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                         </mrow><mo fence='true' form='postfix'>]</mo></mrow><mo class='MathClass-punc' stretchy='false'>,</mo><mi>H</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>0</mn></mtd>
-</mtr>  <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd></mtr> <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                                     </mrow><mo fence='true' form='postfix'>]</mo></mrow><mo class='MathClass-punc' stretchy='false'>,</mo><mstyle class='text'><mtext> and start P as identity </mtext></mstyle><mi>P</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>0</mn></mtd>
-</mtr>  <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd></mtr> <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                                     </mrow><mo fence='true' form='postfix'>]</mo></mrow></mtd>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   <mtd class='align-even'><mspace width='2em'></mspace></mtd>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          <mtd class='align-label' columnalign='right'>
-   </mtd></mtr></mtable></math>
-<!-- l. 99 --><p class='noindent'><!-- l. 99 --><math display='inline'><mi>K</mi></math> is
-<!-- l. 99 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math> and
-<!-- l. 99 --><math display='inline'><mi>S</mi></math> is
-<!-- l. 99 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math>
-</p><!-- tex4ht:inline --><!-- l. 109 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='none none none none none none none none none none none none none none none none none none none none none' style=''>
+</mtr>  <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd></mtr> <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                                     </mrow><mo fence='true' form='postfix'>]</mo></mrow><mo class='MathClass-punc' stretchy='false'>,</mo></mtd>
+ 
+<mtd></mtd>
+</mtr><mtr> 
+<mtd><mstyle class='text'><mtext>and start </mtext><mstyle class='math'><mi>P</mi></mstyle><mtext> as identity </mtext></mstyle><mi>P</mi> <mo class='MathClass-rel' stretchy='false'>=</mo>  <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd> <mtd class='array-td' columnalign='center'> <mn>0</mn></mtd>
+</mtr>  <mtr class='array-row'><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>0</mn> </mtd><mtd class='array-td' columnalign='center'> <mn>1</mn> </mtd></mtr> <!-- *\c@MaxMatrixCols c --></mtable>                                                                                                                                     </mrow><mo fence='true' form='postfix'>]</mo></mrow></mtd>                                                                                                                                                                                                   
+ 
+<mtd></mtd></mtr></mtable>
+</mrow></math>
+<!-- l. 101 --><p class='nopar'><!-- l. 102 --><math display='inline'><mi>K</mi></math> is
+<!-- l. 102 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math> and
+<!-- l. 102 --><math display='inline'><mi>S</mi></math> is
+<!-- l. 102 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math>
+                                                                                                       
+                                                                                                       
+</p><!-- tex4ht:inline --><!-- l. 112 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='none none none none none none none none none none none none none none none none none none none none none' style=''>
                                  <mtr><mtd class='align-odd' columnalign='right'> <mrow><mo fence='true' form='prefix'>[</mo><mrow><mtable align='axis' class='array' columnlines='none none none none none none none none none' displaystyle='true' equalcolumns='false' equalrows='false' rowlines='none' style=''> <mtr class='array-row'><mtd class='array-td' columnalign='center'><msub><mrow> <mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mn>1</mn></mrow></msub>  </mtd>
 </mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'><msub><mrow>  <mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mn>2</mn></mrow></msub>  </mtd></mtr> <mtr class='array-row'><mtd class='array-td' columnalign='center'><msub><mrow> <mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover> </mrow><mrow>
 <mn>3</mn></mrow></msub>  </mtd>
@@ -246,14 +256,12 @@ pairs.</li></ul>
                                                                                                                                                                                                                                                                                                                    <mtd class='align-label' columnalign='right'></mtd>
                                                                                                                                                                                                                                                                                                                                                     <mtd class='align-label'>
    <mspace width='2em'></mspace></mtd></mtr></mtable></math>
-                                                                                                       
-                                                                                                       
-<!-- l. 110 --><p class='noindent'><!-- l. 110 --><math display='inline'><mi>Q</mi></math> and
-<!-- l. 110 --><math display='inline'><mi>R</mi></math> are
-<!-- l. 110 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math> matrices
+<!-- l. 113 --><p class='noindent'><!-- l. 113 --><math display='inline'><mi>Q</mi></math> and
+<!-- l. 113 --><math display='inline'><mi>R</mi></math> are
+<!-- l. 113 --><math display='inline'><mrow><mn>3</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>3</mn></mrow></math> matrices
 that you need to tune
-</p><!-- l. 112 --><p class='indent'>   Prediction Steps
-</p><!-- tex4ht:inline --><!-- l. 117 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='' style=''>
+</p><!-- l. 115 --><p class='indent'>   Prediction Steps
+</p><!-- tex4ht:inline --><!-- l. 120 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='' style=''>
                                          <mtr><mtd class='align-odd' columnalign='right'><msub><mrow><mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn><mo class='MathClass-rel' stretchy='false'>|</mo><mi>k</mi></mrow></msub></mtd>
                                                                                         <mtd class='align-even'> <mo class='MathClass-rel' stretchy='false'>=</mo> <mi>F</mi><msub><mrow><mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mi>k</mi><mo class='MathClass-rel' stretchy='false'>|</mo><mi>k</mi></mrow></msub> <mo class='MathClass-bin' stretchy='false'>+</mo> <mi>B</mi><msub><mrow><mi>u</mi></mrow><mrow><mi>k</mi></mrow></msub><mspace width='2em'></mspace></mtd>
                                                                                                                                                  <mtd class='align-label' columnalign='right'></mtd>
@@ -264,8 +272,8 @@ that you need to tune
                                                                                                                                                  <mtd class='align-label' columnalign='right'></mtd>
                                                                                                                                                                                           <mtd class='align-label'>
    <mspace width='2em'></mspace></mtd></mtr></mtable></math>
-<!-- l. 118 --><p class='noindent'>Correction Steps
-</p><!-- tex4ht:inline --><!-- l. 123 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='' style=''>
+<!-- l. 121 --><p class='noindent'>Correction Steps
+</p><!-- tex4ht:inline --><!-- l. 126 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='' style=''>
                                        <mtr><mtd class='align-odd' columnalign='right'><msub><mrow><mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn><mo class='MathClass-rel' stretchy='false'>|</mo><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn></mrow></msub></mtd>
                                                                                        <mtd class='align-even'> <mo class='MathClass-rel' stretchy='false'>=</mo><msub><mrow> <mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn><mo class='MathClass-rel' stretchy='false'>|</mo><mi>k</mi></mrow></msub> <mo class='MathClass-bin' stretchy='false'>+</mo> <mi>K</mi><mover accent='true'><mrow><mi>y</mi></mrow><mo accent='true'>~</mo></mover><mspace width='2em'></mspace></mtd>
                                                                                                                                                 <mtd class='align-label' columnalign='right'></mtd>
@@ -275,8 +283,10 @@ that you need to tune
                                                                                                                                                 <mtd class='align-label' columnalign='right'></mtd>
                                                                                                                                                                                       <mtd class='align-label'>
    <mspace width='2em'></mspace></mtd></mtr></mtable></math>
-<!-- l. 125 --><p class='noindent'>where
-</p><!-- tex4ht:inline --><!-- l. 131 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='none' style=''>
+<!-- l. 128 --><p class='noindent'>where
+                                                                                                       
+                                                                                                       
+</p><!-- tex4ht:inline --><!-- l. 134 --><math display='block'><mtable class='align-star' columnalign='left' displaystyle='true' rowlines='none' style=''>
                                         <mtr><mtd class='align-odd' columnalign='right'><mover accent='true'><mrow><mi>y</mi></mrow><mo accent='true'>~</mo></mover></mtd>
                                                                                    <mtd class='align-even'> <mo class='MathClass-rel' stretchy='false'>=</mo> <msub><mrow><mi>z</mi></mrow><mrow><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn></mrow></msub> <mo class='MathClass-bin' stretchy='false'>−</mo> <mi>H</mi><msub><mrow><mover accent='true'><mrow><mi>x</mi></mrow><mo accent='true'>^</mo></mover></mrow><mrow><mi>k</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>1</mn><mo class='MathClass-rel' stretchy='false'>|</mo><mi>k</mi></mrow></msub><mspace width='2em'></mspace></mtd>
                                                                                                                                                 <mtd class='align-label' columnalign='right'></mtd>
@@ -291,11 +301,8 @@ that you need to tune
                                                                                                                                                 <mtd class='align-label' columnalign='right'></mtd>
                                                                                                                                                                                         <mtd class='align-label'>
    <mspace width='2em'></mspace></mtd></mtr></mtable></math>
-                                                                                                       
-                                                                                                       
-   
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 134 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 137 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See</span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>

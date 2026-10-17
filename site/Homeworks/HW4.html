@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 44 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -23,11 +24,13 @@
 </div>
    
 <h3 class='likesectionHead' id='exercise-1-linux-commands-'> <a id='x1-1000'></a>Exercise 1: Linux commands </h3>
-<p id='exercise-1-linux-commands'><a id='Q1-1-2'></a>
-<!-- l. 48 --></p><p class='noindent'>Give yourself a small introduction to working in Linux, especially at the command prompt, by reading through the help at
+<p id='exercise-1-linux-commands'><a id='Q1-1-2'></a>                                                                                                       
                                                                                                        
+<!-- l. 48 --></p><p class='noindent'>Give yourself a small introduction to working in Linux, especially at the command prompt, by reading through the help at
 <a class='url' href='http://community.linuxmint.com/tutorial/view/244'><span class='rm-lmtt-10x-x-109'>http://community.linuxmint.com/tutorial/view/244</span></a>. Answer the following questions:
-     </p><ol class='enumerate1'>
+     
+</p>
+<ol class='enumerate1'>
 <li class='enumerate' id='x1-1002x1'>What command, along with an option, would you type to list all the files in a directory and more information,
 like file date and file size?
 </li>
@@ -42,7 +45,7 @@ type to copy “<span class='obeylines-h'><code class='verb'>hw4data.dat</code><
 </li>
 <li class='enumerate' id='x1-1010x5'>What do the “<span class='obeylines-h'><code class='verb'>ifconfig</code></span>” and “<span class='obeylines-h'><code class='verb'>ping</code></span>” commands do?
 </li>
-<li class='enumerate' id='x1-1012x6'>What command line text will set the date to <span class='obeylines-h'><code class='verb'>2:30PM April 25th, 2026</code></span> using the “<span class='obeylines-h'><code class='verb'>date</code></span>” command?</li></ol>
+<li class='enumerate' id='x1-1012x6'>What command line text will set the date to <span class='obeylines-h'><code class='verb'>2:30PM April 25th, 2026</code></span> using the “<span class='obeylines-h'><code class='verb'>date</code></span>” command?</li></ol>
    
 <h3 class='likesectionHead' id='exercise-2-solder-battery-pack-'>  <a id='x1-2000'></a>Exercise 2: Solder battery pack </h3>
 <p id='exercise-2-solder-battery-pack'><a id='Q1-1-4'></a>

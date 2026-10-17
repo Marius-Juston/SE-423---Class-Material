@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 28 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -24,8 +25,8 @@ used like MATLAB/Simulink to simulate system equations.</span>
 <p id='exercise-1'><a id='Q1-1-2'></a>
 <!-- l. 32 --></p><p class='noindent'>For this exercise, I would like you to reproduce the two VIs shown in the pictures below. Both VIs perform the same task
 using different methods to implement an “if-else” condition, and one uses a SubVI. Again, for this exercise, start by
-creating a LabVIEW Project. Then, inside this project, add a single VI. We are using a project this time, so the SubVI
                                                                                                        
+creating a LabVIEW Project. Then, inside this project, add a single VI. We are using a project this time, so the SubVI
 you create will be saved in it. I will give some pointers and instructions below, but you will need to do some of your own
 hunting to find the necessary blocks and other parts of the program, and use LabVIEW help to figure out how to
 use/wire certain blocks. Many of the blocks I used below come from the “Control Design &amp; Simulation
@@ -42,10 +43,10 @@ exercise.
 <!-- l. 40 --><p class='noindent'>You will notice that I am using a Case Structure in this VI. The case structure is implementing the following if
 statement:
 </p>     
-<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-1006r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (velocity &gt; 0) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1008r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    FricComp = Vpos*velocity + Cpos;  // viscous friction*velocity + static friction</span></span> 
-<span class='fancyvrblineno'><a id='x1-1010r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>} else {</span></span> 
-<span class='fancyvrblineno'><a id='x1-1012r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    FricComp = Vneg*velocity + Cneg;</span></span> 
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-1006r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (velocity &gt; 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1008r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    FricComp = Vpos*velocity + Cpos;  // viscous friction*velocity + static friction</span></span> 
+<span class='fancyvrblineno'><a id='x1-1010r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>} else {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1012r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    FricComp = Vneg*velocity + Cneg;</span></span> 
 <span class='fancyvrblineno'><a id='x1-1014r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
 </li>
 <li class='enumerate' id='x1-1016x3'>The signal generator is set to Square wave, Amplitude of 1, and frequency of .1 hertz

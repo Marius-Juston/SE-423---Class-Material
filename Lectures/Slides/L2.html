@@ -15,9 +15,31 @@ h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(-
 figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
 table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
 details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
-math[display=block] { margin:.5rem 0; max-width:100%; }
+math[display=block] { margin:.5rem 0; }
+/* Reflow (WCAG 1.4.10, 320 px): long words and URLs wrap; tables and equations,
+   which cannot reflow, scroll sideways in their own box. */
+body { overflow-wrap:break-word; }
+.scroll-x, math[display=block] { overflow-x:auto; overflow-y:hidden; max-width:100%; }
+.math-inline { display:inline-block; vertical-align:middle; }
 nav ol { columns: 2 18rem; }
-</style></head>
+</style><script>
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.scroll-x, math[display=block]');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      if (el.tagName !== 'math' && !el.classList.contains('math-inline')) {
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Table (scrolls sideways)');
+      }
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
+</script></head>
 <body><a class="skip" href="#main">Skip to the slides</a>
 <header><h1>L2: SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston</h1>
 <p>Text version of the lecture slides, one section per slide.
@@ -278,7 +300,7 @@ nav ol { columns: 2 18rem; }
 <h2 id='h18'><span class='num'>18.</span> Hexadecimal</h2>
 <p>Instead of base 10, let’s explore base 16, i.e., hexadecimal base system</p>
 <p>Very easy to convert binary to hex (0-9 then A-F):</p>
-<table><thead><tr><th scope='col'>Binary</th><th scope='col'>Hexidecimal</th><th scope='col'>Decimal</th></tr></thead><tbody><tr><td>0000</td><td>0</td><td>0</td></tr><tr><td>0001</td><td>1</td><td>1</td></tr><tr><td>1010</td><td>A</td><td>10</td></tr><tr><td>1111</td><td>F</td><td>15</td></tr></tbody></table>
+<div class='scroll-x'><table><thead><tr><th scope='col'>Binary</th><th scope='col'>Hexidecimal</th><th scope='col'>Decimal</th></tr></thead><tbody><tr><td>0000</td><td>0</td><td>0</td></tr><tr><td>0001</td><td>1</td><td>1</td></tr><tr><td>1010</td><td>A</td><td>10</td></tr><tr><td>1111</td><td>F</td><td>15</td></tr></tbody></table></div>
 <p>Every 4-bits = 1 hex value, makes things much easier to compress, much easier to look at!</p>
 <p>int32_t x = 0xC8190824;</p>
 <p>int16_t x = 0x0824;</p>
@@ -314,8 +336,8 @@ nav ol { columns: 2 18rem; }
 <p>reg &amp;= ~(1 &lt;&lt; 3);</p>
 <p><strong>XOR (^) – Toggling Bits</strong></p>
 <p>reg ^= (1 &lt;&lt; 3);</p>
-<table><thead><tr><th scope='col'>REG</th><th scope='col'>MASK</th><th scope='col'>AND</th><th scope='col'>OR</th><th scope='col'>XOR</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td></tr></tbody></table>
-<table><thead><tr><th scope='col'>MASK</th><th scope='col'>NOT</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></tbody></table>
+<div class='scroll-x'><table><thead><tr><th scope='col'>REG</th><th scope='col'>MASK</th><th scope='col'>AND</th><th scope='col'>OR</th><th scope='col'>XOR</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td></tr></tbody></table></div>
+<div class='scroll-x'><table><thead><tr><th scope='col'>MASK</th><th scope='col'>NOT</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></tbody></table></div>
 <details><summary>Lecture notes</summary><p>This slide answers the question from the last slide, &quot;what are masks used for?&quot; It shows four C bitwise operations, each applied to bit 3 of a variable called reg using the mask 1 &lt;&lt; 3, which is 0b1000 or 0x08.</p><p>On the left, AND (&amp;) is used for masking, or testing a bit: if (reg &amp; (1 &lt;&lt; 3)) { // Bit 3 is set }. The result is nonzero only if bit 3 of reg is 1. Below that, OR (|) sets a bit: reg |= (1 &lt;&lt; 3) forces bit 3 to 1 and leaves the others alone. On the right, NOT (~) combined with AND clears a bit: reg &amp;= ~(1 &lt;&lt; 3). The NOT flips the mask to all ones except bit 3, so the AND forces bit 3 to 0 and keeps every other bit. Finally, XOR (^) toggles a bit: reg ^= (1 &lt;&lt; 3) flips bit 3.</p><p>A truth table at the bottom left lists columns REG, MASK, AND, OR and XOR. For REG 0 and MASK 0, all results are 0. For 0 and 1: AND 0, OR 1, XOR 1. For 1 and 0: AND 0, OR 1, XOR 1. For 1 and 1: AND 1, OR 1, XOR 0. A smaller table on the right shows NOT: MASK 0 gives 1, and MASK 1 gives 0.</p><p>The key pattern is that a mask selects the bits you touch. Where the mask is 0, OR and XOR leave reg unchanged. Where the mask is 1, AND leaves reg unchanged.</p><p>Watch two common mistakes. First, &amp; and | are not the logical operators &amp;&amp; and ||. Second, ~ is not !, because !(1 &lt;&lt; 3) is just 0.</p><p>You use exactly these operations on peripheral registers in lab, including GPIO, where single bits control individual pins. Next, you apply them to timer registers.</p></details>
 </section>
 <section id='s21' aria-labelledby='h21'>

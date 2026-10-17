@@ -1,5 +1,16 @@
 (() => {
   const { useState, useEffect, useMemo } = React;
+  const NARROW = "(max-width: 900px)";
+  function useNarrow() {
+    const [narrow, setNarrow] = useState(() => window.matchMedia(NARROW).matches);
+    useEffect(() => {
+      const mq = window.matchMedia(NARROW);
+      const on = () => setNarrow(mq.matches);
+      mq.addEventListener("change", on);
+      return () => mq.removeEventListener("change", on);
+    }, []);
+    return narrow;
+  }
   function totalTurn(gtTraj, upTo) {
     let s = 0;
     for (let i = 1; i <= upTo; i++) s += Math.abs(Math.atan2(
@@ -9,6 +20,7 @@
     return s;
   }
   function App() {
+    const narrow = useNarrow();
     const [pySource, setPySource] = useState(null);
     const [index, setIndex] = useState(null);
     const [levelData, setLevelData] = useState({});
@@ -140,7 +152,15 @@
         fontFamily: "JetBrains Mono, monospace"
       } }, "loading lidar_slam_2d.py and data/index.json \u2026");
     }
-    return /* @__PURE__ */ React.createElement("div", { style: {
+    return /* @__PURE__ */ React.createElement("div", { style: narrow ? {
+      minHeight: "100vh",
+      width: "100%",
+      display: "flex",
+      flexDirection: "column",
+      gap: 12,
+      padding: 8,
+      background: "var(--bg-0)"
+    } : {
       height: "100vh",
       width: "100vw",
       display: "grid",
@@ -150,20 +170,20 @@
       background: "var(--bg-0)"
     } }, /* @__PURE__ */ React.createElement(Header, { stage, stageIdx, totalStages: stages.length }), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
-      gridTemplateColumns: "minmax(0, 1.35fr) minmax(0, 0.95fr)",
+      gridTemplateColumns: narrow ? "minmax(0, 1fr)" : "minmax(0, 1.35fr) minmax(0, 0.95fr)",
       gap: 12,
       minHeight: 0
     } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
-      gridTemplateRows: "minmax(0, 1.05fr) minmax(0, 1fr)",
+      gridTemplateRows: narrow ? "auto auto" : "minmax(0, 1.05fr) minmax(0, 1fr)",
       gap: 12,
       minHeight: 0
-    } }, /* @__PURE__ */ React.createElement(Panel, { title: "Process Flow", eyebrow: "threads \xB7 queues \xB7 IPC" }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, position: "relative" } }, /* @__PURE__ */ React.createElement(window.FlowNodes, { stage }))), /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement(Panel, { title: "Process Flow", eyebrow: "threads \xB7 queues \xB7 IPC", style: narrow ? { height: 440 } : void 0 }, /* @__PURE__ */ React.createElement("div", { style: { flex: 1, minHeight: 0, position: "relative" } }, /* @__PURE__ */ React.createElement(window.FlowNodes, { stage }))), /* @__PURE__ */ React.createElement("div", { style: {
       display: "grid",
-      gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+      gridTemplateColumns: narrow ? "minmax(0, 1fr)" : "minmax(0, 1fr) minmax(0, 1fr)",
       gap: 12,
       minHeight: 0
-    } }, /* @__PURE__ */ React.createElement(Panel, { title: "Robot \xB7 LiDAR", eyebrow: "2D map \xB7 240\xB0 fan" }, /* @__PURE__ */ React.createElement("div", { style: {
+    } }, /* @__PURE__ */ React.createElement(Panel, { title: "Robot \xB7 LiDAR", eyebrow: "2D map \xB7 240\xB0 fan", style: narrow ? { height: 420 } : void 0 }, /* @__PURE__ */ React.createElement("div", { style: {
       flex: 1,
       minHeight: 0,
       minWidth: 0,
@@ -172,7 +192,7 @@
       alignItems: "center",
       justifyContent: "center",
       padding: 8
-    } }, activeCache ? /* @__PURE__ */ React.createElement(window.RobotScene, { stage, step, cache: activeCache }) : /* @__PURE__ */ React.createElement("div", { style: { color: "var(--text-3)", fontFamily: "JetBrains Mono, monospace" } }, "loading ", level.file, " \u2026")), /* @__PURE__ */ React.createElement(SceneLegend, { stage })), /* @__PURE__ */ React.createElement(Panel, { title: "Subgraph \xB7 iSAM2", eyebrow: "pose nodes \xB7 between-factors" }, /* @__PURE__ */ React.createElement("div", { style: {
+    } }, activeCache ? /* @__PURE__ */ React.createElement(window.RobotScene, { stage, step, cache: activeCache }) : /* @__PURE__ */ React.createElement("div", { style: { color: "var(--text-3)", fontFamily: "JetBrains Mono, monospace" } }, "loading ", level.file, " \u2026")), /* @__PURE__ */ React.createElement(SceneLegend, { stage })), /* @__PURE__ */ React.createElement(Panel, { title: "Subgraph \xB7 iSAM2", eyebrow: "pose nodes \xB7 between-factors", style: narrow ? { height: 420 } : void 0 }, /* @__PURE__ */ React.createElement("div", { style: {
       flex: 1,
       minHeight: 0,
       minWidth: 0,
@@ -181,9 +201,10 @@
       alignItems: "center",
       justifyContent: "center",
       padding: 8
-    } }, /* @__PURE__ */ React.createElement(window.FactorGraph, { stage, step, cache: activeCache })), /* @__PURE__ */ React.createElement(StageDetail, { stage })))), /* @__PURE__ */ React.createElement(Panel, { title: stage.title, eyebrow: stage.subtitle, accent: true }, /* @__PURE__ */ React.createElement(window.CodePanel, { source: pySource, stage }))), /* @__PURE__ */ React.createElement(
+    } }, /* @__PURE__ */ React.createElement(window.FactorGraph, { stage, step, cache: activeCache })), /* @__PURE__ */ React.createElement(StageDetail, { stage })))), /* @__PURE__ */ React.createElement(Panel, { title: stage.title, eyebrow: stage.subtitle, accent: true, style: narrow ? { height: "75vh" } : void 0 }, /* @__PURE__ */ React.createElement(window.CodePanel, { source: pySource, stage }))), /* @__PURE__ */ React.createElement(
       DriftPanel,
       {
+        narrow,
         index,
         levelIdx,
         setLevelIdx,
@@ -212,6 +233,8 @@
       display: "flex",
       alignItems: "center",
       justifyContent: "space-between",
+      flexWrap: "wrap",
+      gap: 8,
       padding: "6px 4px"
     } }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 14 } }, /* @__PURE__ */ React.createElement("div", { style: {
       width: 28,
@@ -254,7 +277,7 @@
       borderRadius: 5
     } }, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-3)" } }, k), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-0)" } }, v));
   }
-  function Panel({ title, eyebrow, children, accent }) {
+  function Panel({ title, eyebrow, children, accent, style }) {
     return /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       flexDirection: "column",
@@ -263,7 +286,8 @@
       borderRadius: 8,
       minHeight: 0,
       minWidth: 0,
-      overflow: "hidden"
+      overflow: "hidden",
+      ...style
     } }, title && /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       alignItems: "baseline",
@@ -340,17 +364,15 @@
       fontSize: 10
     } }, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-3)" } }, m.k), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--cyan)" } }, m.v)))));
   }
-  function DriftPanel({ index, levelIdx, setLevelIdx, level, liveErr, thetaModel }) {
+  function DriftPanel({ narrow, index, levelIdx, setLevelIdx, level, liveErr, thetaModel }) {
     const n = index.levels.length;
     const reset = () => setLevelIdx(3);
     const { k_d, k_th, arw, lidar } = level.noise;
     const st = level.stats;
     const Row = ({ k, v, warn }) => /* @__PURE__ */ React.createElement("div", { style: { display: "flex", justifyContent: "space-between", gap: 8 } }, /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-3)" } }, k), /* @__PURE__ */ React.createElement("span", { style: { color: warn ? "var(--rose)" : "var(--cyan)" } }, v));
     return /* @__PURE__ */ React.createElement("div", { style: {
-      position: "fixed",
-      right: 24,
-      bottom: 132,
-      width: 290,
+      // A floating card on wide screens; part of the page on narrow ones.
+      ...narrow ? { position: "static" } : { position: "fixed", right: 24, bottom: 132, width: 290 },
       background: "var(--bg-1)",
       border: "1px solid var(--line)",
       borderRadius: 8,

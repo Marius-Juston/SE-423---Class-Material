@@ -216,6 +216,11 @@ a.url { display: inline-block; padding-block: 3px; }
 code.lstinline, span.lstinline, tt.lstinline, code.lstinline span, span.lstinline span, tt.lstinline span { color: #0b0b0b !important; background-color: #f3f3f3 !important; padding: 0.05em 0.3em; border-radius: 3px; font-weight: 600; }
 pre.lstlisting, pre.lstinputlisting, pre.fancyvrb, pre.verbatim, div.fancyvrb pre, div.verbatim pre { color: #0b0b0b !important; background-color: #f3f3f3 !important; padding: 0.6em 0.8em; border-left: 3px solid #444444; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (prefers-color-scheme: dark) { code.lstinline, span.lstinline, tt.lstinline, code.lstinline span, span.lstinline span, tt.lstinline span, pre.lstlisting, pre.lstinputlisting, pre.fancyvrb, pre.verbatim, div.fancyvrb pre, div.verbatim pre { color: #f5f5f5 !important; background-color: #1f2937 !important; border-left-color: #9ca3af; } }
+body { overflow-wrap: break-word; }
+code, tt, .lstinline, [class*="lmtt"] { overflow-wrap: anywhere; }
+code.verb, span.obeylines-h { white-space: pre-wrap; overflow-wrap: anywhere; }
+img, svg { max-width: 100%; height: auto; }
+figure:has(> table), div:has(> table), math[display="block"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
 #tcolobox-1 .tcolorbox-title{color: #FFFFFF; background-color: #404040;}
 #tcolobox-1 .tcolorbox-content{color: #000000; background-color: #DFDFDF; border: 1px solid #404040;}
 #tcolobox-1 > div{ padding-top:14.22635px; padding-bottom:14.22635px; padding-left:19.9169px; padding-right:19.9169px; }

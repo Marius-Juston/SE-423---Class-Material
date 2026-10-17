@@ -9,6 +9,7 @@
 <link href='https://fonts.googleapis.com' rel='preconnect' /> 
 <link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
 <link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', () =&gt; { const boxes = document.querySelectorAll('figure:has(&gt; table), div:has(&gt; table), math[display="block"]'); const mark = () =&gt; boxes.forEach(el =&gt; { if (el.scrollWidth &gt; el.clientWidth + 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math' &amp;&amp; !el.hasAttribute('aria-label')) { const cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); mark(); addEventListener('resize', mark); }); </script> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 30 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -24,8 +25,8 @@ Plotting In LABVIEW.</span>
 <p id='exercise-1'><a id='Q1-1-2'></a>
 <!-- l. 34 --></p><p class='noindent'>Demonstrate your programs working and be prepared to show me how you built parts of your LabVIEW program.
 Grading for this assignment is simply full credit if you did the assignment and no credit if you did not complete the
-assignment. Make sure to ask your instructors questions if you get stuck.                                     
                                                                                                        
+assignment. Make sure to ask your instructors questions if you get stuck.
 </p><!-- l. 36 --><p class='indent'>   I would like you to go through the “Basics of Control Design and Simulation” tutorial. It can be found at
 <a class='url' href='http://coecsl.ece.illinois.edu/se423/NI-Tutorial-BasicsofCDS.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/NI-Tutorial-BasicsofCDS.pdf</span></a>. When you are done with this tutorial you
 will have saved three files: “<code class='lstinline'><span style='color:#000000'>My Controls Example VI.vi</span></code>”, “<code class='lstinline'><span style='color:#000000'>My Controls Example With Math Script VI.vi</span></code>” and
@@ -113,7 +114,8 @@ Mode.”
                                                                                                        
           </p>
           <ol class='enumerate2'>
-<li class='enumerate' id='x1-1015x1'>Use the Flat Sequence to order when items of your program run. Programming <!-- l. 95 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<li class='enumerate' id='x1-1015x1'>Use    the    Flat    Sequence    to    order    when    items    of    your    program    run.    Programming
+<!-- l. 95 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Structures.
 </li>
 <li class='enumerate' id='x1-1017x2'>Transfer Function: Control Design &amp; Simulation<!-- l. 96 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
@@ -128,9 +130,10 @@ generator and select the amplitude parameter, you can change its parameter sourc
 </li>
 <li class='enumerate' id='x1-1021x4'>Collector: Control &amp; Simulation <!-- l. 99 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Simulation <!-- l. 99 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
-Utilities. The Collector is optimized for the simulation loop and collects data for later plotting, even
-offline. To create the Collector’s output variable that I called “signal history”, hover your mouse just to
-the right of the Collector and right-click. Select Create<!-- l. 99 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Indicator.
+Utilities.   The   Collector   is   optimized   for   the   simulation   loop   and   collects   data   for   later
+plotting,   even   offline.   To   create   the   Collector’s   output   variable   that   I   called   “signal
+history”,   hover   your   mouse   just   to   the   right   of   the   Collector   and   right-click.   Select
+Create<!-- l. 99 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Indicator.
 </li>
 <li class='enumerate' id='x1-1023x5'>The Waveform Chart and its accompanying block to its left is called a “SimTime Waveform”. Find it
 under Control &amp; Simulation<!-- l. 100 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Simulation<!-- l. 100 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graph
@@ -143,20 +146,23 @@ route only one to a desired block.
 <li class='enumerate' id='x1-1027x7'>Dice (Random Number): Programming <!-- l. 102 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Numeric.
 </li>
+                                                                                                       
+                                                                                                       
 <li class='enumerate' id='x1-1029x8'>Local Variable: Programming <!-- l. 103 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
           Structures.
-          </li>
+</li>
 <li class='enumerate' id='x1-1031x9'>To add the XY Graph to your program, you must switch to the Front Panel window. From there,
 right-click and find the XY Graph in Modern <!-- l. 104 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Graph.
 </li>
-<li class='enumerate' id='x1-1033x10'>Property Nodes <code class='lstinline'><span style='color:#000000'>XScale.Minimum</span></code>, <code class='lstinline'><span style='color:#000000'>XScale.Maximum</span></code>, <code class='lstinline'><span style='color:#000000'>YScale.Minimum</span></code>, <code class='lstinline'><span style='color:#000000'>YScale.Maximum</span></code>. Property Nodes
-allow you to change properties of a front panel object (in this case, a graph) during your program run.
-Here I am just setting the range of the X and Y scales. You will see there are a huge number of properties
-you can change on the fly if you wish. Since there are so many, it can be hard to find the correct property
-to change the item you are interested in. Using Help and trial and error is the way to figure out which
-property to change, finally. Create these property nodes by right-clicking on the Waveform Chart block
-and selecting Create <!-- l. 105 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<li class='enumerate' id='x1-1033x10'>Property  Nodes  <code class='lstinline'><span style='color:#000000'>XScale.Minimum</span></code>,  <code class='lstinline'><span style='color:#000000'>XScale.Maximum</span></code>,  <code class='lstinline'><span style='color:#000000'>YScale.Minimum</span></code>,  <code class='lstinline'><span style='color:#000000'>YScale.Maximum</span></code>.  Property
+Nodes  allow  you  to  change  properties  of  a  front  panel  object  (in  this  case,  a  graph)  during
+your  program  run.  Here  I  am  just  setting  the  range  of  the  X  and  Y  scales.  You  will  see  there
+are  a  huge  number  of  properties  you  can  change  on  the  fly  if  you  wish.  Since  there  are  so
+many,  it  can  be  hard  to  find  the  correct  property  to  change  the  item  you  are  interested  in.
+Using  Help  and  trial  and  error  is  the  way  to  figure  out  which  property  to  change,  finally.
+Create  these  property  nodes  by  right-clicking  on  the  Waveform  Chart  block  and  selecting  Create
+<!-- l. 105 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Property Node <!-- l. 105 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 XScale <!-- l. 105 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
 Range <!-- l. 105 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>

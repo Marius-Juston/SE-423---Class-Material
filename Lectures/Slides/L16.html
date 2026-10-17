@@ -15,9 +15,31 @@ h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(-
 figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
 table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
 details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
-math[display=block] { margin:.5rem 0; max-width:100%; }
+math[display=block] { margin:.5rem 0; }
+/* Reflow (WCAG 1.4.10, 320 px): long words and URLs wrap; tables and equations,
+   which cannot reflow, scroll sideways in their own box. */
+body { overflow-wrap:break-word; }
+.scroll-x, math[display=block] { overflow-x:auto; overflow-y:hidden; max-width:100%; }
+.math-inline { display:inline-block; vertical-align:middle; }
 nav ol { columns: 2 18rem; }
-</style></head>
+</style><script>
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.scroll-x, math[display=block]');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      if (el.tagName !== 'math' && !el.classList.contains('math-inline')) {
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Table (scrolls sideways)');
+      }
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
+</script></head>
 <body><a class="skip" href="#main">Skip to the slides</a>
 <header><h1>L16: SE 423: Introduction to MechatronicsLecture 16: LiDAR CodeMarius Juston</h1>
 <p>Text version of the lecture slides, one section per slide.
@@ -104,7 +126,7 @@ nav ol { columns: 2 18rem; }
 </li>
 <li>If a laser is not class 1 compliant, you should wear protective equipment when entering the danger zone: laser safety glasses for eye protection and special suits for skin protection.
 </li></ul>
-<table><thead><tr><th scope='col'>Lazer Class</th><th scope='col'>Hazard Risk</th><th scope='col'>Common Uses</th><th scope='col'>Safe Use Considerations</th></tr></thead><tbody><tr><td><strong>Class 1</strong></td><td>None</td><td>Barcode scanners, DVD players (if you remember what a DVD is!)</td><td>Safe under all considerations.</td></tr><tr><td><strong>Class 1M</strong></td><td>None to low</td><td>Laser diodes, fiber communication systems, speed meters</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 2</strong></td><td>Low (unless stared into)</td><td>Laser points, alignment tools</td><td>Avoid direct eye exposure</td></tr><tr><td><strong>Class 2M</strong></td><td>Low to moderate</td><td>Projection laser (e.g. light shows)</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 3R/3B</strong></td><td>Moderate to high</td><td>Laser scanners, 3D printers</td><td>Can damage the naked eye and skin</td></tr><tr><td><strong>Class 4</strong></td><td>Very high</td><td>Cutting, marking welding, cleaning surgery</td><td>Requires protective eyewear and strict controls.</td></tr></tbody></table>
+<div class='scroll-x'><table><thead><tr><th scope='col'>Lazer Class</th><th scope='col'>Hazard Risk</th><th scope='col'>Common Uses</th><th scope='col'>Safe Use Considerations</th></tr></thead><tbody><tr><td><strong>Class 1</strong></td><td>None</td><td>Barcode scanners, DVD players (if you remember what a DVD is!)</td><td>Safe under all considerations.</td></tr><tr><td><strong>Class 1M</strong></td><td>None to low</td><td>Laser diodes, fiber communication systems, speed meters</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 2</strong></td><td>Low (unless stared into)</td><td>Laser points, alignment tools</td><td>Avoid direct eye exposure</td></tr><tr><td><strong>Class 2M</strong></td><td>Low to moderate</td><td>Projection laser (e.g. light shows)</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 3R/3B</strong></td><td>Moderate to high</td><td>Laser scanners, 3D printers</td><td>Can damage the naked eye and skin</td></tr><tr><td><strong>Class 4</strong></td><td>Very high</td><td>Cutting, marking welding, cleaning surgery</td><td>Requires protective eyewear and strict controls.</td></tr></tbody></table></div>
 <details><summary>Lecture notes</summary><p>This slide sorts lasers by how dangerous they are, so you know why our URG-04LX, a class 1 device at 785 nm, needs no special precautions.</p><p>The text makes two points. Laser radiation causes three basic types of hazard: eye, skin and fire. If a laser is not class 1 compliant, you should wear protective equipment when entering the danger zone: laser safety glasses for your eyes and special suits for your skin.</p><p>Below the text is a table with four columns: laser class, hazard risk, common uses, and safe use considerations. The rows are color coded from green to red as the risk rises.</p><p>Class 1 has no risk. It is used in barcode scanners and DVD players (&quot;if you remember what a DVD is!&quot;) and is safe under all conditions.</p><p>Class 1M is none to low risk. It appears in laser diodes, fiber communication systems and speed meters, and is safe unless viewed through optical instruments.</p><p>Class 2 is low risk unless stared into. It covers laser pointers and alignment tools, and you should avoid direct eye exposure.</p><p>Class 2M is low to moderate risk, for example projection lasers in light shows. It is safe unless viewed through optics.</p><p>Class 3R/3B is moderate to high risk. It covers laser scanners and 3D printers and can damage the naked eye and skin.</p><p>Class 4 is very high risk. It is used for cutting, marking, welding, cleaning and surgery, and requires protective eyewear and strict controls.</p><p>The &quot;M&quot; classes are a common trap. A beam that is harmless to the naked eye can become dangerous when a lens or telescope concentrates it.</p><p>Next, we look at each hazard in turn, starting with the most serious one: the eye.</p></details>
 </section>
 <section id='s9' aria-labelledby='h9'>
@@ -224,8 +246,8 @@ nav ol { columns: 2 18rem; }
 </li>
 <li>Any status code other than ‘0’16 represents an error.
 </li></ul>
-<table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF (0a16) or CR (0d16)</td></tr></tbody></table>
-<table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF</td><td>Status</td><td>LF</td><td>Data</td><td>LF</td><td>LF</td></tr></tbody></table>
+<div class='scroll-x'><table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF (0a16) or CR (0d16)</td></tr></tbody></table></div>
+<div class='scroll-x'><table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF</td><td>Status</td><td>LF</td><td>Data</td><td>LF</td><td>LF</td></tr></tbody></table></div>
 <details><summary>Lecture notes</summary><p>Before you can send individual commands, you need to know the shape of every message on the serial (SCI) line. This slide gives the general packet format the URG-04LX uses in both directions, and every command on the following slides fills in this template.</p><p>The first table, Host to Sensor, has three boxes: Command, then Parameter (if necessary), then a terminator, either LF, hex 0a, or CR, hex 0d. So the Red Board sends a command letter, any parameter characters, and one line-ending character.</p><p>The second table, Sensor to Host, has eight boxes: Command, Parameter (if necessary), LF, Status, LF, Data, LF, LF. The sensor first echoes your command and parameter, then sends a status line, then the data, and ends with two line feeds in a row. That double line feed is how your receive code knows the reply is complete.</p><p>The bullets explain the notation. The terminator can be Line Feed, written &#x27;\n&#x27; in C, or Carriage Return, &#x27;\r&#x27;. A value written with a subscript 16, like 0a_16, is an ASCII code in hexadecimal. Any status other than the character &#x27;0&#x27; means an error.</p><p>A common mistake is comparing the status byte to the number 0. The sensor sends the ASCII character &#x27;0&#x27;, which is 0x30, so compare against &#x27;0&#x27;. Another is forgetting the terminator: without &#x27;\n&#x27;, the sensor never acts on your command.</p><p>Next, you apply this format to the simplest command, &#x27;V&#x27;, for version information.</p></details>
 </section>
 <section id='s18' aria-labelledby='h18'>

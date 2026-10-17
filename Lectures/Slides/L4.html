@@ -15,9 +15,31 @@ h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(-
 figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
 table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
 details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
-math[display=block] { margin:.5rem 0; max-width:100%; }
+math[display=block] { margin:.5rem 0; }
+/* Reflow (WCAG 1.4.10, 320 px): long words and URLs wrap; tables and equations,
+   which cannot reflow, scroll sideways in their own box. */
+body { overflow-wrap:break-word; }
+.scroll-x, math[display=block] { overflow-x:auto; overflow-y:hidden; max-width:100%; }
+.math-inline { display:inline-block; vertical-align:middle; }
 nav ol { columns: 2 18rem; }
-</style></head>
+</style><script>
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.scroll-x, math[display=block]');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      if (el.tagName !== 'math' && !el.classList.contains('math-inline')) {
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Table (scrolls sideways)');
+      }
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
+</script></head>
 <body><a class="skip" href="#main">Skip to the slides</a>
 <header><h1>L4: SE 423: Introduction to MechatronicsLecture 4: Numbers, Strings, SCI and InterruptsMarius Juston</h1>
 <p>Text version of the lecture slides, one section per slide.
@@ -358,7 +380,7 @@ nav ol { columns: 2 18rem; }
 <p><strong>SYS_PLL_SLIP_INT / AUX_PLL_SLIP_INT: </strong></p>
 <p>The Phase Locked Loop (clock generator) has lost its lock. The CPU clock is unstable. The system must immediately halt PWM generation to prevent blowing up power electronics.</p>
 <p><strong>FPU_OVERFLOW_INT / FPU_UNDERFLOW_INT: </strong></p>
-<p>The Floating-Point Unit calculated a value exceeding IEEE-754 limits (creating <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">\pm \infty</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>a</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">NaN</annotation></semantics></math>)</p>
+<p>The Floating-Point Unit calculated a value exceeding IEEE-754 limits (creating <span class='scroll-x math-inline'><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">\pm \infty</annotation></semantics></math></span> or <span class='scroll-x math-inline'><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>a</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">NaN</annotation></semantics></math></span>)</p>
 <details><summary>Lecture notes</summary><p>This slide is a text list of the error interrupts on the F28379D, each name in bold with a one-line explanation. Unlike the timer, sensor and communication interrupts from the previous slides, these fire when something has gone wrong.</p><p>NMI_INT, the Non-Maskable Interrupt, is the only interrupt the CPU cannot ignore or disable. It is reserved for critical hardware failures. ILLEGAL_INT fires when the CPU tries to decode an opcode, an instruction code, that does not exist. This usually means a corrupted pointer, a stack overflow or an out-of-bounds array write sent the program counter into data instead of code. If your Red Board program suddenly stops inside a default ISR in the debugger, check your pointers and arrays first.</p><p>EMIF_ERROR_INT reports a timing violation or a disconnect on the External Memory Interface to external RAM or Flash. The RAM and Flash correctable-error interrupts mean the ECC (Error Correction Code) logic found a flipped bit and fixed it. The ISR usually just logs these events for predictive maintenance. RAM_ACCESS_VIOLATION_INT means code tried to write to a protected memory region.</p><p>SYS_PLL_SLIP_INT and AUX_PLL_SLIP_INT mean the Phase Locked Loop, the clock generator, has lost lock, so the CPU clock is unstable. PWM must stop immediately to protect the power electronics, which is the same safety idea as the trip zones on the actuation slide. Finally, the FPU overflow and underflow interrupts flag results beyond the IEEE-754 floating-point limits, producing plus or minus infinity or NaN (not a number).</p><p>Next, you look at interrupts from the CPU&#x27;s helpers: DMA, inter-processor communication and the accelerators.</p></details>
 </section>
 <section id='s36' aria-labelledby='h36'>
@@ -388,7 +410,7 @@ nav ol { columns: 2 18rem; }
 <section id='s39' aria-labelledby='h39'>
 <h2 id='h39'><span class='num'>39.</span> Interrupts – Placeholders &amp; User Definitions</h2>
 <p><strong>PIE1_RESERVED_INT </strong>through<strong> PIE88_RESERVED_INT:</strong></p>
-<p>The hardware architecture allocates a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">12 \times 16</annotation></semantics></math> grid, but not every slot is connected to a peripheral in this specific chip. These must be mapped to a &quot;Default ISR&quot; that essentially does nothing, to prevent system crashes if noise triggers a phantom interrupt.</p>
+<p>The hardware architecture allocates a <span class='scroll-x math-inline'><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">12 \times 16</annotation></semantics></math></span> grid, but not every slot is connected to a peripheral in this specific chip. These must be mapped to a &quot;Default ISR&quot; that essentially does nothing, to prevent system crashes if noise triggers a phantom interrupt.</p>
 <p><strong>USER1_INT </strong>through<strong> USER12_INT:</strong></p>
 <p>These are software traps. You can trigger these manually in code using the assembly instruction TRAP #20. They are often used by RTOS kernels to implement system calls.</p>
 <details><summary>Lecture notes</summary><p>This slide covers two groups of entries in the interrupt vector list that are not tied to any real peripheral: reserved placeholders and user-defined software traps.</p><p>The first heading reads PIE1_RESERVED_INT through PIE88_RESERVED_INT. The Peripheral Interrupt Expansion (PIE) block is laid out as a 12 by 16 grid: 12 groups of 16 channels, or 192 possible slots. The F28379D does not connect a peripheral to every slot, so the unused ones are reserved. These still need a valid address in the vector table, so they are mapped to a &quot;Default ISR,&quot; a harmless handler that essentially does nothing. If electrical noise or a configuration mistake triggers a phantom interrupt, the CPU lands somewhere safe instead of jumping to a garbage address and crashing.</p><p>The second heading reads USER1_INT through USER12_INT. These are software traps: interrupts you trigger on purpose from code rather than from hardware. On the C28x, the assembly instruction TRAP #20 triggers USER1. Real-time operating system (RTOS) kernels often use traps like these to implement system calls, where application code asks the kernel for a service and the CPU switches cleanly into the kernel&#x27;s handler.</p><p>In SE 423 you will rarely touch either group directly, because the provided project code already fills the vector table. Recognizing these entries keeps them from confusing you when you scroll through the full list.</p><p>Quick check: why not leave the reserved vectors empty?</p><p>Next, we finish the tour with the debugging interrupts.</p></details>
