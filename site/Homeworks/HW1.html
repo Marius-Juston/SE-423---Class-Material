@@ -595,43 +595,43 @@ happens. <span class='rm-lmbx-10x-x-109'>Also, demo this to your TA in person</s
    </div>
    
 <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-output'> <a id='x1-12000'></a>GPIO Register Use when GPIO pin set as Output:</h5>
-<!-- l. 388 --><p class='noindent'>The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register
+<!-- l. 390 --><p class='noindent'>The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register
 at a time. The “<span class='obeylines-h'><code class='verb'>.all</code></span>” part of the C/C++ union is the entire 32-bit register. The “<span class='obeylines-h'><code class='verb'>.bit.GPIO19</code></span>” is just one bit in the
 32-bit register. So these two lines of C code perform the same operation: </p><div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 390 --><p class='indent'>   </p><figure class='float' id='x1-12001r3'><span id='gpio-register-functional-definitions-and-usage-constraints'></span>
+<!-- l. 392 --><p class='indent'>   </p><figure class='float' id='x1-12001r3'><span id='gpio-register-functional-definitions-and-usage-constraints'></span>
                                                                                                        
                                                                                                        
 
 <figcaption class='caption'><span class='id'>Table 3: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-12001r3  -->
-<div class='tabular'> <table class='tabular' id='TBL-5' rules='groups'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-05-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-05-3-1' style='text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>           </p></td>
-                  <td class='td11' id='TBL-05-3-2' style='text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                           </p></td>
-                                                       <td class='td11' id='TBL-05-3-3' style='text-align:left;'> <!-- l. 398 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                      </p></td>
+<div class='tabular'> <table class='tabular' id='TBL-5' rules='groups'><colgroup id='TBL-5-1g'><col id='TBL-5-1' /></colgroup><colgroup id='TBL-5-2g'><col id='TBL-5-2' /></colgroup><colgroup id='TBL-5-3g'><col id='TBL-5-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-05-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-05-3-1' style='text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>           </p></td>
+                  <td class='td11' id='TBL-05-3-2' style='text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                           </p></td>
+                                                       <td class='td11' id='TBL-05-3-3' style='text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                      </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-005-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-005-6-1' style='text-align:left;'>
- <!-- l. 399 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
+ <!-- l. 403 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
                             </p></td>
-                  <td class='td11' id='TBL-005-6-2' style='text-align:left;'> <!-- l. 400 --><p class='noindent'><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' />                                                          </p></td>
-                                                       <td class='td11' id='TBL-005-6-3' style='text-align:left;'> <!-- l. 402 --><p class='noindent'><span class='rm-lmbx-9'>FOR TECHNICAL REASONS, DO NOT USE 
+                  <td class='td11' id='TBL-005-6-2' style='text-align:left;'> <!-- l. 404 --><p class='noindent'><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' />                                                          </p></td>
+                                                       <td class='td11' id='TBL-005-6-3' style='text-align:left;'> <!-- l. 406 --><p class='noindent'><span class='rm-lmbx-9'>FOR TECHNICAL REASONS, DO NOT USE 
 DAT  FOR  TURNING  ON  AND  OFF  LEDS. 
 JUST USE IT TO READ THE STATE OF THE 
 PUSHBUTTONS BELOW.</span>                              </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-0005-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-0005-9-1' style='text-align:left;'>
- <!-- l. 404 --><p class='noindent'><span class='rm-lmr-9'>GP?SET</span>
+ <!-- l. 408 --><p class='noindent'><span class='rm-lmr-9'>GP?SET</span>
                             </p></td>
-                  <td class='td11' id='TBL-0005-9-2' style='text-align:left;'> <!-- l. 405 --><p class='noindent'><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-                                                       <td class='td11' id='TBL-0005-9-3' style='text-align:left;'> <!-- l. 407 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO37 High/3.3V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
+                  <td class='td11' id='TBL-0005-9-2' style='text-align:left;'> <!-- l. 409 --><p class='noindent'><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin High, 3.3V </span><br class='newline' /><span class='rm-lmtt-9'>GP?SET.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+                                                       <td class='td11' id='TBL-0005-9-3' style='text-align:left;'> <!-- l. 411 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO37 High/3.3V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-00005-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00005-12-1' style='text-align:left;'>
- <!-- l. 408 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR</span>
+ <!-- l. 412 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR</span>
                             </p></td>
-<td class='td11' id='TBL-00005-12-2' style='text-align:left;'> <!-- l. 409 --><p class='noindent'><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-<td class='td11' id='TBL-00005-12-3' style='text-align:left;'> <!-- l. 411 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO70 Low/0V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
+<td class='td11' id='TBL-00005-12-2' style='text-align:left;'> <!-- l. 413 --><p class='noindent'><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmtt-9'>GP?CLEAR.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+<td class='td11' id='TBL-00005-12-3' style='text-align:left;'> <!-- l. 415 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets GPIO70 Low/0V. </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing.</span>                                                         </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-000005-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-000005-15-1' style='text-align:left;'>
- <!-- l. 412 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE</span>
+ <!-- l. 416 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE</span>
                             </p></td>
-<td class='td11' id='TBL-000005-15-2' style='text-align:left;'> <!-- l. 413 --><p class='noindent'><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin opposite of its current state </span><br class='newline' /><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
-<td class='td11' id='TBL-000005-15-3' style='text-align:left;'> <!-- l. 415 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; </span><br class='newline' /><span class='rm-lmr-9'>State                         toggles                         (3.3V</span> 
-<!-- l. 415 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>↔</mo></mrow></math> 
+<td class='td11' id='TBL-000005-15-2' style='text-align:left;'> <!-- l. 417 --><p class='noindent'><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 1; </span><br class='newline' /><span class='rm-lmr-9'>Sets Pin opposite of its current state </span><br class='newline' /><span class='rm-lmtt-9'>GP?TOGGLE.bit.GPIO? = 0; </span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                        </p></td>
+<td class='td11' id='TBL-000005-15-3' style='text-align:left;'> <!-- l. 419 --><p class='noindent'><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; </span><br class='newline' /><span class='rm-lmr-9'>State                         toggles                         (3.3V</span> 
+<!-- l. 419 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>↔</mo></mrow></math> 
 <span class='rm-lmr-9'>0V) </span><br class='newline' /><span class='rm-lmtt-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;</span><br class='newline' /><span class='rm-lmr-9'>Does Nothing</span>                                                          </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                     </div>
                                                                                                        
@@ -640,22 +640,22 @@ PUSHBUTTONS BELOW.</span>                              </p></td>
    </div>
    
 <h5 class='likesubsubsectionHead' id='gpio-register-use-when-gpio-pin-set-as-input'> <a id='x1-13000'></a>GPIO Register Use When GPIO Pin Set as Input:</h5>
-<!-- l. 420 --><p class='noindent'>Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for
+<!-- l. 424 --><p class='noindent'>Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for
 that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.
 </p><div class='table'>
                                                                                                        
                                                                                                        
-<!-- l. 422 --><p class='indent'>   </p><figure class='float' id='x1-13001r4'><span id='gpio-register-functional-definitions-and-usage-constraints1'></span>
+<!-- l. 426 --><p class='indent'>   </p><figure class='float' id='x1-13001r4'><span id='gpio-register-functional-definitions-and-usage-constraints1'></span>
                                                                                                        
                                                                                                        
 
 <figcaption class='caption'><span class='id'>Table 4: </span><span class='content'>GPIO Register Functional Definitions and Usage Constraints                                       </span></figcaption><!-- tex4ht:label?: x1-13001r4  -->
-<div class='tabular'> <table class='tabular' id='TBL-6' rules='groups'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-06-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-06-3-1' style='text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>     </p></td>
-              <td class='td11' id='TBL-06-3-2' style='text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                                       </p></td>
-                                                            <td class='td11' id='TBL-06-3-3' style='text-align:left;'> <!-- l. 430 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                   </p></td>
+<div class='tabular'> <table class='tabular' id='TBL-6' rules='groups'><colgroup id='TBL-6-1g'><col id='TBL-6-1' /></colgroup><colgroup id='TBL-6-2g'><col id='TBL-6-2' /></colgroup><colgroup id='TBL-6-3g'><col id='TBL-6-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-06-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-06-3-1' style='text-align:left;'> <!-- l. 436 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>     </p></td>
+              <td class='td11' id='TBL-06-3-2' style='text-align:left;'> <!-- l. 436 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                                       </p></td>
+                                                            <td class='td11' id='TBL-06-3-3' style='text-align:left;'> <!-- l. 436 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                   </p></td>
 </tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-006-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-006-6-1' style='text-align:left;'>
- <!-- l. 431 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
-                     </p></td><td class='td11' id='TBL-006-6-2' style='text-align:left;'> <!-- l. 432 --><p class='noindent'><span class='rm-lmr-9'>If </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1</span><span class='rm-lmr-9'>, the pin is logic high (3.3 V).</span><br class='newline' /><span class='rm-lmr-9'>If   </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0</span><span class='rm-lmr-9'>,   the   pin   is   logic   low 
+ <!-- l. 437 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
+                     </p></td><td class='td11' id='TBL-006-6-2' style='text-align:left;'> <!-- l. 438 --><p class='noindent'><span class='rm-lmr-9'>If </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 1</span><span class='rm-lmr-9'>, the pin is logic high (3.3 V).</span><br class='newline' /><span class='rm-lmr-9'>If   </span><span class='rm-lmtt-9'>GP?DAT.bit.GPIO? = 0</span><span class='rm-lmr-9'>,   the   pin   is   logic   low 
 (0 V/GND).</span>                                                        </p></td><td class='td11' id='TBL-006-6-3' style='text-align:left;'> <div class='minipage'><pre class='fancyvrb' id='fancyvrb14'><span class='fancyvrblineno'><a id='x1-13003r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {</span></span> 
 <span class='fancyvrblineno'><a id='x1-13005r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Code executed when input pin</span></span> 
 <span class='fancyvrblineno'><a id='x1-13007r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // GPIO19 is High (3.3V)</span></span> 
@@ -671,7 +671,7 @@ that pin. With the passive push button on our breakout board, we will need to en
    
 <h3 class='likesectionHead' id='exercise-9-led-toggles-'> <a id='x1-14000'></a>Exercise 9: LED toggles </h3>
 <p id='exercise-9-led-toggles'><a id='Q1-1-28'></a>
-<!-- l. 451 --></p><p class='noindent'>Using the GPIO reference tables above <span class='rm-lmbx-10x-x-109'>(note the example code in the table)</span>, add code to your CPU Timer2
+<!-- l. 457 --></p><p class='noindent'>Using the GPIO reference tables above <span class='rm-lmbx-10x-x-109'>(note the example code in the table)</span>, add code to your CPU Timer2
 interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed,
 toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and
 off. 
@@ -679,7 +679,7 @@ off.
 </p>   
 <h3 class='likesectionHead' id='exercise-10-led-patterns-'>  <a id='x1-15000'></a>Exercise 10: LED patterns </h3>
 <p id='exercise-10-led-patterns'><a id='Q1-1-30'></a>
-<!-- l. 455 --></p><p class='noindent'>Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these
+<!-- l. 461 --></p><p class='noindent'>Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these
 different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each
 other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate
 within one of the CPU timer interrupt functions.
@@ -687,7 +687,7 @@ within one of the CPU timer interrupt functions.
 </p>   
 <h3 class='likesectionHead' id='exercise-11-binary-operations-'>  <a id='x1-16000'></a>Exercise 11: Binary operations </h3>
 <p id='exercise-11-binary-operations'><a id='Q1-1-32'></a>
-<!-- l. 459 --></p><p class='noindent'>Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these
+<!-- l. 465 --></p><p class='noindent'>Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these
 calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value
 over the serial port using the “<span class='obeylines-h'><code class='verb'>serial_printf</code></span>” function.
 </p>     
@@ -711,21 +711,21 @@ is 9600 bits per second when using the <span class='obeylines-h'><code class='ve
    
 <h3 class='likesectionHead' id='exercise-12-type-bit-sizes-'> <a id='x1-17000'></a>Exercise 12: Type bit sizes </h3>
 <p id='exercise-12-type-bit-sizes'><a id='Q1-1-34'></a>
-<!-- l. 473 --></p><p class='noindent'>Read section 6.3 of the F28379D C reference guide (<a class='url' href='https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf'><span class='rm-lmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf</span></a>).
+<!-- l. 479 --></p><p class='noindent'>Read section 6.3 of the F28379D C reference guide (<a class='url' href='https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf'><span class='rm-lmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf</span></a>).
 How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: <span class='rm-lmtt-10x-x-109'>int</span>,
 <span class='rm-lmtt-10x-x-109'>long int</span>, <span class='rm-lmtt-10x-x-109'>unsigned int</span>, <span class='rm-lmtt-10x-x-109'>short int</span>, <span class='rm-lmtt-10x-x-109'>char</span>, <span class='rm-lmtt-10x-x-109'>double</span>, <span class='rm-lmtt-10x-x-109'>float</span>?
 
 </p>   
 <h3 class='likesectionHead' id='exercise-13-uart-signal-display-'>  <a id='x1-18000'></a>Exercise 13: UART signal display </h3>
 <p id='exercise-13-uart-signal-display'><a id='Q1-1-36'></a>
-<!-- l. 478 --></p><p class='noindent'>To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope
+<!-- l. 484 --></p><p class='noindent'>To give you a better understanding of the data transmitted to the Tera Term serial terminal, if an oscilloscope
 was connected to the transmit line (TXD) of your TMS320F28379D processor, what would be displayed if
 the baud rate was set to 115200 bits per second and only two <a href='https://www.ascii-code.com/'>ASCII</a> characters, “4” and “B”, were sent
 in sequence? Scoping the TXD line is not required, but you are welcome to figure out the waveform that
 way.
 </p>   
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 480 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 486 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See</span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
