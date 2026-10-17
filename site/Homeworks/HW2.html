@@ -6,6 +6,9 @@
 <meta content='width=device-width,initial-scale=1' name='viewport' /> 
 <link href='HW2.css' rel='stylesheet' type='text/css' /> 
 <meta content='HW2.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
 </head><body>
 <div class='tcolorbox tcolorbox' id='tcolobox-1'>     
 <div class='tcolorbox-content'><!-- l. 35 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
@@ -54,35 +57,35 @@ your code. I am just showing you how to view variable definitions using “Open 
 delete this single line of code where you typed <span class='rm-lmtt-10x-x-109'>EPwm12Regs</span>, otherwise you will receive a compiler error
 later.)
 </span></code></p>   
-<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct TBCTL_BITS {                     // bits description</span></span> 
-<span class='fancyvrblineno'><a id='x1-2004r2'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CTRMODE:2;                   // 1:0 Counter Mode</span></span> 
-<span class='fancyvrblineno'><a id='x1-2006r3'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 PHSEN:1;                     // 2 Phase Load Enable</span></span> 
-<span class='fancyvrblineno'><a id='x1-2008r4'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 PRDLD:1;                     // 3 Active Period Load</span></span> 
-<span class='fancyvrblineno'><a id='x1-2010r5'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 SYNCOSEL:2;                  // 5:4 Sync Output Select</span></span> 
-<span class='fancyvrblineno'><a id='x1-2012r6'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 SWFSYNC:1;                   // 6 Software Force Sync Pulse</span></span> 
-<span class='fancyvrblineno'><a id='x1-2014r7'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 HSPCLKDIV:3;                 // 9:7 High Speed TBCLK Pre-scaler</span></span> 
-<span class='fancyvrblineno'><a id='x1-2016r8'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CLKDIV:3;                    // 12:10 Time Base Clock Pre-scaler</span></span> 
-<span class='fancyvrblineno'><a id='x1-2018r9'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 PHSDIR:1;                    // 13 Phase Direction Bit</span></span> 
-<span class='fancyvrblineno'><a id='x1-2020r10'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 FREE_SOFT:2;                 // 15:14 Emulation Mode Bits</span></span> 
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct TBCTL_BITS {                     // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-2004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CTRMODE:2;                   // 1:0 Counter Mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-2006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PHSEN:1;                     // 2 Phase Load Enable</span></span> 
+<span class='fancyvrblineno'><a id='x1-2008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PRDLD:1;                     // 3 Active Period Load</span></span> 
+<span class='fancyvrblineno'><a id='x1-2010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 SYNCOSEL:2;                  // 5:4 Sync Output Select</span></span> 
+<span class='fancyvrblineno'><a id='x1-2012r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 SWFSYNC:1;                   // 6 Software Force Sync Pulse</span></span> 
+<span class='fancyvrblineno'><a id='x1-2014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 HSPCLKDIV:3;                 // 9:7 High Speed TBCLK Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-2016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CLKDIV:3;                    // 12:10 Time Base Clock Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-2018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PHSDIR:1;                    // 13 Phase Direction Bit</span></span> 
+<span class='fancyvrblineno'><a id='x1-2020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 FREE_SOFT:2;                 // 15:14 Emulation Mode Bits</span></span> 
 <span class='fancyvrblineno'><a id='x1-2022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
-<span class='fancyvrblineno'><a id='x1-2024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union TBCTL_REG {</span></span> 
-<span class='fancyvrblineno'><a id='x1-2026r13'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 all;</span></span> 
-<span class='fancyvrblineno'><a id='x1-2028r14'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>struct TBCTL_BITS bit;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union TBCTL_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-2026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    struct TBCTL_BITS bit;</span></span> 
 <span class='fancyvrblineno'><a id='x1-2030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
 <span class='fancyvrblineno'><a id='x1-2032r16'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-2034r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct AQCTLA_BITS {                    // bits description</span></span> 
-<span class='fancyvrblineno'><a id='x1-2036r18'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 ZRO:2;                       // 1:0 Action Counter = Zero</span></span> 
-<span class='fancyvrblineno'><a id='x1-2038r19'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 PRD:2;                       // 3:2 Action Counter = Period</span></span> 
-<span class='fancyvrblineno'><a id='x1-2040r20'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CAU:2;                       // 5:4 Action Counter = Compare A Up</span></span> 
-<span class='fancyvrblineno'><a id='x1-2042r21'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CAD:2;                       // 7:6 Action Counter = Compare A Down</span></span> 
-<span class='fancyvrblineno'><a id='x1-2044r22'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CBU:2;                       // 9:8 Action Counter = Compare B Up</span></span> 
-<span class='fancyvrblineno'><a id='x1-2046r23'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 CBD:2;                       // 11:10 Action Counter = Compare B Down</span></span> 
-<span class='fancyvrblineno'><a id='x1-2048r24'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 rsvd1:4;                     // 15:12 Reserved</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-2034r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct AQCTLA_BITS {                    // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-2036r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 ZRO:2;                       // 1:0 Action Counter = Zero</span></span> 
+<span class='fancyvrblineno'><a id='x1-2038r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PRD:2;                       // 3:2 Action Counter = Period</span></span> 
+<span class='fancyvrblineno'><a id='x1-2040r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CAU:2;                       // 5:4 Action Counter = Compare A Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-2042r21'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CAD:2;                       // 7:6 Action Counter = Compare A Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-2044r22'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CBU:2;                       // 9:8 Action Counter = Compare B Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-2046r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CBD:2;                       // 11:10 Action Counter = Compare B Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-2048r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 rsvd1:4;                     // 15:12 Reserved</span></span> 
 <span class='fancyvrblineno'><a id='x1-2050r25'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
 <span class='fancyvrblineno'><a id='x1-2052r26'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-2054r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union AQCTLA_REG {</span></span> 
-<span class='fancyvrblineno'><a id='x1-2056r28'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Uint16 all;</span></span> 
-<span class='fancyvrblineno'><a id='x1-2058r29'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>struct AQCTLA_BITS bit;</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-2054r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union AQCTLA_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-2056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-2058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    struct AQCTLA_BITS bit;</span></span> 
 <span class='fancyvrblineno'><a id='x1-2060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span></pre>
 <!-- l. 127 --><p class='noindent'>Looking at these bit-fields notice the <span class='rm-lmtt-10x-x-109'>:1</span>, <span class='rm-lmtt-10x-x-109'>:2 </span>or <span class='rm-lmtt-10x-x-109'>:3 </span>after <span class='rm-lmtt-10x-x-109'>PHSEN</span>, <span class='rm-lmtt-10x-x-109'>CTRMODE</span>, <span class='rm-lmtt-10x-x-109'>CLKDIV </span>respectively. This indicates how many bits
 this portion of the bit field uses. If you add up all the numbers after the colons, you see that it adds to 16, which
@@ -176,7 +179,7 @@ field. To make this clearer, look at the definition of <span class='rm-lmtt-10x-
 bit-field unions allow us to do in our program is assign the value of the three CLKDIV bits without changing the other bits
 of the register. So you could code:
 </p>   
-<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2064r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm12Regs.TBCTL.bit.CLKDIV = 3;</span></span></pre>
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2064r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm12Regs.TBCTL.bit.CLKDIV = 3;</span></span></pre>
 <!-- l. 174 --><p class='noindent'>Moreover, that would set bit 10 to 1, bit 11 to 1, and bit 12 to 0 in the TBCTL register, leaving all the other
 bits unchanged. Since CLKDIV uses 3 bits, the smallest value you can set it to is 0. What is the largest
 number you could set it to? <span class='rm-lmri-10x-x-109'>(Technically, you could set it to any number in your code, but only the bottom 3
@@ -205,15 +208,15 @@ F28379D Launchpad</a> to help you here. Use the function <span class='rm-lmtt-10
 GPIO22 is instead set as EPWM12A output pin. For example, the below line of code sets GPIO158 as
 GPIO158:
 </p>   
-<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2066r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2066r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index</span></span></pre>
 <!-- l. 196 --><p class='noindent'>Looking at the PinMux table, the line of code below sets GPIO40 to be instead the SDAB pin:
 </p>   
-<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-2068r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-2068r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index</span></span></pre>
 <!-- l. 202 --><p class='noindent'>Finally, based on a number of TI examples, it is a good idea to disable the pull-up resistor when an I/O pin is set as a PWM
 output to reduce power consumption. Add these lines of code after your above initializations.
 </p>   
-<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-2070r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;  // Below are protected registers</span></span> 
-<span class='fancyvrblineno'><a id='x1-2072r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A</span></span> 
+<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-2070r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;  // Below are protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-2072r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A</span></span> 
 <span class='fancyvrblineno'><a id='x1-2074r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
 <!-- l. 210 --><p class='noindent'>Compile your code and fix any compiler errors. So that you can see LED1 dimming and brightening, go to CPU Timer 0’s
 interrupt function and comment out the call to the <span class='rm-lmtt-10x-x-109'>displayLEDletter() </span>function. When ready, download this code to
@@ -307,19 +310,19 @@ In <span class='rm-lmtt-10x-x-109'>main() </span>after the <span class='rm-lmtt-
 reference. Do not forget to copy EALLOW and EDIS.
 </p>   
 <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-3002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;</span></span> 
-<span class='fancyvrblineno'><a id='x1-3004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group</span></span> 
-<span class='fancyvrblineno'><a id='x1-3006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = 3; // freeze counter</span></span> 
-<span class='fancyvrblineno'><a id='x1-3008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCASEL = ???; // Select event when counter equal to PRD</span></span> 
-<span class='fancyvrblineno'><a id='x1-3010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETPS.bit.SOCAPRD = ???; // Generate pulse on 1st event (“pulse” is the same as “trigger”)</span></span> 
+<span class='fancyvrblineno'><a id='x1-3004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group</span></span> 
+<span class='fancyvrblineno'><a id='x1-3006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = 3; // freeze counter</span></span> 
+<span class='fancyvrblineno'><a id='x1-3008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCASEL = ???; // Select event when counter equal to PRD</span></span> 
+<span class='fancyvrblineno'><a id='x1-3010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETPS.bit.SOCAPRD = ???; // Generate pulse on 1st event (“pulse” is the same as “trigger”)</span></span> 
 <span class='fancyvrblineno'><a id='x1-3012r6'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTR = 0x0; // Clear counter</span></span> 
-<span class='fancyvrblineno'><a id='x1-3016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0</span></span> 
-<span class='fancyvrblineno'><a id='x1-3018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading</span></span> 
-<span class='fancyvrblineno'><a id='x1-3020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CLKDIV = 0; // divide by 1 50Mhz Clock</span></span> 
-<span class='fancyvrblineno'><a id='x1-3022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBPRD = ???;  // Set Period to 1ms sample. The input clock is 50MHz.</span></span> 
-<span class='fancyvrblineno'><a id='x1-3024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal</span></span> 
-<span class='fancyvrblineno'><a id='x1-3026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 1; //enable SOCA</span></span> 
-<span class='fancyvrblineno'><a id='x1-3028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = ???; //unfreeze, and enter up count mode</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTR = 0x0; // Clear counter</span></span> 
+<span class='fancyvrblineno'><a id='x1-3016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-3018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading</span></span> 
+<span class='fancyvrblineno'><a id='x1-3020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CLKDIV = 0; // divide by 1 50Mhz Clock</span></span> 
+<span class='fancyvrblineno'><a id='x1-3022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBPRD = ???;  // Set Period to 1ms sample. The input clock is 50MHz.</span></span> 
+<span class='fancyvrblineno'><a id='x1-3024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal</span></span> 
+<span class='fancyvrblineno'><a id='x1-3026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.ETSEL.bit.SOCAEN = 1; //enable SOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm4Regs.TBCTL.bit.CTRMODE = ???; //unfreeze, and enter up count mode</span></span> 
 <span class='fancyvrblineno'><a id='x1-3030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
                                                                                                        
                                                                                                        
@@ -335,34 +338,34 @@ appropriate blanks (???). Note that the lines of C code that are commented out w
 also convert the Joystick channels.
 </p>   
 <pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-3032r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;</span></span> 
-<span class='fancyvrblineno'><a id='x1-3034r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//write configurations for ADCA</span></span> 
-<span class='fancyvrblineno'><a id='x1-3036r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</span></span> 
-<span class='fancyvrblineno'><a id='x1-3038r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);  //read calibration settings</span></span> 
-<span class='fancyvrblineno'><a id='x1-3040r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//Set pulse positions to late</span></span> 
-<span class='fancyvrblineno'><a id='x1-3042r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-3044r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//power up the ADCs</span></span> 
-<span class='fancyvrblineno'><a id='x1-3046r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-3048r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//delay for 1ms to allow ADC time to power up</span></span> 
+<span class='fancyvrblineno'><a id='x1-3034r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//write configurations for ADCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3036r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</span></span> 
+<span class='fancyvrblineno'><a id='x1-3038r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);  //read calibration settings</span></span> 
+<span class='fancyvrblineno'><a id='x1-3040r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//Set pulse positions to late</span></span> 
+<span class='fancyvrblineno'><a id='x1-3042r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3044r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//power up the ADCs</span></span> 
+<span class='fancyvrblineno'><a id='x1-3046r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3048r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//delay for 1ms to allow ADC time to power up</span></span> 
 <span class='fancyvrblineno'><a id='x1-3050r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>DELAY_US(1000);</span></span> 
 <span class='fancyvrblineno'><a id='x1-3052r11'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3054r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//Select the channels to convert and the end of conversion flag</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3054r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//Select the channels to convert and the end of conversion flag</span></span> 
 <span class='fancyvrblineno'><a id='x1-3056r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//ADCA</span></span> 
-<span class='fancyvrblineno'><a id='x1-3058r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???; //SOC0 will convert Channel you choose Does not have to be A0</span></span> 
-<span class='fancyvrblineno'><a id='x1-3060r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
-<span class='fancyvrblineno'><a id='x1-3062r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+<span class='fancyvrblineno'><a id='x1-3058r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???; //SOC0 will convert Channel you choose Does not have to be A0</span></span> 
+<span class='fancyvrblineno'><a id='x1-3060r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3062r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
 <span class='fancyvrblineno'><a id='x1-3064r17'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3066r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1</span></span> 
-<span class='fancyvrblineno'><a id='x1-3068r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
-<span class='fancyvrblineno'><a id='x1-3070r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3066r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1</span></span> 
+<span class='fancyvrblineno'><a id='x1-3068r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3070r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
 <span class='fancyvrblineno'><a id='x1-3072r21'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3074r22'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2</span></span> 
-<span class='fancyvrblineno'><a id='x1-3076r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
-<span class='fancyvrblineno'><a id='x1-3078r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3074r22'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2</span></span> 
+<span class='fancyvrblineno'><a id='x1-3076r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns</span></span> 
+<span class='fancyvrblineno'><a id='x1-3078r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA</span></span> 
 <span class='fancyvrblineno'><a id='x1-3080r25'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3082r26'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//set to last or only SOC that is converted, and it will set INT1 flag ADCA1</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3082r26'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//set to last or only SOC that is converted, and it will set INT1 flag ADCA1</span></span> 
 <span class='fancyvrblineno'><a id='x1-3084r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;</span></span> 
-<span class='fancyvrblineno'><a id='x1-3086r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag</span></span> 
-<span class='fancyvrblineno'><a id='x1-3088r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared        </span></span> 
+<span class='fancyvrblineno'><a id='x1-3086r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-3088r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared        </span></span> 
 <span class='fancyvrblineno'><a id='x1-3090r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
 <!-- l. 321 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Note</span>: <span class='rm-lmri-10x-x-109'>The naming can get confusing here. There are ADCA inputs channels labeled ADCINA0, ADCINA1, ADCINA2,
 ADCINA3, ADCINA4, ADCINA5 and there are also four ADCA interrupts labeled ADCA1, ADCA2, ADCA3 and
@@ -372,18 +375,18 @@ function.
 </p><!-- l. 323 --><p class='indent'>   Now add this ADCA1 hardware interrupt function. To get you started with this interrupt function, cut and paste this
 shell function somewhere in your code outside of your <span class='rm-lmtt-10x-x-109'>main() </span>function.
 </p>   
-<pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-3092r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//adca1 pie interrupt</span></span> 
-<span class='fancyvrblineno'><a id='x1-3094r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void ADCA_ISR (void)</span></span> 
+<pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-3092r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//adca1 pie interrupt</span></span> 
+<span class='fancyvrblineno'><a id='x1-3094r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void ADCA_ISR (void)</span></span> 
 <span class='fancyvrblineno'><a id='x1-3096r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-3098r4'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>Adca4result = AdcaResultRegs.ADCRESULT0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3098r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Adca4result = AdcaResultRegs.ADCRESULT0;</span></span> 
 <span class='fancyvrblineno'><a id='x1-3100r5'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3102r6'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// Here covert ADCINA4 to volts</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3102r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Here covert ADCINA4 to volts</span></span> 
 <span class='fancyvrblineno'><a id='x1-3104r7'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3106r8'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>// Print ADCINA4’s voltage value to TeraTerm every 100ms by setting UARTPrint to one every 100th</span></span> 
-<span class='fancyvrblineno'><a id='x1-3108r9'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>//time in this function.</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3106r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Print ADCINA4’s voltage value to TeraTerm every 100ms by setting UARTPrint to one every 100th</span></span> 
+<span class='fancyvrblineno'><a id='x1-3108r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //time in this function.</span></span> 
 <span class='fancyvrblineno'><a id='x1-3110r10'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-3112r11'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //clear interrupt flag</span></span> 
-<span class='fancyvrblineno'><a id='x1-3114r12'></a></span><span class='fancyvrbline'>    <span class='rm-lmtt-9'>PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+</span><span class='fancyvrblineno'><a id='x1-3112r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //clear interrupt flag</span></span> 
+<span class='fancyvrblineno'><a id='x1-3114r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
 <span class='fancyvrblineno'><a id='x1-3116r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
 <!-- l. 341 --><p class='noindent'>Furthermore, perform the following steps (<span class='rm-lmri-10x-x-109'>some of these steps have already been done for you by the shell code</span>):
 </p>     

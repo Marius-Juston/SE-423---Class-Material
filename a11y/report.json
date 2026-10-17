@@ -1,0 +1,5744 @@
+[
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "color_spaces.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "dark",
+  "severity": "error",
+  "count": 6
+ },
+ {
+  "tool": "html",
+  "file": "color_spaces.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "light",
+  "severity": "error",
+  "count": 6
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 67
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "light",
+  "severity": "error",
+  "count": 67
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "dark",
+  "severity": "error",
+  "count": 6
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "light",
+  "severity": "error",
+  "count": 6
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "lidar_slam/slam.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 23
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "light",
+  "severity": "error",
+  "count": 23
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 14
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "light",
+  "severity": "error",
+  "count": 14
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/meta-viewport",
+  "message": "Zooming and scaling must not be disabled",
+  "where": "dark",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/meta-viewport",
+  "message": "Zooming and scaling must not be disabled",
+  "where": "light",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "path_planning.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 14
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "dark",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "light",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "light",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/commenting_code_example.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/syllabus.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 3
+ },
+ {
+  "tool": "html",
+  "file": "site/syllabus.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/syllabus.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/syllabus.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/syllabus.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "dark",
+  "severity": "error",
+  "count": 16
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "light",
+  "severity": "error",
+  "count": 16
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "dark",
+  "severity": "error",
+  "count": 7
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "light",
+  "severity": "error",
+  "count": 7
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/select-name",
+  "message": "Select element must have an accessible name",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 13
+ },
+ {
+  "tool": "html",
+  "file": "trajectory_planning.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 13
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/HW1.tex",
+  "rule": "latex/table-header-undeclared",
+  "message": "tables without declared header rows (\\tagpdfsetup{table/header-rows={1}})",
+  "where": "",
+  "severity": "warning",
+  "count": 4
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/HW2.tex",
+  "rule": "latex/table-header-undeclared",
+  "message": "tables without declared header rows (\\tagpdfsetup{table/header-rows={1}})",
+  "where": "",
+  "severity": "warning",
+  "count": 2
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/LabVIEW1.tex",
+  "rule": "latex/figure-no-caption",
+  "message": "figure without \\caption (no accessible name in the tagged PDF)",
+  "where": "",
+  "severity": "error",
+  "count": 5
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/LabVIEW2.tex",
+  "rule": "latex/figure-no-caption",
+  "message": "figure without \\caption (no accessible name in the tagged PDF)",
+  "where": "",
+  "severity": "error",
+  "count": 3
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/LabVIEW3.tex",
+  "rule": "latex/figure-no-caption",
+  "message": "figure without \\caption (no accessible name in the tagged PDF)",
+  "where": "",
+  "severity": "error",
+  "count": 3
+ },
+ {
+  "tool": "latex",
+  "file": "Homeworks/LabVIEW4.tex",
+  "rule": "latex/figure-no-caption",
+  "message": "figure without \\caption (no accessible name in the tagged PDF)",
+  "where": "",
+  "severity": "error",
+  "count": 3
+ },
+ {
+  "tool": "latex",
+  "file": "syllabus.tex",
+  "rule": "latex/table-header-undeclared",
+  "message": "tables without declared header rows (\\tagpdfsetup{table/header-rows={1}})",
+  "where": "",
+  "severity": "warning",
+  "count": 2
+ },
+ {
+  "tool": "make4ht",
+  "file": "Homeworks/HW4.tex",
+  "rule": "html/not-produced",
+  "message": "the accessible HTML version failed to build",
+  "where": "",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "make4ht",
+  "file": "Homeworks/HW6.tex",
+  "rule": "html/not-produced",
+  "message": "the accessible HTML version failed to build",
+  "where": "",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "make4ht",
+  "file": "Homeworks/commenting_code_example.tex",
+  "rule": "html/not-produced",
+  "message": "the accessible HTML version failed to build",
+  "where": "",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "make4ht",
+  "file": "syllabus.tex",
+  "rule": "html/not-produced",
+  "message": "the accessible HTML version failed to build",
+  "where": "",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pdf",
+  "file": "Homeworks/HW2.pdf",
+  "rule": "pdf/ISO 32005:2023 Table 5. P-P-1",
+  "message": "<P> shall not contain <P>",
+  "where": "",
+  "severity": "error",
+  "count": 66
+ },
+ {
+  "tool": "pdf",
+  "file": "Homeworks/HW2.pdf",
+  "rule": "pdf/ISO 32005:2023 Table 5. P-Part-1",
+  "message": "<P> shall not contain <Part>",
+  "where": "",
+  "severity": "error",
+  "count": 66
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 2 has no alt text",
+  "where": "slide 259 / {F08F1229-F74C-C806-9243-DFA99F70E43C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 5 has no alt text",
+  "where": "slide 272 / {8754EDC0-99B7-CBA6-37EB-E90E9A22774B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 6 has no alt text",
+  "where": "slide 273 / {146F05D5-34A6-365B-F1DA-44E97F5A3DA1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 21
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 69
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 21
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 310 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 7",
+  "where": "slide 314 / shape 13",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 40",
+  "where": "slide 392 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 7 has no alt text",
+  "where": "slide 314 / {93684A5F-CA2F-28C0-49AD-4A49C4B0AB84}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 10 has no alt text",
+  "where": "slide 315 / {3B811EB4-FFC8-B884-FA4E-2DE4D94CF01A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 318 / {7FBC60A7-C44A-88C2-2880-42A130B2D873}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 319 / {D302A98A-CEE1-9372-173D-59C903A10761}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 13 has no alt text",
+  "where": "slide 320 / {5247E9EB-6C19-47E0-2230-76E8EDED30CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 324 / {F2DB4266-0321-68D1-A7B8-0DC3666EEF0D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 331 / {7F3DCA0B-06EC-CDAB-5F7A-048D3BBDB4CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 334 / {37104FA7-F39F-8F31-1F55-4826818DCDA8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 35 has no alt text",
+  "where": "slide 336 / {647DD6B5-C8C7-BE73-FB99-988487132B67}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 39 has no alt text",
+  "where": "slide 387 / {9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 392 / {A2C751A5-B34B-D3F6-4EA0-0BA4554B9031}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 45 has no alt text",
+  "where": "slide 398 / {87F78193-1707-7908-BA06-B40E6782147B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 399 / {1A4A4412-5944-0B4E-16E8-7FDCA80BC159}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 399 / {B029C68A-1543-011F-D3B6-A4CE4200B828}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 50 has no alt text",
+  "where": "slide 402 / {53F754A7-3686-6B9D-9B12-97F1F3E76F8A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 52 has no alt text",
+  "where": "slide 404 / {61188845-24DF-5C13-BC45-4F51B6829131}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 46 has no alt text",
+  "where": "slide 405 / {7C788A6C-9173-E3C2-5AA8-97894712E557}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 56 has no alt text",
+  "where": "slide 409 / {89F6B071-B715-7FBB-0E30-D060E408D0E0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 61
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 288
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 61
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 20",
+  "where": "slide 433 / shape 13",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 20",
+  "where": "slide 433 / shape 43",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 21",
+  "where": "slide 434 / shape 12",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 21",
+  "where": "slide 434 / shape 16",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 7 has no alt text",
+  "where": "slide 417 / {80FC701E-794E-5C2C-E1F5-4739C0BC8277}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 16 has no alt text",
+  "where": "slide 421 / {F019B837-225D-A578-169B-D851C7A2C1D3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 428 / {5582DEE3-F239-7E2F-227E-E5AC805EB3E6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 430 / {7869FDA0-4CF7-481C-A8DF-0846B8BF8F79}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 20 has no alt text",
+  "where": "slide 433 / {7396B6AB-E327-BBF0-7275-F666CB059720}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 21 has no alt text",
+  "where": "slide 434 / {B09EE897-6171-2032-9BE2-00C2F44C9310}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 25
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 147
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 25
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 22",
+  "where": "slide 435 / shape 14",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 22",
+  "where": "slide 435 / shape 18",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 31",
+  "where": "slide 441 / shape 12",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 31",
+  "where": "slide 441 / shape 21",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 31",
+  "where": "slide 441 / shape 26",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 31",
+  "where": "slide 441 / shape 30",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 31",
+  "where": "slide 441 / shape 42",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 32",
+  "where": "slide 442 / shape 29",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 32",
+  "where": "slide 442 / shape 7",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 37",
+  "where": "slide 447 / shape 16",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 37",
+  "where": "slide 447 / shape 29",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 37",
+  "where": "slide 447 / shape 31",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 37",
+  "where": "slide 447 / shape 35",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 387 / {9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 426 / {9AE8F741-9312-721E-B0DC-B9D63AB5C94B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 435 / {F6074030-B8F1-B0AD-1A65-72A80DAE0131}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 441 / {6DAB086C-55CF-1A28-68CB-954CFF4AFBF9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 32 has no alt text",
+  "where": "slide 442 / {4B287157-1149-6EFD-6641-BD017E014418}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 37 has no alt text",
+  "where": "slide 447 / {CAB8B104-0853-0562-290B-5A74B3804C62}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 41 has no alt text",
+  "where": "slide 449 / {359598AE-F55A-9B86-D5BE-1F5C7A0AAC5D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 39 has no alt text",
+  "where": "slide 450 / {4C8589C5-0B8C-BDAF-E74E-A8BBBB20F64F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 43
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 243
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 43
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 13 has no description",
+  "where": "slide 432 / {324C272E-4056-2D46-0466-467E8004EC02}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 422 / {F96529A1-B40E-A8F2-D80D-74408277B80A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 423 / {5AAA68F8-9D75-7853-D652-AFBB9C534ED2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 423 / {A38C60A1-C66E-CE47-28E4-763F4132E6BF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 16 has no alt text",
+  "where": "slide 429 / {20166750-1C13-A3FF-99A1-2CB80308C6D9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 430 / {B062A763-D041-A592-9822-74D17B82A0DA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 431 / {04DBDED2-FC79-A6C7-F177-0D9C747FF478}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 6 has no alt text",
+  "where": "slide 442 / {24356165-11B7-5CA3-9C3C-2FF29D036AC1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 443 / {84B40BA0-6200-7012-2665-31C9F569C493}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 444 / {D88A1901-4402-8DD6-6D8F-007EA8BCF76A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 41 has no alt text",
+  "where": "slide 455 / {1318D75A-6E38-B719-46F0-F70CD629CBA7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 43
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 613
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 43
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 20 has no description",
+  "where": "slide 428 / {EBE6570E-94DE-EAE5-C00B-EDF84219689C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 12",
+  "where": "slide 427 / shape 20",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 451 / shape 16",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 451 / shape 30",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 451 / shape 6",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 42 has no alt text",
+  "where": "slide 422 / {B03BADCA-92CE-EC47-0841-616BEA662AEF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 427 / {95B64AEF-6C4C-F19B-2D4D-03E6FA9EA2CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 430 / {6EE6CDDF-E069-0316-A6F0-FE9CA9748642}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 20 has no alt text",
+  "where": "slide 436 / {0C64EA01-EC69-2AB7-A454-9CA845DCA2E7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 25 has no alt text",
+  "where": "slide 440 / {22F6EAA8-D1E8-2E30-34AA-E3E04D9A1ED7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 442 / {90BDC651-87BC-7F7F-A3A5-D34A1C946415}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 444 / {662D4277-2399-920C-94B4-F3EE2E5790F5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 448 / {45945A97-1EC3-51F2-D867-9CB53EC098DB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 33 has no alt text",
+  "where": "slide 451 / {D564E30D-12B0-B940-E27A-97B5A4271577}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 44 has no alt text",
+  "where": "slide 455 / {66048966-B200-A1D9-C88D-B7C71B5C9292}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 37 has no alt text",
+  "where": "slide 456 / {9380E33E-904F-ACBA-FB5C-400272C931BE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 458 / {60760AFA-7E5F-FF84-8B45-D570D8D42F96}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 39 has no alt text",
+  "where": "slide 459 / {52B52767-BC6A-58FF-6CBF-F32DD842F92B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 27 has placeholder alt text 'undefined'",
+  "where": "slide 443 / {FE6F859E-2E0D-BE78-1AFA-2D262DE7E689}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 38 has placeholder alt text 'undefined'",
+  "where": "slide 457 / {FE1FDDE6-E8C4-63CB-DC53-04F648D4BD61}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 79
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 43 has no description",
+  "where": "slide 423 / {E277F7A4-DC0A-5C1E-F2F5-CFC67683FB7A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 421 / {B01BA914-F748-37D2-7034-19DF3A5F1142}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 10 has no alt text",
+  "where": "slide 422 / {B09C676A-C7CC-590E-E845-C95E05865DD4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 13 has no alt text",
+  "where": "slide 424 / {D2324FFB-0CF5-F03C-B042-14E9646FD156}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 426 / {6CD07C2B-9CCD-5838-F433-5C2EBF3516E8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 434 / {F253A45E-17E9-77F6-0CF5-586594A729A5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 435 / {5981030D-0294-627F-8D3B-A114FD5891DE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 25 has no alt text",
+  "where": "slide 436 / {2E5442EB-5FDF-63B8-74EC-F0DEBD0C3517}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 437 / {057E820A-FAFB-0518-9A2F-DF8DB1F97973}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 438 / {08DCB2E8-FF30-3015-8E18-F5DE0586C1B9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 441 / {D7E15BB6-082A-1B39-6E44-A4C768B729AC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 442 / {5AB07676-E75C-9490-A2CF-AB34E41E2BCF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 35 has no alt text",
+  "where": "slide 444 / {51BAB843-7088-724C-E33B-5C28CB5B4365}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 448 / {315ED8E6-1A93-6BA4-35DD-15A6BF9A8007}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 448 / {5EDCFAED-D88C-BF40-EBFD-F63257E52099}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 44 has no alt text",
+  "where": "slide 457 / {749C5622-0D26-7FC2-2E63-53E62FF28A68}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 458 / {89D0CA00-8753-DA08-F841-EF1FE694E952}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 458 / {AE4E309E-FD80-C30D-E2B0-52B363B78C09}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 79
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L15.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 428 / {BBAB6D5A-341B-ACD8-BAA3-A78ADAC524D8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 428 / {D2D10FB6-D953-00EB-84CA-C1878DFF7FF0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 431 / {576F147B-51BA-D5AB-81E5-CADD9A5B10E8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 431 / {6085CB31-7B1B-44F9-C259-63C45FF68578}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 19 has no alt text",
+  "where": "slide 432 / {BFD2AB86-F5E6-BC4C-CEA7-D858A5E60D1A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 20 has no alt text",
+  "where": "slide 433 / {3EFB3967-80C8-1F91-3D55-0DCA4793CEEA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 435 / {C6CEE4EA-86BC-5A3B-C33C-223CA06B5EFA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 436 / {DF6ABBC9-8162-C324-89DA-8469C01AFE72}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 436 / {F479F71F-6634-1BB5-519F-67394CB2FD13}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 437 / {77A5E155-8E76-E0A9-D357-6759E148F1F4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 437 / {A6D11F94-4902-1D2F-2530-E6A7ACD88758}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 438 / {ADD02CC6-039D-F520-F02E-F9DF71027302}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 438 / {C04602B4-FB65-879D-0271-533181C290B2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 439 / {6ECD23FF-F85B-E3AE-06E9-78DBEF2C5302}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 28 has no alt text",
+  "where": "slide 440 / {B5EBC154-0030-723B-6E07-EF9517686B53}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 25 has no alt text",
+  "where": "slide 441 / {4CBEC6BF-EC18-1A02-C5F8-07B8B2AD0B72}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 442 / {1D699870-7E14-EDEE-84C3-89063CD246F4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 443 / {4C8F5941-36FB-E6BC-27C0-9366122C7FD0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 448 / {7A495A7C-4D09-60AF-F301-540BA716036A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 40
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 563
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/table-no-header",
+  "message": "table on slide 17 has no header row",
+  "where": "slide 430 / table 5",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/table-no-header",
+  "message": "table on slide 17 has no header row",
+  "where": "slide 430 / table 6",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 40
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 2 has no alt text",
+  "where": "slide 417 / {24A77EEA-1740-B395-D98B-8393E536A5FE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 2 has no alt text",
+  "where": "slide 417 / {5C9ED0E5-D2F3-6859-05CA-DBB780B2AEFF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 9 has no alt text",
+  "where": "slide 422 / {13F46CA8-EE1D-75C2-2D7F-5CB72CE2BE3F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 423 / {607017C9-F3C9-CE7F-6ED2-053A21D09358}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 427 / {A7C3B241-1FB8-9B94-5DF3-2792191F22B1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 19 has no alt text",
+  "where": "slide 429 / {1D8E7123-8833-59E4-C7E6-F8C1F1E9FDB4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 19 has no alt text",
+  "where": "slide 429 / {E9F80111-1378-6BC9-2B5D-07F27806A1A1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 20 has no alt text",
+  "where": "slide 430 / {82222B3B-389F-7775-51FF-2BA97B418931}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 21 has no alt text",
+  "where": "slide 431 / {80CC4E5E-E877-37EB-865E-FB15BC4881BA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 25 has no alt text",
+  "where": "slide 435 / {2C29C659-83F3-5525-4410-BAC568249FF0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 436 / {2919FED6-C67F-725D-39A7-7E7B85FE4C9B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 437 / {D438D219-4CEC-F988-4BF8-AD7BCD28C967}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 28 has no alt text",
+  "where": "slide 438 / {AF6EB6C2-AADA-A0B4-39C7-4724DBFA9211}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 441 / {D5130AE9-14BA-F584-28E1-F910A55AB149}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 442 / {45C563A8-9C6C-884F-050B-DCCA4FA58ED2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 443 / {AE05105A-68F1-3D08-DB16-EBFF7C585996}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 446 / {391BBE52-D58B-65EA-4C1E-6779ABB764E2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 446 / {41A7A60A-73DC-DEC4-0C5F-CF88DBAF0420}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 446 / {CB2095BA-9684-22C8-ADC8-E825ADD54885}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 446 / {DCF6C397-C9DD-3CAF-C0CA-D5D1CDA95204}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 447 / {C26F9AA7-B35C-8A6F-B8EB-91A4578A80E6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 447 / {D2AA05EC-F333-E110-32DC-1E4D05FF14F6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 32 has no alt text",
+  "where": "slide 448 / {65C38C90-2230-46A9-529F-C754AA363B8E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 32 has no alt text",
+  "where": "slide 448 / {D1FD9546-DC56-C2E1-82B5-993921386BDC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 22 has placeholder alt text 'undefined'",
+  "where": "slide 432 / {FDC5DBA4-DACA-DD70-878D-935106022821}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 23 has placeholder alt text 'undefined'",
+  "where": "slide 433 / {A838F4B9-F11D-9A10-4905-78818523DE90}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 44
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 86
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 44
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 42 has no description",
+  "where": "slide 455 / {E8AA5AD8-B95F-8DA2-93C5-F0798C82327D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 15",
+  "where": "slide 427 / shape 12",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 21",
+  "where": "slide 432 / shape 7",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 26",
+  "where": "slide 440 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 28",
+  "where": "slide 442 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 30",
+  "where": "slide 444 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 36",
+  "where": "slide 449 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 40",
+  "where": "slide 453 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 43",
+  "where": "slide 457 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 8 has no alt text",
+  "where": "slide 419 / {31B775A8-68D4-B1F8-F2D5-F470BC3EDAD9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 9 has no alt text",
+  "where": "slide 421 / {698375AB-26D4-42E2-7EE1-76E199CEBC74}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 9 has no alt text",
+  "where": "slide 421 / {B92C4461-3DAC-027F-FD82-FA79FA94E318}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 427 / {116C6903-85C2-2428-2452-0AD555162D1D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 428 / {5B66694E-3611-A63F-B31B-2C03C8C55AE7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 21 has no alt text",
+  "where": "slide 432 / {6C0588D9-6262-9FE0-4B67-28BF44C0D08A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 19 has no alt text",
+  "where": "slide 436 / {204D41CB-C77A-305A-D2CF-F57C09B9D67D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 443 / {2BF7C7E3-5C85-8313-2AE3-2C75871A8948}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 35 has no alt text",
+  "where": "slide 448 / {1AB14D8B-94E4-C45C-CA35-ED195E5479D2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 461 / {4DF359CC-053B-3BFF-DD14-99CB49BB0EE8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 461 / {4FC67481-99FD-B36B-82FB-F3B7C0FCEB80}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 52
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 456
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 52
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 6 has no alt text",
+  "where": "slide 418 / {DE29BBC0-4BB7-869B-8200-C3349CD5F674}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 10 has no alt text",
+  "where": "slide 458 / {5F5E9C8F-1320-10CF-C7C0-24E090752BE9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 459 / {2506955E-C640-0B5D-8D0B-301D7AF462E5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 464 / {4E5447E2-7341-B44F-352B-3D9830A5CBF2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 466 / {919D33E8-7EAF-AA80-88C6-2F1B4B16AC19}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 467 / {EEC4A36C-2B95-7EB7-BB96-4923A7CEC1AB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 468 / {4F94F830-256A-67F2-824F-F9E77F5C877A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 470 / {AF935A9C-ED9D-597F-5808-6489F310C0F6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 471 / {2BA1BAA0-EC2A-FBB3-AF83-752E1DA00F4F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 473 / {2559E48E-C689-C2E4-FD11-7D15588834EA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 473 / {414DD0D5-C094-C132-3B6F-960BF02C5695}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 473 / {F94BBFB2-2786-0EF6-0D70-23FAAC7D84B2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 33 has no alt text",
+  "where": "slide 484 / {08DBD55E-454A-A22E-8FCA-0324AB95588A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 33 has no alt text",
+  "where": "slide 484 / {A261F26B-1B5E-F705-6B89-BC061BD78359}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 46 has no alt text",
+  "where": "slide 491 / {13CEFEBB-CABF-3586-5974-092C1A099C81}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 48
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 83
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L19.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 48
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 4",
+  "where": "slide 274 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 6",
+  "where": "slide 276 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 1 has no alt text",
+  "where": "slide 256 / {3DEDD2ED-7EA0-C726-B86C-DAF6A1B5857D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 292 / {0073D16F-1F5B-03A8-350C-E201DDF86EF3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 26 has no alt text",
+  "where": "slide 293 / {2BCB83CC-7AC6-B0A5-00FA-C78A00ADEF21}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 29
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 47
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 29
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 24 has no description",
+  "where": "slide 295 / {A553F8F7-7DD2-D53E-17D0-2EC475C190E7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/embedded-video",
+  "message": "embedded video on slide 17: check it has captions",
+  "where": "slide 433 / {2F7F4B1C-22CC-1CC9-EFFA-09BF652E5528}",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 10 has no alt text",
+  "where": "slide 424 / {898DA8B1-06EE-F383-1742-DF52DE9381C2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 427 / {1BCCD553-6D42-489E-24ED-5153F66EF2A3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 429 / {8BA59FD0-35B2-89C5-FDBD-04FCD45DEDAF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 22 has no alt text",
+  "where": "slide 437 / {F36F80FA-8AB9-CA0B-87D2-56033447C5A0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 438 / {ABCE8D01-A433-765C-31F8-999610B4C624}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 28 has no alt text",
+  "where": "slide 439 / {BF02FE44-DD7C-2BF2-7311-06C963C661F0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 440 / {DE7AA5F7-52D4-DFA6-6A7F-55939E484891}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 446 / {7EA5D460-2371-5DDC-7B12-80A2B905D861}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 472 / {C912C74F-6B49-F930-5A27-F2BCE85E1FCA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 38 has no alt text",
+  "where": "slide 473 / {CD571A45-C401-F0E2-ABC0-41DDD883CAA2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 53 has no alt text",
+  "where": "slide 474 / {C258B433-0AD9-AB4A-4E5E-7067A7B3F22A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 55 has no alt text",
+  "where": "slide 475 / {B7BD1292-1381-74C9-7D60-929C34529F92}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 77 has no alt text",
+  "where": "slide 493 / {916BB3D0-BBD4-DBFB-B0F6-36E53C66B70C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 78 has no alt text",
+  "where": "slide 505 / {42196BA8-67CB-FEC0-DC5E-09554E7A5DF5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 88 has no alt text",
+  "where": "slide 506 / {BAB53DCF-39D4-00A6-32FB-1B692FF53B1A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 98 has no alt text",
+  "where": "slide 507 / {FB821CD5-ADF9-81BC-13BF-E2E66DCE4CCF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 80 has no alt text",
+  "where": "slide 514 / {0F746960-7837-7025-1E03-27CDC991D05E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 100
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 168
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 100
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L20-21.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 17 has no description",
+  "where": "slide 433 / {2F7F4B1C-22CC-1CC9-EFFA-09BF652E5528}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 52",
+  "where": "slide 468 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 78",
+  "where": "slide 496 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 78",
+  "where": "slide 496 / shape 3",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 9 has no alt text",
+  "where": "slide 422 / {EF13CDBB-0C94-B08F-4050-E913015CB7D7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 423 / {16007D7B-1A09-7A7F-FAB3-B2CD1D02268F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 16 has no alt text",
+  "where": "slide 424 / {6B973CFB-5AC6-A79D-91D5-46E485F4B21A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 427 / {D68E115A-821F-04D8-CA91-EF8D68A2EB50}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 428 / {FBC98894-E41E-C45E-7AED-4A3D24D1AC67}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 13 has no alt text",
+  "where": "slide 429 / {D5A5294C-26E8-DEAD-39F0-2D1D2AD71F00}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 437 / {87C70462-9099-5DE3-41F4-016C8AA15073}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 442 / {480721DF-6236-5C04-ED77-787CD3EF102D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 443 / {D3ED5833-CD34-2A44-D59C-C4F1E4C5677C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 444 / {CD4F6074-2342-44E4-603D-7BBEB0ABC089}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 447 / {6B3BD2D8-5782-690F-7D47-71A54CBFDD47}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 450 / {80E7BA96-8E1C-A49D-1A90-DE537FC7A7C3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 450 / {A21A4FF7-BE46-DD16-A84E-B833F0366E2A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 450 / {B12402E6-85AA-1660-3B56-41AB6EA5FC55}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 39 has no alt text",
+  "where": "slide 455 / {FE2A42B3-A304-A058-8773-52AE6753F26B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 456 / {4D7160FC-FC11-EB66-C767-47B837C0D462}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 41 has no alt text",
+  "where": "slide 458 / {B757FF99-5C78-5DC7-2AA1-7FE02C1014FC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 42 has no alt text",
+  "where": "slide 459 / {246AB825-4C5D-06E1-4787-A67A362193AB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 43 has no alt text",
+  "where": "slide 460 / {67E5AC74-4151-6881-6E40-4C9B5D988C4A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 463 / {375CE45C-B50C-4C0E-DACF-C83F205D8C48}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 463 / {5DA4C708-EFC9-844E-77CB-83F1D9D90C4C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 463 / {D9435647-6AAD-7469-1ABF-3ABF4721B3CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 54 has no alt text",
+  "where": "slide 465 / {695B3723-1567-8DFA-1673-FAC0F8BBA029}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 55 has no alt text",
+  "where": "slide 471 / {C32521C5-2C97-79A3-AE97-9E43F0FE93C2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 56 has no alt text",
+  "where": "slide 472 / {56EF08F1-C912-FB9D-C3F1-651D0D3F0CE0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 57 has no alt text",
+  "where": "slide 473 / {384ABA18-8201-7377-5E1F-0EC851F397A5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 58 has no alt text",
+  "where": "slide 474 / {22BECA5C-7AFC-CC38-289F-E91C20157BB1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 59 has no alt text",
+  "where": "slide 475 / {A0E59CB1-AD1E-E0F9-4346-7E5D59CED79D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 60 has no alt text",
+  "where": "slide 476 / {90ADB7A4-7D03-9FC8-9190-F7B75E68F852}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 67 has no alt text",
+  "where": "slide 483 / {1D79F333-EE4B-42B3-5864-A122A975A4B9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 67 has no alt text",
+  "where": "slide 483 / {8E90DAC3-ABE9-0BA5-54D5-A14CC7637D6D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 67 has no alt text",
+  "where": "slide 483 / {9CF57325-6069-C4F1-B2BA-D37290417D29}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 69 has no alt text",
+  "where": "slide 485 / {08B3E3CB-69CF-1CCD-85E5-24872374253F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 69 has no alt text",
+  "where": "slide 485 / {0E31E96D-C5EB-D488-C9A6-05C8A1B8EB50}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 69 has no alt text",
+  "where": "slide 485 / {DDE39FFD-0524-B962-1343-B9F0F2F1B397}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 70 has no alt text",
+  "where": "slide 486 / {1BA95C49-EE26-7648-AF94-C025A13830BA}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 70 has no alt text",
+  "where": "slide 486 / {6E3C2A3B-EE3D-76EE-C438-099842595325}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 70 has no alt text",
+  "where": "slide 486 / {A3C95885-7C80-62C9-02E1-4B794C76C219}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 71 has no alt text",
+  "where": "slide 487 / {2047D363-B7A0-D76C-C4C0-F9290C07BBA1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 71 has no alt text",
+  "where": "slide 487 / {7313A76F-ED51-01A0-9ADD-DBE7CE90A535}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 71 has no alt text",
+  "where": "slide 487 / {7F9D8868-AF71-7322-096F-0A9838ECB26B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 71 has no alt text",
+  "where": "slide 487 / {8F47C22A-4D9A-9D1F-3A20-2EACB80C8F18}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 72 has no alt text",
+  "where": "slide 488 / {EA790A75-42FF-D3FE-9902-9E39F5F3959B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 73 has no alt text",
+  "where": "slide 490 / {9217DB6E-CB47-BF4D-40A8-92B5BC133AE8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 74 has no alt text",
+  "where": "slide 492 / {FE681539-F429-A5E8-2CFF-20EEE1A4D471}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 75 has no alt text",
+  "where": "slide 493 / {CA843DB7-D8E1-3236-8235-F17D22B22148}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 76 has no alt text",
+  "where": "slide 494 / {BE07F963-9838-E116-2EDB-92B87BDD606B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 76 has no alt text",
+  "where": "slide 494 / {D026E1BB-C654-6E26-8F2F-426E81E4E734}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 77 has no alt text",
+  "where": "slide 495 / {78DC9D52-E4BC-AE9F-D15E-D921E745F894}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 77 has no alt text",
+  "where": "slide 495 / {DCDE5FAB-8809-95E2-6DC6-3A29A6BCFA3D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 81 has no alt text",
+  "where": "slide 499 / {C1B36956-7582-A1CC-00B0-0EA7637CB811}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 84 has no alt text",
+  "where": "slide 503 / {909E9ED3-FA57-BBF4-29EF-D61B1A821181}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 86 has no alt text",
+  "where": "slide 505 / {F4C37A16-5395-BC8E-D87B-5C5A8430597B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 88 has no alt text",
+  "where": "slide 507 / {8484A9A5-DA84-D76E-E0F1-EBEB9D5462D0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 90 has no alt text",
+  "where": "slide 509 / {F26E0098-803C-47C2-0D58-FA85DABDDC6D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 91 has no alt text",
+  "where": "slide 510 / {7C6B6DCD-5D03-BABA-41F1-E2B0E4D51A77}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 93 has no alt text",
+  "where": "slide 512 / {1E64088C-4711-00D7-F092-79E72E1F3EC0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 94 has no alt text",
+  "where": "slide 513 / {A8FA60DD-33EB-3195-99D3-B83F672FF237}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 95 has no alt text",
+  "where": "slide 514 / {4774BBB2-A79B-D8B1-2022-7CFAD33E157D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 98 has no alt text",
+  "where": "slide 516 / {8B5E52F1-ED21-8C8D-48C1-75E34F1C45A8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 99 has no alt text",
+  "where": "slide 517 / {AD4EFAD0-C8BA-1753-205C-F66777552FC0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 101 has no alt text",
+  "where": "slide 519 / {EC23FDD1-32C2-8417-FCA5-B1056865E578}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 96 has no alt text",
+  "where": "slide 520 / {376E8454-2569-8537-C01B-8EC4377A2572}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 103
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 284
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 103
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 3",
+  "where": "slide 413 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 12",
+  "where": "slide 497 / shape 9",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 42",
+  "where": "slide 527 / shape 3",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 46",
+  "where": "slide 531 / shape 3",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 115",
+  "where": "slide 602 / shape 5",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 130",
+  "where": "slide 618 / shape 5",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 131",
+  "where": "slide 621 / shape 5",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 503 / {694E4C2D-B133-A7BD-6E7F-280D7170D46A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 23 has no alt text",
+  "where": "slide 509 / {C79949CB-594B-F688-E4EF-95F9EBEE6462}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 28 has no alt text",
+  "where": "slide 513 / {B15FABCB-9326-B5A1-346B-EDFBCF964159}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 30 has no alt text",
+  "where": "slide 515 / {81743C38-62B8-77DC-2BF1-B3B213EBF581}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 42 has no alt text",
+  "where": "slide 527 / {18BAE210-BBF1-CBAB-22A6-C3EB4E085A20}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 43 has no alt text",
+  "where": "slide 528 / {FD20D93B-0F98-5034-611E-C6C783D4B50E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 44 has no alt text",
+  "where": "slide 529 / {536E3C64-6EBB-C997-8554-1A3F2ECD8123}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 45 has no alt text",
+  "where": "slide 530 / {0305EC02-A30E-839C-30BE-F1AB43709982}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 46 has no alt text",
+  "where": "slide 531 / {24D571A1-D7AF-E1FF-EA34-3C42C1061DB3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 53 has no alt text",
+  "where": "slide 537 / {A9A4C169-3B8F-0939-6C78-523D57240305}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 53 has no alt text",
+  "where": "slide 537 / {F7175818-FC9A-A861-6098-08D488DBB57F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 56 has no alt text",
+  "where": "slide 540 / {FBBEBDBD-7C39-FD68-1AED-2A027E06B352}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 59 has no alt text",
+  "where": "slide 545 / {1489C5F9-7D67-13E3-0059-079BEF23468A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 60 has no alt text",
+  "where": "slide 546 / {935A3870-4E40-AB7E-5489-15E08BBF3AAE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 61 has no alt text",
+  "where": "slide 547 / {114A0657-A83D-04FE-DCEF-BDBD87BC48C9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 62 has no alt text",
+  "where": "slide 548 / {AB26337C-C0FE-785D-664C-E78E4F41C1B1}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 63 has no alt text",
+  "where": "slide 549 / {B089199C-4AA2-F6DE-DC64-0A874270896F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 50 has no alt text",
+  "where": "slide 552 / {E3E09890-3168-E32E-1D7B-91ED2DDD0670}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 72 has no alt text",
+  "where": "slide 558 / {40748070-3272-41C3-D5A9-877BB099CFC4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 73 has no alt text",
+  "where": "slide 559 / {E044F0E9-46B3-AFDB-4258-F880045052B0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 74 has no alt text",
+  "where": "slide 560 / {339E70BD-E16D-312C-7656-B1F9534783F3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 75 has no alt text",
+  "where": "slide 561 / {E6A1CC5D-3528-B967-C279-75044A85974F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 76 has no alt text",
+  "where": "slide 562 / {BDF95E64-54D0-046E-19A9-0F58B731CBDD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 77 has no alt text",
+  "where": "slide 563 / {8ABDE1BB-38AB-A455-03AD-25A978257A27}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 78 has no alt text",
+  "where": "slide 564 / {5D047045-F956-090B-782A-4A80C5B5138F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 84 has no alt text",
+  "where": "slide 571 / {A1A54DBA-9E2C-AC65-949E-17E308E465AD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 89 has no alt text",
+  "where": "slide 575 / {1B5362B7-0ED9-368F-CD30-86D45EAC4F4A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 89 has no alt text",
+  "where": "slide 575 / {5A8D1BB4-7B58-B08A-98D7-DCAEE416E205}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 96 has no alt text",
+  "where": "slide 583 / {42B940EE-E68B-1D6D-810D-059BF73012DC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 101 has no alt text",
+  "where": "slide 588 / {3EEBB267-9700-6CFC-7EAD-A4840F0915FE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 101 has no alt text",
+  "where": "slide 588 / {CA4B0EBA-3591-752E-8B94-4DED076421FC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 106 has no alt text",
+  "where": "slide 594 / {6A00BD3A-0A73-8147-BEE2-AD09DE9C544B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 106 has no alt text",
+  "where": "slide 594 / {6ACD4586-5708-226D-D134-AD3D211B74E6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 111 has no alt text",
+  "where": "slide 597 / {817E7B6D-2F59-38A8-86FE-2CAD62884839}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 113 has no alt text",
+  "where": "slide 599 / {336D3C0E-6853-6E73-2D66-427B51A9BDD6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 114 has no alt text",
+  "where": "slide 600 / {E577ADDD-4AEC-D195-080E-7B0BF815BCE0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 117 has no alt text",
+  "where": "slide 604 / {DF6AE405-0BBD-2451-122E-9FAF9CF319F8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 118 has no alt text",
+  "where": "slide 605 / {9C2B3218-E3A8-3123-8C75-88B44C977D36}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 118 has no alt text",
+  "where": "slide 605 / {B41A5A28-CC8E-BBA8-F9F0-639EA2E4F556}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 136 has no alt text",
+  "where": "slide 624 / {ECE00094-BEC3-DEB1-565F-4231CAE04C4D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 141 has no alt text",
+  "where": "slide 632 / {7A6228AF-A121-E196-A3EB-03CAD843C07F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 144 has no alt text",
+  "where": "slide 633 / {9BD424DD-5576-6588-72B8-EA4CD4CCEA28}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 149 has no alt text",
+  "where": "slide 637 / {320CDAC4-80A4-31B8-AD1B-87A27C79FC64}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 155
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 645
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 155
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 48 has no description",
+  "where": "slide 533 / {BEBC29B2-B957-7A7E-A426-22CF6D4709D8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 97 has no description",
+  "where": "slide 584 / {43130EE5-44A4-D8F8-C934-A66F9414E1B6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 273 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 13",
+  "where": "slide 295 / shape 2",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 14",
+  "where": "slide 296 / shape 2",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 8 has no alt text",
+  "where": "slide 285 / {D88FE8AE-D2ED-E266-E374-A8E60E3A05C0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 287 / {24E33918-C5EA-B4E7-A605-B10068B72348}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 21 has no alt text",
+  "where": "slide 291 / {4DEAC88C-CC19-E63D-08DE-C2D078D9E86E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 16 has no alt text",
+  "where": "slide 298 / {6C983543-E503-AFF6-EB67-27E5999BF530}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 19 has placeholder alt text 'undefined'",
+  "where": "slide 290 / {951CD270-E96E-0C94-E14F-8969C8EC804E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 13 has placeholder alt text 'undefined'",
+  "where": "slide 295 / {785CA8E1-A16A-6597-2A7A-112D6D707849}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/picture-placeholder-alt",
+  "message": "picture on slide 14 has placeholder alt text 'undefined'",
+  "where": "slide 296 / {D1F8CC7D-879A-7262-1244-4483EACF7252}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 27
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 137
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 27
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 9 has no description",
+  "where": "slide 276 / {E92A1532-2B30-59C0-EEE0-EA0927948F96}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 310 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 14",
+  "where": "slide 325 / shape 2",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 292 / {0073D16F-1F5B-03A8-350C-E201DDF86EF3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 25 has no alt text",
+  "where": "slide 293 / {2BCB83CC-7AC6-B0A5-00FA-C78A00ADEF21}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 28 has no alt text",
+  "where": "slide 296 / {02135911-0C67-578A-04CE-DE041BC2C821}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 11 has no alt text",
+  "where": "slide 321 / {F1D32B60-CFAE-3FF0-A7F1-65D2BAE555C0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 12 has no alt text",
+  "where": "slide 322 / {497865CA-A0B3-0AA9-F5AD-5ECA84EBDEE8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 325 / {366C7F76-8FFA-B739-6C30-41C8E8443E6F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 325 / {63351F2F-FF01-2706-4626-BA427732B0A4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 326 / {F938DA17-59DF-BAC1-98E1-951DFCFFB333}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 329 / {599356A3-0D60-A9FD-E3C6-702FA2E162DD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 21 has no alt text",
+  "where": "slide 330 / {416B3715-F369-8368-B824-154A9BE19229}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 42
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 277
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 42
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 23 has no description",
+  "where": "slide 276 / {8BAFC627-A381-2F4E-5916-F6809F21170A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 8 has no description",
+  "where": "slide 320 / {A31E2EA5-3D6A-F4A7-8330-B2AEB75284BE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 19 has no description",
+  "where": "slide 327 / {2D80618D-0087-8A38-7BA1-A621CD723F6C}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 310 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 7 has no alt text",
+  "where": "slide 313 / {08D8DC2D-0B7C-BECC-3B08-23FDA0F21088}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 8 has no alt text",
+  "where": "slide 314 / {2E58F4D6-84A8-6EE1-349B-9E1138B5173B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 10 has no alt text",
+  "where": "slide 317 / {B6A0F4FE-9541-2923-1AEE-CAE88CF0099B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 13 has no alt text",
+  "where": "slide 320 / {D7819B87-1A56-4347-DD8B-BB705D116090}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 16 has no alt text",
+  "where": "slide 323 / {2135A234-4CD2-54C5-4972-B0CDC73F3FA0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 324 / {7F107DCA-C2A6-7213-8C2F-190B929C168F}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 324 / {FFBD0417-A150-8D58-FF5E-C83E5EDFC2E0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 327 / {63401C51-F28F-0E9D-CAE6-B6188F1D6EEF}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 331 / {BC7B23A1-7B33-9631-08E4-8494D1AAD642}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 20 has no alt text",
+  "where": "slide 335 / {AB2E0165-C1E4-5D08-6847-3A62DFCC6B89}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 30
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 166
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 30
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 310 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 60",
+  "where": "slide 334 / shape 8",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 357 / shape 10",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 357 / shape 53",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 33",
+  "where": "slide 357 / shape 69",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 45",
+  "where": "slide 363 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 62",
+  "where": "slide 371 / shape 6",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 62",
+  "where": "slide 371 / shape 7",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 62",
+  "where": "slide 371 / shape 8",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 81",
+  "where": "slide 383 / shape 15",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 81",
+  "where": "slide 383 / shape 27",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 81",
+  "where": "slide 383 / shape 29",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 81",
+  "where": "slide 383 / shape 6",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 42",
+  "where": "slide 392 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 83",
+  "where": "slide 399 / shape 12",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 83",
+  "where": "slide 399 / shape 6",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 13 has no alt text",
+  "where": "slide 312 / {1E944887-F44C-FAD5-F9BE-FC50F812B1F6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 321 / {C16E2DE4-C380-655A-EAA4-316930318A95}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 324 / {72EF6654-5103-A01A-DBAD-9C9F47B5C54B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 15 has no alt text",
+  "where": "slide 324 / {C2253F07-688A-FE18-A290-EEAD46E118A7}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 60 has no alt text",
+  "where": "slide 334 / {00B54087-6B08-FC0E-A820-76387806E61B}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 64 has no alt text",
+  "where": "slide 335 / {88B76D67-908B-5D79-38B0-E6C9A3F69934}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 35 has no alt text",
+  "where": "slide 337 / {D6C1C104-7CA8-65B2-5496-0F26999FB65E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 24 has no alt text",
+  "where": "slide 342 / {04C35D3B-231B-85B9-DB11-2976AD0EF319}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 27 has no alt text",
+  "where": "slide 348 / {5DF49792-1753-1EF4-6C86-6062DEE964F9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 29 has no alt text",
+  "where": "slide 349 / {A370D3DB-FB40-D562-2467-3F6AF16A1A63}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 39 has no alt text",
+  "where": "slide 352 / {10B17922-CF3A-12C0-C9FE-1A65C8F40EBB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 31 has no alt text",
+  "where": "slide 354 / {346D31BF-2F08-2FB7-5DE7-17CF7C271177}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 33 has no alt text",
+  "where": "slide 357 / {56783C8F-784F-097E-8E37-01F2BF230542}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 358 / {977D35C3-3E13-7431-61F2-75DAC4F586AC}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 41 has no alt text",
+  "where": "slide 360 / {430ABF43-E62D-6C07-F34F-0100345B7801}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 45 has no alt text",
+  "where": "slide 363 / {A4B42BA2-BA94-C715-8BED-33FFA0BEF666}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 52 has no alt text",
+  "where": "slide 368 / {CA794137-8D78-4974-4EB6-CDBBC218B436}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 62 has no alt text",
+  "where": "slide 371 / {03A556D8-4466-897D-7296-E1D7E11452C0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 63 has no alt text",
+  "where": "slide 372 / {ECBC909C-E185-23BE-58C2-703E817519B4}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 68 has no alt text",
+  "where": "slide 374 / {A0BBE5DC-DAED-8E67-27CF-B97DEEC1AAB0}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 70 has no alt text",
+  "where": "slide 375 / {349DFD70-8BB9-B479-CA1B-F04CF5512BF5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 79 has no alt text",
+  "where": "slide 381 / {DE56D442-8AB1-0A5A-E71E-372294321CAD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 81 has no alt text",
+  "where": "slide 383 / {322B5B7A-2A00-1525-E2DF-C579338779EB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 76 has no alt text",
+  "where": "slide 384 / {A8D493C8-78BB-6C74-25B0-AD0D972D0631}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 73 has no alt text",
+  "where": "slide 385 / {B311D077-57BE-37D8-69C6-449D6D89B97E}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 49 has no alt text",
+  "where": "slide 387 / {9260AE3A-C439-4AAE-1D54-D8DA2A1046CD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 54 has no alt text",
+  "where": "slide 388 / {57DED5E8-FF03-D84A-2C95-E93C92E59674}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 48 has no alt text",
+  "where": "slide 391 / {1CAB6A71-95F3-E209-A218-4D4849A0CC43}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 42 has no alt text",
+  "where": "slide 392 / {A2C751A5-B34B-D3F6-4EA0-0BA4554B9031}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 67 has no alt text",
+  "where": "slide 393 / {95D11B9A-E303-8F20-9B2C-23F2E71B43BB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 69 has no alt text",
+  "where": "slide 394 / {584FF96F-3FBE-5255-1DAC-3AE6EC7C0BB5}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 78 has no alt text",
+  "where": "slide 397 / {81BB0BEC-8689-6AB5-B838-34D6468D81D9}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 85
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 707
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 85
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 20 has no description",
+  "where": "slide 329 / {D2C9E5D5-CAAC-223E-3F23-7EEEFA886AB2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 59 has no description",
+  "where": "slide 333 / {EBB2413A-A29F-6235-039B-3D3E8A4E830A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 75 has no description",
+  "where": "slide 380 / {2283BB6C-EEB9-C0EF-0D51-DB021C0321B2}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/low-contrast",
+  "message": "low-contrast text on slide 2",
+  "where": "slide 310 / shape 118",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 14 has no alt text",
+  "where": "slide 324 / {AE5AE88A-ED40-2A09-B15C-C1F13F87F1E3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 17 has no alt text",
+  "where": "slide 333 / {C58E5A04-20EC-B639-8403-26357B70BFBB}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 18 has no alt text",
+  "where": "slide 334 / {871DE840-7AA5-524D-AE85-F2576F8B6FBD}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 34 has no alt text",
+  "where": "slide 341 / {7E6D07FB-281B-5369-B2CC-6745E735844A}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 35 has no alt text",
+  "where": "slide 342 / {D2B56D98-8223-63CC-C4A6-83798BF36BC3}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 36 has no alt text",
+  "where": "slide 343 / {97A5600B-470C-EF18-9074-FC62F93CAE59}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 37 has no alt text",
+  "where": "slide 344 / {8C0CD861-BA5F-BE9F-4574-1903F0B82AD6}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 40 has no alt text",
+  "where": "slide 347 / {F3E860BC-900A-E531-DFB6-C2F79FAC75EE}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 41 has no alt text",
+  "where": "slide 348 / {CF1F19BB-E830-CCE8-E20C-E1E4D21FB1E8}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 42 has no alt text",
+  "where": "slide 349 / {6C01899C-96C7-0F8F-9DA0-082A41A7EB6D}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/picture-no-alt",
+  "message": "picture on slide 43 has no alt text",
+  "where": "slide 350 / {735C8AA8-01BD-5878-5893-1F532B467A59}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/slide-no-title",
+  "message": "slides without a title placeholder",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 875
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/template-image-not-decorative",
+  "message": "template logos not marked decorative",
+  "where": "",
+  "severity": "error",
+  "count": 46
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 5 has no description",
+  "where": "slide 311 / {192F0912-D226-7A35-FB2D-C9FC953A3895}",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/video-no-alt",
+  "message": "video on slide 6 has no description",
+  "where": "slide 312 / {1266BBF1-2733-ED9E-F089-BF59196593FE}",
+  "severity": "error",
+  "count": 1
+ }
+]
