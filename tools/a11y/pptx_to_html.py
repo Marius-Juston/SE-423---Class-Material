@@ -12,7 +12,7 @@
 Writes <out>/<deck>.html (+ <deck>_files/ with the pictures): one section per slide
 with the slide title as a heading, text in reading order (bullets as nested lists),
 pictures with their alt text (decorative ones left out), tables with header cells,
-equations as MathML (pandoc's OMML reader), videos as links, and the speaker notes.
+equations as MathML (pandoc's OMML reader), videos as links, and the lecture notes.
 A slide PDF is a picture of the slides; this page is the version screen readers,
 reflow and zoom work best with.
 """
