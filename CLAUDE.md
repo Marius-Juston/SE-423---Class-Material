@@ -96,6 +96,10 @@ uv scripts: `lint_latex.py`, `lint_pptx.py`, `check_pdf.py` (veraPDF `ua2`), `ch
 - Slide PDFs are reported as warnings only until the LibreOffice export is tagged.
 - Local veraPDF: set `VERAPDF` to the `verapdf` launcher; CI uses the `verapdf/cli:v1.30.2` image pinned by digest (`--docker`).
 - `run_all.py --sarif` also writes the findings as SARIF; CI uploads it to code scanning (category `accessibility`), fingerprinted by the same stable keys.
+- Slide fixers (all write only the parts they change, through `Deck.save`; render and compare the slides afterwards): `fix_contrast.py` (smallest colour change to 4.6:1), `fix_duplicate_titles.py` (" (k/N)" on repeated titles; keep titles unique when adding slides), `fix_slide_titles.py`, `fix_video_alt.py`.
+- Lecture notes: every slide has notes (description of the slide, explanation, links to the neighbouring slides). `draft_notes.py submit/collect/apply` regenerates them with Claude from slide renders; keep existing notes' information when editing. A silent video needs a description saying "no sound" (lint convention).
+- Tables in LaTeX: declare header rows with `\SETableHeaders{1}` (header.tex; a no-op in HTML; not with tabularx).
+- Site search and gallery: `search_index.py` (CI) writes `search-index.json` (slides + every described image) and `figures/` (thumbnails, browser-viewable copies); `site/search.js` renders results and the gallery with DOM methods only (no innerHTML: CodeQL).
 - Other formats: `<doc>-large.pdf` (`\SElargeprint`, fontsetup.tex/header.tex), `<doc>.epub` (`tex4ebook -c se423-ebook`, then `epub_repair.py`; `check_epub.py` runs epubcheck), `accessibility.html` (`report_page.py`). `svg_gallery.py` describes published SVGs and fills the gallery; `cvd_check.py` warns about colour-blind collisions in figures.
 - `pptx_to_html.py` builds the accessible HTML of each deck (CI publishes `Lectures/Slides/<deck>.html`); equations go OMML → MathML through pandoc.
 - Read decks with `deck_reader.py` (python-pptx + XPath, coloraide for colours), never with regexes over XML. Write decks only through `sync_deck_figures.py` (`Deck.save`): python-pptx's save re-serializes every part.

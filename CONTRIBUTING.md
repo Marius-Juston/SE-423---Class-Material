@@ -167,6 +167,12 @@ Commit the updated `a11y-baseline.json` with your fix. Use `--accept-new` only w
 
 The site's [accessibility page](https://marius-juston.github.io/SE-423---Class-Material/accessibility.html) (`tools/a11y/report_page.py`) publishes the statement, the open problems and their trend after every build; barriers can be reported with the *Accessibility barrier or format request* issue form. Pull requests get a checklist (`.github/pull_request_template.md`).
 
+**Lecture notes.** Every slide has notes: what the slide shows (screen-reader users rely on it), the explanation, and how it connects to the slides around it. When you add or change a slide, write or update its notes in PowerPoint (or regenerate drafts with `uv run tools/a11y/draft_notes.py submit --renders DIR`, then `collect` and `apply`; see the script's help).
+
+**Slide titles** must be unique within a deck: number continued slides "Topic (2/3)" (`uv run tools/a11y/fix_duplicate_titles.py` does it for you).
+
+**Search and gallery.** The site's search finds lecture slides and every described image (slide pictures, homework and lab figures, TikZ figures) and shows the image with its description; the figure gallery shows them all, any image type. Both read `search-index.json`, built by CI from the decks, `figures.toml` and the documents, so good alt text is also what makes figures findable.
+
 On pull requests the findings also appear as **code-scanning alerts** on the changed files (only the ones the PR introduces; the baseline backlog shows as notes), from the SARIF file `run_all.py --sarif` writes.
 
 **Accessible formats built by CI** (published next to the PDFs): a large-print PDF (`<doc>-large.pdf`: fonts 1.3x, 1.5 line spacing; `\SElargeprint`), an EPUB 3 book (`<doc>.epub`, tex4ebook + `tools/a11y/epub_repair.py`, validated by epubcheck), an HTML version of every handout (MathML equations, alt text, light/dark mode) and of every lecture deck (`Lectures/Slides/<deck>.html`: one section per slide with its title as a heading, nested lists, alt text, tables, MathML equations and the speaker notes; `uv run tools/a11y/pptx_to_html.py --out build/Lectures/Slides` builds them locally).
