@@ -24,6 +24,11 @@
       position: relative;
     }
     .dark .code-block { background: #020617; }
+    /* Reflow (WCAG 1.4.10, 320 px): code wraps instead of widening the page (copying,
+       and the Copy buttons, still give the original lines); tables scroll in a box. */
+    .code-block pre { white-space: pre-wrap; overflow-wrap: anywhere; }
+    body { overflow-wrap: break-word; }
+    .table-scroll { overflow-x: auto; max-width: 100%; }
 
     .copy-btn {
       position: absolute;
@@ -182,7 +187,7 @@
         </div>
 
         <h3 class="font-bold text-lg mb-3 mt-6">What lives where</h3>
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm">
           <thead><tr><th>Directory / File</th><th>What it contains</th></tr></thead>
           <tbody>
             <tr><td><span class="ic">Lectures/Slides/</span></td><td>PowerPoint slides (.pptx) for each lecture</td></tr>
@@ -194,7 +199,7 @@
             <tr><td><span class="ic">pdf-list.txt</span></td><td>The build manifest — lists every .tex file the CI should compile</td></tr>
             <tr><td><span class="ic">.github/workflows/build-latex.yml</span></td><td>The automation script (GitHub Actions) — you rarely need to touch this</td></tr>
           </tbody>
-        </table>
+        </table></div>
       </section>
 
       <!-- ──────────────────────────────────────── -->
@@ -517,13 +522,13 @@ or \mintinline{c}{inline code}.
         <p class="text-sm text-gray-700 dark:text-gray-300 mb-3">
           The <span class="ic">\GetDate{weeks}{days}</span> macro counts forward from the <span class="ic">\StartDate</span> you set in <span class="ic">timline.tex</span>. You never hardcode dates — if the semester shifts, you change <span class="ic">\StartDate</span> once and every deadline updates.
         </p>
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-4">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm mb-4">
           <thead><tr><th>Command</th><th>Means</th></tr></thead>
           <tbody>
             <tr><td><span class="ic">\GetDate{2}{1}</span></td><td>2 weeks + 1 day after start date</td></tr>
             <tr><td><span class="ic">\GetDate{4}{5}</span></td><td>4 weeks + 5 days after start date</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Add the new file to <span class="ic">pdf-list.txt</span>:</p>
         <div class="code-block p-4 text-sm mb-2">
@@ -560,13 +565,13 @@ or \mintinline{c}{inline code}.
 
         <h3 class="font-bold text-lg mb-3">Naming convention</h3>
         <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Use lowercase with underscores. The filename becomes the gallery card title.</p>
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
           <thead><tr><th>Good name</th><th>Bad name</th></tr></thead>
           <tbody>
             <tr><td><span class="ic">adc_soc_trigger_flow.tex</span></td><td><span class="ic">Figure1.png</span></td></tr>
             <tr><td><span class="ic">encoder_disk_diagram.svg</span></td><td><span class="ic">Untitled.svg</span></td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <h3 class="font-bold text-lg mb-3">Using a figure in a LaTeX document</h3>
         <div class="code-block p-4 text-sm mb-2">
@@ -722,7 +727,7 @@ int main(void) {
         </div>
 
         <h3 class="font-bold text-lg mb-3">Repo-specific macros you'll use constantly</h3>
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
           <thead><tr><th>Macro</th><th>What it does</th></tr></thead>
           <tbody>
             <tr><td><span class="ic">\MakeAssignmentTitle</span></td><td>Prints the gray title box at the top of the document</td></tr>
@@ -733,10 +738,10 @@ int main(void) {
             <tr><td><span class="ic">\GetDate{weeks}{days}</span></td><td>Computes a date relative to the semester start</td></tr>
             <tr><td><span class="ic">\mintinline{c}{code}</span></td><td>Inline syntax-highlighted code</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <h3 class="font-bold text-lg mb-3">Formatting rules specific to this repo</h3>
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm">
           <thead><tr><th>Do this</th><th>Not this</th><th>Why</th></tr></thead>
           <tbody>
             <tr><td><span class="ic">\begin{figure}[H]</span></td><td><span class="ic">\begin{figure}[t]</span></td><td>Forces figure to appear exactly where written</td></tr>
@@ -745,7 +750,7 @@ int main(void) {
             <tr><td>Add a <span class="ic">%</span> line between paragraphs and environments</td><td>Blank lines between <span class="ic">\end{...}</span> and <span class="ic">\begin{...}</span></td><td>Prevents spacing issues in HTML output</td></tr>
             <tr><td><span class="ic">\AltImg</span></td><td><span class="ic">\includegraphics</span></td><td>Required for accessibility compliance</td></tr>
           </tbody>
-        </table>
+        </table></div>
       </section>
 
       <!-- ──────────────────────────────────────── -->
@@ -758,7 +763,7 @@ int main(void) {
           All course material is set in <strong>Atkinson Hyperlegible Next</strong>, a typeface from the Braille Institute designed to keep similar characters (<span class="ic">Il1</span>, <span class="ic">O0</span>, <span class="ic">rn/m</span>) distinct for low-vision readers. It is free under the SIL Open Font License. The OTF files live in <span class="ic">fonts/</span> at the repo root, so builds never depend on what is installed on a machine. Code stays monospaced and LaTeX math stays in Latin Modern.
         </p>
 
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm mb-6">
           <thead><tr><th>Material</th><th>How the typeface is applied</th><th>What you need to do</th></tr></thead>
           <tbody>
             <tr><td>Labs, homeworks, syllabus (PDF)</td><td><span class="ic">header.tex</span> loads <span class="ic">fontsetup.tex</span></td><td>Compile with <strong>LuaLaTeX</strong> (<span class="ic">latexmk -pdflua -shell-escape</span>) from the repo root. On Overleaf, set the compiler to LuaLaTeX. pdfLaTeX still compiles, but in the old font.</td></tr>
@@ -768,7 +773,7 @@ int main(void) {
             <tr><td>matplotlib plots</td><td><span class="ic">course_style.apply()</span> in SE423Animations</td><td>Call it after any <span class="ic">plt.style.use</span> / <span class="ic">rcParams</span> block, regenerate, and replace the copies in <span class="ic">Lectures/Figures/svg/</span> and in the deck.</td></tr>
             <tr><td>Website and tools</td><td>Google Fonts link + CSS</td><td>Use <span class="ic">'Atkinson Hyperlegible Next'</span> for any new page; keep monospace for code.</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <h3 class="font-bold text-lg mb-3">Installing the font</h3>
         <div class="code-block p-4 text-sm mb-2">
@@ -824,13 +829,13 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
 
           <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
             <p class="font-semibold text-sm mb-2">2. Write meaningful alt text — describe what the image <em>shows</em>, not just what it <em>is</em></p>
-            <table class="guide-table rounded-lg overflow-hidden mt-2">
+            <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden mt-2">
               <thead><tr><th>Good alt text</th><th>Bad alt text</th></tr></thead>
               <tbody>
                 <tr><td>"Block diagram showing ePWM → ADC SOC trigger with channel select and result register output"</td><td>"Figure 1" or "diagram"</td></tr>
                 <tr><td>"Photo of soldered board, top view. Headers installed along top edge."</td><td>"board photo"</td></tr>
               </tbody>
-            </table>
+            </table></div>
           </div>
 
           <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
@@ -886,7 +891,7 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
       <section id="quick-ref" class="section-title">
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Quick Reference</h2>
 
-        <table class="guide-table rounded-lg overflow-hidden shadow-sm mb-8">
+        <div class="table-scroll"><table class="guide-table rounded-lg overflow-hidden shadow-sm mb-8">
           <thead><tr><th>Task</th><th>What to do</th></tr></thead>
           <tbody>
             <tr><td>Change course name</td><td>Edit <span class="ic">\def\CourseCode</span> and <span class="ic">\def\CourseName</span> in <span class="ic">header.tex</span></td></tr>
@@ -898,7 +903,7 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
             <tr><td>Force a full rebuild</td><td>GitHub → Actions → Build LaTeX PDFs → Run workflow</td></tr>
             <tr><td>Add a new package to LaTeX</td><td>Open an issue to discuss first — package order affects the accessibility pipeline</td></tr>
           </tbody>
-        </table>
+        </table></div>
 
         <div class="bg-uiuc-blue text-white rounded-xl p-6">
           <h3 class="font-bold text-lg mb-3">Contact</h3>
@@ -968,5 +973,24 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
 
     sections.forEach(s => observer.observe(s));
   </script>
+<script>
+// A table box that does overflow becomes keyboard-focusable and named; boxes that fit
+// stay out of the tab order.
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.table-scroll');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      el.setAttribute('role', 'region');
+      const head = el.querySelector('th');
+      el.setAttribute('aria-label', `Table${head ? ': ' + head.textContent.trim() : ''} (scrolls sideways)`);
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
+</script>
 </body>
 </html>

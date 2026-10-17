@@ -60,7 +60,7 @@ EPwm9Regs.AQCTLA.bit.ZRO = ???; // What to do when CNT set back to zero
 %
 When you have the PWM peripheral set up this way, you can change the TBPRD register to change the square wave frequency.  
 
-\textbf{Note}:  Below, I am asking you to play the short “Happy Birthday” song. A longer song that also defines the array “\mintinline{c}{songarray}” is defined in the include file “\mintinline{c}{song.h}”. You are welcome to play the longer song, but if you want to cut and paste the below shorter song into your code, you will need to go to the top of your C file and comment out the line \mintinline{c}{#include "song.h”;}.  
+\textbf{Note}:  Below, I am asking you to play the short “Happy Birthday” song. A longer song that also defines the array “\mintinline{c}{songarray}” is defined in the include file “\mintinline{c}{song.h}”. You are welcome to play the longer song, but if you want to cut and paste the below shorter song into your code, you will need to go to the top of your C file and comment out the line \mintinline{c}{#include "song.h"}.  
 
 Below is code that defines notes and an array of notes that play “Happy Birthday”.  To play this song change CPU Timer 1 so that it is called every 125 milliseconds (\mintinline{c}{1.0/8.0} of a second).  Then inside CPU Timer 1’s ISR every time it is called, set EPWM9A’s \mintinline{c}{TBPRD} to the value stored at the current index in the song array.  Before you exit CPU Timer 1’s ISR make sure to increment a global index variable that keeps track of where you are in the song.  When you reach the length of the song (length of the array), change the mux of pin \mintinline{c}{GPIO16} so that it is no longer \mintinline{c}{EPWM9A} and instead \mintinline{c}{GPIO16}.  Then Set \mintinline{c}{GPIO16} to low so that the buzzer does not make any random noise. 
 
@@ -149,72 +149,99 @@ For this exercise, I would like you to set up the SPI port for sending and recei
 \begin{enumerate}
     \item Copy and Paste this shell code in to your \mintinline{c}{main()} function below the \mintinline{c}{init_serial} function calls. Fill in the ??? with the correct value by reading the \href{http://coecsl.ece.illinois.edu/se423/SPICondensed_TechRef.pdf}{SPI Condensed TechRef} and its register descriptions.  
 \begin{minted}{c}
-GPIO_SetupPinMux(66, GPIO_MUX_CPU1, 0);  // Set as GPIO66 and used as MPU-9250 SS
-GPIO_SetupPinOptions(66, GPIO_OUTPUT, GPIO_PUSHPULL);  // Make GPIO66 an Output Pin
-GpioDataRegs.GPCSET.bit.GPIO66 = 1;  //Initially Set GPIO66/SS High so MPU-9250 is not selected
+// Set as GPIO66 and used as MPU-9250 SS
+GPIO_SetupPinMux(66, GPIO_MUX_CPU1, 0);
+// Make GPIO66 an Output Pin
+GPIO_SetupPinOptions(66, GPIO_OUTPUT, GPIO_PUSHPULL);
+// Initially Set GPIO66/SS High so MPU-9250 is not selected
+GpioDataRegs.GPCSET.bit.GPIO66 = 1;
 
 GPIO_SetupPinMux(63, GPIO_MUX_CPU1, ???);  //Set GPIO63 pin to SPISIMOB 
 GPIO_SetupPinMux(64, GPIO_MUX_CPU1, ???);  //Set GPIO64 pin to SPISOMIB
 GPIO_SetupPinMux(65, GPIO_MUX_CPU1, ???);  //Set GPIO65 pin to SPICLKB
 
 EALLOW;
-GpioCtrlRegs.GPBPUD.bit.GPIO63   = 0;  // Enable Pull-ups on SPI PINs Recommended by TI for SPI Pins
+// Enable Pull-ups on SPI PINs Recommended by TI for SPI Pins
+GpioCtrlRegs.GPBPUD.bit.GPIO63   = 0;
 GpioCtrlRegs.GPCPUD.bit.GPIO64   = 0;
 GpioCtrlRegs.GPCPUD.bit.GPIO65   = 0;
-GpioCtrlRegs.GPBQSEL2.bit.GPIO63 = 3;  // Set I/O pin to asynchronous mode recommended for SPI
-GpioCtrlRegs.GPCQSEL1.bit.GPIO64 = 3;  // Set I/O pin to asynchronous mode recommended for SPI
-GpioCtrlRegs.GPCQSEL1.bit.GPIO65 = 3;  // Set I/O pin to asynchronous mode recommended for SPI
+// Set I/O pin to asynchronous mode recommended for SPI
+GpioCtrlRegs.GPBQSEL2.bit.GPIO63 = 3;
+// Set I/O pin to asynchronous mode recommended for SPI
+GpioCtrlRegs.GPCQSEL1.bit.GPIO64 = 3;
+// Set I/O pin to asynchronous mode recommended for SPI
+GpioCtrlRegs.GPCQSEL1.bit.GPIO65 = 3;
 EDIS;
 
-// ---------------------------------------------------------------------------
+// ---------------------------------------------------------------------
 SpibRegs.SPICCR.bit.SPISWRESET = ???;  // Put SPI in Reset
 
-SpibRegs.SPICTL.bit.CLK_PHASE = 1;  //This happens to be the mode for both the DAN28027 and
-SpibRegs.SPICCR.bit.CLKPOLARITY = 0;  //The MPU-9250,  Mode 01.  
+// This happens to be the mode for both the DAN28027 and the MPU-9250,
+// Mode 01.
+SpibRegs.SPICTL.bit.CLK_PHASE = 1;
+SpibRegs.SPICCR.bit.CLKPOLARITY = 0;
 SpibRegs.SPICTL.bit.MASTER_SLAVE = ???;  // Set to SPI Master
-SpibRegs.SPICCR.bit.SPICHAR = ???;  // Set to transmit and receive 16 bits each write to SPITXBUF 
+// Set to transmit and receive 16 bits each write to SPITXBUF
+SpibRegs.SPICCR.bit.SPICHAR = ???;
 SpibRegs.SPICTL.bit.TALK = ???;  // Enable transmission 
 SpibRegs.SPIPRI.bit.FREE = 1;  // Free run, continue SPI operation
 SpibRegs.SPICTL.bit.SPIINTENA = ???;  // Disables the SPI interrupt
 
-SpibRegs.SPIBRR.bit.SPI_BIT_RATE = ???; // Set SCLK bit rate to 1 MHz so 1us period. SPI base clock is
-                                        // 50MHZ. And this setting divides that base clock
-                                        // to create SCLK’s period 
-SpibRegs.SPISTS.all = 0x0000; // Clear status flags just in case they are set for some reason
+// Set SCLK bit rate to 1 MHz so 1us period. SPI base clock is 50MHZ.
+// And this setting divides that base clock to create SCLK's period
+SpibRegs.SPIBRR.bit.SPI_BIT_RATE = ???;
+// Clear status flags just in case they are set for some reason
+SpibRegs.SPISTS.all = 0x0000;
 
 SpibRegs.SPIFFTX.bit.SPIRST = ???; // Pull SPI FIFO out of reset, 
-                                   //SPI FIFO can resume transmitting or receiving.
+                                   // SPI FIFO can resume
+                                   // transmitting or receiving.
 SpibRegs.SPIFFTX.bit.SPIFFENA = ???;    // Enable SPI FIFO enhancements
-SpibRegs.SPIFFTX.bit.TXFIFO =  0;    // Write 0 to reset the FIFO pointer to zero, and hold in reset
-SpibRegs.SPIFFTX.bit.TXFFINTCLR = 1;    // Write 1 to clear SPIFFTX[TXFFINT] flag just in case it is set
+// Write 0 to reset the FIFO pointer to zero, and hold in reset
+SpibRegs.SPIFFTX.bit.TXFIFO =  0;
+// Write 1 to clear SPIFFTX[TXFFINT] flag just in case it is set
+SpibRegs.SPIFFTX.bit.TXFFINTCLR = 1;
 
-SpibRegs.SPIFFRX.bit.RXFIFORESET = 0;    // Write 0 to reset the FIFO pointer to zero, and hold in reset
-SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;    // Write 1 to clear SPIFFRX[RXFFOVF] just in case it is set
-SpibRegs.SPIFFRX.bit.RXFFINTCLR = ???;    // Write 1 to clear SPIFFRX[RXFFINT] flag just in case it is set
-SpibRegs.SPIFFRX.bit.RXFFIENA = ???;   // Enable the RX FIFO Interrupt. RXFFST >= RXFFIL
+// Write 0 to reset the FIFO pointer to zero, and hold in reset
+SpibRegs.SPIFFRX.bit.RXFIFORESET = 0;
+// Write 1 to clear SPIFFRX[RXFFOVF] just in case it is set
+SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;
+// Write 1 to clear SPIFFRX[RXFFINT] flag just in case it is set
+SpibRegs.SPIFFRX.bit.RXFFINTCLR = ???;
+// Enable the RX FIFO Interrupt. RXFFST >= RXFFIL
+SpibRegs.SPIFFRX.bit.RXFFIENA = ???;
 
-SpibRegs.SPIFFCT.bit.TXDLY = ???; // Set the delay between transmits to 0 spi clocks.
+// Set the delay between transmits to 0 spi clocks.
+SpibRegs.SPIFFCT.bit.TXDLY = ???;
 
 SpibRegs.SPICCR.bit.SPISWRESET = ???;    // Pull the SPI out of reset
 
-SpibRegs.SPIFFTX.bit.TXFIFO = ???;    // Release transmit FIFO from reset.
-SpibRegs.SPIFFRX.bit.RXFIFORESET = 1;    // Re-enable receive FIFO operation
-SpibRegs.SPICTL.bit.SPIINTENA = 1;  // Enables SPI interrupt. !! I do not think this is needed. Need to Test
+// Release transmit FIFO from reset.
+SpibRegs.SPIFFTX.bit.TXFIFO = ???;
+// Re-enable receive FIFO operation
+SpibRegs.SPIFFRX.bit.RXFIFORESET = 1;
+// Enables SPI interrupt. !! I do not think this is needed. Need to Test
+SpibRegs.SPICTL.bit.SPIINTENA = 1;
 
-SpibRegs.SPIFFRX.bit.RXFFIL =???; // Interrupt Level to 16 words or more received into FIFO causes
-                                  // an interrupt. This is just the initial setting for the register. 
-                                  // Will be changed below
+// Interrupt Level to 16 words or more received into
+// FIFO causes an interrupt. This is just the initial
+// setting for the register. Will be changed below
+SpibRegs.SPIFFRX.bit.RXFFIL =???;
 \end{minted}
 \item Setup CPU Timer 0’s interrupt function to be called every 1ms. Then, inside CPU Timer 0’s interrupt function, call these three lines of code to tell the SPI to transmit two 16-bit values, and because this is an SPI serial port, two 16-bit values will be received. Whenever you transmit data in a SPI serial port, you also receive. Once two 16-bit values are received into the FIFO, the \mintinline{c}{SPIB_RX_INT} hardware interrupt function will be called.
 \begin{minted}{c}
-// Clear GPIO66 Low to act as a Slave Select. Right now, just to scope. Later, select the MPU9250 chip
+// Clear GPIO66 Low to act as a Slave Select. Right
+// now, just to scope. Later, select the MPU9250 chip
 GpioDataRegs.?????  = ???;
-SpibRegs.SPIFFRX.bit.RXFFIL = 2;  // Issue the SPIB_RX_INT when two values are in the RX FIFO
-SpibRegs.SPITXBUF = 0x4A3B;  // 0x4A3B and 0xB517 have no special meaning. Wanted to send
-SpibRegs.SPITXBUF = 0xB517;  // something so you can see the pattern on the Oscilloscope
+// Issue the SPIB_RX_INT when two values are in the RX FIFO
+SpibRegs.SPIFFRX.bit.RXFFIL = 2;
+// 0x4A3B and 0xB517 have no special meaning. Wanted to send something
+// so you can see the pattern on the Oscilloscope
+SpibRegs.SPITXBUF = 0x4A3B;
+SpibRegs.SPITXBUF = 0xB517;
 \end{minted}
 \item \begin{enumerate}
-    \item At the top of your C file, add a predefinition of \mintinline{c}{__interrupt void SPIB_isr(void)}. 
+    \item At the top of your C file, add a predefinition of \mintinline{c}{__interrupt} \mintinline{c}{void} \mintinline{c}{SPIB_isr(void)}. 
     \item Then add this function to the \mintinline{c}{PieVectTable} like you did in Lab 4 for \mintinline{c}{ADCD_ISR}, \mintinline{c}{ADCC_ISR}, \mintinline{c}{ADCB_ISR}.  
     \item Look up in the PIE Channel Mapping Table the interrupt number for \mintinline{c}{SPIB_RX} and enable this interrupt by both enabling the major interrupt in the IER: \mintinline{c}{IER |= M_INT?;} and enabling the correct \mintinline{c}{PIEIER?.bit.???}.   
     \item Finally insert the \mintinline{c}{SPIB_isr} function below and correct the ???
@@ -223,17 +250,25 @@ SpibRegs.SPITXBUF = 0xB517;  // something so you can see the pattern on the Osci
 int16_t spivalue1 = 0;
 int16_t spivalue2 = 0;
 __interrupt void SPIB_isr(void){
-    spivalue1 = SpibRegs.???; // Read first 16-bit value off RX FIFO. Probably is zero since no chip
-    spivalue2 = SpibRegs.???; // Read second 16-bit value off RX FIFO. Again probably zero
+    // Read first 16-bit value off RX FIFO.
+    // Probably is zero since no chip
+    spivalue1 = SpibRegs.???;
+    // Read second 16-bit value off RX FIFO. Again probably zero
+    spivalue2 = SpibRegs.???;
     
-    GpioDataRegs.???? = ???; // Set GPIO 66 high to end Slave Select. Now to Scope. 
-                             //Later, deselect the MPU9250.
-    // Later, when actually communicating with the MPU9250, do something with the data. Now do nothing.
+    // Set GPIO 66 high to end Slave Select. Now
+    // to Scope. Later, deselect the MPU9250.
+    GpioDataRegs.???? = ???;
+    // Later, when actually communicating with the MPU9250,
+    // do something with the data. Now do nothing.
     
-    SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;      // Clear Overflow flag just in case of an overflow
-    SpibRegs.SPIFFRX.bit.RXFFINTCLR = 1;      // Clear RX FIFO Interrupt flag so next interrupt will happen
+    // Clear Overflow flag just in case of an overflow
+    SpibRegs.SPIFFRX.bit.RXFFOVFCLR = 1;
+    // Clear RX FIFO Interrupt flag so next interrupt will happen
+    SpibRegs.SPIFFRX.bit.RXFFINTCLR = 1;
     
-    PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;  // Acknowledge INT6 PIE interrupt
+    // Acknowledge INT6 PIE interrupt
+    PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;
 }
 \end{minted}
 \item Compile and run this code. Use the oscilloscope's logic analyzer channel to scope SS, SCLK, MOSI, and MISO. Trigger on SS. Verify that the correct clock rate and clock mode are being used. Verify that 0x4A3B and 0xB517 are being transmitted, and probably zero is being received.    
@@ -247,9 +282,12 @@ In the exercise 3 code that you wrote, change the values being sent through the 
 %
 \begin{minted}{c}
 GpioDataRegs.?????  = ???;  // Clear GPIO66 Low to select MPU9250 chip  
-SpibRegs.SPIFFRX.bit.RXFFIL = 2;  // Issue the SPIB_RX_INT when two values are in the RX FIFO
-SpibRegs.SPITXBUF = (0x8000 | 0x4600);  // the 0x8000 set the read bit and 46 GYRO_YOUT_L
-SpibRegs.SPITXBUF = 0x0000;  // Send 16 zeros in order that we receive the 16 GyroZ reading
+// Issue the SPIB_RX_INT when two values are in the RX FIFO
+SpibRegs.SPIFFRX.bit.RXFFIL = 2;
+// the 0x8000 set the read bit and 46 GYRO_YOUT_L
+SpibRegs.SPITXBUF = (0x8000 | 0x4600);
+// Send 16 zeros in order that we receive the 16 GyroZ reading
+SpibRegs.SPITXBUF = 0x0000;
 \end{minted}
 %
 You will understand this code better after several lectures on the MPU-9250, studying its datasheet, and working through exercise 5. This code tells the MPU-9250 to start reading from the GyroY’s Low byte. The reason we start reading at the Gyro Y’s Low byte is that it is the register before both the Gyro Z’s high byte and then the Gyro Z’s low byte. The goal is to read the full 16-bit value of Gyro Z in the second 16 bits received from the MPU-9250.  
@@ -263,23 +301,29 @@ For this exercise, you are going to initialize the MPU-9250 and then every 1 ms.
 First, finish the \mintinline{c}{setupSpib()} function given below by filling in the ???. Much of the code is provided to you, but you will need to add the parts described to this function. Copy this function to the bottom of your project’s C file and create a predefinition of the function at the top of your C file. Then make sure to call \mintinline{c}{setupSpib()} in \mintinline{c}{main()} after the “\mintinline{c}{init_serial()}” statement and before interrupts are enabled.  
 %
 \begin{minted}{c}
-void setupSpib(void) //Call this function in main() somewhere after the DINT; line of code.
+// Call this function in main() somewhere after the DINT; line of code.
+void setupSpib(void)
 {
     int16_t temp = 0;
 Step 1.
-    // cut and paste all the SpibRegs initializations you found for part 3 here. 
+    // cut and paste all the SpibRegs
+    // initializations you found for part 3 here.
     // Also, do not forget to cut and paste the GPIO settings for
     // GPIO63, 64, 65, and 66, which are part of the SPIB setup. 
-    //--------------------------------------------------------------------------
+    //------------------------------------------------------------------
 
 Step 2.
-    // perform a multiple 16-bit transfer to initialize MPU-9250 registers 0x13,0x14,0x15,0x16
-    // 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C 0x1D, 0x1E, 0x1F. Use only one SS low to high for all these writes
+    // perform a multiple 16-bit transfer to initialize
+    // MPU-9250 registers 0x13,0x14,0x15,0x16 0x17,
+    // 0x18, 0x19, 0x1A, 0x1B, 0x1C 0x1D, 0x1E, 0x1F.
+    // Use only one SS low to high for all these writes
     //Some code is given, most you have to fill yourself.  
     GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;  // Slave Select Low
 
-    // Perform the number of needed writes to SPITXBUF to write to all 13 registers. 
-    // Remember, we are sending 16-bit transfers, so two registers at a time after the first 16-bit transfer.
+    // Perform the number of needed writes to
+    // SPITXBUF to write to all 13 registers.
+    // Remember, we are sending 16-bit transfers, so two
+    // registers at a time after the first 16-bit transfer.
     // To address 00x13 write 0x00
     // To address 00x14 write 0x00
     // To address 00x15 write 0x00
@@ -294,21 +338,26 @@ Step 2.
     // To address 00x1E write 0x00
     // To address 00x1F write 0x00
 
-    // wait for the correct number of 16-bit values to be received into the RX FIFO
+    // wait for the correct number of 16-bit
+    // values to be received into the RX FIFO
     while(SpibRegs.SPIFFRX.bit.RXFFST !=???);
     GpioDataRegs.GPCSET.bit.GPIO66 = 1; // Slave Select High
     temp = SpibRegs.SPIRXBUF;
-    //  read the additional number of garbage receive values off the RX FIFO to clear out the RX FIFO
+    // read the additional number of garbage receive
+    // values off the RX FIFO to clear out the RX FIFO
     DELAY_US(10);  // Delay 10us to allow time for the MPU-2950 
                    // to get ready for the next transfer.		
 
 Step 3. 
-     // perform a multiple 16-bit transfer to initialize MPU-9250 registers 0x23,0x24,0x25,0x26
-    // 0x27, 0x28, 0x29. Use only one SS low to high for all these writes
+     // perform a multiple 16-bit transfer to initialize
+     // MPU-9250 registers 0x23,0x24,0x25,0x26
+    // 0x27, 0x28, 0x29. Use only one SS
+    // low to high for all these writes
     //Some code is given, most you have to fill yourself.  
     GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;  // Slave Select Low
 
-    // Perform the number of needed writes to SPITXBUF to write to all 7 registers
+    // Perform the number of needed writes to
+    // SPITXBUF to write to all 7 registers
     // To address 00x23 write 0x00
     // To address 00x24 write 0x40
     // To address 00x25 write 0x8C
@@ -317,15 +366,19 @@ Step 3.
     // To address 00x28 write 0x0C
     // To address 00x29 write 0x0A
     
-    // wait for the correct number of 16-bit values to be received into the RX FIFO
+    // wait for the correct number of 16-bit
+    // values to be received into the RX FIFO
     while(SpibRegs.SPIFFRX.bit.RXFFST !=???);
     GpioDataRegs.GPCSET.bit.GPIO66 = 1; // Slave Select High
     temp = SpibRegs.SPIRXBUF;
-    //  read the additional number of garbage receive values off the RX FIFO to clear out the RX FIFO
-    DELAY_US(10);  // Delay 10us to allow time for the MPU-2950 to get ready for the next transfer.
+    // read the additional number of garbage receive
+    // values off the RX FIFO to clear out the RX FIFO
+    DELAY_US(10);  // Delay 10us to allow time for the MPU-2950
+                   // to get ready for the next transfer.
 
 Step 4.
-    // perform a single 16-bit transfer to initialize MPU-9250 register 0x2A
+    // perform a single 16-bit transfer to
+    // initialize MPU-9250 register 0x2A
     GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;
     // Write to address 0x2A the value 0x81
 
@@ -415,7 +468,8 @@ Step 4.
     temp = SpibRegs.SPIRXBUF;
     DELAY_US(50);
 
-    // Clear the SPIB interrupt source, just in case any of the above initializations triggered it.  
+    // Clear the SPIB interrupt source, just in case
+    // any of the above initializations triggered it.
     SpibRegs.SPIFFRX.bit.RXFFOVFCLR=1;  // Clear Overflow flag
     SpibRegs.SPIFFRX.bit.RXFFINTCLR=1;  // Clear Interrupt flag
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;

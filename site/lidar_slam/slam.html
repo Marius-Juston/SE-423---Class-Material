@@ -87,6 +87,11 @@
   }
 
   #root { height: 100vh; width: 100vw; }
+  /* Narrow screens (and 400 % zoom): the page scrolls; the app stacks its panels. */
+  @media (max-width: 900px) {
+    html, body { height: auto; overflow: auto; }
+    #root { height: auto; width: 100%; }
+  }
 </style>
 
 </head>

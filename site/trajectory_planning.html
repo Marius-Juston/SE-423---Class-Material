@@ -38,9 +38,11 @@
 body{background:var(--bg);color:var(--text);font-family:var(--fb);line-height:1.55;overflow-x:hidden}
 h1,h2,h3,h4{font-family:var(--fb);font-weight:700}
 
-.topnav{display:flex;align-items:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#1A335F,var(--bg));position:sticky;top:0;z-index:100}
+.topnav{display:flex;flex-wrap:wrap;align-items:center;border-bottom:1px solid var(--border);background:linear-gradient(180deg,#1A335F,var(--bg));position:sticky;top:0;z-index:100}
 .topnav .brand{padding:0.6rem 1.2rem;font-family:var(--fm);font-size:0.82rem;font-weight:700;color:var(--accent);white-space:nowrap;border-right:1px solid var(--border)}
 .topnav .nb{font-family:var(--fm);font-size:0.7rem;padding:0.7rem 1rem;background:none;border:none;border-right:1px solid var(--border);color:var(--dim);cursor:pointer;transition:all .15s}
+/* Reflow (320 px): canvases shrink to the column (clicks are scaled back to canvas pixels) */
+canvas{max-width:100%;height:auto}
 .topnav .nb:hover{color:var(--text);background:var(--surface)}
 .topnav .nb.active{color:var(--accent);background:var(--surface);box-shadow:inset 0 -2px 0 var(--accent)}
 

@@ -91,7 +91,11 @@ class SlidePage:
                     out.append(ESC(dr.text_of(el)))
                 elif kind == "m":
                     for m in dr.xp(el, "./m:oMathPara | ./m:oMath"):
-                        out.append(self.maths.get(m.getroottree().getpath(m), ""))
+                        html_ = self.maths.get(m.getroottree().getpath(m), "")
+                        if html_ and 'display="block"' not in html_.split(">", 1)[0]:
+                            # Inline equations cannot wrap: a wide one scrolls in its own box.
+                            html_ = f"<span class='scroll-x math-inline'>{html_}</span>"
+                        out.append(html_)
         return "".join(out).strip()
 
     def text_body(self, body, bulleted):
@@ -171,8 +175,11 @@ class SlidePage:
                 cells.append(f"<{tag}{span}{scope}>{text}</{tag}>")
             rows.append("<tr>" + "".join(cells) + "</tr>")
         if header and rows:
-            return f"<table><thead>{rows[0]}</thead><tbody>{''.join(rows[1:])}</tbody></table>"
-        return f"<table><tbody>{''.join(rows)}</tbody></table>"
+            table = f"<table><thead>{rows[0]}</thead><tbody>{''.join(rows[1:])}</tbody></table>"
+        else:
+            table = f"<table><tbody>{''.join(rows)}</tbody></table>"
+        # Tables cannot reflow: a wide one scrolls sideways in its own box (SCRIPT).
+        return f"<div class='scroll-x'>{table}</div>"
 
     def shapes(self, tree, skip):
         out = []
@@ -266,7 +273,7 @@ class DeckPage:
 <title>{stem}: {first} (accessible slides)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
-<style>{STYLE}</style></head>
+<style>{STYLE}</style><script>{SCRIPT}</script></head>
 <body><a class="skip" href="#main">Skip to the slides</a>
 <header><h1>{stem}: {first}</h1>
 <p>Text version of the lecture slides, one section per slide.
@@ -293,8 +300,35 @@ h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(-
 figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
 table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
 details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
-math[display=block] { margin:.5rem 0; max-width:100%; }
+math[display=block] { margin:.5rem 0; }
+/* Reflow (WCAG 1.4.10, 320 px): long words and URLs wrap; tables and equations,
+   which cannot reflow, scroll sideways in their own box. */
+body { overflow-wrap:break-word; }
+.scroll-x, math[display=block] { overflow-x:auto; overflow-y:hidden; max-width:100%; }
+.math-inline { display:inline-block; vertical-align:middle; }
 nav ol { columns: 2 18rem; }
+"""
+
+
+# A box that does overflow becomes keyboard-focusable and named (axe
+# scrollable-region-focusable); boxes that fit stay out of the tab order.
+SCRIPT = """
+addEventListener('DOMContentLoaded', () => {
+  const boxes = document.querySelectorAll('.scroll-x, math[display=block]');
+  const mark = () => boxes.forEach(el => {
+    if (el.scrollWidth > el.clientWidth + 1) {
+      el.tabIndex = 0;
+      if (el.tagName !== 'math' && !el.classList.contains('math-inline')) {
+        el.setAttribute('role', 'region');
+        el.setAttribute('aria-label', 'Table (scrolls sideways)');
+      }
+    } else if (el.tabIndex === 0) {
+      el.removeAttribute('tabindex');
+    }
+  });
+  mark();
+  addEventListener('resize', mark);
+});
 """
 
 

@@ -31,11 +31,12 @@ function Timeline({
       borderRadius: 8,
     }}>
       {/* Stage chips */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12, minHeight: 28 }}>
+      {/* Rows wrap on narrow screens; the chip strip and the slider shrink. */}
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12, minHeight: 28 }}>
         <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-          <button onClick={() => setStageIdx(Math.max(0, stageIdx - 1))}
+          <button type="button" aria-label="Previous stage" onClick={() => setStageIdx(Math.max(0, stageIdx - 1))}
                   style={btnStyle}>‹</button>
-          <button onClick={() => setStageIdx(Math.min(stages.length - 1, stageIdx + 1))}
+          <button type="button" aria-label="Next stage" onClick={() => setStageIdx(Math.min(stages.length - 1, stageIdx + 1))}
                   style={btnStyle}>›</button>
         </div>
         <div style={{
@@ -46,7 +47,7 @@ function Timeline({
           stage {stageIdx + 1} / {stages.length}
         </div>
         <div style={{
-          flex: 1, display: "flex", gap: 4, overflowX: "auto",
+          flex: "1 1 200px", minWidth: 0, display: "flex", gap: 4, overflowX: "auto",
           paddingBottom: 4,
         }}>
           {stages.map((s, i) => {
@@ -77,7 +78,7 @@ function Timeline({
       </div>
 
       {/* Frame scrubber */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: 12 }}>
         <button type="button" aria-label={playing ? "Pause" : "Play"} onClick={() => setPlaying(p => !p)} style={{
           ...btnStyle, width: 36,
           background: playing ? "var(--cyan)" : "var(--bg-3)",
@@ -101,7 +102,7 @@ function Timeline({
                value={step}
                onChange={(e) => setStep(parseInt(e.target.value))}
                style={{
-                 flex: 1, accentColor: "oklch(0.80 0.13 220)", height: 6,
+                 flex: "1 1 160px", minWidth: 0, accentColor: "oklch(0.80 0.13 220)", height: 6,
                }} />
         <div style={{
           fontFamily: "JetBrains Mono, monospace",

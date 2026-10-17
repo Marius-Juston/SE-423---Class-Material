@@ -19,6 +19,10 @@ Rules (counted per file, so the keys survive edits):
                             \\AltImg or \\Annotated (screen readers get nothing)
   latex/figure-no-caption   a figure environment without \\caption
   latex/no-document-metadata  no \\DocumentMetadata (the PDF is not tagged)
+  latex/code-typographic-char  curly quotes, dashes, ellipses or invisible spaces inside
+                            code (minted/lstlisting/verbatim blocks, \\verb, \\lstinline,
+                            \\mintinline): code copied from the PDF or HTML must paste
+                            into an editor and compile
   latex/table-header-undeclared  (warning) tables in a document that never declares
                             table header rows for tagging (\\SETableHeaders{1}, header.tex)
 """
@@ -51,6 +55,21 @@ def lint_figure(path):
         return []
     rel = path.relative_to(REPO).as_posix()
     return [Finding("latex", rel, "latex/tikz-figure-no-alt", "TikZ figure without a `% alt: ...` description")]
+
+
+# Characters that look like ASCII in print but break code when pasted into an editor.
+TYPOGRAPHIC = re.compile("[\u2018\u2019\u201c\u201d\u2013\u2014\u2026\u00a0\u200b\u2212\ufeff]")
+CODE_BLOCK = re.compile(r"\\begin\{(minted|lstlisting|verbatim|Verbatim)\}(?:\{[^}]*\})?(.*?)\\end\{\1\}", re.S)
+CODE_INLINE = re.compile(
+    r"\\(?:verb|lstinline)(.)(.*?)\1|\\(?:mintinline|lstinline)(?:\[[^\]]*\])?(?:\{[a-zA-Z]*\})?\{([^}]*)\}"
+)
+
+
+def typographic_in_code(raw):
+    """Lines of code (blocks and inline) holding typographic characters."""
+    hits = [ln for m in CODE_BLOCK.finditer(raw) for ln in m[2].splitlines() if TYPOGRAPHIC.search(ln)]
+    hits += [m[0] for m in CODE_INLINE.finditer(raw) if TYPOGRAPHIC.search(m[2] or m[3] or "")]
+    return hits
 
 
 def lint(path):
@@ -97,6 +116,18 @@ def lint(path):
                 "latex/figure-no-caption",
                 "figure without \\caption (no accessible name in the tagged PDF)",
                 count=no_caption,
+            )
+        )
+
+    typo = typographic_in_code(raw)
+    if typo:
+        out.append(
+            Finding(
+                "latex",
+                rel,
+                "latex/code-typographic-char",
+                f"code with curly quotes, dashes or special spaces (breaks when pasted): {typo[0].strip()[:60]}",
+                count=len(typo),
             )
         )
 

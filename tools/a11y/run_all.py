@@ -83,9 +83,17 @@ def main():
     if args.pdf_root and Path(args.pdf_root).is_dir():
         found += run_tool("check_pdf.py", ["--root", args.pdf_root] + (["--docker"] if args.docker else []))
         tools.add("pdf")
+        # Text spilling out of place (tables over footers, code off the page), both editions.
+        found += run_tool("check_layout.py", ["--root", args.pdf_root])
+        tools.add("layout")
         root = Path(args.pdf_root)
         checked["pdf"] = {
             p.relative_to(root).as_posix() for p in root.rglob("*.pdf") if "Lectures/Figures" not in p.as_posix()
+        }
+        checked["layout"] = {
+            p.relative_to(root).as_posix()
+            for p in root.rglob("*.pdf")
+            if not p.relative_to(root).as_posix().startswith("Lectures/")
         }
     if args.epub_root and Path(args.epub_root).is_dir() and any(Path(args.epub_root).rglob("*.epub")):
         found += run_tool("check_epub.py", ["--root", args.epub_root])
