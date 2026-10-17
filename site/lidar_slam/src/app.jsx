@@ -5,6 +5,20 @@
 
 const { useState, useEffect, useMemo } = React;
 
+// Narrow screens (phones, or a desktop window zoomed to 400 %, WCAG 1.4.10 reflow):
+// one column that scrolls with the page instead of a full-window dashboard.
+const NARROW = "(max-width: 900px)";
+function useNarrow() {
+  const [narrow, setNarrow] = useState(() => window.matchMedia(NARROW).matches);
+  useEffect(() => {
+    const mq = window.matchMedia(NARROW);
+    const on = () => setNarrow(mq.matches);
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return narrow;
+}
+
 // Heading drift model of the producer: σ_θ² = k_θ²·Θ + ARW²·T, where Θ is the
 // total angle turned and T the elapsed time (see ProducerSim._odom_loop).
 function totalTurn(gtTraj, upTo) {
@@ -15,6 +29,7 @@ function totalTurn(gtTraj, upTo) {
 }
 
 function App() {
+  const narrow = useNarrow();
   const [pySource, setPySource] = useState(null);
   const [index, setIndex] = useState(null);         // data/index.json
   const [levelData, setLevelData] = useState({});   // file → level_XX.json
@@ -155,7 +170,12 @@ function App() {
   }
 
   return (
-    <div style={{
+    <div style={narrow ? {
+      minHeight: "100vh", width: "100%",
+      display: "flex", flexDirection: "column",
+      gap: 12, padding: 8,
+      background: "var(--bg-0)",
+    } : {
       height: "100vh", width: "100vw",
       display: "grid",
       gridTemplateRows: "auto 1fr auto",
@@ -167,18 +187,18 @@ function App() {
 
       <div style={{
         display: "grid",
-        gridTemplateColumns: "minmax(0, 1.35fr) minmax(0, 0.95fr)",
+        gridTemplateColumns: narrow ? "minmax(0, 1fr)" : "minmax(0, 1.35fr) minmax(0, 0.95fr)",
         gap: 12,
         minHeight: 0,
       }}>
         {/* Left column: flow nodes (top) + scene/graph (bottom) */}
         <div style={{
           display: "grid",
-          gridTemplateRows: "minmax(0, 1.05fr) minmax(0, 1fr)",
+          gridTemplateRows: narrow ? "auto auto" : "minmax(0, 1.05fr) minmax(0, 1fr)",
           gap: 12,
           minHeight: 0,
         }}>
-          <Panel title="Process Flow" eyebrow="threads · queues · IPC">
+          <Panel title="Process Flow" eyebrow="threads · queues · IPC" style={narrow ? { height: 440 } : undefined}>
             <div style={{ flex: 1, minHeight: 0, position: "relative" }}>
               <window.FlowNodes stage={stage} />
             </div>
@@ -186,11 +206,11 @@ function App() {
 
           <div style={{
             display: "grid",
-            gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1fr)",
+            gridTemplateColumns: narrow ? "minmax(0, 1fr)" : "minmax(0, 1fr) minmax(0, 1fr)",
             gap: 12,
             minHeight: 0,
           }}>
-            <Panel title="Robot · LiDAR" eyebrow="2D map · 240° fan">
+            <Panel title="Robot · LiDAR" eyebrow="2D map · 240° fan" style={narrow ? { height: 420 } : undefined}>
               <div style={{
                 flex: 1, minHeight: 0, minWidth: 0, overflow: "hidden",
                 display: "flex", alignItems: "center", justifyContent: "center",
@@ -203,7 +223,7 @@ function App() {
               <SceneLegend stage={stage} />
             </Panel>
 
-            <Panel title="Subgraph · iSAM2" eyebrow="pose nodes · between-factors">
+            <Panel title="Subgraph · iSAM2" eyebrow="pose nodes · between-factors" style={narrow ? { height: 420 } : undefined}>
               <div style={{
                 flex: 1, minHeight: 0, minWidth: 0, overflow: "hidden",
                 display: "flex", alignItems: "center", justifyContent: "center",
@@ -217,12 +237,12 @@ function App() {
         </div>
 
         {/* Right column: code panel */}
-        <Panel title={stage.title} eyebrow={stage.subtitle} accent>
+        <Panel title={stage.title} eyebrow={stage.subtitle} accent style={narrow ? { height: "75vh" } : undefined}>
           <window.CodePanel source={pySource} stage={stage} />
         </Panel>
       </div>
 
-      <DriftPanel index={index} levelIdx={levelIdx} setLevelIdx={setLevelIdx}
+      <DriftPanel narrow={narrow} index={index} levelIdx={levelIdx} setLevelIdx={setLevelIdx}
                   level={level} liveErr={liveErr} thetaModel={thetaModel} />
 
       <window.Timeline
@@ -242,6 +262,7 @@ function Header({ stage, stageIdx, totalStages }) {
   return (
     <div style={{
       display: "flex", alignItems: "center", justifyContent: "space-between",
+      flexWrap: "wrap", gap: 8,
       padding: "6px 4px",
     }}>
       <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
@@ -298,7 +319,7 @@ function KeyValueChip({ k, v }) {
   );
 }
 
-function Panel({ title, eyebrow, children, accent }) {
+function Panel({ title, eyebrow, children, accent, style }) {
   return (
     <div style={{
       display: "flex", flexDirection: "column",
@@ -307,6 +328,7 @@ function Panel({ title, eyebrow, children, accent }) {
       borderRadius: 8,
       minHeight: 0, minWidth: 0,
       overflow: "hidden",
+      ...style,
     }}>
       {title && (
         <div style={{
@@ -419,7 +441,7 @@ function StageDetail({ stage }) {
   );
 }
 
-function DriftPanel({ index, levelIdx, setLevelIdx, level, liveErr, thetaModel }) {
+function DriftPanel({ narrow, index, levelIdx, setLevelIdx, level, liveErr, thetaModel }) {
   const n = index.levels.length;
   const reset = () => setLevelIdx(3);
   const { k_d, k_th, arw, lidar } = level.noise;
@@ -433,9 +455,8 @@ function DriftPanel({ index, levelIdx, setLevelIdx, level, liveErr, thetaModel }
 
   return (
     <div style={{
-      position: "fixed",
-      right: 24, bottom: 132,
-      width: 290,
+      // A floating card on wide screens; part of the page on narrow ones.
+      ...(narrow ? { position: "static" } : { position: "fixed", right: 24, bottom: 132, width: 290 }),
       background: "var(--bg-1)",
       border: "1px solid var(--line)",
       borderRadius: 8,
