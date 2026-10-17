@@ -19,7 +19,7 @@ HTML5-tolerant markup. In every content document this:
     that precede it move into it; a caption nested deeper moves up to its figure,
     and a caption outside any figure makes its wrapper the figure);
   - percent-encodes spaces in link URLs;
-  - turns the non-breaking spaces tex4ht writes in code blocks into plain spaces
+  - turns the non-breaking spaces tex4ht writes in code (blocks and \\verb) into plain spaces
     (copied code compiles).
 The book is rewritten in place with the mimetype entry first and uncompressed.
 """
@@ -103,9 +103,9 @@ def repair(root):
             fig.remove(cap)
             fig.append(cap)
             changes += 1
-    # Code blocks: tex4ht writes every space as U+00A0, which breaks copied code
+    # Code (blocks and inline): tex4ht writes every space as U+00A0, which breaks copied code
     # (compilers reject it); plain spaces copy cleanly and still render in <pre>.
-    for pre in root.iter(X + "pre"):
+    for pre in root.iter(X + "pre", X + "code"):
         for el in pre.iter():
             for attr in ("text", "tail"):
                 value = getattr(el, attr)
