@@ -241,7 +241,7 @@ SpibRegs.SPITXBUF = 0x4A3B;
 SpibRegs.SPITXBUF = 0xB517;
 \end{minted}
 \item \begin{enumerate}
-    \item At the top of your C file, add a predefinition of \mintinline{c}{__interrupt void SPIB_isr(void)}. 
+    \item At the top of your C file, add a predefinition of \mintinline{c}{__interrupt} \mintinline{c}{void} \mintinline{c}{SPIB_isr(void)}. 
     \item Then add this function to the \mintinline{c}{PieVectTable} like you did in Lab 4 for \mintinline{c}{ADCD_ISR}, \mintinline{c}{ADCC_ISR}, \mintinline{c}{ADCB_ISR}.  
     \item Look up in the PIE Channel Mapping Table the interrupt number for \mintinline{c}{SPIB_RX} and enable this interrupt by both enabling the major interrupt in the IER: \mintinline{c}{IER |= M_INT?;} and enabling the correct \mintinline{c}{PIEIER?.bit.???}.   
     \item Finally insert the \mintinline{c}{SPIB_isr} function below and correct the ???
