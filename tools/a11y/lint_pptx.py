@@ -15,6 +15,8 @@ Rules:
   pptx/template-image-not-decorative  template logos (figures.toml `ignore`) not marked
                              decorative; counted per deck
   pptx/video-no-alt          video/audio placeholder without a description
+  pptx/no-document-title     deck without a document title (File > Info > Title); the
+                             slide PDF's title and a screen reader's first announcement
   pptx/slide-no-title        slide without a title placeholder (or with an empty one);
                              counted per deck
   pptx/table-no-header       data table (two or more rows) without a header row (tblPr firstRow)
@@ -66,6 +68,9 @@ def lint(path, ignore):
 
     def finding(rule, message, where="", **kw):
         out.append(Finding("pptx", rel, rule, message, where=where, **kw))
+
+    if not (prs.core_properties.title or "").strip():
+        finding("pptx/no-document-title", "deck has no document title (File > Info > Title)")
 
     # Template text repeated on many slides (footers such as "SYSTEMS ENGINEERING"):
     # incidental, like a logotype, so not held to the size guideline.
