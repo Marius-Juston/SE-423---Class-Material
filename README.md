@@ -88,7 +88,9 @@ And for the website: https://wave.webaim.org/report#/https://marius-juston.githu
 
 ## L3
 
-- Slides 13–14 (Push-Pull - Output): create an animation of the push-pull output (the PMOS and NMOS transistors switching as the input changes); the slides currently show only the static circuit. The placeholder note that said so was removed from the slides.
+- Slides 13–14 (Push-Pull - Output): create an animation of the push-pull output (the PMOS and NMOS transistors switching as the input changes); the slides currently show only the static circuit.
+- Slide 21 (Pin Mux (4/4)): create an animation of the pin mux (the GPyMUX/GPyGMUX bits selecting which peripheral drives the pin); the slide currently shows only TI's static GPIO logic figure.
+- The placeholder notes that said so were removed from these slides.
 
 ## L5
 
