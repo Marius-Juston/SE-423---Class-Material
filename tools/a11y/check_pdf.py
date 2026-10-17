@@ -23,6 +23,7 @@ import os
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -91,45 +92,53 @@ def findings_for(rel, job, sev):
     return out
 
 
+VERAPDF_TIMEOUT = 20 * 60  # s per veraPDF run; a hang becomes a pdf/not-validated finding
+
+
+def validate(cmd, by_name, sev):
+    """Run one veraPDF command over the files in by_name ({path as veraPDF sees it: rel})."""
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=VERAPDF_TIMEOUT)
+        jobs, detail = jobs_of(r.stdout), (r.stderr or r.stdout)[-200:]
+    except subprocess.TimeoutExpired:
+        jobs, detail = [], f"veraPDF did not finish within {VERAPDF_TIMEOUT // 60} min"
+    except (ValueError, KeyError, TypeError):
+        jobs, detail = [], (r.stderr or r.stdout)[-200:]
+    out, seen = [], set()
+    for job in jobs:
+        rel = by_name.get(job.get("itemDetails", {}).get("name"))
+        if rel is not None:
+            seen.add(rel)
+            out += findings_for(rel, job, sev)
+    for rel in sorted(set(by_name.values()) - seen):
+        out.append(
+            Finding("pdf", rel, "pdf/not-validated", f"veraPDF could not validate the file: {detail}", severity=sev)
+        )
+    return out
+
+
 def check(pdfs, root, use_docker):
-    """One veraPDF run per flavour (one JVM, PROCESSES files at a time), not one per file."""
+    """Few veraPDF runs instead of one per file (each run starts a JVM, with --docker a
+    container too). Natively, one run per flavour with --processes; in Docker the files
+    are split over PROCESSES containers run side by side (veraPDF's own --processes
+    spawns child JVMs, which hung inside the container)."""
     base, path_of = verapdf_cmd(use_docker, root)
     groups = {}
     for pdf in pdfs:
         rel = pdf.relative_to(root).as_posix()
-        flavour = "ua1" if rel.startswith(REPORT_ONLY) else "ua2"
-        groups.setdefault(flavour, []).append(pdf)
-    out = []
+        groups.setdefault("ua1" if rel.startswith(REPORT_ONLY) else "ua2", []).append(pdf)
+    runs = []
     for flavour, group in groups.items():
         sev = "warning" if flavour == "ua1" else "error"
-        by_name = {path_of(pdf): pdf.relative_to(root).as_posix() for pdf in group}
-        r = subprocess.run(
-            [*base, "--flavour", flavour, "--format", "json", "--processes", str(PROCESSES), *by_name],
-            capture_output=True,
-            text=True,
-        )
-        try:
-            jobs = jobs_of(r.stdout)
-        except (ValueError, KeyError, TypeError):
-            jobs = []
-        seen = set()
-        for job in jobs:
-            rel = by_name.get(job.get("itemDetails", {}).get("name"))
-            if rel is None:
-                continue
-            seen.add(rel)
-            out += findings_for(rel, job, sev)
-        for rel in sorted(set(by_name.values()) - seen):
-            out.append(
-                Finding(
-                    "pdf",
-                    rel,
-                    "pdf/not-validated",
-                    f"veraPDF could not validate the file: {(r.stderr or r.stdout)[-200:]}",
-                    severity=sev,
-                )
-            )
-    return out
+        chunks = [group[i::PROCESSES] for i in range(PROCESSES)] if use_docker else [group]
+        for chunk in filter(None, chunks):
+            by_name = {path_of(pdf): pdf.relative_to(root).as_posix() for pdf in chunk}
+            extra = [] if use_docker else ["--processes", str(PROCESSES)]
+            cmd = [*base, "--flavour", flavour, "--format", "json", *extra, *by_name]
+            runs.append((cmd, by_name, sev))
+    with ThreadPoolExecutor(max_workers=PROCESSES) as pool:
+        results = pool.map(lambda run: validate(*run), runs)
+    return [f for chunk in results for f in chunk]
 
 
 def main():

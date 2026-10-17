@@ -244,7 +244,12 @@ def sharded(pages, root, jobs):
             procs.append((subprocess.Popen(cmd, stdout=subprocess.DEVNULL), out))
         findings = []
         for proc, out in procs:
-            if proc.wait() != 0 or not out.exists():
+            try:
+                code = proc.wait(timeout=40 * 60)  # a hung browser fails the check, not CI
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                sys.exit("check_html.py: a page group did not finish within 40 min")
+            if code != 0 or not out.exists():
                 sys.exit(f"check_html.py: a page group failed (exit {proc.returncode})")
             findings += read(out)
     return findings

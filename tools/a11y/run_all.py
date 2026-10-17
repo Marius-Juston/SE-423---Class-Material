@@ -27,6 +27,7 @@ import os
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -35,16 +36,26 @@ import findings as fd  # noqa: E402
 HERE = Path(__file__).resolve().parent
 
 
+TOOL_TIMEOUT = 45 * 60  # s: a hung checker fails the run instead of stalling CI
+
+
 def run_tool(script, args):
+    start = time.monotonic()
+    print(f"running {script} ...", file=sys.stderr, flush=True)  # progress in the CI log
     with tempfile.TemporaryDirectory() as d:
         out = Path(d, "findings.json")
-        r = subprocess.run(
-            # --locked: the script's dependencies come from its committed <script>.py.lock
-            # (exact versions and hashes); a stale lock is an error, not a silent re-resolve.
-            ["uv", "run", "--quiet", "--locked", str(HERE / script), *args, "--json", str(out)],
-            capture_output=True,
-            text=True,
-        )
+        try:
+            r = subprocess.run(
+                # --locked: the script's dependencies come from its committed <script>.py.lock
+                # (exact versions and hashes); a stale lock is an error, not a silent re-resolve.
+                ["uv", "run", "--quiet", "--locked", str(HERE / script), *args, "--json", str(out)],
+                capture_output=True,
+                text=True,
+                timeout=TOOL_TIMEOUT,
+            )
+        except subprocess.TimeoutExpired as e:
+            sys.exit(f"{script} timed out after {TOOL_TIMEOUT // 60} min:\n{(e.stderr or b'')[-2000:]!r}")
+        print(f"  {script}: {time.monotonic() - start:.0f} s", file=sys.stderr, flush=True)
         if r.returncode != 0 or not out.exists():
             sys.exit(f"{script} failed:\n{r.stdout[-2000:]}\n{r.stderr[-2000:]}")
         return fd.read(out)
