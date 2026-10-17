@@ -33,12 +33,12 @@ permissions:
   contents: write
   security-events: write # accessibility findings as code-scanning alerts (SARIF)
 
-# Ensures that if a new commit arrives it does not cancel the in-progress build, but instead queues it to run immediately after. 
-# This way we guarantee that every commit gets built and deployed, even if multiple commits arrive in quick succession.
-# Ensuring that the artifact history is preserved and that no state changes are skipped.
+# Pushes to main never cancel each other: each one builds and deploys in turn, so the
+# artifact history keeps every state. A new push to a pull request cancels that PR's
+# running build instead (its result would be out of date anyway).
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: false
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
   build:
@@ -352,23 +352,41 @@ jobs:
           mkdir -p ${{ github.workspace }}/texmf-output
           mkdir -p "${HOME}/.config/latexminted"
           
-          # Intersect resolved files with pdf-list.txt
+          # Font database once, before the parallel builds (they would all race to make it).
+          luaotfload-tool --update --quiet || true
+
+          # One build per (document, edition), 4 at a time. Each runs in its own folder
+          # (separate minted caches and TEXMFOUTPUT, so parallel builds cannot collide);
+          # the PDF and its log (read by check_layout.py) are copied into build/.
+          # Large-print edition, <doc>-large.pdf: fonts 1.3x, 1.5 line spacing
+          # (\SElargeprint, see fontsetup.tex / header.tex).
+          build_one() {
+            tex="$1"; edition="$2"
+            doc=$(basename "$tex" .tex); dir=$(dirname "$tex")
+            job="$doc"; pre=""
+            if [ "$edition" = large ]; then job="$doc-large"; pre='\def\SElargeprint{}'; fi
+            work="$RUNNER_TEMP/latex/$dir/$job"
+            mkdir -p "$work" "build/$dir"
+            if TEXMFOUTPUT="$work" latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
+                 -shell-escape -outdir="$work" -jobname="$job" ${pre:+-usepretex="$pre"} "$tex" \
+                 > "$work/latexmk.out" 2>&1; then
+              cp "$work/$job.pdf" "$work/$job.log" "build/$dir/"
+              echo "built $tex ($edition)"
+            else
+              echo "::group::$tex ($edition) failed"
+              grep -A4 '^!\|^.*:[0-9]*: ' "$work/$job.log" 2>/dev/null | head -60 || tail -60 "$work/latexmk.out"
+              echo "::endgroup::"
+              echo "::error file=$tex::LaTeX build failed ($edition edition)"
+              return 1
+            fi
+          }
+          export -f build_one
           for texfile in ${{ steps.resolve.outputs.tex_files }}; do
             if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
-              echo "State change detected: Compiling $texfile..."
-              out_dir="build/$(dirname "$texfile")"
-              mkdir -p "$out_dir"
-
-              latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
-                -shell-escape -outdir="$out_dir" "$texfile"
-
-              # Large-print edition, <doc>-large.pdf: fonts 1.3x, 1.5 line spacing
-              # (\SElargeprint, see fontsetup.tex / header.tex).
-              latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
-                -shell-escape -outdir="$out_dir" -jobname="$(basename "$texfile" .tex)-large" \
-                -usepretex='\def\SElargeprint{}' "$texfile"
+              echo "$texfile normal"
+              echo "$texfile large"
             fi
-          done
+          done | xargs -r -P 4 -L 1 bash -c 'build_one "$0" "$1"'
 
       - name: Generate XBB sidecars for raster images
         if: steps.resolve.outputs.has_tex == 'true'
@@ -444,25 +462,29 @@ jobs:
 
           # HTML artifacts are kept under build/site/<path> so they land in
           # deploy_target/site/<path> after rsync, keeping the PDF tree clean.
-          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
-            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
-              echo "Building HTML for $texfile..."
-              out_dir="build/site/$(dirname "$texfile")"
-              mkdir -p "$out_dir"
-
-              # Run from workspace root (not the source subdir) so that:
-              # - repo-root-relative image paths resolve correctly
-              # - .xbb sidecar files are found at their generated locations
-              # TeX's kpathsea already searches the source file's own directory
-              # for \input{header} etc., so no cd needed.
-              # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
-              # "mathml": equations become MathML that screen readers can read.
-              make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" \
-                "$texfile" "mathml" \
-                || { echo "::warning::HTML build failed for $texfile (continuing)"; \
-                     mkdir -p build/a11y; echo "$texfile" >> build/a11y/make4ht-failures.txt; }
+          # Run from workspace root (not the source subdir) so that:
+          # - repo-root-relative image paths resolve correctly
+          # - .xbb sidecar files are found at their generated locations
+          # TeX's kpathsea already searches the source file's own directory
+          # for \input{header} etc., so no cd needed.
+          # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
+          # "mathml": equations become MathML that screen readers can read.
+          # 4 documents at a time (tex4ht's working files are named after each document).
+          html_one() {
+            out_dir="build/site/$(dirname "$1")"
+            mkdir -p "$out_dir"
+            if make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" "$1" "mathml" > "$RUNNER_TEMP/html-$(basename "$1").out" 2>&1; then
+              echo "HTML built for $1"
+            else
+              tail -30 "$RUNNER_TEMP/html-$(basename "$1").out"
+              echo "::warning::HTML build failed for $1 (continuing)"
+              mkdir -p build/a11y; echo "$1" >> build/a11y/make4ht-failures.txt
             fi
-          done
+          }
+          export -f html_one
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then echo "$texfile"; fi
+          done | xargs -r -P 4 -I{} bash -c 'html_one "{}"'
           # Code blocks: plain spaces instead of tex4ht's U+00A0, so copied code compiles.
           pages=$(find build/site -name '*.html' 2>/dev/null)
           [ -z "$pages" ] || uv run --quiet --locked tools/a11y/fix_code_spaces.py $pages
@@ -474,18 +496,27 @@ jobs:
         env:
           TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
         run: |
-          books=""
-          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
-            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
-              out_dir="build/$(dirname "$texfile")"
-              mkdir -p "$out_dir"
-              if tex4ebook -c se423-ebook -f epub3 -d "$GITHUB_WORKSPACE/$out_dir" "$texfile" "mathml"; then
-                books="$books $out_dir/$(basename "$texfile" .tex).epub"
-              else
-                echo "::warning::EPUB build failed for $texfile (continuing)"
-              fi
+          # One book at a time: tex4ebook shares its working files (the OPF) between
+          # documents in the same directory, so parallel builds lose books. Each finished
+          # book is listed for the repair step.
+          epub_one() {
+            out_dir="build/$(dirname "$1")"
+            mkdir -p "$out_dir"
+            if tex4ebook -c se423-ebook -f epub3 -d "$GITHUB_WORKSPACE/$out_dir" "$1" "mathml" \
+                 > "$RUNNER_TEMP/epub-$(basename "$1").out" 2>&1; then
+              echo "$out_dir/$(basename "$1" .tex).epub" >> "$RUNNER_TEMP/books.txt"
+              echo "EPUB built for $1"
+            else
+              tail -30 "$RUNNER_TEMP/epub-$(basename "$1").out"
+              echo "::warning::EPUB build failed for $1 (continuing)"
             fi
-          done
+          }
+          export -f epub_one
+          : > "$RUNNER_TEMP/books.txt"
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then echo "$texfile"; fi
+          done | xargs -r -P 1 -I{} bash -c 'epub_one "{}"'
+          books=$(cat "$RUNNER_TEMP/books.txt")
           [ -z "$books" ] || uv run --quiet --locked tools/a11y/epub_repair.py $books
 
       - name: Convert TikZ Figures to SVG
@@ -550,36 +581,45 @@ jobs:
           uv run --quiet --locked tools/sync_deck_figures.py check > /dev/null \
             || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'uv run tools/sync_deck_figures.py auto --base origin/main', and commit."
 
+          # 4 decks at a time, each LibreOffice with its own profile (instances sharing
+          # one profile block each other).
+          deck_one() {
+            pptx="$1"
+            out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
+            mkdir -p "$out_dir"
+            profile="$RUNNER_TEMP/lo-$(basename "$pptx" .pptx)"
+            # Tagged PDF/UA export: screen readers get the reading order, headings from
+            # the slide titles and the pictures' alt text (same image quality as before).
+            libreoffice \
+              -env:UserInstallation="file://$profile" \
+              --headless \
+              --invisible \
+              --nodefault \
+              --nolockcheck \
+              --nologo \
+              --nofirststartwizard \
+              --convert-to 'pdf:impress_pdf_Export:{"UseTaggedPDF":{"type":"boolean","value":"true"},"PDFUACompliance":{"type":"boolean","value":"true"},"ReduceImageResolution":{"type":"boolean","value":"false"},"UseLosslessCompression":{"type":"boolean","value":"true"},"EmbedStandardFonts":{"type":"boolean","value":"true"}}' \
+              --outdir "$out_dir" \
+              "$pptx" > /dev/null 2>&1
+            pdf="$out_dir/$(basename "$pptx" .pptx).pdf"
+            if [ ! -f "$pdf" ]; then
+              echo "::error file=$pptx::LibreOffice did not export a PDF"
+              return 1
+            fi
+            # Close LibreOffice's tagging gaps (decorative figures and backgrounds as
+            # artifacts, tagged links, title shown); nothing drawn changes.
+            uv run --quiet --locked tools/a11y/tag_slide_pdf.py "$pdf"
+            cp "$pptx" "$out_dir/"
+            echo "$pptx" >> "$RUNNER_TEMP/decks.txt"
+          }
+          export -f deck_one
+          : > "$RUNNER_TEMP/decks.txt"
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
           # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.
-          DECKS=""
           for pptx in ${{ steps.resolve.outputs.pptx_files }}; do
-            if [[ $(basename "$pptx") == L*.pptx ]]; then
-              echo "State change detected: Converting $pptx..."
-              out_dir="${{ env.PPTX_OUTPUT_DIR }}/$(dirname "$pptx")"
-              mkdir -p "$out_dir"
-
-              # Tagged PDF/UA export: screen readers get the reading order, headings from
-              # the slide titles and the pictures' alt text (same image quality as before).
-              libreoffice \
-                --headless \
-                --invisible \
-                --nodefault \
-                --nolockcheck \
-                --nologo \
-                --nofirststartwizard \
-                --convert-to 'pdf:impress_pdf_Export:{"UseTaggedPDF":{"type":"boolean","value":"true"},"PDFUACompliance":{"type":"boolean","value":"true"},"ReduceImageResolution":{"type":"boolean","value":"false"},"UseLosslessCompression":{"type":"boolean","value":"true"},"EmbedStandardFonts":{"type":"boolean","value":"true"}}' \
-                --outdir "$out_dir" \
-                "$pptx"
-              # Close LibreOffice's tagging gaps (decorative figures and backgrounds as
-              # artifacts, tagged links, title shown); nothing drawn changes.
-              uv run --quiet --locked tools/a11y/tag_slide_pdf.py "$out_dir/$(basename "${pptx%.pptx}").pdf"
-
-              echo "Propagating source artifact ($pptx) to $out_dir..."
-              cp "$pptx" "$out_dir/"
-              DECKS="$DECKS $pptx"
-            fi
-          done
+            if [[ $(basename "$pptx") == L*.pptx ]]; then echo "$pptx"; fi
+          done | xargs -r -P 4 -I{} bash -c 'deck_one "{}"'
+          DECKS=$(cat "$RUNNER_TEMP/decks.txt")
 
           # Accessible text version of each deck (headings, lists, alt text, MathML).
           if [ -n "$DECKS" ]; then

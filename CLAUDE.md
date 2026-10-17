@@ -82,6 +82,8 @@ The `\ifSEhtml` flag switches between `minted` (PDF) and a verbatim fallback (HT
 6. Injects SVG gallery (top-level `Lectures/Figures/svg/*.svg` only) into the site's `index.html`
 7. Deploys everything to the `artifacts` branch
 
+Builds run 4 at a time (LaTeX documents and their large-print editions, HTML, slide decks), each LaTeX build in its own folder and each LibreOffice with its own profile; EPUBs build one at a time (tex4ebook shares working files between documents). veraPDF validates all PDFs of a flavour in one run, and `check_html.py --jobs` splits pages over several browsers. A new push to a pull request cancels its running build; pushes to `main` never cancel each other.
+
 Incremental builds only rebuild files that changed, except that a change to a file every document reads (`header.tex`, `fontsetup.tex`, `icons.tex`, `timline.tex`, any `*.cfg`) rebuilds every document in `pdf-list.txt`, and a change to `tools/a11y/pptx_to_html.py` re-exports every deck. Trigger the workflow manually (workflow_dispatch) to rebuild everything.
 
 ### Site (`site/`)

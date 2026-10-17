@@ -51,23 +51,75 @@ def verapdf_cmd(use_docker, root):
 # Slide PDFs come from LibreOffice, which exports PDF/UA-1 (not UA-2): they are validated
 # against ua1 and reported only, since exact counts depend on the LibreOffice version.
 REPORT_ONLY = ("Lectures/Slides/",)
+PROCESSES = max(1, min(4, os.cpu_count() or 1))  # files validated in parallel per run
+
+
+def jobs_of(stdout):
+    """veraPDF's per-file jobs: one report (single process) or a list (--processes)."""
+    data = json.loads(stdout)
+    reports = data["reports"] if "reports" in data else [data]
+    return [job for rep in reports for job in rep["report"]["jobs"]]
+
+
+def findings_for(rel, job, sev):
+    result = job.get("validationResult")
+    result = result[0] if isinstance(result, list) and result else result
+    if not result:
+        return [
+            Finding(
+                "pdf",
+                rel,
+                "pdf/not-validated",
+                "veraPDF returned no result (unreadable or encrypted PDF?)",
+                severity=sev,
+            )
+        ]
+    out = []
+    for rule in result["details"].get("ruleSummaries", []):
+        if rule.get("status") == "failed" or rule.get("failedChecks"):
+            rid = f"pdf/{rule.get('specification', 'ISO 14289-2')} {rule.get('clause')}-{rule.get('testNumber')}"
+            out.append(
+                Finding(
+                    "pdf",
+                    rel,
+                    rid,
+                    rule.get("description", "")[:200],
+                    severity=sev,
+                    count=int(rule.get("failedChecks") or 1),
+                )
+            )
+    return out
 
 
 def check(pdfs, root, use_docker):
+    """One veraPDF run per flavour (one JVM, PROCESSES files at a time), not one per file."""
     base, path_of = verapdf_cmd(use_docker, root)
-    out = []
+    groups = {}
     for pdf in pdfs:
         rel = pdf.relative_to(root).as_posix()
-        sev = "warning" if rel.startswith(REPORT_ONLY) else "error"
         flavour = "ua1" if rel.startswith(REPORT_ONLY) else "ua2"
+        groups.setdefault(flavour, []).append(pdf)
+    out = []
+    for flavour, group in groups.items():
+        sev = "warning" if flavour == "ua1" else "error"
+        by_name = {path_of(pdf): pdf.relative_to(root).as_posix() for pdf in group}
         r = subprocess.run(
-            [*base, "--flavour", flavour, "--format", "json", path_of(pdf)], capture_output=True, text=True
+            [*base, "--flavour", flavour, "--format", "json", "--processes", str(PROCESSES), *by_name],
+            capture_output=True,
+            text=True,
         )
         try:
-            job = json.loads(r.stdout)["report"]["jobs"][0]
-            result = job["validationResult"]
-            result = result[0] if isinstance(result, list) else result
-        except (ValueError, KeyError, IndexError, TypeError):
+            jobs = jobs_of(r.stdout)
+        except (ValueError, KeyError, TypeError):
+            jobs = []
+        seen = set()
+        for job in jobs:
+            rel = by_name.get(job.get("itemDetails", {}).get("name"))
+            if rel is None:
+                continue
+            seen.add(rel)
+            out += findings_for(rel, job, sev)
+        for rel in sorted(set(by_name.values()) - seen):
             out.append(
                 Finding(
                     "pdf",
@@ -77,31 +129,6 @@ def check(pdfs, root, use_docker):
                     severity=sev,
                 )
             )
-            continue
-        if result is None:
-            out.append(
-                Finding(
-                    "pdf",
-                    rel,
-                    "pdf/not-validated",
-                    "veraPDF returned no result (unreadable or encrypted PDF?)",
-                    severity=sev,
-                )
-            )
-            continue
-        for rule in result["details"].get("ruleSummaries", []):
-            if rule.get("status") == "failed" or rule.get("failedChecks"):
-                rid = f"pdf/{rule.get('specification', 'ISO 14289-2')} {rule.get('clause')}-{rule.get('testNumber')}"
-                out.append(
-                    Finding(
-                        "pdf",
-                        rel,
-                        rid,
-                        rule.get("description", "")[:200],
-                        severity=sev,
-                        count=int(rule.get("failedChecks") or 1),
-                    )
-                )
     return out
 
 
