@@ -92,11 +92,29 @@ button {{ font:inherit; padding:6px 14px; margin:8px 8px 0 0; border-radius:6px;
 button[data-act=approve] {{ background:var(--accent); color:var(--bg); }}
 :focus-visible {{ outline:3px solid #FF5F05; outline-offset:2px; }}
 @media (max-width: 700px) {{ article {{ grid-template-columns:1fr; }} }}
+.progress {{ position:sticky; top:0; z-index:1; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+            background:var(--bg); padding:8px 0; border-bottom:1px solid var(--muted); }}
+.progress button {{ margin:0; }}
 </style></head><body>
 <main><h1>Review alt text ({len(groups)} images)</h1>
-<p>Approve keeps the text exactly as it is in the box (edit first if needed). Decisions save immediately.</p>
+<p>Approve keeps the text exactly as it is in the box (edit first if needed). Decisions save immediately
+and can be changed (approve after decorative, or the other way round). Skipped pictures stay undecided.</p>
+<div class="progress"><span id="left" role="status" aria-live="polite"></span>
+<button type="button" id="next-undecided">Next undecided</button></div>
 {"".join(cards) or "<p>No drafts to review.</p>"}</main>
 <script>
+const cards = [...document.querySelectorAll('article')];
+function undecided() {{ return cards.filter(c => !c.classList.contains('done')); }}
+function updateLeft() {{
+  const n = undecided().length;
+  document.getElementById('left').textContent = n ? `${{n}} of ${{cards.length}} left to decide` : `All ${{cards.length}} decided`;
+  document.getElementById('next-undecided').disabled = n === 0;
+}}
+document.getElementById('next-undecided').addEventListener('click', () => {{
+  const c = undecided()[0]; if (!c) return;
+  c.scrollIntoView({{block: 'start'}}); c.querySelector('textarea').focus({{preventScroll: true}});
+}});
+updateLeft();
 document.addEventListener('click', async ev => {{
   const b = ev.target.closest('button[data-act]'); if (!b) return;
   const card = b.closest('article'), status = card.querySelector('.status');
@@ -104,6 +122,7 @@ document.addEventListener('click', async ev => {{
     body: JSON.stringify({{source: card.dataset.source, action: b.dataset.act, alt: card.querySelector('textarea').value}})}});
   status.textContent = res.ok ? ({{approve:'Approved', decorative:'Marked decorative', skip:'Skipped'}})[b.dataset.act] : 'Error: ' + await res.text();
   if (res.ok && b.dataset.act !== 'skip') card.classList.add('done');
+  updateLeft();
   const next = card.nextElementSibling; if (res.ok && next) next.querySelector('textarea').focus();
 }});
 </script></body></html>"""
