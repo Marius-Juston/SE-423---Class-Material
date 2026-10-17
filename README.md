@@ -86,6 +86,10 @@ And for the website: https://wave.webaim.org/report#/https://marius-juston.githu
 
 - Looking back, I went EXTREMELY fast in the deep C code! Should have really simplified / spent more time, doing a big picture -> small scale view with analogies. Really should have made things much simpler!!!!
 
+## L3
+
+- Slides 13–14 (Push-Pull - Output): create an animation of the push-pull output (the PMOS and NMOS transistors switching as the input changes); the slides currently show only the static circuit. The placeholder note that said so was removed from the slides.
+
 ## L5
 
 - Lecture on ADCs could be increased and spent more time on since it is short and students have a lot of confusion on this. 
