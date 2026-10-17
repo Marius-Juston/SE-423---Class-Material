@@ -195,8 +195,25 @@ jobs:
           # 1. Install Dependencies (Added python3-pygments)
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
 
-          # 2. Download Installer
-          wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+          # 2. Download Installer from the first mirror that works. mirror.ctan.org
+          # redirects to a random mirror, and a broken one (bad TLS certificate,
+          # outage) used to fail the whole build. The chosen mirror is used for
+          # install-tl and every later tlmgr call (TL_REPO in $GITHUB_ENV).
+          TL_REPO=""
+          for repo in \
+            https://mirrors.mit.edu/CTAN/systems/texlive/tlnet \
+            https://mirrors.rit.edu/CTAN/systems/texlive/tlnet \
+            https://mirror.las.iastate.edu/tex-archive/systems/texlive/tlnet \
+            https://mirror.ctan.org/systems/texlive/tlnet; do
+            if wget -q --tries=2 --timeout=60 -O install-tl-unx.tar.gz "$repo/install-tl-unx.tar.gz" \
+               && tar -tzf install-tl-unx.tar.gz > /dev/null; then
+              TL_REPO="$repo"; break
+            fi
+            echo "::warning::TeX Live mirror $repo failed, trying the next one"
+          done
+          [ -n "$TL_REPO" ] || { echo "::error::No TeX Live mirror reachable"; exit 1; }
+          echo "TL_REPO=$TL_REPO" >> "$GITHUB_ENV"
+          echo "Using TeX Live mirror $TL_REPO"
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(find . -maxdepth 1 -name "install-tl-*" -type d | head -1)
 
@@ -221,7 +238,7 @@ jobs:
           EOF
           
           # 5. Run Install
-          ./install-tl --profile=texlive.profile
+          ./install-tl --profile=texlive.profile --repository "$TL_REPO"
 
       - name: Normalize TeX Live permissions
         if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
@@ -236,8 +253,10 @@ jobs:
           # ENSURE TEXMFOUTPUT IS NOT SET HERE
           unset TEXMFOUTPUT
 
-          # 1. Disable auto-formats to prevent latex-dev crashes
+          # 1. Disable auto-formats to prevent latex-dev crashes; use the mirror
+          #    install-tl used (see "Install TeX Live 2026").
           tlmgr option create_formats 0
+          tlmgr option repository "$TL_REPO"
           
           # 2. Install Packages
           tlmgr install \
