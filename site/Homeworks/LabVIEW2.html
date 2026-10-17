@@ -68,8 +68,10 @@ Picture.
 </li>
 <li class='enumerate' id='x1-1016x6'>Programming<span class='cmsy-10x-x-109'>→</span>Cluster, Class &amp;Variant<span class='cmsy-10x-x-109'>→</span>Unbundle and Bundle</li></ol>
 </li></ul>
-<figure class='figure'> 
- <span aria-label='Reference VI front panel: an array of numeric controls and indicators wired through Boolean comparators that map raw I16 ADC counts to engineering units and assemble the result into a cluster.' role='img'><img alt='PIC' height='481' src='Homeworks/Figures/LabVIEW2/Picture1.png' width='542' /></span> </figure>
+<figure class='figure' id='x1-1017r1'><span id='reference-vi-front-panel'></span> 
+ <span aria-label='Reference VI front panel: an array of numeric controls and indicators wired through Boolean comparators that map raw I16 ADC counts to engineering units and assemble the result into a cluster.' role='img'><img alt='PIC' height='481' src='Homeworks/Figures/LabVIEW2/Picture1.png' width='542' /></span> 
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Reference VI front panel                                                                       </span></figcaption><!-- tex4ht:label?: x111017r1  -->
+</figure>
                                                                                                        
                                                                                                        
 <p><span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            <figure class='figure'> 
@@ -80,12 +82,13 @@ Picture.
 <span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                                                   </span>
                                                                                                        
                                                                                                        
-<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 85 --><p class='noindent'><span aria-label='Block diagram (true case) of the I16-conversion VI: the true branch of a Case structure unbundles the input cluster, applies scaling math, and re-bundles the converted values for output.' role='img'><img alt='PIC' height='184' src='Homeworks/Figures/LabVIEW2/Picture2.png' width='686' /></span>
-                                                                                                                                                                                            </p>
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 86 --><p class='noindent' id='i16conversion-vi-block-diagram-true-case'><span aria-label='Block diagram (true case) of the I16-conversion VI: the true branch of a Case structure unbundles the input cluster, applies scaling math, and re-bundles the converted values for output.' role='img'><img alt='PIC' height='184' src='Homeworks/Figures/LabVIEW2/Picture2.png' width='686' /></span> <a id='x1-1018r2'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>I16-conversion VI block diagram (true case)                                                                                                                     </span></figcaption><!-- tex4ht:label?: x111018r2  -->
+                                                                                                                                                                                            </span>
                                                                                                        
                                                                                                        
-<span class='rotatebox' id='exercise-2-tcp-ethernet-protocol' style='transform: rotate(-90deg);'>                                                                                                       <p></p>
-     
+<span class='rotatebox' id='exercise-2-tcp-ethernet-protocol' style='transform: rotate(-90deg);'>                                                                                                            
      <figure class='figure'> 
 
                                                                                                                                                                                             </figure>
@@ -94,9 +97,9 @@ Picture.
 <span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                                                                                                                                                                                                                   </span>
                                                                                                        
                                                                                                        
-<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 93 --><p class='noindent' id='false-case'><span aria-label='Block diagram, false case: the input cluster is passed through to the output unchanged when the case selector is false.' role='img'><img alt='PIC' height='132' src='Homeworks/Figures/LabVIEW2/Picture3.png' width='137' /></span> <a id='x1-1017r1'></a>
+<span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <!-- l. 95 --><p class='noindent' id='false-case'><span aria-label='Block diagram, false case: the input cluster is passed through to the output unchanged when the case selector is false.' role='img'><img alt='PIC' height='132' src='Homeworks/Figures/LabVIEW2/Picture3.png' width='137' /></span> <a id='x1-1019r3'></a>
 </p>
-<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>False Case                                                                                                                                                                 </span></figcaption><!-- tex4ht:label?: x111017r1  -->
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>False Case                                                                                                                                                                 </span></figcaption><!-- tex4ht:label?: x111019r3  -->
                                                                                                                                                                                             </span>
                                                                                                        
                                                                                                        
@@ -107,15 +110,15 @@ Picture.
    
    
 <h3 class='likesectionHead' id='exercise-2-tcp-ethernet-protocol-'>  <a id='x1-2000'></a>Exercise 2: TCP Ethernet protocol </h3>
-<a id='Q1-1-5'></a>
-<!-- l. 101 --><p class='noindent'>For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP
+<a id='Q1-1-7'></a>
+<!-- l. 103 --><p class='noindent'>For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP
 Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a
 single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a
 nice, simple Echo Server that we are going to use.) Then the Echo Server echoes the exact string back. We
 receive this string with the “TCP Read” command and assume it is different information from what we just
 sent. We use the “Scan From String” command to pull the two real numbers out of the string and display
 them.
-</p><!-- l. 103 --><p class='indent'>   Copy this VI and demonstrate it working. <span class='rm-lmri-10x-x-109'>The first time you try to write data across a TCP socket from an</span>
+</p><!-- l. 105 --><p class='indent'>   Copy this VI and demonstrate it working. <span class='rm-lmri-10x-x-109'>The first time you try to write data across a TCP socket from an</span>
 <span class='rm-lmri-10x-x-109'>application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in</span>
 <span class='rm-lmri-10x-x-109'>those pop-up windows, allowing public and private networks</span>. Because we are using this echo server, you may
 find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you
@@ -124,13 +127,13 @@ You will need to find your computer’s IP address. The easiest way is to run �
 prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first
 one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection”
 block.
-</p><!-- l. 105 --><p class='indent'>   Then, before running the LabVIEW application, open MATLAB and type the command “<span class='obeylines-h'><code class='verb'>echotcpip("n”,12321)</code></span>”.
+</p><!-- l. 107 --><p class='indent'>   Then, before running the LabVIEW application, open MATLAB and type the command “<span class='obeylines-h'><code class='verb'>echotcpip("n”,12321)</code></span>”.
 12321 is the port the echo server will listen on. Later, if you want to turn off the echo server, type the command
 “<span class='obeylines-h'><code class='verb'>echotcpip("ff”)</code></span>” to turn off the server. Once the echo server is running in MATLAB, you can run your LabVIEW
 application. Type in some real numbers into the two Send Values and then click “SEND”. Play with different
 numbers and see that you get the exact numbers back. When you are done, you can click the “STOP”
 button.
-</p><!-- l. 107 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Location of blocks you may not have used for the Block Diagram view:</span> </p>
+</p><!-- l. 109 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Location of blocks you may not have used for the Block Diagram view:</span> </p>
 <ul class='itemize1'>     
 <li class='itemize'>String<span class='cmsy-10x-x-109'>→</span>Carriage Return Constant and String<span class='cmsy-10x-x-109'>→</span>Line Feed Constant and String<span class='cmsy-10x-x-109'>→</span>Scan From String
 </li>
@@ -140,8 +143,10 @@ button.
 </li>
 <li class='itemize'>Data Communication<span class='cmsy-10x-x-109'>→</span>Protocols<span class='cmsy-10x-x-109'>→</span>TCP<span class='cmsy-10x-x-109'>→</span>“TCP Open Connection” and “TCP Read” and “TCP Write”
 and “TCP Close Connection.”</li></ul>
-<figure class='figure'> 
- <span aria-label='TCP echo VI front panel: numeric controls for two values to send, indicators for the two values received back, an IP address text box, SEND and STOP buttons, and a connection- status indicator.' role='img'><img alt='PIC' height='345' src='Homeworks/Figures/LabVIEW2/Picture4.png' width='542' /></span> </figure>
+<figure class='figure' id='x1-2001r4'><span id='tcp-echo-vi-front-panel'></span> 
+ <span aria-label='TCP echo VI front panel: numeric controls for two values to send, indicators for the two values received back, an IP address text box, SEND and STOP buttons, and a connection- status indicator.' role='img'><img alt='PIC' height='345' src='Homeworks/Figures/LabVIEW2/Picture4.png' width='542' /></span> 
+<figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>TCP echo VI front panel                                                                       </span></figcaption><!-- tex4ht:label?: x122001r4  -->
+</figure>
                                                                                                        
                                                                                                        
 <span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                            <figure class='figure'> 
@@ -153,14 +158,14 @@ and “TCP Close Connection.”</li></ul>
                                                                                                        
                                                                                                        
 <span class='rotatebox' style='transform: rotate(-90deg);'>                                                                                                       <div class='subfigure'>
-<!-- l. 128 --><p class='noindent'></p><!-- l. 136 --><p class='noindent'><span aria-label='TCP echo VI block diagram: TCP Open Connection, an Event structure inside a While loop with cases for SEND, Timeout, and STOP, formatting the two numbers into a string, TCP Write, TCP Read, Scan From String to recover the two numbers, and TCP Close Connection on exit.' role='img'><img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW2/Picture5.png' width='652' /></span>                                                                                                                                                                             </p></div>
+<!-- l. 131 --><p class='noindent'></p><!-- l. 139 --><p class='noindent'><span aria-label='TCP echo VI block diagram: TCP Open Connection, an Event structure inside a While loop with cases for SEND, Timeout, and STOP, formatting the two numbers into a string, TCP Write, TCP Read, Scan From String to recover the two numbers, and TCP Close Connection on exit.' role='img'><img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW2/Picture5.png' width='652' /></span>                                                                                                                                                                             </p></div>
 <div class='subfigure'>
-<!-- l. 139 --><p class='noindent'><a id='x1-2001r1'></a></p>
+<!-- l. 142 --><p class='noindent'><a id='x1-2002r1'></a></p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(a) </span></span><span class='content'><span class='rm-lmr-10'>Showing the Timeout Event</span>                                                          </span></div>
-<!-- l. 146 --><p class='noindent'><span aria-label='Detail of the Event structure&#39;s Timeout frame: when no front-panel event fires within the timeout interval, the VI polls connection state and updates a heartbeat indicator.' role='img'><img alt='PIC' height='136' src='Homeworks/Figures/LabVIEW2/Picture6.png' width='332' /></span>                                                                                      </p></div>                                                                                                 <div class='subfigure'>
-<!-- l. 150 --><p class='noindent'><a id='x1-2002r2'></a></p>
+<!-- l. 149 --><p class='noindent'><span aria-label='Detail of the Event structure&#39;s Timeout frame: when no front-panel event fires within the timeout interval, the VI polls connection state and updates a heartbeat indicator.' role='img'><img alt='PIC' height='136' src='Homeworks/Figures/LabVIEW2/Picture6.png' width='332' /></span>                                                                                      </p></div>                                                                                                 <div class='subfigure'>
+<!-- l. 153 --><p class='noindent'><a id='x1-2003r2'></a></p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(b) </span></span><span class='content'><span class='rm-lmr-10'>Stop: Value Change Event</span>                                                            </span></div>
-<!-- l. 158 --><p class='noindent'><span after='' aria-label='Detail of the Event structure&#39;s ' button='' change"='' closing='' connection."='' continue='' false,='' frame:='' input='' is='' loop's='' loop='' pressed,='' role='img' stop:='' stop='' tcp='' terminating='' the='' value='' when='' while='' wired=''><img alt='PIC' height='137' src='Homeworks/Figures/LabVIEW2/Picture7.png' width='332' /></span>                                                                                      </p></div>
+<!-- l. 161 --><p class='noindent'><span after='' aria-label='Detail of the Event structure&#39;s ' button='' change"='' closing='' connection."='' continue='' false,='' frame:='' input='' is='' loop's='' loop='' pressed,='' role='img' stop:='' stop='' tcp='' terminating='' the='' value='' when='' while='' wired=''><img alt='PIC' height='137' src='Homeworks/Figures/LabVIEW2/Picture7.png' width='332' /></span>                                                                                      </p></div>
                                                                                                                                                                                             </span>
                                                                                                        
                                                                                                        
@@ -174,4 +179,4 @@ and “TCP Close Connection.”</li></ul>
                                                                                                        
 
 
-</span></span></p></body></html>
+</span></p></body></html>
