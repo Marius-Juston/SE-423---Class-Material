@@ -20,7 +20,7 @@ Rules (counted per file, so the keys survive edits):
   latex/figure-no-caption   a figure environment without \\caption
   latex/no-document-metadata  no \\DocumentMetadata (the PDF is not tagged)
   latex/table-header-undeclared  (warning) tables in a document that never declares
-                            table header rows for tagging (\\tagpdfsetup{table/header-rows=...})
+                            table header rows for tagging (\\SETableHeaders{1}, header.tex)
 """
 
 import argparse
@@ -101,14 +101,14 @@ def lint(path):
         )
 
     tables = len(re.findall(r"\\begin\{(tabular\*?|tabularx|tblr|longtable)\}", tex))
-    declared = "table/header-rows" in tex or "table/header-rows" in strip_comments((REPO / "header.tex").read_text())
+    declared = "\\SETableHeaders" in tex or "table/header-rows" in tex
     if tables and not declared:
         out.append(
             Finding(
                 "latex",
                 rel,
                 "latex/table-header-undeclared",
-                "tables without declared header rows (\\tagpdfsetup{table/header-rows={1}})",
+                "tables without declared header rows (\\SETableHeaders{1}, see header.tex)",
                 severity="warning",
                 count=tables,
             )

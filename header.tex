@@ -102,6 +102,13 @@
   \usepackage{minted}
 \fi
 
+% \SETableHeaders{rows}: the header rows of the next tables (e.g. {1} or {1,4}),
+% tagged as column headers in the PDF. A no-op in the HTML build (no tagpdf there).
+% Use it right before a tabular, inside its table float, or once after \input{header}
+% when every table of the document starts with a header row. Not with tabularx:
+% its trial runs make the tagging code recurse ("TeX capacity exceeded").
+\providecommand{\SETableHeaders}[1]{}
+%
 % tagpdf must be skipped in tex4ht/HTML mode: it requires the LaTeX
 % PDF resource manager activated via \DocumentMetadata, which we
 % deliberately skip under \HCode. Loading tagpdf without that setup
@@ -112,6 +119,7 @@
   \ifSEhtml\else
     \usepackage{tagpdf}
     \tagpdfsetup{activate-all}
+    \renewcommand{\SETableHeaders}[1]{\tagpdfsetup{table/header-rows={#1}}}
     \AtBeginEnvironment{tcolorbox}{\tagpdfparaOff}
     \AtEndEnvironment{tcolorbox}{\tagpdfparaOn}
     % End any open paragraph before a figure. A [H] float placed right after
