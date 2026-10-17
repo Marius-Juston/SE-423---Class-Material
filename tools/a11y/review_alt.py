@@ -35,6 +35,7 @@ import sync_deck_figures as sdf  # noqa: E402
 from draft_alt_text import open_deck, slide_context  # noqa: E402
 
 LOCK = threading.Lock()
+ON_PAGE = set()  # sources shown on the review page; decisions on them can be changed
 
 
 def drafts():
@@ -47,6 +48,7 @@ def drafts():
 
 def page():
     groups = drafts()
+    ON_PAGE.update(groups)
     decks, cards = {}, []
     for i, (source, entries) in enumerate(sorted(groups.items(), key=lambda kv: sdf.natural(kv[0]))):
         e = entries[0]
@@ -90,11 +92,29 @@ button {{ font:inherit; padding:6px 14px; margin:8px 8px 0 0; border-radius:6px;
 button[data-act=approve] {{ background:var(--accent); color:var(--bg); }}
 :focus-visible {{ outline:3px solid #FF5F05; outline-offset:2px; }}
 @media (max-width: 700px) {{ article {{ grid-template-columns:1fr; }} }}
+.progress {{ position:sticky; top:0; z-index:1; display:flex; align-items:center; gap:12px; flex-wrap:wrap;
+            background:var(--bg); padding:8px 0; border-bottom:1px solid var(--muted); }}
+.progress button {{ margin:0; }}
 </style></head><body>
 <main><h1>Review alt text ({len(groups)} images)</h1>
-<p>Approve keeps the text exactly as it is in the box (edit first if needed). Decisions save immediately.</p>
+<p>Approve keeps the text exactly as it is in the box (edit first if needed). Decisions save immediately
+and can be changed (approve after decorative, or the other way round). Skipped pictures stay undecided.</p>
+<div class="progress"><span id="left" role="status" aria-live="polite"></span>
+<button type="button" id="next-undecided">Next undecided</button></div>
 {"".join(cards) or "<p>No drafts to review.</p>"}</main>
 <script>
+const cards = [...document.querySelectorAll('article')];
+function undecided() {{ return cards.filter(c => !c.classList.contains('done')); }}
+function updateLeft() {{
+  const n = undecided().length;
+  document.getElementById('left').textContent = n ? `${{n}} of ${{cards.length}} left to decide` : `All ${{cards.length}} decided`;
+  document.getElementById('next-undecided').disabled = n === 0;
+}}
+document.getElementById('next-undecided').addEventListener('click', () => {{
+  const c = undecided()[0]; if (!c) return;
+  c.scrollIntoView({{block: 'start'}}); c.querySelector('textarea').focus({{preventScroll: true}});
+}});
+updateLeft();
 document.addEventListener('click', async ev => {{
   const b = ev.target.closest('button[data-act]'); if (!b) return;
   const card = b.closest('article'), status = card.querySelector('.status');
@@ -102,6 +122,7 @@ document.addEventListener('click', async ev => {{
     body: JSON.stringify({{source: card.dataset.source, action: b.dataset.act, alt: card.querySelector('textarea').value}})}});
   status.textContent = res.ok ? ({{approve:'Approved', decorative:'Marked decorative', skip:'Skipped'}})[b.dataset.act] : 'Error: ' + await res.text();
   if (res.ok && b.dataset.act !== 'skip') card.classList.add('done');
+  updateLeft();
   const next = card.nextElementSibling; if (res.ok && next) next.querySelector('textarea').focus();
 }});
 </script></body></html>"""
@@ -142,10 +163,15 @@ class Handler(http.server.BaseHTTPRequestHandler):
             return self.send(400, "empty alt text: write a description or mark it decorative")
         with LOCK:
             m = sdf.load_manifest()
+            if req.get("source") not in ON_PAGE:
+                return self.send(400, "not a picture on this review page; reload it")
+            # Any earlier decision made on this page (approved or decorative) is replaced,
+            # so a picture marked decorative can still get alt text, and vice versa.
             for f in m["figure"]:
-                if f["source"] != req.get("source") or f.get("alt_status") != "draft":
+                if f["source"] != req.get("source"):
                     continue
                 if action == "approve":
+                    f.pop("decorative", None)
                     f.update(alt=alt, alt_status="reviewed")
                 elif action == "decorative":
                     f.pop("alt", None)
