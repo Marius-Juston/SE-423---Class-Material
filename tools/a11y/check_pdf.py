@@ -23,6 +23,7 @@ import os
 import shutil
 import subprocess
 import sys
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -51,58 +52,93 @@ def verapdf_cmd(use_docker, root):
 # Slide PDFs come from LibreOffice, which exports PDF/UA-1 (not UA-2): they are validated
 # against ua1 and reported only, since exact counts depend on the LibreOffice version.
 REPORT_ONLY = ("Lectures/Slides/",)
+PROCESSES = max(1, min(4, os.cpu_count() or 1))  # files validated in parallel per run
+
+
+def jobs_of(stdout):
+    """veraPDF's per-file jobs: one report (single process) or a list (--processes)."""
+    data = json.loads(stdout)
+    reports = data["reports"] if "reports" in data else [data]
+    return [job for rep in reports for job in rep["report"]["jobs"]]
+
+
+def findings_for(rel, job, sev):
+    result = job.get("validationResult")
+    result = result[0] if isinstance(result, list) and result else result
+    if not result:
+        return [
+            Finding(
+                "pdf",
+                rel,
+                "pdf/not-validated",
+                "veraPDF returned no result (unreadable or encrypted PDF?)",
+                severity=sev,
+            )
+        ]
+    out = []
+    for rule in result["details"].get("ruleSummaries", []):
+        if rule.get("status") == "failed" or rule.get("failedChecks"):
+            rid = f"pdf/{rule.get('specification', 'ISO 14289-2')} {rule.get('clause')}-{rule.get('testNumber')}"
+            out.append(
+                Finding(
+                    "pdf",
+                    rel,
+                    rid,
+                    rule.get("description", "")[:200],
+                    severity=sev,
+                    count=int(rule.get("failedChecks") or 1),
+                )
+            )
+    return out
+
+
+VERAPDF_TIMEOUT = 20 * 60  # s per veraPDF run; a hang becomes a pdf/not-validated finding
+
+
+def validate(cmd, by_name, sev):
+    """Run one veraPDF command over the files in by_name ({path as veraPDF sees it: rel})."""
+    try:
+        r = subprocess.run(cmd, capture_output=True, text=True, timeout=VERAPDF_TIMEOUT)
+        jobs, detail = jobs_of(r.stdout), (r.stderr or r.stdout)[-200:]
+    except subprocess.TimeoutExpired:
+        jobs, detail = [], f"veraPDF did not finish within {VERAPDF_TIMEOUT // 60} min"
+    except (ValueError, KeyError, TypeError):
+        jobs, detail = [], (r.stderr or r.stdout)[-200:]
+    out, seen = [], set()
+    for job in jobs:
+        rel = by_name.get(job.get("itemDetails", {}).get("name"))
+        if rel is not None:
+            seen.add(rel)
+            out += findings_for(rel, job, sev)
+    for rel in sorted(set(by_name.values()) - seen):
+        out.append(
+            Finding("pdf", rel, "pdf/not-validated", f"veraPDF could not validate the file: {detail}", severity=sev)
+        )
+    return out
 
 
 def check(pdfs, root, use_docker):
+    """Few veraPDF runs instead of one per file (each run starts a JVM, with --docker a
+    container too). Natively, one run per flavour with --processes; in Docker the files
+    are split over PROCESSES containers run side by side (veraPDF's own --processes
+    spawns child JVMs, which hung inside the container)."""
     base, path_of = verapdf_cmd(use_docker, root)
-    out = []
+    groups = {}
     for pdf in pdfs:
         rel = pdf.relative_to(root).as_posix()
-        sev = "warning" if rel.startswith(REPORT_ONLY) else "error"
-        flavour = "ua1" if rel.startswith(REPORT_ONLY) else "ua2"
-        r = subprocess.run(
-            [*base, "--flavour", flavour, "--format", "json", path_of(pdf)], capture_output=True, text=True
-        )
-        try:
-            job = json.loads(r.stdout)["report"]["jobs"][0]
-            result = job["validationResult"]
-            result = result[0] if isinstance(result, list) else result
-        except (ValueError, KeyError, IndexError, TypeError):
-            out.append(
-                Finding(
-                    "pdf",
-                    rel,
-                    "pdf/not-validated",
-                    f"veraPDF could not validate the file: {(r.stderr or r.stdout)[-200:]}",
-                    severity=sev,
-                )
-            )
-            continue
-        if result is None:
-            out.append(
-                Finding(
-                    "pdf",
-                    rel,
-                    "pdf/not-validated",
-                    "veraPDF returned no result (unreadable or encrypted PDF?)",
-                    severity=sev,
-                )
-            )
-            continue
-        for rule in result["details"].get("ruleSummaries", []):
-            if rule.get("status") == "failed" or rule.get("failedChecks"):
-                rid = f"pdf/{rule.get('specification', 'ISO 14289-2')} {rule.get('clause')}-{rule.get('testNumber')}"
-                out.append(
-                    Finding(
-                        "pdf",
-                        rel,
-                        rid,
-                        rule.get("description", "")[:200],
-                        severity=sev,
-                        count=int(rule.get("failedChecks") or 1),
-                    )
-                )
-    return out
+        groups.setdefault("ua1" if rel.startswith(REPORT_ONLY) else "ua2", []).append(pdf)
+    runs = []
+    for flavour, group in groups.items():
+        sev = "warning" if flavour == "ua1" else "error"
+        chunks = [group[i::PROCESSES] for i in range(PROCESSES)] if use_docker else [group]
+        for chunk in filter(None, chunks):
+            by_name = {path_of(pdf): pdf.relative_to(root).as_posix() for pdf in chunk}
+            extra = [] if use_docker else ["--processes", str(PROCESSES)]
+            cmd = [*base, "--flavour", flavour, "--format", "json", *extra, *by_name]
+            runs.append((cmd, by_name, sev))
+    with ThreadPoolExecutor(max_workers=PROCESSES) as pool:
+        results = pool.map(lambda run: validate(*run), runs)
+    return [f for chunk in results for f in chunk]
 
 
 def main():

@@ -28,14 +28,16 @@ import argparse
 import functools
 import hashlib
 import http.server
+import os
 import subprocess
 import sys
+import tempfile
 import threading
 import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from findings import Finding, write  # noqa: E402
+from findings import Finding, read, write  # noqa: E402
 
 AXE_VERSION = "4.13.0"
 AXE_URL = f"https://cdn.jsdelivr.net/npm/axe-core@{AXE_VERSION}/axe.min.js"
@@ -231,11 +233,36 @@ def check(pages, root):
     return out
 
 
+def sharded(pages, root, jobs):
+    """Split the pages over `jobs` processes (each its own server and browser) and merge."""
+    groups = [pages[i::jobs] for i in range(jobs) if pages[i::jobs]]
+    with tempfile.TemporaryDirectory() as tmp:
+        procs = []
+        for n, group in enumerate(groups):
+            out = Path(tmp) / f"{n}.json"
+            cmd = [sys.executable, __file__, "--root", str(root), "--jobs", "1", "--json", str(out), *map(str, group)]
+            procs.append((subprocess.Popen(cmd, stdout=subprocess.DEVNULL), out))
+        findings = []
+        for proc, out in procs:
+            try:
+                code = proc.wait(timeout=40 * 60)  # a hung browser fails the check, not CI
+            except subprocess.TimeoutExpired:
+                proc.kill()
+                sys.exit("check_html.py: a page group did not finish within 40 min")
+            if code != 0 or not out.exists():
+                sys.exit(f"check_html.py: a page group failed (exit {proc.returncode})")
+            findings += read(out)
+    return findings
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("pages", nargs="*")
     ap.add_argument("--root", help="directory served as the site root")
     ap.add_argument("--json", help="write findings here")
+    ap.add_argument(
+        "--jobs", type=int, default=min(4, os.cpu_count() or 1), help="pages checked in parallel (one browser each)"
+    )
     ap.add_argument("--install-browser", action="store_true", help="install the matching Chromium and exit")
     ap.add_argument("--with-deps", action="store_true", help="with --install-browser: also its system libraries")
     args = ap.parse_args()
@@ -247,7 +274,7 @@ def main():
     root = Path(args.root).resolve()
     # Page arguments are relative to --root (or absolute).
     pages = [(root / p).resolve() for p in args.pages] or sorted(root.rglob("*.html"))
-    findings = check(pages, root)
+    findings = sharded(pages, root, args.jobs) if args.jobs > 1 and len(pages) > 1 else check(pages, root)
     if args.json:
         write(findings, args.json)
     for f in findings:
