@@ -249,7 +249,7 @@ class DeckPage:
             body = SlidePage(self, slide, maths.get(no, {})).shapes(tree, title_sp)
             notes = dr.notes_text(slide)
             notes_html = (
-                "<details><summary>Speaker notes</summary>" + "".join(f"<p>{ESC(n)}</p>" for n in notes) + "</details>"
+                "<details><summary>Lecture notes</summary>" + "".join(f"<p>{ESC(n)}</p>" for n in notes) + "</details>"
                 if notes
                 else ""
             )
