@@ -58,6 +58,11 @@
 \usepackage{array}
 % \usepackage{colortbl}
 \usepackage{pdflscape}
+% HTML has no landscape pages: tex4ht renders the environment as one rotated box
+% that swallows the rest of the page (LabVIEW2, 2400 px wide on a phone).
+\ifSEhtml
+  \AtBeginDocument{\renewenvironment{landscape}{\par}{\par}}
+\fi
 \usepackage{pgfplots}
 \usepackage{xurl}
 \usetikzlibrary{arrows.meta, angles, quotes, shapes.symbols, arrows.meta}
@@ -130,8 +135,13 @@
     \AddToHook{env/figure/before}{\par}
     \AddToHook{env/table/before}{\par}  % same for tables: else the caption lands outside the table (Lab2)
     % Same for a minted block that directly follows a nested list inside an
-    % \item (e.g. HW3): end the list-continuation paragraph first.
-    \AddToHook{env/minted/before}{\par}
+    % \item (e.g. HW3): end the list-continuation paragraph first. When the
+    % block is the first thing in an \item, set the item's label on its own
+    % line first: a bare \par leaves the label pending, and it was printed
+    % over the next item's label (HW1 Exercise 8: "1." on top of "2.").
+    \makeatletter
+    \AddToHook{env/minted/before}{\if@inlabel\leavevmode\fi\par}
+    \makeatother
   \fi
 \fi
 
@@ -179,6 +189,11 @@
   \geometry{left=0.75in, right=0.75in, top=0.75in, bottom=1.0in}
   \AtBeginDocument{\setstretch{1.5}}
 \fi
+% Paragraphs with long code names or paths (\texttt, \lstinline) may stretch
+% their spaces further instead of running into the margin; only lines that
+% would otherwise be overfull change. Code is never broken by this, so it
+% still copies cleanly.
+\setlength{\emergencystretch}{3em}
 
 \definecolor{highlight}{rgb}{0.788235294, 0.0117647059, 0.0431372549}
 
@@ -233,6 +248,9 @@
 \fancyfoot[L]{// \CourseCode, \CourseName}
 \fancyfoot[R]{// \AssignmentFooter~\HWNum, Page \thepage\ of \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0pt}
+% Footer as wide as the final text block: a document that changes its margins
+% after \input{header} (the syllabus) otherwise gets a footer running off the page.
+\AtBeginDocument{\setlength{\headwidth}{\textwidth}}
 
 % ============================
 % Title box

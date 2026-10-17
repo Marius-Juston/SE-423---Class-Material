@@ -340,7 +340,10 @@ Etc...
 \caption{LED GPIO Mapping and Control Registers}
 \label{tab:led_gpio_mapping}
 \renewcommand{\arraystretch}{1.15}
-\begin{tabularx}{\textwidth}{c c c X X X X}
+% Row 1 is the header row (tagged as column headers in the PDF). Natural-width
+% columns: no register name wraps, so the table fits a page in large print too.
+\SETableHeaders{1}
+\begin{tabular}{c c c l l l l}
 \toprule
 \textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} & \textbf{SET} & \textbf{CLEAR} & \textbf{TOGGLE} \\
 \midrule
@@ -361,7 +364,7 @@ LED14 & 158 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
 LED15 & 159 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
 LED16 & 160 & GPF & GPFDAT & GPFSET & GPFCLEAR & GPFTOGGLE \\
 \bottomrule
-\end{tabularx}
+\end{tabular}
 \end{table}
 %
 \subsection*{Push Button’s Default GPIO Assignments:}
@@ -431,7 +434,8 @@ Each GPIO pin, when configured as an input, has an internal pull-up resistor tha
 \renewcommand{\arraystretch}{1.2}
 % Row 1 is the header row (tagged as column headers in the PDF).
 \SETableHeaders{1}
-\begin{tabular}{|p{0.09\columnwidth}|p{0.40\columnwidth}|p{0.4\columnwidth}|}
+% The example column fits the longest code line in large print too.
+\begin{tabular}{|p{0.13\columnwidth}|p{0.27\columnwidth}|p{0.49\columnwidth}|}
 \hline
 \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
 GP?DAT &

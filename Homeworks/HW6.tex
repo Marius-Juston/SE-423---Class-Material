@@ -88,14 +88,17 @@ What to turn in:
 %
 \subsection{Kalman Equations}
 For the robot car:
-\begin{align*}
+\begin{gather*}
    F=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}, 
    B=\begin{bmatrix} \cos(\theta_k)\Delta t & 0 \\
     \sin(\theta_k)\Delta t & 0 \\
      0 & \Delta t
    \end{bmatrix}, 
-   H=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}, \text{ and start P as identity } P=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}
-\end{align*}
+   H=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix},
+   \\
+   % Second line: all four matrices on one line do not fit the page in large print.
+   \text{and start $P$ as identity } P=\begin{bmatrix}1&0&0\\0&1&0\\0&0&1\end{bmatrix}
+\end{gather*}
 $K$ is $3 \times 3$ and $S$ is $3 \times 3$
 %
 \begin{align*}

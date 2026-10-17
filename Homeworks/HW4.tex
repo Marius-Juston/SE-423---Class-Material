@@ -258,19 +258,19 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 \begin{tikzpicture}
 	% Paths, nodes, and wires:
 	\draw (6.75, 8.25) to[american resistor, l={$RB$}] (9.16, 8.25);
-	\node[npn](N1) at (10, 8.25){} node[anchor=west] at (N1.text){$TIP122~NPN$};
-	\node[ground](N2) at (10, 6.5){} node[anchor=west] at (N2.text){$0V =GND$};
-	\draw (10, 11) to[empty led, l={$ULTRA-BRIGHT~LED$}] (10, 10);
+	\node[npn](N1) at (10, 8.25){} node[anchor=west] at (N1.text){TIP122 NPN};
+	\node[ground](N2) at (10, 6.5){} node[anchor=west] at (N2.text){0\,V = GND};
+	\draw (10, 11) to[empty led, l={ULTRA-BRIGHT LED}] (10, 10);
 	\draw (10, 12.5) to[american resistor, l={$47 \Omega$}] (10, 11);
-	\node[rground, yscale=-1](N3) at (10, 12.5){} node[anchor=south] at ([yshift=0.36cm]N3.text){$+6V$};
-	\node[ocirc](N4) at (10, 9.5){} node[anchor=east] at (N4.text){$COLLECTOR$};
+	\node[rground, yscale=-1](N3) at (10, 12.5){} node[anchor=south] at ([yshift=0.36cm]N3.text){+6\,V};
+	\node[ocirc](N4) at (10, 9.5){} node[anchor=east] at (N4.text){COLLECTOR};
 	\draw (10, 9.5) -- (10, 10);
 	\draw (10, 9) -- (10, 9.5);
 	\draw (10, 7.48) |- (10, 6.5);
-	\node[shape=rectangle, minimum width=4.215cm, minimum height=0.73cm] at (12.125, 7.367){} node[anchor=north, align=center, text width=3.827cm, inner sep=6pt] at (12.125, 7.75){\footnotesize Routed to GND for you};
-	\node[ocirc](N5) at (6.75, 8.25){} node[anchor=north] at (N5.text){$INPUT$};
+	\node[anchor=west, font=\footnotesize] at (10.3, 7.0) {Routed to GND for you};
+	\node[ocirc](N5) at (6.75, 8.25){} node[anchor=north west] at ([yshift=-0.2cm]N5.text){INPUT};
 	\draw (6.75, 8.25) -- (5.5, 8.25);
-	\node[circ](N6) at (5.5, 8.25){} node[anchor=east] at (N6.text){$GPIO$};
+	\node[circ](N6) at (5.5, 8.25){} node[anchor=east] at (N6.text){GPIO};
 \end{tikzpicture}
 \AltEnd
     \caption{Transistors}
@@ -292,28 +292,28 @@ If you are unfamiliar with transistors, refer to an introductory electronic circ
 \begin{tikzpicture}
 	% Paths, nodes, and wires:
 	\draw (3.25, 5.48) to[american resistor, l={$RB$}] (5.66, 5.48);
-	\node[npn](N1) at (6.5, 5.48){} node[anchor=west] at (N1.text){$TIP122~NPN$};
-	\node[ground](N2) at (6.5, 3.73){} node[anchor=west] at (N2.text){$0V =GND$};
-	\node[rground, yscale=-1](N3) at (6.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N3.text){$+6V$};
-	\node[ocirc](N4) at (6.5, 6.73){} node[anchor=east] at (N4.text){$COLLECTOR$};
+	\node[npn](N1) at (6.5, 5.48){} node[anchor=west] at (N1.text){TIP122 NPN};
+	\node[ground](N2) at (6.5, 3.73){} node[anchor=west] at (N2.text){0\,V = GND};
+	\node[rground, yscale=-1](N3) at (6.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N3.text){+6\,V};
+	\node[ocirc](N4) at (6.5, 6.73){} node[anchor=east] at (N4.text){COLLECTOR};
 	\draw (6.5, 6.73) -- (6.5, 9);
 	\draw (6.5, 6.23) -- (6.5, 6.73);
 	\draw (6.5, 4.71) |- (6.5, 3.73);
-	\node[shape=rectangle, minimum width=3.465cm, minimum height=0.73cm] at (4.75, 4.363){} node[anchor=north, align=center, text width=3.077cm, inner sep=6pt] at (4.75, 4.745){\footnotesize Routed to GND for you};
-	\node[ocirc](N5) at (3.25, 5.48){} node[anchor=north] at (N5.text){$INPUT$};
+	\node[anchor=east, font=\footnotesize] at (6.3, 4.2) {Routed to GND for you};
+	\node[ocirc](N5) at (3.25, 5.48){} node[anchor=north west] at ([yshift=-0.2cm]N5.text){INPUT};
 	\draw (3.25, 5.48) -| (2.25, 5.5);
-	\node[circ](N6) at (2.25, 5.48){} node[anchor=east] at (N6.text){$GPIO$};
-	\draw (10.25, 5.98) to[empty led, l={$STANDARD~LED$}] (10.25, 4.73);
+	\node[circ](N6) at (2.25, 5.48){} node[anchor=east] at (N6.text){GPIO};
+	\draw (10.25, 5.98) to[empty led, l={STANDARD LED}] (10.25, 4.73);
 	\draw (10.25, 4.73) |- (6.5, 4.23);
 	\draw (10.25, 7.48) to[american resistor, l={$47 \Omega$}] (10.25, 5.98);
-	\draw (6.5, 8.75) to[stroke diode, l={$1N4003$}] (6.5, 9.75);
-	\node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=3.965cm](N7) at (8.5, 9.25){} node[anchor=north] at ([yshift=-1.98cm]N7.text){$DIP05-1A57$};
+	\draw (6.5, 8.75) to[stroke diode, l={1N4003}] (6.5, 9.75);
+	\node[shape=rectangle, draw, line width=1pt, minimum width=2.465cm, minimum height=3.965cm](N7) at (8.5, 9.25){} node[anchor=north] at ([yshift=-1.98cm]N7.text){DIP05-1A57};
 	\draw (6.5, 9.75) -- (6.5, 11.25);
 	\draw (6.5, 8.25) -- (7.25, 8.25);
 	\draw (6.5, 10.25) -- (7.25, 10.25);
 	\draw (10.25, 7.5) |- (9.75, 7.75);
 	\draw (9.75, 10.75) -| (10.5, 11.25);
-	\node[rground, yscale=-1](N8) at (10.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N8.text){$+6V$};
+	\node[rground, yscale=-1](N8) at (10.5, 11.25){} node[anchor=south] at ([yshift=0.36cm]N8.text){+6\,V};
 	\draw (7.75, 10.25) to[american inductor] (7.75, 8.25);
 	\draw (7.25, 8.25) -- (7.75, 8.25);
 	\draw (7.25, 10.25) -- (7.75, 10.25);
