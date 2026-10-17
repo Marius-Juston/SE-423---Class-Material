@@ -1,18 +1,31 @@
  
 /* start css.sty */
 .rm-lmr-10x-x-109{}
-.rm-lmbx-10x-x-109{ font-weight: bold;}
-.rm-lmbx-12x-x-120{font-size:130%; font-weight: bold;}
-.rm-lmtt-10x-x-109{ font-family: monospace,monospace;}
-.rm-lmtt-10x-x-109{ font-family: monospace,monospace;}
+.cmbsy-10x-x-109{font-weight: bold;}
+.cmbsy-10x-x-109{font-weight: bold;}
+.cmbsy-10x-x-109{font-weight: bold;}
+.cmbsy-8{font-size:72%;font-weight: bold;}
+.cmbsy-8{font-weight: bold;}
+.cmbsy-8{font-weight: bold;}
+.cmbsy-6{font-size:54%;font-weight: bold;}
+.cmbsy-6{font-weight: bold;}
+.cmbsy-6{font-weight: bold;}
+.cmex-10x-x-109{}
+.cmex-8{font-size:72%;}
+.cmex-7x-x-85{font-size:54%;}
 .cmr-10x-x-109{}
 .cmr-8{font-size:72%;}
+.cmr-6{font-size:54%;}
 .cmmi-10x-x-109{font-style: italic;}
 .cmmi-8{font-size:72%;font-style: italic;}
 .cmmi-6{font-size:54%;font-style: italic;}
 .cmsy-10x-x-109{}
 .cmsy-8{font-size:72%;}
-.cmex-10x-x-109{}
+.cmsy-6{font-size:54%;}
+.rm-lmbx-10x-x-109{ font-weight: bold;}
+.rm-lmbx-12x-x-120{font-size:130%; font-weight: bold;}
+.rm-lmtt-10x-x-109{ font-family: monospace,monospace;}
+.rm-lmtt-10x-x-109{ font-family: monospace,monospace;}
 .rm-lmr-10{font-size:90%;}
 .cmmi-12{font-size:109%;font-style: italic;}
 .rm-lmr-9{font-size:81%;}
@@ -34,8 +47,7 @@ a img { border-top: 0; border-left: 0; border-right: 0; }
 center { margin-top:1em; margin-bottom:1em; }
 td center { margin-top:0em; margin-bottom:0em; }
 .Canvas { position:relative; }
-img.math{vertical-align:middle;}
-div.par-math-display, div.math-display{text-align:center;}
+math { text-indent: 0em; }
 body{ margin:1em auto; max-width:80ch; padding:0 .62em; }
 h1,h2,h3,h4,h5 { line-height:1.2; }
 @media print{ body{ max-width:none } }
@@ -113,22 +125,23 @@ div.figure img {text-align:center;}
 .marginpar,.reversemarginpar {width:20%; float:right; text-align:left; margin-left:auto; margin-top:0.5em; font-size:85%; text-decoration:underline;}
 .marginpar p,.reversemarginpar p{margin-top:0.4em; margin-bottom:0.4em;}
 .reversemarginpar{float:left;}
-table.equation {width:100%;}
-.equation td{text-align:center; }
-td.equation { margin-top:1em; margin-bottom:1em; } 
-td.equation-label { width:5%; text-align:center; }
-td.eqnarray4 { width:5%; white-space: normal; }
-td.eqnarray2 { width:5%; }
-table.eqnarray-star, table.eqnarray {width:100%;}
-div.eqnarray{text-align:center;}
-div.array {text-align:center;}
-div.pmatrix {text-align:center;}
-table.pmatrix {width:100%;}
-span.pmatrix img{vertical-align:middle;}
-div.pmatrix {text-align:center;}
-table.pmatrix {width:100%;}
-span.bar-css {text-decoration:overline;}
-img.cdots{vertical-align:middle;}
+.equation td{text-align:center; vertical-align:middle; }
+td.eq-no{ width:5%; }
+table.equation { width:100%; } 
+div.math-display, div.par-math-display{text-align:center;}
+.array-hline,.array-cline{ border-top: 1px solid black; height:0px; }
+.array-hline + .array-vspace:last-child{display:none;}
+.hline-mtd, .array-hline td{ display:none }
+.array-hline:first-child{border-bottom:1px solid black;border-top:none;}
+math .texttt { font-family: monospace; }
+math .textit { font-style: italic; }
+math .textsl { font-style: oblique; }
+math .textsf { font-family: sans-serif; }
+math .textbf { font-weight: bold; }
+mo.MathClass-op + mi{margin-left:0.3em}
+mi + mo.MathClass-op{margin-left:0.3em}
+ math mstyle[mathvariant="bold"] { font-weight: bold; font-style: normal; } 
+ math mstyle[mathvariant="normal"] { font-weight: normal; font-style: normal; } 
 div.tabular, div.center div.tabular {text-align: center; margin-top:0.5em; margin-bottom:0.5em; }
 table.tabular td p{margin-top:0em;}
 table.tabular {margin-left: auto; margin-right: auto;}
@@ -149,7 +162,7 @@ table[rules] {border-left:solid black 0.4pt; border-right:solid black 0.4pt; }
 .hline hr, .cline hr{border:none;border-top:1px solid black;}
 .hline {border-top: 1px solid black;}
 .hline + .vspace:last-child{display:none;}
-div.array {text-align:center;}
+.hline:first-child{border-bottom:1px solid black;border-top:none;}
 tr.hline td hr{display:none}
 .partToc a, .partToc, .likepartToc a, .likepartToc {line-height: 200%; font-weight:bold; font-size:110%;}
 .theindex-letter{ margin-top: 1em;}
@@ -189,19 +202,11 @@ p + figcaption, img + figcaption{margin-top: 1em;}
 .tcolorbox .lowerbox{margin-top:0pt;}
 .rotatebox{display: inline-block;}
 div.verbatiminput {font-family: monospace,monospace; white-space: nowrap; }
-.equation td{text-align:center; }
-.equation-star td{text-align:center; }
-table.equation-star { width:100%; }
-table.equation { width:100%; }
-table.align, table.alignat, table.xalignat, table.xxalignat, table.flalign {width:95%; margin-left:5%; white-space: nowrap;}
-table.align-star, table.alignat-star, table.xalignat-star, table.flalign-star {margin-left:auto; margin-right:auto; white-space: nowrap;}
-td.align-label { width:5%; text-align:center; }
-td.align-odd { text-align:right; padding-right:0.3em;}
-td.align-even { text-align:left; padding-right:0.6em;}
-table.multline, table.multline-star {width:100%;}
-td.gather {text-align:center; }
-table.gather {width:100%;}
-div.gather-star {text-align:center;}
+.equation-star td{text-align:center; vertical-align:middle; }
+table.equation-star { width:100%; } 
+.boxed{border: 1px solid black; padding-left:2px; padding-right:2px;}
+mtd.align-odd{margin-left:2em; text-align:right;}
+mtd.align-even{margin-right:2em; text-align:left;}
 code.lstinline{font-family:monospace,monospace;}
 pre.listings{font-family: monospace,monospace; white-space: pre-wrap; margin-top:0.5em; margin-bottom:0.5em; }
 .lstlisting .label{margin-right:0.5em; }
@@ -214,8 +219,12 @@ pre.fancyvrb {white-space: pre; margin:0em;font-family:monospace,monospace;}
 .fancyvrblineno span {font-size:0.6rem;}
 html, body { font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
 [class^="cmss"], [class*=" cmss"], [class^="ecss"], [class*=" ecss"] { font-family: 'Atkinson Hyperlegible Next', system-ui, sans-serif !important; }
+.tcolorbox-content a, .tcolorbox-content a * { color: #0b3d91 !important; }
+.tcolorbox-content span[style*="color:#C9030B"], .tcolorbox-content span[style*="color:#FF0000"] { color: #a00008 !important; }
+@media (prefers-color-scheme: dark) { span[style*="color:#C9030B"], span[style*="color:#FF0000"] { color: #ff8a8a !important; } .tcolorbox-content span[style*="color:#C9030B"], .tcolorbox-content span[style*="color:#FF0000"] { color: #a00008 !important; } table td { background-color: transparent !important; } }
+a.url { display: inline-block; padding-block: 3px; }
 code.lstinline, span.lstinline, tt.lstinline, code.lstinline span, span.lstinline span, tt.lstinline span { color: #0b0b0b !important; background-color: #f3f3f3 !important; padding: 0.05em 0.3em; border-radius: 3px; font-weight: 600; }
-pre.lstlisting, pre.lstinputlisting, pre.fancyvrb, pre.verbatim, div.fancyvrb pre, div.verbatim pre { color: #0b0b0b !important; background-color: #f3f3f3 !important; padding: 0.6em 0.8em; border-left: 3px solid #444444; border-radius: 4px; overflow-x: auto; }
+pre.lstlisting, pre.lstinputlisting, pre.fancyvrb, pre.verbatim, div.fancyvrb pre, div.verbatim pre { color: #0b0b0b !important; background-color: #f3f3f3 !important; padding: 0.6em 0.8em; border-left: 3px solid #444444; border-radius: 4px; white-space: pre-wrap; overflow-wrap: anywhere; }
 @media (prefers-color-scheme: dark) { code.lstinline, span.lstinline, tt.lstinline, code.lstinline span, span.lstinline span, tt.lstinline span, pre.lstlisting, pre.lstinputlisting, pre.fancyvrb, pre.verbatim, div.fancyvrb pre, div.verbatim pre { color: #f5f5f5 !important; background-color: #1f2937 !important; border-left-color: #9ca3af; } }
 #tcolobox-1 .tcolorbox-title{color: #FFFFFF; background-color: #404040;}
 #tcolobox-1 .tcolorbox-content{color: #000000; background-color: #DFDFDF; border: 1px solid #404040;}

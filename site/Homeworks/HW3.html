@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
 <html lang='en-US' xml:lang='en-US'> 
-<head> <title></title> 
+<head> <title>SE 423 Mechatronics: Homework Assignment 3</title> 
 <meta charset='utf-8' /> 
 <meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
 <meta content='width=device-width,initial-scale=1' name='viewport' /> 
@@ -25,6 +25,7 @@ March 10</span></span><span class='rm-lmbx-10x-x-109'>.</span>
 <h3 class='likesectionHead' id='exercise-1-solder-imu-'> <a id='x1-1000'></a>Exercise 1: Solder IMU </h3>
 <p id='exercise-1-solder-imu'><a id='Q1-1-2'></a>
 <!-- l. 39 --></p><p class='noindent'>Using the “Demo” board as the example, solder the needed headers for your MPU-9250 IMU connections to your breakout
+                                                                                                       
 board. As you will see on the demo board, you need a single-row ten-pin female header, a 2x2-pin male header, and two
 1x2 male headers. Once you finish exercise 3 below, I will give you your MPU-9250 IMU along with the ten-pin male
 header that needs to be soldered to the IMU board. At that time, I will also give you the four jumpers that are shown in
@@ -34,7 +35,8 @@ the picture below. </p><figure class='figure'>
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 47 --><p class='noindent' id='imu-placement'><span aria-label='Demo breakout board with the MPU-9250 IMU mounted on a ten-pin female header. A 2x2 male header sets SPI vs I2C mode, and two 1x2 male headers route SPI signals; four jumpers configure SPI.' role='img'><img alt='PIC' height='281' src='Homeworks/Figures/HW3/Picture1.png' width='271' /></span> <a id='x1-1001r1'></a>
+<!-- l. 47 --><p class='noindent' id='imu-placement'><img alt='Demo breakout board with the MPU-9250 IMU mounted on a ten-pin female header. A 2x2 male header sets SPI
+vs I2C mode, and two 1x2 male headers route SPI signals; four jumpers configure SPI.' height='281' src='Homeworks/Figures/HW3/Picture1.png' width='271' /> <a id='x1-1001r1'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>IMU Placement                                                                                </span></figcaption><!-- tex4ht:label?: x1-1001r1  -->
                                                                                                        
@@ -521,8 +523,8 @@ transitions look very good, but then you find out they do not work too well on t
 ok, because you will be ahead of the game in your thoughts on how to program the robot for the desired
 tasks.
 </p><!-- l. 435 --><p class='indent'>   Grading of these homework problems will be more lenient, but I am looking for some good thought. I want your answers
-written out very neatly so I can read all parts of the diagram and code. Do not give me garbage! Also study the State Machine
-lecture handout at <a class='url' href='http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf</span></a>
+written out very neatly so I can read all parts of the diagram and code. Do not give me garbage! Also study the State
+Machine lecture handout at <a class='url' href='http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf</span></a>
 </p><!-- l. 437 --><p class='indent'>   So, to start, I want you to create a state transition diagram and pseudocode (with switch case structure) with only
 three (you can use more if you wish) states:
 </p>     
@@ -556,7 +558,7 @@ sets.
    
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
 <div class='tcolorbox-content'><!-- l. 447 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
-submission! See </span>
+submission! See</span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
 </p>

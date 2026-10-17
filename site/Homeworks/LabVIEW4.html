@@ -1,6 +1,6 @@
 <!DOCTYPE html> 
 <html lang='en-US' xml:lang='en-US'> 
-<head> <title></title> 
+<head> <title>SE 423 Mechatronics: LabVIEW Assignment 4</title> 
 <meta charset='utf-8' /> 
 <meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
 <meta content='width=device-width,initial-scale=1' name='viewport' /> 
@@ -25,10 +25,12 @@ used like MATLAB/Simulink to simulate system equations.</span>
 <!-- l. 32 --></p><p class='noindent'>For this exercise, I would like you to reproduce the two VIs shown in the pictures below. Both VIs perform the same task
 using different methods to implement an “if-else” condition, and one uses a SubVI. Again, for this exercise, start by
 creating a LabVIEW Project. Then, inside this project, add a single VI. We are using a project this time, so the SubVI
+                                                                                                       
 you create will be saved in it. I will give some pointers and instructions below, but you will need to do some of your own
-hunting to find the necessary blocks and other parts of the program, and use LabVIEW help to figure out how to use/wire
-certain blocks. Many of the blocks I used below come from the “Control Design &amp; Simulation <span class='cmsy-10x-x-109'>→ </span>Simulation” section of
-LabVIEW.
+hunting to find the necessary blocks and other parts of the program, and use LabVIEW help to figure out how to
+use/wire certain blocks. Many of the blocks I used below come from the “Control Design &amp; Simulation
+<!-- l. 32 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+Simulation” section of LabVIEW.
 </p><!-- l. 34 --><p class='indent'>   Reproduce the below VI.
 </p><!-- l. 36 --><p class='indent'>   Instructions/tips:
 </p>     
@@ -49,48 +51,59 @@ statement:
 <li class='enumerate' id='x1-1016x3'>The signal generator is set to Square wave, Amplitude of 1, and frequency of .1 hertz
 </li>
 <li class='enumerate' id='x1-1018x4'>Gain Blocks are set to “terminal” mode so that the gain can be changed with a control.
-                                                                                                       
-                                                                                                       
-     </li>
+</li>
 <li class='enumerate' id='x1-1020x5'>We are implementing a PID controller. Gain values are displayed in the Control Items section of the Front Panel
 window.
 </li>
-<li class='enumerate' id='x1-1022x6'>The Plant transfer function is <img align='middle' alt='-----1600------
-s3+14s2+448s+3200' class='frac' src='LabVIEW40x.svg' />.
+<li class='enumerate' id='x1-1022x6'>The Plant transfer function is <!-- l. 51 --><math display='inline'><mrow>         <mfrac><mrow><mn>1600</mn></mrow>
+<mrow><msup><mrow>
+<mi>s</mi></mrow><mrow><mn>3</mn></mrow></msup><mo class='MathClass-bin' stretchy='false'>+</mo><mn>14</mn><msup><mrow><mi>s</mi></mrow><mrow><mn>2</mn></mrow></msup><mo class='MathClass-bin' stretchy='false'>+</mo><mn>448</mn><mi>s</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>3200</mn></mrow></mfrac></mrow></math>.
 </li>
-<li class='enumerate' id='x1-1024x7'><img align='middle' alt='1s+0100s0-' class='frac' src='LabVIEW41x.svg' /> is an approximation of a derivative.
-</li>
+<li class='enumerate' id='x1-1024x7'><!-- l. 52 --><math display='inline'><mrow> <mfrac><mrow><mn>100</mn><mi>s</mi></mrow>
+<mrow>
+<mi>s</mi><mo class='MathClass-bin' stretchy='false'>+</mo><mn>100</mn></mrow></mfrac></mrow></math> is
+an approximation of a derivative.
+                                                                                                       
+                                                                                                       
+     </li>
 <li class='enumerate' id='x1-1026x8'>The Graph is a SimTime Waveform block.
 </li>
 <li class='enumerate' id='x1-1028x9'>I am using a Build Array block before the SimTime Waveform to plot two signals on a single graph.
 </li>
 <li class='enumerate' id='x1-1030x10'>     
 <!-- l. 55 --><p class='noindent'>More steps continue below. </p><figure class='figure' id='x1-1031r1'><span id='reference-vi-front-panel'></span> 
- <span aria-label='Reference VI front panel: a SimTime Waveform graph plots two signals (the system response and the friction-compensated response) over time, with numeric controls for gain, friction deadband, and a stop button.' role='img'><img alt='PIC' height='269' src='Homeworks/Figures/LabVIEW4/Picture1.png' width='542' /></span> 
+ <img alt='Reference VI front panel: a SimTime Waveform graph plots two signals (the
+system response and the friction-compensated response) over time, with numeric controls for gain, friction
+deadband, and a stop button.' height='269' src='Homeworks/Figures/LabVIEW4/Picture1.png' width='542' /> 
 <figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Reference VI front panel                                                                       </span></figcaption><!-- tex4ht:label?: x1-1031r1  -->
 </figure>     
 <figure class='figure' id='x1-1032r2'><span id='reference-vi-block-diagram'></span> 
- <span aria-label='Block diagram of the reference VI inside a Control and Simulation Loop: a transfer-function block, a derivative approximation 100s over (s+100), the Friction Compensation sub-network, and a Build Array feeding the SimTime Waveform graph.' role='img'><img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture2.png' width='542' /></span> 
+ <img alt='Block diagram of the reference VI inside a Control and Simulation Loop: a transfer-function block, a
+derivative approximation 100s over (s+100), the Friction Compensation sub-network, and a Build Array
+feeding the SimTime Waveform graph.' height='277' src='Homeworks/Figures/LabVIEW4/Picture2.png' width='542' /> 
 <figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Reference VI block diagram                                                                     </span></figcaption><!-- tex4ht:label?: x1-1032r2  -->
 </figure>     
 </li>
-<li class='enumerate' id='x1-1034x11'>Now, as a final task for this VI, change the Friction Compensation part of the VI into a SubVI. See the
-following tutorial to help you create this SubVI from the blocks already in your simulation. 
+<li class='enumerate' id='x1-1034x11'>Now, as a final task for this VI, change the Friction Compensation part of the VI into a SubVI. See
+the following tutorial to help you create this SubVI from the blocks already in your simulation.
 <a class='url' href='https://www.youtube.com/watch?v=zr2qqv1F4kk'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=zr2qqv1F4kk</span></a>
 </li>
 <li class='enumerate' id='x1-1036x12'>     
 <!-- l. 78 --><p class='noindent'>Make a simple Icon for your VI and connect the inputs and outputs to the pattern shown in the picture
 below. There is also another picture below of the simulation with the SubVI. </p><figure class='figure' id='x1-1037r3'><span id='picture-of-icon-and-pattern-to-use'></span> 
- <span aria-label='SubVI icon and connector pane layout: a small custom icon, with the connector pane wired so the simulation input is on the left terminal and the friction-compensated output is on the right terminal.' role='img'><img alt='PIC' height='277' src='Homeworks/Figures/LabVIEW4/Picture3.png' width='271' /></span> 
-                                                                                                       
-                                                                                                       
+ <img alt='SubVI icon and connector
+pane layout: a small custom icon, with the connector pane wired so the simulation input is on the left
+terminal and the friction-compensated output is on the right terminal.' height='277' src='Homeworks/Figures/LabVIEW4/Picture3.png' width='271' /> 
 <figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>Picture of Icon and Pattern to use                                                               </span></figcaption><!-- tex4ht:label?: x1-1037r3  -->
-     </figure>
-<figure class='figure' id='x1-1038r4'><span id='picture-with-subvi'></span> 
- <span aria-label='Block diagram with the friction-compensation logic factored out into a single SubVI tile, leaving the rest of the simulation unchanged.' role='img'><img alt='PIC' height='256' src='Homeworks/Figures/LabVIEW4/Picture4.png' width='542' /></span> 
-<figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Picture with SubVI                                                                            </span></figcaption><!-- tex4ht:label?: x1-1038r4  -->
 </figure>     
-</li>
+<figure class='figure' id='x1-1038r4'><span id='picture-with-subvi'></span> 
+ <img alt='Block diagram with the friction-compensation logic factored out into a single SubVI tile, leaving the rest
+of the simulation unchanged.' height='256' src='Homeworks/Figures/LabVIEW4/Picture4.png' width='542' /> 
+<figcaption class='caption'><span class='id'>Figure 4: </span><span class='content'>Picture with SubVI                                                                            </span></figcaption><!-- tex4ht:label?: x1-1038r4  -->
+</figure>
+                                                                                                       
+                                                                                                       
+     </li>
 <li class='enumerate' id='x1-1040x13'>Now, either create a new VI, or you can copy the Simulation Loop and all of its contents and run two simulation
 loops in one VI.
 </li>
@@ -101,7 +114,9 @@ program.
 <li class='enumerate' id='x1-1044x15'>     
 <!-- l. 100 --><p class='noindent'>To add a variable to a formula node, right-click on an edge of the formula node and select “Add Input.” To
 add an output for the formula, right-click on an edge and select “Add Output.” </p><figure class='figure' id='x1-1045r5'><span id='friction-compensation-with-a-formula-node'></span> 
- <span aria-label='Block diagram variant where the friction-compensation SubVI has been replaced by a Formula Node containing equivalent C code; inputs and an output are added on the node&#39;s left and right edges respectively.' role='img'><img alt='PIC' height='262' src='Homeworks/Figures/LabVIEW4/Picture5.png' width='542' /></span> 
+ <img alt='Block diagram variant
+where the friction-compensation SubVI has been replaced by a Formula Node containing equivalent C
+code; inputs and an output are added on the node’s left and right edges respectively.' height='262' src='Homeworks/Figures/LabVIEW4/Picture5.png' width='542' /> 
 <figcaption class='caption'><span class='id'>Figure 5: </span><span class='content'>Friction compensation with a Formula Node                                                      </span></figcaption><!-- tex4ht:label?: x1-1045r5  -->
 </figure>     
 </li></ol>
