@@ -46,6 +46,7 @@ For this next exercise, I would like you to reproduce the VI shown in the pictur
         waveform chart plotting simulation output y over time, with
         gain and time-constant numeric controls, and a Stop button.%
     }
+    \caption{Control and Simulation example: front panel}
 \end{figure}
 %
 \begin{figure}[H]
@@ -57,6 +58,7 @@ For this next exercise, I would like you to reproduce the VI shown in the pictur
         Variable named SaveData (orange node) with Real-Time FIFO,
         the second reads SaveData and feeds the chart.%
     }
+    \caption{Control and Simulation example: block diagram}
 \end{figure}
 %
 Pointers/Instructions
@@ -84,6 +86,7 @@ Pointers/Instructions
     }
 % \caption{First image}
 \end{subfigure}
+\caption{Simulation parameters of the two Control and Simulation loops}
 \end{figure}
 \item In your project window, right-click on the “My Computer” under your project name and select New$\rightarrow$Variable. Give the variable a name. Make the variable type “Single Process” and the data type “Double”. Click on the RT FIFO item and check the item “Enable RT FIFO”. The shared variable is stored in a library \lstinline|.lvlib| file. Save this library file with a name of your choosing.
 \item To add the shared variables to your application, drag the shared variable from the project window into your block diagram window. Then, in your Block Diagram, right-click on the shared variable and select the appropriate “Access Mode.”  

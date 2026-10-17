@@ -115,6 +115,7 @@
     % paragraph begin/end hooks go out of step (fatal at \end{document}).
     % \par in vertical mode is a no-op, so other figures are unaffected.
     \AddToHook{env/figure/before}{\par}
+    \AddToHook{env/table/before}{\par}  % same for tables: else the caption lands outside the table (Lab2)
     % Same for a minted block that directly follows a nested list inside an
     % \item (e.g. HW3): end the list-continuation paragraph first.
     \AddToHook{env/minted/before}{\par}

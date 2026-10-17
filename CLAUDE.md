@@ -147,6 +147,7 @@ Every document in `pdf-list.txt` (syllabus, homeworks, LabVIEW) starts with `\Do
 - A figure or minted block directly after a list (only a `%` line between, or a minted block right after a nested list inside an `\item`) left tagpdf's paragraph hooks unbalanced ("number of automatic begin … and end … para hooks differ"). `header.tex` adds `\par` before every `figure` and `minted` environment.
 - fvextra line breaking (`breaklines`) does not work with tagging: blocks and inline code (`\setmintedinline`) both keep it off; inline breaking recursed forever in Lab2.
 - With the new tagged lists, enumitem's `leftmargin=*` and the `before`/`after` keys are rejected; use explicit lengths (see `syllabus.tex`).
+- Use `tabular` (with `\multicolumn`, `\rowcolor`), not tabularray's `tblr`: tabularray isn't tagging-aware, so its cells become paragraphs nested in paragraphs (PDF/UA-2 failure; HW2 was converted).
 - The PDF title comes from `\CourseCode`, `\CourseName`, `\AssignmentType` and `\HWNum` (`header.tex`); override with `\hypersetup{pdftitle=...}` after `\input{header}` when that doesn't fit (the syllabus does).
 
 ## Known Content Issues (do not fix without discussion)
