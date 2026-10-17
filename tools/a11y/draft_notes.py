@@ -262,15 +262,30 @@ def set_notes(xml, text):
     if body is None:
         return None
     tx = body.find(dr.q("p:txBody"))
+    # Shrink text on overflow, so long notes still fit a printed notes page.
+    body_pr = tx.find(A + "bodyPr")
+    if body_pr is not None:
+        for fit in [c for c in body_pr if etree.QName(c).localname in ("noAutofit", "normAutofit", "spAutoFit")]:
+            body_pr.remove(fit)
+        etree.SubElement(body_pr, A + "normAutofit")
     first = tx.find(A + "p")
     ppr = first.find(A + "pPr") if first is not None else None
     end_rpr = first.find(A + "endParaRPr") if first is not None else None
     for p in tx.findall(A + "p"):
         tx.remove(p)
-    for para in [p.strip() for p in text.split("\n\n") if p.strip()]:
+    # One notes paragraph per line (blank lines separate paragraphs; "- " list lines stay lines).
+    for para in [p.strip() for p in text.split("\n") if p.strip()]:
         p = etree.SubElement(tx, A + "p")
-        if ppr is not None:
-            p.append(etree.fromstring(etree.tostring(ppr)))
+        new_ppr = etree.fromstring(etree.tostring(ppr)) if ppr is not None else etree.Element(A + "pPr")
+        for old in new_ppr.findall(A + "spcAft"):
+            new_ppr.remove(old)
+        # 6 pt after each paragraph, so paragraphs stay apart in the notes pane and pages.
+        spc = etree.Element(A + "spcAft")
+        etree.SubElement(spc, A + "spcPts", val="600")
+        # Schema order: lnSpc, spcBef, spcAft, then bullets etc.
+        after = [c for c in new_ppr if etree.QName(c).localname in ("lnSpc", "spcBef")]
+        new_ppr.insert(new_ppr.index(after[-1]) + 1 if after else 0, spc)
+        p.append(new_ppr)
         r = etree.SubElement(p, A + "r")
         rpr = etree.SubElement(r, A + "rPr", lang="en-US", dirty="0")
         if end_rpr is not None:
