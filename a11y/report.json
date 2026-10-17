@@ -1,1078 +1,268 @@
 [
  {
-  "tool": "html",
-  "file": "Homeworks/HW1-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW1-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW1-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW1-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW2-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW2-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW2-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW2-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW3-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW3-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW3-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW3-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW4-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW4-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW4-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW4-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW5-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW5-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW5-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW5-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW6-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW6-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW6-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/HW6-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "color_spaces.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "dark",
-  "severity": "error",
-  "count": 6
- },
- {
-  "tool": "html",
-  "file": "color_spaces.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "light",
-  "severity": "error",
-  "count": 6
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 67
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "light",
-  "severity": "error",
-  "count": 67
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "dark",
-  "severity": "error",
-  "count": 6
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "light",
-  "severity": "error",
-  "count": 6
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "lidar_slam/slam.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 23
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "light",
-  "severity": "error",
-  "count": 23
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/select-name",
-  "message": "Select element must have an accessible name",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "path-planning.html",
-  "rule": "axe/select-name",
-  "message": "Select element must have an accessible name",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 14
- },
- {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "light",
-  "severity": "error",
-  "count": 14
- },
- {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/meta-viewport",
-  "message": "Zooming and scaling must not be disabled",
-  "where": "dark",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/02_prediction.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "deutan",
   "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/meta-viewport",
-  "message": "Zooming and scaling must not be disabled",
-  "where": "light",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/02_prediction.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "protan",
   "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/select-name",
-  "message": "Select element must have an accessible name",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/04_fused_update.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #2ca02c/#ff7f0e; add a second cue (line style, marker, label)",
+  "where": "protan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/select-name",
-  "message": "Select element must have an accessible name",
-  "where": "light",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/05_covariance_matrix.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2ca02c/#d62728; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/MD_02_prediction.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "path_planning.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "light",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/MD_02_prediction.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "protan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "site/Homeworks/HW1.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/MD_04_fused_update.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #2ca02c/#ff7f0e; add a second cue (line style, marker, label)",
+  "where": "protan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "site/Homeworks/HW1.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/gaussian_transform.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "site/Homeworks/HW1.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/gaussian_transform.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #1f77b4/#9467bd; add a second cue (line style, marker, label)",
+  "where": "protan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "site/Homeworks/HW2.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 14
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW2.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/monte_carlo_ekf_lie.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2ca02c/#d62728; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
   "count": 1
  },
  {
-  "tool": "html",
-  "file": "site/Homeworks/HW2.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW3.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW3.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW3.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW3.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "dark",
-  "severity": "error",
-  "count": 4
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW3.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "light",
-  "severity": "error",
-  "count": 4
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW4.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW4.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW4.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW5.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW5.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW5.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW6.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW6.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/HW6.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW1.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW1.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW1.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "dark",
-  "severity": "error",
-  "count": 4
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW1.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "light",
-  "severity": "error",
-  "count": 4
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW2.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW2.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW2.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "dark",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW2.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "light",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW3.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW3.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW4.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/LabVIEW4.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "light",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/Homeworks/commenting_code_example.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/syllabus.html",
-  "rule": "axe/color-contrast",
-  "message": "Elements must meet minimum color contrast ratio thresholds",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_3.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #00b300/#ff0000, #00ffb3/#ffb3b3, #00ffb3/#ffcccc; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
   "count": 3
  },
  {
-  "tool": "html",
-  "file": "site/syllabus.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_3.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with tritanopia: #00ffb3/#00ffff; add a second cue (line style, marker, label)",
+  "where": "tritan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_4.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #00b300/#ff0000, #00ffb3/#ffb3b3, #00ffb3/#ffcccc; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 3
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_4.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with tritanopia: #00ffb3/#00ffff; add a second cue (line style, marker, label)",
+  "where": "tritan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_5.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #00b300/#ff0000, #00ffb3/#ffb3b3, #00ffb3/#ffcccc; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 3
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/p2p_icp_steps_5.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with tritanopia: #00ffb3/#00ffff; add a second cue (line style, marker, label)",
+  "where": "tritan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/pl_icp_step_1.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #00b300/#ff0000; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/pl_icp_step_2.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #00b300/#ff0000; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/pl_icp_step_2.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with protanopia: #00b300/#ff8000; add a second cue (line style, marker, label)",
+  "where": "protan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/slide1_init.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2980b9/#8e44ad; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/slide2_predict.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2980b9/#8e44ad; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/slide4_resample.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2980b9/#8e44ad; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/slide5_predict2.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2980b9/#8e44ad; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "cvd",
+  "file": "Lectures/Figures/svg/slide7_resample2.svg",
+  "rule": "cvd/confusable-colours",
+  "message": "colours that look alike with deuteranopia: #2980b9/#8e44ad; add a second cue (line style, marker, label)",
+  "where": "deutan",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "epub",
+  "file": "syllabus.epub",
+  "rule": "epub/HTM-025",
+  "message": "Non-registered URI scheme type found in href.",
+  "where": "",
+  "severity": "warning",
   "count": 1
  },
  {
   "tool": "html",
-  "file": "site/syllabus.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "site/syllabus.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "dark",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "site/syllabus.html",
-  "rule": "axe/target-size",
-  "message": "All touch targets must be 24px large, or leave sufficient space",
-  "where": "light",
-  "severity": "error",
-  "count": 2
- },
- {
-  "tool": "html",
-  "file": "syllabus-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "syllabus-luamml-mathml.html",
-  "rule": "axe/document-title",
-  "message": "Documents must have <title> element to aid in navigation",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "syllabus-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "dark",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "syllabus-luamml-mathml.html",
-  "rule": "axe/html-has-lang",
-  "message": "<html> element must have a lang attribute",
-  "where": "light",
-  "severity": "error",
-  "count": 1
- },
- {
-  "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "path-planning.html",
   "rule": "axe/color-contrast",
   "message": "Elements must meet minimum color contrast ratio thresholds",
   "where": "dark",
   "severity": "error",
-  "count": 1
+  "count": 23
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "path-planning.html",
   "rule": "axe/color-contrast",
   "message": "Elements must meet minimum color contrast ratio thresholds",
   "where": "light",
   "severity": "error",
+  "count": 23
+ },
+ {
+  "tool": "html",
+  "file": "path-planning.html",
+  "rule": "axe/label",
+  "message": "Form elements must have labels",
+  "where": "dark",
+  "severity": "error",
   "count": 1
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
-  "rule": "axe/label",
-  "message": "Form elements must have labels",
-  "where": "dark",
-  "severity": "error",
-  "count": 16
- },
- {
-  "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "path-planning.html",
   "rule": "axe/label",
   "message": "Form elements must have labels",
   "where": "light",
   "severity": "error",
-  "count": 16
+  "count": 1
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "dark",
-  "severity": "error",
-  "count": 7
- },
- {
-  "tool": "html",
-  "file": "trajectory_planning.html",
-  "rule": "axe/scrollable-region-focusable",
-  "message": "Scrollable region must have keyboard access",
-  "where": "light",
-  "severity": "error",
-  "count": 7
- },
- {
-  "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "path-planning.html",
   "rule": "axe/select-name",
   "message": "Select element must have an accessible name",
   "where": "dark",
@@ -1081,7 +271,7 @@
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "path-planning.html",
   "rule": "axe/select-name",
   "message": "Select element must have an accessible name",
   "where": "light",
@@ -1090,21 +280,291 @@
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 14
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "dark",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW3.html",
+  "rule": "axe/scrollable-region-focusable",
+  "message": "Scrollable region must have keyboard access",
+  "where": "light",
+  "severity": "error",
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW5.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/color-contrast",
+  "message": "Elements must meet minimum color contrast ratio thresholds",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/HW6.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW1.html",
   "rule": "axe/target-size",
   "message": "All touch targets must be 24px large, or leave sufficient space",
   "where": "dark",
   "severity": "error",
-  "count": 13
+  "count": 4
  },
  {
   "tool": "html",
-  "file": "trajectory_planning.html",
+  "file": "site/Homeworks/LabVIEW1.html",
   "rule": "axe/target-size",
   "message": "All touch targets must be 24px large, or leave sufficient space",
   "where": "light",
   "severity": "error",
-  "count": 13
+  "count": 4
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "dark",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW2.html",
+  "rule": "axe/target-size",
+  "message": "All touch targets must be 24px large, or leave sufficient space",
+  "where": "light",
+  "severity": "error",
+  "count": 2
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW3.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "site/Homeworks/LabVIEW4.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
  },
  {
   "tool": "latex",
@@ -3315,7 +2775,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 258",
   "severity": "warning",
   "count": 1
@@ -3333,7 +2793,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 418",
   "severity": "warning",
   "count": 1
@@ -3342,7 +2802,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 419",
   "severity": "warning",
   "count": 1
@@ -3351,7 +2811,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 420",
   "severity": "warning",
   "count": 1
@@ -3360,7 +2820,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 421",
   "severity": "warning",
   "count": 1
@@ -3369,7 +2829,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 422",
   "severity": "warning",
   "count": 1
@@ -3378,7 +2838,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 423",
   "severity": "warning",
   "count": 1
@@ -3387,7 +2847,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 424",
   "severity": "warning",
   "count": 1
@@ -3396,7 +2856,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 425",
   "severity": "warning",
   "count": 1
@@ -3405,7 +2865,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 426",
   "severity": "warning",
   "count": 1
@@ -3414,7 +2874,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 427",
   "severity": "warning",
   "count": 1
@@ -3423,7 +2883,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 428",
   "severity": "warning",
   "count": 1
@@ -3432,7 +2892,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 429",
   "severity": "warning",
   "count": 1
@@ -3441,7 +2901,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 430",
   "severity": "warning",
   "count": 1
@@ -3450,7 +2910,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes - IPC' also on slide 25",
+  "message": "title 'Threads & Processes - IPC' also on slide 25",
   "where": "slide 434",
   "severity": "warning",
   "count": 1
@@ -3459,7 +2919,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes - IPC' also on slide 25",
+  "message": "title 'Threads & Processes - IPC' also on slide 25",
   "where": "slide 435",
   "severity": "warning",
   "count": 1
@@ -3468,7 +2928,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 437",
   "severity": "warning",
   "count": 1
@@ -3477,7 +2937,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes - IPC' also on slide 25",
+  "message": "title 'Threads & Processes - IPC' also on slide 25",
   "where": "slide 438",
   "severity": "warning",
   "count": 1
@@ -3486,7 +2946,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 441",
   "severity": "warning",
   "count": 1
@@ -3495,7 +2955,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 442",
   "severity": "warning",
   "count": 1
@@ -3504,7 +2964,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 443",
   "severity": "warning",
   "count": 1
@@ -3513,7 +2973,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 444",
   "severity": "warning",
   "count": 1
@@ -3522,7 +2982,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes \u2013 Race Conditions' also on slide 32",
+  "message": "title 'Threads & Processes \u2013 Race Conditions' also on slide 32",
   "where": "slide 446",
   "severity": "warning",
   "count": 1
@@ -3531,7 +2991,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 447",
   "severity": "warning",
   "count": 1
@@ -3540,7 +3000,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes \u2013 Mutex and Locking' also on slide 35",
+  "message": "title 'Threads & Processes \u2013 Mutex and Locking' also on slide 35",
   "where": "slide 449",
   "severity": "warning",
   "count": 1
@@ -3549,7 +3009,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes \u2013 Semaphores' also on slide 37",
+  "message": "title 'Threads & Processes \u2013 Semaphores' also on slide 37",
   "where": "slide 451",
   "severity": "warning",
   "count": 1
@@ -3558,7 +3018,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes \u2013 Semaphores' also on slide 37",
+  "message": "title 'Threads & Processes \u2013 Semaphores' also on slide 37",
   "where": "slide 452",
   "severity": "warning",
   "count": 1
@@ -3567,7 +3027,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes \u2013 Semaphores' also on slide 37",
+  "message": "title 'Threads & Processes \u2013 Semaphores' also on slide 37",
   "where": "slide 454",
   "severity": "warning",
   "count": 1
@@ -3576,7 +3036,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L13.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Threads &amp; Processes' also on slide 5",
+  "message": "title 'Threads & Processes' also on slide 5",
   "where": "slide 455",
   "severity": "warning",
   "count": 1
@@ -12000,7 +11460,7 @@
   "tool": "pptx",
   "file": "Lectures/Slides/L8-9.pptx",
   "rule": "pptx/duplicate-title",
-  "message": "title 'Fourier Transforms &amp; FFTCode' also on slide 7",
+  "message": "title 'Fourier Transforms & FFTCode' also on slide 7",
   "where": "slide 325",
   "severity": "warning",
   "count": 1
@@ -12283,5 +11743,437 @@
   "where": "",
   "severity": "warning",
   "count": 875
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW5-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/HW6-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW1-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW2-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW3-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/LabVIEW4-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "Homeworks/commenting_code_example-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/document-title",
+  "message": "Documents must have <title> element to aid in navigation",
+  "where": "light",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "dark",
+  "severity": "error",
+  "count": 1
+ },
+ {
+  "tool": "html",
+  "file": "syllabus-luamml-mathml.html",
+  "rule": "axe/html-has-lang",
+  "message": "<html> element must have a lang attribute",
+  "where": "light",
+  "severity": "error",
+  "count": 1
  }
 ]

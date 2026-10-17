@@ -461,7 +461,7 @@
     ), liveErr && /* @__PURE__ */ React.createElement(Row, { k: "odometry xy error @ step", v: `${liveErr.odomXY.toFixed(2)} m`, warn: liveErr.odomXY > 1 }), liveErr && /* @__PURE__ */ React.createElement(Row, { k: "odometry \u03B8 error @ step", v: `${liveErr.odomTh.toFixed(3)} rad`, warn: liveErr.odomTh > 0.2 }), liveErr && /* @__PURE__ */ React.createElement(Row, { k: `SLAM X(${liveErr.kf}) error (when added)`, v: `${liveErr.slamXY.toFixed(2)} m`, warn: liveErr.slamXY > 1 }), /* @__PURE__ */ React.createElement(Row, { k: "final KF RMSE: odom \u2192 SLAM", v: `${st.odomRmse.toFixed(2)} \u2192 ${st.optRmse.toFixed(2)} m` }), /* @__PURE__ */ React.createElement(Row, { k: "final ICP gate 3\u03C3 (adaptive)", v: `${(3 * st.icpSigma).toFixed(2)} m` }), /* @__PURE__ */ React.createElement(Row, { k: "loops accepted (wrong vs truth)", v: `${st.nLoops} (${st.nWrongLoops})`, warn: st.nWrongLoops > 0 }), st.gtAssisted && /* @__PURE__ */ React.createElement(Row, { k: "loop search", v: "GT-assisted fallback", warn: true })));
   }
   function DriftSlider({ label, unit, value, onChange, min, max, step, display, readOnly, master }) {
-    return /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 9, opacity: readOnly ? 0.6 : 1 } }, /* @__PURE__ */ React.createElement("div", { style: {
+    return /* @__PURE__ */ React.createElement("div", { style: { marginBottom: 9 } }, /* @__PURE__ */ React.createElement("div", { style: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "baseline",
@@ -478,6 +478,9 @@
       "input",
       {
         type: "range",
+        "aria-label": label,
+        "aria-valuetext": `${display} ${unit || ""}`.trim(),
+        "aria-readonly": readOnly || void 0,
         min,
         max,
         step,
@@ -488,7 +491,8 @@
           width: "100%",
           accentColor: master ? "var(--amber)" : "var(--text-3)",
           height: readOnly ? 2 : master ? 6 : 4,
-          pointerEvents: readOnly ? "none" : "auto"
+          pointerEvents: readOnly ? "none" : "auto",
+          opacity: readOnly ? 0.6 : 1
         }
       }
     ));

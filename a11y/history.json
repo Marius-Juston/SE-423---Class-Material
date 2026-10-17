@@ -1,0 +1,33 @@
+[
+ {
+  "date": "2026-10-17",
+  "errors": 583,
+  "warnings": 51612,
+  "by_tool": {
+   "cvd": {
+    "error": 0,
+    "warning": 30
+   },
+   "epub": {
+    "error": 0,
+    "warning": 1
+   },
+   "html": {
+    "error": 158,
+    "warning": 0
+   },
+   "latex": {
+    "error": 0,
+    "warning": 8
+   },
+   "pdf": {
+    "error": 0,
+    "warning": 44867
+   },
+   "pptx": {
+    "error": 425,
+    "warning": 6706
+   }
+  }
+ }
+]

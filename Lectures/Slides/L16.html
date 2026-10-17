@@ -1,0 +1,594 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L16: SE 423: Introduction to MechatronicsLecture 16: LiDAR CodeMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L16: SE 423: Introduction to MechatronicsLecture 16: LiDAR CodeMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L16.pdf">PDF</a> · <a href="L16.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (40)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 16: LiDAR CodeMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>URG-04LX</a></li><li><a href='#s6'>LiDAR</a></li><li><a href='#s7'>Laser Classes</a></li><li><a href='#s8'>LiDAR – Laser classes</a></li><li><a href='#s9'>LiDAR – Laser classes – Eye</a></li><li><a href='#s10'>LiDAR – Laser classes – Eye</a></li><li><a href='#s11'>LiDAR – Laser classes – Skin</a></li><li><a href='#s12'>LiDAR – Laser classes – Fire hazards</a></li><li><a href='#s13'>URG-04LX</a></li><li><a href='#s14'>LiDAR</a></li><li><a href='#s15'>LiDAR</a></li><li><a href='#s16'>LiDAR</a></li><li><a href='#s17'>LiDAR</a></li><li><a href='#s18'>LiDAR – Version Info</a></li><li><a href='#s19'>LiDAR – Laser Illumination Control</a></li><li><a href='#s20'>LiDAR – Communication Settings</a></li><li><a href='#s21'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s22'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s23'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s24'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s25'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s26'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s27'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s28'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s29'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s30'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s31'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s32'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s33'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s34'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s35'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s36'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s37'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s38'>LiDAR – Distance Data Acquisition</a></li><li><a href='#s39'>Questions?</a></li><li><a href='#s40'>End of Lecture 16</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 16: LiDAR CodeMarius Juston</h2>
+<p>Monday, March 23rd, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>Why did we use a ping pong buffer for the FFT code?
+</li>
+<li>Given that LiDAR splits its space as 360 degrees into 1024 steps, what is the angular resolution of the LiDAR?
+</li>
+<li>What happens if your angular resolution is too low and your object is far away?
+</li>
+<li>Is UART a synchronous or asynchronous communication protocol? What does it mean for it to be synchronous or not?
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 6 this week. This a 3-week lab!</p>
+<ul>
+<li>Don’t forget to have the Lab LabVIEW application implemented before lab.
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+<li>
+<ul>
+<li>This is a long homework, so <strong>DO NOT </strong>expect to work on and finish it during the Tuesday office hours time!
+</li></ul>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 2 and 3 are due <strong>March 31, 5PM (The end of office hours)</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> URG-04LX</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> LiDAR</h2>
+<ul>
+<li>The LiDAR we are working with is called the URG-04LX
+</li>
+<li>RG-04LX is a laser sensor for area scanning. The light source of the sensor is infrared laser of wavelength 785nm with laser class 1 safety.
+</li></ul>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Laser Classes</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> LiDAR – Laser classes</h2>
+<ul>
+<li>Laser radiation can cause three basic types of laser hazards: <strong>eye</strong>, <strong>skin</strong> and <strong>fire hazards</strong>.
+</li>
+<li>If a laser is not class 1 compliant, you should wear protective equipment when entering the danger zone: laser safety glasses for eye protection and special suits for skin protection.
+</li></ul>
+<table><thead><tr><th scope='col'>Lazer Class</th><th scope='col'>Hazard Risk</th><th scope='col'>Common Uses</th><th scope='col'>Safe Use Considerations</th></tr></thead><tbody><tr><td><strong>Class 1</strong></td><td>None</td><td>Barcode scanners, DVD players (if you remember what a DVD is!)</td><td>Safe under all considerations.</td></tr><tr><td><strong>Class 1M</strong></td><td>None to low</td><td>Laser diodes, fiber communication systems, speed meters</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 2</strong></td><td>Low (unless stared into)</td><td>Laser points, alignment tools</td><td>Avoid direct eye exposure</td></tr><tr><td><strong>Class 2M</strong></td><td>Low to moderate</td><td>Projection laser (e.g. light shows)</td><td>Safe unless viewed with optical instruments</td></tr><tr><td><strong>Class 3R/3B</strong></td><td>Moderate to high</td><td>Laser scanners, 3D printers</td><td>Can damage the naked eye and skin</td></tr><tr><td><strong>Class 4</strong></td><td>Very high</td><td>Cutting, marking welding, cleaning surgery</td><td>Requires protective eyewear and strict controls.</td></tr></tbody></table>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> LiDAR – Laser classes – Eye</h2>
+<ul>
+<li>Of all the laser hazards, eye injuries are the most serious (unless you don’t mind being blind!).
+</li>
+<li>When light reaches the eye, the <strong>cornea </strong>and the <strong>lens </strong>act as <strong>amplifiers</strong>. They concentrate light onto the <strong>retina </strong>(the back of the eye) which, afterward, is processed by the brain as an image.
+</li>
+<li>Those three components of the human eye (<strong>cornea, lens and retina</strong>) are the most susceptible to damage from laser radiation.
+</li>
+<li>Almost all types of laser lights can harm your eyes, but the various components of the human eye react more strongly with some light wavelengths.
+</li></ul>
+<figure><img src='L16_files/73ca67592cff.jpg' alt='Laser Systems Eye' loading='lazy'></figure>
+<p><a href='https://www.laserax.com/blog/laser-safety-laser-classes-explained'>https://www.laserax.com/blog/laser-safety-laser-classes-explained</a></p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> LiDAR – Laser classes – Eye</h2>
+<ul>
+<li>Part of visible light is absorbed by the eyes before being amplified by the lens and cornea.
+</li>
+<li>But infrared light isn’t visible and isn’t absorbed by the eyes. Thus, is more dangerous than visible light.
+</li>
+<li>All this energy is spent burning a small area of the retina which causes blindness and severe eye damages. Photochemical damage is also possible for lights lower than 400 nm (in the ultraviolet range) and may cause cataracts (decreased vision).
+</li>
+<li>Protective eyewear like laser goggles protects you by absorbing dangerous light.
+</li>
+<li><strong>Different goggles absorb different lights</strong>, so you need to wear the right goggles for your laser class.
+</li></ul>
+<figure><img src='L16_files/73ca67592cff.jpg' alt='Laser Systems Eye' loading='lazy'></figure>
+<p><a href='https://www.laserax.com/blog/laser-safety-laser-classes-explained'>https://www.laserax.com/blog/laser-safety-laser-classes-explained</a></p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> LiDAR – Laser classes – Skin</h2>
+<ul>
+<li>If you had the choice between putting your eyes or your hands on the stove, chances are you would put your hands. It’s easy to understand why skin hazards are less serious than eye hazards. But the risks of skin burns still deserve attention.
+</li>
+<li>Direct contact with the laser beam and specular (mirror-like) reflections can cause skin injuries. Those injuries are typically caused by thermal damage like touching the stove, or photochemical damage like sunburns.
+</li>
+<li>The burn level depends on the laser’s output power, the wavelength, the size of the affected area, and the duration of the irradiation.
+</li></ul>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> LiDAR – Laser classes – Fire hazards</h2>
+<ul>
+<li>Apart from health hazards, laser light can also start fires and put your work environment at risk.
+</li>
+<li>Only class 4 lasers pose real fire safety concerns. Their direct beam as well as any type of reflection can ignite combustible materials.
+</li>
+<li>For a safe integration, those lasers must be enclosed properly and account for all possible angles of reflection, including diffuse reflections.
+</li></ul>
+<p>Given that the URG-04LX is a class 1 laser. What precautions do we need to take when handling it?</p>
+<p>Nothing, it is a class 1 laser!</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> URG-04LX</h2>
+
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> LiDAR</h2>
+<ul>
+<li>Scan area is 240º semicircle with maximum distance of 4000mm.
+</li>
+<li>Pitch angle is 0.36º and sensor outputs the distance measured at every point (683 steps).
+</li>
+<li>Laser beam diameter is less than 20mm at 2000mm with maximum divergence 40mm at 4000mm.
+</li>
+<li>The principle of distance measurement is based on calculation of the phase difference, due to which it is possible to obtain stable measurement with minimum influence from object’s color and surface gloss.
+<li>
+<ul>
+<li>Essentially Time of Flight but with a continuous wave rather than the discrete pulse
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> LiDAR</h2>
+<figure><img src='L16_files/49ccbe866f13.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/c88c3efbb5ec.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.robotshop.com/products/hokuyo-urg-04lx-laser-rangefinder'>https://www.robotshop.com/products/hokuyo-urg-04lx-laser-rangefinder</a></p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> LiDAR</h2>
+<ul>
+<li>There are 2 ways to communicate with the LiDAR sensor SCI (UART) or USB. We use SCI only.
+</li>
+<li>There are 4 types of commands that can be sent.
+</li></ul>
+<ol>
+<li>Version Command (‘V’)
+</li>
+<li>Laser Illumination Command (‘L’)
+</li>
+<li>Communication Speed Setting command for RS-232C (‘S’)
+</li>
+<li>Distance Data Acquisition Command (‘G’)
+</li></ol>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> LiDAR</h2>
+<ul>
+<li>The SCI data packets are in the following format,
+</li></ul>
+<p>Host to Sensor:</p>
+<p>Sensor to Host:</p>
+<ul>
+<li>Termination code is either Line Feed (‘\n’) or Carriage Return (‘\r’)
+</li>
+<li>The codes XX16 represents ASCII codes in hex
+</li>
+<li>Any status code other than ‘0’16 represents an error.
+</li></ul>
+<table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF (0a16) or CR (0d16)</td></tr></tbody></table>
+<table><tbody><tr><td>Command</td><td>Parameter (if necessary)</td><td>LF</td><td>Status</td><td>LF</td><td>Data</td><td>LF</td><td>LF</td></tr></tbody></table>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> LiDAR – Version Info</h2>
+<ul>
+<li>If we want to get the version information of the LiDAR we can use the version command. This can be done simply as sending,
+</li>
+<li>The command ‘V’
+</li></ul>
+<ul>
+<li>Done as:
+</li></ul>
+<p>serial_sendSCIC(&amp;SerialC, &quot;V\n&quot;, 2);</p>
+<figure><img src='L16_files/05965160db37.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/fdd7d3aeeae1.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> LiDAR – Laser Illumination Control</h2>
+<ul>
+<li>If we want to turn the LiDAR on or off, we can use the ‘L’ command to turn it on or off.
+</li>
+<li>By default, the sensor is switched on even if it was previously switched off
+</li></ul>
+<ul>
+<li>Done as:
+</li></ul>
+<p>serial_sendSCIC(&amp;SerialC, &quot;L0\n&quot;, 3); // Turn LiDAR off</p>
+<p>serial_sendSCIC(&amp;SerialC, &quot;L1\n&quot;, 3); // Turn LiDAR on</p>
+<figure><img src='L16_files/562c9da34b79.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> LiDAR – Communication Settings</h2>
+<p>The default baud rate of the sensor through SCI is 19.2 kbps. Though it can be changed to 57.6, 115.2, 250, 500 and 750 kbps by varying the settings.</p>
+<p>Example :</p>
+<ul>
+<li>57.6 Kpbs = “057600” (ASCII 6 Digits)
+</li>
+<li>115.2 Kpbs = “115200” (ASCII 6 Digits)
+</li></ul>
+<p>What baud rate is being set here?</p>
+<p>char S_command[19] = &quot;S1152000124000\n&quot;;</p>
+<p>uint16_t S_len = 19;</p>
+<p>serial_sendSCIC(&amp;SerialC, S_command, S_len);</p>
+<p>The baud rate set here is, 115200</p>
+<figure><img src='L16_files/41a252b74dad.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>The maximum measurable distance of the sensor is 4095 mm with 1 mm resolution.
+</li>
+<li>Each data point is represented with 12 bits (0-4095 range).
+</li>
+<li>To represents the data points in ASCII format a simple encoding is implemented.
+</li>
+<li>The 12-bit data is separated into 6 bit (max value of 63) each and then have 3016 (‘0’)  added to them.
+</li></ul>
+<p>Example:</p>
+<p>1234 mm = 01001101001022</p>
+<p>↓ separation</p>
+<p>(0100112, 0100102) = (1316, 1216)</p>
+<p>↓ Add 3016</p>
+<p>(4316, 4216) = (‘C’, ‘D’)</p>
+<p>To decode you just do the inverse, where you subtract 3016 and then merge using bitwise or and bit shifting. It follows the big-endian system. The most significant bits of the data are sent first (in this case ‘C’ then ‘D’).</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>The full range of the sensor is 240 degrees where it can send a maximum of 683. However, it has 768 configurable steps. To be able to specify the actual usable range that we want to observe we can set this in the ‘G’ command.
+</li>
+<li>To obtain the data, we need to assign the starting point, end point and cluster count.
+</li>
+<li>The sensor groups multiple neighboring points assigned by the cluster count.
+</li>
+<li>The minimum value from each group is supplied as distance data to the host
+</li>
+<li><strong>Starting point </strong>(0-768): Point of the area from where the data reading starts.
+</li>
+<li><strong>End Point </strong>(0-768): Point of the area where the data reading stops.
+</li>
+<li><strong>Cluster Count </strong>(0-99): Number of neighboring points that are grouped as a cluster.
+</li></ul>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> LiDAR – Distance Data Acquisition</h2>
+<p>char G_command[] = &quot;G04472503\n&quot;; //command for getting distance -120 to 120 degree</p>
+<p>uint16_t G_len = 11;</p>
+<p>serial_sendSCIC(&amp;SerialC, G_command, G_len);</p>
+<p>What is the starting point?</p>
+<p>‘044’ = 44th step</p>
+<p>What is the ending point?</p>
+<p>‘725’ = 725th step</p>
+<p>What is the cluster count?</p>
+<p>‘03’ = group 3</p>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> LiDAR – Distance Data Acquisition</h2>
+<p>char G_command[] = &quot;G04472503\n&quot;; //command for getting distance -120 to 120 degree</p>
+<p>uint16_t G_len = 11;</p>
+<p>serial_sendSCIC(&amp;SerialC, G_command, G_len);</p>
+<p>How many datapoints are we expecting then based on the command?</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>E</mi><mi>n</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>e</mi><mi>p</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>s</mi><mi>t</mi><mi>e</mi><mi>p</mi></mrow><mrow><mi>C</mi><mi>l</mi><mi>u</mi><mi>s</mi><mi>t</mi><mi>e</mi><mi>r</mi><mspace width="0.222em"></mspace><mi>c</mi><mi>o</mi><mi>u</mi><mi>n</mi><mi>t</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{End\ step\  - \ start\ step}{Cluster\ count}\  + \ 1</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mn>725</mn><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mn>44</mn></mrow><mn>3</mn></mfrac><mspace width="0.222em"></mspace><mo>+</mo><mn>1</mn><mo>=</mo><mn>228</mn></mrow><annotation encoding="application/x-tex">\frac{725\  - \ 44}{3}\  + 1 = 228</annotation></semantics></math></p>
+<figure><img src='L16_files/73d3dba8b573.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/11b6dd5c1c83.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>Sensor measures the distance in the range 20 mm to 4095 mm. If the distance is less than 20 mm, we can encode an error into the distance measurement.
+</li></ul>
+<figure><img src='L16_files/de116d43f385.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>We implement the reading of the data as a state machine,
+</li></ul>
+<figure><img src='L16_files/5979dce09daa.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> LiDAR – Distance Data Acquisition</h2>
+<p>if (read_ladar_state == 0) {//wait for the starting char &#x27;G&#x27;</p>
+<p>buf_index = 0;</p>
+<p>if (RXCdata ==&#x27;G&#x27;) {</p>
+<p>read_ladar_state = 1;</p>
+<p>G_count = 1;</p>
+<p>}</p>
+<p>}</p>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> LiDAR – Distance Data Acquisition</h2>
+<p>else if (read_ladar_state == 1) {//get the headers</p>
+<p>G_count += 1;//count the number of headers</p>
+<p>//check the status code and if it is not &#x27;0&#x27;, wait for the next packet</p>
+<p>if (G_count == 11) {</p>
+<p>if (RXCdata != &#x27;0&#x27;) {</p>
+<p>read_ladar_state = 0;</p>
+<p>}</p>
+<p>}</p>
+<p>if (G_count &gt;= 12) {//there are total 12 things before the data</p>
+<p>read_ladar_state = 2;</p>
+<p>get_dis_first = 1;</p>
+<p>dis_index = 0;</p>
+<p>}</p>
+<p>}</p>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> LiDAR – Distance Data Acquisition</h2>
+<p>else if (read_ladar_state == 2) {//get actual data</p>
+<p>if (RXCdata == 0x0a) { //check for line feed</p>
+<p>LF_count += 1;</p>
+<p>} else {</p>
+<p>LF_count = 0;</p>
+<p>if (get_dis_first == 1) {</p>
+<p>tempscid = (RXCdata - 0x30) &lt;&lt; 6;//first data is the top 6 bit of the distance reading</p>
+<p>get_dis_first = 0;</p>
+<p>} else if (get_dis_first == 0) {</p>
+<p><strong>// Continued to next slide</strong></p>
+<p>}</p>
+<p>if (LF_count == 2) { //two consecutive line feed means the end of the current data stream</p>
+<p>read_ladar_state = 0;</p>
+<p>print_dis_index = dis_index;</p>
+<p>PieCtrlRegs.PIEIFR12.bit.INTx10 = 1; // Manually cause the interrupt for the SWI2</p>
+<p>LADARpingpong = 1-LADARpingpong;</p>
+<p>}</p>
+<p>}</p>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> LiDAR – Distance Data Acquisition</h2>
+<p>else if (get_dis_first == 0) {</p>
+<p>distance = tempscid + (RXCdata - 0x30);//second data is the bottom 6 bit of the distance reading</p>
+<p>if (distance == 0 || distance == 6) {//error code</p>
+<p>distance = LADAR_MAX_READING; //set to the max reading</p>
+<p>} else if (distance == 16) { //distance is 4096mm</p>
+<p>distance = 4096;</p>
+<p>}</p>
+<p>if (LADARpingpong == 0) {</p>
+<p>checkdist = distance*0.00328084;</p>
+<p>if ((checkdist &gt; 0.0) &amp;&amp; (checkdist &lt; 20.0)) {</p>
+<p>ladar_data[dis_index].distance_ping = checkdist; // fill in the distance_ping array</p>
+<p>} else {</p>
+<p>numRCXerrors++;</p>
+<p>ladar_data[dis_index].distance_ping = ladar_data[dis_index].distance_pong;</p>
+<p>}</p>
+<p>} else if (LADARpingpong == 1) {</p>
+<p>checkdist = distance*0.00328084;</p>
+<p>if ((checkdist &gt;= 0.0) &amp;&amp; (checkdist &lt; 20.0)) {</p>
+<p>ladar_data[dis_index].distance_pong = checkdist; // fill in the distance_ping array</p>
+<p>} else {</p>
+<p>numRCXerrors++;</p>
+<p>ladar_data[dis_index].distance_pong = ladar_data[dis_index].distance_ping;</p>
+<p>}</p>
+<p>}</p>
+<p>dis_index += 1;</p>
+<p>get_dis_first = 1;</p>
+<p>}</p>
+<figure><img src='L16_files/e5e2e118b00d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>The sensor has a scanning speed of 100 msec / scan ( so 10 Hz ) and we want to communicate with at a baud rate of 115200.
+</li>
+<li>As such in the main function we do the initialization:
+</li></ul>
+<p>ConfigCpuTimer(&amp;CpuTimer1, LAUNCHPAD_CPU_FREQUENCY, 100000); // 10 Hz timer</p>
+<p>init_serialSCIC(&amp;SerialC,19200); //remember that the initial baud rate is 19200!</p>
+<p>char S_command[19] = &quot;S1152000124000\n&quot;; // this changes the baud rate to 115200</p>
+<p>uint16_t S_len = 19;</p>
+<p>serial_sendSCIC(&amp;SerialC, S_command, S_len);</p>
+<p>DELAY_US(1000000); // Delay letting LADAR change its Baud rate</p>
+<p>init_serialSCIC(&amp;SerialC,115200); // Use the new baud rate for communication</p>
+<p>for (LADARi = 0; LADARi &lt; 228; LADARi++) { // the angle each point will be at will be constant</p>
+<p>ladar_data[LADARi].angle = ((3*LADARi+44)*0.3515625-135)*0.01745329; //0.017453292519943 is pi/180, multiplication is faster; 0.3515625 is 360/1024</p>
+<p>}</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>We use CPU Timer 1 to call the SCI command for reading the LiDAR information
+</li></ul>
+<p>__interrupt void cpu_timer1_isr(void)</p>
+<p>{</p>
+<p>serial_sendSCIC(&amp;SerialC, G_command, G_len);</p>
+<p>CpuTimer1.InterruptCount++;</p>
+<p>}</p>
+<p>So, every 10Hz timer 1 sends the ‘G’ command to collect the new data into the lidar_data buffer.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> LiDAR – Distance Data Acquisition</h2>
+<ul>
+<li>Once we get all the information from the SCI interrupt it triggers a software interrupt
+</li></ul>
+<p>if (LF_count == 2) { //two consecutive line feed means the end of the current data stream</p>
+<p>read_ladar_state = 0;</p>
+<p>print_dis_index = dis_index;</p>
+<p>PieCtrlRegs.PIEIFR12.bit.INTx10 = 1; // Manually cause the interrupt for the SWI2</p>
+<p>LADARpingpong = 1-LADARpingpong;</p>
+<p>}</p>
+<ul>
+<li>As a reminder a software interrupt is the lowest priority level and can be interrupted by any of the other interrupts of higher priority levels.
+</li>
+<li>The rows represent a <strong>group</strong>
+</li>
+<li>Each column a <strong>channel </strong>within that group
+</li>
+<li>When multiple interrupts are pending, the lowest-numbered channel from the lowest-numbered group is serviced first. Thus, the interrupts at the top left of the table are service first and the bottom right last.
+</li></ul>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> LiDAR – Distance Data Acquisition</h2>
+<figure><img src='L16_files/8dfbe8084439.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> LiDAR – Distance Data Acquisition</h2>
+<p>In the LiDAR lab code, we will have 3 software interrupts:</p>
+<p>Software interrupt 1, will have the <strong>highest</strong> priority, this is used for retrieving the data and sending the data to and from the RaspberryPI</p>
+<p>Software interrupt 2, will have the <strong>middle</strong> priority, where we will perform the LiDAR position computation and the coordinate transformations based on the sensor’s location on the robot.</p>
+<p>Software interrupt 3, will have the <strong>lowest</strong> priority, where anything else can be done</p>
+<p>In this lecture we will only look at software interrupt 2.</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> LiDAR – Distance Data Acquisition</h2>
+<p>__interrupt void SWI2_MiddlePriority(void)     // RAM_CORRECTABLE_ERROR</p>
+<p>{</p>
+<p>// Set interrupt priority:</p>
+<p>volatile Uint16 TempPIEIER = PieCtrlRegs.PIEIER12.all;</p>
+<p>IER |= M_INT12;</p>
+<p>IER &amp;= MINT12;                        // Set &quot;global&quot; priority</p>
+<p>PieCtrlRegs.PIEIER12.all &amp;= MG12_10;  // Set &quot;group&quot;  priority</p>
+<p>PieCtrlRegs.PIEACK.all = 0xFFFF;      // Enable PIE interrupts so that other interrupts can go in between</p>
+<p>__asm(&quot;  NOP&quot;);</p>
+<p>EINT;</p>
+<p>if (LADARpingpong == 1) {</p>
+<p>// LADARrightfront is the min of dist 52, 53, 54, 55, 56</p>
+<p>for (LADARi = 52, LADARrightfront = 19; LADARi &lt;= 56 ; LADARi++) { // 19 is greater than max feet</p>
+<p>if (ladar_data[LADARi].distance_ping &lt; LADARrightfront) {</p>
+<p>LADARrightfront = ladar_data[LADARi].distance_ping;</p>
+<p>}</p>
+<p>}</p>
+<p>// LADARfront is the min of dist 111, 112, 113, 114, 115</p>
+<p>for (LADARi = 111, LADARfront = 19; LADARi &lt;= 115 ; LADARi++) {</p>
+<p>if (ladar_data[LADARi].distance_ping &lt; LADARfront) {</p>
+<p>LADARfront = ladar_data[LADARi].distance_ping;</p>
+<p>}</p>
+<p>}</p>
+<p>// Do coordinate transformations here, done in the next slides</p>
+<p>} else if (LADARpingpong == 0) { /** same for pong */ }</p>
+<p>}</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> LiDAR – Distance Data Acquisition</h2>
+<p>We start with the coordinate transform to get the coordinate of the LiDAR in the real world based on the robot’s position and heading.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>W</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>W</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>t</mi><mi>x</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>t</mi><mi>y</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>R</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>R</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+x_{W} \\
+y_{W} \\
+1
+\end{bmatrix} = \begin{bmatrix}
+\cos(\theta) &amp; - \sin(\theta) &amp; t_{x} \\
+\sin(\theta) &amp; \cos(\theta) &amp; t_{y} \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}\begin{bmatrix}
+x_{R} \\
+y_{R} \\
+1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>LADARxoffset = ROBOTps.x + (LADARps.x*cosf(ROBOTps.theta)-LADARps.y*sinf(ROBOTps.theta));</p>
+<p>LADARyoffset = ROBOTps.y + (LADARps.x*sinf(ROBOTps.theta)+LADARps.y*cosf(ROBOTps.theta));</p>
+<p>Now we can get the coordinates of the object in the global reference frame based on the distance returned from the LiDAR and the angle.</p>
+<p>for (LADARi = 0; LADARi &lt; 228; LADARi++) {</p>
+<p>ladar_pts[LADARi].x = LADARxoffset + ladar_data[LADARi].distance_ping*cosf(ladar_data[LADARi].angle + ROBOTps.theta);</p>
+<p>ladar_pts[LADARi].y = LADARyoffset + ladar_data[LADARi].distance_ping*sinf(ladar_data[LADARi].angle + ROBOTps.theta);</p>
+<p>}</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> LiDAR – Distance Data Acquisition</h2>
+<p>The pose objects as simply defined as,</p>
+<p>typedef struct</p>
+<p>{</p>
+<p>float x;        //in feet</p>
+<p>float y;        //in feet</p>
+<p>float theta;    // in radians between -PI and PI. O radian is along the +x axis, PI/2 is the +y axis</p>
+<p>} pose;</p>
+<p>pose ROBOTps = {0,0,0}; //robot position, will be updated through your integration code</p>
+<p>pose LADARps = {3.5/12.0,0,1};  // 3.5/12 for front mounting, theta is not used in this current code</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Questions?</h2>
+
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> End of Lecture 16</h2>
+
+
+</section>
+</main></body></html>

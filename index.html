@@ -98,12 +98,38 @@
         /* Modal Transitions */
         .modal-active { overflow: hidden; } /* Prevents body scroll when modal is open */
         
+        /* Keyboard focus: always visible, on light and dark backgrounds */
+        :focus-visible { outline: 3px solid #FF5F05; outline-offset: 2px; border-radius: 6px; }
+        .skip-link { position: absolute; left: 1rem; top: -4rem; z-index: 100; background: #13294B; color: #fff;
+                     padding: .75rem 1rem; border-radius: .5rem; font-weight: 700; }
+        .skip-link:focus { top: 1rem; }
+
+        /* Lecture format picker (radio group) */
+        .format-option span { display: inline-block; padding: .4rem .8rem; border-radius: .6rem; font-size: .75rem;
+                              font-weight: 700; text-transform: uppercase; color: #334155; cursor: pointer; }
+        .dark .format-option span { color: #cbd5e1; }
+        .format-option input:checked + span { background: #13294B; color: #fff; }
+        .dark .format-option input:checked + span { background: #FF5F05; color: #13294B; }
+        .format-option input:focus-visible + span { outline: 3px solid #FF5F05; outline-offset: 2px; }
+
+        /* Figure gallery: a native modal <dialog> (focus trap, Esc, focus restore) */
+        #gallery-modal { width: calc(100vw - 2rem); height: calc(100vh - 2rem); max-width: none; max-height: none;
+                         margin: auto; padding: 0; border: 0; border-radius: 1rem; background: transparent; }
+        #gallery-modal::backdrop { background: rgba(15, 23, 42, .8); backdrop-filter: blur(4px); }
+        @media (min-width: 768px) { #gallery-modal { width: calc(100vw - 5rem); height: calc(100vh - 5rem); } }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+            .card-transition:hover, .btn-course:hover { transform: none; }
+        }
+
         /* Ensure TikZ SVGs (usually black lines) invert to white in dark mode */
         .svg-preview { filter: none; }
         .dark .svg-preview { filter: invert(0.9) hue-rotate(180deg); }
     </style>
 </head>
 <body class="min-h-screen relative">
+    <a href="#main" class="skip-link">Skip to course material</a>
 
     <!-- Navigation / Header -->
     <header class="bg-uiuc-blue text-white py-10 shadow-md relative overflow-hidden">
@@ -113,9 +139,9 @@
 
         <!-- Theme Toggle Positioned Absolutely -->
         <div class="absolute top-6 right-6 z-20">
-            <button id="theme-toggle" aria-label="Toggle theme" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all">
-                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
-                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
+            <button id="theme-toggle" type="button" aria-label="Dark mode" aria-pressed="false" class="p-2.5 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 transition-all">
+                <svg id="theme-toggle-light-icon" aria-hidden="true" class="hidden w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"></path></svg>
+                <svg id="theme-toggle-dark-icon" aria-hidden="true" class="hidden w-5 h-5 text-blue-200" fill="currentColor" viewBox="0 0 20 20"><path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path></svg>
             </button>
         </div>
 
@@ -125,7 +151,7 @@
             
             <!-- Navigation Links -->
             <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-                <button onclick="toggleGallery(true)" aria-label="Open figure gallery" class="btn-outline px-6 py-2.5 rounded-full font-bold text-sm flex items-center bg-white/20 border-white text-white">
+                <button type="button" onclick="toggleGallery(true)" aria-haspopup="dialog" class="btn-outline px-6 py-2.5 rounded-full font-bold text-sm flex items-center bg-white/20 border-white text-white">
                     <svg aria-hidden="true" class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
@@ -136,21 +162,21 @@
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                     </svg>
-                    Course Syllabus
+                    Course Syllabus<span class="sr-only"> (opens in a new tab)</span>
                 </a>
 
                 <a href="https://coecsl.ece.illinois.edu/se423/" target="_blank" class="btn-course px-6 py-2.5 rounded-full font-bold text-sm shadow-lg flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
-                    Official Website
+                    Official Website<span class="sr-only"> (opens in a new tab)</span>
                 </a>
                 
                 <a href="https://github.com/Marius-Juston/SE-423---Class-Material" target="_blank" class="bg-white/10 hover:bg-white/20 px-6 py-2.5 rounded-full font-bold text-sm transition-all flex items-center border border-white/20">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
                     </svg>
-                    Class Repo
+                    Class Repo<span class="sr-only"> (opens in a new tab)</span>
                 </a>
 
                 <a href="professor_guide.html" class="btn-outline px-6 py-2.5 rounded-full font-bold text-sm flex items-center">
@@ -162,39 +188,38 @@
             </div>
 
             <div class="mt-8 flex justify-center">
-                <label for="pdfSearch" class="sr-only">Search</label>
-                <input type="text" id="pdfSearch" placeholder="Search assignments, labs, lectures, or resources..." 
+                <label for="pdfSearch" class="sr-only">Search course material</label>
+                <input type="search" id="pdfSearch" aria-describedby="search-status" placeholder="Search assignments, labs, lectures, or resources..." 
                        class="px-4 py-3 w-full max-w-2xl rounded-xl text-gray-900 dark:text-white dark:bg-slate-900 shadow-inner focus:outline-none focus:ring-2 focus:ring-orange-500 border-0">
             </div>
+            <p id="search-status" class="sr-only" role="status" aria-live="polite"></p>
         </div>
     </header>
 
-    <div id="gallery-modal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300">
-        <button type="button" aria-label="Close gallery backdrop" class="absolute inset-0 w-full h-full bg-slate-900/80 backdrop-blur-sm cursor-pointer border-none p-0" onclick="toggleGallery(false)"></button>
-        
-        <div class="absolute inset-4 md:inset-10 bg-white dark:bg-slate-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden transform scale-95 transition-transform duration-300" id="gallery-content">
+    <dialog id="gallery-modal" aria-labelledby="gallery-title">
+        <div class="h-full bg-white dark:bg-slate-900 rounded-2xl shadow-2xl flex flex-col overflow-hidden" id="gallery-content">
             <div class="px-6 py-4 border-b border-gray-200 dark:border-slate-800 flex justify-between items-center bg-gray-50 dark:bg-slate-800/50">
                 <div class="flex items-center space-x-3">
-                    <svg class="h-7 w-7 uiuc-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg aria-hidden="true" class="h-7 w-7 uiuc-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                     </svg>
-                    <h2 class="text-2xl font-bold uiuc-blue dark:text-slate-100">Course Figures & Vectors</h2>
+                    <h2 id="gallery-title" class="text-2xl font-bold uiuc-blue dark:text-slate-100">Course Figures & Vectors</h2>
                 </div>
-                <button onclick="toggleGallery(false)" aria-label="Close gallery" class="p-2 rounded-xl bg-slate-200/50 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-slate-600 dark:text-slate-300">
+                <button type="button" onclick="toggleGallery(false)" aria-label="Close gallery" class="p-2 rounded-xl bg-slate-200/50 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors text-slate-600 dark:text-slate-300">
                     <svg aria-hidden="true" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
                     </svg>
                 </button>
             </div>
-            
-            <div class="p-6 overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-950/50">
-                <div id="gallery-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
-                    </div>
+
+            <div class="p-6 overflow-y-auto flex-grow bg-slate-50 dark:bg-slate-950/50" tabindex="0" aria-label="Figures">
+                <ul id="gallery-grid" role="list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+                </ul>
             </div>
         </div>
-    </div>
+    </dialog>
 
-    <main class="container mx-auto px-4 py-12 flex-grow">
+    <main id="main" tabindex="-1" class="container mx-auto px-4 py-12 flex-grow">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
             
             <!-- Homework Section -->
@@ -241,12 +266,12 @@
                 <div class="flex items-center space-x-3">
                     <!-- Media Buttons Integrated Here -->
                     <div class="flex items-center gap-2">
-                        <a href="https://mediaspace.illinois.edu/channel/SE%2B423%253A%2BMechatornics%2BSpring%2B2026/399580233" target="_blank" title="MediaSpace Recordings" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-uiuc-orange border border-slate-200 dark:border-slate-700 transition-all shadow-sm">
+                        <a href="https://mediaspace.illinois.edu/channel/SE%2B423%253A%2BMechatornics%2BSpring%2B2026/399580233" target="_blank" aria-label="Lecture recordings on MediaSpace (opens in a new tab)" title="MediaSpace Recordings" class="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-500 hover:text-uiuc-orange border border-slate-200 dark:border-slate-700 transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                             </svg>
                         </a>
-                        <a href="https://www.youtube.com/playlist?list=PLc6LuUpXlDnnyZrtYWuCMLDYuijEMPsBh" target="_blank" title="YouTube Animations" class="p-2 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/40 border border-red-100 dark:border-red-900/30 transition-all shadow-sm">
+                        <a href="https://www.youtube.com/playlist?list=PLc6LuUpXlDnnyZrtYWuCMLDYuijEMPsBh" target="_blank" aria-label="Animations on YouTube (opens in a new tab)" title="YouTube Animations" class="p-2 rounded-xl bg-red-50 dark:bg-red-900/20 text-red-500 hover:bg-red-100 dark:hover:bg-red-900/40 border border-red-100 dark:border-red-900/30 transition-all shadow-sm">
                             <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                 <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
                             </svg>
@@ -259,20 +284,16 @@
                         <span class="text-sm font-bold text-uiuc-orange dark:text-uiuc-orange" id="lecture-count-display">0</span>
                     </div>
 
-                    <!-- Format Toggle -->
-                    <div class="flex items-center space-x-3 bg-white dark:bg-slate-900 p-2 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
-                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-tighter" id="label-pdf">PDF</span>
-                        <label class="relative inline-flex items-center cursor-pointer">
-                            <span class="sr-only text-black dark:text-white">Toggle format between PDF and PPTX</span>
-                            <input type="checkbox" id="formatToggle" class="sr-only">
-                            <div class="w-10 h-5 toggle-bg rounded-full"></div>
-                            <div class="absolute left-1 top-1 bg-white w-3 h-3 rounded-full toggle-dot shadow-sm"></div>
-                        </label>
-                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300 uppercase tracking-tighter" id="label-pptx">PPTX</span>
-                    </div>
+                    <!-- Format picker -->
+                    <fieldset class="flex items-center gap-1 bg-white dark:bg-slate-900 p-1 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm">
+                        <legend class="sr-only">Open lectures as</legend>
+                        <label class="format-option"><input type="radio" name="lecture-format" value="pdf" class="sr-only" checked><span>PDF</span></label>
+                        <label class="format-option"><input type="radio" name="lecture-format" value="pptx" class="sr-only"><span>PPTX</span></label>
+                        <label class="format-option"><input type="radio" name="lecture-format" value="html" class="sr-only"><span>Text</span></label>
+                    </fieldset>
                 </div>
             </div>
-            
+
             <div id="lecture-list" class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"></div>
         </div>
     </main>
@@ -281,6 +302,7 @@
         <div class="container mx-auto px-4 text-center text-slate-600 dark:text-slate-400 text-sm">
             <p>&copy; 2026 UIUC Department of Industrial and Enterprise Systems Engineering</p>
             <p class="mt-1 italic">Designed for educational access within SE 423.</p>
+            <p class="mt-2"><a href="accessibility.html" class="underline">Accessibility</a>: statement, current status, and how to ask for another format.</p>
         </div>
     </footer>
 
@@ -291,29 +313,30 @@
         const lightIcon = document.getElementById('theme-toggle-light-icon');
         const htmlRoot = document.getElementById('html-root');
 
-        function setTheme(isDark) {
+        function setTheme(isDark, remember = true) {
             if (isDark) {
                 htmlRoot.classList.add('dark');
+                themeToggleBtn.setAttribute('aria-pressed', 'true');
                 lightIcon.classList.remove('hidden');
                 darkIcon.classList.add('hidden');
-                localStorage.setItem('color-theme', 'dark');
+                if (remember) try { localStorage.setItem('color-theme', 'dark'); } catch (e) {}
             } else {
                 htmlRoot.classList.remove('dark');
+                themeToggleBtn.setAttribute('aria-pressed', 'false');
                 darkIcon.classList.remove('hidden');
                 lightIcon.classList.add('hidden');
-                localStorage.setItem('color-theme', 'light');
+                if (remember) try { localStorage.setItem('color-theme', 'light'); } catch (e) {}
             }
         }
 
         // Initialize theme
-        const savedTheme = localStorage.getItem('color-theme');
+        // Storage can be unavailable (private windows, blocked site data): then just follow the system.
+        let savedTheme = null;
+        try { savedTheme = localStorage.getItem('color-theme'); } catch (e) {}
         const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
         
-        if (savedTheme === 'dark' || (!savedTheme && systemPrefersDark)) {
-            setTheme(true);
-        } else {
-            setTheme(false);
-        }
+        // Follow the system setting until the visitor picks a theme with the button.
+        setTheme(savedTheme ? savedTheme === 'dark' : systemPrefersDark, false);
 
         themeToggleBtn.addEventListener('click', () => {
             setTheme(!htmlRoot.classList.contains('dark'));
@@ -325,101 +348,104 @@
          * items: Array of objects
          * - title: Main text
          * - file: Primary PDF link
+         * - html: Optional accessible HTML version (default: derived from a local PDF)
+         * - large: Optional large-print PDF (default: <file>-large.pdf for a local PDF)
+         * - epub: Optional EPUB 3 edition (default: <file>.epub for a local PDF)
          * - links: Optional array of { label: string, url: string }
          */
         const data = {
             figures: [
                 /* INJECT_FIGURES_START */
-                { title: "2 2r Circuit", file: "Lectures/Figures/2-2r_circuit.svg" },
-                { title: "3d Astar State Transition", file: "Lectures/Figures/3d_astar_state_transition.svg" },
-                { title: "6dof", file: "Lectures/Figures/6dof.svg" },
-                { title: "ICP Iteration", file: "Lectures/Figures/ICP Iteration.svg" },
-                { title: "ICP Iteration", file: "Lectures/Figures/ICP_Iteration.svg" },
-                { title: "Cmos", file: "Lectures/Figures/cmos.svg" },
-                { title: "Cmos 2", file: "Lectures/Figures/cmos_2.svg" },
-                { title: "Cross Product", file: "Lectures/Figures/cross_product.svg" },
-                { title: "Dijkstra Revisit", file: "Lectures/Figures/dijkstra_revisit.svg" },
-                { title: "Edge Types", file: "Lectures/Figures/edge_types.svg" },
-                { title: "Fsm Lidar Reading", file: "Lectures/Figures/fsm_lidar_reading.svg" },
-                { title: "Fsm Micromouse", file: "Lectures/Figures/fsm_micromouse.svg" },
-                { title: "Fsm Wall Following", file: "Lectures/Figures/fsm_wall_following.svg" },
-                { title: "Gicp Steps", file: "Lectures/Figures/gicp_steps.svg" },
-                { title: "Grids", file: "Lectures/Figures/grids.svg" },
-                { title: "Hybrid Astar Expansion", file: "Lectures/Figures/hybrid_astar_expansion.svg" },
-                { title: "Hybrid Astar Kinematics", file: "Lectures/Figures/hybrid_astar_kinematics.svg" },
-                { title: "Hysteresis", file: "Lectures/Figures/hysteresis.svg" },
-                { title: "Icp Failure", file: "Lectures/Figures/icp_failure.svg" },
-                { title: "Icp Steps", file: "Lectures/Figures/icp_steps.svg" },
-                { title: "Inductive Interferrence", file: "Lectures/Figures/inductive_interferrence.svg" },
-                { title: "Lidar", file: "Lectures/Figures/lidar.svg" },
-                { title: "Linux Connection Diagram", file: "Lectures/Figures/linux_connection_diagram.svg" },
-                { title: "Linux Connection Diagram With Lidar", file: "Lectures/Figures/linux_connection_diagram_with_lidar.svg" },
-                { title: "Magnetic Flux", file: "Lectures/Figures/magnetic_flux.svg" },
-                { title: "Ndt Icp", file: "Lectures/Figures/ndt_icp.svg" },
-                { title: "Nyquist Frequency", file: "Lectures/Figures/nyquist_frequency.svg" },
-                { title: "P2p Icp Failure", file: "Lectures/Figures/p2p_icp_failure.svg" },
-                { title: "P2p Icp Iteration", file: "Lectures/Figures/p2p_icp_iteration.svg" },
-                { title: "P2p Icp Steps", file: "Lectures/Figures/p2p_icp_steps.svg" },
-                { title: "Path Following", file: "Lectures/Figures/path_following.svg" },
-                { title: "Ping Poing Buffered", file: "Lectures/Figures/ping_poing_buffered.svg" },
-                { title: "Ping Pong Single", file: "Lectures/Figures/ping_pong_single.svg" },
-                { title: "Pl Icp Steps", file: "Lectures/Figures/pl_icp_steps.svg" },
-                { title: "Polygon Grid", file: "Lectures/Figures/polygon_grid.svg" },
-                { title: "Reeds Sheep Curves", file: "Lectures/Figures/reeds_sheep_curves.svg" },
-                { title: "Rpi Slam Process Flow", file: "Lectures/Figures/rpi_slam_process_flow.svg" },
-                { title: "Slam 1d", file: "Lectures/Figures/slam_1d.svg" },
-                { title: "Slam 1d 1", file: "Lectures/Figures/slam_1d_1.svg" },
-                { title: "Slam Loop", file: "Lectures/Figures/slam_loop.svg" },
-                { title: "01 Initial Belief", file: "Lectures/Figures/svg/01_initial_belief.svg" },
-                { title: "02 Prediction", file: "Lectures/Figures/svg/02_prediction.svg" },
-                { title: "03 Sensor Opinion", file: "Lectures/Figures/svg/03_sensor_opinion.svg" },
-                { title: "04 Fused Update", file: "Lectures/Figures/svg/04_fused_update.svg" },
-                { title: "05 Covariance Matrix", file: "Lectures/Figures/svg/05_covariance_matrix.svg" },
-                { title: "ColdMascot", file: "Lectures/Figures/svg/ColdMascot.svg" },
-                { title: "Differential Drive Kinematics Of A Wheeled Mobile Robot", file: "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot.svg" },
-                { title: "Differential Drive Kinematics Of A Wheeled Mobile Robot Rotate", file: "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot_rotate.svg" },
-                { title: "Differential Drive Kinematics Of A Wheeled Mobile Robot Zero Heading", file: "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot_zero_heading.svg" },
-                { title: "Integration Num Trapezes Notation", file: "Lectures/Figures/svg/Integration_num_trapezes_notation.svg" },
-                { title: "Left Riemann Sum", file: "Lectures/Figures/svg/Left_Riemann_Sum.svg" },
-                { title: "LiDAR Diagram", file: "Lectures/Figures/svg/LiDAR Diagram.svg" },
-                { title: "LiDAR Scanning Direction", file: "Lectures/Figures/svg/LiDAR Scanning Direction.svg" },
-                { title: "LiDAR Steps", file: "Lectures/Figures/svg/LiDAR Steps.svg" },
-                { title: "MD 01 Initial Belief", file: "Lectures/Figures/svg/MD_01_initial_belief.svg" },
-                { title: "MD 02 Prediction", file: "Lectures/Figures/svg/MD_02_prediction.svg" },
-                { title: "MD 03 Sensor Opinion", file: "Lectures/Figures/svg/MD_03_sensor_opinion.svg" },
-                { title: "MD 04 Fused Update", file: "Lectures/Figures/svg/MD_04_fused_update.svg" },
-                { title: "April Tag Transformed", file: "Lectures/Figures/svg/april_tag_transformed.svg" },
-                { title: "Gaussian Transform", file: "Lectures/Figures/svg/gaussian_transform.svg" },
-                { title: "Gaussians", file: "Lectures/Figures/svg/gaussians.svg" },
-                { title: "Huber Loss", file: "Lectures/Figures/svg/huber_loss.svg" },
-                { title: "Icp Steps 1", file: "Lectures/Figures/svg/icp_steps_1.svg" },
-                { title: "Icp Steps 2", file: "Lectures/Figures/svg/icp_steps_2.svg" },
-                { title: "Icp Steps 3", file: "Lectures/Figures/svg/icp_steps_3.svg" },
-                { title: "Icp Steps 4", file: "Lectures/Figures/svg/icp_steps_4.svg" },
-                { title: "Icp Steps 5", file: "Lectures/Figures/svg/icp_steps_5.svg" },
-                { title: "Lidar Grid", file: "Lectures/Figures/svg/lidar_grid.svg" },
-                { title: "Monte Carlo Ekf", file: "Lectures/Figures/svg/monte_carlo_ekf.svg" },
-                { title: "Monte Carlo Ekf Lie", file: "Lectures/Figures/svg/monte_carlo_ekf_lie.svg" },
-                { title: "Monte Carlo Only", file: "Lectures/Figures/svg/monte_carlo_only.svg" },
-                { title: "P2p Icp Steps 1", file: "Lectures/Figures/svg/p2p_icp_steps_1.svg" },
-                { title: "P2p Icp Steps 2", file: "Lectures/Figures/svg/p2p_icp_steps_2.svg" },
-                { title: "P2p Icp Steps 3", file: "Lectures/Figures/svg/p2p_icp_steps_3.svg" },
-                { title: "P2p Icp Steps 4", file: "Lectures/Figures/svg/p2p_icp_steps_4.svg" },
-                { title: "P2p Icp Steps 5", file: "Lectures/Figures/svg/p2p_icp_steps_5.svg" },
-                { title: "Pl Icp Step 1", file: "Lectures/Figures/svg/pl_icp_step_1.svg" },
-                { title: "Pl Icp Step 2", file: "Lectures/Figures/svg/pl_icp_step_2.svg" },
-                { title: "Slide1 Init", file: "Lectures/Figures/svg/slide1_init.svg" },
-                { title: "Slide2 Predict", file: "Lectures/Figures/svg/slide2_predict.svg" },
-                { title: "Slide3 Update", file: "Lectures/Figures/svg/slide3_update.svg" },
-                { title: "Slide4 Resample", file: "Lectures/Figures/svg/slide4_resample.svg" },
-                { title: "Slide5 Predict2", file: "Lectures/Figures/svg/slide5_predict2.svg" },
-                { title: "Slide6 Update2", file: "Lectures/Figures/svg/slide6_update2.svg" },
-                { title: "Slide7 Resample2", file: "Lectures/Figures/svg/slide7_resample2.svg" },
-                { title: "White Noise", file: "Lectures/Figures/svg/white_noise.svg" },
-                { title: "White Noise Mean", file: "Lectures/Figures/svg/white_noise_mean.svg" },
-                { title: "White Std", file: "Lectures/Figures/svg/white_std.svg" },
-                { title: "Trajectory Planning Process", file: "Lectures/Figures/trajectory_planning_process.svg" },
-                { title: "Vision Pipeline", file: "Lectures/Figures/vision_pipeline.svg" },
+                {"title": "2 2r Circuit", "alt": "Circuit: R-2R ladder digital-to-analog converter. A horizontal chain of resistors R connects n nodes; each node also connects through a 2R resistor up to a digital input a0, a1, ... a(n-1). The left end goes through 2R to ground and the right end is the analog output V_out, so each bit contributes half as much as the bit to its right. Marius-Juston 2026", "file": "Lectures/Figures/2-2r_circuit.svg"},
+                {"title": "3d Astar State Transition", "alt": "3D plot of A* search over (X, Y, orientation theta): three stacked grid layers for theta = 0, 90 and 180 degrees. A path starts at (1, 1, 0 degrees) on the bottom layer, moves within a layer to change position and moves vertically between layers to rotate, ending at the goal (5, 5, 0 degrees) circled in red.", "file": "Lectures/Figures/3d_astar_state_transition.svg"},
+                {"title": "6dof", "alt": "Diagram of the six degrees of freedom: three perpendicular axes X, Y and Z (translation along each) with a curved arrow around each axis for the rotations theta_x, theta_y and theta_z. Marius-Juston 2026 - SE 423 - Lecture 12 - 6DOF Figure", "file": "Lectures/Figures/6dof.svg"},
+                {"title": "Cmos", "alt": "Block diagram of a CMOS camera. On the camera's printed circuit board, a connector and bias decoupling feed the image sensor's bias generation. The sensor has clock and timing generation, an oscillator, row drivers and row access driving a grid of pixels; in each pixel a photodiode converts photons to electrons and transistors convert electrons to voltage. Column amplifiers and a column multiplexer pass the signal through gain and analog-to-digital conversion to a line driver that sends it to the frame grabber.", "file": "Lectures/Figures/cmos.svg"},
+                {"title": "Cmos 2", "alt": "Block diagram of a CMOS camera, as in the previous figure but with the column stage expanded: below the pixel grid, a column bias and sampling stage (transistors biased by v_bias and sampling capacitors) holds each column's voltage before the column multiplexer, gain, analog-to-digital conversion and line driver to the frame grabber.", "file": "Lectures/Figures/cmos_2.svg"},
+                {"title": "Cross Product", "alt": "State diagram of a quadrature encoder: the four states of channels A and B, (0,0), (1,0), (1,1) and (0,1), placed around a circle in the A-B plane. A red loop shows the order of states for one direction of rotation and a blue loop the opposite order for the other direction. Marius-Juston 2026", "file": "Lectures/Figures/cross_product.svg"},
+                {"title": "Dijkstra Revisit", "alt": "Weighted directed graph with nodes A, B, C and D: A to B costs 5, A to C costs 1, C to B costs 2 and B to D costs 1. The path A to C to B (cost 3, highlighted in blue) is cheaper than the direct edge A to B (cost 5), so Dijkstra's algorithm must update B after visiting C.", "file": "Lectures/Figures/dijkstra_revisit.svg"},
+                {"title": "Edge Types", "alt": "Timing diagram of a pulse input going from low (0) to high (1) at a rising edge and back to low at a falling edge. Below it, a rising-edge detector outputs a short pulse only at the rising edge and a falling-edge detector outputs a short pulse only at the falling edge. Marius-Juston 2026", "file": "Lectures/Figures/edge_types.svg"},
+                {"title": "Fsm Lidar Reading", "alt": "State machine run by the serial receive (RXC) interrupt to parse LiDAR data. State 0 waits for the character 'G' and resets the buffer index. State 1 reads the 12 header bytes (counting with G_count) and returns to state 0 if the 11th byte is not '0'. It then alternates between state 2 high byte (temp = (RXC - 0x30) shifted left 6) and state 2 low byte (dist = temp + RXC - 0x30; distances 0 to 6 become MAX and 16 becomes 4096; store in the ping/pong array), skipping line feeds. After a second line feed the end-of-stream state triggers software interrupt SWI2, toggles the ping/pong buffer and returns to state 0. LADAR RXC Parsing State Machine (Fixed Loops)", "file": "Lectures/Figures/fsm_lidar_reading.svg"},
+                {"title": "Fsm Micromouse", "alt": "State machine for a micromouse maze robot. State 0 idle/calibrate (zero IMU, initialise SLAM) goes on a push button to state 1 search forward (wall-following speed and steering). After each cell, state 4 SLAM and flood-fill updates the map and path cost and chooses: forward (state 1), a 90 degree pivot (state 2) or, at a dead end, a 180 degree U-turn (state 3), each returning to state 1. Reaching the centre goes to state 5 goal reached (optimise diagonal path). A second push button starts state 6 speed sprint, which alternates with state 7 high-G curves; the finish line or a fault leads to state 8 hard deceleration and back to state 0. Marius-Juston 2026", "file": "Lectures/Figures/fsm_micromouse.svg"},
+                {"title": "Fsm Wall Following", "alt": "Two-state machine for wall following. State 1, right wall follow (forward velocity, angular velocity = Kp times (d_ref minus d_right)), switches to state 2, left turn, when the front distance is below the stop threshold; state 2 (turning speed, angular velocity from the front distance) switches back when the front distance exceeds the start threshold. Marius-Juston 2026", "file": "Lectures/Figures/fsm_wall_following.svg"},
+                {"title": "Gicp Steps", "alt": "Two panels on Generalized ICP. (A) Probabilistic surface modelling: each source point p_i and target point q_i has a covariance ellipse (C_p, C_q) describing its local surface. (B) Plane-to-plane alignment: after transforming p_i by T, the residual d_i = q_i - T p_i is weighted by the sum of the covariances, minimising the Mahalanobis distance d_i transpose times (C_q + R C_p R transpose) inverse times d_i, so points can slide along both surfaces.", "file": "Lectures/Figures/gicp_steps.svg"},
+                {"title": "Grids", "alt": "Three grid types with basis vectors e_u and e_v and cell coordinates (u, v): a square grid with perpendicular basis vectors, a hexagonal grid with basis vectors 60 degrees apart, and a triangular grid with the same 60 degree basis.", "file": "Lectures/Figures/grids.svg"},
+                {"title": "Hybrid Astar Expansion", "alt": "Comparison of node expansion. In A*, the popped cell x_n opens its grid neighbours (up, left, right). In Hybrid A*, the state s_n = (x_n, theta_n) expands along three steering arcs (left, straight, right) to continuous successor states s_n+1, which are stored in the grid cells they land in.", "file": "Lectures/Figures/hybrid_astar_expansion.svg"},
+                {"title": "Hybrid Astar Kinematics", "alt": "Hybrid A* motion primitives from state S_n = (x_n, theta_n): forward-only expansion along three arcs (left, straight, right), and expansion with reverse motion allowed, which adds three backward arcs for six successors.", "file": "Lectures/Figures/hybrid_astar_kinematics.svg"},
+                {"title": "Hysteresis", "alt": "Plot of output against input showing hysteresis: the output follows a lower curve while the input increases and a higher curve while it decreases, so for the same input (dashed vertical line) the output differs depending on direction. A dashed diagonal shows the ideal response without hysteresis. Marius-Juston 2026", "file": "Lectures/Figures/hysteresis.svg"},
+                {"title": "Inductive Interferrence", "alt": "Sketch of inductive interference: two circuits, each an AC source and resistors, share a ground plane. The current in one circuit creates a magnetic field H that loops through the area of the other circuit and induces noise in it. Marius-Juston 2026", "file": "Lectures/Figures/inductive_interferrence.svg"},
+                {"title": "Lidar", "alt": "Top view of a LiDAR's field of view: a small circle (the sensor) with beams fanning out as wedge-shaped sectors over about 240 degrees, leaving a gap behind the sensor. Marius-Juston 2026", "file": "Lectures/Figures/lidar.svg"},
+                {"title": "Linux Connection Diagram", "alt": "Diagram of the Linux programs on the robot and how they communicate. The central hub serial_COMandOpti talks to the RedBoard (F28379D) over serial/UDP. It exchanges data with LVCOMApp (TCP/IP server to LabVIEW), LinuxCMDApp (command-line control) and AstarApp (path planner) through named POSIX shared-memory blocks (e.g. sharedmem-LVCOMApp-readfrom with 32 chars and 8 floats; AstarApp's pose, obstacle and path blocks), each signalled with a semaphore (sem_post). A separate ladar_server reads the LiDAR on UART ttyAMA2 into posix-shared-mem-ladar-dist (228 floats). Marius-Juston 2026", "file": "Lectures/Figures/linux_connection_diagram.svg"},
+                {"title": "Linux Connection Diagram With Lidar", "alt": "The same Linux program diagram with the LiDAR added: the RedBoard sends the 'G' command to the LiDAR and receives points, and the LiDAR also sends its points through UART3 to ladar_server, which writes 228 distances to shared memory and signals a semaphore. Marius-Juston 2026", "file": "Lectures/Figures/linux_connection_diagram_with_lidar.svg"},
+                {"title": "Magnetic Flux", "alt": "Diagram for computing magnetic coupling: a straight source wire carrying current I1(t) produces circular magnetic field lines B = mu0 I1 / (2 pi r). Beside it is a rectangular victim loop of height l spanning distances r1 to r2 from the wire; the flux through the loop is the integral of B over area elements dA = dr dz. Marius-Juston 2026", "file": "Lectures/Figures/magnetic_flux.svg"},
+                {"title": "Ndt Icp", "alt": "Series on the Normal Distributions Transform. Step 1: the target point cloud Q is divided into grid cells; only cells with enough points are active. Step 2: each active cell gets the mean and covariance of its points, a Gaussian shown as an ellipse, turning the point cloud into a piecewise continuous probability density. Further steps score and optimise the source scan's pose against these distributions.", "file": "Lectures/Figures/ndt_icp.svg"},
+                {"title": "Nyquist Frequency", "alt": "Aliasing illustration: a sine wave sampled once per period (at 1 times its frequency f0). Every sample (red star) falls at the same point of the wave, so the reconstructed signal is a flat line: sampling must be faster than twice the signal frequency. Marius-Juston 2026", "file": "Lectures/Figures/nyquist_frequency.svg"},
+                {"title": "P2p Icp Failure", "alt": "Failure case of point-to-point ICP in a corridor. (A) At time t the robot sees two parallel walls as evenly spaced points while moving forward. (B) At t+1 the points have shifted along the walls by the actual drift, but nearest-neighbour matching pairs each new point with the old point beside it, so the correct forward motion along the featureless walls cannot be recovered.", "file": "Lectures/Figures/p2p_icp_failure.svg"},
+                {"title": "P2p Icp Iteration", "alt": "Three panels of point-to-point ICP: iteration 1 pairs each source point P1 to P3 with its nearest target point Q1 to Q3; applying the first transform brings the clouds closer and forms new pairs; after a few iterations the clouds align and the error falls below the threshold.", "file": "Lectures/Figures/p2p_icp_iteration.svg"},
+                {"title": "P2p Icp Steps", "alt": "Series on solving point-to-point ICP. Step 1: compute the centroids p-bar and q-bar of the source triangle P and the rotated, shifted target triangle Q. Step 2: centre both clouds on their centroids and form the cross-covariance H = sum of (p_i - p-bar)(q_i - q-bar) transpose. Later steps take the SVD of H to get the rotation and then the translation.", "file": "Lectures/Figures/p2p_icp_steps.svg"},
+                {"title": "Path Following", "alt": "Geometry of path following for a differential-drive robot at (x, y) with heading theta, following a path segment from p_k to p_k+1 at angle theta_r. The vector d from the robot to the reference point is split into the along-track error e_x and cross-track error e_y in the robot frame, and e_theta is the heading error.", "file": "Lectures/Figures/path_following.svg"},
+                {"title": "Ping Poing Buffered", "alt": "Three stages of ping-pong (double) buffering: an analog voltage is converted by the ADC and the DMA controller first fills the ping buffer; then it fills the pong buffer while the ping buffer's data is processed; then it fills ping again while pong is processed, so acquisition never waits for processing. Marius-Juston 2026", "file": "Lectures/Figures/ping_poing_buffered.svg"},
+                {"title": "Ping Pong Single", "alt": "Single-buffer acquisition in two stages: the ADC and DMA controller write a data buffer, during which no processing can happen; once full, data processing starts and the DMA controller has to wait for it to finish. Marius-Juston 2026", "file": "Lectures/Figures/ping_pong_single.svg"},
+                {"title": "Pl Icp Steps", "alt": "Series on point-to-plane ICP. Step 1: match source points P to target points Q and compute each target point's surface normal n_i and tangent line. Step 2: unlike point-to-point ICP, which penalises the full distance to q_i, the point-to-plane error (p_i - q_i) dot n_i only penalises the distance along the normal, so points can slide along the surface.", "file": "Lectures/Figures/pl_icp_steps.svg"},
+                {"title": "Polygon Grid", "alt": "Visibility graph for path planning: two polygonal obstacles with edges drawn between all mutually visible vertices, the start and end points; the shortest path from start to end (highlighted) runs along obstacle vertices and edges.", "file": "Lectures/Figures/polygon_grid.svg"},
+                {"title": "Reeds Sheep Curves", "alt": "A car-like robot's path from a start pose to a goal pose made of circular arcs of minimum turning radius r and straight segments, including a reversing segment (cusp), as in Reeds-Shepp curves; a dashed alternative path is drawn for comparison.", "file": "Lectures/Figures/reeds_sheep_curves.svg"},
+                {"title": "Rpi Slam Process Flow", "alt": "Process diagram of the Raspberry Pi SLAM program. External LiDAR and odometry programs write scans and poses to shared memory (lslam_lidar, lslam_odom), signalled by semaphores; LidarReader and OdomReader threads move them into a queue and a deque for the SLAM main loop. The main loop updates factors and estimates poses with iSAM2 (GTSAM), shares keyframe scans and poses under a lock, and sends new keyframes to a LoopClosureWorker thread, which returns relative poses and errors through queues. SLAM Pipeline IPC & Thread Architecture", "file": "Lectures/Figures/rpi_slam_process_flow.svg"},
+                {"title": "Slam 1d", "alt": "One-dimensional SLAM example. Step 1: the robot at 0 measures a wall at 5 m (q = 5). Step 2: it moves +2 m and measures the wall at 3 m (p = 3) in its own frame. Step 3: aligning the new measurement with the map, 3 + t = 5, gives t = 2, the robot's movement.", "file": "Lectures/Figures/slam_1d.svg"},
+                {"title": "Slam Loop", "alt": "Flowchart of a LiDAR-inertial SLAM loop. Front end (high rate): each IMU/odometry interrupt (100 Hz or more) is preintegrated and a motion model predicts and publishes a fast pose. When a LiDAR scan is ready (10 Hz), the back end deskews and voxel-filters the cloud, matches it to the local map (ICP/NDT) to get an odometry factor, optimises the factor graph (iSAM2/GTSAM) with loop-closure factors, updates the map manager, and publishes the global map and corrected pose, which corrects the front end's drift.", "file": "Lectures/Figures/slam_loop.svg"},
+                {"title": "Trajectory Planning Process", "alt": "Pipeline from perception to motion: perception and mapping provide a costmap; 1. path planning (Hybrid A* with a bicycle model) produces a geometric path of poses; 2. trajectory planning (optimisation for smoothness within velocity and acceleration limits) produces a time-parameterised reference trajectory; 3. a tracking controller (MPC or pure pursuit) sends velocity commands to the vehicle, with state feedback from the vehicle.", "file": "Lectures/Figures/trajectory_planning_process.svg"},
+                {"title": "Vision Pipeline", "alt": "Four-stage vision pipeline. 1. Raw sensor data: CMOS array and Bayer colour filter (1 red : 2 green : 1 blue). 2. Pre-processing: demosaicing, RGB to HSV conversion and a binary threshold on hue. 3. Feature extraction: blob detection with connected components, area filtering and image moments giving the centroid x-bar = M10 / M00. 4. Control logic: error e = x-bar minus image centre, a PI controller, and PWM motor commands for the left and right wheels.", "file": "Lectures/Figures/vision_pipeline.svg"},
+                {"title": "ICP Iteration", "alt": "ICP Iteration", "file": "Lectures/Figures/ICP Iteration.svg"},
+                {"title": "ICP Iteration", "alt": "ICP Iteration", "file": "Lectures/Figures/ICP_Iteration.svg"},
+                {"title": "Icp Failure", "alt": "Icp Failure", "file": "Lectures/Figures/icp_failure.svg"},
+                {"title": "Icp Steps", "alt": "Icp Steps", "file": "Lectures/Figures/icp_steps.svg"},
+                {"title": "Slam 1d 1", "alt": "Slam 1d 1", "file": "Lectures/Figures/slam_1d_1.svg"},
+                {"title": "01 Initial Belief", "alt": "01 Initial Belief", "file": "Lectures/Figures/svg/01_initial_belief.svg"},
+                {"title": "02 Prediction", "alt": "02 Prediction", "file": "Lectures/Figures/svg/02_prediction.svg"},
+                {"title": "03 Sensor Opinion", "alt": "03 Sensor Opinion", "file": "Lectures/Figures/svg/03_sensor_opinion.svg"},
+                {"title": "04 Fused Update", "alt": "04 Fused Update", "file": "Lectures/Figures/svg/04_fused_update.svg"},
+                {"title": "05 Covariance Matrix", "alt": "05 Covariance Matrix", "file": "Lectures/Figures/svg/05_covariance_matrix.svg"},
+                {"title": "ColdMascot", "alt": "ColdMascot", "file": "Lectures/Figures/svg/ColdMascot.svg"},
+                {"title": "Differential Drive Kinematics Of A Wheeled Mobile Robot", "alt": "Differential Drive Kinematics Of A Wheeled Mobile Robot", "file": "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot.svg"},
+                {"title": "Differential Drive Kinematics Of A Wheeled Mobile Robot Rotate", "alt": "Differential Drive Kinematics Of A Wheeled Mobile Robot Rotate", "file": "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot_rotate.svg"},
+                {"title": "Differential Drive Kinematics Of A Wheeled Mobile Robot Zero Heading", "alt": "Differential Drive Kinematics Of A Wheeled Mobile Robot Zero Heading", "file": "Lectures/Figures/svg/Differential_Drive_Kinematics_of_a_Wheeled_Mobile_Robot_zero_heading.svg"},
+                {"title": "Integration Num Trapezes Notation", "alt": "Integration Num Trapezes Notation", "file": "Lectures/Figures/svg/Integration_num_trapezes_notation.svg"},
+                {"title": "Left Riemann Sum", "alt": "Left Riemann Sum", "file": "Lectures/Figures/svg/Left_Riemann_Sum.svg"},
+                {"title": "LiDAR Diagram", "alt": "LiDAR Diagram", "file": "Lectures/Figures/svg/LiDAR Diagram.svg"},
+                {"title": "LiDAR Scanning Direction", "alt": "LiDAR Scanning Direction", "file": "Lectures/Figures/svg/LiDAR Scanning Direction.svg"},
+                {"title": "LiDAR Steps", "alt": "LiDAR Steps", "file": "Lectures/Figures/svg/LiDAR Steps.svg"},
+                {"title": "MD 01 Initial Belief", "alt": "MD 01 Initial Belief", "file": "Lectures/Figures/svg/MD_01_initial_belief.svg"},
+                {"title": "MD 02 Prediction", "alt": "MD 02 Prediction", "file": "Lectures/Figures/svg/MD_02_prediction.svg"},
+                {"title": "MD 03 Sensor Opinion", "alt": "MD 03 Sensor Opinion", "file": "Lectures/Figures/svg/MD_03_sensor_opinion.svg"},
+                {"title": "MD 04 Fused Update", "alt": "MD 04 Fused Update", "file": "Lectures/Figures/svg/MD_04_fused_update.svg"},
+                {"title": "April Tag Transformed", "alt": "April Tag Transformed", "file": "Lectures/Figures/svg/april_tag_transformed.svg"},
+                {"title": "Gaussian Transform", "alt": "Gaussian Transform", "file": "Lectures/Figures/svg/gaussian_transform.svg"},
+                {"title": "Gaussians", "alt": "Gaussians", "file": "Lectures/Figures/svg/gaussians.svg"},
+                {"title": "Huber Loss", "alt": "Huber Loss", "file": "Lectures/Figures/svg/huber_loss.svg"},
+                {"title": "Icp Steps 1", "alt": "Icp Steps 1", "file": "Lectures/Figures/svg/icp_steps_1.svg"},
+                {"title": "Icp Steps 2", "alt": "Icp Steps 2", "file": "Lectures/Figures/svg/icp_steps_2.svg"},
+                {"title": "Icp Steps 3", "alt": "Icp Steps 3", "file": "Lectures/Figures/svg/icp_steps_3.svg"},
+                {"title": "Icp Steps 4", "alt": "Icp Steps 4", "file": "Lectures/Figures/svg/icp_steps_4.svg"},
+                {"title": "Icp Steps 5", "alt": "Icp Steps 5", "file": "Lectures/Figures/svg/icp_steps_5.svg"},
+                {"title": "Lidar Grid", "alt": "Lidar Grid", "file": "Lectures/Figures/svg/lidar_grid.svg"},
+                {"title": "Monte Carlo Ekf", "alt": "Monte Carlo Ekf", "file": "Lectures/Figures/svg/monte_carlo_ekf.svg"},
+                {"title": "Monte Carlo Ekf Lie", "alt": "Monte Carlo Ekf Lie", "file": "Lectures/Figures/svg/monte_carlo_ekf_lie.svg"},
+                {"title": "Monte Carlo Only", "alt": "Monte Carlo Only", "file": "Lectures/Figures/svg/monte_carlo_only.svg"},
+                {"title": "P2p Icp Steps 1", "alt": "P2p Icp Steps 1", "file": "Lectures/Figures/svg/p2p_icp_steps_1.svg"},
+                {"title": "P2p Icp Steps 2", "alt": "P2p Icp Steps 2", "file": "Lectures/Figures/svg/p2p_icp_steps_2.svg"},
+                {"title": "P2p Icp Steps 3", "alt": "P2p Icp Steps 3", "file": "Lectures/Figures/svg/p2p_icp_steps_3.svg"},
+                {"title": "P2p Icp Steps 4", "alt": "P2p Icp Steps 4", "file": "Lectures/Figures/svg/p2p_icp_steps_4.svg"},
+                {"title": "P2p Icp Steps 5", "alt": "P2p Icp Steps 5", "file": "Lectures/Figures/svg/p2p_icp_steps_5.svg"},
+                {"title": "Pl Icp Step 1", "alt": "Pl Icp Step 1", "file": "Lectures/Figures/svg/pl_icp_step_1.svg"},
+                {"title": "Pl Icp Step 2", "alt": "Pl Icp Step 2", "file": "Lectures/Figures/svg/pl_icp_step_2.svg"},
+                {"title": "Slide1 Init", "alt": "Slide1 Init", "file": "Lectures/Figures/svg/slide1_init.svg"},
+                {"title": "Slide2 Predict", "alt": "Slide2 Predict", "file": "Lectures/Figures/svg/slide2_predict.svg"},
+                {"title": "Slide3 Update", "alt": "Slide3 Update", "file": "Lectures/Figures/svg/slide3_update.svg"},
+                {"title": "Slide4 Resample", "alt": "Slide4 Resample", "file": "Lectures/Figures/svg/slide4_resample.svg"},
+                {"title": "Slide5 Predict2", "alt": "Slide5 Predict2", "file": "Lectures/Figures/svg/slide5_predict2.svg"},
+                {"title": "Slide6 Update2", "alt": "Slide6 Update2", "file": "Lectures/Figures/svg/slide6_update2.svg"},
+                {"title": "Slide7 Resample2", "alt": "Slide7 Resample2", "file": "Lectures/Figures/svg/slide7_resample2.svg"},
+                {"title": "White Noise", "alt": "White Noise", "file": "Lectures/Figures/svg/white_noise.svg"},
+                {"title": "White Noise Mean", "alt": "White Noise Mean", "file": "Lectures/Figures/svg/white_noise_mean.svg"},
+                {"title": "White Std", "alt": "White Std", "file": "Lectures/Figures/svg/white_std.svg"},
                 /* INJECT_FIGURES_END */
             ],
             hw: [
@@ -710,22 +736,16 @@
         };
 
         let currentFormat = 'pdf';
+        const LECTURE_FORMATS = ['pdf', 'pptx', 'html'];
+
+        // Escape text before it goes into HTML built from template strings.
+        const esc = (v) => String(v).replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 
         function updateLectureUI() {
             const container = document.getElementById('lecture-list');
-            const pdfLabel = document.getElementById('label-pdf');
-            const pptxLabel = document.getElementById('label-pptx');
-
             document.getElementById('lecture-count-display').textContent = data.lectures.length;
-
-            // Update Labels
-            if (currentFormat === 'pdf') {
-                pdfLabel.classList.add('uiuc-orange');
-                pptxLabel.classList.remove('uiuc-orange');
-            } else {
-                pptxLabel.classList.add('uiuc-orange');
-                pdfLabel.classList.remove('uiuc-orange');
-            }
+            // "html" = the accessible text version of the deck (tools/a11y/pptx_to_html.py)
+            const formatLabel = { pdf: 'PDF', pptx: 'PowerPoint', html: 'Text (HTML)' };
 
             container.innerHTML = data.lectures.map(item => {
                 const isHtmlFormat = item.isHtml || item.basePath.endsWith("html");
@@ -733,17 +753,18 @@
                 const formatToUse = isHtmlFormat ? "html" : currentFormat;  
                 const url = isHtmlFormat? item.basePath: `${item.basePath}.${formatToUse}`;
                 const iconColor = formatToUse === 'pdf' ? 'text-red-500' : (formatToUse === 'pptx')? 'text-orange-500' : 'text-blue-500';
-                
+                const label = isHtmlFormat ? 'Interactive page' : formatLabel[formatToUse];
+
                 return `
-                    <a href="${url}" target="_blank" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${item.title.toLowerCase()},${item.topic.toLowerCase()}">
-                        <div class="${iconColor} mb-2">
+                    <a href="${esc(url)}" target="_blank" aria-label="${esc(item.title)}, ${esc(label)} (opens in a new tab)" class="searchable-item flex flex-col items-center justify-center p-4 bg-white rounded-xl border border-gray-200 card-transition text-center dark:bg-slate-900 dark:border-slate-800" data-title="${esc(item.title.toLowerCase())},${esc(item.topic.toLowerCase())}">
+                        <div class="${iconColor} mb-2" aria-hidden="true">
                             ${formatToUse === 'pdf' ? 
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" /><path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" /></svg>` :
                                 `<svg class="h-8 w-8" fill="currentColor" viewBox="0 0 20 20"><path d="M4 4a2 2 0 012-2h4.586A2 2 0 0112 2.586L15.414 6A2 2 0 0116 7.414V16a2 2 0 01-2 2H6a2 2 0 01-2-2V4z" /><path d="M6 10h8v2H6v-2zm0 4h8v2H6v-2z" /></svg>`
                             }
                         </div>
-                        <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${item.title}</span>
-                        <span class="text-[10px] text-gray-600 mt-1 uppercase font-semibold">${formatToUse}</span>
+                        <span class="text-xs font-bold text-gray-800 dark:text-slate-100">${esc(item.title)}</span>
+                        <span class="text-[10px] text-gray-600 mt-1 uppercase font-semibold">${esc(label)}</span>
                     </a>
                 `;
             }).join('');
@@ -771,10 +792,22 @@
                 //   Homeworks/HW1.pdf -> site/Homeworks/HW1.html
                 // External URLs (http/https) and non-PDFs are skipped.
                 const isLocalPdf = item.file && !/^https?:\/\//i.test(item.file) && item.file.toLowerCase().endsWith('.pdf');
-                const htmlFile = isLocalPdf ? 'site/' + item.file.replace(/\.pdf$/i, '.html') : null;
+                const htmlFile = item.html || (isLocalPdf ? 'site/' + item.file.replace(/\.pdf$/i, '.html') : null);
+                const epubFile = item.epub || (isLocalPdf ? item.file.replace(/\.pdf$/i, '.epub') : null);
+                const epubLinkHtml = epubFile ? `
+                        <a href="${epubFile}" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link" download>
+                            EPUB (e-reader)
+                        </a>
+                ` : '';
+                const largeFile = item.large || (isLocalPdf ? item.file.replace(/\.pdf$/i, '-large.pdf') : null);
+                const largeLinkHtml = largeFile ? `
+                        <a href="${largeFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
+                            Large-print PDF<span class="sr-only"> (opens in a new tab)</span>
+                        </a>
+                ` : '';
                 const htmlLinkHtml = htmlFile ? `
                         <a href="${htmlFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
-                            View HTML (Accessible)
+                            View HTML (Accessible)<span class="sr-only"> (opens in a new tab)</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.75 5.25A2.25 2.25 0 016 3h12a2.25 2.25 0 012.25 2.25v9A2.25 2.25 0 0118 16.5h-3.75l.75 3h1.5a.75.75 0 010 1.5H7.5a.75.75 0 010-1.5H9l.75-3H6a2.25 2.25 0 01-2.25-2.25v-9z" />
                             </svg>
@@ -791,12 +824,14 @@
                         </div>
 
                         <a href="${item.file}" target="_blank" class="mt-2 inline-flex items-center text-sm font-semibold uiuc-orange-access pdf-link">
-                            View Assignment PDF
+                            View Assignment PDF<span class="sr-only"> (opens in a new tab)</span>
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                             </svg>
                         </a>
                         ${htmlLinkHtml}
+                        ${largeLinkHtml}
+                        ${epubLinkHtml}
 
                         ${extraLinksHtml}
                     </div>
@@ -807,44 +842,36 @@
         // NEW: Render Gallery Logic
         function renderGallery() {
             const container = document.getElementById('gallery-grid');
+            // fig.alt comes from the SVG's <desc>/<title> (CI injection); file name otherwise.
             container.innerHTML = data.figures.map(fig => `
-                <a href="${fig.file}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
+                <li>
+                <a href="${esc(fig.file)}" target="_blank" class="group block bg-white dark:bg-slate-800 rounded-xl overflow-hidden border border-gray-200 dark:border-slate-700 shadow-sm hover:shadow-lg transition-all card-transition">
                     <div class="h-48 p-4 bg-slate-100 dark:bg-slate-900 flex items-center justify-center relative overflow-hidden">
-                        <img src="${fig.file}" alt="${fig.title}" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
+                        <img src="${esc(fig.file)}" alt="${esc(fig.alt || fig.title)}" loading="lazy" class="svg-preview max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-300">
                     </div>
                     <div class="p-4 border-t border-gray-100 dark:border-slate-700">
-                        <h3 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${fig.title}</h3>
-                        <p class="text-[10px] text-gray-400 uppercase mt-1 tracking-wider text-uiuc-orange font-semibold">SVG Vector</p>
+                        <h3 class="font-bold text-sm text-gray-800 dark:text-slate-100 truncate">${esc(fig.title)}</h3>
+                        <p class="text-[10px] uppercase mt-1 tracking-wider uiuc-orange-access font-semibold">SVG Vector<span class="sr-only"> (opens in a new tab)</span></p>
                     </div>
                 </a>
+                </li>
             `).join('');
         }
 
-        // NEW: Toggle Gallery Modal
+        // Figure gallery: native modal dialog. showModal() makes the rest of the page inert
+        // (focus stays inside), Esc closes it and focus returns to the opening button.
+        const galleryDialog = document.getElementById('gallery-modal');
         function toggleGallery(show) {
-            const modal = document.getElementById('gallery-modal');
-            const content = document.getElementById('gallery-content');
-            
-            if(show) {
-                modal.classList.remove('hidden');
-                document.body.classList.add('modal-active'); // Prevent background scroll
-                
-                // Small timeout to allow display:block to apply before animating opacity
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    content.classList.remove('scale-95');
-                }, 10);
+            if (show) {
+                galleryDialog.showModal();
+                document.body.classList.add('modal-active'); // no background scroll
             } else {
-                modal.classList.add('opacity-0');
-                content.classList.add('scale-95');
-                document.body.classList.remove('modal-active');
-                
-                // Wait for transition to finish before hiding
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
+                galleryDialog.close();
             }
         }
+        galleryDialog.addEventListener('close', () => document.body.classList.remove('modal-active'));
+        // A click on the backdrop (the dialog element itself, outside its content) closes it.
+        galleryDialog.addEventListener('click', (e) => { if (e.target === galleryDialog) galleryDialog.close(); });
 
         // Initialize Everything
         updateLectureUI();
@@ -853,21 +880,35 @@
         renderList('lab-list', data.labs);
         renderGallery();
 
-        // Toggle Event Listener
-        document.getElementById('formatToggle').addEventListener('change', (e) => {
-            currentFormat = e.target.checked ? 'pptx' : 'pdf';
-            updateLectureUI();
+        // Lecture format (radio group; arrow keys move between options)
+        document.querySelectorAll('input[name="lecture-format"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                // Only known formats (the value comes from the page, so never trust it).
+                currentFormat = LECTURE_FORMATS.includes(e.target.value) ? e.target.value : 'pdf';
+                updateLectureUI();
+                applySearch();
+            });
         });
 
         // Search Logic
-        document.getElementById('pdfSearch').addEventListener('input', (e) => {
-            const term = e.target.value.toLowerCase();
+        const searchStatus = document.getElementById('search-status');
+        let searchTimer;
+        function applySearch() {
+            const term = document.getElementById('pdfSearch').value.toLowerCase();
             const items = document.querySelectorAll('.searchable-item');
+            let shown = 0;
             items.forEach(item => {
-                const title = item.getAttribute('data-title');
-                item.style.display = title.includes(term) ? 'flex' : 'none';
+                const match = item.getAttribute('data-title').includes(term);
+                item.style.display = match ? 'flex' : 'none';
+                shown += match;
             });
-        });
+            // Announce the result count once typing pauses (screen readers).
+            clearTimeout(searchTimer);
+            searchTimer = setTimeout(() => {
+                searchStatus.textContent = term ? `${shown} of ${items.length} items match` : '';
+            }, 500);
+        }
+        document.getElementById('pdfSearch').addEventListener('input', applySearch);
     </script>
 </body>
 </html>

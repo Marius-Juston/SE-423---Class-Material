@@ -1,0 +1,900 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L20-21: SE 423: Introduction to MechatronicsLecture 20-21: Sensor Fusion and Kalman FiltersMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L20-21: SE 423: Introduction to MechatronicsLecture 20-21: Sensor Fusion and Kalman FiltersMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L20-21.pdf">PDF</a> · <a href="L20-21.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (100)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 20-21: Sensor Fusion and Kalman FiltersMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Sensor Fusion</a></li><li><a href='#s6'>Sensor Fusion</a></li><li><a href='#s7'>Sensor Fusion</a></li><li><a href='#s8'>Sensor Fusion</a></li><li><a href='#s9'>Sensor Fusion</a></li><li><a href='#s10'>Sensor Fusion</a></li><li><a href='#s11'>Sensor Fusion</a></li><li><a href='#s12'>Sensor Fusion</a></li><li><a href='#s13'>1D Kalman Filter</a></li><li><a href='#s14'>Sensor Fusion</a></li><li><a href='#s15'>Sensor Fusion</a></li><li><a href='#s16'>Sensor Fusion</a></li><li><a href='#s17'>Sensor Fusion</a></li><li><a href='#s18'>Predict</a></li><li><a href='#s19'>Sensor Fusion</a></li><li><a href='#s20'>Sensor Fusion – Predict Step</a></li><li><a href='#s21'>Sensor Fusion – Predict Step</a></li><li><a href='#s22'>Sensor Fusion – Predict Step</a></li><li><a href='#s23'>Sensor Fusion – Predict Step</a></li><li><a href='#s24'>Sensor Fusion – Predict Step</a></li><li><a href='#s25'>Sensor Fusion – Predict Step</a></li><li><a href='#s26'>Update</a></li><li><a href='#s27'>Sensor Fusion – Predict Step</a></li><li><a href='#s28'>Sensor Fusion – Predict Step</a></li><li><a href='#s29'>Sensor Fusion – Predict Step</a></li><li><a href='#s30'>Sensor Fusion – Predict Step</a></li><li><a href='#s31'>Sensor Fusion – Predict Step</a></li><li><a href='#s32'>Sensor Fusion – Predict Step</a></li><li><a href='#s33'>Sensor Fusion – Predict Step</a></li><li><a href='#s34'>ND - Kalman Filter</a></li><li><a href='#s35'>Predict</a></li><li><a href='#s36'>Sensor Fusion – Predict Step</a></li><li><a href='#s37'>Sensor Fusion – Predict Step</a></li><li><a href='#s38'>Sensor Fusion – Predict Step</a></li><li><a href='#s39'>Sensor Fusion – Predict Step</a></li><li><a href='#s40'>Sensor Fusion – Predict Step</a></li><li><a href='#s41'>Sensor Fusion – Predict Step</a></li><li><a href='#s42'>Sensor Fusion – Predict Step</a></li><li><a href='#s43'>Sensor Fusion – Predict Step</a></li><li><a href='#s44'>Sensor Fusion – Predict Step</a></li><li><a href='#s45'>Sensor Fusion – Predict Step</a></li><li><a href='#s46'>Sensor Fusion – Predict Step</a></li><li><a href='#s47'>Update</a></li><li><a href='#s48'>Sensor Fusion – Predict Step</a></li><li><a href='#s49'>Sensor Fusion – Predict Step</a></li><li><a href='#s50'>Sensor Fusion – Predict Step</a></li><li><a href='#s51'>Sensor Fusion – Predict Step</a></li><li><a href='#s52'>Sensor Fusion – Predict Step</a></li><li><a href='#s53'>Sensor Fusion – Predict Step</a></li><li><a href='#s54'>Sensor Fusion – Predict Step</a></li><li><a href='#s55'>Sensor Fusion – Predict Step</a></li><li><a href='#s56'>Sensor Fusion – Predict Step</a></li><li><a href='#s57'>Sensor Fusion – Predict Step</a></li><li><a href='#s58'>Sensor Fusion – Predict Step</a></li><li><a href='#s59'>Optional Derivations</a></li><li><a href='#s60'>Sensor Fusion – Predict Step</a></li><li><a href='#s61'>Sensor Fusion – Predict Step</a></li><li><a href='#s62'>Sensor Fusion – Predict Step</a></li><li><a href='#s63'>Sensor Fusion – Predict Step</a></li><li><a href='#s64'>Kalman Filter Example</a></li><li><a href='#s65'>Review – 5-minute partner discussion</a></li><li><a href='#s66'>Kalman Filter Example</a></li><li><a href='#s67'>Kalman Filter Example</a></li><li><a href='#s68'>Kalman Filter Example</a></li><li><a href='#s69'>Kalman Filter Example</a></li><li><a href='#s70'>Kalman Filter Example</a></li><li><a href='#s71'>Kalman Filter Example</a></li><li><a href='#s72'>Kalman Filter Example</a></li><li><a href='#s73'>Kalman Filter Example</a></li><li><a href='#s74'>Extended (Nonlinear) Kalman Filter</a></li><li><a href='#s75'>Extended Kalman Filter</a></li><li><a href='#s76'>Extended Kalman Filter</a></li><li><a href='#s77'>Extended Kalman Filter</a></li><li><a href='#s78'>Extended Kalman Filter</a></li><li><a href='#s79'>Extended Kalman Filter</a></li><li><a href='#s80'>Extended Kalman Filter</a></li><li><a href='#s81'>Extended Kalman Filter</a></li><li><a href='#s82'>Extended Kalman Filter</a></li><li><a href='#s83'>Extended Kalman Filter</a></li><li><a href='#s84'>Extended Kalman Filter</a></li><li><a href='#s85'>Predict</a></li><li><a href='#s86'>Extended Kalman Filter</a></li><li><a href='#s87'>Extended Kalman Filter</a></li><li><a href='#s88'>Extended Kalman Filter</a></li><li><a href='#s89'>Update</a></li><li><a href='#s90'>Extended Kalman Filter</a></li><li><a href='#s91'>Extended Kalman Filter</a></li><li><a href='#s92'>Extended Kalman Filter</a></li><li><a href='#s93'>Extended Kalman Filter</a></li><li><a href='#s94'>Extended Kalman Filter</a></li><li><a href='#s95'>Extended Kalman Filter</a></li><li><a href='#s96'>Extended Kalman Filter</a></li><li><a href='#s97'>Extended Kalman Filter</a></li><li><a href='#s98'>Extended Kalman Filter</a></li><li><a href='#s99'>Questions?</a></li><li><a href='#s100'>End of Lectures 20–21</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 20-21: Sensor Fusion and Kalman FiltersMarius Juston</h2>
+<p>Monday, April 6th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>What assumptions were made during path planning / trajectory planning?
+</li>
+<li>What sensors on the robot help determine it’s the location in the world?
+</li>
+<li>When could the odometry and the IMU give different values? Which one should you trust?
+</li>
+<li>If your IMU says you accelerated forward, but LiDAR scan matching says you didn’t move, what should the system believe?
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Finishing Lab 6 this week. This a 3-week lab!</p>
+<ul>
+<li>Don’t forget to have the Lab LabVIEW application implemented before lab.
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 4 are due <strong>April 7, 5PM (The end of office hours)</strong>
+</li>
+<li>Remainder of <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> due on Gradescope on <strong>April 8, 9AM</strong>
+</li>
+<li>Next homework is primarily the <strong>personal project </strong>due on <strong>April 22, 9AM</strong>.
+<li>
+<ul>
+<li>I would highly recommend you thinking now and maybe even starting it now if you have a good idea already!
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Sensor Fusion</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Sensor Fusion</h2>
+<p>In the real world, motors don&#x27;t spin exactly as commanded due to friction and voltage drops.</p>
+<p>Sensors have electrical noise, mechanical imperfections, and environmental interference.</p>
+<p>What can cause the LiDAR to fail?</p>
+<ul>
+<li>Reflective / absorptive surfaces: glass, mirrors, black materials
+</li>
+<li>Fog, rain, dust, snow
+</li>
+<li>Fast motion relative to scan frequency
+</li></ul>
+<p>What can cause the odometry to fail?</p>
+<ul>
+<li>Slippery terrain for wheel slip
+</li></ul>
+<p>When can cause the IMU fail?</p>
+<ul>
+<li>IMU drift
+</li>
+<li>Saturating the sensors
+</li></ul>
+<p>If we blindly execute our path plan open-loop, the robot will quickly crash.</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Sensor Fusion</h2>
+<p>We need <strong>Localization</strong>: determining the robot&#x27;s state (position, velocity, orientation) in the real world.</p>
+<p>To solve the localization problem, SE 423 robots use multiple sensors.</p>
+<p><strong>Proprioceptive </strong>sensors measure internal states: Wheel Encoders (Odometry) and IMUs.</p>
+<p><strong>Exteroceptive </strong>sensors measure the external environment: LiDAR.</p>
+<p>No single sensor is perfect; they all lie to us in different ways.</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Sensor Fusion</h2>
+<p><strong>Wheel encoders </strong>count the rotations of the robot&#x27;s wheels. By knowing wheel radius and track width, we calculate forward kinematics to estimate position. It provides <strong>high-frequency</strong>, smooth data for short-term movement.</p>
+<p>Similarly, <strong>IMUs</strong> generate <strong>high-frequency</strong>, smooth data for short-term movement based on the integration of acceleration.</p>
+<p><strong>LiDAR</strong>, unlike odometry and IMUs, LiDAR gives us <strong>absolute </strong>measurements relative to the environment.; however, due to the additional data, the sensor runs at a lower frequency (e.g., 10Hz) compared to an IMU (e.g., 500Hz).</p>
+<p>If we are in a perfectly square, featureless hallway, can LiDAR tell us our position along the hallway? What about the IMU / odometry?</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Sensor Fusion</h2>
+<p>We have <strong>fast, smooth </strong>sensors that drift (IMU, Odometry).</p>
+<p>We have <strong>slow</strong>, computationally heavy sensors that don&#x27;t drift (LiDAR).</p>
+<p>How do we combine them?</p>
+<p>Simple averaging doesn&#x27;t work because their reliability changes over time.</p>
+<p>If 2 sensors given measurements give different values which, should you trust?</p>
+<p>What if your sensors give you the confidence of their measurements? I.e. the LiDAR is 75% sure of its position and the IMU / Odometry are, in total, 25% sure of their positions?</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Sensor Fusion</h2>
+<p>Instead of saying robot is exactly at “X = 5”, we want to say “We are 90% sure that the robot is near X=5”.</p>
+<p>We represent our state as a probability distribution.</p>
+<p>We use the Gaussian (Normal) Distribution, defined by a mean (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>) and variance (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^{2}</annotation></semantics></math>).</p>
+<figure><img src='L20-21_files/bfd67c9c0515.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Normal_distribution'>https://en.wikipedia.org/wiki/Normal_distribution</a></p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Sensor Fusion</h2>
+<p>Why Gaussians?</p>
+<p>The <strong>mean</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>) represents our best guess of the robot&#x27;s state.</p>
+<p>The <strong>variance</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^{2}</annotation></semantics></math>) represents our uncertainty; a wide curve means we are lost, a narrow curve means we are confident.</p>
+<p>Gaussians are mathematically convenient: multiplying two Gaussians results in a new Gaussian!</p>
+<p>In addition, a lot of math can be derived in closed form when using Gaussians (most other more complex probability distributions do not allow for this)</p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Sensor Fusion</h2>
+<p>Which sensor would you trust more?</p>
+<figure><img src='L20-21_files/1c4109eb461a.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> 1D Kalman Filter</h2>
+
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Sensor Fusion</h2>
+<p>The Kalman Filter is an optimal estimator for <strong>linear </strong>systems subject to <strong>Gaussian </strong>noise.</p>
+<p>When would the Kalman Filter not be appropriate?</p>
+<p>If your sensor or system if non-linear and / or does not follow a Gaussian noise distribution! Always understand how your sensors / system acts and the underlying assumptions for algorithms!</p>
+<p>It operates in a continuous, two-step loop: <strong>Predict</strong> and <strong>Update</strong>.</p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Sensor Fusion</h2>
+<figure><img src='L20-21_files/00e90307a998.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Sensor Fusion</h2>
+<p><strong>Step 1</strong>: The robot <strong>moves</strong>. We use our fast, noisy sensors (Odometry/IMU) to <strong>Predict</strong> where we are. Our uncertainty grows.</p>
+<p><strong>Step 2:</strong> The robot <strong>looks</strong>. We take a measurement with our absolute sensor (LiDAR) to <strong>Update</strong> our belief. Our uncertainty shrinks.</p>
+<p>Rinse and repeat thousands of times a second.</p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Sensor Fusion</h2>
+<p class='video'>Video (embedded video, in the slide deck)</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Predict</h2>
+
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Sensor Fusion</h2>
+<p>Last lectures, we covered algorithms like A*, Dijkstras, Hybrid A* for path planning.</p>
+<p>We learned to compute an optimal, collision-free trajectory from Point A to Point B.</p>
+<p>However, path planning operates in a perfect, simulated world!</p>
+<p>The <strong>fundamental assumption</strong> we made about the robot to execute these plans were:</p>
+<p>Perfect localization and actuation!</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Sensor Fusion – Predict Step</h2>
+<p>We use a physical model of the robot (kinematics) and our control inputs (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>) to guess the new state.</p>
+<p>Because we know our model and our encoders are imperfect, we actively increase our uncertainty covariance (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>).</p>
+<p>This represents &quot;flying blind&quot; between reference measurements.</p>
+<p>If we close our eyes and take 5 steps, are we more or less certain of our position than before we moved?</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Sensor Fusion – Predict Step</h2>
+<p>Before we look at massive matrices, let&#x27;s look at a robot on a 1-Dimensional train track.</p>
+<p>Its state is just one number: its position on the track, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>. Its uncertainty is also just one number: the variance, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>σ</mi><mn>2</mn></msup><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">\sigma^{2}\ </annotation></semantics></math>.</p>
+<p>Together, they form a 1D Gaussian (Bell Curve) representing our &quot;belief&quot;.</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/0aef1e961fc7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Sensor Fusion – Predict Step</h2>
+<p>The robot commands its motors to move forward by distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>u</mi><annotation encoding="application/x-tex">u</annotation></semantics></math>.</p>
+<p>Our new predicted mean simply shifts:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">\mu_{pred} = \mu_{old} + u</annotation></semantics></math></p>
+<p>But moving is never perfect (slipping, bumps). We add adds <strong>process noise </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>m</mi><mi>o</mi><mi>v</mi><mi>e</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{move}^{2}</annotation></semantics></math>).</p>
+<p>Therefore our uncertainty <strong>always </strong>grows.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>m</mi><mi>o</mi><mi>v</mi><mi>e</mi></mrow><mn>2</mn></msubsup></mrow><annotation encoding="application/x-tex">\sigma_{pred}^{2} = \sigma_{old}^{2} + \sigma_{move}^{2}</annotation></semantics></math></p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/f5c937c7fac5.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Sensor Fusion – Predict Step</h2>
+<p>This prediction updates the covariance and the means as such because we are assuming <strong>Gaussian </strong>random variables.</p>
+<p>Let X and Y be independent random variables that are normally distributed, then their sum is also normally distributed. i.e., if</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>X</mi></msub><mo>,</mo><msubsup><mi>σ</mi><mi>X</mi><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>Y</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>Y</mi></msub><mo>,</mo><msubsup><mi>σ</mi><mi>Y</mi><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">X \sim N\left( \mu_{X},\sigma_{X}^{2} \right),\ \ Y \sim N\left( \mu_{Y},\sigma_{Y}^{2} \right)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mspace width="0.222em"></mspace><mo>=</mo><mi>X</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mi>Y</mi></mrow><annotation encoding="application/x-tex">Z\  = X\  + \ Y</annotation></semantics></math></p>
+<p>Then,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mo>∼</mo><mi>N</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>X</mi></msub><mo>+</mo><msub><mi>μ</mi><mi>Y</mi></msub><mo>,</mo><msubsup><mi>σ</mi><mi>X</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mi>Y</mi><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">Z \sim N\left( \mu_{X} + \mu_{Y},\sigma_{X}^{2} + \sigma_{Y}^{2} \right)</annotation></semantics></math></p>
+<p>For how to derive it you can look <a href='https://en.wikipedia.org/wiki/Sum_of_normally_distributed_random_variables'>here (from Wikipedia)</a></p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Update</h2>
+
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Sensor Fusion – Predict Step</h2>
+<p>Now, our absolute sensor (like a 1D LiDAR) <strong>takes a measurement</strong>.</p>
+<p>It says the robot is at position <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>, with a sensor noise variance of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{sensor}^{2}</annotation></semantics></math>.</p>
+<p>We now have <strong>two</strong> Gaussian curves: our flattened <strong>prediction</strong> curve, and the new <strong>sensor</strong> curve.</p>
+<p>How do we combine these two conflicting opinions into one single truth?</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/23ad32167604.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Sensor Fusion – Predict Step</h2>
+<p>In probability, to fuse two independent estimates, we <strong>multiply their distributions </strong>together.</p>
+<p>The <strong>magical property </strong>of Gaussians: Multiplying two Gaussians <strong>always</strong> produces a new <strong>Gaussian</strong>.</p>
+<p>Because the new curve represents the overlapping area of agreement, it is always taller and narrower than both original curves.</p>
+<p>Fusing data <strong>reduces</strong> uncertainty!</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/c6b070cd70f6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Sensor Fusion – Predict Step</h2>
+<p>The math behind that multiplication gives us the 1D <strong>Kalman Gain </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><mrow><mi>P</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mspace width="0.222em"></mspace><mi>U</mi><mi>n</mi><mi>c</mi><mi>e</mi><mi>r</mi><mi>t</mi><mi>a</mi><mi>i</mi><mi>n</mi><mi>t</mi><mi>y</mi></mrow><mrow><mi>T</mi><mi>o</mi><mi>t</mi><mi>a</mi><mi>l</mi><mspace width="0.222em"></mspace><mi>S</mi><mi>y</mi><mi>s</mi><mi>t</mi><mi>e</mi><mi>m</mi><mspace width="0.222em"></mspace><mi>U</mi><mi>n</mi><mi>c</mi><mi>e</mi><mi>r</mi><mi>t</mi><mi>a</mi><mi>i</mi><mi>n</mi><mi>t</mi><mi>y</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{Prediction\ Uncertainty}{Total\ System\ Uncertainty}</annotation></semantics></math></p>
+<p>If the sensor is perfect, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">K = 1</annotation></semantics></math>, and then we trust the sensor completely.</p>
+<p>If the sensor is garbage, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">K = 0</annotation></semantics></math>, we ignore it!</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Sensor Fusion – Predict Step</h2>
+<p>The math behind that multiplication gives us the 1D <strong>Kalman Gain </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{\sigma_{pred}^{2}}{\sigma_{pred}^{2} + \sigma_{sensor}^{2}}</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> is just a ratio! It&#x27;s the ratio of our prediction uncertainty to the total system uncertainty. It always falls between 0 and 1.</p>
+<p>We update our position using this ratio:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mu_{new} = \mu_{pred} + K\left( z - \mu_{pred} \right)</annotation></semantics></math></p>
+<p>All it really says is “how much of the measurement should we incorporate”?</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Sensor Fusion – Predict Step</h2>
+<p>That’s all the Kalman filter is!</p>
+<p>What is the current limitation of the formulation?</p>
+<p>We are only looking at a problem with 1 state, can this be generalized to be N-dimensional?</p>
+<p>For our differentiable robot, we live in a 2D plane with an <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>, and heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>.</p>
+<p>We can no longer use a single scalar number <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math> for position. We must use a <strong>State Vector</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>θ</mi><msup><mo stretchy="false" form="postfix">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">x = \lbrack X,Y,\theta\rbrack^{T}</annotation></semantics></math>.</p>
+<p>We can no longer use a single scalar variance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^{2}</annotation></semantics></math>. We must use a <strong>Covariance Matrix</strong>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>.</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> ND - Kalman Filter</h2>
+
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Predict</h2>
+
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/0ed200bb7de7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Sensor Fusion – Predict Step</h2>
+<p>Let&#x27;s translate our 1D prediction (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>u</mi></mrow><annotation encoding="application/x-tex">\mu_{pred} = \mu_{old} + u</annotation></semantics></math>) to N-Dimensions:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>B</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x_{k|k - 1} = Fx_{k - 1|k - 1} + Bu_{k}</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math> becomes the state vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> is our state transition matrix (how physics updates the state).</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/09791d249b78.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Sensor Fusion – Predict Step</h2>
+<p>The <strong>Covariance Matrix </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> represents multi-dimensional uncertainty as an ellipse, not a 1D curve.</p>
+<p>The diagonal elements are the individual variances (e.g., how unsure are we about <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> independent of everything else?).</p>
+<p>The off-diagonal elements are the critical addition: <strong>Correlations</strong>.</p>
+<p>If our robot only drives forward, and we are uncertain about our heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>, will that create an uncertainty in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> as we travel?</p>
+<p>Yes, errors in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math> are highly correlated with errors in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>.</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/b32c85cb6672.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Sensor Fusion – Predict Step</h2>
+<p>What is <strong>Variance</strong>, Really?</p>
+<p>Before we calculate how uncertainty grows, we must define what it is.</p>
+<p>Imagine throwing 100 darts at a board. The <strong>Expected Value </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>E</mi><mo stretchy="false" form="prefix">[</mo><mi>X</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">(E\lbrack X\rbrack</annotation></semantics></math>, or mean <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math>) is the center point of all your darts.</p>
+<p><strong>Variance</strong> measures <strong>how spread out </strong>those darts are from the center. It is the average of the squared distances from the mean.</p>
+<p>We write this mathematically as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var(X) = E\left\lbrack (X - \mu)^{2} \right\rbrack</annotation></semantics></math></p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Sensor Fusion – Predict Step</h2>
+<p>What happens to our uncertainty if we multiply our state by a constant <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> (like applying a gear ratio to a wheel)?</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo>−</mo><mi>E</mi><mo stretchy="false" form="prefix">[</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var(aX) = E\left\lbrack \left( aX - E\lbrack aX\rbrack \right)^{2} \right\rbrack</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo>−</mo><mi>a</mi><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var(aX) = E\left\lbrack (aX - a\mu)^{2} \right\rbrack</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><msup><mi>a</mi><mn>2</mn></msup><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var(aX) = E\left\lbrack a^{2}(X - \mu)^{2} \right\rbrack</annotation></semantics></math></p>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>a</mi><mn>2</mn></msup><annotation encoding="application/x-tex">a^{2}</annotation></semantics></math> is a constant, we pull it out:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Var(aX) = a^{2}E\left\lbrack (X - \mu)^{2} \right\rbrack</annotation></semantics></math></p>
+<p>Thus, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(aX) = a^{2}Var(X)</annotation></semantics></math>. Scaling the state scales the uncertainty quadratically.</p>
+<p>If a motor spins twice as fast, does the position uncertainty double?</p>
+<p>No, it <strong>quadruples</strong>!</p>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> Sensor Fusion – Predict Step</h2>
+<p>Real robots experience random bumps and slip. We represent this as adding a random noise variable <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math> to our state.</p>
+<p>Assuming the noise <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>W</mi><annotation encoding="application/x-tex">W</annotation></semantics></math> is <strong>completely independent </strong>of our state <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo>+</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(aX + W) = Var(aX) + Var(W)</annotation></semantics></math></p>
+<p>Substituting our previous proof:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>a</mi><mi>X</mi><mo>+</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(aX + W) = a^{2}Var(X) + Var(W)</annotation></semantics></math></p>
+<p>This simple 1D equation is the exact heart of the Kalman Filter&#x27;s predict step!</p>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> Sensor Fusion – Predict Step</h2>
+<p>Our 1D variance equation is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msup><mi>a</mi><mn>2</mn></msup><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var\left( X_{new} \right) = a^{2}Var(X) + Var(W)</annotation></semantics></math>.</p>
+<p>In a multidimensional robot, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> becomes the State Transition Matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(X)</annotation></semantics></math> becomes the Covariance Matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>a</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>W</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Var(W)</annotation></semantics></math> becomes the Process Noise Matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>.</p>
+<p>But how do we square a matrix to get the equivalent of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>a</mi><mn>2</mn></msup><annotation encoding="application/x-tex">a^{2}</annotation></semantics></math>? We can&#x27;t just write <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>F</mi><mn>2</mn></msup><annotation encoding="application/x-tex">F^{2}</annotation></semantics></math>!</p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Sensor Fusion – Predict Step</h2>
+<p>In linear algebra, the variance of a matrix transformation is derived using the transpose:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>o</mi><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>F</mi><mi>X</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mi>X</mi><mo>−</mo><mi>E</mi><mo stretchy="false" form="prefix">[</mo><mi>F</mi><mi>X</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">)</mo></mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mi>X</mi><mo>−</mo><mi>E</mi><mo stretchy="false" form="prefix">[</mo><mi>F</mi><mi>X</mi><mo stretchy="false" form="postfix">]</mo><mo stretchy="true" form="postfix">)</mo></mrow><mi>T</mi></msup><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mi>T</mi></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Cov(FX) = E\left\lbrack \left( FX - E\lbrack FX\rbrack \right)\left( FX - E\lbrack FX\rbrack \right)^{T} \right\rbrack = E\left\lbrack F(X - \mu)\left( F(X - \mu) \right)^{T} \right\rbrack</annotation></semantics></math></p>
+<p>By the rules of matrix transposition <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>B</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>=</mo><msup><mi>B</mi><mi>T</mi></msup><msup><mi>A</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">(AB)^{T} = B^{T}A^{T}</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>F</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><msup><mi>F</mi><mi>T</mi></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">= E\left\lbrack F(X - \mu)(X - \mu)^{T}F^{T} \right\rbrack</annotation></semantics></math></p>
+<p>We pull the constant <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> matrices out of the Expectation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mi>F</mi><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>−</mo><mi>μ</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo stretchy="true" form="postfix">]</mo></mrow><msup><mi>F</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">= FE\left\lbrack (X - \mu)(X - \mu)^{T} \right\rbrack F^{T}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>=</mo><mi>F</mi><mi>P</mi><msup><mi>F</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">= FPF^{T}</annotation></semantics></math></p>
+<p>Adding our noise matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>, we get our final prediction: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mi>F</mi><mi>P</mi><msup><mi>F</mi><mi>T</mi></msup><mo>+</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P_{new} = FPF^{T} + Q</annotation></semantics></math>.</p>
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> Sensor Fusion – Predict Step</h2>
+<p>The multi-dimensional <strong>Prediction </strong>step is thus</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>B</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x_{k|k - 1} = Fx_{k - 1|k - 1} + Bu_{k}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mi>F</mi><mi>P</mi><msup><mi>F</mi><mi>T</mi></msup><mo>+</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P\  = FPF^{T} + Q</annotation></semantics></math></p>
+
+</section>
+<section id='s47' aria-labelledby='h47'>
+<h2 id='h47'><span class='num'>47.</span> Update</h2>
+
+
+</section>
+<section id='s48' aria-labelledby='h48'>
+<h2 id='h48'><span class='num'>48.</span> Sensor Fusion – Predict Step</h2>
+<p>We’ve successfully predicted our new position, but our uncertainty (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>) has grown.</p>
+<p>Now, our sensor (e.g., LiDAR) provides a new measurement (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math>).</p>
+<p>We have two imperfect guesses for our position: our prediction and our sensor. How do we fuse them? Think of a <strong>Weighted Average</strong>. If you and an expert both guess the weight of a robot, you don&#x27;t just average the two numbers.</p>
+<p>You give more weight to the expert.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mi>s</mi><mi>t</mi><mi>i</mi><mi>m</mi><mi>a</mi><mi>t</mi><mi>e</mi><mo>=</mo><msub><mi>W</mi><mrow><mi>m</mi><mi>o</mi><mi>d</mi><mi>e</mi><mi>l</mi></mrow></msub><mo>⋅</mo><mi>P</mi><mi>r</mi><mi>e</mi><mi>d</mi><mi>i</mi><mi>c</mi><mi>t</mi><mi>i</mi><mi>o</mi><mi>n</mi><mo>+</mo><msub><mi>W</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow></msub><mo>⋅</mo><mi>M</mi><mi>e</mi><mi>a</mi><mi>s</mi><mi>u</mi><mi>r</mi><mi>e</mi><mi>m</mi><mi>e</mi><mi>n</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">Estimate = W_{model} \cdot Prediction + W_{sensor} \cdot Measurement</annotation></semantics></math></p>
+
+</section>
+<section id='s49' aria-labelledby='h49'>
+<h2 id='h49'><span class='num'>49.</span> Sensor Fusion – Predict Step</h2>
+<p>Again, for 1D the equation is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mu_{new} = \mu_{pred} + K\left( z - \mu_{pred} \right)</annotation></semantics></math></p>
+<p>Where we have:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{\sigma_{pred}^{2}}{\sigma_{pred}^{2} + \sigma_{sensor}^{2}}</annotation></semantics></math></p>
+<p>If our sensor is perfect (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\sigma_{sensor}^{2} = 0</annotation></semantics></math>), what does <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> become, and what happens to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><annotation encoding="application/x-tex">\mu_{new}</annotation></semantics></math>?</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow><annotation encoding="application/x-tex">K\  = \ 1</annotation></semantics></math>, and our new estimate exactly equals the sensor measurement!</p>
+
+</section>
+<section id='s50' aria-labelledby='h50'>
+<h2 id='h50'><span class='num'>50.</span> Sensor Fusion – Predict Step</h2>
+<p>In 1D, state and measurement were both just position along a track. In 2D/3D, our state is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>θ</mi><msup><mo stretchy="false" form="postfix">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">x = \lbrack X,Y,\theta\rbrack^{T}</annotation></semantics></math>. But our LiDAR might just measure the <strong>straight-line distance </strong>to a wall.</p>
+<p>What is the problem?</p>
+<p>We cannot subtract a state vector from a distance measurement! They speak different languages!</p>
+<p>We introduce the <strong>Observation Matrix </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>), which translates our internal state into the format of the sensor.</p>
+<p>Expected Measurement = <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><msub><mi>x</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">Hx_{pred}</annotation></semantics></math></p>
+
+</section>
+<section id='s51' aria-labelledby='h51'>
+<h2 id='h51'><span class='num'>51.</span> Sensor Fusion – Predict Step</h2>
+<p>We thus, start by modifying the 1D Kalman Gain into matrices.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{\sigma_{pred}^{2}}{\sigma_{pred}^{2} + \sigma_{sensor}^{2}}</annotation></semantics></math></p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{pred}^{2}</annotation></semantics></math> becomes our covariance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{sensor}^{2}</annotation></semantics></math> becomes our measurement noise <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>.</p>
+<p>But we must map <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> into sensor space using <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>. Just like <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mi>P</mi><msup><mi>F</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">FPF^{T}</annotation></semantics></math> for motion, we use <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">HPH^{T}</annotation></semantics></math> for sensors!</p>
+
+</section>
+<section id='s52' aria-labelledby='h52'>
+<h2 id='h52'><span class='num'>52.</span> Sensor Fusion – Predict Step</h2>
+<p>We thus, start by modifying the 1D Kalman Gain into matrices.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{\sigma_{pred}^{2}}{\sigma_{pred}^{2} + \sigma_{sensor}^{2}}</annotation></semantics></math></p>
+<p>The numerator is the prediction covariance mapped to the sensor. The denominator is the total system noise.</p>
+<p>Because we can&#x27;t divide matrices, we multiply by the inverse:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K = PH^{T}\left( HPH^{T} + R \right)^{- 1}</annotation></semantics></math></p>
+
+</section>
+<section id='s53' aria-labelledby='h53'>
+<h2 id='h53'><span class='num'>53.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/cafa139bf165.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s54' aria-labelledby='h54'>
+<h2 id='h54'><span class='num'>54.</span> Sensor Fusion – Predict Step</h2>
+<p>Now we apply our matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> to update the multi-dimensional state.</p>
+<p>The 1D equation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><msub><mi>μ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\mu_{new} = \mu_{pred} + K\left( z - \mu_{pred} \right)</annotation></semantics></math> becomes:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>z</mi><mi>k</mi></msub><mo>−</mo><mi>H</mi><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k} = x_{k|k - 1} + K\left( z_{k} - Hx_{k|k - 1} \right)</annotation></semantics></math></p>
+<p>Finally, we update the uncertainty ellipse. We pull the information from the sensor out of our uncertainty:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_{kk} = (I - KH)P_{kk - 1}</annotation></semantics></math></p>
+<p>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math> is the Identity Matrix, the matrix equivalent of the number 1).</p>
+<p>And we are done!</p>
+
+</section>
+<section id='s55' aria-labelledby='h55'>
+<h2 id='h55'><span class='num'>55.</span> Sensor Fusion – Predict Step</h2>
+<figure><img src='L20-21_files/d45308a786a5.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s56' aria-labelledby='h56'>
+<h2 id='h56'><span class='num'>56.</span> Sensor Fusion – Predict Step</h2>
+<p>But what does <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(I - KH)</annotation></semantics></math> mean physically?</p>
+<p>Think of the Identity Matrix (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math>) as the number 1, representing 100% of our previous uncertainty (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">P_{k|k - 1}</annotation></semantics></math>).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> maps our state to the sensor.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> is how much we trust the sensor.</p>
+<p>Therefore, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mi>H</mi></mrow><annotation encoding="application/x-tex">KH</annotation></semantics></math> is the <strong>percentage of uncertainty the sensor measurement removes</strong>.</p>
+<p>If the sensor is completely useless (pure noise, K=0), what does the equation become?</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>=</mo><msub><mi>P</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">P_{new} = (I - 0)P_{old} = P_{old}</annotation></semantics></math>. Our uncertainty doesn&#x27;t shrink at all!</p>
+
+</section>
+<section id='s57' aria-labelledby='h57'>
+<h2 id='h57'><span class='num'>57.</span> Sensor Fusion – Predict Step</h2>
+<p><strong>Prediction:</strong></p>
+<p>State Prediction (Where do we think we are?):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>B</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x_{k|k - 1} = Fx_{k - 1|k - 1} + Bu_{k}</annotation></semantics></math></p>
+<p>Covariance Prediction (How uncertain are we getting?):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>P</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>F</mi><mi>T</mi></msup><mo>+</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P_{k|k - 1} = FP_{k - 1|k - 1}F^{T} + Q</annotation></semantics></math></p>
+<p><strong>Update</strong>:</p>
+<p>The Kalman Gain (Who do we trust more?):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K = P_{k|k - 1}H^{T}\left( HP_{k|k - 1}H^{T} + R \right)^{- 1}</annotation></semantics></math></p>
+<p>State Update (Correcting our position):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>z</mi><mi>k</mi></msub><mo>−</mo><mi>H</mi><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k} = x_{k|k - 1} + K\left( z_{k} - Hx_{k|k - 1} \right)</annotation></semantics></math></p>
+<p>Covariance Update (Shrinking our uncertainty):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_{k|k} = (I - KH)P_{k|k - 1}</annotation></semantics></math></p>
+
+</section>
+<section id='s58' aria-labelledby='h58'>
+<h2 id='h58'><span class='num'>58.</span> Sensor Fusion – Predict Step</h2>
+<table><thead><tr><th scope='col'>Concept</th><th scope='col'>1D (Scalar)</th><th scope='col'>N-dimensional (Matrix)</th><th scope='col'>Description</th></tr></thead><tbody><tr><td><strong>State</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>μ</mi><annotation encoding="application/x-tex">\mu</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math></td><td>The robot&#x27;s current estimated condition (Position, Velocity, etc.)</td></tr><tr><td><strong>Uncertainty</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>σ</mi><mn>2</mn></msup><annotation encoding="application/x-tex">\sigma^{2}</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math></td><td>How unsure we are about the state (Variance / Covariance Matrix)</td></tr><tr><td><strong>Physics Model</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math></td><td>How the state naturally evolves over time (State Transition / Jacobian)</td></tr><tr><td><strong>Process Noise</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>m</mi><mi>o</mi><mi>v</mi><mi>e</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{move}^{2}</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math></td><td>Uncertainty added simply by moving / imperfections in the physics model</td></tr><tr><td><strong>Sensor Model</strong></td><td>1 (direct)</td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math></td><td>Translates internal state space into the format the sensor outputs</td></tr><tr><td><strong>Sensor Noise</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup><annotation encoding="application/x-tex">\sigma_{sensor}^{2}</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math></td><td>The inherent electrical/mechanical noise of the specific sensor</td></tr><tr><td><strong>Measurement</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math></td><td>The raw data point provided by the sensor (LiDAR, Encoders, etc.)</td></tr><tr><td><strong>Kalman Gain</strong></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mfrac><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mrow><msubsup><mi>σ</mi><mrow><mi>p</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>σ</mi><mrow><mi>s</mi><mi>e</mi><mi>n</mi><mi>s</mi><mi>o</mi><mi>r</mi></mrow><mn>2</mn></msubsup></mrow></mfrac></mrow><annotation encoding="application/x-tex">K = \frac{\sigma_{pred}^{2}}{\sigma_{pred}^{2} + \sigma_{sensor}^{2}}</annotation></semantics></math></td><td><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K = PH^{T}\left( HPH^{T} + R \right)^{- 1}</annotation></semantics></math></td><td>The dynamic weight that decides whether to trust the model or the sensor</td></tr></tbody></table>
+
+</section>
+<section id='s59' aria-labelledby='h59'>
+<h2 id='h59'><span class='num'>59.</span> Optional Derivations</h2>
+
+
+</section>
+<section id='s60' aria-labelledby='h60'>
+<h2 id='h60'><span class='num'>60.</span> Sensor Fusion – Predict Step</h2>
+<p>To derive the multi-dimensional math, we must define our ultimate goal: <strong>Minimizing Uncertainty</strong>.</p>
+<p>Mathematically, total uncertainty is the <strong>sum of the variances </strong>of our state variables (the <strong>diagonal elements of the covariance matrix </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>).</p>
+<p>The sum of the diagonal elements of a matrix is called the <strong>Trace</strong>, written <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>P</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">Tr(P)</annotation></semantics></math>.</p>
+<p>Thus the objective is to find the Gain matrix, that forces the derive to achieve:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>T</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>∂</mi><mi>K</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial Tr\left( P_{k|k} \right)}{\partial K} = 0</annotation></semantics></math></p>
+
+</section>
+<section id='s61' aria-labelledby='h61'>
+<h2 id='h61'><span class='num'>61.</span> Sensor Fusion – Predict Step</h2>
+<p>Let&#x27;s define the actual error of our updated state: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>=</mo><msub><mi>x</mi><mrow><mi>t</mi><mi>r</mi><mi>u</mi><mi>e</mi></mrow></msub><mo>−</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub></mrow><annotation encoding="application/x-tex">e = x_{true} - x_{k|k}</annotation></semantics></math>.</p>
+<p>We substitute our update equation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>z</mi><mo>−</mo><mi>H</mi><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k} = x_{k|k - 1} + K\left( z - Hx_{k|k - 1} \right)</annotation></semantics></math> into the error definition.</p>
+<p>Covariance is defined as the expected value of the error squared: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mi>E</mi><mrow><mo stretchy="true" form="prefix">[</mo><mi>e</mi><msup><mi>e</mi><mi>T</mi></msup><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">P_{k|k} = E\left\lbrack ee^{T} \right\rbrack</annotation></semantics></math>.</p>
+<p>Expanding this massive expected value yields the universally true <strong>Joseph Form of the covariance update</strong>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>+</mo><mi>K</mi><mi>R</mi><msup><mi>K</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">P_{k|k} = (I - KH)P_{k|k - 1}(I - KH)^{T} + KRK^{T}</annotation></semantics></math></p>
+<p>Why do we see both <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> (model noise) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> (sensor noise) in this equation?</p>
+<p>Because our new estimate relies on both, so both sources contribute to the final error</p>
+
+</section>
+<section id='s62' aria-labelledby='h62'>
+<h2 id='h62'><span class='num'>62.</span> Sensor Fusion – Predict Step</h2>
+<p>We have our covariance equation. Now, we use matrix calculus to minimize its Trace:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>T</mi><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mi>∂</mi><mi>K</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial Tr\left( P_{k|k} \right)}{\partial K} = 0</annotation></semantics></math></p>
+<p>Taking the derivative of the Joseph Form with respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> yields:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mn>2</mn><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mn>2</mn><mi>K</mi><mi>R</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">- 2(I - KH)P_{k|k - 1}H^{T} + 2KR = 0</annotation></semantics></math></p>
+<p>Divide by 2, expand, and isolate the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> terms:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><mo>=</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{k|k - 1}H^{T} = K\left( HP_{k|k - 1}H^{T} + R \right)</annotation></semantics></math>There it is!</p>
+<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">P_{kk - 1}H^{T}</annotation></semantics></math> term emerges naturally from taking the derivative of the covariance. It represents the <strong>cross-covariance between our state error and our measurement error</strong>.</p>
+
+</section>
+<section id='s63' aria-labelledby='h63'>
+<h2 id='h63'><span class='num'>63.</span> Sensor Fusion – Predict Step</h2>
+<p>Now we have our optimal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>. But calculating the massive Joseph Form</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><msup><mo stretchy="false" form="postfix">)</mo><mi>T</mi></msup><mo>+</mo><mi>K</mi><mi>R</mi><msup><mi>K</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">P_{k|k} = (I - KH)P_{k|k - 1}(I - KH)^{T} + KRK^{T}</annotation></semantics></math></p>
+<p>takes too much processing power on a microcontroller. Let&#x27;s substitute our newly derived optimal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math> back into the Joseph Form.</p>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>P</mi><msup><mi>H</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">K\left( HPH^{T} + R \right) = PH^{T}</annotation></semantics></math>, massive sections of the Joseph equation perfectly cancel each other out.</p>
+<p>The equation collapses into the short form:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_{k|k} = (I - KH)P_{k|k - 1}</annotation></semantics></math></p>
+
+</section>
+<section id='s64' aria-labelledby='h64'>
+<h2 id='h64'><span class='num'>64.</span> Kalman Filter Example</h2>
+
+
+</section>
+<section id='s65' aria-labelledby='h65'>
+<h2 id='h65'><span class='num'>65.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>The Kalman Filter works as a 2 steps process, what are they called?
+</li>
+<li>What are the conditions on the sensor / process noise?
+</li>
+<li>What are the conditions imposed on the state transition of the system?
+</li></ul>
+
+</section>
+<section id='s66' aria-labelledby='h66'>
+<h2 id='h66'><span class='num'>66.</span> Kalman Filter Example</h2>
+<p>Up to this point, we have looked at a lot of theoretical matrices: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>H</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>P</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Q</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>R</mi></mrow><annotation encoding="application/x-tex">F,\ H,\ P,\ Q,\ R</annotation></semantics></math></p>
+<p>But that is always difficult to understand. We will build a complete, multi-dimensional Kalman Filter from scratch for a simple robotic system!</p>
+<p>Let’s go back to our previous autonomous train example from before!</p>
+
+</section>
+<section id='s67' aria-labelledby='h67'>
+<h2 id='h67'><span class='num'>67.</span> Kalman Filter Example</h2>
+<p>Imagine a simple robot constrained to a 1D track (like a train). It can move forward and backward, but it cannot steer.</p>
+<p>We want to track both its <strong>Position</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>) and its <strong>Velocity</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>).</p>
+<p>What would our state be?</p>
+<p>Our State Vector (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>) is now a 2x1 column matrix:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>p</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>v</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">x = \begin{bmatrix}
+p \\
+v
+\end{bmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s68' aria-labelledby='h68'>
+<h2 id='h68'><span class='num'>68.</span> Kalman Filter Example</h2>
+<p>To predict the future state, we need basic kinematic equations.</p>
+<p>If our time step is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\Delta t</annotation></semantics></math>, the new position is the old position plus velocity times time:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>p</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><msub><mi>v</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">p_{new} = p_{old} + v_{old}\Delta t</annotation></semantics></math></p>
+<p>Assuming a constant velocity model (for simplicity), the new velocity is just the old velocity:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>v</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">v_{new} = v_{old}</annotation></semantics></math></p>
+
+</section>
+<section id='s69' aria-labelledby='h69'>
+<h2 id='h69'><span class='num'>69.</span> Kalman Filter Example</h2>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>p</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><msub><mi>v</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">p_{new} = p_{old} + v_{old}\Delta t</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>v</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>v</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">v_{new} = v_{old}</annotation></semantics></math></p>
+<p>We format this into our State Transition Matrix (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>p</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>v</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi mathvariant="normal">Δ</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>p</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>v</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+p_{new} \\
+v_{new}
+\end{bmatrix} = \begin{bmatrix}
+1 &amp; \Delta t \\
+0 &amp; 1
+\end{bmatrix}\begin{bmatrix}
+p_{old} \\
+v_{old}
+\end{bmatrix}</annotation></semantics></math></p>
+<p>So now we all the info to place into the <strong>Predict</strong> step! (Simple right?)</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>B</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><annotation encoding="application/x-tex">x_{k|k - 1} = Fx_{k - 1|k - 1} + Bu_{k}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>F</mi><msub><mi>P</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>F</mi><mi>T</mi></msup><mo>+</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P_{k|k - 1} = FP_{k - 1|k - 1}F^{T} + Q</annotation></semantics></math></p>
+
+</section>
+<section id='s70' aria-labelledby='h70'>
+<h2 id='h70'><span class='num'>70.</span> Kalman Filter Example</h2>
+<p>Our train is equipped with a noisy GPS unit.</p>
+<p>GPS directly measures <strong>Position</strong>, but it cannot directly measure <strong>Velocity</strong>.</p>
+<p>We need an <strong>Observation Matrix</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>) that extracts only the position from our state vector to compare it with the GPS reading.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>z</mi><mrow><mi>e</mi><mi>x</mi><mi>p</mi><mi>e</mi><mi>c</mi><mi>t</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><mi>H</mi><mi>x</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>p</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>v</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">z_{expected} = Hx = \begin{bmatrix}
+1 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+p \\
+v
+\end{bmatrix} = p</annotation></semantics></math></p>
+<p>By making <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">[</mo><mn>1</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">H\  = \ \lbrack 1,\ 0\rbrack</annotation></semantics></math>, we multiply <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1</mn><mspace width="0.222em"></mspace><mo>⋅</mo><mi>p</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>0</mn><mspace width="0.222em"></mspace><mo>⋅</mo><mi>v</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>p</mi></mrow><annotation encoding="application/x-tex">1\  \cdot p\  + \ 0\  \cdot v\  = \ p</annotation></semantics></math>.</p>
+<p>We have successfully translated our 2D state into a 1D measurement!</p>
+
+</section>
+<section id='s71' aria-labelledby='h71'>
+<h2 id='h71'><span class='num'>71.</span> Kalman Filter Example</h2>
+<p><strong>Measurement Noise </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>): The GPS datasheet says it has an accuracy of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">\pm 5</annotation></semantics></math> meters.</p>
+<p>What dimension is R?</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> is a 1x1 matrix (a scalar) representing the variance of the <strong>sensor</strong>, which in this case is the GPS returning position only</p>
+<p>Given that the standard deviation of the GPS is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mn>5</mn></mrow><annotation encoding="application/x-tex">\pm 5</annotation></semantics></math>, what is the variance?</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mn>25</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">R = \lbrack 25\rbrack</annotation></semantics></math></p>
+
+</section>
+<section id='s72' aria-labelledby='h72'>
+<h2 id='h72'><span class='num'>72.</span> Kalman Filter Example</h2>
+<p><strong>Process Noise </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>): We assumed constant velocity, but wind gusts or voltage drops might slightly alter the speed.</p>
+<p>The process noise is based on the state, as such what dimension is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>?</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math> is a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mspace width="0.222em"></mspace><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\  \times 2</annotation></semantics></math> matrix injecting uncertainty into both position and velocity during the predict step!</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Q</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mi>p</mi><mn>2</mn></msubsup></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msubsup><mi>σ</mi><mi>v</mi><mn>2</mn></msubsup></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">Q = \begin{bmatrix}
+\sigma_{p}^{2} &amp; 0 \\
+0 &amp; \sigma_{v}^{2}
+\end{bmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s73' aria-labelledby='h73'>
+<h2 id='h73'><span class='num'>73.</span> Kalman Filter Example</h2>
+<p>So now we all the info to place into the <strong>Update</strong> step! (Simple right?)</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>H</mi><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msup><mi>H</mi><mi>T</mi></msup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K = P_{k|k - 1}H^{T}\left( HP_{k|k - 1}H^{T} + R \right)^{- 1}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>z</mi><mi>k</mi></msub><mo>−</mo><mi>H</mi><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k} = x_{k|k - 1} + K\left( z_{k} - Hx_{k|k - 1} \right)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>I</mi><mo>−</mo><mi>K</mi><mi>H</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_{k|k} = (I - KH)P_{k|k - 1}</annotation></semantics></math></p>
+<p>And we are all done! (simpler than expected right?)</p>
+<p>Our train example works perfectly with the standard Kalman Filter equations because the math is strictly <strong>linear</strong> (simple multiplication and addition).</p>
+<p>Matrix (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math>) is a linear transformation.</p>
+
+</section>
+<section id='s74' aria-labelledby='h74'>
+<h2 id='h74'><span class='num'>74.</span> Extended (Nonlinear) Kalman Filter</h2>
+
+
+</section>
+<section id='s75' aria-labelledby='h75'>
+<h2 id='h75'><span class='num'>75.</span> Extended Kalman Filter</h2>
+<p>We use differential drive platforms operating in a 2D plane in lab.</p>
+<p>The state vector is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>θ</mi><msup><mo stretchy="false" form="postfix">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">x = \lbrack X,Y,\theta\rbrack^{T}</annotation></semantics></math>.</p>
+<p>The physics equations for the next time step (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">dt</annotation></semantics></math>) involve steering:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>X</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">X_{new} = X_{old} + v\cos(\theta)dt</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>Y</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">Y_{new} = Y_{old} + v\sin(\theta)dt</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>θ</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>ω</mi><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\theta_{new} = \theta_{old} + \omega dt</annotation></semantics></math></p>
+<p>What is the problem?</p>
+<p>You cannot create a constant linear matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> that multiplies by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math> to produce <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\cos(\theta)</annotation></semantics></math>.</p>
+
+</section>
+<section id='s76' aria-labelledby='h76'>
+<h2 id='h76'><span class='num'>76.</span> Extended Kalman Filter</h2>
+<p>The standard Kalman Filter guarantees an optimal estimate <strong>if and only if </strong>the system remains Gaussian.</p>
+<p>If you pass a Gaussian distribution through a linear function (like <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mi>x</mi></mrow><annotation encoding="application/x-tex">2x</annotation></semantics></math>), it stays Gaussian!</p>
+<p>If you pass a Gaussian distribution through a highly non-linear function (like sine or cosine), it becomes warped, skewed, and destroys the assumptions of the filter!</p>
+
+</section>
+<section id='s77' aria-labelledby='h77'>
+<h2 id='h77'><span class='num'>77.</span> Extended Kalman Filter</h2>
+<figure><img src='L20-21_files/a2fab4ed8a5f.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s78' aria-labelledby='h78'>
+<h2 id='h78'><span class='num'>78.</span> Extended Kalman Filter</h2>
+<figure><img src='L20-21_files/b2787dbee3b8.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s79' aria-labelledby='h79'>
+<h2 id='h79'><span class='num'>79.</span> Extended Kalman Filter</h2>
+<p>To solve this, we introduce the <strong>Extended Kalman Filter </strong>(EKF)</p>
+<p>The EKF uses the <strong>Taylor Series </strong>expansion to approximate the non-linear curves as flat lines right at our current operating point.</p>
+<p>By zooming in incredibly close to the robot&#x27;s current state, the curve looks like a straight line.</p>
+<p>We use that temporary straight line (tangent) to update our uncertainty.</p>
+<p>What calculus tool allows us to find these tangents?</p>
+<p>Derivates (in this case <strong>Partial Derivatives</strong>)</p>
+
+</section>
+<section id='s80' aria-labelledby='h80'>
+<h2 id='h80'><span class='num'>80.</span> Extended Kalman Filter</h2>
+<figure><img src='L20-21_files/491b1dca5058.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s81' aria-labelledby='h81'>
+<h2 id='h81'><span class='num'>81.</span> Extended Kalman Filter</h2>
+<p>To find that linear approximation, we take the derivative.</p>
+<p>Because our state has multiple variables (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>θ</mi></mrow><annotation encoding="application/x-tex">X,\ Y,\ \theta</annotation></semantics></math>), we must take the <strong>Partial Derivative </strong>of every output equation with respect to every input state variable.</p>
+<p>We arrange these partial derivatives into a grid called the <strong>Jacobian Matrix</strong>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mspace width="0.167em"></mspace><mo>=</mo><mspace width="0.167em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><mn>3</mn></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>3</mn></msub></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>3</mn></msub></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">F\, = \,\begin{bmatrix}
+\frac{\partial f_{1}}{\partial X} &amp; \frac{\partial f_{1}}{\partial Y} &amp; \frac{\partial f_{1}}{\partial\theta} \\
+\frac{\partial f_{2}}{\partial X} &amp; \frac{\partial f_{2}}{\partial Y} &amp; \frac{\partial f_{2}}{\partial\theta} \\
+\frac{\partial 3}{\partial X} &amp; \frac{\partial f_{3}}{\partial Y} &amp; \frac{\partial f_{3}}{\partial\theta}
+\end{bmatrix}</annotation></semantics></math></p>
+<p>In the EKF, the dynamic Jacobian matrix replaces the static linear <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> matrix.</p>
+
+</section>
+<section id='s82' aria-labelledby='h82'>
+<h2 id='h82'><span class='num'>82.</span> Extended Kalman Filter</h2>
+<p>Let&#x27;s calculate the partial derivatives for our <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> position equation: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>1</mn></msub><mo>=</mo><mi>X</mi><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">f_{1} = X + v\cos(\theta)dt</annotation></semantics></math>.</p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial f_{1}}{\partial X} = 1</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial f_{1}}{\partial Y} = 0</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>:</p>
+<p>We take the derivative of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">v\cos(\theta)dt</annotation></semantics></math>. The derivative of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos{( \cdot )}</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">- \sin{( \cdot )}</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>1</mn></msub></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mi>v</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\frac{\partial f_{1}}{\partial\theta} = - v\sin(\theta)dt</annotation></semantics></math></p>
+
+</section>
+<section id='s83' aria-labelledby='h83'>
+<h2 id='h83'><span class='num'>83.</span> Extended Kalman Filter</h2>
+<p>Let&#x27;s calculate the partial derivatives for our <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> position equation: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mn>2</mn></msub><mo>=</mo><mi>Y</mi><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">f_{2} = Y + v\sin(\theta)dt</annotation></semantics></math>.</p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial f_{2}}{\partial X} = 0</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">\frac{\partial f_{2}}{\partial Y} = 1</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>:</p>
+<p>We derive <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">v\sin(\theta)dt</annotation></semantics></math>. The derivative of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sin{( \cdot )}</annotation></semantics></math> is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\cos{\ ( \cdot )}</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><msub><mi>f</mi><mn>2</mn></msub></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mi>v</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\frac{\partial f_{2}}{\partial\theta} = v\cos(\theta)dt</annotation></semantics></math></p>
+
+</section>
+<section id='s84' aria-labelledby='h84'>
+<h2 id='h84'><span class='num'>84.</span> Extended Kalman Filter</h2>
+<p>Putting everything together into the State Transition Matrix:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>k</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><msub><mi>v</mi><mi>k</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>v</mi><mi>k</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>d</mi><mi>t</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">F_{k} = \begin{bmatrix}
+1 &amp; 0 &amp; - v_{k}\sin\left( \theta_{k} \right)dt \\
+0 &amp; 1 &amp; v_{k}\cos\left( \theta_{k} \right)dt \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>Notice the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math> subscript. This matrix is no longer static.</p>
+<p>You must <strong>re-calculate</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>k</mi></msub><annotation encoding="application/x-tex">F_{k}</annotation></semantics></math> on your microcontroller every single loop based on your <strong>current velocity and heading</strong>!</p>
+
+</section>
+<section id='s85' aria-labelledby='h85'>
+<h2 id='h85'><span class='num'>85.</span> Predict</h2>
+
+
+</section>
+<section id='s86' aria-labelledby='h86'>
+<h2 id='h86'><span class='num'>86.</span> Extended Kalman Filter</h2>
+<p>The structure of the Kalman filter remains exactly the same, we just swap in our non-linear functions and our newly derived Jacobian.</p>
+<p><strong>State Prediction</strong>: Instead of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> matrix here and just use the raw, non-linear physics equations (let&#x27;s call the function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>g</mi><annotation encoding="application/x-tex">g</annotation></semantics></math>).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>,</mo><msub><mi>u</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k - 1} = g\left( x_{k - 1|k - 1},u_{k} \right)</annotation></semantics></math></p>
+<p>In our case <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g(X,Y,\theta)</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>X</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>X</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">X_{new} = X_{old} + v\cos(\theta)dt</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Y</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>Y</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>v</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">Y_{new} = Y_{old} + v\sin(\theta)dt</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>n</mi><mi>e</mi><mi>w</mi></mrow></msub><mo>=</mo><msub><mi>θ</mi><mrow><mi>o</mi><mi>l</mi><mi>d</mi></mrow></msub><mo>+</mo><mi>ω</mi><mi>d</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\theta_{new} = \theta_{old} + \omega dt</annotation></semantics></math></p>
+
+</section>
+<section id='s87' aria-labelledby='h87'>
+<h2 id='h87'><span class='num'>87.</span> Extended Kalman Filter</h2>
+<p><strong>Covariance Prediction</strong>: We use our calculated Jacobian <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>F</mi><mi>k</mi></msub><annotation encoding="application/x-tex">F_{k}</annotation></semantics></math> to warp the uncertainty ellipse properly.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>F</mi><mi>k</mi></msub><msub><mi>P</mi><mrow><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msubsup><mi>F</mi><mi>k</mi><mi>T</mi></msubsup><mo>+</mo><mi>Q</mi></mrow><annotation encoding="application/x-tex">P_{k|k - 1} = F_{k}P_{k - 1|k - 1}F_{k}^{T} + Q</annotation></semantics></math></p>
+<p>What dimension is Q in our nonlinear case?</p>
+
+</section>
+<section id='s88' aria-labelledby='h88'>
+<h2 id='h88'><span class='num'>88.</span> Extended Kalman Filter</h2>
+<figure><img src='L20-21_files/491b1dca5058.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s89' aria-labelledby='h89'>
+<h2 id='h89'><span class='num'>89.</span> Update</h2>
+
+
+</section>
+<section id='s90' aria-labelledby='h90'>
+<h2 id='h90'><span class='num'>90.</span> Extended Kalman Filter</h2>
+<p>The same logic applies to sensors.</p>
+<p>If a sensor measurement is non-linear (like a radar measuring angle and distance), we use the non-linear measurement function <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math> to predict the measurement, and a sensor Jacobian <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mi>k</mi></msub><annotation encoding="application/x-tex">H_{k}</annotation></semantics></math> to calculate the gain.</p>
+
+</section>
+<section id='s91' aria-labelledby='h91'>
+<h2 id='h91'><span class='num'>91.</span> Extended Kalman Filter</h2>
+<p>Let&#x27;s say our robot is being tracked by a stationary radar tower located at the origin <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,0)</annotation></semantics></math></p>
+<p>The radar doesn&#x27;t measure <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> coordinates. It outputs a measurement vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>z</mi><annotation encoding="application/x-tex">z</annotation></semantics></math> containing two values: distance (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>) and bearing angle (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math>).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>z</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>r</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>ϕ</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">z = \begin{bmatrix}
+r \\
+\phi
+\end{bmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s92' aria-labelledby='h92'>
+<h2 id='h92'><span class='num'>92.</span> Extended Kalman Filter</h2>
+<p>During the Predict Step, we need to guess <strong>what the radar should see </strong>based on our internal belief of where we are (try to guess the radar measurement).</p>
+<p>We use geometry to map our state space into sensor space. This is our non-linear measurement function, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(x)</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msqrt><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">r = \sqrt{X^{2} + Y^{2}}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mrow><mi mathvariant="normal">arctan</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mi>Y</mi><mi>X</mi></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi = \arctan\left( \frac{Y}{X} \right)</annotation></semantics></math></p>
+<p>Just like kinematics, we cannot express this as a linear matrix multiplication. We must use Jacobians to linearize it!</p>
+
+</section>
+<section id='s93' aria-labelledby='h93'>
+<h2 id='h93'><span class='num'>93.</span> Extended Kalman Filter</h2>
+<p>We must take the partial derivatives of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ϕ</mi><annotation encoding="application/x-tex">\phi</annotation></semantics></math> with respect to our state variables (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>θ</mi></mrow><annotation encoding="application/x-tex">X,\ Y,\ \theta</annotation></semantics></math>).</p>
+<p>Let&#x27;s look at the distance equation: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo>=</mo><msqrt><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">r = \sqrt{X^{2} + Y^{2}}</annotation></semantics></math></p>
+<p>Using the chain rule:</p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>r</mi></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac><mo>=</mo><mfrac><mi>X</mi><msqrt><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></msqrt></mfrac><mo>=</mo><mfrac><mi>X</mi><mi>r</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial r}{\partial X} = \frac{X}{\sqrt{X^{2} + Y^{2}}} = \frac{X}{r}</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Y</mi><mo>:</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>∂</mi><mi>r</mi></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac><mo>=</mo><mfrac><mi>Y</mi><msqrt><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></msqrt></mfrac><mo>=</mo><mfrac><mi>Y</mi><mi>r</mi></mfrac></mrow><annotation encoding="application/x-tex">Y:\ \frac{\partial r}{\partial Y} = \frac{Y}{\sqrt{X^{2} + Y^{2}}} = \frac{Y}{r}</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>:</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>∂</mi><mi>r</mi></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta:\ \frac{\partial r}{\partial\theta} = 0</annotation></semantics></math></p>
+
+</section>
+<section id='s94' aria-labelledby='h94'>
+<h2 id='h94'><span class='num'>94.</span> Extended Kalman Filter</h2>
+<p>Now the bearing equation:  <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ϕ</mi><mo>=</mo><mrow><mi mathvariant="normal">arctan</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>Y</mi><mtext mathvariant="normal">/</mtext><mi>X</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\phi = \arctan\left( Y\text{/}X \right)</annotation></semantics></math>.</p>
+<p>The derivative of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mi mathvariant="normal">arctan</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>u</mi><mo stretchy="false" form="postfix">)</mo><mi>i</mi><mi>s</mi><mfrac><mn>1</mn><mrow><mn>1</mn><mo>+</mo><msup><mi>u</mi><mn>2</mn></msup></mrow></mfrac><mo>⋅</mo><msup><mi>u</mi><mo>′</mo></msup></mrow><annotation encoding="application/x-tex">\arctan(u)is\frac{1}{1 + u^{2}} \cdot u&#39;</annotation></semantics></math>.</p>
+<p>After some algebra:</p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>ϕ</mi></mrow><mrow><mi>∂</mi><mi>X</mi></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mi>Y</mi><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mi>−</mi><mfrac><mi>Y</mi><msup><mi>r</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial\phi}{\partial X} = - \frac{Y}{X^{2} + Y^{2}} = - \frac{Y}{r^{2}}</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>ϕ</mi></mrow><mrow><mi>∂</mi><mi>Y</mi></mrow></mfrac><mo>=</mo><mfrac><mi>X</mi><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></mfrac><mo>=</mo><mfrac><mi>X</mi><msup><mi>r</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">\frac{\partial\phi}{\partial Y} = \frac{X}{X^{2} + Y^{2}} = \frac{X}{r^{2}}</annotation></semantics></math></p>
+<p>With respect to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>∂</mi><mi>ϕ</mi></mrow><mrow><mi>∂</mi><mi>θ</mi></mrow></mfrac><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\frac{\partial\phi}{\partial\theta} = 0</annotation></semantics></math></p>
+
+</section>
+<section id='s95' aria-labelledby='h95'>
+<h2 id='h95'><span class='num'>95.</span> Extended Kalman Filter</h2>
+<p>We assemble our partial derivatives into a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mspace width="0.222em"></mspace><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">2\  \times 3</annotation></semantics></math> matrix (2 measurement outputs, 3 state variables).</p>
+<p>This is our dynamic <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mi>k</mi></msub><annotation encoding="application/x-tex">H_{k}</annotation></semantics></math> matrix for the current time step:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>H</mi><mi>k</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mfrac><mi>X</mi><mi>r</mi></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mi>Y</mi><mi>r</mi></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd><mtd columnalign="center" style="text-align: center"></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mfrac><mi>Y</mi><msup><mi>r</mi><mn>2</mn></msup></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mfrac><mi>X</mi><msup><mi>r</mi><mn>2</mn></msup></mfrac></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">H_{k} = \begin{bmatrix}
+\frac{X}{r} &amp; \frac{Y}{r} &amp; 0 \\
+ &amp; &amp; \\
+ - \frac{Y}{r^{2}} &amp; \frac{X}{r^{2}} &amp; 0
+\end{bmatrix}</annotation></semantics></math></p>
+<p>We calculate this exact matrix <strong>every single loop </strong>using our predicted <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> values.</p>
+
+</section>
+<section id='s96' aria-labelledby='h96'>
+<h2 id='h96'><span class='num'>96.</span> Extended Kalman Filter</h2>
+<p>Now that we have our non-linear <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(x)</annotation></semantics></math> and our linear Jacobian <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mi>k</mi></msub><annotation encoding="application/x-tex">H_{k}</annotation></semantics></math>, we execute the EKF Update step:</p>
+<p>1. Calculate Kalman Gain:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>K</mi><mi>k</mi></msub><mo>=</mo><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msubsup><mi>H</mi><mi>k</mi><mi>T</mi></msubsup><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>H</mi><mi>k</mi></msub><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><msubsup><mi>H</mi><mi>k</mi><mi>T</mi></msubsup><mo>+</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msup></mrow><annotation encoding="application/x-tex">K_{k} = P_{kk - 1}H_{k}^{T}\left( H_{k}P_{kk - 1}H_{k}^{T} + R \right)^{- 1}</annotation></semantics></math></p>
+<p>2. Correct the State: (Notice we use <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(x)</annotation></semantics></math> to calculate the residual, not <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>H</mi><mi>k</mi></msub><annotation encoding="application/x-tex">H_{k}</annotation></semantics></math>!)</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi></mrow></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>k</mi><mo stretchy="false" form="prefix">|</mo><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>K</mi><mi>k</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>z</mi><mrow><mi>m</mi><mi>e</mi><mi>a</mi><mi>s</mi><mi>u</mi><mi>r</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>−</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msqrt><mrow><msup><mi>X</mi><mn>2</mn></msup><mo>+</mo><msup><mi>Y</mi><mn>2</mn></msup></mrow></msqrt></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">arctan</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><mi>Y</mi><mtext mathvariant="normal">/</mtext><mi>X</mi><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{k|k} = x_{k|k - 1} + K_{k}\left( z_{measured} - \begin{bmatrix}
+\sqrt{X^{2} + Y^{2}} \\
+\arctan\left( Y\text{/}X \right)
+\end{bmatrix} \right)</annotation></semantics></math></p>
+<p>3. Shrink Covariance:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>I</mi><mo>−</mo><msub><mi>K</mi><mi>k</mi></msub><msub><mi>H</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>P</mi><mrow><mi>k</mi><mi>k</mi><mo>−</mo><mn>1</mn></mrow></msub></mrow><annotation encoding="application/x-tex">P_{kk} = \left( I - K_{k}H_{k} \right)P_{kk - 1}</annotation></semantics></math></p>
+
+</section>
+<section id='s97' aria-labelledby='h97'>
+<h2 id='h97'><span class='num'>97.</span> Extended Kalman Filter</h2>
+<p>And that’s it! That’s the extended Kalman filter!</p>
+<p>There are more complex filters out there such as Particle Filters, Unscented filters, Lie Group Kalman Filters.</p>
+<p>But all they are trying to do is improve the estimate of the non-linearity in the system!</p>
+<p>Everything else is the same, they all have update and predict steps!</p>
+
+</section>
+<section id='s98' aria-labelledby='h98'>
+<h2 id='h98'><span class='num'>98.</span> Extended Kalman Filter</h2>
+<figure><img src='L20-21_files/c952bdd7a0af.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s99' aria-labelledby='h99'>
+<h2 id='h99'><span class='num'>99.</span> Questions?</h2>
+
+
+</section>
+<section id='s100' aria-labelledby='h100'>
+<h2 id='h100'><span class='num'>100.</span> End of Lectures 20–21</h2>
+
+
+</section>
+</main></body></html>

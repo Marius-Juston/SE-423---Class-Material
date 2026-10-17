@@ -1,0 +1,529 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L8-9: SE 423: Introduction to MechatronicsLecture 8-9: FFT and FiltersMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L8-9: SE 423: Introduction to MechatronicsLecture 8-9: FFT and FiltersMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L8-9.pdf">PDF</a> · <a href="L8-9.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (46)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 8-9: FFT and FiltersMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Fourier Transforms &amp; FFTBackground</a></li><li><a href='#s5'>Fourier Transforms</a></li><li><a href='#s6'>FFT</a></li><li><a href='#s7'>Fourier Transforms &amp; FFTCode</a></li><li><a href='#s8'>FFT Code</a></li><li><a href='#s9'>FFT Code</a></li><li><a href='#s10'>FFT Code</a></li><li><a href='#s11'>Direct Memory Access (DMA)</a></li><li><a href='#s12'>DMA</a></li><li><a href='#s13'>DMA</a></li><li><a href='#s14'>FFT Code</a></li><li><a href='#s15'>FFT Code – Ping Pong Buffer</a></li><li><a href='#s16'>Ping Pong Buffer</a></li><li><a href='#s17'>FFT Code – Ping Pong Buffer</a></li><li><a href='#s18'>FFT Code – Ping Pong Buffer</a></li><li><a href='#s19'>Fourier Transforms &amp; FFTCode</a></li><li><a href='#s20'>FFT Code - Setup</a></li><li><a href='#s21'>FFT Code - Setup</a></li><li><a href='#s22'>FFT Code - Setup</a></li><li><a href='#s23'>All that’s really happening is that we use ePWM as a deterministic timer to trigger the ADC, which then feeds into the DMA until the buffer is populated!</a></li><li><a href='#s24'>FFT Code - Main</a></li><li><a href='#s25'>FFT Code - Main</a></li><li><a href='#s26'>FFT Code</a></li><li><a href='#s27'>FIR Filters</a></li><li><a href='#s28'>FIR Filter</a></li><li><a href='#s29'>FIR Filter</a></li><li><a href='#s30'>FIR Filter</a></li><li><a href='#s31'>FIR Filter</a></li><li><a href='#s32'>FIR Filter</a></li><li><a href='#s33'>FIR Filter – Nyquist frequency</a></li><li><a href='#s34'>FIR Filter – Nyquist frequency</a></li><li><a href='#s35'>FIR Filter – Nyquist frequency</a></li><li><a href='#s36'>FIR Filter – Nyquist frequency</a></li><li><a href='#s37'>FIR Filter – Nyquist frequency</a></li><li><a href='#s38'>FIR Code</a></li><li><a href='#s39'>FIR Code</a></li><li><a href='#s40'>FIR Code</a></li><li><a href='#s41'>FIR Code</a></li><li><a href='#s42'>FIR Code</a></li><li><a href='#s43'>FIR Code</a></li><li><a href='#s44'>FIR Code</a></li><li><a href='#s45'>Questions?</a></li><li><a href='#s46'>End of Lectures 8–9</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 8-9: FFT and FiltersMarius Juston</h2>
+<p>Monday, February 16th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 3 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 1 &amp; 2 are due <strong>February 17, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 3 &amp; 4 are due <strong>February 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for homework 2 are due <strong>February 25, </strong><strong>9AM</strong>
+</li></ul>
+<p><strong>LabVIEW:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW2.pdf'>LabVIEW 2</a> are due <strong>February 26, 5PM</strong>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW questions?</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Fourier Transforms &amp; FFTBackground</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Fourier Transforms</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=spUNpyF58BY'>YouTube video: But what is the Fourier Transform?  A visual introduction. (3Blue1Brown)</a></p>
+<p><a href='https://www.youtube.com/watch?v=spUNpyF58BY'>https://www.youtube.com/watch?v=spUNpyF58BY</a></p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> FFT</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=h7apO7q16V0'>YouTube video: The Fast Fourier Transform (FFT): Most Ingenious Algorithm Ever? (Reducible)</a></p>
+<p><a href='https://www.youtube.com/watch?v=h7apO7q16V0'>https://www.youtube.com/watch?v=h7apO7q16V0</a></p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Fourier Transforms &amp; FFTCode</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> FFT Code</h2>
+<p>You just watched a couple of videos all about what a Fourier transform is, and what the FFT is…</p>
+<p>Time to implement it!</p>
+<p>Just joking, smart people have already implemented the algorithms and optimized it to work with this specific hardware to be as efficient as possible.</p>
+<p>This one was implemented to work in C++ and C.</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> FFT Code</h2>
+<p>#define RFFT_STAGES     10</p>
+<p>#define RFFT_SIZE       (1 &lt;&lt; RFFT_STAGES)           // 1024</p>
+<p>#pragma DATA_SECTION(pwrSpec, &quot;FFT_buffer_2&quot;)</p>
+<p>float pwrSpec[(RFFT_SIZE/2)+1];</p>
+<p>float maxpwr = 0;</p>
+<p>int16_t maxpwrindex = 0;</p>
+<p>#pragma DATA_SECTION(test_output, &quot;FFT_buffer_2&quot;)</p>
+<p>float test_output[RFFT_SIZE];</p>
+<p>#pragma DATA_SECTION(fft_input, &quot;FFT_buffer_1&quot;)</p>
+<p>float fft_input[RFFT_SIZE];</p>
+<p>#pragma DATA_SECTION(RFFTF32Coef,&quot;FFT_buffer_2&quot;)</p>
+<p>float RFFTF32Coef[RFFT_SIZE];</p>
+<p>#pragma DATA_SECTION(AdcPingBufRaw, &quot;FFT_buffer_2&quot;)</p>
+<p>uint16_t AdcPingBufRaw[RFFT_SIZE];</p>
+<p>#pragma DATA_SECTION(AdcPongBufRaw, &quot;FFT_buffer_2&quot;)</p>
+<p>uint16_t AdcPongBufRaw[RFFT_SIZE];</p>
+<p>RFFT_F32_STRUCT rfft;</p>
+<p>RFFT_F32_STRUCT_Handle hnd_rfft = &amp;rfft;</p>
+<p>uint16_t pingFFT = 0;</p>
+<p>uint16_t pongFFT = 0;</p>
+<p>uint16_t pingpongFFT = 1;</p>
+<p>uint16_t iPingPong = 0;</p>
+<p>int16_t DMAcount = 0;</p>
+<p>__interrupt void DMA_ISR(void);</p>
+<p>void InitDma(void);</p>
+<p>typedef struct {</p>
+<p>float  *InBuf;        //!&lt; Pointer to the input buffer</p>
+<p>float  *OutBuf;       //!&lt; Pointer to the output buffer</p>
+<p>float  *CosSinBuf;    //!&lt; Pointer to the twiddle factors</p>
+<p>float  *MagBuf;       //!&lt; Pointer to the magnitude buffer</p>
+<p>float  *PhaseBuf;     //!&lt; Pointer to the phase buffer</p>
+<p>uint16_t   FFTSize;   //!&lt; Size of the FFT (number of real data points)</p>
+<p>uint16_t   FFTStages; //!&lt; Number of FFT stages</p>
+<p>} RFFT_F32_STRUCT;</p>
+<p>typedef RFFT_F32_STRUCT* RFFT_F32_STRUCT_Handle;</p>
+<details><summary>Speaker notes</summary><p>In a standard Radix-2 Cooley-Tukey algorithm, the computation is broken down into $\log_2(N)$ stages. Thus, an $N=1024$ point FFT requires exactly 10 stages of butterfly operations. This reduces the computational complexity from $O(N^2)$ for a naive Discrete Fourier Transform (DFT) to $O(N \log_2 N)$, which is mathematically necessary for real-time latency constraints in embedded control systems</p><p>The pragma puts the specific data into different distinct physical RAM blocks. If fft_input and RFFTF32Coef (the twiddle factors) were in the same memory block, the CPU would stall due to bus contention, requiring two clock cycles to fetch the operands. By placing them in separate blocks, the DSP core can fetch both operands in a single clock cycle, effectively halving the execution time of the butterfly loops.</p><p>We only need to store N/2 + 1 points because for the strictly real-valued inputs the spectrum is mirrored at index N-k, because you have the complex conjugate, the magnitudes are the same.</p><p>We have ping pong buffers, for establishing double-buffering, the peripherials write using Direct Memory Access  DMA) the raw ADC data to the buffer, and the CPU does the RFFT on the data in the second buffer. You keep on switching buffers. Allowing zero dropped samples.</p></details>
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> FFT Code</h2>
+<p>EALLOW;  // This is needed to write to EALLOW protected registers</p>
+<p>PieVectTable.DMA_CH1_INT = &amp;DMA_ISR;</p>
+<p>EDIS;    // This is needed to disable write to EALLOW protected registers</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Direct Memory Access (DMA)</h2>
+
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> DMA</h2>
+<p>The direct memory access (DMA) module provides a hardware method of transferring data between peripherals and/or memory without intervention from the CPU, thereby freeing up bandwidth for other system functions.</p>
+<p>Many times, applications spend a significant amount of their bandwidth moving data,whether it is from off-chip memory to on-chip memory, or from a peripheral such as an analog-to-digital converter (ADC) to RAM, or even from one peripheral to another.</p>
+<p>Furthermore, many times this data comes in a format that is not conducive to the optimum processing powers of the CPU.</p>
+<p>The DMA module described in this reference guide can free up CPU bandwidth and rearrange the data into a pattern for more streamlined processing.</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> DMA</h2>
+<p>DMA features include:</p>
+<ul>
+<li>Six channels with independent PIE interrupts
+</li>
+<li>Each DMA channel can be triggered from multiple peripheral trigger sources independently
+</li>
+<li>Word Size: 16-bit or 32-bit (SPI limited to 16-bit)
+</li>
+<li>Throughput: 3 cycles/word without arbitration
+</li></ul>
+<p>The DMA has an 8-bit trigger source selection (“255 options”). The trigger sources range from the ADC, XINT, ePWM, Timer interrupts, SPI and more.</p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> FFT Code</h2>
+<figure><img src='L8-9_files/88108b78b3f6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> FFT Code – Ping Pong Buffer</h2>
+<p>__interrupt void DMA_ISR(void)                    // PIE7.1 @ 0x000DA0  DMA channel 1 interrupt</p>
+<p>{</p>
+<p>PieCtrlRegs.PIEACK.all = PIEACK_GROUP7;         // Must acknowledge the PIE group</p>
+<p>//--- Process the ADC data</p>
+<p>if(iPingPong == 0)  // Ping buffer filling, process Pong buffer</p>
+<p>{</p>
+<p>// Manage the DMA registers</p>
+<p>EALLOW;                                                     // Enable EALLOW protected register access</p>
+<p>DmaRegs.CH1.DST_ADDR_SHADOW = (Uint32)AdcPongBufRaw;        // Adjust DST start address for Pong buffer</p>
+<p>EDIS;                                                       // Disable EALLOW protected register access</p>
+<p>// Don&#x27;t run ping FFT first time around</p>
+<p>if (DMAcount &gt; 0) {</p>
+<p>pingFFT = 1;</p>
+<p>}</p>
+<p>iPingPong = 1;</p>
+<p>}</p>
+<p>else    // Pong buffer filling, process Ping buffer</p>
+<p>{</p>
+<p>// Manage the DMA registers</p>
+<p>EALLOW;                                                     // Enable EALLOW protected register access</p>
+<p>DmaRegs.CH1.DST_ADDR_SHADOW = (Uint32)AdcPingBufRaw;        // Adjust DST start address for Ping buffer</p>
+<p>EDIS;                                                       // Disable EALLOW protected register access</p>
+<p>pongFFT = 1;</p>
+<p>iPingPong = 0;</p>
+<p>}</p>
+<p>DMAcount += 1;</p>
+<p>}</p>
+<details><summary>Speaker notes</summary><p>All shadow registers are copied to active registers.</p></details>
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Ping Pong Buffer</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> FFT Code – Ping Pong Buffer</h2>
+<figure><img src='L8-9_files/208b1399a079.svg' alt='Picture without a description' loading='lazy'></figure>
+<details><summary>Speaker notes</summary><p>All shadow registers are copied to active registers.</p></details>
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> FFT Code – Ping Pong Buffer</h2>
+<figure><img src='L8-9_files/9655ffb21847.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>If this is not animated, I did not have the time to create it.</p>
+<details><summary>Speaker notes</summary><p>All shadow registers are copied to active registers.</p></details>
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Fourier Transforms &amp; FFTCode</h2>
+
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> FFT Code - Setup</h2>
+<p>EALLOW;</p>
+<p>EPwm7Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group</p>
+<p>EPwm7Regs.TBCTL.bit.CTRMODE = 3; // freeze counter</p>
+<p>EPwm7Regs.ETSEL.bit.SOCASEL = 0x2; // Select Event when counter equal to PRD</p>
+<p>EPwm7Regs.ETPS.bit.SOCAPRD = 0x1; // Generate pulse on 1st event</p>
+<p>EPwm7Regs.TBCTR = 0x0; // Clear counter</p>
+<p>EPwm7Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0</p>
+<p>EPwm7Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading</p>
+<p>EPwm7Regs.TBCTL.bit.CLKDIV = 0; // divide by 1 50Mhz Clock</p>
+<p>EPwm7Regs.TBPRD = 5000; // Set Period to 0.1ms sample. Input clock is 50MHz.</p>
+<p>EPwm7Regs.ETSEL.bit.SOCAEN = 1; // Enable SOC on A group</p>
+<p>// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal EPwm7Regs.ETSEL.bit.SOCAEN = 1; //enable SOCA</p>
+<p>EPwm7Regs.TBCTL.bit.CTRMODE = 0x00; //unfreeze, and enter up count mode</p>
+<p>EDIS;</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> FFT Code - Setup</h2>
+<p>EALLOW;</p>
+<p>//write configurations for all ADCs ADCA, ADCB, ADCC, ADCD</p>
+<p>AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</p>
+<p>AdcbRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</p>
+<p>AdccRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</p>
+<p>AdcdRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4</p>
+<p>AdcSetMode(ADC_ADCA, <em>ADC_RESOLUTION_12BIT</em><em>, ADC_SIGNALMODE_SINGLE); </em><em>//read calibration settings</em></p>
+<p>AdcSetMode(ADC_ADCB, <em>ADC_RESOLUTION_12BIT</em><em>, ADC_SIGNALMODE_SINGLE); </em><em>//read calibration settings</em></p>
+<p>AdcSetMode(ADC_ADCC, <em>ADC_RESOLUTION_12BIT</em><em>, ADC_SIGNALMODE_SINGLE); </em><em>//read calibration settings</em></p>
+<p>AdcSetMode(ADC_ADCD, <em>ADC_RESOLUTION_12BIT</em><em>, ADC_SIGNALMODE_SINGLE); </em><em>//read calibration settings</em></p>
+<p>//Set pulse positions to late</p>
+<p>AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;</p>
+<p>AdcbRegs.ADCCTL1.bit.INTPULSEPOS = 1;</p>
+<p>AdccRegs.ADCCTL1.bit.INTPULSEPOS = 1;</p>
+<p>AdcdRegs.ADCCTL1.bit.INTPULSEPOS = 1;   //power up the ADCs</p>
+<p>AdcaRegs.ADCCTL1.bit.ADCPWDNZ = 1;</p>
+<p>AdcbRegs.ADCCTL1.bit.ADCPWDNZ = 1;</p>
+<p>AdccRegs.ADCCTL1.bit.ADCPWDNZ = 1;</p>
+<p>AdcdRegs.ADCCTL1.bit.ADCPWDNZ = 1;      //delay for 1ms to allow ADC time to power up</p>
+<p>DELAY_US(1000);</p>
+<p>//ADCB</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.CHSEL = 4;      //SOC0 will convert Channel you choose Does not have to be B0, ADCIN4</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.ACQPS = 99;     //sample window is acqps + 1 SYSCLK cycles = 500ns</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.TRIGSEL = 0x11; // EPWM7 ADCSOCA or another trigger you choose will trigger SOC0</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1SEL = 0;  //set to last SOC that is converted and it will set INT1 flag ADCB1</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1E = 1;    //enable INT1 flag, originally = 1 (need to set to 1 for non-DMA)</p>
+<p>AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //make sure INT1 flag is cleared</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1CONT = 1; // Interrupt pulses regardless of flag state</p>
+<p>EDIS;</p>
+<p>// Initialize DMA</p>
+<p>InitDma();</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> FFT Code - Setup</h2>
+<p>void InitDma(void)</p>
+<p>{</p>
+<p>EALLOW;</p>
+<p>//--- Overall DMA setup</p>
+<p>DmaRegs.DMACTRL.bit.HARDRESET = 1;          // Reset entire DMA module</p>
+<p>asm(&quot; NOP&quot;);                                // 1 cycle delay for HARDRESET to take effect</p>
+<p>DmaRegs.DEBUGCTRL.bit.FREE = 1;             // 1 = DMA unaffected by emulation halt</p>
+<p>DmaRegs.PRIORITYCTRL1.bit.CH1PRIORITY = 0;  // Not using CH1 Priority mode</p>
+<p>//--- Configure DMA channel 1 to read the ADC results</p>
+<p>DmaRegs.CH1.MODE.all = 0x8901; //good</p>
+<p>// 0x8901 = 1000 1001 0000 0001</p>
+<p>// CHINTE = interrupt enabled</p>
+<p>// CONTINUOUS = re-init after transfer complete</p>
+<p>// PERINTE = peripheral interrupt trigger enabled</p>
+<p>// Set Channel 1</p>
+<p>//--- Select DMA interrupt source                 /******** TRIGGER SOURCE FOR EACH DMA CHANNEL (unlisted numbers are reserved) ********/</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL1.bit.CH1 = 6;    // 0=none       6=ADCBINT1  12=ADCCINT2  18=ADCDINT3  32=XINT4      40=EPWM3SOCA  46=EPWM6SOCA  52=EPWM9SOCA   58=EPWM12SOCA  72=MREVTA    98=SD1FLT4    110=SPIRXDMAA     132=USBA_EPx_TX1</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL1.bit.CH2 = 0;    // 1=ADCAINT1   7=ADCBINT2  13=ADCCINT3  19=ADCDINT4  33=XINT5      41=EPWM3SOCB  47=EPWM6SOCB  53=EPWM9SOCB   59=EPWM12SOCB  73=MXEVTB    99=SD2FLT1    111=SPITXDMAB     133=USBA_EPx_RX2</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL1.bit.CH3 = 0;    // 2=ADCAINT2   8=ADCBINT3  14=ADCCINT4  20=ADCDEVT   36=EPWM1SOCA  42=EPWM4SOCA  48=EPWM7SOCA  54=EPWM10SOCA  68=TINT0       74=MREVTB   100=SD2FLT2    112=SPIRXDMAB     134=USBA_EPx_TX2</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL1.bit.CH4 = 0;    // 3=ADCAINT3   9=ADCBINT4  15=ADCCEVT   29=XINT1     37=EPWM1SOCB  43=EPWM4SOCB  49=EPWM7SOCB  55=EPWM10SOCB  69=TINT1       95=SD1FLT1  101=SD2FLT3    113=SPITXDMAC     135=USBA_EPx_RX3</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL2.bit.CH5 = 0;    // 4=ADCAINT4  10=ADCBEVT   16=ADCDINT1  30=XINT2     38=EPWM2SOCA  44=EPWM5SOCA  50=EPWM8SOCA  56=EPWM11SOCA  70=TINT2       96=SD1FLT2  102=SD2FLT4    114=SPIRXDMAC     136=USBA_EPx_TX3</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSEL2.bit.CH6 = 0;    // 5=ADCAEVT   11=ADCCINT1  17=ADCDINT2  31=XINT3     39=EPWM2SOCB  45=EPWM5SOCB  51=EPWM8SOCB  57=EPWM11SOCB  71=MXEVTA      97=SD1FLT3  109=SPITXDMAA  131=USBA_EPx_RX1</p>
+<p>//--- DMA trigger source lock</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSELLOCK.bit.DMACHSRCSEL1 = 0;              // Write a 1 to lock (cannot be cleared once set)</p>
+<p>DmaClaSrcSelRegs.DMACHSRCSELLOCK.bit.DMACHSRCSEL2 = 0;              // Write a 1 to lock (cannot be cleared once set)</p>
+<p>DmaRegs.CH1.BURST_SIZE.bit.BURSTSIZE = 0;                           // 0 means 1 word per burst</p>
+<p>DmaRegs.CH1.TRANSFER_SIZE = RFFT_SIZE-1;                            // RFFT_SIZE bursts per transfer</p>
+<p>DmaRegs.CH1.SRC_TRANSFER_STEP = 0;                                  // 0 means add 0 to pointer each burst in a transfer</p>
+<p>DmaRegs.CH1.SRC_ADDR_SHADOW = (Uint32)&amp;AdcbResultRegs.ADCRESULT0;   // SRC start address</p>
+<p>DmaRegs.CH1.DST_TRANSFER_STEP = 1;                                  // 1 = add 1 to pointer each burst in a transfer</p>
+<p>DmaRegs.CH1.DST_ADDR_SHADOW = (Uint32)AdcPingBufRaw;                // DST start address Ping buffer</p>
+<p>DmaRegs.CH1.CONTROL.all = 0x0091; //good</p>
+<p>// 0x0091 = 1001 0001</p>
+<p>// ERRCLR = clear SYNCERR bit</p>
+<p>// PERINTCLR = clear periph event</p>
+<p>// RUN = Enable channel</p>
+<p>//--- Finish up</p>
+<p>EDIS;</p>
+<p>PieCtrlRegs.PIEIER7.bit.INTx1 = 1;  // Enable DINTCH1 in PIE group 7</p>
+<p>IER |= M_INT7;                      // Enable INT7 in IER to enable PIE group</p>
+<p>}</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> All that’s really happening is that we use ePWM as a deterministic timer to trigger the ADC, which then feeds into the DMA until the buffer is populated!</h2>
+
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> FFT Code - Main</h2>
+<p>int16_t i = 0;</p>
+<p>float samplePeriod = 0.0001;</p>
+<p>// Clear input buffers:</p>
+<p>for(i=0; i &lt; RFFT_SIZE; i++){</p>
+<p>fft_input[i] = 0.0f;</p>
+<p>}</p>
+<p>hnd_rfft-&gt;FFTSize   = RFFT_SIZE;</p>
+<p>hnd_rfft-&gt;FFTStages = RFFT_STAGES;</p>
+<p>hnd_rfft-&gt;InBuf     = &amp;fft_input[0];    //Input buffer</p>
+<p>hnd_rfft-&gt;OutBuf    = &amp;test_output[0];  //Output buffer</p>
+<p>hnd_rfft-&gt;MagBuf    = &amp;pwrSpec[0];      //Magnitude buffer</p>
+<p>hnd_rfft-&gt;CosSinBuf = &amp;RFFTF32Coef[0];  //Twiddle factor buffer</p>
+<p>RFFT_f32_sincostable(hnd_rfft);         //Calculate twiddle factor</p>
+<p>for (i=0; i &lt; RFFT_SIZE; i++){</p>
+<p>test_output[i] = 0;               //Clean up output buffer</p>
+<p>}</p>
+<p>for (i=0; i &lt;= RFFT_SIZE/2; i++){</p>
+<p>pwrSpec[i] = 0;                    //Clean up magnitude buffer</p>
+<p>}</p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> FFT Code - Main</h2>
+<p>while(1)</p>
+<p>{</p>
+<p>if ( (pingFFT == 1) || (pongFFT == 1) ) {</p>
+<p>if (pingFFT == 1) {</p>
+<p>pingFFT = 0;</p>
+<p>// Raw ADC data</p>
+<p>for(i=0; i&lt;RFFT_SIZE; i++) {</p>
+<p>//--- Read the ADC results:</p>
+<p>fft_input[i] = AdcPingBufRaw[i]*3.0/4095.0;  // ping data</p>
+<p>}</p>
+<p>} else if (pongFFT == 1) {</p>
+<p>pongFFT = 0;</p>
+<p>// Raw ADC data</p>
+<p>for(i=0; i&lt;RFFT_SIZE; i++) {</p>
+<p>//--- Read the ADC result:</p>
+<p>fft_input[i] = AdcPongBufRaw[i]*3.0/4095.0;  // pong data</p>
+<p>}</p>
+<p>}</p>
+<p>RFFT_f32(hnd_rfft);             // Send the fft data to be calculated</p>
+<p>RFFT_f32_mag_TMU0(hnd_rfft);    //Calculate magnitude</p>
+<p>maxpwr = 0;</p>
+<p>maxpwrindex = 0;</p>
+<p>// Ignore the bias ( low frequencies) and find the next max frequency</p>
+<p>for (i=5;i&lt;(RFFT_SIZE/2);i++) {</p>
+<p>if (pwrSpec[i]&gt;maxpwr) {</p>
+<p>maxpwr = pwrSpec[i];</p>
+<p>maxpwrindex = i;</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<details><summary>Speaker notes</summary><p>We don’t care that the FFT will take a bit longer and get interrupted, so we just put it in the main loop</p></details>
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> FFT Code</h2>
+<p>Given that we have the ePWM trigger the SOCA every 0.1ms and the FFT requires 1024 values, it thus takes 102.4ms for the data to fully be loaded into the buffers.</p>
+<p>Thus, to compute the FFT’s full pipeline it takes approximately 10Hz!</p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> FIR Filters</h2>
+
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> FIR Filter</h2>
+<p>Imagine you are building a robot that has an analog distance sensor, you feed it into your ADC and look at the output.</p>
+<p>Instead of a smooth line telling you the wall is exactly 10cm away, the signal looks noisy.</p>
+<p>Intuitively how would you smooth that data (think simple)?</p>
+<p>You can just take the average of the last 5 points and the noise, spikes will attenuate!</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> FIR Filter</h2>
+<p>Mathematically, at our current time step <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>, our filtered output <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">y\lbrack n\rbrack</annotation></semantics></math> based on our noisy input&#x27;s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">x\lbrack n\rbrack</annotation></semantics></math> looks like this:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>2</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>3</mn><mo stretchy="false" form="postfix">]</mo><mo>+</mo><mfrac><mn>1</mn><mn>5</mn></mfrac><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mn>4</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">y\lbrack n\rbrack = \frac{1}{5}x\lbrack n\rbrack + \frac{1}{5}x\lbrack n - 1\rbrack + \frac{1}{5}x\lbrack n - 2\rbrack + \frac{1}{5}x\lbrack n - 3\rbrack + \frac{1}{5}x\lbrack n - 4\rbrack</annotation></semantics></math></p>
+<p>Without realizing it, you have just designed your first Finite Impulse Response (FIR) Filter!</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> FIR Filter</h2>
+<p>Note the structure, we have a set of <strong>weights </strong>(in the previous case, every weight was <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><mn>5</mn></mfrac><annotation encoding="application/x-tex">\frac{1}{5}</annotation></semantics></math> ) multiplied by a history of <strong>states </strong>(our current and past sensor readings).</p>
+<p>We can generalize this idea into the fundamental equation of an FIR filter of order <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo stretchy="false" form="postfix">]</mo><mo>=</mo><munderover><mo>∑</mo><mrow><mi>k</mi><mo>=</mo><mn>0</mn></mrow><mi>M</mi></munderover><mrow><msub><mi>b</mi><mi>k</mi></msub><mi>x</mi><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>−</mo><mi>k</mi><mo stretchy="false" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">y\lbrack n\rbrack = \sum_{k = 0}^{M}{b_{k}x\lbrack n - k\rbrack}</annotation></semantics></math></p>
+<p>Here, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>k</mi></msub><annotation encoding="application/x-tex">b_{k}</annotation></semantics></math> represents our filter coefficients (the “weights”).</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> FIR Filter</h2>
+<p>But why use a FIR filter?</p>
+<p>You might wonder why we care so much about FIR filters specifically.</p>
+<p>The answer is <strong>Linear Phase</strong>.</p>
+<p>When a signal passes through a filter, different frequencies are often delayed by different amounts of time, which <strong>distorts</strong> the shape of the signal.</p>
+<p>FIR filters can be designed to have <em>strict linear phase</em>, meaning every frequency is delayed by the <strong>exact same </strong>amount of time. The signal shape is perfectly preserved.</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> FIR Filter</h2>
+<p>Our 5-point moving average is great, but what if we want to precisely block high-frequency motor noise but keep our low-frequency physical movements?</p>
+<p>We need better coefficients (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>k</mi></msub><annotation encoding="application/x-tex">b_{k}</annotation></semantics></math>)!</p>
+<p>We use FIR filters and thus the <strong>fir1</strong> function to design those in MATLAB.</p>
+<p>The Signal Processing Toolbox scales frequencies on a 0-1 scale relative to the Nyquist frequency. The Nyquist frequency is the absolute highest frequency your system can mathematically perceive, which is exactly half of your sampling rate.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> FIR Filter – Nyquist frequency</h2>
+<p>The Nyquist frequency is the <strong>MINIMUM</strong> frequency you should be sampling your signal at.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>f</mi><mrow><mi>n</mi><mi>y</mi><mi>q</mi><mi>u</mi><mi>i</mi><mi>s</mi><mi>t</mi></mrow></msub><mo>=</mo><mn>2</mn><msub><mrow><mi>×</mi><mi>f</mi></mrow><mrow><mi>h</mi><mi>i</mi><mi>g</mi><mi>h</mi><mi>e</mi><mi>s</mi><mi>t</mi><mspace width="0.222em"></mspace><mi>a</mi><mi>n</mi><mi>a</mi><mi>l</mi><mi>o</mi><mi>g</mi><mspace width="0.222em"></mspace><mi>f</mi><mi>r</mi><mi>e</mi><mi>q</mi><mi>u</mi><mi>e</mi><mi>n</mi><mi>c</mi><mi>y</mi></mrow></msub></mrow><annotation encoding="application/x-tex">f_{nyquist} = 2{\times f}_{highest\ analog\ frequency}</annotation></semantics></math></p>
+<p>Otherwise, you will get into problems of getting an aliased output.</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> FIR Filter – Nyquist frequency</h2>
+<figure><img src='L8-9_files/166e5f831577.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> FIR Filter – Nyquist frequency</h2>
+<figure><img src='L8-9_files/b06ce2f732ef.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> FIR Filter – Nyquist frequency</h2>
+<figure><img src='L8-9_files/2bd36665379e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> FIR Filter – Nyquist frequency</h2>
+<figure><img src='L8-9_files/32f368035ddb.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> FIR Code</h2>
+<p>Let’s say your system is sampling at 1000 Hz; the cutoff frequency for the Nyquist limit is,</p>
+<p>500 Hz,</p>
+<p>If we want to do an FIR frequency design and do a 21st order filter with a low-pass cutoff of 100 Hz, we calculate the normalized frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi>n</mi></msub><annotation encoding="application/x-tex">W_{n}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>n</mi></msub><mo>=</mo><mfrac><mrow><mn>100</mn><mspace width="0.222em"></mspace><mi>H</mi><mi>z</mi></mrow><mrow><mn>500</mn><mspace width="0.222em"></mspace><mi>H</mi><mi>z</mi></mrow></mfrac><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0.2</mn></mrow><annotation encoding="application/x-tex">W_{n} = \frac{100\ Hz}{500\ Hz}\  = \ 0.2</annotation></semantics></math></p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> FIR Code</h2>
+<p>In MATLAB, generating the 22 weights ( a 21st has <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow><annotation encoding="application/x-tex">M\  + \ 1</annotation></semantics></math> coefficients) is incredibly simple!</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> FIR Code</h2>
+<p>% 21st Order Low-Pass Filter</p>
+<p>Order = 21;</p>
+<p>Wn = 0.2;</p>
+<p>b = fir1(Order, Wn, &#x27;low&#x27;);</p>
+<p>freqz(b,1,512)</p>
+<figure><img src='L8-9_files/9b942779ec29.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> FIR Code</h2>
+<p>% 22st Order High-Pass Filter</p>
+<p>Order = 22;</p>
+<p>Wn = 0.3;</p>
+<p>b = fir1(Order, Wn, &#x27;high&#x27;);</p>
+<p>freqz(b,1,512)</p>
+<figure><img src='L8-9_files/7a1db389306e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> FIR Code</h2>
+<p>% 21st Order band-Pass Filter</p>
+<p>Order = 21;</p>
+<p>Wn = [0.35 0.65];</p>
+<p>b = fir1(Order, Wn , ‘bandpass&#x27;);</p>
+<p>freqz(b,1,512)</p>
+<figure><img src='L8-9_files/4a4f9b544006.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> FIR Code</h2>
+<figure><img src='L8-9_files/981208637826.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> FIR Code</h2>
+<p>Now that we used MATLAB to generate the coefficients, we need to implement the actual filter in the code.</p>
+<p>We do not need to save all the history when the robot is running only the running <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>M</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">M\ </annotation></semantics></math> last states!</p>
+<p>For a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math>-order filter, we only ever need the <em>current </em>reading and the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>M</mi><annotation encoding="application/x-tex">M</annotation></semantics></math><em> previous readings</em>!</p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Questions?</h2>
+
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> End of Lectures 8–9</h2>
+
+
+</section>
+</main></body></html>

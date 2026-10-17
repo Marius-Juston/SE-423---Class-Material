@@ -1,0 +1,612 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L10: SE 423: Introduction to MechatronicsLecture 10: Communication ProtocolsMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L10: SE 423: Introduction to MechatronicsLecture 10: Communication ProtocolsMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L10.pdf">PDF</a> · <a href="L10.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (61)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 10: Communication ProtocolsMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Serial Communication</a></li><li><a href='#s5'>Serial Communication</a></li><li><a href='#s6'>Interferences</a></li><li><a href='#s7'>Serial Communication - Interferences</a></li><li><a href='#s8'>Serial Communication – Interferences - Capacitive</a></li><li><a href='#s9'>Serial Communication - Interferences - Capacitive</a></li><li><a href='#s10'>Serial Communication – Interferences - Inductive</a></li><li><a href='#s11'>Serial Communication – Interferences - Inductive</a></li><li><a href='#s12'>Serial Communication – Interferences - Inductive</a></li><li><a href='#s13'>Serial Communication – Interferences - Inductive</a></li><li><a href='#s14'>Serial Communication - Interferences - Capacitive</a></li><li><a href='#s15'>Serial Communication</a></li><li><a href='#s16'>Notation</a></li><li><a href='#s17'>Serial Communication – Multiple Devices</a></li><li><a href='#s18'>Serial Communication – Multiple Devices</a></li><li><a href='#s19'>Serial Communication – Asynchronous Communication</a></li><li><a href='#s20'>Serial Communication – Synchronous Communication</a></li><li><a href='#s21'>Serial Communication – Simplex vs Half-Duplex vs Full-Duplex</a></li><li><a href='#s22'>Protocols</a></li><li><a href='#s23'>Serial Communication</a></li><li><a href='#s24'>Serial Communication</a></li><li><a href='#s25'>SCI / UART</a></li><li><a href='#s26'>Serial Communication – SCI / UART</a></li><li><a href='#s27'>SPI</a></li><li><a href='#s28'>Serial Communication - SPI</a></li><li><a href='#s29'>Serial Communication - SPI</a></li><li><a href='#s30'>Serial Communication - SPI</a></li><li><a href='#s31'>Serial Communication – SPI - SPICLK</a></li><li><a href='#s32'>Serial Communication – SPI – SPISIMO (Master Output)</a></li><li><a href='#s33'>Serial Communication – SPI – SPISOMI (Master Input)</a></li><li><a href='#s34'>Serial Communication – SPI – SPISTE (Slave Transmit Enable)</a></li><li><a href='#s35'>Serial Communication - SPI</a></li><li><a href='#s36'>Serial Communication – SPI – 3-wire mode</a></li><li><a href='#s37'>Serial Communication – SPI</a></li><li><a href='#s38'>Serial Communication – SPI</a></li><li><a href='#s39'>SPI</a></li><li><a href='#s40'>SPI</a></li><li><a href='#s41'>Serial Communication – SPI – Multiple Slaves</a></li><li><a href='#s42'>What happens if you want to communicate with 15 temperature sensors?</a></li><li><a href='#s43'>I2C</a></li><li><a href='#s44'>Serial Communication – I2C</a></li><li><a href='#s45'>Serial Communication – I2C</a></li><li><a href='#s46'>Serial Communication – I2C</a></li><li><a href='#s47'>Serial Communication – I2C</a></li><li><a href='#s48'>Serial Communication – I2C</a></li><li><a href='#s49'>Serial Communication – I2C</a></li><li><a href='#s50'>Serial Communication – I2C</a></li><li><a href='#s51'>Serial Communication – I2C</a></li><li><a href='#s52'>Serial Communication – I2C</a></li><li><a href='#s53'>If you have 2 masters sending Serial Clock (SCL) signals what is a problem?</a></li><li><a href='#s54'>Serial Communication – I2C</a></li><li><a href='#s55'>Serial Communication – I2C</a></li><li><a href='#s56'>Serial Communication – I2C</a></li><li><a href='#s57'>I2C Code</a></li><li><a href='#s58'>Serial Communication – I2C - Init</a></li><li><a href='#s59'>Serial Communication – I2C - Init</a></li><li><a href='#s60'>Questions?</a></li><li><a href='#s61'>End of Lecture 10</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 10: Communication ProtocolsMarius Juston</h2>
+<p>Monday, February 23rd 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 4 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 3 &amp; 4 are due <strong>February 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for homework 2 are due <strong>February 25, </strong><strong>9AM</strong>
+</li></ul>
+<p><strong>LabVIEW:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW2.pdf'>LabVIEW 2</a> are due <strong>February 26, 5PM</strong>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW questions?</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Serial Communication</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Serial Communication</h2>
+<p>Communication between different signal could happen in 2 ways,</p>
+<p>Parallel communication vs Serial communication</p>
+<p>Why not do parallel communication?</p>
+<ul>
+<li>Requires many I/O pins, these are already very limited
+</li>
+<li>With the wires, we can run into electromagnetic interference (EMI) and cross-talk
+</li></ul>
+<p>Serial communication, serializes data into single-bit stream, requires much less circuit complexity. What is the trade-off?</p>
+<p>Time!</p>
+<p>Serializing an N-bit word requires N discrete clock cycles!</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Interferences</h2>
+
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Serial Communication - Interferences</h2>
+<p>There are 4 interference couplings:</p>
+<ul>
+<li><strong>Conductive</strong>: You have physical connection causing interference
+</li>
+<li><strong>Inductive</strong>: source and victim are separated by a short distance (typically less than a wavelength). Can be of two kinds, electrical induction and magnetic induction.
+<li>
+<ul>
+<li>It is common to refer to electrical induction as <strong>capacitive</strong> coupling, and to magnetic induction as <strong>inductive</strong> coupling.
+</li></ul>
+</li>
+<li><strong>Capacitive:</strong> occurs when a varying electrical field exists between two adjacent conductors, inducing a change in voltage on the receiving conductor.
+</li>
+<li><strong>Inductive:</strong> magnetic coupling occurs when a varying magnetic field exists between two parallel conductors, inducing a change in voltage along the receiving conductor.
+</li>
+<li><strong>Radiative:</strong> electromagnetic coupling occurs when source and victim are separated by a large distance. Source and victim act as radio antennas: the source emits or radiates an electromagnetic wave which is picked up or received by the victim.
+</li></ul>
+<p><a href='https://en.wikipedia.org/wiki/Electromagnetic_interference'>https://en.wikipedia.org/wiki/Electromagnetic_interference</a></p>
+<figure><img src='L10_files/7e90440738f8.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Air acts as a conductor as well</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Serial Communication – Interferences - Capacitive</h2>
+<p>Let’s try to explain how we get capacitive interference!</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V_{1}(t)</annotation></semantics></math> be the time-varying voltage on the noisy source wires and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">V_{2}(t)</annotation></semantics></math> be the voltage on the victim wire. Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mn>12</mn></msub><annotation encoding="application/x-tex">C_{12}</annotation></semantics></math> be the mutual stray capacitance between the two wires (could be air), let the victim wire have a resistance of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>.</p>
+<p>The fundamental equation for current through a capacitor is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo>=</mo><mi>C</mi><mfrac><mrow><mi>d</mi><mi>V</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">I = C\frac{dV}{dt}</annotation></semantics></math></p>
+<p>The current injected from wire 1 into wire 2, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><annotation encoding="application/x-tex">I_{noise}</annotation></semantics></math>, is driven from the difference between them across the capacitor.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><msub><mi>C</mi><mn>12</mn></msub><mfrac><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>−</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">I_{noise} = C_{12}\frac{d(V_{1} - V_{2})}{dt}</annotation></semantics></math></p>
+<p>In practice, the noise source voltage is much larger than the victim’s wire (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mn>1</mn></msub><mo>≫</mo><msub><mi>V</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">V_{1} \gg V_{2}</annotation></semantics></math>), which allows the voltage derivative to simplify to:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><msub><mi>C</mi><mn>12</mn></msub><mfrac><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>V</mi><mn>1</mn></msub><mo>−</mo><msub><mi>V</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>≈</mo><msub><mi>C</mi><mn>12</mn></msub><mfrac><mrow><mi>d</mi><msub><mi>V</mi><mn>1</mn></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">I_{noise} = C_{12}\frac{d(V_{1} - V_{2})}{dt} \approx C_{12}\frac{dV_{1}}{dt}</annotation></semantics></math></p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Serial Communication - Interferences - Capacitive</h2>
+<p>By Ohm’s law, the inject noise current flows through the victim’s wire impedence to ground (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>), creating a noise voltage:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>≈</mo><msub><mi>I</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mi>R</mi><mo>≈</mo><mi>R</mi><msub><mi>C</mi><mn>12</mn></msub><mfrac><mrow><mi>d</mi><msub><mi>V</mi><mn>1</mn></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">V_{noise} \approx I_{noise}R \approx RC_{12}\frac{dV_{1}}{dt}</annotation></semantics></math></p>
+<p>The interference voltage <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><annotation encoding="application/x-tex">V_{noise}</annotation></semantics></math> is directly proportion to the rate of change of the source voltage, even if the actual voltage amplitude is moderate!</p>
+<p>What causes more digital signal interference?</p>
+<p>High-frequency vs low-frequency</p>
+<p>Assuming a duty cycle of 50%?</p>
+<p>EPwm7Regs.TBPRD = 5000;  EPwm7Regs.TBPRD = 500;</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Serial Communication – Interferences - Inductive</h2>
+<p>Let’s try to explain how we get inductive interference!</p>
+<p>Coupling between the circuits can occur when the magnetic field lines from one of the circuits pass through the loop formed by the other circuit.</p>
+<p>Magnetic coupling is governed by <strong>Ampere&#x27;s Law </strong>and <strong>Faraday&#x27;s Law </strong>of Induction. A time-varying current in a source wire generates a time-varying magnetic field, which penetrates the loop area formed by the victim wire and its ground return path, inducing an electromotive force (EMF).</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I_{1}(t)</annotation></semantics></math> be the time-varying current for. Assuming it is a long, straight wire, we use Ampere’s Law (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∮</mo><mrow></mrow><mrow></mrow></msubsup><mrow><mi mathvariant="bold-italic">𝑩</mi><mo>⋅</mo><mi mathvariant="double-struck">𝕕</mi><mi mathvariant="bold-italic">𝒍</mi></mrow><mo>=</mo><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mrow><mi>e</mi><mi>n</mi><mi>c</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\oint_{}^{}{{\mathbf{B}} \cdot \mathbb{d}{\mathbf{l}}} = \mu_{0}I_{enc}</annotation></semantics></math>) to find the magnetic field at radial distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover></mrow><annotation encoding="application/x-tex">B(r,t) = \frac{\mu_{0}I_{1}(t)}{2\pi r}\widehat{\phi}</annotation></semantics></math></p>
+<p>(there <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mn>0</mn></msub><annotation encoding="application/x-tex">\mu_{0}</annotation></semantics></math>, is the permeability of free space and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>ϕ</mi><mo accent="true">̂</mo></mover><annotation encoding="application/x-tex">\widehat{\phi}</annotation></semantics></math> represents the flux)</p>
+<figure><img src='L10_files/73305232af29.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Serial Communication – Interferences - Inductive</h2>
+<p>If the victim wire forms a rectangular loop ( not often the case but good enough for showing this specific case), with it’s return path. Having a length <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>l</mi><annotation encoding="application/x-tex">l</annotation></semantics></math> and distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mn>1</mn></msub><annotation encoding="application/x-tex">r_{1}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>r</mi><mn>2</mn></msub><annotation encoding="application/x-tex">r_{2}</annotation></semantics></math> from the source wire. The magnetic flux <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Φ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Phi_{B}</annotation></semantics></math>, though this loop is the surface integral of the magnetic field.</p>
+<p>Animate this!</p>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Serial Communication – Interferences - Inductive</h2>
+<p>Integrating the field across the area.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><msubsup><mo>∬</mo><mi>S</mi><mrow></mrow></msubsup><mrow><mi>B</mi><mo>⋅</mo><mi mathvariant="double-struck">𝕕</mi><mi>A</mi></mrow></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \iint_{S}^{}{B \cdot \mathbb{d}A}</annotation></semantics></math></p>
+<p>Substituting and integrating over the area <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mi>A</mi><mo>=</mo><mi>l</mi><mspace width="0.222em"></mspace><mi>d</mi><mi>r</mi></mrow><annotation encoding="application/x-tex">dA = l\ dr</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><msubsup><mo>∫</mo><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></msubsup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mi>l</mi><msub><mi>d</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \int_{r_{1}}^{r_{2}}\left( \frac{\mu_{0}I_{1}(t)}{2\pi r} \right)ld_{r}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mrow><mi>l</mi><mi>I</mi></mrow><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi></mrow></mfrac><msubsup><mo>∫</mo><msub><mi>r</mi><mn>1</mn></msub><msub><mi>r</mi><mn>2</mn></msub></msubsup><mrow><mfrac><mn>1</mn><mi>r</mi></mfrac><mspace width="0.222em"></mspace><msub><mi>d</mi><mi>r</mi></msub></mrow></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \frac{\mu_{0}{lI}_{1}(t)}{2\pi}\int_{r_{1}}^{r_{2}}{\frac{1}{r}\ d_{r}}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub><mo>=</mo><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><msub><mrow><mi>l</mi><mi>I</mi></mrow><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mfrac><msub><mi>r</mi><mn>2</mn></msub><msub><mi>r</mi><mn>1</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">{\mathit{Φ}}_{B} = \frac{\mu_{0}{lI}_{1}(t)}{2\pi r}\ln\frac{r_{2}}{r_{1}}</annotation></semantics></math></p>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Serial Communication – Interferences - Inductive</h2>
+<p>Faraday’s Law states that the induced voltage (EMF) in a closed loop is equal to the negative rate of change of magnetic flux through the loop:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mrow><mi>d</mi><msub><mi mathvariant="italic">𝛷</mi><mi>B</mi></msub></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">V_{noise} = - \frac{d{\mathit{Φ}}_{B}}{dt}</annotation></semantics></math></p>
+<p>Substituting we get:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><mi>l</mi></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mrow><mfrac><msub><mi>r</mi><mn>2</mn></msub><msub><mi>r</mi><mn>1</mn></msub></mfrac><mo>×</mo><mfrac><mrow><mi>d</mi><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow></mrow><annotation encoding="application/x-tex">V_{noise} = - \frac{\mu_{0}l}{2\pi r}\ln{\frac{r_{2}}{r_{1}} \times \frac{dI_{1}(t)}{dt}}</annotation></semantics></math></p>
+<figure><img src='L10_files/a656b4062b37.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Serial Communication - Interferences - Capacitive</h2>
+<p>Thus, given the final inference noise,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>=</mo><mi>−</mi><mfrac><mrow><msub><mi>μ</mi><mn>0</mn></msub><mi>l</mi></mrow><mrow><mn>2</mn><mi>π</mi><mi>r</mi></mrow></mfrac><mrow><mi mathvariant="normal">ln</mi><mo>&#8289;</mo></mrow><mrow><mfrac><msub><mi>r</mi><mn>2</mn></msub><msub><mi>r</mi><mn>1</mn></msub></mfrac><mo>×</mo><mfrac><mrow><mi>d</mi><msub><mi>I</mi><mn>1</mn></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow></mrow><annotation encoding="application/x-tex">V_{noise} = - \frac{\mu_{0}l}{2\pi r}\ln{\frac{r_{2}}{r_{1}} \times \frac{dI_{1}(t)}{dt}}</annotation></semantics></math></p>
+<p>The interference voltage <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><annotation encoding="application/x-tex">V_{noise}</annotation></semantics></math> is directly proportion to the rate of change of the current in the interfering wire!</p>
+<p>This is why heavy machinery or circuits that draw massive, pulsating currents (like motor drives) are notorious sources of magnetic Electromagnetic Interference (EMI)!</p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Serial Communication</h2>
+
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Notation</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Serial Communication – Multiple Devices</h2>
+<p>We want to be able to communicate with multiple devices. We can a “Master / Slave” paradigm in communication.</p>
+<p>“Master / Slave” is still commonly used but sometimes called Peripheral In and Peripheral Out.</p>
+<p>The “Master” Node, holds the authority to initiate data transfers and generates the synchronization clock.</p>
+<p>The “Slave” Nodes are strictly reactive and remain low until explicitly addressed.</p>
+<p>Think of it as the “Master” node as a “Teacher” asking you to do something, the “Slave” nodes are the “students” doing the work and reporting the results back.</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Serial Communication – Multiple Devices</h2>
+<figure><img src='L10_files/130b9bcde414.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://commons.wikimedia.org/wiki/File:Prinzip_MIMO.svg'>https://commons.wikimedia.org/wiki/File:Prinzip_MIMO.svg</a></p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Serial Communication – Asynchronous Communication</h2>
+<p>Asynchronous networks (SCI/UART) operate <strong>without</strong> a shared, physical clock line routing between nodes.</p>
+<p>Nodes rely on independent, internal clocks that must be pre-configured to a matching baud-rate! ( Remember the UART lecture? )</p>
+<p>What could be some issue?</p>
+<ul>
+<li>You don’t properly communicate the correct baud rate
+</li>
+<li>The internal clocks could drift causing the receiver to sample data out of phase, corrupting the data
+</li></ul>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Serial Communication – Synchronous Communication</h2>
+<p>Synchronous networks (SPI/I2C) operate <strong>with</strong> a shared, physical clock line routing between nodes. The Master node routes a clock to all Slave devices.</p>
+<p>This shared clock signal dictates the precise times that data lines are driven and sampled!</p>
+<p>What could be some issue?</p>
+<ul>
+<li>Extra wiring required, at least one for the clock and one for the data
+</li></ul>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Serial Communication – Simplex vs Half-Duplex vs Full-Duplex</h2>
+<figure><img src='L10_files/e6bfb79ae890.gif' alt='How data flows in networks: Simplex, Half-Duplex, Full-Duplex | Anis HASSEN  posted on the topic | LinkedIn' loading='lazy'></figure>
+<p><a href='https://www.linkedin.com/posts/anis-hassen_communication-modes-simplified-ever-activity-7310553982957948928-FHnT/'>https://www.linkedin.com/posts/anis-hassen_communication-modes-simplified-ever-activity-7310553982957948928-FHnT/</a></p>
+<figure><img src='L10_files/aeed0014f172.jpg' alt='Half-duplex vs Full-duplex vs Simplex Transmission Mode' loading='lazy'></figure>
+<p><a href='https://www.qsfptek.com/qt-news/half-duplex-vs-full-duplex-vs-simplex-transmission-mode.html?srsltid=AfmBOopvEYPNWR3lh3_nh46jJxnYWESqNo07pANJhJ3pTBwkhLByDD5J'>https://www.qsfptek.com/qt-news/half-duplex-vs-full-duplex-vs-simplex-transmission-mode.html?srsltid=AfmBOopvEYPNWR3lh3_nh46jJxnYWESqNo07pANJhJ3pTBwkhLByDD5J</a></p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Protocols</h2>
+
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Serial Communication</h2>
+<p>The Red Board supports a lot of communication protocols:</p>
+<ul>
+<li><strong>SCI</strong> – Serial Communications Interface - The classic UART. It is asynchronous, requiring only two wires (TX/RX), but limited in speed due to the lack of a shared clock. Discussed in <a href='https://marius-juston.github.io/SE-423---Class-Material/Lectures/Slides/L4.pdf'>Lecture 4</a>.
+</li>
+<li><strong>SPI</strong> – Serial Peripheral Interface - A high-speed synchronous serial input and output (I/O) port. It requires four wires and dominates high-frequency sensor and motor driver applications. Discussed in <a href='https://marius-juston.github.io/SE-423---Class-Material/Lectures/Slides/L6-7.pdf'>Lecture 6-7</a>
+</li>
+<li><strong>I2C</strong> – Inter-Integrated Circuit Module - A synchronous, two-wire bus using software addressing rather than hardware routing. Uses less wires some can be advantageous over SPI.
+</li></ul>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Serial Communication</h2>
+<p>The Red Board supports a lot of communication protocols:</p>
+<ul>
+<li><strong>CAN</strong> – Controller Area Network - A highly robust, differential-signaling serial bus designed for automotive environments. It prioritizes message IDs and deterministic collision resolution over raw speed.
+</li></ul>
+<ul>
+<li><strong>McBSP</strong> – Multichannel Buffered Serial Port - A high-speed synchronous serial port capable of handling complex audio streams and telecommunications data.
+</li></ul>
+<ul>
+<li><strong>USB</strong> – Universal Serial Bus - A complex, differential standard used primarily for interfacing the embedded system with host PCs for data logging or firmware updates.
+</li></ul>
+<ul>
+<li><strong>uPP</strong> - Universal Parallel Port - A high-speed parallel interface used for connecting directly to FPGAs or massive data-acquisition modules (high-speed ADC).
+</li></ul>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> SCI / UART</h2>
+
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Serial Communication – SCI / UART</h2>
+<p><strong>Asynchronous</strong>: No shared clock wire. Timing relies on agreed-upon Baud Rate.</p>
+<p>init_serialSCIA(&amp;SerialA,115200);</p>
+<figure><img src='L10_files/259883a97376.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> SPI</h2>
+
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Serial Communication - SPI</h2>
+<p>This is full-duplex protocol, capable of simultaneous transmission and reception during a single clock cycle.</p>
+<p>Multi-device communication is supported by the master or slave operation of the SPI.</p>
+<p>Has 4 wires:</p>
+<ul>
+<li><strong>SPICLK</strong>: The SPI serial-clock pin, supplying the synchronous heartbeat
+</li>
+<li><strong>SPISIMO</strong>: The SPI slave-input/master-output pin
+</li>
+<li><strong>SPISOMI</strong>: The SPI slave-output/master-input pin
+</li>
+<li><strong>SPISTE</strong>: The SPI slave transmit-enable pin
+</li></ul>
+<p>All four pins can be used as general-purpose input/output (GPIO) if the SPI module is not used by the system</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Serial Communication - SPI</h2>
+<figure><img src='L10_files/9bdf3df9ed59.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Serial Communication - SPI</h2>
+<p>Has 2 interrupt signal:</p>
+<ul>
+<li><strong>SPIINT: </strong>Transmit interrupt/ Receive Interrupt in non-FIFO mode
+</li>
+<li><strong>SPIRXINT: </strong>Receive interrupt in FIFO mode
+</li>
+<li><strong>SPITXINT: </strong>Transmit interrupt in FIFO mode
+</li></ul>
+<p>Can also integrate with the DMA (limited to 16-bit register read/writes and only works when FIFO is enabled)</p>
+<ul>
+<li><strong>SPITXDMA</strong>: Transmit request to DMA
+</li>
+<li><strong>SPIRXDMA</strong>: Receive request to DMA
+</li></ul>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Serial Communication – SPI - SPICLK</h2>
+<p>The SPI module supports 125 different baud rates using the SPIBRR register:</p>
+<p>For SPIBRR = 3 to 127:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>P</mi><mi>I</mi><mspace width="0.222em"></mspace><mi>B</mi><mi>a</mi><mi>u</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>L</mi><mi>S</mi><mi>P</mi><mi>C</mi><mi>L</mi><mi>K</mi></mrow><mrow><mi>S</mi><mi>P</mi><mi>I</mi><mi>B</mi><mi>R</mi><mi>R</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow></mfrac></mrow><annotation encoding="application/x-tex">SPI\ Baud\ Rate\  = \ \frac{LSPCLK}{SPIBRR\  + \ 1}</annotation></semantics></math></p>
+<p>For SPIBRR = 0, 1, or 2:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mi>P</mi><mi>I</mi><mspace width="0.222em"></mspace><mi>B</mi><mi>a</mi><mi>u</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>R</mi><mi>a</mi><mi>t</mi><mi>e</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>L</mi><mi>S</mi><mi>P</mi><mi>C</mi><mi>L</mi><mi>K</mi></mrow><mn>4</mn></mfrac></mrow><annotation encoding="application/x-tex">SPI\ Baud\ Rate\  = \ \frac{LSPCLK}{4}</annotation></semantics></math></p>
+<p>LSPCLK = Low-speed peripheral clock frequency of the device. Like the ePWM it is 50 MHz.</p>
+<p>In <strong>master </strong>mode, the SPI clock is generated by the SPI and is output on the SPICLK pin.</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Serial Communication – SPI – SPISIMO (Master Output)</h2>
+<p>The <strong>SPISIMO</strong> pin acts as the primary transmission pin <strong>from </strong>the controller <strong>to </strong>the peripheral</p>
+<p>If the MCU (Microcontroller Unit), is configured as the master, data is shifted out of it’s transmit buffer and onto this line!</p>
+<p>If the MCU is configured as a slave, this pin receives the incoming data from the network’s master.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Serial Communication – SPI – SPISOMI (Master Input)</h2>
+<p>The <strong>SPISOMI</strong> pin acts as the primary receiver pin <strong>from </strong>the peripheral back <strong>to </strong>the MCU.</p>
+<p>When the SPI transmits data, it can receive characters simultaneously, placing them in the receiver buffer <strong>SPIRXBUF</strong>.</p>
+<p>The incoming data is stored right-justified within this register</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Serial Communication – SPI – SPISTE (Slave Transmit Enable)</h2>
+<p>The <strong>SPISTE</strong> provides the ability to gate any clock and data pulses when SPI is in slave mode.</p>
+<p>An active <strong>SPISTE</strong> will not allow the slave to receive data, preventing the SPI slave from losing synchronization with the master.</p>
+<p>Toggling the <strong>SPISWRESET</strong> bit will reset the internal bit counter and allow a desynchronized slave to recover.</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Serial Communication - SPI</h2>
+<p><a href='https://en.wikipedia.org/wiki/Serial_Peripheral_Interface'>https://en.wikipedia.org/wiki/Serial_Peripheral_Interface</a></p>
+<figure><img src='L10_files/1f4672cd270c.gif' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Serial Communication – SPI – 3-wire mode</h2>
+<p>The system can be compressed by setting the <strong>TRIWIRE</strong> bit to 1, enabling a 3-wire SPI mode.</p>
+<p>SPI 3-wire mode allows for SPI communication over three pins instead of the normal four pins.</p>
+<p>Because in 3-wire mode, the receive and transmit paths within the SPI are connected, any data transmitted by the SPI module is also received by itself. The application software must take care to perform a dummy read to clear the SPI data register of the additional received data.</p>
+<p>This helps reduce pin count on your microcontroller when interfacing with peripherals that do not require full-duplex communication.</p>
+<p>If you only need to send/read commands and occasionally read/send data (not simultaneously), 3-wire saves wiring complexity without losing functionality.</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Serial Communication – SPI</h2>
+<p>To successfully transmit data, the master and slave must share an identical clock wave mapping.</p>
+<p>The clock polarity select bit (<strong>CLKPOLARITY</strong>) and the clock phase select bit (<strong>CLK_PHASE</strong>) control four different clocking schemes on the <strong>SPICLK</strong> pin.</p>
+<p><strong>CLKPOLARITY</strong> selects the active edge, either rising or falling, of the clock</p>
+<p><strong>CLK_PHASE </strong>selects a half-cycle delay of the clock.</p>
+<p>Very dependent on your sensor, look at and understand your dataset to know what is expected!</p>
+<p>If <strong>CLKPOLARITY</strong> and <strong>CLK_PHASE</strong> can only 0 or 1 each, how many different modes are there available?</p>
+<p>4 Modes!</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Serial Communication – SPI</h2>
+<p>Rising Edge Without Delay: <strong>CLKPOLARITY</strong> = 0 and <strong>CLK_PHASE </strong>= 0</p>
+<ul>
+<li>The SPI transmits data on the <strong>rising edge </strong>of the SPICLK signal.
+</li>
+<li>The SPI receives data on the <strong>falling edge </strong>of the SPICLK signal.
+</li></ul>
+<p>Rising Edge With Delay: <strong>CLKPOLARITY</strong> = 0 and <strong>CLK_PHASE </strong>= 1</p>
+<ul>
+<li>The SPI transmits data <strong>one half-cycle ahead of the rising edge</strong> of the SPICLK signal.
+</li>
+<li>The SPI receives data on the <strong>rising edge </strong>of the SPICLK signal.
+</li></ul>
+<p>Falling Edge Without Delay: <strong>CLKPOLARITY</strong> = 1 and <strong>CLK_PHASE </strong>= 0</p>
+<ul>
+<li>The SPI transmits data <strong>falling edge </strong>of the SPICLK signal.
+</li>
+<li>The SPI receives data on the <strong>rising edge </strong>of the SPICLK signal.
+</li></ul>
+<p>Falling Edge With Delay: <strong>CLKPOLARITY</strong> = 1 and <strong>CLK_PHASE </strong>= 1</p>
+<ul>
+<li>The SPI transmits data <strong>one half-cycle ahead of the falling edge </strong>of the SPICLK signal.
+</li>
+<li>The SPI receives data on the <strong>falling edge </strong>of the SPICLK signal.
+</li></ul>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> SPI</h2>
+<figure><img src='L10_files/3f706f4edce5.svg' alt='Picture without a description' loading='lazy'></figure>
+<table><thead><tr><th scope='col'>Polarity</th><th scope='col'>Phase</th></tr></thead><tbody><tr><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td></tr></tbody></table>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> SPI</h2>
+<p>What is this registry?</p>
+<figure><img src='L10_files/9e49ef1f9cde.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Serial Communication – SPI – Multiple Slaves</h2>
+<p>The problem is that this can only allow you to communicate to one peripheral, what about if you want to communicate multiple peripherals, i.e., addressing all your wheel motors individually?</p>
+<p>In many systems, a SPI master may be connected to multiple SPI slaves using multiple instances of <strong>SPISTE</strong> (You selectively choose which SPI slave to enable and read the incoming data).</p>
+<p>Though this SPI module <strong>does not natively support multiple SPISTE signals</strong>, it is possible to emulate this behavior in software using GPIOs.</p>
+<p>In this configuration, the SPI must be configured as the <strong>master</strong>. Rather than using the GPIO Mux to select SPISTE, the application would configure pins to be GPIO outputs, <strong>one GPIO per SPI slave</strong>.</p>
+<p>Before transmitting any data, the application would drive the desired GPIO to the active state.</p>
+<p>Immediately after the transmission has been completed, the GPIO chip select would be driven to the inactive state. This process can be repeated for many slaves which share the SPICLK, SPISIMO, and SPISOMI lines! Essentially creating a <strong>SPISTE pin mux!</strong></p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> What happens if you want to communicate with 15 temperature sensors?</h2>
+
+<details><summary>Speaker notes</summary><p>Correct, you would need 15 SPISTE wires to route between the different sensors, this complicates the circuit and, more wires also means more potential interference!</p></details>
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> I2C</h2>
+
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> Serial Communication – I2C</h2>
+<p>The I2C bus consists of 2 wires: Serial Data (SDA) and Serial Clock (SCL). Instead of relying active push-pull transistors like SPI (which forces a line high or low), I2C uses an open-draw architecture with passive pull-up resistors.</p>
+<p>When a microcontroller wants to send a logical 1, it simply “lets go” of the wire, and the physical pull-up resistor pulls the voltage to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mrow><mi>c</mi><mi>c</mi></mrow></msub><annotation encoding="application/x-tex">V_{cc}</annotation></semantics></math> (e.g., 3.3V). When it wants to send a logical 0, an internal transistor connects the wire to ground.</p>
+<p>Why?</p>
+<p>If 2 devices accidentally talk at the exact same time, and one sends a 0 (pulls to ground), while the other sends a 1 (let’s go), the line safely goes to ground. There is no short circuit!</p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/780e51122d40.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/77123d734e8d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s47' aria-labelledby='h47'>
+<h2 id='h47'><span class='num'>47.</span> Serial Communication – I2C</h2>
+<p>Because there is no Chip Select wires, the Master must should a specific “Address” onto the bus. Every slave device listens. The protocol is strictly framed as:</p>
+<ul>
+<li><strong>START condition</strong>: The Master pulls SDA low while SCL remains high. This violates normal data rules, acting as a wake-up for all devices.
+</li>
+<li><strong>Addressing</strong>: The Master transmits a 7-bit (or 10-bit) hardware addres, folled by a Read/Write direction bit.
+</li>
+<li><strong>Acknowledge (ACK): </strong>The specific Slave that matches the address pulls the SDA line low on the 9th clock cycle to say “I am here”
+</li>
+<li><strong>Data Transfer: </strong>Butes are clocked across the SDA line
+</li>
+<li><strong>STOP Condition: </strong>The Master releases SDA while SCL is high, signaling the bus is free.
+</li></ul>
+
+</section>
+<section id='s48' aria-labelledby='h48'>
+<h2 id='h48'><span class='num'>48.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/59908c4bb78b.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L10_files/9e5a82b9a94f.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>R/W=0: The I2C master writes (transmits) data to the addressed slave.</p>
+<p>R/W=1: The I2C master reads (receives) data from the slave.</p>
+
+</section>
+<section id='s49' aria-labelledby='h49'>
+<h2 id='h49'><span class='num'>49.</span> Serial Communication – I2C</h2>
+<p>An extra clock cycle dedicated for acknowledgement (<strong>ACK</strong>) is inserted after each byte.</p>
+<p>If the <strong>ACK</strong> bit is inserted by the slave after the first byte from the master, it is followed by n bits of data from the transmitter (master or slave depending on the R/W bit).</p>
+<p>n is a number from 1-8 determined by the bit count (<strong>BC</strong>) field of the <strong>I2CMDR</strong>.</p>
+<p>After the data bits have been transferred, the receiver inserts an ACK bit.</p>
+<p>We can have a 10-bit slave address. The problem is that we have a maximum of 8 bits that we send at a time!</p>
+
+</section>
+<section id='s50' aria-labelledby='h50'>
+<h2 id='h50'><span class='num'>50.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/9cbb80b62518.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s51' aria-labelledby='h51'>
+<h2 id='h51'><span class='num'>51.</span> Serial Communication – I2C</h2>
+<p>I2C allows multiple MCU to exist on the same two wires, potentially attempting a START condition simultaneously.</p>
+<p>Both Masters begin clocking out their addresses bit-by-bit, monitoring the actual voltage on the SDA line.</p>
+<p>If Master A transmits a 1 (lets go) but physically measures a 0 on the SDA line, it determines another Master (Master B) is pulling it low.</p>
+<p>Master A instantly realizes it has lost arbitration, ceases transmission, and returns to slave/listening mode without corrupting Master B&#x27;s packet.</p>
+
+</section>
+<section id='s52' aria-labelledby='h52'>
+<h2 id='h52'><span class='num'>52.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/190b78e49d6f.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s53' aria-labelledby='h53'>
+<h2 id='h53'><span class='num'>53.</span> If you have 2 masters sending Serial Clock (SCL) signals what is a problem?</h2>
+
+<details><summary>Speaker notes</summary><p>How do we get the electrical signals to agree on a single clock wave?</p></details>
+</section>
+<section id='s54' aria-labelledby='h54'>
+<h2 id='h54'><span class='num'>54.</span> Serial Communication – I2C</h2>
+<p>The microcontrollers on the bus can only drive the SCL line as such:</p>
+<ul>
+<li><strong>Drive LOW</strong>: They can turn on an internal transistor to connect the SCL line to ground (0V)
+</li>
+<li><strong>Release HIGH</strong>: They can turn <em><strong>off</strong></em> the transistor, letting go of the line. They cannot force the line high; they rely entirely on the pull-up resistor to pull the voltage back up
+</li></ul>
+<p>Because of this, the SCL line acts as a massive physical <strong>AND</strong> gate.</p>
+<ul>
+<li>The SCL line will only transition HIGH if <strong>ALL</strong> devices let go of it.
+</li>
+<li>The SCL line will instantly transition LOW if <strong>ANY</strong> device pulls it to ground.
+</li></ul>
+
+</section>
+<section id='s55' aria-labelledby='h55'>
+<h2 id='h55'><span class='num'>55.</span> Serial Communication – I2C</h2>
+<p>Masters attempt to begin their clock cycles by pulling the SCL line LOW.</p>
+<p>Whichever Master pulls the line LOW first instantly forces the entire physical bus to 0V.</p>
+<p>The other Masters, seeing the line go LOW, immediately synchronize its internal state machine to this falling edge and beings counting its own programmed LOW period<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow></mrow><annotation encoding="application/x-tex"></annotation></semantics></math></p>
+<p>The synchronized LOW period is strictly determined by the Master with the <strong>longest</strong> programmed LOW period.</p>
+<p>The synchronized HIGH period is strictly determined by the Master with the <strong>shortest</strong> programmed HIGH period.</p>
+<p>If a device pulls down the clock line for a longer time, the result is that all clock generators must enter the wait state. In this way, a slave slows down a fast master, and the slow device creates enough time to store a received byte or to prepare a byte to be transmitted.</p>
+
+</section>
+<section id='s56' aria-labelledby='h56'>
+<h2 id='h56'><span class='num'>56.</span> Serial Communication – I2C</h2>
+<figure><img src='L10_files/649ada7bf124.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s57' aria-labelledby='h57'>
+<h2 id='h57'><span class='num'>57.</span> I2C Code</h2>
+
+
+</section>
+<section id='s58' aria-labelledby='h58'>
+<h2 id='h58'><span class='num'>58.</span> Serial Communication – I2C - Init</h2>
+<p>void I2CA_Init(void) {</p>
+<p>// 1. Set the Prescaler to generate the Module Clock</p>
+<p>I2caRegs.I2CPSC.all = 16;   // Divides high-speed system clock down to ~7-12 MHz</p>
+<p>// 2. Define the exact characteristics of the SCL wave</p>
+<p>I2caRegs.I2CCLKL = 10;      // Defines the duration of the SCL LOW period</p>
+<p>I2caRegs.I2CCLKH = 5;       // Defines the duration of the SCL HIGH period</p>
+<p>// 3. Enable Interrupts for critical network events</p>
+<p>I2caRegs.I2CIER.all = 0x24; // Enable Start Condition Detected (SCD) &amp; Register Access Ready (ARDY)</p>
+<p>// 4. Take the I2C module out of reset</p>
+<p>I2caRegs.I2CMDR.all = 0x0020;</p>
+<p>// 5. Enable the 16-level Transmit and Receive FIFOs</p>
+<p>I2caRegs.I2CFFTX.all = 0x6000; // Enable FIFO mode and TXFIFO</p>
+<p>I2caRegs.I2CFFRX.all = 0x2040; // Enable RXFIFO and clear interrupt flags</p>
+<p>}</p>
+<p>Notice that I2CCLKL (10) is mathematically larger than I2CCLKH (5). Because the physical bus relies on passive pull-up resistors to transition HIGH, the rise-time is inherently slower, compared to the transistors, than the fall-time (which is actively pulled LOW by a transistor).</p>
+
+</section>
+<section id='s59' aria-labelledby='h59'>
+<h2 id='h59'><span class='num'>59.</span> Serial Communication – I2C - Init</h2>
+<p>Uint16 I2CA_WriteData(struct I2CMSG *msg) {</p>
+<p>// 1. Verify if the previous message completed?</p>
+<p>if(I2caRegs.I2CMDR.bit.STP == 1) {</p>
+<p>return I2C_STP_NOT_READY_ERROR;</p>
+<p>}</p>
+<p>// 2. Verify if another Master using the bus?</p>
+<p>if(I2caRegs.I2CSTR.bit.BB == 1) {</p>
+<p>return I2C_BUS_BUSY_ERROR;</p>
+<p>}</p>
+<p>// 3. Broadcast the Slave&#x27;s address (EEPROM is typically 0x50)</p>
+<p>I2caRegs.I2CSAR.all = msg-&gt;SlaveAddress;</p>
+<p>// 4. Define exactly how many bytes we will transmit</p>
+<p>// (2 bytes for the EEPROM memory address + the actual data bytes)</p>
+<p>I2caRegs.I2CCNT = 2 + msg-&gt;NumOfBytes;</p>
+<p>// 4. Push the EEPROM memory pointer into the Transmit FIFO (think of the Slave&#x27;s address as the apartment address and this as setting the specific apartment number we want to write to)</p>
+<p>I2caRegs.I2CDXR.all = msg-&gt;MemoryHighAddr;</p>
+<p>I2caRegs.I2CDXR.all = msg-&gt;MemoryLowAddr;</p>
+<p>// 5. Push the actual data payload into the Transmit FIFO</p>
+<p>for (int i = 0; i &lt; msg-&gt;NumOfBytes; i++) {</p>
+<p>I2caRegs.I2CDXR.all = *(msg-&gt;MsgBuffer + i);</p>
+<p>}</p>
+<p>// 6. Command the hardware to execute the transaction</p>
+<p>// 0x6E20 sets: FREE (run during debug), START, STOP, MASTER, TRANSMIT, and ENABLE bits</p>
+<p>I2caRegs.I2CMDR.all = 0x6E20;</p>
+<p>return I2C_SUCCESS;</p>
+<p>}</p>
+
+</section>
+<section id='s60' aria-labelledby='h60'>
+<h2 id='h60'><span class='num'>60.</span> Questions?</h2>
+
+
+</section>
+<section id='s61' aria-labelledby='h61'>
+<h2 id='h61'><span class='num'>61.</span> End of Lecture 10</h2>
+
+
+</section>
+</main></body></html>

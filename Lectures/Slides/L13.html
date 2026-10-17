@@ -1,0 +1,583 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L13: SE 423: Introduction to MechatronicsLecture 13: Thread &amp; ProcessesMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L13: SE 423: Introduction to MechatronicsLecture 13: Thread &amp; ProcessesMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L13.pdf">PDF</a> · <a href="L13.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (43)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 13: Thread &amp; ProcessesMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Threads &amp; Processes</a></li><li><a href='#s6'>Threads &amp; Processes</a></li><li><a href='#s7'>Threads &amp; Processes</a></li><li><a href='#s8'>Threads &amp; Processes</a></li><li><a href='#s9'>Threads &amp; Processes</a></li><li><a href='#s10'>Threads &amp; Processes</a></li><li><a href='#s11'>Threads &amp; Processes</a></li><li><a href='#s12'>Threads &amp; Processes</a></li><li><a href='#s13'>Threads &amp; Processes</a></li><li><a href='#s14'>Threads &amp; Processes</a></li><li><a href='#s15'>Threads &amp; Processes</a></li><li><a href='#s16'>Threads &amp; Processes</a></li><li><a href='#s17'>Threads &amp; Processes</a></li><li><a href='#s18'>Threads &amp; Processes</a></li><li><a href='#s19'>Threads &amp; Processes</a></li><li><a href='#s20'>Threads &amp; Processes</a></li><li><a href='#s21'>Threads &amp; Processes</a></li><li><a href='#s22'>Threads &amp; Processes</a></li><li><a href='#s23'>Processes Communication</a></li><li><a href='#s24'>Threads &amp; Processes – IPC – Inter-Process Communication</a></li><li><a href='#s25'>Threads &amp; Processes - IPC</a></li><li><a href='#s26'>Threads &amp; Processes</a></li><li><a href='#s27'>Threads &amp; Processes - IPC</a></li><li><a href='#s28'>Threads &amp; Processes - IPC</a></li><li><a href='#s29'>Threads &amp; Processes - IPC</a></li><li><a href='#s30'>Thread Communication</a></li><li><a href='#s31'>Threads &amp; Processes</a></li><li><a href='#s32'>Threads &amp; Processes – Race Conditions</a></li><li><a href='#s33'>Threads &amp; Processes – Race Conditions</a></li><li><a href='#s34'>Threads &amp; Processes</a></li><li><a href='#s35'>Threads &amp; Processes – Mutex and Locking</a></li><li><a href='#s36'>Threads &amp; Processes – Mutex and Locking</a></li><li><a href='#s37'>Threads &amp; Processes – Semaphores</a></li><li><a href='#s38'>Threads &amp; Processes – Semaphores</a></li><li><a href='#s39'>Threads &amp; Processes – Semaphores</a></li><li><a href='#s40'>Threads &amp; Processes – Semaphores</a></li><li><a href='#s41'>Threads &amp; Processes</a></li><li><a href='#s42'>Questions?</a></li><li><a href='#s43'>End of Lecture 13</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 13: Thread &amp; ProcessesMarius Juston</h2>
+<p>Wednesday, March 4rd, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>If you have Timer 0 and Timer 1 running at the exact same time in parallel and both are trying to write the robot’s position as (0, 1) and (1, 0) respectively to the same array. What is the worst-possible case that could happen?
+</li></ul>
+<ul>
+<li>If you drive a car, why is it safer and more robust to separate the “where should I be” (localization) calculations from the “how much voltage goes to the steering motor” calculations rather than a single equation?
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 4 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 1, 2, 3 &amp; 4 are due <strong>March 10, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Threads &amp; Processes</h2>
+<p>In future labs we will be using a more powerful microcontroller for doing some heavy computation such as handling camera image data and doing processing on this.</p>
+<p>To be able to handle that data throughput we need to use something more complex, i.e., the Raspberry Pi.</p>
+<p>The Raspberry Pi is a multi-core Linux system with a lot more RAM.</p>
+<p>However, the Raspberry Pi more complex due to its modern architectural design choices so we need to somewhat understand it.</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Threads &amp; Processes</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Threads &amp; Processes</h2>
+<p><strong>Warning</strong>: This lecture is going to be very high level of what threads and processes are.</p>
+<p>There is an incredibly big rabbit hole of complexity. If you want to really understand things properly. I would highly recommend the following videos in order:</p>
+<ol>
+<li>The definition of a process vs a program (8 min): <a href='https://youtu.be/7ge7u5VUSbE?si=O0Uba2lTkLotpd87'>https://youtu.be/7ge7u5VUSbE?si=O0Uba2lTkLotpd87</a>
+</li>
+<li>What a process actual and how it works (16 min): <a href='https://youtu.be/LDhoD4IVElk?si=wzx11WVn2Ow84q__'>https://youtu.be/LDhoD4IVElk?si=wzx11WVn2Ow84q__</a>
+</li>
+<li>IPC to share memory between processes (14 min): <a href='https://youtu.be/Y2mDwW2pMv4?si=BAZ74dU6Yn5dNik2'>https://youtu.be/Y2mDwW2pMv4?si=BAZ74dU6Yn5dNik2</a>
+</li>
+<li>What are threads, and how they work on single core processors (16 min): <a href='https://youtu.be/M9HHWFp84f0?si=NMBI0whrwmfuv7IA'>https://youtu.be/M9HHWFp84f0?si=NMBI0whrwmfuv7IA</a>
+</li>
+<li>Threads on multicore systems (11 min): <a href='https://youtu.be/5sw9XJokAqw?si=IvZqqokTP5nwP-uN'>https://youtu.be/5sw9XJokAqw?si=IvZqqokTP5nwP-uN</a>
+</li></ol>
+<p>Total of 65 minutes.</p>
+<p>You can also practice and get additional details reading <a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/</a></p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Threads &amp; Processes</h2>
+<p>A <strong>process</strong> is, informally “a program in execution”.</p>
+<p>A <strong>program</strong> is a set of CPU instructions and the data necessary for its task. Which is essential an executable file. It stays in your file storage waiting to be run.</p>
+<p>When you run the program, it needs more than that data to be able to run its task which are placed in the heap and the stack, which change dynamically in size.</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Threads &amp; Processes</h2>
+<p>The combination of a code, data, stack, heap, and some extra information the information is the <strong>process</strong>.</p>
+<p>Whenever you think of opening Google Chrome, VSCode, CodeComposer and the likes. You are starting a process from a program.</p>
+<p>The “.exe” represents the program and then an instance of VSCode represents a process. As you add more tabs or write more code, the editor’s heap / stack size increases, differing from the initial program.</p>
+<p>The CPU then cycles between the running process and switches the context that it is looking at.</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Threads &amp; Processes</h2>
+<p><a href='https://www.youtube.com/watch?v=7ge7u5VUSbE'>https://www.youtube.com/watch?v=7ge7u5VUSbE</a></p>
+<figure><img src='L13_files/0b1b05d24df2.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L13_files/08b470ce08c4.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Threads &amp; Processes</h2>
+<p><a href='https://www.youtube.com/watch?v=7ge7u5VUSbE'>https://www.youtube.com/watch?v=7ge7u5VUSbE</a></p>
+<figure><img src='L13_files/f71fc6482845.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Threads &amp; Processes</h2>
+<p>A <strong>thread</strong> is the smallest unit of a process.</p>
+<p>A thread executes a sequence of operations for a process. Each threads maintains the same code, heap and data from the process; however, they have their own registers, program counter and stack.</p>
+<p>Every process runs initially on a single-threaded way with the “main” thread.</p>
+<p>However, it is possible to dynamically allocate the number of threads for your application to make it <strong>multi-thread.</strong></p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Threads &amp; Processes</h2>
+<p>Depending on your CPU and how many cores you have you will be able to parallelize how many threads can run at once.</p>
+<p>A CPU with 4 cores allows you to run 4 threads in parallel, while a CPU with 8 cores allows you to run 8 in parallel.</p>
+<p>What happens if you have more threads than cores, i.e., 1 core and wanting to use 8 threads?</p>
+<p>Would we want to wait for one thread to finish before continuing another one? What happens if you must wait for a large file transfer to happen?</p>
+<p>This is where scheduler works!</p>
+<p>Essentially every thread is given a tiny bit of time to execute an instruction and then you cycle to the next thread, and you do this so fast it seems like you are running in parallel.</p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Threads &amp; Processes</h2>
+<p>The Red Board is a dual-core microcontroller; however, we only use one CPU1.</p>
+<p>So many threads can it have running in parallel?</p>
+<p>Are the CPU timers / interrupts running truly parallelly?</p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/71aecd3f9c16.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/</a></p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/18153db5066d.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/threads/</a></p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Threads &amp; Processes</h2>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;string.h&gt;</p>
+<p>#include &lt;pthread.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;unistd.h&gt;</p>
+<p>int counter;</p>
+<p>void* startThreadJob() {</p>
+<p>unsigned long i = 0;</p>
+<p>counter += 1;</p>
+<p>printf(&quot;  Job %d started\n&quot;, counter);</p>
+<p>for(i=0; i&lt;(0xFFFFFFFF); i++) {</p>
+<p>// do nothing</p>
+<p>// this is just here to keep the thread running for a while!</p>
+<p>}</p>
+<p>printf(&quot;  Job %d finished\n&quot;, counter);</p>
+<p>return NULL;</p>
+<p>}</p>
+<p>int main(void) {</p>
+<p>int i = 0, err;</p>
+<p>pthread_t tid[2];</p>
+<p>counter = 0;</p>
+<p>while(i &lt; 2) {</p>
+<p>// pthread_create has 4 parameters:</p>
+<p>// 1. pointer to pthread_t, needed to keep thread state</p>
+<p>// 2. configuration arguments for the thread (passing NULL means we use the defaults here)</p>
+<p>// 3. pointer to the function that will run in a separate thread</p>
+<p>// 4. parameters to pass to the thread (no arguments for startThreadJob, so we pass NULL)</p>
+<p>err = pthread_create( &amp;(tid[i]), NULL, startThreadJob, NULL );</p>
+<p>if (err != 0) {</p>
+<p>printf(&quot;\ncan&#x27;t create thread :[%s]&quot;, strerror(err));</p>
+<p>}</p>
+<p>i++;</p>
+<p>}</p>
+<p>// pthread_join pauses the current thread until the thread in the first argument is terminated</p>
+<p>// Note that the &quot;main&quot; function automatically also executes in a thread, which we often call the &quot;main thread&quot;.</p>
+<p>// If the joined thread was already terminated, pthread_join returns immediately</p>
+<p>// The second argument can be used to store the return value of the thread</p>
+<p>// Our thread currently doesn&#x27;t return anything, so we pass NULL</p>
+<p>pthread_join(tid[0], NULL);</p>
+<p>pthread_join(tid[1], NULL);</p>
+<p>return 0;</p>
+<p>}</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/385f55a2fe38.jpg' alt='Program vs Process vs Thread | Smit Shah' loading='lazy'></figure>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Threads &amp; Processes</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=hN2Yrf4tqTY'>YouTube video: What is a Thread? | Threads, Process, Program, Parallelism and Scheduler Explained | Geekific (Geekific)</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Threads &amp; Processes</h2>
+<p>Why would we want multi-processes?</p>
+<ul>
+<li><strong>Fault Isolation and Robustness</strong>: Each process resides in its own isolated virtual address space. If a process experiences an error, it typically cannot corrupt the heap or stack of an unrelated process. This ensures that a failure in one process does not cause everything else to fail.
+</li>
+<li><strong>Scalability Across Distributed Systems</strong>: While threads are inherently limited to a single physical machine (as they rely on shared local memory), processes can easily be distributed across a cluster or a network of machines. This allows for scaling across different hardware.
+</li>
+<li><strong>Security and Privilege Separation</strong>: Multi-processing allows for the strict application of the Principle of Least Privilege. Different processes can be executed with distinct user permissions or security contexts. For instance, in a browser architecture, the rendering engine might run with restricted sandboxed privileges, while a kernel-level driver or system service runs with elevated permissions, preventing malicious content from escalating access.
+</li>
+<li><strong>Enhanced Security and Isolation</strong>: Because processes do not share memory by default, one process cannot accidentally (or maliciously) read or overwrite the data of another. This &quot;sandboxing&quot; is critical for executing untrusted code or separating sensitive cryptographic operations from general UI logic.
+</li>
+<li><strong>True Hardware Parallelism (CPU-Bound Tasks): </strong>In many interpreted languages (notably Python with its Global Interpreter Lock), threads cannot run in parallel on multiple cores (less true recently). Multiprocessing bypasses these software-level locks by giving each process its own instance of the interpreter and its own memory space, allowing N processes to utilize N CPU cores simultaneously.
+</li></ul>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Threads &amp; Processes</h2>
+<p>Why would we want multi-threading?</p>
+<ul>
+<li><strong>Responsiveness</strong>: When a single program is broken into multiple threads, the experience feels more responsive. Dedicated threads can be created to handle user requires, while other threads can process data in the background.
+</li>
+<li><strong>Resource sharing</strong>: Programs that have multiple threads typically want some sort of communication between these threads. This is done more easily between threads than between processes, as threads implicitly share memory via their heap
+</li>
+<li><strong>Economy</strong>: Context switching becomes cheaper when switching between threads in comparison to switching between processes. This is because less per-thread state needs to be tracked, in comparison to more per-process state.
+</li>
+<li><strong>Scalability</strong>: Multiple threads can run in parallel on multi-core systems in contrast to a single threaded process.
+</li></ul>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Processes Communication</h2>
+
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Threads &amp; Processes – IPC – Inter-Process Communication</h2>
+<ul>
+<li>Each process resides in its own isolated virtual address space. While isolation is useful for security sometimes you need to communication information
+</li>
+<li>To communicate information between processes you either do it through 2 methods:
+</li>
+<li><strong>Shared Memory</strong>:
+<li>
+<ul>
+<li>Maps a singular physical memory block into the virtual address spaces of distinct processes
+</li></ul>
+</li>
+<li><strong>Message Passing </strong>(Signals / Pipes):
+<li>
+<ul>
+<li>OS-mediated streams or interrupts.
+</li></ul>
+</li></ul>
+<figure><img src='L13_files/cbd988a0d5bb.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/interprocess/'>https://kuleuven-diepenbeek.github.io/osc-course/ch6-tasks/interprocess/</a></p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Threads &amp; Processes - IPC</h2>
+<p>// Producer (a process which puts data inside of the shared memory)</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;string.h&gt;</p>
+<p>#include &lt;fcntl.h&gt;</p>
+<p>#include &lt;unistd.h&gt;</p>
+<p>#include &lt;sys/shm.h&gt;</p>
+<p>#include &lt;sys/mman.h&gt;</p>
+<p>int main() {</p>
+<p>const int SIZE = 4096; /* buffersize (bytes) */</p>
+<p>const char *name = &quot;OS&quot;; /* shared memory object name */</p>
+<p>const char *data_0 = &quot;Hello&quot;;</p>
+<p>const char *data_1 = &quot;World!&quot;;</p>
+<p>int shm_fd; /* shared memory file descriptor */</p>
+<p>void *ptr;</p>
+<p>/* create the shared memory file descriptor */</p>
+<p>shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);</p>
+<p>/* configure the size of the shared memory file */</p>
+<p>ftruncate(shm_fd, SIZE);</p>
+<p>/* memory map the shared memory file */</p>
+<p>ptr = mmap(0, SIZE, PROT_WRITE, MAP_SHARED, shm_fd, 0);</p>
+<p>/* write to the shared memory file */</p>
+<p>sprintf(ptr,&quot;%s&quot;,data_0);</p>
+<p>ptr += strlen(data_0);</p>
+<p>sprintf(ptr,&quot;%s&quot;,data_1);</p>
+<p>ptr += strlen(data_1);</p>
+<p>return 0;</p>
+<p>}</p>
+<p>// CONSUMER  (which uses the data it gets from the producer)</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;fcntl.h&gt;</p>
+<p>#include &lt;unistd.h&gt;</p>
+<p>#include &lt;sys/shm.h&gt;</p>
+<p>#include &lt;sys/mman.h&gt;</p>
+<p>int main() {</p>
+<p>const int SIZE = 4096; /* buffersize (bytes) */</p>
+<p>const char *name = &quot;OS&quot;; /* shared memory object name */</p>
+<p>int shm_fd; /* file descriptor */</p>
+<p>void *ptr;</p>
+<p>/* open the shared memory file */</p>
+<p>shm_fd = shm_open(name, O_RDONLY, 0666);</p>
+<p>/* memory map the shared memory file */</p>
+<p>ptr = mmap(0, SIZE, PROT_READ, MAP_SHARED, shm_fd, 0);</p>
+<p>/* read from the shared memory file */</p>
+<p>printf(&quot;%s&quot;,(char *)ptr);</p>
+<p>/* remove the shared memory file */</p>
+<p>shm_unlink(name);</p>
+<p>return 0;</p>
+<p>}</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Threads &amp; Processes - IPC</h2>
+<ul>
+<li>The message passing is split into 2 different mechanism <strong>signals </strong>and <strong>pipes</strong>
+</li>
+<li><strong>Signals</strong> are the cheapest form of IPC. They literally allow one process to send a signal (a code) to another process, using the function kill() (terminates a running program).
+</li></ul>
+<p>kill -L</p>
+<p>1) SIGHUP       2) SIGINT       3) SIGQUIT      4) SIGILL       5) SIGTRAP</p>
+<p>6) SIGABRT      7) SIGBUS       8) SIGFPE       9) SIGKILL     10) SIGUSR1</p>
+<p>11) SIGSEGV     12) SIGUSR2     13) SIGPIPE     14) SIGALRM     15) SIGTERM</p>
+<p>16) SIGSTKFLT   17) SIGCHLD     18) SIGCONT     19) SIGSTOP     20) SIGTSTP</p>
+<p>21) SIGTTIN     22) SIGTTOU     23) SIGURG      24) SIGXCPU     25) SIGXFSZ</p>
+<p>26) SIGVTALRM   27) SIGPROF     28) SIGWINCH    29) SIGIO       30) SIGPWR</p>
+<p>31) SIGSYS      34) SIGRTMIN    35) SIGRTMIN+1  36) SIGRTMIN+2  37) SIGRTMIN+3</p>
+<p>38) SIGRTMIN+4  39) SIGRTMIN+5  40) SIGRTMIN+6  41) SIGRTMIN+7  42) SIGRTMIN+8</p>
+<p>43) SIGRTMIN+9  44) SIGRTMIN+10 45) SIGRTMIN+11 46) SIGRTMIN+12 47) SIGRTMIN+13</p>
+<p>48) SIGRTMIN+14 49) SIGRTMIN+15 50) SIGRTMAX-14 51) SIGRTMAX-13 52) SIGRTMAX-12</p>
+<p>53) SIGRTMAX-11 54) SIGRTMAX-10 55) SIGRTMAX-9  56) SIGRTMAX-8  57) SIGRTMAX-7</p>
+<p>58) SIGRTMAX-6  59) SIGRTMAX-5  60) SIGRTMAX-4  61) SIGRTMAX-3  62) SIGRTMAX-2</p>
+<p>63) SIGRTMAX-1  64) SIGRTMAX</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Threads &amp; Processes - IPC</h2>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;stdlib.h&gt;</p>
+<p>#include &lt;signal.h&gt;</p>
+<p>// Signal handler function</p>
+<p>void signalHandler(int sig) {</p>
+<p>printf(&quot;Interrupt handled: %d&quot;, sig);</p>
+<p>// Optionally exit the program after handling</p>
+<p>exit(sig);</p>
+<p>}</p>
+<p>int main() {</p>
+<p>// Handle signal</p>
+<p>signal(SIGINT, signalHandler);</p>
+<p>// Automatically generate a signal</p>
+<p>raise(SIGINT);</p>
+<p>return 0;</p>
+<p>}</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Threads &amp; Processes - IPC</h2>
+<p><strong>Anonymous pipes </strong>are like waterslides. (Named pipes are not often used)</p>
+<p>You can put some data on it on one end (the top of the slide) and it comes out the other (the bottom), but it’s not possible to go up the waterslide from the bottom.</p>
+<p>One process can write into the pipe, while the other can read from of the pipe. We write to a “virtual file” in memory.</p>
+<p>This type of pipe can only be created between two processes that have parent-child relationship.</p>
+<p>What happens internally is that the stdout of the first process is mapped to the stdin of the second process.</p>
+<p>For this, we use the | (pipe) character.</p>
+<p>When using the CLI, anonymous pipes are a very powerful tool for chaining different commands. The output of the first command will be the input for the next command. This can be chained multiple times:</p>
+<p>ps -ux | grep xeyes | head -1 | tr -s &quot; &quot; | cut -d &quot; &quot; -f 3</p>
+<p>List of all my processes | filter only lines that contain “xeyes” | filter only the first line | squish all consecutive spaces together to a single space | split the input on a space, report the third field</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Thread Communication</h2>
+
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Threads &amp; Processes – Race Conditions</h2>
+<p>Race conditions, imagine you have the following code where I have multiple threads running at the same time?</p>
+<p>int counter = 0;</p>
+<p>void* doSomeThing(void *arg) {</p>
+<p>int local_id; // new, per-thread variable</p>
+<p>counter += 1;</p>
+<p>local_id = counter; // make a local copy of counter for this thread</p>
+<p>return NULL;</p>
+<p>}</p>
+<p>We must think very low level, can potentially switch between different thread at each assembly instruction (the compiled version of this C code, between C and binary code)!</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Threads &amp; Processes – Race Conditions</h2>
+<p>The problem is the following:</p>
+<p>// Code that both threads will execute:</p>
+<p>counter += 1;</p>
+<p>local_id = counter;</p>
+<p>// -----------------------------------</p>
+<p>// Thread 1</p>
+<p>counter += 1; // after this, counter == 1</p>
+<p>// Before Thread 1 can execute local_id = counter, it is paused by the CPU</p>
+<p>// Thread 2</p>
+<p>counter += 1; // after this, counter == 2</p>
+<p>local_id = counter; // thus, in Thread 2, local_id is correctly 2</p>
+<p>// Here, the CPU switches back to Thread 1</p>
+<p>// Thread 1</p>
+<p>local_id = counter; // now, local_id is still 2, instead of 1... mission failed</p>
+<p>This is called a race condition!</p>
+<p>This happens when you the ordering of instructions is not what you expect! There is some randomness in the instruction call ordering, so you might not always get this problem.</p>
+<p>Can the Red Board also have this problem?</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Threads &amp; Processes</h2>
+<p>The problem is that what we just did was not an <strong>atomic operation</strong> . This means that internally, it is not implemented with a single CPU instruction but rather out of a series of different operations / instructions.</p>
+<p>Even simple, unassuming code can cause a race condition. For example, the following causes a race condition,</p>
+<p>int counter = 0;</p>
+<p>void* doSomeThing(void *arg) {</p>
+<p>counter += 1;</p>
+<p>return NULL;</p>
+<p>}</p>
+<p>What is causing the race condition in this case?</p>
+<p>The “+= 1”, is causing the race condition! Since that is not a single operation!</p>
+<p>// In simple pseudocode, counter += 1 or counter++ looks like this:</p>
+<p>int temp = counter + 1; // temp is for example the CPU register here, and &quot;counter&quot; is the value in memory</p>
+<p>counter = temp; // the register value is written back out to the memory</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Threads &amp; Processes – Mutex and Locking</h2>
+<p>We need a way to secure the important sections in a thread such that you can <strong>lock </strong>and <strong>unlock </strong>access for pieces of code for the threads.</p>
+<p>The simplest method is called the <strong>mutex</strong> (<strong>Mut</strong>ual <strong>Ex</strong>clusion).</p>
+<p>The behavior can be seen as the lock on a restroom door. If you are using the restroom, you <strong>lock</strong> the door. Others that want to occupy the restroom must <strong>wait</strong> until you’re finished and you <strong>unlock</strong> the door (and get out, after washing your hands).</p>
+<p>Hence, the mutex has only <strong>two states</strong>: one or zero, on or off, locked or unlocked.</p>
+<p>Internally the mutex is implemented as a single, atomic CPU instruction!</p>
+<p>The number of code / instructions between locking and unlocking a mutex should be kept to a minimum. If you put your whole thread inside the mutex then you are just making all your threads run in serial again! Losing all the parallelization benefits!</p>
+<p>You can still have a Deadlock problem (where threads lock each other out causing infinite waiting)</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Threads &amp; Processes – Mutex and Locking</h2>
+<p>int counter;</p>
+<p>pthread_mutex_t counter_lock;</p>
+<p>void* doSomeThing(void *arg) {</p>
+<p>unsigned long i = 0;</p>
+<p>int local_id;</p>
+<p>pthread_mutex_lock(&amp;counter_lock);</p>
+<p>counter += 1;</p>
+<p>local_id = counter;</p>
+<p>pthread_mutex_unlock(&amp;counter_lock);</p>
+<p>printf(&quot;  Job %d started\n&quot;, local_id);</p>
+<p>for(i=0; i&lt;(0xFFFFFFFF);i++);</p>
+<p>printf(&quot;  Job %d finished\n&quot;, local_id);</p>
+<p>return NULL;</p>
+<p>}</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Threads &amp; Processes – Semaphores</h2>
+<p>While the mutex is nice and simple, we can improve the thread synchronization techniuques using Semaphores!</p>
+<p>This technique is useful in <strong>producer-consumer </strong>problems.</p>
+<p>The <strong>producer </strong>has 1 or more threads to prepare data and put it in a limited amount of shared memory (an array for example)</p>
+<p>The <strong>consumer </strong>wants to be able to read that ready data.</p>
+<p>Now we want to have multiple producers be able to write to that shared memory at a given time if there is an open spot. If not wait!</p>
+<p>Similarly, the consumers can read data from the shared memory if there is something there. If not wait!</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Threads &amp; Processes – Semaphores</h2>
+<p>We want threads that want to read/write an item from/to the array can only do so if it is possible.</p>
+<p>If not, the thread should be <strong>paused</strong> until it’s sure that it can make progress, instead of constantly checking.</p>
+<p>To do this, we need a new type of lock that keeps track of who’s waiting for what to happen, which is called the <strong>semaphore</strong>.</p>
+<p>We could have a mutex and check if the specific element has been changed or not; however, having a mutex locking and unlocking almost immediately to check that element, is called <strong>busy waiting </strong>or <strong>polling </strong>and is bad for performance as you’re doing a lot of unnecessary work.</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Threads &amp; Processes – Semaphores</h2>
+<p>Semaphores are simply a counter, but one that can automatically pause/resume threads that use it.</p>
+<p>It only has 2 operations (below is pseudocode for the functions):</p>
+<ul>
+<li><strong>Wait</strong>: continues if counter &gt; 0 and decrements it by 1. If not waits until counter &gt; 0
+</li>
+<li><strong>Post</strong>: increments counter by 1. Causes 1 of the waiting threads to un pause.
+</li></ul>
+<p>Can be used to help wait for data to arrive.</p>
+<p>wait(semaphore v){</p>
+<p>while(1){</p>
+<p>atomic {</p>
+<p>if (v &gt; 0){</p>
+<p>v--;</p>
+<p>return;</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>}</p>
+<p>post(semaphore v){</p>
+<p>atomic {</p>
+<p>v++;</p>
+<p>return;</p>
+<p>}</p>
+<p>}</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Threads &amp; Processes – Semaphores</h2>
+<p>#include &lt;stdio.h&gt;</p>
+<p>#include &lt;pthread.h&gt;</p>
+<p>#include &lt;semaphore.h&gt;</p>
+<p>#include &lt;unistd.h&gt;</p>
+<p>sem_t signal_sem;</p>
+<p>void* worker_thread(void* arg) {</p>
+<p>printf(&quot;Collected sensor data...\n&quot;);</p>
+<p>sleep(2); // Simulate the time it takes to read hardware sensors</p>
+<p>printf(&quot;Finished reading.\n&quot;);</p>
+<p>sem_post(&amp;signal_sem); // Increments S to 1. Unblocks the main thread.</p>
+<p>return NULL;</p>
+<p>}</p>
+<p>int main() {</p>
+<p>pthread_t thread;</p>
+<p>// Initialize the semaphore to 0</p>
+<p>sem_init(&amp;signal_sem, 0, 0);</p>
+<p>printf(&quot;Start reading.\n&quot;);</p>
+<p>pthread_create(&amp;thread, NULL, worker_thread, NULL);</p>
+<p>printf(&quot;Waiting for sensor reading...\n&quot;);</p>
+<p>// Attempt to decrement S. Since S is 0, the CPU strictly blocks here.</p>
+<p>sem_wait(&amp;signal_sem);</p>
+<p>printf(&quot;Data collected, processing!\n&quot;);</p>
+<p>// Clean up memory</p>
+<p>pthread_join(thread, NULL);</p>
+<p>sem_destroy(&amp;signal_sem);</p>
+<p>return 0;</p>
+<p>}</p>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Threads &amp; Processes</h2>
+<figure><img src='L13_files/2670b12fa858.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Questions?</h2>
+
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> End of Lecture 13</h2>
+
+
+</section>
+</main></body></html>

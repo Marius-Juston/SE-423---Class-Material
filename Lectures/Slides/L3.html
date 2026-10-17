@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L3: SE 423: Introduction to MechatronicsLecture 3: GPIOMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L3: SE 423: Introduction to MechatronicsLecture 3: GPIOMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L3.pdf">PDF</a> · <a href="L3.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (27)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 3: GPIOMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Digital Inputs / Outputs</a></li><li><a href='#s5'>Digital Inputs / Outputs</a></li><li><a href='#s6'>Digital Outputs</a></li><li><a href='#s7'>Digital Outputs</a></li><li><a href='#s8'>Digital Outputs</a></li><li><a href='#s9'>Controlling an LED</a></li><li><a href='#s10'>Digital Inputs</a></li><li><a href='#s11'>Pull-Up / Pull-Down Resistors</a></li><li><a href='#s12'>Digital Inputs</a></li><li><a href='#s13'>A PMOS transistor pulls the pin up to 3.3 V</a></li><li><a href='#s14'>A PMOS transistor pulls the pin up to 3.3 V</a></li><li><a href='#s15'>Digital Outputs – too many GPIO output</a></li><li><a href='#s16'>Pull-Up / Pull-Down Resistors - Input</a></li><li><a href='#s17'>Pin Mux</a></li><li><a href='#s18'>Pin Mux</a></li><li><a href='#s19'>What is the Pin Multiplexer (PinMux)</a></li><li><a href='#s20'>Pin Mux</a></li><li><a href='#s21'>Pin Mux</a></li><li><a href='#s22'>Pin Mux – Code ( Not the exact code for reduced spacing )</a></li><li><a href='#s23'>Common PinMux mistake</a></li><li><a href='#s24'>Git / GitHub</a></li><li><a href='#s25'>Git / GitHub</a></li><li><a href='#s26'>Questions?</a></li><li><a href='#s27'>End of Lecture 3</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 3: GPIOMarius Juston</h2>
+<p>Wednesday, January 28th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting <a href='https://marius-juston.github.io/SE-423---Class-Material/Labs/Lab1.pdf'>Lab 1</a> this week, will be using C so be sure to be prepared! ( don’t forget to turn in commented code)!</p>
+<p><strong>Homeworks</strong><strong> (Next week):</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW1.pdf'>homework 1</a> are due <strong>February 3, 5PM</strong>
+</li>
+<li>Answers and code submissions for homework 1 are due <strong>February 4, 9AM</strong>
+</li></ul>
+<p><strong>LabVIEW (Next week):</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW1.pdf'>LabVIEW 1</a> are  due <strong>February 5, 5PM</strong>
+</li></ul>
+<p><strong>Small easy Quiz at the end of this lecture, like Monday, due at 11AM.</strong></p>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW, quiz questions?</p>
+<p>( I sent an update for the reason for the 2 counters question )</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Digital Inputs / Outputs</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Digital Inputs / Outputs</h2>
+<p><strong>What does it mean for something to be “digital”?</strong></p>
+<p>It is the control of your system / sensor using binary (0 or 1) signals.</p>
+<p>Digital I/O is the lowest level electrical interface between software and hardware.</p>
+<p>Almost every mechatronic system constrains at least one digital input / output.</p>
+<p>Sensors often reduce complex physical phenomena to binary decisions ( limit reached / not reached, turned on or off )</p>
+<p>Digital signals are inherently discrete</p>
+<p>Digital I/O provides deterministic, low-latency interaction with the environment</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Digital Outputs</h2>
+<p>A digital output drives a pin to a logic level:</p>
+<ul>
+<li>Logic 0 (LOW)  → ≈0 V
+</li>
+<li>Logic 1 (HIGH) → ≈3.3 V / 5 V
+</li></ul>
+<p>Logic levels are represented by voltage ranges, not exact values</p>
+<p>Internally controlled by a latch / register</p>
+<p>Can source or sink limited current (GPIO should not be used to drive power)</p>
+<p>Digital outputs are not power supplies and must not directly drive loads. The GPIO have a total maximum of current it can supply, shared throughout all the pins.</p>
+<p>If you power too many devices using GPIO, you might run out of power!</p>
+<p>Examples:</p>
+<ul>
+<li>Controlling LEDs
+</li></ul>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Digital Outputs</h2>
+<p>Digital output control consists of :</p>
+<ol>
+<li>Choosing the GPIO number
+</li>
+<li>Selecting the GPIO pin mux selection
+</li>
+<li>Setting direction = output
+</li></ol>
+<p>GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</p>
+<p>GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</p>
+<p>You never write voltage, you write <strong>bits in registers</strong></p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Digital Outputs</h2>
+<figure><img src='L3_files/a06650368c02.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Controlling an LED</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=606DHE81HZ4'>YouTube video: GPIO Led Control Animation (Marius Juston)</a></p>
+<p><a href='https://youtu.be/606DHE81HZ4?si=4FCUMsPSI-xp2QcO'>https://youtu.be/606DHE81HZ4?si=4FCUMsPSI-xp2QcO</a></p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Digital Inputs</h2>
+<p>Digital input samples external voltage</p>
+<p>Compared against logic thresholds:</p>
+<ul>
+<li>LOW
+</li>
+<li>HIGH
+</li></ul>
+<p>Examples:</p>
+<ul>
+<li>Buttons
+</li>
+<li>Switches
+</li>
+<li>Some types of encoders
+</li></ul>
+<p>Problem with floating inputs, if input is not driven:</p>
+<ul>
+<li>Voltage is undefined
+</li>
+<li>Susceptible to noise
+</li>
+<li>Input may randomly read 0 or 1
+</li></ul>
+<p>More on this with ADC</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Pull-Up / Pull-Down Resistors</h2>
+<p>A pull-up resistor:</p>
+<ul>
+<li>Connects input to Vcc
+</li>
+<li>Defines default logic HIGH
+</li></ul>
+<p>When switch is:</p>
+<ul>
+<li>Open: input → HIGH
+</li>
+<li>Closed: input short circuits to GND → LOW
+</li></ul>
+<p>A pull-down resistor ( not used in our application ):</p>
+<ul>
+<li>Connects input to GND
+</li>
+<li>Defines default logic LOW
+</li></ul>
+<p>When switch is:</p>
+<ul>
+<li>Open: input → LOW
+</li>
+<li>Closed: input short circuits to GND → HIGH
+</li></ul>
+<p>This is all internal on the Red Board, makes it cleaner!</p>
+<p>You don’t need to understand this, just put it in code!</p>
+<figure><img src='L3_files/d5e1854f8a79.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Pull-up_resistor'>https://en.wikipedia.org/wiki/Pull-up_resistor</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Digital Inputs</h2>
+<p>Digital output control consists of :</p>
+<ol>
+<li>Choosing the GPIO number
+</li>
+<li>Selecting the GPIO pin mux selection
+</li>
+<li>Setting direction = input
+</li>
+<li>Enable pull-up resistor
+</li></ol>
+<p>GPIO_SetupPinMux(7, GPIO_MUX_CPU1, 0);</p>
+<p>GPIO_SetupPinOptions(7, GPIO_INPUT, GPIO_PULLUP);</p>
+<p>You read the binary input using:</p>
+<p>if(GpioDataRegs.GPADAT.bit.GPIO7){</p>
+<p>// Do stuff</p>
+<p>}</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> A PMOS transistor pulls the pin up to 3.3 V</h2>
+<p>A <strong>push-pull output</strong> uses <strong>two transistors</strong>:</p>
+<ul>
+<li>A PMOS transistor pulls the pin up to 3.3 V
+</li>
+<li>An NMOS transistor pulls the pin down to GND
+</li></ul>
+<p>Only <strong>one is ON at a time</strong>.</p>
+<p>When a pin is an output:</p>
+<ul>
+<li>You want deterministic voltage
+</li>
+<li>You want noise immunity
+</li>
+<li>You want defined transitions
+</li></ul>
+<p>A more detailed video <a href='https://www.youtube.com/watch?v=S7jrirsfkNw'>here</a>.</p>
+<p>You don’t need to understand this, just put it in code!</p>
+<p>Push-Pull - Output</p>
+<figure><img src='L3_files/49ca52ad4458.png' alt='undefined' loading='lazy'></figure>
+<p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
+<p>NMOS</p>
+<p>PMOS</p>
+<p>Operational Amplifier</p>
+<p><a href='https://en.wikipedia.org/wiki/Push%E2%80%93pull_output'>https://en.wikipedia.org/wiki/Push%E2%80%93pull_output</a></p>
+<details><summary>Speaker notes</summary><p>If input is high the NPN is turned on, PNP will be off current flows from +9 to ground. NPN sources current (called push)</p><p>If input is low the PNP is turned on, NPN will be off, current flows from ground to -9V, PNP sinks current (called pull)</p></details>
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> A PMOS transistor pulls the pin up to 3.3 V</h2>
+<p>A pull-up resistor is:</p>
+<ul>
+<li>Slow
+</li>
+<li>Incapable of pulling LOW
+</li></ul>
+<p>So, for outputs, pull-ups are electrically irrelevant and often harmful.</p>
+<p>Push-Pull - Output</p>
+<figure><img src='L3_files/49ca52ad4458.png' alt='undefined' loading='lazy'></figure>
+<p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
+<p>NMOS</p>
+<p>PMOS</p>
+<p>Operational Amplifier</p>
+<p><a href='https://en.wikipedia.org/wiki/Push%E2%80%93pull_output'>https://en.wikipedia.org/wiki/Push%E2%80%93pull_output</a></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Digital Outputs – too many GPIO output</h2>
+<p>Why would we run out of power?</p>
+<p>Each GPIO output has its own transistors and can safely source or sink only a limited current.</p>
+<p>However, all GPIOs draw that current from shared internal power and ground networks inside the chip.</p>
+<p>Even if each individual pin is within its limit, the sum of all GPIO currents can exceed what the silicon, bond wires, or package can safely carry.</p>
+<p>This is why microcontrollers specify both per-pin and total GPIO current limits, and why <strong>GPIOs must never be used as power supplies</strong>.</p>
+<p>Think of each GPIO as a faucet drawing water from the same pipe.</p>
+<ul>
+<li>Each faucet has a <strong>local limit </strong>(per-pin current)
+</li>
+<li>The pipe has a <strong>global flow limit </strong>(total GPIO current)
+</li></ul>
+<p>Opening too many faucets:</p>
+<ul>
+<li>Reduces pressure
+</li>
+<li>Stresses the pipe
+</li>
+<li>Causes failure elsewhere
+</li></ul>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Pull-Up / Pull-Down Resistors - Input</h2>
+<p>What an input pin is:</p>
+<ul>
+<li>Pin becomes high-impedance, sensitive to low current, allowing for high voltages
+</li>
+<li>Sensitive to noise
+</li></ul>
+<p>The internal pull-up:</p>
+<ul>
+<li>Weak resistor (~20-50 kΩ)
+</li>
+<li>Slightly biases pin to logic HIGH
+</li>
+<li>Can be overridden by external hardware (button to GND)
+</li></ul>
+<p>Without pull-up, just using floating-inputs, you would be sensitive to random noise, returning:</p>
+<ul>
+<li>Random bits
+</li>
+<li>Thus, unpredictable control behavior
+</li></ul>
+<figure><img src='L3_files/d5e1854f8a79.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Pull-up_resistor'>https://en.wikipedia.org/wiki/Pull-up_resistor</a></p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Pin Mux</h2>
+
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Pin Mux</h2>
+<p>The Red Board has only <strong>80</strong> pins but <strong>160</strong> GPIO!</p>
+<p>We also need the pins to do multiple specialized things,</p>
+<ul>
+<li>GPIO                   (General Purpose Input-Output)
+</li>
+<li>PWM output        (Pulse Width Modulation)
+</li>
+<li>SPI                      (Serial Peripheral Interface)
+</li>
+<li>I2C                      (Inter-Integrated Circuit)
+</li>
+<li>CAN                    (Controller Area Network)
+</li>
+<li>UART                  (Universal Asynchronous Receiver-Transmitter)
+</li>
+<li>ADC trigger, etc. (Analog-to-Digital Converter)
+</li></ul>
+<p>Whole list is in the <a href='https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf'>pin mux list</a>, you will be using this in Lab 1!</p>
+<p>This sharing is managed by the <strong>pin multiplexer</strong>!</p>
+<p>Pins and GPIOs are not for hardware wiring / optimality reasons.</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> What is the Pin Multiplexer (PinMux)</h2>
+<p>This is a hardware switch that selects which peripheral controls a pin:</p>
+<figure><img src='L3_files/8e272f5d0a1f.png' alt='undefined' loading='lazy'></figure>
+<figure><img src='L3_files/629d96774205.png' alt='16-to-1 mux' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Multiplexer'>https://en.wikipedia.org/wiki/Multiplexer</a></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Pin Mux</h2>
+<p>Up to twelve independent peripheral signals are multiplexed on a single GPIO-enabled pin in addition to</p>
+<p>the CPU-controlled I/O capability.</p>
+<p>Each pin output can be controlled by either a peripheral or one of the</p>
+<p>four CPU masters (CPU1, CPU1.CLA, CPU2, or CPU2.CLA). There are six I/O ports:</p>
+<ul>
+<li>Port <strong>A</strong> consists of GPIO0-GPIO31
+</li>
+<li>Port <strong>B</strong> consists of GPIO32-GPIO63
+</li>
+<li>Port <strong>C</strong> consists of GPIO64-GPIO95
+</li>
+<li>Port <strong>D</strong> consists of GPIO96-GPIO127
+</li>
+<li>Port <strong>E</strong> consists of GPIO128-GPIO159
+</li>
+<li>Port <strong>F</strong> consists of GPIO160-GPIO168
+</li></ul>
+<p>GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Pin Mux</h2>
+<figure><img src='L3_files/14956ca0b648.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>( I wanted to create the animation for this, but if this text is still here, then it has not been done yet.)</p>
+<p>PinMux has 12 inputs, requires how many bits in the selector?</p>
+<details><summary>Speaker notes</summary><p>If a student wants to help me create the animation. I would love your help!!! It takes a lot of time to make these things work!</p><p>Group mux = G</p><p>There are 8 groups, 0,</p></details>
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Pin Mux – Code ( Not the exact code for reduced spacing )</h2>
+<p>void GPIO_SetupPinMux(Uint16 gpioNumber, Uint16 cpu, Uint16 muxPosition)</p>
+<p>{</p>
+<p>volatile Uint32 *gpioBaseAddr; // volatile means that the variable may change from external sources (i.e. interrupts)</p>
+<p>volatile Uint32 *mux, *gmux, *csel;</p>
+<p>Uint16 pin32, pin16, pin8;</p>
+<p>pin32 = gpioNumber % 32;</p>
+<p>pin16 = gpioNumber % 16;</p>
+<p>pin8 = gpioNumber % 8;</p>
+<p>gpioBaseAddr = (Uint32 *)&amp;GpioCtrlRegs + (gpioNumber/32)*GPY_CTRL_OFFSET;</p>
+<p>mux = gpioBaseAddr + GPYMUX + pin32/16;</p>
+<p>gmux = gpioBaseAddr + GPYGMUX + pin32/16;</p>
+<p>csel = gpioBaseAddr + GPYCSEL + pin32/8;</p>
+<p>EALLOW; // block that controls the physical multiplexer</p>
+<p>// 0x3UL means 0b11 but in int32_t (i.e. 0b11 with 30 leading 0s)</p>
+<p>*mux &amp;= ~(0x3UL &lt;&lt; (2*pin16));</p>
+<p>*gmux &amp;= ~(0x3UL &lt;&lt; (2*pin16));</p>
+<p>*gmux |= (Uint32)((muxPosition &gt;&gt; 2) &amp; 0x3UL) &lt;&lt; (2*pin16);</p>
+<p>*mux |= (Uint32)(muxPosition &amp; 0x3UL) &lt;&lt; (2*pin16);</p>
+<p>*csel &amp;= ~(0x3L &lt;&lt; (4*pin8));</p>
+<p>*csel |= (Uint32)(cpu &amp; 0x3L) &lt;&lt; (4*pin8);</p>
+<p>EDIS;</p>
+<p>}</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Common PinMux mistake</h2>
+<p>GPIO_SetupPinMux(19, GPIO_MUX_CPU1, 0);</p>
+<p>GPIO_SetupPinOptions(19, GPIO_OUTPUT, GPIO_PUSHPULL);</p>
+<ul>
+<li>Using the pin number instead of the GPIO number
+</li>
+<li>Using the wrong GPIO for the pin that you want
+</li>
+<li>Direction is not set correctly
+</li>
+<li>Pull-up disabled unintentionally
+</li>
+<li>Make sure to read the documentation
+</li></ul>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Git / GitHub</h2>
+
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Git / GitHub</h2>
+<p>Working Directory</p>
+<p>Staging Area</p>
+<p>Local Repository</p>
+<p>Remote Repository</p>
+<p>Local (git)</p>
+<p>Remote (GitHub)</p>
+<p>git push</p>
+<p>git clone</p>
+<p>git commit</p>
+<p>git add</p>
+<p>git pull</p>
+<p>git checkout</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Questions?</h2>
+
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> End of Lecture 3</h2>
+
+
+</section>
+</main></body></html>

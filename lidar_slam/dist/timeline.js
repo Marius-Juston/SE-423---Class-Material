@@ -83,13 +83,13 @@
         " \xB7 ",
         s.id
       );
-    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("button", { onClick: () => setPlaying((p) => !p), style: {
+    }))), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 12 } }, /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": playing ? "Pause" : "Play", onClick: () => setPlaying((p) => !p), style: {
       ...btnStyle,
       width: 36,
       background: playing ? "var(--cyan)" : "var(--bg-3)",
       color: playing ? "var(--bg-0)" : "var(--text-0)",
       fontWeight: 700
-    } }, playing ? "\u275A\u275A" : "\u25B6"), /* @__PURE__ */ React.createElement("button", { onClick: () => setStep(0), style: btnStyle }, "\u21BA"), /* @__PURE__ */ React.createElement("button", { onClick: () => setStep(Math.max(0, step - 1)), style: btnStyle }, "\u2039"), /* @__PURE__ */ React.createElement("button", { onClick: () => setStep(Math.min(totalSteps - 1, step + 1)), style: btnStyle }, "\u203A"), /* @__PURE__ */ React.createElement("div", { style: {
+    } }, playing ? "\u275A\u275A" : "\u25B6"), /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": "Back to the start", onClick: () => setStep(0), style: btnStyle }, "\u21BA"), /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": "Previous step", onClick: () => setStep(Math.max(0, step - 1)), style: btnStyle }, "\u2039"), /* @__PURE__ */ React.createElement("button", { type: "button", "aria-label": "Next step", onClick: () => setStep(Math.min(totalSteps - 1, step + 1)), style: btnStyle }, "\u203A"), /* @__PURE__ */ React.createElement("div", { style: {
       fontFamily: "JetBrains Mono, monospace",
       fontSize: 10.5,
       color: "var(--text-3)",
@@ -100,6 +100,8 @@
         type: "range",
         min: 0,
         max: totalSteps - 1,
+        "aria-label": "Time step",
+        "aria-valuetext": `t = ${(step * 0.02).toFixed(2)} s`,
         value: step,
         onChange: (e) => setStep(parseInt(e.target.value)),
         style: {

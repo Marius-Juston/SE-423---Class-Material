@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L15: SE 423: Introduction to MechatronicsLecture 15: Coordinate Transforms &amp; Dead-reckoningMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L15: SE 423: Introduction to MechatronicsLecture 15: Coordinate Transforms &amp; Dead-reckoningMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L15.pdf">PDF</a> · <a href="L15.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (46)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 15: Coordinate Transforms &amp; Dead-reckoningMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Localization(A brief introduction.)</a></li><li><a href='#s6'>Localization</a></li><li><a href='#s7'>Localization</a></li><li><a href='#s8'>Coordinate Transformation</a></li><li><a href='#s9'>Localization</a></li><li><a href='#s10'>Localization</a></li><li><a href='#s11'>Localization</a></li><li><a href='#s12'>Localization – 2D Translation (Shifting)</a></li><li><a href='#s13'>Localization – 2D Translation (Shifting)</a></li><li><a href='#s14'>Localization – 2D Rotation</a></li><li><a href='#s15'>Localization – 2D Translation (Shifting)</a></li><li><a href='#s16'>Localization – 2D Rotation</a></li><li><a href='#s17'>Localization – 2D Rotation</a></li><li><a href='#s18'>Localization – 2D Rotation</a></li><li><a href='#s19'>Localization – Transformation</a></li><li><a href='#s20'>Dead-Reckoning</a></li><li><a href='#s21'>Dead-Reckoning</a></li><li><a href='#s22'>Dead-Reckoning</a></li><li><a href='#s23'>Dead-Reckoning</a></li><li><a href='#s24'>Dead-Reckoning</a></li><li><a href='#s25'>Dead-Reckoning</a></li><li><a href='#s26'>Dead-Reckoning</a></li><li><a href='#s27'>Dead-Reckoning</a></li><li><a href='#s28'>Dead-Reckoning</a></li><li><a href='#s29'>Errors</a></li><li><a href='#s30'>Errors</a></li><li><a href='#s31'>Errors</a></li><li><a href='#s32'>Errors</a></li><li><a href='#s33'>Errors</a></li><li><a href='#s34'>Errors</a></li><li><a href='#s35'>Errors</a></li><li><a href='#s36'>Errors</a></li><li><a href='#s37'>Errors</a></li><li><a href='#s38'>Errors</a></li><li><a href='#s39'>SLAM(A VERY brief introduction.)</a></li><li><a href='#s40'>SLAM</a></li><li><a href='#s41'>SLAM</a></li><li><a href='#s42'>SLAM</a></li><li><a href='#s43'>SLAM</a></li><li><a href='#s44'>SLAM</a></li><li><a href='#s45'>Questions?</a></li><li><a href='#s46'>End of Lecture 15</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 15: Coordinate Transforms &amp; Dead-reckoningMarius Juston</h2>
+<p>Wednesday, March 11th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>Stand up and with your partner and:
+<li>
+<ol>
+<li>Agree on a starting position and a target position
+</li>
+<li>Discuss ways how one would go from point A to B as accurately as possible with their eyes closed.
+</li>
+<li>One of you closes your eyes (the partner should keep the other safe during the activity) and performs the strategy to try to get from point A to B. The other partner should not provide information during that time (Dead-Reckoning).
+</li>
+<li>Now redo the task but now your partner can only tell you distance to the target as well (type IR sensor).
+</li></ol>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Spring Break next week, no office hours!</strong></p>
+<p><strong>Lab: </strong>Starting Lab 5 this week. This a 1-week lab!</p>
+<ul>
+<li>Don’t forget the Lab 6 LabVIEW assignment that needs to be done beforehand!
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+<li>
+<ul>
+<li>This is a long homework, so <strong>DO NOT </strong>expect to work on and finish it during the Tuesday office hours time!
+</li></ul>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 2 and 3 are due <strong>March 31, 5PM (The end of office hours)</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Localization(A brief introduction.)</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Localization</h2>
+<p>We now have sensors to figure out where obstacles are. We have sensors to figure out the internal state of the robot.</p>
+<p>We also know how to make a robot drive straight or follow a wall using feedback control.</p>
+<p>However, if we ask the robot to “go to coordinates (5, 5) on the map,” how does it know where it currently is?</p>
+<p>This is the fundamental question of <strong>Localization</strong>!</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Localization</h2>
+<p>To solve localization, we need to understand that the world is not perfect and not a single sensor gives the exact solution.</p>
+<p>We first estimate movement using internal sensors (Dead-Reckoning).</p>
+<p>What is a problem with just using internal sensors?</p>
+<p>The internal sensors drift and accumulate errors!</p>
+<p>Think of this as walking blind and relying on just counting your steps as you did at the beginning of the lecture.</p>
+<p>Finally, we use external sensors (LiDAR, Cameras) to look at landmarks and correct these errors (SLAM)</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Coordinate Transformation</h2>
+
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Localization</h2>
+<p>A robot experiences the world from its own perspective, which we call the <strong>Local Frame </strong>(or Body Frame).</p>
+<p>The map or the room exists in a fixed, global reference frame, called the <strong>Global / World Frame</strong> (or Inertial Frame).</p>
+<p>When driving a car, your local reference frame is your point of view inside the car, only you have that viewpoint, and the global reference is the shared viewpoint, which is provided by the GPS map.</p>
+<p>Each of the sensors view its information in its own Local Frame; however, to navigate a room, we must translate the local sensor data into the global map!</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Localization</h2>
+<p>The local frames of each of the sensors can be of different positions and orientation than the robot’s <strong>body frame</strong>.</p>
+<p>The <strong>body frame</strong> is typically the frame where you define the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y,\ \theta)</annotation></semantics></math> of the robot.</p>
+<p>So, we need to translate the sensor frames to the body frame, and then the body frame to the global frame.</p>
+<p>If the robot to the right moves “forward 1 meter”, does its local x coordinate increase or it’s y? What about it’s world x, y coordinates?</p>
+<figure><img src='L15_files/2dfaf60161b1.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1671673/full'>https://www.frontiersin.org/journals/robotics-and-ai/articles/10.3389/frobt.2025.1671673/full</a></p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Localization</h2>
+<p>Let the <strong>World Frame </strong>be defined by axes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>,</mo><mi>Y</mi></mrow><annotation encoding="application/x-tex">X,Y</annotation></semantics></math> with origin <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>O</mi><annotation encoding="application/x-tex">O</annotation></semantics></math>.</p>
+<p>Let the <strong>Body Frame </strong>be defined by axes <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>X</mi><mi>B</mi></msub><annotation encoding="application/x-tex">X_{B}</annotation></semantics></math> (pointing forward) and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Y</mi><mi>B</mi></msub><annotation encoding="application/x-tex">Y_{B}</annotation></semantics></math> (pointing left) with origin <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>O</mi><mi>B</mi></msub><annotation encoding="application/x-tex">O_{B}</annotation></semantics></math>.</p>
+<p>The robot’s pose in the world is defined by its position and it’s heading angle.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo>,</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p = (x,y,\theta)</annotation></semantics></math></p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Differential_wheeled_robot'>https://en.wikipedia.org/wiki/Differential_wheeled_robot</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Localization – 2D Translation (Shifting)</h2>
+<p>If the robot’s heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>θ</mi><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">\theta = \ 0</annotation></semantics></math>, its axes are perfectly aligned with the world axes.</p>
+<p>Thus, moving from the robot frame to the world frame is simply a vector addition!</p>
+<p>If the robot is at world coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">T\  = \ (x,y)</annotation></semantics></math>, a point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>R</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>,</mo><msub><mi>y</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{R} = \left( x_{r},y_{r} \right)</annotation></semantics></math> in the robot frame is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>w</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>+</mo><mi>x</mi><mo>,</mo><msub><mi>y</mi><mi>r</mi></msub><mo>+</mo><mi>y</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{w} = \left( x_{r} + x,y_{r} + y \right)</annotation></semantics></math></p>
+<p>In the world frame. In vector math, this is represented as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>W</mi></msub><mo>=</mo><msub><mi>P</mi><mi>R</mi></msub><mo>+</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">P_{W} = P_{R} + T</annotation></semantics></math></p>
+<p>Translation is linear and simple; however, robot also rotate.</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Localization – 2D Translation (Shifting)</h2>
+<figure><img src='L15_files/b41406158e1b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><strong>T</strong></p>
+<p><strong>P</strong><strong>r</strong></p>
+<p><strong>P</strong><strong>w</strong></p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Localization – 2D Rotation</h2>
+<p>Suppose the robot frame is at the world origin but rotated by and angle <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>.</p>
+<p>We want to map point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, from the rotated frame to the fixed frame.</p>
+<p>Let point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> have polar coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>r</mi><mo>,</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(r,\alpha)</annotation></semantics></math></p>
+<p>Therefore,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>,</mo><msub><mi>y</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>r</mi><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\left( x_{r},y_{r} \right) = \left( r\cos(\alpha),r\sin(\alpha) \right)</annotation></semantics></math></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Localization – 2D Translation (Shifting)</h2>
+<figure><img src='L15_files/ad8f93669c5f.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><strong>r</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝜶</mi><annotation encoding="application/x-tex">\mathbf{α}</annotation></semantics></math></p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Localization – 2D Rotation</h2>
+<p>In the world frame, the angle of point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> is now at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(\alpha + \varphi)</annotation></semantics></math>.</p>
+<p>The world coordinates are thus,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>w</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>r</mi><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo>+</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">P_{w} = \left( r\cos(\alpha + \varphi),r\sin(\alpha + \varphi) \right)</annotation></semantics></math></p>
+<p>We can expand the following using standard trigonometric sum identities:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>W</mi></msub><mo>=</mo><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{W} = r\left( \cos(\alpha)\cos(\varphi) - \sin(\alpha)\sin(\varphi) \right)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>W</mi></msub><mo>=</mo><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y_{W} = r\left( \sin(\alpha)\cos(\varphi) + \cos(\alpha)\sin(\varphi) \right)</annotation></semantics></math></p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Localization – 2D Rotation</h2>
+<p>Substituting back in the location position:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>x</mi><mi>r</mi></msub><mo>,</mo><msub><mi>y</mi><mi>r</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>r</mi><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mi>r</mi><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\left( x_{r},y_{r} \right) = \left( r\cos(\alpha),r\sin(\alpha) \right)</annotation></semantics></math></p>
+<p>To the global position:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>W</mi></msub><mo>=</mo><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">x_{W} = r\left( \cos(\alpha)\cos(\varphi) - \sin(\alpha)\sin(\varphi) \right)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>W</mi></msub><mo>=</mo><mi>r</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi mathvariant="normal">cos</mi><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mi mathvariant="normal">sin</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y_{W} = r\left( \sin(\alpha)\cos(\varphi) + \cos(\alpha)\sin(\varphi) \right)</annotation></semantics></math></p>
+<p>We thus get:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>W</mi></msub><mo>=</mo><msub><mi>x</mi><mi>R</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>y</mi><mi>R</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">x_{W} = x_{R}\cos(\varphi) - y_{R}\sin(\varphi)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mi>W</mi></msub><mo>=</mo><msub><mi>x</mi><mi>R</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>y</mi><mi>R</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y_{W} = x_{R}\sin(\varphi) + y_{R}\cos(\varphi)</annotation></semantics></math></p>
+<p>Which is elegantly expressed using matrix multiplications!</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Localization – 2D Rotation</h2>
+<p>The system of equations can be written as a 2x2 matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>w</mi></msub><mo>=</mo><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">P_{w} = R(\varphi)P_{r}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>W</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>W</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>R</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>R</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+x_{W} \\
+y_{W}
+\end{bmatrix} = \begin{bmatrix}
+\cos(\varphi) &amp; - \sin(\varphi) \\
+\sin(\varphi) &amp; \cos(\varphi)
+\end{bmatrix}\begin{bmatrix}
+x_{R} \\
+y_{R}
+\end{bmatrix}</annotation></semantics></math></p>
+<p>The matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">R(\varphi)</annotation></semantics></math>, belongs to the Special Orthogonal Group SO(2).</p>
+<p>Given that the determinant represents how much the space gets scaled after the transformation. What is the determinant of rotation matrices without doing any calculation?</p>
+<p>It should be 1, meaning it preserves the scale and area! The robot doesn’t stretch as it turns!</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Localization – Transformation</h2>
+<p>In reality, a robot is both translated and rotated!</p>
+<p>Thus, the complete transformation is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>w</mi></msub><mo>=</mo><mi>R</mi><mo stretchy="false" form="prefix">(</mo><mi>φ</mi><mo stretchy="false" form="postfix">)</mo><msub><mi>P</mi><mi>r</mi></msub><mo>+</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">P_{w} = R(\varphi)P_{r} + T</annotation></semantics></math></p>
+<p>We can, however, make this into a single matrix operation, through Homogeneous Coordinates,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>W</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>W</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>t</mi><mi>x</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>t</mi><mi>y</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>R</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>R</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+x_{W} \\
+y_{W} \\
+1
+\end{bmatrix} = \begin{bmatrix}
+\cos(\theta) &amp; - \sin(\theta) &amp; t_{x} \\
+\sin(\theta) &amp; \cos(\theta) &amp; t_{y} \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}\begin{bmatrix}
+x_{R} \\
+y_{R} \\
+1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>This is the standard representation used in all modern software!</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Dead-Reckoning</h2>
+
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Dead-Reckoning</h2>
+<p>Now that we can map local coordinates to the world, how do we track our movement?</p>
+<p><strong>Dead-Reckoning</strong> (Odometry) is the process of calculating current position by integrating previously determined positions and estimated speeds over time.</p>
+<p>It relies purely on internal sensors, primarily wheel encoders and IMUs.</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Dead-Reckoning</h2>
+<p>Our robot uses a differential drive system (2 independently driven wheels).</p>
+<p>The robot’s overall forward linear velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math> is the average of the two wheels:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><msub><mi>ν</mi><mi>L</mi></msub><mo>+</mo><msub><mi>ν</mi><mi>R</mi></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">V\  = \ \frac{\nu_{L} + \nu_{R}}{2}</annotation></semantics></math></p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ν</mi><mi>L</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>ν</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">\nu_{L}\  = \nu_{R}</annotation></semantics></math>, what is the robot doing?</p>
+<p>The robot goes forward!</p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Dead-Reckoning</h2>
+<p>The robot’s angular velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> depends on the difference between the wheel speeds.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mfrac><mrow><msub><mi>ν</mi><mi>R</mi></msub><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow><mi>b</mi></mfrac></mrow><annotation encoding="application/x-tex">\omega = \frac{\nu_{R} - \ \nu_{L}}{b}</annotation></semantics></math></p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ν</mi><mi>L</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><msub><mrow><mi>−</mi><mi>ν</mi></mrow><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">\nu_{L}\  = {- \nu}_{R}</annotation></semantics></math>, what is the robot doing?</p>
+<p>The robot rotates in place (a zero-radius turn).</p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Dead-Reckoning</h2>
+<p>Assuming that the wheels are at contacting the ground, the wheels describe arcs in the plane in such a way that the robot always rotates around a point (the <strong>ICR </strong>refers to the instantaneous center of rotation).</p>
+<p>The rotation leads the robot to have the rotation of the vehicle to be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> around the <strong>ICR</strong>.</p>
+<p>Following the angular velocity equation <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mi>r</mi><mi>ν</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">\omega = r\nu\ </annotation></semantics></math>, we have,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mo>+</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ν</mi><mi>r</mi></msub></mrow><annotation encoding="application/x-tex">\omega = \left( R + \frac{b}{2} \right)\nu_{r}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>R</mi><mo>−</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>ν</mi><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">\omega = \left( R - \frac{b}{2} \right)\nu_{l}</annotation></semantics></math></p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Dead-Reckoning</h2>
+<p>Solving for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ω</mi><annotation encoding="application/x-tex">\omega</annotation></semantics></math> and R, we get that,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>=</mo><mfrac><mrow><msub><mi>ν</mi><mi>R</mi></msub><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow><mi>b</mi></mfrac></mrow><annotation encoding="application/x-tex">\omega = \frac{\nu_{R} - \ \nu_{L}}{b}</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mfrac><mi>b</mi><mn>2</mn></mfrac><mfrac><mrow><msub><mi>ν</mi><mi>R</mi></msub><mo>+</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow><mrow><msub><mi>ν</mi><mi>R</mi></msub><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">R = \frac{b}{2}\frac{\nu_{R} + \ \nu_{L}}{\nu_{R}\  - \ \nu_{L}}</annotation></semantics></math></p>
+<p>Very simple!</p>
+<p>When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>∞</mi></mrow><annotation encoding="application/x-tex">R\  = \ \infty</annotation></semantics></math>, what is the robot doing?</p>
+<p>When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">R\  = \ 0</annotation></semantics></math>, what is the robot doing?</p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Dead-Reckoning</h2>
+<p>Based on the calculated forward velocity from the encoders, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>V</mi><annotation encoding="application/x-tex">V</annotation></semantics></math>, in lab we already calculate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ν</mi><mi>R</mi></msub><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>ν</mi><mi>L</mi></msub></mrow><annotation encoding="application/x-tex">\nu_{R},\ \nu_{L}</annotation></semantics></math>.</p>
+<p>Using forward Euler integration, we update our world <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Y</mi><annotation encoding="application/x-tex">Y</annotation></semantics></math> coordinates using our current heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>φ</mi><mi>t</mi></msub><annotation encoding="application/x-tex">\varphi_{t}</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>x</mi><mi>t</mi></msub><mo>+</mo><msub><mi>V</mi><mi>t</mi></msub><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>φ</mi><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x_{t + 1} = x_{t} + V_{t}\cos\left( \varphi_{t} \right)\mathrm{\Delta}t</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>y</mi><mi>t</mi></msub><mo>+</mo><msub><mi>V</mi><mi>t</mi></msub><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>φ</mi><mi>t</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">y_{t + 1} = y_{t} + V_{t}\sin\left( \varphi_{t} \right)\mathrm{\Delta}t</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>φ</mi><mrow><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>φ</mi><mi>t</mi></msub><mo>+</mo><msub><mi>ω</mi><mi>t</mi></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\varphi_{t + 1} = \varphi_{t} + \omega_{t}\Delta t</annotation></semantics></math></p>
+<p>There we go!</p>
+<p>We now have 2 ways to get the robot’s position, integrating the <strong>IMU</strong> or integrating the <strong>wheel encoder</strong> information!</p>
+<figure><img src='L15_files/cae7a0ee5bd6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Dead-Reckoning</h2>
+<p>There are multiple ways of integrating; however, we can get a slightly more accurate result depending on how we do it.</p>
+<p>Specifically, instead of doing the Riemann sum (rectangle rule) we can do the Trapezoidal rule. In lab <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>x</mi><annotation encoding="application/x-tex">x</annotation></semantics></math>, represents the heading <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>φ</mi><annotation encoding="application/x-tex">\varphi</annotation></semantics></math>, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>⋅</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f( \cdot )</annotation></semantics></math>, represents the gyro reading.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>t</mi></msub><mo>=</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><mfrac><mn>1</mn><mn>2</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mi>t</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>f</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>x</mi><mrow><mi>t</mi><mo>−</mo><mn>1</mn></mrow></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="true" form="postfix">)</mo></mrow><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">x_{t} = x_{t - 1} + \frac{1}{2}\left( f(x_{t}) + f(x_{t - 1}) \right)\mathrm{\Delta}t</annotation></semantics></math></p>
+<figure><img src='L15_files/d9ed0a680bb1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/74b00b98ab05.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Dead-Reckoning</h2>
+<p>Given the 2 methods of calculating the robot’s position, if we run this integration for 10 minutes, will the robot’s calculated position match its real physical location?</p>
+<p>Will the IMU and the wheel encoder measurements match?</p>
+<p>Absolutely not! Dead-reckoning is subject to unbounded accumulating errors.</p>
+<p>Any small measurement error is added to the previous state, meaning the error grows infinitely over time.</p>
+<p>This is known as drift. <strong>Odometry Drift </strong>for wheel encoders and <strong>IMU Drift </strong>for the IMU.</p>
+<p>In later lectures we will learn about the <strong>Kalman Filter</strong> to be able to <strong>fuse</strong> both sensors to get a more accurate measurement!</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Errors</h2>
+
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Errors</h2>
+<p>There are 2-types of errors in measurements,</p>
+<p><strong>Systematic Error:</strong></p>
+<ul>
+<li>Built into the physical mechanism of the sensor
+</li>
+<li>Always occurs, with the same value, when we the instrument in the same way and in the same case
+</li>
+<li>Can often be accounted for
+</li></ul>
+<p>Examples:</p>
+<ul>
+<li>Unequal wheel diameter
+</li>
+<li>Constant accelerometer bias
+</li></ul>
+<figure><img src='L15_files/40f2db52e56b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Observational_error'>https://en.wikipedia.org/wiki/Observational_error</a></p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Errors</h2>
+<p>There are 2-types of errors in measurements,</p>
+<p><strong>Random Error:</strong></p>
+<ul>
+<li>Random and due to environment factors
+</li>
+<li>May vary from observation to another
+</li>
+<li>These fluctuations may be in part due to interference of the environment with the measurement process
+</li>
+<li>Much harder to model (often assumed to be Gaussian)
+</li></ul>
+<p>Examples:</p>
+<ul>
+<li>Wheel slip
+</li>
+<li>Loose components
+</li></ul>
+<figure><img src='L15_files/40f2db52e56b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Observational_error'>https://en.wikipedia.org/wiki/Observational_error</a></p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Errors</h2>
+<p>In robotics the best way to handle noise is just by adding more sensors / different sensors.</p>
+<p>The more different opinions / viewpoints you have the more likely that the majority will agree or will provide useful information to help compensate from the fault of others!</p>
+<p>How does one calculate how much the error drift?</p>
+<p>To help combat heading drift from encoders, we use the Z-axis rate gyro from our IMU.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>φ</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>t</mi><mo>+</mo><mn>1</mn></mrow></msub><mo>=</mo><msub><mi>φ</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>+</mo><msub><mi>ω</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi><mo>,</mo><mi>t</mi></mrow></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\varphi_{gyro,\ t + 1} = \varphi_{gyro,t} + \omega_{gyro,t}\Delta t</annotation></semantics></math></p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Errors</h2>
+<p>A Gyroscope’s output is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><msub><mi>ω</mi><mrow><mi>t</mi><mi>r</mi><mi>u</mi><mi>e</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>b</mi><mi>i</mi><mi>a</mi><mi>s</mi></mrow></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\omega_{gyro,t} = \omega_{true,t} + \epsilon_{bias} + \epsilon_{noise}</annotation></semantics></math></p>
+<p>We assume that the noise <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ϵ</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub><mo>∼</mo><mi mathvariant="script">𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><msup><mi>σ</mi><mn>2</mn></msup><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\epsilon_{noise}\sim\mathcal{N}\left( 0,\sigma^{2} \right)</annotation></semantics></math>, is “White Noise”, zero mean Gaussian noise.</p>
+<p>When we integrate the bias over time we:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mo>∫</mo><mrow></mrow><mrow></mrow></msubsup><msub><mi>ϵ</mi><mrow><mi>b</mi><mi>i</mi><mi>a</mi><mi>s</mi></mrow></msub><mi>d</mi><mi>t</mi><mo>=</mo><msub><mi>ϵ</mi><mrow><mi>b</mi><mi>i</mi><mi>a</mi><mi>s</mi></mrow></msub><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\int_{}^{}\epsilon_{bias}dt = \epsilon_{bias}\mathrm{\Delta}t</annotation></semantics></math></p>
+<p>If the bias just 0.05 degrees / sec, how far off is our heading after 5 minutes?</p>
+<p><strong>15 degrees!</strong></p>
+<p>This is why we calibrate the IMU to measure and subtract the bias!</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Errors</h2>
+<p>Now with the bias removed we now have White Noise that remains.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>=</mo><msub><mi>ω</mi><mrow><mi>t</mi><mi>r</mi><mi>u</mi><mi>e</mi><mo>,</mo><mi>t</mi></mrow></msub><mo>+</mo><msub><mi>ϵ</mi><mrow><mi>n</mi><mi>o</mi><mi>i</mi><mi>s</mi><mi>e</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\omega_{gyro,t} = \omega_{true,t} + \epsilon_{noise}</annotation></semantics></math></p>
+<p>Integrating white noise results in a “<strong>Random Walk</strong>” (a Wiener process in stochastic calculus).</p>
+<p>The mean of the error over multiple “Random Walk” runs is centered at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math>.</p>
+<p>The variance of the error grows linearly with time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>σ</mi><mi>φ</mi><mn>2</mn></msubsup><mo>=</mo><msubsup><mi>σ</mi><mi>ω</mi><mn>2</mn></msubsup><mi mathvariant="normal">Δ</mi><mi>t</mi></mrow><annotation encoding="application/x-tex">\sigma_{\varphi}^{2} = \sigma_{\omega}^{2}\Delta t</annotation></semantics></math>.</p>
+<p>The standard deviation (the actual angular error) grows proportional to the square root of time <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>∝</mo><mspace width="0.222em"></mspace><msqrt><mi>t</mi></msqrt></mrow><annotation encoding="application/x-tex">\propto \ \sqrt{t}</annotation></semantics></math>. The math for proving this is very complicated, so just take it as truth!</p>
+<p>Thus, over long period, the gyro’s heading becomes entirely unreliable!</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Errors</h2>
+<figure><img src='L15_files/c8e8d653bac7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Errors</h2>
+<figure><img src='L15_files/9f7b1dd8f530.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L15_files/2790673f3972.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Errors</h2>
+<p><strong>Encoders</strong> are good at low speeds and measuring exact distance, but terrible at heading due to wheel slip.</p>
+<p><strong>Gyroscopes</strong> are highly accurate for rapid rotations and <strong>immune to wheel slip</strong>, but drift over time due to integrated noise.</p>
+<p>Sensor Fusion is the mathematical process of combining these complementary sensors.</p>
+<p>We use algorithms like Complementary Filters or Kalman Filters to merge the data.</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Errors</h2>
+<p>Very briefly the Complementary Filter (very simple filter) blends a <strong>high-pass</strong> filtered signal and a <strong>low-pass</strong> filtered signal.</p>
+<p>For heading, we pass the integrated Gyro data through a <strong>High-Pass</strong> filter (trusting it in the short term).</p>
+<p>We pass an absolute heading measurement (like a Magnetometer, if available) through a <strong>Low-Pass</strong> filter (trusting it in the long term).</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>φ</mi><mrow><mi>f</mi><mi>u</mi><mi>s</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>=</mo><mi>α</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>φ</mi><mrow><mi>f</mi><mi>u</mi><mi>s</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>+</mo><msub><mi>ω</mi><mrow><mi>g</mi><mi>y</mi><mi>r</mi><mi>o</mi></mrow></msub><mi mathvariant="normal">Δ</mi><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>φ</mi><mrow><mi>m</mi><mi>a</mi><mi>g</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\varphi_{fused} = \alpha\left( \varphi_{fused} + \omega_{gyro}\Delta t \right) + (1 - \alpha)\left( \varphi_{mag} \right)</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> is a tuning constant close to 1 (e.g., 0.98).</p>
+<p>This is essential an <strong>exponential moving average</strong>,</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> SLAM(A VERY brief introduction.)</h2>
+
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> SLAM</h2>
+<p>Even with perfect sensor fusion of internal sensors, drift will eventually occur.</p>
+<p>To truly fix our global position, we must look at the external world using active or passive sensors.</p>
+<p>We detect <strong>Landmarks</strong>: recognizable, distinct features in the environment with known coordinates.</p>
+<p>When we see a landmark, we calculate our relative distance to it and use that to instantly reset our accumulated odometry error.</p>
+<p>When you are driving / walking and you are lost what are some landmarks that you use to relocate yourself?</p>
+<p>Examples:</p>
+<ul>
+<li>Specific buildings
+</li>
+<li>Specific road names
+</li></ul>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> SLAM</h2>
+<p>The 2 sensors that we can use in our robot is the LiDAR and the camera.</p>
+<p>For the camera, we can create specific tags to place in the environment as landmarks. The most common is called AprilTags,</p>
+<p>If you cannot place landmarks in your environment, then it becomes much more complicated as a process:</p>
+<ul>
+<li>Look at images, find pixels that represent landmarks
+</li>
+<li>At the next frame match to find those previous landmarks
+</li>
+<li>Calculate the 6DOF movement your camera did to achieve the landmark transform
+</li>
+<li>Calculculate the odometry
+</li>
+<li>If you perform a loop, correct any error through loop closure
+</li></ul>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> SLAM</h2>
+<figure><img src='L15_files/51419be1ce06.png' alt='The visualization interface showing the results of the ORB-SLAM and... |  Download Scientific Diagram' loading='lazy'></figure>
+<p><a href='https://www.researchgate.net/publication/355183350_PSL-SLAM_a_monocular_SLAM_system_using_points_and_structure_lines_in_Manhattan_World'>https://www.researchgate.net/publication/355183350_PSL-SLAM_a_monocular_SLAM_system_using_points_and_structure_lines_in_Manhattan_World</a></p>
+<figure><img src='L15_files/fd424ae8d986.jpg' alt='AprilTag' loading='lazy'></figure>
+<p><a href='https://april.eecs.umich.edu/software/apriltag'>https://april.eecs.umich.edu/software/apriltag</a></p>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> SLAM</h2>
+<p>What if there are no AprilTags and we don’t know the map beforehand?</p>
+<p>We use <strong>SLAM: Simultaneous Localization and Mapping</strong>.</p>
+<p>The rapidly spinning LiDAR generates a dense 2D point cloud.</p>
+<p>As the robot moves, it takes a new point cloud scan and compares it to the previous scan.</p>
+<p>How do we align two-point clouds taken a few seconds apart?</p>
+<p>The <strong>Iterative Closest Point </strong>(ICP) algorithm rotates and translates the new scan until it best overlaps with the old scan.</p>
+<p>The required rotation and translation to make them match is exactly how much the robot moved.</p>
+<p>This provides highly accurate odometry without relying on wheel friction!</p>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> SLAM</h2>
+<figure><img src='L15_files/bec076b3247c.gif' alt='iterative-closest-point-stanford-bunny-converging-iterations-point2point-point2plane' loading='lazy'></figure>
+<p><a href='https://learnopencv.com/iterative-closest-point-icp-explained/'>https://learnopencv.com/iterative-closest-point-icp-explained/</a></p>
+<figure><img src='L15_files/5451ec415048.gif' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Questions?</h2>
+
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> End of Lecture 15</h2>
+
+
+</section>
+</main></body></html>

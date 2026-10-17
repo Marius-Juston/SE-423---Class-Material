@@ -1,0 +1,468 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L17: SE 423: Introduction to MechatronicsLecture 17: Vision Processing, Cameras, Blob DetectionMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L17: SE 423: Introduction to MechatronicsLecture 17: Vision Processing, Cameras, Blob DetectionMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L17.pdf">PDF</a> · <a href="L17.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (44)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 17: Vision Processing, Cameras, Blob DetectionMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Computer Vision</a></li><li><a href='#s6'>Preface</a></li><li><a href='#s7'>Camera Vision</a></li><li><a href='#s8'>Camera Vision</a></li><li><a href='#s9'>Camera Vision</a></li><li><a href='#s10'>CMOS</a></li><li><a href='#s11'>Camera Vision</a></li><li><a href='#s12'>Camera Vision</a></li><li><a href='#s13'>Camera Vision</a></li><li><a href='#s14'>Camera Vision</a></li><li><a href='#s15'>Camera Vision</a></li><li><a href='#s16'>Color</a></li><li><a href='#s17'>Camera Vision</a></li><li><a href='#s18'>Camera Vision</a></li><li><a href='#s19'>Camera Vision</a></li><li><a href='#s20'>Camera Vision</a></li><li><a href='#s21'>Camera Vision</a></li><li><a href='#s22'>Camera Vision</a></li><li><a href='#s23'>Camera Vision</a></li><li><a href='#s24'>Camera Vision</a></li><li><a href='#s25'>Camera Vision</a></li><li><a href='#s26'>Camera Vision</a></li><li><a href='#s27'>Camera Vision</a></li><li><a href='#s28'>Camera Vision</a></li><li><a href='#s29'>Camera Vision</a></li><li><a href='#s30'>Camera Vision</a></li><li><a href='#s31'>Camera Vision</a></li><li><a href='#s32'>Camera Vision</a></li><li><a href='#s33'>Blob detection</a></li><li><a href='#s34'>Camera Vision</a></li><li><a href='#s35'>Camera Vision</a></li><li><a href='#s36'>Camera Vision</a></li><li><a href='#s37'>Camera Vision</a></li><li><a href='#s38'>Camera Vision</a></li><li><a href='#s39'>Camera Vision</a></li><li><a href='#s40'>Camera Vision</a></li><li><a href='#s41'>Camera Vision</a></li><li><a href='#s42'>Camera Vision</a></li><li><a href='#s43'>Questions?</a></li><li><a href='#s44'>End of Lecture 17</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 17: Vision Processing, Cameras, Blob DetectionMarius Juston</h2>
+<p>Wednesday, March 25th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>What does RGB stand for?
+</li>
+<li>How many colors are there? Are the lines straight?
+</li></ul>
+<figure><img src='L17_files/72e80c95bad5.gif' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/19d39bd7c3d3.png' alt='Picture without a description' loading='lazy'></figure>
+<p>check out <a href='https://michaelbach.de/ot/'>https://michaelbach.de/ot/</a> for a bunch of optical illusions!</p>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 6 this week. This a 3-week lab!</p>
+<ul>
+<li>Don’t forget to have the Lab LabVIEW application implemented before lab.
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 2 and 3 are due <strong>March 31, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 4 are due <strong>April 7, 5PM (The end of office hours)</strong>
+</li>
+<li>Remainder of <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> due on Gradescope on <strong>April 8, 9AM</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Computer Vision</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Preface</h2>
+<p>I would <strong>HIGHLY</strong> recommend you looking at:</p>
+<ul>
+<li><a href='https://visionbook.mit.edu/'>https://visionbook.mit.edu/</a>
+</li>
+<li>The webpage is a textbook with all the math, background and information for computer vision.
+</li>
+<li>We will only be doing a tiny portion of this in this lecture (there are whole grad classes for computer vision).
+</li>
+<li>It is containerized very nicely, has lots of pictures, diagrams. Each section takes 5 minutes to read.
+</li>
+<li>(also, for more CMOS details look at <a href='https://isl.stanford.edu/~abbas/ee392b/lect04.pdf'>https://isl.stanford.edu/~abbas/ee392b/lect04.pdf</a> )
+</li></ul>
+<figure><img src='L17_files/1558f8a15d76.jpg' alt='Book Cover' loading='lazy'></figure>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Camera Vision</h2>
+<p>Currently we have the LiDAR working and returning points; however, what kind of data are missing from just the LiDAR?</p>
+<p>Color, complex shapes, human vision like data</p>
+<p>Vision processing allows a robot to extract rich, high-density data from its environment.</p>
+<p>Instead of an array of 228 distances (like our LiDAR), a camera gives us millions of data points per frame (RGB per pixel).</p>
+<p>What is the primary drawback of having millions of data points per frame in a real-time mechatronic system?</p>
+<p>Computational latency; processing takes time, more memory / bandwidth is required to handle processing of the data!</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Camera Vision</h2>
+<p>Is a standard camera an active or a passive sensor?</p>
+<p>Passive.</p>
+<p>It does not emit energy; it captures ambient light bouncing off objects.</p>
+<p>Because it is passive, it is highly vulnerable to environmental changes.</p>
+<p>If the sun goes behind a cloud what happens?</p>
+<p>The pixel color changes, shadows appears, etc.</p>
+<p>How do we build robust code around this?</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Camera Vision</h2>
+<p>The main pipeline that we will follow in this class is the following:</p>
+<p>Step 1: The CMOS sensor captures photons and converts them to digital arrays.</p>
+<p>Step 2: The processor filters the image (e.g., finding specific colors).</p>
+<p>Step 3: The algorithm calculates the coordinates of the target (Centroid).</p>
+<p>Step 4: The Cascade Control loop turns the coordinates into wheel velocities.</p>
+<figure><img src='L17_files/9f2aa5679eb4.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> CMOS</h2>
+
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Camera Vision</h2>
+<figure><img src='L17_files/9f2aa5679eb4.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Camera Vision</h2>
+<p>Most modern robotics vision relies on CMOS (Complementary Metal-Oxide-Semiconductor) sensors.</p>
+<p>A CMOS sensor contains a massive 2D grid of microscopic photodiodes.</p>
+<p>When photons strike a photodiode, they excite electrons via the photoelectric effect, creating a measurable voltage.</p>
+<p>This continuous voltage is sampled and converted into a discrete digital value (usually 0-255 for an 8-bit ADC).</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Camera Vision</h2>
+<figure><img src='L17_files/e5d6660276ae.jpg' alt='CMOS Image Sensors: How They Work in Digital Microscopy | Evident' loading='lazy'></figure>
+<p><a href='https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/cmosimagesensors'>https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/cmosimagesensors</a></p>
+<p><a href='https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/cmosimagesensors'>https://evidentscientific.com/en/microscope-resource/knowledge-hub/digital-imaging/cmosimagesensors</a></p>
+<figure><img src='L17_files/827bc107397d.jpg' alt='CCD and CMOS Technology' loading='lazy'></figure>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Camera Vision</h2>
+<ul>
+<li>Readout performed by transferring one row at a time to the column storage capacitors, then reading out the row, one (or more) pixel at a time, using the column decoder and multiplexer
+</li>
+<li>In many CMOS image sensor architectures, row integration times are <em>staggerred</em> by the row / column readout time (scrolling shutter)
+</li></ul>
+<figure><img src='L17_files/1ffb0489721c.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://isl.stanford.edu/~abbas/ee392b/lect04.pdf'>https://isl.stanford.edu/~abbas/ee392b/lect04.pdf</a></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Camera Vision</h2>
+<figure><img src='L17_files/0cd146f1a726.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Color</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Camera Vision</h2>
+<figure><img src='L17_files/9f2aa5679eb4.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Camera Vision</h2>
+<p>The problem with photodiodes is that they only measure the intensity of light (how many photons hit them).</p>
+<p>What kind of problem that cause?</p>
+<p>They are inherently colorblind; they only produce a grayscale image!</p>
+<p>To see a red ball, we need a way to filter out all other wavelengths of light before they hit the photodiode.</p>
+<p>How do we make a single sensor array see Red, Green, and Blue simultaneously?</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Camera Vision</h2>
+<p>To achieve color vision, a microscopic color filter is placed over each individual photodiode.</p>
+<p>This is known as a Color Filter Array (CFA), the most common being the Bayer Filter.</p>
+<p>It assigns each pixel to capture only Red, only Green, or only Blue light.</p>
+<figure><img src='L17_files/0a7228dc02ed.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/ae09cdb785c0.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Bayer_filter'>https://en.wikipedia.org/wiki/Bayer_filter</a></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Camera Vision</h2>
+<p>The Bayer format arranges filters in a repeating <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mspace width="0.222em"></mspace><mo>×</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">2\  \times 2</annotation></semantics></math> grid.</p>
+<p>What is a problem with filtering color?</p>
+<p>We lose information! This is why most scientific instruments (on Mars for example) are in black and white to ensure capturing all the intensities!</p>
+<p>Notice anything strange about this ratio?</p>
+<p>1 Red : 2 Green : 1 Blue</p>
+<p>Why are there twice as many Green pixels as Red or Blue?</p>
+<figure><img src='L17_files/0a7228dc02ed.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Bayer_filter'>https://en.wikipedia.org/wiki/Bayer_filter</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Camera Vision</h2>
+<p>We use twice as many green filters because the human eye (specifically our cone cells) is most sensitive to green wavelengths (~550 nm).</p>
+<p>By over-sampling green, the camera captures luminance (brightness) detail that matches human perception.</p>
+<p>However, our raw array is now a mosaic of single colors.</p>
+<p>Pixel (0,0) only knows Red.</p>
+<p>How do we get RGB values for every pixel?</p>
+<figure><img src='L17_files/e0a05e40d13c.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Color_vision'>https://en.wikipedia.org/wiki/Color_vision</a></p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Camera Vision</h2>
+<p><strong>Demosaicing</strong> is the mathematical process of guessing the missing color values at each pixel location.</p>
+<p>We use surrounding pixels to calculate an average. To find the missing Green value at a Red pixel:</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>R</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>:</mo><msub><mrow><mspace width="0.222em"></mspace><mi>G</mi></mrow><mrow><mi>i</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>=</mo><mfrac><mn>1</mn><mn>4</mn></mfrac><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mrow><mi>i</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>j</mi></mrow></msub><mo>+</mo><msub><mi>G</mi><mrow><mi>i</mi><mo>+</mo><mn>1</mn><mo>,</mo><mi>j</mi></mrow></msub><mo>+</mo><msub><mi>G</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>−</mo><mn>1</mn></mrow></msub><mo>+</mo><msub><mi>G</mi><mrow><mi>i</mi><mo>,</mo><mi>j</mi><mo>+</mo><mn>1</mn></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">R_{i,j}:{\ G}_{i,j} = \frac{1}{4}\left( G_{i - 1,j} + G_{i + 1,j} + G_{i,j - 1} + G_{i,j + 1} \right)</annotation></semantics></math></p>
+<p>The camera&#x27;s internal DSP (Digital Signal Processor) usually does this before sending data to the microcontroller.</p>
+<p>This simple approach works well in areas with constant color or smooth gradients, but it can cause artifacts such as color bleeding in areas where there are abrupt changes in color or brightness especially noticeable along sharp edges in the image.</p>
+<p>Because of this, other demosaicing methods attempt to identify high-contrast edges and only interpolate along these edges, but not across them.</p>
+<p><a href='https://en.wikipedia.org/wiki/Color_vision'>https://en.wikipedia.org/wiki/Color_vision</a></p>
+<figure><img src='L17_files/13780f8b31f8.png' alt='undefined' loading='lazy'></figure>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Camera Vision</h2>
+<p>Once demosaiced, every pixel is an array of three values: <strong>R, G, B</strong>.</p>
+<p>RGB is an additive color model used by screens and sensors and each value is represented as an 8-bit value (depends on the ADC of the sensor).</p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>255</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>G</mi><mo>=</mo><mn>255</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>B</mi><mo>=</mo><mn>255</mn></mrow><annotation encoding="application/x-tex">R = 255,\ G = 255,\ B = 255</annotation></semantics></math>, what color do we see?</p>
+<p>White</p>
+<p>If <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>255</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>G</mi><mo>=</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mi>B</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">R = 255,\ G = 0,\ B = 0</annotation></semantics></math>, what color do we see?</p>
+<p>Red</p>
+<p>RGB is represented as a 3D Cartesian cube, where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi></mrow><annotation encoding="application/x-tex">x,\ y,\ z</annotation></semantics></math> correspond to Red, Green, and Blue intensities.</p>
+<figure><img src='L17_files/f6a04f6e32c0.png' alt='undefined' loading='lazy'></figure>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Camera Vision</h2>
+<p>Imagine we write code to track a red ball:</p>
+<p>if (R &gt; 200 &amp;&amp; G &lt; 50 &amp;&amp; B &lt; 50) { track(); }</p>
+<p>What happens when the robot drives under a shadow?</p>
+<p>The total light drops. The pixel might become R=100, G=10, B=10. Our code fails!</p>
+<p>In RGB, a change in lighting changes all three variables simultaneously. It couples chrominance (color) with luminance (brightness).</p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Camera Vision</h2>
+<p>To solve the shadow problem, we transform the RGB cube into a cylinder: The <strong>HSV </strong>color space.</p>
+<p>H = <strong>Hue</strong> (The actual color type, e.g., Red, Blue).</p>
+<p>S = <strong>Saturation</strong> (How pure the color is, vs. faded white).</p>
+<p>V = <strong>Value</strong> (How bright or dark the color is).</p>
+<figure><img src='L17_files/cc3206f35d21.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/HSL_and_HSV'>https://en.wikipedia.org/wiki/HSL_and_HSV</a></p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Camera Vision</h2>
+<p>In the HSV cylinder, Hue is an angle from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>0</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">0^{\circ}</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>360</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">360^{\circ}</annotation></semantics></math>.</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mn>0</mn><mo>∘</mo></msup><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">0^{\circ}\ </annotation></semantics></math>= Red,
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>120</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">120^{\circ}</annotation></semantics></math> = Green,
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>240</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">240^{\circ}</annotation></semantics></math> = Blue.
+</li></ul>
+<p>Why this is brilliant: If a red ball enters a shadow, its <strong>Value</strong> <strong>drops</strong>, but its <strong>Hue angle remains “exactly” </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn mathvariant="bold">𝟎</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">\mathbf{0}^{\circ}</annotation></semantics></math><strong>!</strong></p>
+<p>This isolates the color from the lighting condition, making our tracking algorithm more robust!</p>
+<figure><img src='L17_files/cc3206f35d21.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/HSL_and_HSV'>https://en.wikipedia.org/wiki/HSL_and_HSV</a></p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Camera Vision</h2>
+<p>Saturation is the radius (distance from the center axis).</p>
+<ul>
+<li><strong>S=0%</strong> is pure gray/white (center).
+</li>
+<li><strong>S=100%</strong> is a pure, vibrant color (edge).
+</li></ul>
+<p>Value is the height of the cylinder (0 to 100%).</p>
+<ul>
+<li><strong>V=0%</strong> is pitch black.
+</li>
+<li><strong>V=100% </strong>is fully illuminated.
+</li></ul>
+<p>To track an object, we look for pixels that fall within specific ranges.</p>
+<figure><img src='L17_files/cc3206f35d21.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/HSL_and_HSV'>https://en.wikipedia.org/wiki/HSL_and_HSV</a></p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Camera Vision</h2>
+<p>To convert from RGB to HSV the conversion is simple.</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>’</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>G</mi><mi>’</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>B</mi><mi>’</mi></mrow><annotation encoding="application/x-tex">R’,\ G’,\ B’</annotation></semantics></math> be normalized values in <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\lbrack 0,1\rbrack</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>=</mo><mi>m</mi><mi>a</mi><mi>x</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>’</mi><mo>,</mo><mi>G</mi><mi>’</mi><mo>,</mo><mi>B</mi><mi>’</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><msub><mi>C</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>=</mo><mi>m</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>R</mi><mi>’</mi><mo>,</mo><mi>G</mi><mi>’</mi><mo>,</mo><mi>B</mi><mi>’</mi><mo stretchy="false" form="postfix">)</mo><mo>,</mo></mrow><annotation encoding="application/x-tex">C_{max} = max(R’,G’,B’),\ \ C_{min} = min(R’,G’,B’),</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mo>=</mo><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>−</mo><msub><mi>C</mi><mrow><mi>m</mi><mi>i</mi><mi>n</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\Delta = C_{max} - C_{min},</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mo>=</mo><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">V = C_{max},</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>S</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="right" style="text-align: right"><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>C</mi><mi mathvariant="normal">max</mi></msub><mo>=</mo><mn>0</mn></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mi mathvariant="normal">Δ</mi><msub><mi>C</mi><mi mathvariant="normal">max</mi></msub></mfrac></mtd></mtr></mtable><mo>,</mo></mrow><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">S = \left\{ \begin{array}{r}
+0,\ C_{\max} = 0 \\
+\frac{\Delta}{C_{\max}}
+\end{array}, \right.\ </annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>H</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><msup><mn>60</mn><mo>∘</mo></msup><mspace width="0.222em"></mspace><mo>×</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>G</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>B</mi></mrow><mi mathvariant="normal">Δ</mi></mfrac><mspace width="0.222em"></mspace><mi>%</mi><mspace width="0.222em"></mspace><mn>6</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>R</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>B</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>R</mi></mrow><mi mathvariant="normal">Δ</mi></mfrac><mo>+</mo><mn>2</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>G</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mfrac><mrow><mi>R</mi><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>G</mi></mrow><mi mathvariant="normal">Δ</mi></mfrac><mspace width="0.222em"></mspace><mo>+</mo><mn>4</mn><mo>,</mo><mspace width="0.222em"></mspace><msub><mi>C</mi><mrow><mi>m</mi><mi>a</mi><mi>x</mi></mrow></msub><mo>=</mo><mspace width="0.222em"></mspace><mi>B</mi></mtd></mtr></mtable></mrow><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">H\  = \ 60^{\circ}\  \times \left\{ \begin{array}{r}
+\frac{G\  - \ B}{\Delta}\ \%\ 6,\ C_{max} = \ R \\
+\frac{B\  - \ R}{\Delta} + 2,\ C_{max} = \ G \\
+\frac{R\  - \ G}{\Delta}\  + 4,\ C_{max} = \ B
+\end{array} \right.\ </annotation></semantics></math></p>
+<figure><img src='L17_files/cc3206f35d21.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/HSL_and_HSV'>https://en.wikipedia.org/wiki/HSL_and_HSV</a></p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Camera Vision</h2>
+<figure><img src='L17_files/f0df17b4b920.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/d77d4d3bf5f6.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/74897ff2683e.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/dca64cfc4bd2.jpg' alt='Picture without a description' loading='lazy'></figure>
+<p>Which one looks the nicest?</p>
+<p>HSV value V</p>
+<p>HSL value L</p>
+<p>Original Color</p>
+<p>CIELAB L*</p>
+<p><a href='https://en.wikipedia.org/wiki/HSL_and_HSV#Disadvantages'>https://en.wikipedia.org/wiki/HSL_and_HSV#Disadvantages</a></p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Camera Vision</h2>
+<p>While HSL, HSV, and related spaces serve well enough to, for instance, choose a single color, they ignore much of the complexity of color appearance.</p>
+<p>Essentially, they trade off <strong>perceptual relevance </strong>for computation speed.</p>
+<p>HSL and HSV are simple transformations of RGB which preserve symmetries in the RGB cube unrelated to human perception.</p>
+<p>If we plot the RGB gamut in a more <strong>perceptually-uniform space</strong>, such as CIELAB, it becomes immediately clear that the red, green, and blue primaries do not have the same lightness or chroma, or evenly spaced hues.</p>
+<p>Because HSL and HSV are defined purely with reference to some RGB space, they are not absolute color spaces: to specify a color precisely requires reporting not only HSL or HSV values, but also the characteristics of the RGB space they are based on, including the gamma correction in use.</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Camera Vision</h2>
+<p>The <strong>CIELAB</strong> space is three-dimensional and covers the entire gamut (range) of human color perception.</p>
+<p>It is based on the opponent model of human vision, where red and green form an opponent pair and blue and yellow form an opponent pair.</p>
+<p>The <strong>lightness value</strong>, L* (pronounced &quot;L star&quot;), defines <strong>black</strong> at 0 and <strong>white</strong> at 100.</p>
+<p>The <strong>a* axis </strong>is relative to the <strong>green–red </strong>opponent colors, with negative values toward green and positive values toward red.</p>
+<p>The <strong>b* axis </strong>represents the <strong>blue–yellow </strong>opponents, with negative numbers toward blue and positive toward yellow.</p>
+<p><a href='https://en.wikipedia.org/wiki/CIELAB_color_space'>https://en.wikipedia.org/wiki/CIELAB_color_space</a></p>
+<figure><img src='L17_files/f30b28a017ef.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/70079dad55d7.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Camera Vision</h2>
+<p>The lightness value, L* in CIELAB is calculated using the cube root of the relative luminance with an offset near black.</p>
+<p>This results in an effective power curve with an exponent of approximately 0.43 which represents the human eye&#x27;s response to light under daylight (photopic) conditions.</p>
+<p>The a* and b* axes are unbounded and depending on the reference white they can easily exceed ±150 to cover the human gamut (range).</p>
+<p>Nevertheless, software implementations often clamp these values for practical reasons. For instance, if integer math is being used it is common to clamp a* and b* in the range of −128 to 127.</p>
+<figure><img src='L17_files/f30b28a017ef.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L17_files/70079dad55d7.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/CIELAB_color_space'>https://en.wikipedia.org/wiki/CIELAB_color_space</a></p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Blob detection</h2>
+
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Camera Vision</h2>
+<figure><img src='L17_files/9f2aa5679eb4.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Camera Vision</h2>
+<p>Once we convert our image to HSV, we apply a <strong>Threshold. </strong></p>
+<p>We evaluate at every single pixel: “Does this pixel’s CIELAB fall within my target red range?”</p>
+<p>If YES -&gt; Pixel becomes 1 ( Whites)</p>
+<p>If NO -&gt; Pixel becomes 0 (Black).</p>
+<p>The result is a <strong>Binary Mask</strong>.</p>
+<p>We have thrown away all useless data and kept only the target representation.</p>
+<p>Does thresholding tell us exactly where the ball is?</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Camera Vision</h2>
+<p>A &quot;Blob&quot; (Binary Large Object) is a contiguous group of connected white pixels in our binary mask.</p>
+<p>Blob detection algorithms scan the image to find these groupings and label them as distinct physical objects.</p>
+<p>This is known computationally as <strong>Connected Component Labeling (CCL)</strong>.</p>
+<p>What simple graph algorithm can you think of could potentially help us?</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Camera Vision</h2>
+<p>The simplest implementation of the algorithm for the Connected Components work is as following:</p>
+<ol>
+<li>The algorithm scans the image pixel by pixel (raster scan).
+</li>
+<li>When it finds a &#x27;1&#x27;, it checks the neighboring pixels (usually 4-connectivity or 8-connectivity).
+</li>
+<li>If a neighbor is also a &#x27;1&#x27;, it assigns them the same &quot;Label&quot; (e.g., Object A).
+</li>
+<li>It uses a &quot;Union-Find&quot; data structure to merge labels if two separate groups eventually connect.
+</li></ol>
+<p>Otherwise, you can think of this as doing BFS (Breadth-First-Search) on every pixel! (The best algorithms do not do this exactly, but this is the simples way to explain)</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Camera Vision</h2>
+<p>Even with the color filtering, we can still get random glare or noise in the background that will create small fake blobs.</p>
+<p>How do we write a rule t ignore these false positives?</p>
+<p>Filter blob by <strong>Area </strong>(total pixel count), filter blob by <strong>shape </strong>(the more like a circle the more we want to keep it).</p>
+<p>If Blob.Area &lt; MIN_THRESHOLD, we discard it.</p>
+<p>We only pass the largest valid blob to the next step.</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Camera Vision</h2>
+<p>We have found the blob representing our red ball, now where is it?</p>
+<p>We need its (X, Y) coordinate in the camera frame to steer the robot. We do this by calculating the <strong>Centroid </strong>(Center of Mass ) of the blob.</p>
+<p>We compute this using <strong>Image Moments</strong>.</p>
+<p>In computer vision, a discrete image moment <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">M_{ij}</annotation></semantics></math> for a binary image <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(x,y)</annotation></semantics></math> is defined as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><munderover><mo>∑</mo><mi>x</mi><mrow></mrow></munderover><mrow><munderover><mo>∑</mo><mi>y</mi><mrow></mrow></munderover><mrow><msup><mi>x</mi><mi>i</mi></msup><msup><mi>y</mi><mi>j</mi></msup><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">M_{ij} = \sum_{x}^{}{\sum_{y}^{}{x^{i}y^{j}I(x,y)}}</annotation></semantics></math></p>
+<p>The 0th moment, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>00</mn></msub><annotation encoding="application/x-tex">M_{00}</annotation></semantics></math>, sets <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">i = 0</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>j</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">j = 0</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>00</mn></msub><mo>=</mo><munderover><mo>∑</mo><mi>x</mi><mrow></mrow></munderover><mrow><munderover><mo>∑</mo><mi>y</mi><mrow></mrow></munderover><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow></mrow><annotation encoding="application/x-tex">M_{00} = \sum_{x}^{}{\sum_{y}^{}{I(x,y)}}</annotation></semantics></math></p>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">I(x,y)</annotation></semantics></math>is either 1 or 0, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>00</mn></msub><annotation encoding="application/x-tex">M_{00}</annotation></semantics></math> is simply the total sum of white pixels. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>00</mn></msub><mo>=</mo><mi>A</mi><mi>r</mi><mi>e</mi><mi>a</mi><mspace width="0.222em"></mspace><mi>o</mi><mi>f</mi><mspace width="0.222em"></mspace><mi>t</mi><mi>h</mi><mi>e</mi><mspace width="0.222em"></mspace><mi>B</mi><mi>l</mi><mi>o</mi><mi>b</mi></mrow><annotation encoding="application/x-tex">M_{00} = Area\ of\ the\ Blob</annotation></semantics></math>.</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Camera Vision</h2>
+<p>To find the center, we need the 1st order moments, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>10</mn></msub><annotation encoding="application/x-tex">M_{10}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>M</mi><mn>01</mn></msub><annotation encoding="application/x-tex">M_{01}</annotation></semantics></math>.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>10</mn></msub><mo>=</mo><msubsup><mo>∑</mo><mi>x</mi><mrow></mrow></msubsup><mrow><msubsup><mo>∑</mo><mi>y</mi><mrow></mrow></msubsup><mi>x</mi></mrow><mo>⋅</mo><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_{10} = \sum_{x}^{}{\sum_{y}^{}x} \cdot I(x,y)</annotation></semantics></math> (This is the sum of all the X-coordinates of the white pixels).</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>M</mi><mn>01</mn></msub><mo>=</mo><msubsup><mo>∑</mo><mi>x</mi><mrow></mrow></msubsup><mrow><msubsup><mo>∑</mo><mi>y</mi><mrow></mrow></msubsup><mi>y</mi></mrow><mo>⋅</mo><mi>I</mi><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">M_{01} = \sum_{x}^{}{\sum_{y}^{}y} \cdot I(x,y)</annotation></semantics></math> (This is the sum of all the Y-coordinates of the white pixels).</p>
+<p>These act as our weighted spatial totals.</p>
+<p>To find the exact center pixel <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo>,</mo><mover><mi>y</mi><mo accent="true">¯</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left( \overline{x},\overline{y} \right)</annotation></semantics></math>, we divide the spatial totals by the total area.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo>=</mo><mfrac><msub><mi>M</mi><mn>10</mn></msub><msub><mi>M</mi><mn>00</mn></msub></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mover><mi>y</mi><mo accent="true">¯</mo></mover><mo>=</mo><mfrac><msub><mi>M</mi><mn>01</mn></msub><msub><mi>M</mi><mn>00</mn></msub></mfrac></mrow><annotation encoding="application/x-tex">\overline{x} = \frac{M_{10}}{M_{00}},\ \ \overline{y} = \frac{M_{01}}{M_{00}}</annotation></semantics></math></p>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Camera Vision</h2>
+<p>Now we have <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo>,</mo><mover><mi>y</mi><mo accent="true">¯</mo></mover><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\left( \overline{x},\overline{y} \right)</annotation></semantics></math>.</p>
+<p>Let&#x27;s say the image is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>640</mn><mspace width="0.222em"></mspace><mo>×</mo><mn>480</mn></mrow><annotation encoding="application/x-tex">640\  \times 480</annotation></semantics></math> pixels.</p>
+<p>The center of the camera is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>320</mn><mo>,</mo><mn>240</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(320,240)</annotation></semantics></math>.</p>
+<p>If our centroid is at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo>=</mo><mn>500</mn></mrow><annotation encoding="application/x-tex">\overline{x} = 500</annotation></semantics></math>, where is the ball?</p>
+<p>It is to the right of the robot.</p>
+<p>We calculate the error: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo>=</mo><mover><mi>x</mi><mo accent="true">¯</mo></mover><mo>−</mo><msub><mi>X</mi><mrow><mi>c</mi><mi>e</mi><mi>n</mi><mi>t</mi><mi>e</mi><mi>r</mi></mrow></msub><mo>=</mo><mn>500</mn><mo>−</mo><mn>320</mn><mo>=</mo><mn>180</mn></mrow><annotation encoding="application/x-tex">e = \overline{x} - X_{center} = 500 - 320 = 180</annotation></semantics></math> pixels.</p>
+<p>Given this error, we can pass this as an error to a PI controller to make the robot turn to face the target!</p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Camera Vision</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=-WRpijIHN3M'>YouTube video: Computer Vision Blob Detection (Marius Juston)</a></p>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> Questions?</h2>
+
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> End of Lecture 17</h2>
+
+
+</section>
+</main></body></html>

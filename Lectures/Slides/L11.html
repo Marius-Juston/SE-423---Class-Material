@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L11: SE 423: Introduction to MechatronicsLecture 11: PID ControlMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L11: SE 423: Introduction to MechatronicsLecture 11: PID ControlMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L11.pdf">PDF</a> · <a href="L11.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (25)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 11: PID ControlMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>PID Controller</a></li><li><a href='#s5'>PID Controller</a></li><li><a href='#s6'>PID Controller</a></li><li><a href='#s7'>PID Controller</a></li><li><a href='#s8'>PID Controller</a></li><li><a href='#s9'>PID Controller</a></li><li><a href='#s10'>PID Controller</a></li><li><a href='#s11'>PID Controller</a></li><li><a href='#s12'>PID Controller</a></li><li><a href='#s13'>PID Controller</a></li><li><a href='#s14'>PID Controller</a></li><li><a href='#s15'>Tuning</a></li><li><a href='#s16'>PID Controller</a></li><li><a href='#s17'>PID Controller</a></li><li><a href='#s18'>PID Controller</a></li><li><a href='#s19'>PID Controller</a></li><li><a href='#s20'>PID Controller – Lab 5</a></li><li><a href='#s21'>PID Controller</a></li><li><a href='#s22'>PID Controller</a></li><li><a href='#s23'>PID Controller</a></li><li><a href='#s24'>Questions?</a></li><li><a href='#s25'>End of Lecture 11</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 11: PID ControlMarius Juston</h2>
+<p>Wednesday, February 25th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 4 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> are due <strong>February 26, 9AM</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 1, 2, 3 &amp; 4 are due <strong>March 10, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li></ul>
+<p><strong>LabVIEW:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW2.pdf'>LabVIEW 2</a> are due <strong>February 26, 5PM</strong>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW questions?</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> PID Controller</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> PID Controller</h2>
+<p>There are 2 types of controllers:</p>
+<ul>
+<li><strong>Open-Loop </strong>systems: Directly dictates the output.
+</li></ul>
+<p><strong>Problems?</strong></p>
+<p>Any deviation / noise will cause you to not reach your target.</p>
+<ul>
+<li><strong>Closed-Loop </strong>systems: Utilizes feedback to compute an error metric, dynamically correcting the control effort
+</li></ul>
+<details><summary>Speaker notes</summary><p>This is like if I told you to walk blind folded across the room, you might make it</p></details>
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> PID Controller</h2>
+<p>We know it, we love it, it’s the classic PID Controller!</p>
+<p>The proportional–integral–derivative (PID) controller  is a closed-loop controller.</p>
+<p>It is extremely common due to its simplicity, both in the tuning and in the implementation ( you will see how simple it is when you implement it in the code)</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> PID Controller</h2>
+<p>The PID controller is split into 3 parts, as its name states. While each of the terms contribute to improving the output, it is not necessary to use all of them at once.</p>
+<p>As the PID controller is a closed-loop controller the input is an error signal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>−</mo><mspace width="0.222em"></mspace><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e(t)\  = \ r(t)\  - \ y(t)</annotation></semantics></math>, which represents the reference “what you want to be doing” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>r</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">r(t)</annotation></semantics></math> and the currently measured input “what you are doing now” <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">y(t)</annotation></semantics></math></p>
+<figure><img src='L11_files/3a6099cef1ac.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller'>https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller</a></p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> PID Controller</h2>
+<p>We are going to watch <a href='https://www.mathworks.com/discovery/pid-control.html'>some really good MATLAB videos </a>(I highly recommend looking at them some more!)</p>
+<p><a href='https://www.mathworks.com/videos/understanding-pid-control-part-1-what-is-pid-control--1527089264373.html'>What is a PID Controller?</a></p>
+<p>There are 2 main problems with the basic implementation of the PID loop in a real-world example. Any ideas?</p>
+<ul>
+<li><a href='https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html'>Integrator Windup</a>
+</li>
+<li><a href='https://www.mathworks.com/videos/understanding-pid-control-part-3-expanding-beyond-a-simple-derivative-1531120808026.html'>Derivative noise</a>
+</li></ul>
+<p>For the derivative term we decide that it is not worth using and the robot will follow the path well enough. It is usually more recommended to use if you have a sensor the derivative directly!</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> PID Controller</h2>
+<p>Term <strong>P</strong> is the proportional term. It is simplify defined as,</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>K</mi><mi>P</mi></msub><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(t)\  = K_{P}e(t)</annotation></semantics></math>,</p>
+<p>for example, if the error is large, the output control effort <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">u(t)</annotation></semantics></math> will be large and vice-versa.</p>
+<p>This is the most fundamental part of the PID loop, you should at least always use this term.</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> PID Controller</h2>
+<p>Term <strong>I</strong> accounts for past values of the error and integrates them over time to produce the <strong>I</strong> term</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>K</mi><mi>I</mi></msub><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mrow><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">u(t)\  = K_{I}\int_{0}^{t}{e(t)}</annotation></semantics></math>,</p>
+<p>For example, if there is a residual error after the application of proportional control, the integral terms eliminates the residual error by adding some additional control effort.</p>
+<p>When the error is eliminated, the integral term will cease to grow.</p>
+<p>It is important to bound this component such that it does not explode and make it difficult to control the system. I.e. integrator windup.</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> PID Controller</h2>
+<p>Term <strong>D</strong> accounts for future values of the error based on the current rate of change of the error.</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>K</mi><mi>D</mi></msub><mfrac><mrow><mi>d</mi><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">u(t)\  = K_{D}\frac{de(t)}{dt}</annotation></semantics></math>,</p>
+<p>In the real world, sensors are noisy and so collecting the derivative term can be difficult without an additional filter to it.</p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> PID Controller</h2>
+<p>The full form is thus,</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>u</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>=</mo><msub><mi>K</mi><mi>p</mi></msub><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo>+</mo><msub><mi>K</mi><mi>I</mi></msub><msubsup><mo>∫</mo><mn>0</mn><mi>t</mi></msubsup><mrow><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mo>+</mo><msub><mi>K</mi><mi>D</mi></msub><mfrac><mrow><mi>d</mi><mi>e</mi><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">u(t)\  = K_{p}e(t)\  + K_{I}\int_{0}^{t}{e(t)} + K_{D}\frac{de(t)}{dt}</annotation></semantics></math>,</p>
+<p>Simple as that!</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> PID Controller</h2>
+<p>#define MAX_EFFORT 10.0f</p>
+<p>struct PID {</p>
+<p>float Kp;</p>
+<p>float Ki;</p>
+<p>float integral;</p>
+<p>};</p>
+<p>float saturate(float input, float satVal){</p>
+<p>input = (input &gt; satVal)? satVal : input;</p>
+<p>input = (input &lt; -satVal)? -satVal : input;</p>
+<p>return input;</p>
+<p>}</p>
+<p>int sign(float x){</p>
+<p>if (x &gt; 0.0f) return 1;</p>
+<p>if (x &lt; 0.0f) return -1;</p>
+<p>return 0;</p>
+<p>}</p>
+<p>float PIControl(float reference, float target, float dt, struct PID *pidState){</p>
+<p>if (dt &lt;= 0.0f) return 0.0f;</p>
+<p>float error = reference - target;</p>
+<p>// Compute integral</p>
+<p>float integral = pidState-&gt;integral + error * dt;</p>
+<p>// Compute PI using tentative integral</p>
+<p>float effort = pidState-&gt;Kp * error +</p>
+<p>pidState-&gt;Ki * integral;</p>
+<p>// Saturate control input</p>
+<p>float effortSat = saturate(effort, MAX_EFFORT);</p>
+<p>// Anti-windup condition</p>
+<p>// The output is saturating</p>
+<p>// The error is the same sign as the controller output</p>
+<p>if(!(effort != effortSat &amp;&amp; sign(effort) == sign(error))){</p>
+<p>pidState-&gt;integral = integral;</p>
+<p>}</p>
+<p>return effortSat;</p>
+<p>}</p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> PID Controller</h2>
+<figure><img src='L11_files/6bb26bcd8fa3.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html'>https://www.mathworks.com/videos/understanding-pid-control-part-2-expanding-beyond-a-simple-integral-1528310418260.html</a></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Tuning</h2>
+
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> PID Controller</h2>
+<figure><img src='L11_files/9927b256ed0c.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.mathworks.com/videos/understanding-pid-control-part-4-a-pid-tuning-guide-1531124725727.html'>https://www.mathworks.com/videos/understanding-pid-control-part-4-a-pid-tuning-guide-1531124725727.html</a></p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> PID Controller</h2>
+<p>In this class we will only be doing manual tuning, it is just intuition based but given that there are only 3 gains, it is fast to find appropriate constants!</p>
+<p>The manual method for tuning is simple:</p>
+<ol>
+<li>Set all gains to 0 and start <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>p</mi></msub><annotation encoding="application/x-tex">K_{p}</annotation></semantics></math> at 1
+</li>
+<li>Keep increasing <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>P</mi></msub><annotation encoding="application/x-tex">K_{P}</annotation></semantics></math> until the output of the system causes it to oscillate
+</li>
+<li>Then set <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>P</mi></msub><annotation encoding="application/x-tex">K_{P}</annotation></semantics></math> approximately half that value
+</li>
+<li>Then increase <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>I</mi></msub><annotation encoding="application/x-tex">K_{I}</annotation></semantics></math> until any offset is corrected
+</li>
+<li>Then, optionally, increase <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math> to remove overshoot
+</li></ol>
+<p>Usually, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>P</mi></msub><annotation encoding="application/x-tex">K_{P}</annotation></semantics></math> has the highest magnitude, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>I</mi></msub><annotation encoding="application/x-tex">K_{I}</annotation></semantics></math> next and then <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math>.</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> PID Controller</h2>
+<table><thead><tr><th scope='col'>Parameter</th><th scope='col'>Rise time</th><th scope='col'>Overshoot</th><th scope='col'>Settling time</th><th scope='col'>Steady-state error</th><th scope='col'>Stability</th></tr></thead><tbody><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>P</mi></msub><annotation encoding="application/x-tex">K_{P}</annotation></semantics></math></td><td>Decrease</td><td>Increase</td><td>Small change</td><td>Decrease</td><td>Degrade</td></tr><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>I</mi></msub><annotation encoding="application/x-tex">K_{I}</annotation></semantics></math></td><td>Decrease</td><td>Increase</td><td>Increase</td><td>Eliminate</td><td>Degrade</td></tr><tr><td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math></td><td>Minor change</td><td>Decrease</td><td>Decrease</td><td>No effect in theory</td><td>Improve if <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>K</mi><mi>D</mi></msub><annotation encoding="application/x-tex">K_{D}</annotation></semantics></math> small</td></tr></tbody></table>
+<figure><img src='L11_files/eb58c09ca364.gif' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller#Manual_tuning'>https://en.wikipedia.org/wiki/Proportional%E2%80%93integral%E2%80%93derivative_controller#Manual_tuning</a></p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> PID Controller</h2>
+<p>We can try out the effect of gains here!</p>
+<p><a href='https://www.luisllamas.es/en/pid-controller-simulator/'>https://www.luisllamas.es/en/pid-controller-simulator/</a></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> PID Controller – Lab 5</h2>
+<figure><img src='L11_files/789404c40ae8.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>We have 2 PI controllers for setting the motors to the desired velocity</p>
+<p>We computed the velocities from last lab</p>
+<p>Technically not necessary since this is a feedback controller but helps with improving performance</p>
+<p>We have a desired velocity we want the robot to go at</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> PID Controller</h2>
+<figure><img src='L11_files/25740b73865b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>We have 2 PI controllers for setting the motors to the desired velocity</p>
+<p>We have a desired velocity we want the robot to go at</p>
+<p>We have a desired turn rate we want the robot to go at</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> PID Controller</h2>
+<p>We have 3 error terms,</p>
+<p>First, we have the steering error <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{steer}(t)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mspace width="0.222em"></mspace><msub><mi>ω</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mo stretchy="false" form="prefix">(</mo><mspace width="0.222em"></mspace><msub><mi>v</mi><mi>l</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>v</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{steer}(t) = \ \omega_{r}(t) - (\ v_{l}(t) - v_{r}(t)\ )</annotation></semantics></math></p>
+<p>If we tell the robot to turn right (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>ω</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>&gt;</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\omega_{r}(t) &gt; 0</annotation></semantics></math>), we expect the  right wheel to move faster than the left wheel.</p>
+<p>This is because in a differential drive system, the yaw rate is proportional to the difference between the right and left velocities <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>ω</mi><mo>∝</mo><msub><mi>v</mi><mi>r</mi></msub><mo>−</mo><msub><mi>v</mi><mi>l</mi></msub></mrow><annotation encoding="application/x-tex">\omega \propto v_{r} - v_{l}</annotation></semantics></math></p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> PID Controller</h2>
+<p>Now we have the <strong>Left Motor error </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>l</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{l}(t)</annotation></semantics></math>, receives positive feedback from the turning loop</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>l</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mtext mathvariant="normal">= </mtext><msub><mi>v</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>v</mi><mi>l</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msub><mi>K</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><msub><mi>e</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{l}(t)\text{=~}v_{r}(t) - v_{l}(t) + K_{steer}e_{steer}(t)</annotation></semantics></math></p>
+<p>Now we have the <strong>Right Motor error </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{r}(t)</annotation></semantics></math>, receives negative feedback from the turning loop</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>e</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mtext mathvariant="normal">= </mtext><msub><mi>v</mi><mi>r</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>v</mi><mi>l</mi></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><msub><mi>K</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><msub><mi>e</mi><mrow><mi>s</mi><mi>t</mi><mi>e</mi><mi>e</mi><mi>r</mi></mrow></msub><mo stretchy="false" form="prefix">(</mo><mi>t</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">e_{r}(t)\text{=~}v_{r}(t) - v_{l}(t) - K_{steer}e_{steer}(t)</annotation></semantics></math></p>
+<p>This cross couples the control loops for the steering and the velocity control. Such that you have a feedback loop for making the robot steer. And then a separate control loop to reach the robot’s target individual motor velocity.</p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Questions?</h2>
+
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> End of Lecture 11</h2>
+
+
+</section>
+</main></body></html>

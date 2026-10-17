@@ -56,7 +56,10 @@ h1,h2,h3,h4{font-family:var(--fb);font-weight:700}
 
 .sr{display:flex;align-items:center;gap:0.35rem;margin-bottom:0.35rem}
 .sr label{font-family:var(--fm);font-size:0.65rem;color:var(--dim);min-width:48px}
-.sr input[type=range]{flex:1;height:3px;-webkit-appearance:none;background:var(--border);border-radius:2px;outline:none}
+.sr input[type=range]{flex:1;height:24px;-webkit-appearance:none;background:transparent;outline:none} /* 24px target (WCAG 2.5.8), 3px track */
+.sr input[type=range]::-webkit-slider-runnable-track{height:3px;background:var(--border);border-radius:2px}
+.sr input[type=range]::-moz-range-track{height:3px;background:var(--border);border-radius:2px}
+.sr input[type=range]::-webkit-slider-thumb{margin-top:-4.5px}
 .sr input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:12px;height:12px;border-radius:50%;background:var(--accent);cursor:pointer;border:2px solid var(--bg)}
 .sv{font-family:var(--fm);font-size:0.65rem;color:var(--accent);min-width:30px;text-align:right}
 
@@ -65,11 +68,12 @@ h1,h2,h3,h4{font-family:var(--fb);font-weight:700}
 .btn.active{background:var(--accent);color:var(--bg);border-color:var(--accent)}
 .btn-go{background:var(--accent);color:var(--bg);border-color:var(--accent);font-weight:600}
 .btn-go:hover{background:var(--accent-hi)}
-.btn-r{border-color:var(--red);color:var(--red)}.btn-r:hover{background:var(--red);color:var(--bg)}
+.btn-r{border-color:var(--red);color:#FF8A3E} /* lighter orange text: 4.6:1 */.btn-r:hover{background:var(--red);color:var(--bg)}
 .bg{display:flex;gap:0.25rem;flex-wrap:wrap;margin-bottom:0.4rem}
 select{font-family:var(--fm);font-size:0.68rem;padding:0.3rem 0.4rem;border:1px solid var(--border);border-radius:4px;background:var(--surface2);color:var(--text);width:100%;margin-bottom:0.4rem}
 .ck{display:flex;align-items:center;gap:0.35rem;margin-bottom:0.3rem;font-family:var(--fm);font-size:0.68rem;color:var(--dim)}
-.ck input{accent-color:var(--accent)}
+.ck input{accent-color:var(--accent);width:18px;height:18px;margin:3px} /* 24px target with its margin */
+.ck{min-height:24px;cursor:pointer}
 .sr input:disabled{opacity:.3;cursor:not-allowed}.sr input:disabled~.sv{opacity:.4}
 
 canvas{border:1px solid var(--border);border-radius:6px;background:var(--canvas-bg);cursor:crosshair}
@@ -78,7 +82,7 @@ canvas{border:1px solid var(--border);border-radius:6px;background:var(--canvas-
 .ic{background:var(--surface);border:1px solid var(--border);border-radius:6px;padding:0.6rem;margin-bottom:0.5rem;font-size:0.82rem}
 .ic h4{font-size:0.65rem;color:var(--purple);margin-bottom:0.25rem;text-transform:uppercase;letter-spacing:.05em}
 .ic p{color:var(--dim);font-size:0.8rem;line-height:1.5;margin-bottom:0.3rem}.ic p:last-child{margin-bottom:0}
-.ma{font-family:var(--fm);font-size:0.68rem;color:var(--orange);background:var(--surface2);padding:0.3rem 0.5rem;border-radius:4px;display:block;margin:0.25rem 0;white-space:pre;overflow-x:auto;border-left:2px solid var(--orange)}
+.ma{font-family:var(--fm);font-size:0.68rem;color:var(--orange);background:var(--surface2);padding:0.3rem 0.5rem;border-radius:4px;display:block;margin:0.25rem 0;white-space:pre-wrap;overflow-wrap:anywhere;border-left:2px solid var(--orange)} /* wraps: no keyboard-only scroll region */
 
 .sb{font-family:var(--fm);font-size:0.65rem;color:var(--dim);padding:0.3rem 0.6rem;background:var(--surface);border-radius:4px;align-self:stretch;text-align:center;min-height:1.6rem}
 .lb{font-family:var(--fm);font-size:0.62rem;color:var(--dim);background:var(--surface2);border:1px solid var(--border);border-radius:4px;padding:0.4rem;max-height:130px;overflow-y:auto;margin-bottom:0.4rem;line-height:1.6}
@@ -133,19 +137,19 @@ input[type=checkbox]:focus-visible{outline:3px solid var(--focus);outline-offset
 
 <!-- ============ PATH PLANNING ============ -->
 <div class="section active" id="sec-pp"><div class="layout">
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ps"><h3>Map Editor</h3>
     <div class="bg"><button class="btn active" id="btn-obs" onclick="PP.setTool('obstacle');actBtn(this)">◼ Wall</button><button class="btn" id="btn-era" onclick="PP.setTool('erase');actBtn(this)">◻ Erase</button><button class="btn" id="btn-sta" onclick="PP.setTool('start');actBtn(this)">● Start</button><button class="btn" id="btn-goa" onclick="PP.setTool('goal');actBtn(this)">◎ Goal</button></div>
     <div class="bg"><button class="btn btn-r" onclick="PP.clear()">Clear</button><button class="btn" onclick="PP.preset()">Preset</button></div>
-    <div class="sr"><label>Grid</label><input type=range id=pp-gs min=10 max=40 value=20 onchange="PP.resize(+this.value);U(this)"><span class="sv" id=pp-gs-v>20</span></div>
+    <div class="sr"><label for=pp-gs>Grid</label><input type=range id=pp-gs min=10 max=40 value=20 onchange="PP.resize(+this.value);U(this)"><span class="sv" id=pp-gs-v>20</span></div>
   </div>
   <div class="ps"><h3>Start / Goal Orientation</h3>
-    <div class="sr"><label>θ start</label><input type=range id=pp-st min=-3.14 max=3.14 value=0 step=0.01 oninput="U(this);PP.draw()"><span class="sv" id=pp-st-v>0.00</span></div>
-    <div class="sr"><label>θ goal</label><input type=range id=pp-gt min=-3.14 max=3.14 value=0 step=0.01 oninput="U(this);PP.draw()"><span class="sv" id=pp-gt-v>0.00</span></div>
+    <div class="sr"><label for=pp-st>θ start</label><input type=range id=pp-st min=-3.14 max=3.14 value=0 step=0.01 oninput="U(this);PP.draw()"><span class="sv" id=pp-st-v>0.00</span></div>
+    <div class="sr"><label for=pp-gt>θ goal</label><input type=range id=pp-gt min=-3.14 max=3.14 value=0 step=0.01 oninput="U(this);PP.draw()"><span class="sv" id=pp-gt-v>0.00</span></div>
     <p style="font-size:.62rem;color:var(--dim);font-family:var(--fm)">Grid frame: x = column (→ right), y = row (→ down). θ=0 → right, π/2 → down, ±π → left, −π/2 → up (so +θ turns clockwise on screen).</p>
   </div>
   <div class="ps"><h3>Algorithm</h3>
-    <select id=pp-al onchange="PP.algoUI()">
+    <select id=pp-al aria-label="Planning algorithm" onchange="PP.algoUI()">
       <option value=a4>A* — 4-Connectivity</option>
       <option value=a8 selected>A* — 8-Connectivity</option>
       <option value=td>A* Turn-and-Drive (x,y,θ)</option>
@@ -153,41 +157,41 @@ input[type=checkbox]:focus-visible{outline:3px solid var(--focus);outline-offset
       <option value=ha>Hybrid A* + Analytic Expansion</option>
     </select>
     <div id=pp-ho style="display:none">
-      <div class="sr"><label>Steers</label><input type=range id=pp-ns min=3 max=11 value=5 step=2 oninput="U(this)"><span class="sv" id=pp-ns-v>5</span></div>
-      <div class="sr"><label>Arc L</label><input type=range id=pp-al2 min=0.3 max=3 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-al2-v>1.5</span></div>
-      <div class="sr"><label>ω max</label><input type=range id=pp-hw min=0.3 max=3 value=1.2 step=.1 oninput="U(this)"><span class="sv" id=pp-hw-v>1.2</span></div>
-      <div class="sr"><label>θ tol</label><input type=range id=pp-htol min=0.1 max=1.6 value=0.5 step=.05 oninput="U(this)"><span class="sv" id=pp-htol-v>0.50</span></div>
+      <div class="sr"><label for=pp-ns>Steers</label><input type=range id=pp-ns min=3 max=11 value=5 step=2 oninput="U(this)"><span class="sv" id=pp-ns-v>5</span></div>
+      <div class="sr"><label for=pp-al2>Arc L</label><input type=range id=pp-al2 min=0.3 max=3 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-al2-v>1.5</span></div>
+      <div class="sr"><label for=pp-hw>ω max</label><input type=range id=pp-hw min=0.3 max=3 value=1.2 step=.1 oninput="U(this)"><span class="sv" id=pp-hw-v>1.2</span></div>
+      <div class="sr"><label for=pp-htol>θ tol</label><input type=range id=pp-htol min=0.1 max=1.6 value=0.5 step=.05 oninput="U(this)"><span class="sv" id=pp-htol-v>0.50</span></div>
     </div>
     <div id=pp-to style="display:none">
-      <div class="sr"><label>θ pen.</label><input type=range id=pp-tp min=0 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=pp-tp-v>0.5</span></div>
+      <div class="sr"><label for=pp-tp>θ pen.</label><input type=range id=pp-tp min=0 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=pp-tp-v>0.5</span></div>
     </div>
     <div class="bg" style="margin-top:.3rem">
       <button class="btn btn-go" onclick="PP.plan()" style="flex:1">▶ Plan</button>
       <button class="btn" onclick="PP.stepP()">⏭ Step</button>
-      <button class="btn btn-r" onclick="PP.resetP()">⏹</button>
+      <button class="btn btn-r" onclick="PP.resetP()" aria-label="Stop and reset">⏹</button>
     </div>
-    <div class="sr"><label>Speed</label><input type=range id=pp-ps min=1 max=80 value=15 oninput="U(this)"><span class="sv" id=pp-ps-v>15</span></div>
+    <div class="sr"><label for=pp-ps>Speed</label><input type=range id=pp-ps min=1 max=80 value=15 oninput="U(this)"><span class="sv" id=pp-ps-v>15</span></div>
   </div>
   <div class="ps"><h3>Lyapunov Controller</h3>
-    <div class="sr"><label>Kx</label><input type=range id=pp-kx min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-kx-v>1.5</span></div>
-    <div class="sr"><label>Ky</label><input type=range id=pp-ky min=0.1 max=10 value=5 step=.1 oninput="U(this)"><span class="sv" id=pp-ky-v>5.0</span></div>
-    <div class="sr"><label>Kθ</label><input type=range id=pp-kt min=0.1 max=8 value=3 step=.1 oninput="U(this)"><span class="sv" id=pp-kt-v>3.0</span></div>
-    <div class="sr"><label>v max</label><input type=range id=pp-vm min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=pp-vm-v>2.0</span></div>
-    <div class="sr"><label>ω max</label><input type=range id=pp-om min=0.3 max=4 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-om-v>1.5</span></div>
-    <div class="sr"><label>v ref</label><input type=range id=pp-vr min=0.1 max=3 value=0.8 step=.1 oninput="U(this)"><span class="sv" id=pp-vr-v>0.8</span></div>
-    <div class="sr"><label>dt</label><input type=range id=pp-dt min=0.01 max=0.15 value=0.05 step=.01 oninput="U(this)"><span class="sv" id=pp-dt-v>0.05</span></div>
-    <div class="sr"><label>Goal tol</label><input type=range id=pp-wt min=0.1 max=1.5 value=0.5 step=.05 oninput="U(this)"><span class="sv" id=pp-wt-v>0.50</span></div>
+    <div class="sr"><label for=pp-kx>Kx</label><input type=range id=pp-kx min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-kx-v>1.5</span></div>
+    <div class="sr"><label for=pp-ky>Ky</label><input type=range id=pp-ky min=0.1 max=10 value=5 step=.1 oninput="U(this)"><span class="sv" id=pp-ky-v>5.0</span></div>
+    <div class="sr"><label for=pp-kt>Kθ</label><input type=range id=pp-kt min=0.1 max=8 value=3 step=.1 oninput="U(this)"><span class="sv" id=pp-kt-v>3.0</span></div>
+    <div class="sr"><label for=pp-vm>v max</label><input type=range id=pp-vm min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=pp-vm-v>2.0</span></div>
+    <div class="sr"><label for=pp-om>ω max</label><input type=range id=pp-om min=0.3 max=4 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=pp-om-v>1.5</span></div>
+    <div class="sr"><label for=pp-vr>v ref</label><input type=range id=pp-vr min=0.1 max=3 value=0.8 step=.1 oninput="U(this)"><span class="sv" id=pp-vr-v>0.8</span></div>
+    <div class="sr"><label for=pp-dt>dt</label><input type=range id=pp-dt min=0.01 max=0.15 value=0.05 step=.01 oninput="U(this)"><span class="sv" id=pp-dt-v>0.05</span></div>
+    <div class="sr"><label for=pp-wt>Goal tol</label><input type=range id=pp-wt min=0.1 max=1.5 value=0.5 step=.05 oninput="U(this)"><span class="sv" id=pp-wt-v>0.50</span></div>
   </div>
   <div class="ps"><h3>Simulation</h3>
-    <div class="bg"><button class="btn btn-go" onclick="PP.sim()" id=pp-sb style="flex:1">▶ Simulate</button><button class="btn" onclick="PP.stepS()">⏭</button><button class="btn btn-r" onclick="PP.resetS()">⏹</button></div>
-    <div class="sr"><label>Speed</label><input type=range id=pp-ss min=1 max=30 value=5 oninput="U(this)"><span class="sv" id=pp-ss-v>5</span></div>
-    <div class="ck"><input type=checkbox id=pp-se checked> Explored</div>
-    <div class="ck"><input type=checkbox id=pp-sh checked> Heading</div>
-    <div class="ck"><input type=checkbox id=pp-sp checked> Error plots</div>
+    <div class="bg"><button class="btn btn-go" onclick="PP.sim()" id=pp-sb style="flex:1">▶ Simulate</button><button class="btn" onclick="PP.stepS()" aria-label="Step">⏭</button><button class="btn btn-r" onclick="PP.resetS()" aria-label="Stop and reset">⏹</button></div>
+    <div class="sr"><label for=pp-ss>Speed</label><input type=range id=pp-ss min=1 max=30 value=5 oninput="U(this)"><span class="sv" id=pp-ss-v>5</span></div>
+    <label class="ck"><input type=checkbox id=pp-se checked> Explored</label>
+    <label class="ck"><input type=checkbox id=pp-sh checked> Heading</label>
+    <label class="ck"><input type=checkbox id=pp-sp checked> Error plots</label>
   </div>
 </div>
 
-<div class="cc">
+<div class="cc" tabindex="0" role="region" aria-label="Visualization">
   <div class="lg">
     <div class="li"><div class="ld" style="background:var(--red)"></div>Planned</div>
     <div class="li"><div class="ld" style="background:var(--cyan)"></div>Reverse / smoothed ref</div>
@@ -208,7 +212,7 @@ input[type=checkbox]:focus-visible{outline:3px solid var(--focus);outline-offset
   </div>
 </div>
 
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ps"><h3>Metrics</h3>
     <div class="mt"><div class="mb"><div class="v" id=m-pl>—</div><div class="l">Path Len</div></div><div class="mb"><div class="v" id=m-ne>—</div><div class="l">Explored</div></div><div class="mb"><div class="v" id=m-tl>—</div><div class="l">Traj Len</div></div><div class="mb"><div class="v" id=m-me>—</div><div class="l">Max |e|</div></div></div>
   </div>
@@ -252,26 +256,26 @@ y' = y − (v/ω)·[cos(θ+ωΔt) − cos(θ)]
 
 <!-- ============ DUBINS & REEDS-SHEPP ============ -->
 <div class="section" id="sec-cv"><div class="layout">
-<div class="panel">
-  <div class="ps"><h3>Curve Type</h3><select id=cv-tp onchange="CV.draw()"><option value=dubins>Dubins (forward only)</option><option value=reeds>Reeds-Shepp (fwd + reverse)</option></select>
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
+  <div class="ps"><h3>Curve Type</h3><select id=cv-tp aria-label="Curve type" onchange="CV.draw()"><option value=dubins>Dubins (forward only)</option><option value=reeds>Reeds-Shepp (fwd + reverse)</option></select>
     <p style="font-size:.62rem;color:var(--dim);font-family:var(--fm)">World frame: x → right, y → up, θ counter-clockwise from +x (L = CCW turn).</p></div>
   <div class="ps"><h3>Start Pose</h3>
-    <div class="sr"><label>x₁</label><input type=range id=cv-sx min=1 max=18 value=3 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sx-v>3.0</span></div>
-    <div class="sr"><label>y₁</label><input type=range id=cv-sy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sy-v>10.0</span></div>
-    <div class="sr"><label>θ₁</label><input type=range id=cv-sa min=-3.14 max=3.14 value=0 step=.01 oninput="U(this);CV.draw()"><span class="sv" id=cv-sa-v>0.00</span></div>
+    <div class="sr"><label for=cv-sx>x₁</label><input type=range id=cv-sx min=1 max=18 value=3 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sx-v>3.0</span></div>
+    <div class="sr"><label for=cv-sy>y₁</label><input type=range id=cv-sy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-sy-v>10.0</span></div>
+    <div class="sr"><label for=cv-sa>θ₁</label><input type=range id=cv-sa min=-3.14 max=3.14 value=0 step=.01 oninput="U(this);CV.draw()"><span class="sv" id=cv-sa-v>0.00</span></div>
   </div>
   <div class="ps"><h3>Goal Pose</h3>
-    <div class="sr"><label>x₂</label><input type=range id=cv-gx min=1 max=18 value=16 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gx-v>16.0</span></div>
-    <div class="sr"><label>y₂</label><input type=range id=cv-gy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gy-v>10.0</span></div>
-    <div class="sr"><label>θ₂</label><input type=range id=cv-ga min=-3.14 max=3.14 value=1.57 step=.01 oninput="U(this);CV.draw()"><span class="sv" id=cv-ga-v>1.57</span></div>
+    <div class="sr"><label for=cv-gx>x₂</label><input type=range id=cv-gx min=1 max=18 value=16 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gx-v>16.0</span></div>
+    <div class="sr"><label for=cv-gy>y₂</label><input type=range id=cv-gy min=1 max=18 value=10 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-gy-v>10.0</span></div>
+    <div class="sr"><label for=cv-ga>θ₂</label><input type=range id=cv-ga min=-3.14 max=3.14 value=1.57 step=.01 oninput="U(this);CV.draw()"><span class="sv" id=cv-ga-v>1.57</span></div>
   </div>
   <div class="ps"><h3>Parameters</h3>
-    <div class="sr"><label>Radius</label><input type=range id=cv-r min=0.5 max=5 value=2 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-r-v>2.0</span></div>
+    <div class="sr"><label for=cv-r>Radius</label><input type=range id=cv-r min=0.5 max=5 value=2 step=.1 oninput="U(this);CV.draw()"><span class="sv" id=cv-r-v>2.0</span></div>
     <div class="ck"><input type=checkbox id=cv-sc checked onchange="CV.draw()"> Turning circles</div>
     <div class="ck"><input type=checkbox id=cv-sa2 onchange="CV.draw()"> Show all candidate words</div>
   </div>
 </div>
-<div class="cc">
+<div class="cc" tabindex="0" role="region" aria-label="Visualization">
   <div class="lg">
     <div class="li"><div class="ld" style="background:var(--green)"></div>Forward (shortest)</div>
     <div class="li"><div class="ld" style="background:var(--red)"></div>Reverse (shortest)</div>
@@ -283,7 +287,7 @@ y' = y − (v/ω)·[cos(θ+ωΔt) − cos(θ)]
   <span class="cl">Candidate words (length in world units, ★ = shortest)</span>
   <div class="lb" id=cv-list style="align-self:stretch;max-height:160px"></div>
 </div>
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ic"><h4>Dubins Curves</h4>
     <p>Shortest path for a <b>forward-only</b> car with minimum turning radius r (Dubins, 1957). The optimum is always one of 6 words:</p>
     <span class="ma">CSC: LSL  RSR  LSR  RSL
@@ -307,33 +311,33 @@ e.g. L+ R− L+  (fwd-left, back-right, fwd-left)</span>
 
 <!-- ============ TRAJECTORY PLANNING ============ -->
 <div class="section" id="sec-tr"><div class="layout">
-<div class="panel">
-  <div class="ps"><h3>Polynomial Order</h3><select id=tr-or onchange="TR.go()"><option value=cubic>Cubic (4 constraints)</option><option value=quintic selected>Quintic (6 constraints)</option></select></div>
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
+  <div class="ps"><h3>Polynomial Order</h3><select id=tr-or aria-label="Polynomial order" onchange="TR.go()"><option value=cubic>Cubic (4 constraints)</option><option value=quintic selected>Quintic (6 constraints)</option></select></div>
   <div class="ps"><h3>Start Conditions</h3>
-    <div class="sr"><label>x₀</label><input type=range id=tr-x0 min=0 max=10 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-x0-v>0.0</span></div>
-    <div class="sr"><label>ẋ₀</label><input type=range id=tr-v0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-v0-v>0.0</span></div>
-    <div class="sr"><label>ẍ₀</label><input type=range id=tr-a0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-a0-v>0.0</span></div>
+    <div class="sr"><label for=tr-x0>x₀</label><input type=range id=tr-x0 min=0 max=10 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-x0-v>0.0</span></div>
+    <div class="sr"><label for=tr-v0>ẋ₀</label><input type=range id=tr-v0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-v0-v>0.0</span></div>
+    <div class="sr"><label for=tr-a0>ẍ₀</label><input type=range id=tr-a0 min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-a0-v>0.0</span></div>
   </div>
   <div class="ps"><h3>End Conditions</h3>
-    <div class="sr"><label>xf</label><input type=range id=tr-xf min=0 max=10 value=8 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-xf-v>8.0</span></div>
-    <div class="sr"><label>ẋf</label><input type=range id=tr-vf min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vf-v>0.0</span></div>
-    <div class="sr"><label>ẍf</label><input type=range id=tr-af min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-af-v>0.0</span></div>
+    <div class="sr"><label for=tr-xf>xf</label><input type=range id=tr-xf min=0 max=10 value=8 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-xf-v>8.0</span></div>
+    <div class="sr"><label for=tr-vf>ẋf</label><input type=range id=tr-vf min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vf-v>0.0</span></div>
+    <div class="sr"><label for=tr-af>ẍf</label><input type=range id=tr-af min=-3 max=3 value=0 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-af-v>0.0</span></div>
   </div>
   <div class="ps"><h3>Parameters</h3>
-    <div class="sr"><label>T</label><input type=range id=tr-T min=0.5 max=10 value=4 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-T-v>4.0</span></div>
-    <div class="sr"><label>v max</label><input type=range id=tr-vl min=0.5 max=10 value=3 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vl-v>3.0</span></div>
-    <div class="sr"><label>a max</label><input type=range id=tr-al min=0.5 max=10 value=2 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-al-v>2.0</span></div>
+    <div class="sr"><label for=tr-T>T</label><input type=range id=tr-T min=0.5 max=10 value=4 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-T-v>4.0</span></div>
+    <div class="sr"><label for=tr-vl>v max</label><input type=range id=tr-vl min=0.5 max=10 value=3 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-vl-v>3.0</span></div>
+    <div class="sr"><label for=tr-al>a max</label><input type=range id=tr-al min=0.5 max=10 value=2 step=.1 oninput="U(this);TR.go()"><span class="sv" id=tr-al-v>2.0</span></div>
     <div class="ck"><input type=checkbox id=tr-sl checked onchange="TR.go()"> Show limit violations</div>
   </div>
 </div>
-<div class="cc">
+<div class="cc" tabindex="0" role="region" aria-label="Visualization">
   <span class="cl">Position x(t)</span><canvas id=trP width=600 height=140></canvas>
   <span class="cl">Velocity ẋ(t)</span><canvas id=trV width=600 height=140></canvas>
   <span class="cl">Acceleration ẍ(t)</span><canvas id=trA width=600 height=140></canvas>
   <span class="cl">Jerk x⃛(t)</span><canvas id=trJ width=600 height=140></canvas>
   <div class="sb" id=tr-stat>Quintic polynomial — smooth acceleration profile</div>
 </div>
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ic"><h4>Why Polynomials?</h4><p>Represent trajectories as continuous functions. Motors need smooth profiles — no instantaneous jumps in velocity or torque.</p></div>
   <div class="ic"><h4>Cubic (3rd order)</h4><span class="ma">x(t) = c₀ + c₁t + c₂t² + c₃t³</span><p>4 coefficients → constrains position &amp; velocity at endpoints. <b>Cannot</b> constrain acceleration (the ẍ₀/ẍf sliders are disabled): ẍ(0) and ẍ(T) are whatever the fit produces, so acceleration may jump at the segment endpoints.</p></div>
   <div class="ic"><h4>Quintic (5th order)</h4><span class="ma">x(t) = c₀+c₁t+c₂t²+c₃t³+c₄t⁴+c₅t⁵</span><p>6 coefficients → constrains position, velocity, <em>and acceleration</em>. Guarantees smooth acceleration.</p></div>
@@ -344,31 +348,31 @@ e.g. L+ R− L+  (fwd-left, back-right, fwd-left)</span>
 
 <!-- ============ TEB ============ -->
 <div class="section" id="sec-tb"><div class="layout">
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ps"><h3>Elastic Band (TEB-style)</h3>
     <button class="btn btn-go" onclick="TB.reset();TB.run()" style="width:100%">▶ Run</button>
     <button class="btn" onclick="TB.step()" style="width:100%;margin-top:.3rem">⏭ Step</button>
     <button class="btn btn-r" onclick="TB.reset()" style="width:100%;margin-top:.3rem">⏹ Reset</button>
   </div>
   <div class="ps"><h3>Parameters</h3>
-    <div class="sr"><label>k obs</label><input type=range id=tb-ko min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=tb-ko-v>1.5</span></div>
-    <div class="sr"><label>k smooth</label><input type=range id=tb-ks min=0.1 max=5 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-ks-v>1.0</span></div>
-    <div class="sr"><label>k vel</label><input type=range id=tb-kv min=0.1 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=tb-kv-v>0.5</span></div>
-    <div class="sr"><label>v max</label><input type=range id=tb-vx min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=tb-vx-v>2.0</span></div>
-    <div class="sr"><label>r min</label><input type=range id=tb-rm min=0.3 max=3 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-rm-v>1.0</span></div>
-    <div class="sr"><label>iters</label><input type=range id=tb-it min=10 max=500 value=150 step=10 oninput="U(this)"><span class="sv" id=tb-it-v>150</span></div>
-    <div class="sr"><label>α (lr)</label><input type=range id=tb-lr min=.001 max=.1 value=.02 step=.001 oninput="U(this)"><span class="sv" id=tb-lr-v>0.020</span></div>
+    <div class="sr"><label for=tb-ko>k obs</label><input type=range id=tb-ko min=0.1 max=5 value=1.5 step=.1 oninput="U(this)"><span class="sv" id=tb-ko-v>1.5</span></div>
+    <div class="sr"><label for=tb-ks>k smooth</label><input type=range id=tb-ks min=0.1 max=5 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-ks-v>1.0</span></div>
+    <div class="sr"><label for=tb-kv>k vel</label><input type=range id=tb-kv min=0.1 max=3 value=0.5 step=.1 oninput="U(this)"><span class="sv" id=tb-kv-v>0.5</span></div>
+    <div class="sr"><label for=tb-vx>v max</label><input type=range id=tb-vx min=0.5 max=5 value=2 step=.1 oninput="U(this)"><span class="sv" id=tb-vx-v>2.0</span></div>
+    <div class="sr"><label for=tb-rm>r min</label><input type=range id=tb-rm min=0.3 max=3 value=1 step=.1 oninput="U(this)"><span class="sv" id=tb-rm-v>1.0</span></div>
+    <div class="sr"><label for=tb-it>iters</label><input type=range id=tb-it min=10 max=500 value=150 step=10 oninput="U(this)"><span class="sv" id=tb-it-v>150</span></div>
+    <div class="sr"><label for=tb-lr>α (lr)</label><input type=range id=tb-lr min=.001 max=.1 value=.02 step=.001 oninput="U(this)"><span class="sv" id=tb-lr-v>0.020</span></div>
   </div>
   <div class="ps"><h3>Obstacles</h3><p style="font-size:.62rem;color:var(--dim);font-family:var(--fm)">Click canvas to add/remove</p>
     <button class="btn btn-r" onclick="TB.clrObs()" style="width:100%">Clear Obstacles</button>
   </div>
 </div>
-<div class="cc">
+<div class="cc" tabindex="0" role="region" aria-label="Visualization">
   <canvas id=tbC width=600 height=600></canvas>
   <div class="sb" id=tb-stat>Click to place obstacles, then run the band optimisation</div>
   <p style="font-size:.62rem;color:var(--dim);font-family:var(--fm);align-self:stretch;text-align:center">Band colour: <span style="color:var(--purple)">blue = low curvature</span> → <span style="color:var(--red)">orange = κ ≥ 1/r_min</span>. Shaded halo = obstacle influence range ρ₀.</p>
 </div>
-<div class="panel">
+<div class="panel" tabindex="0" role="region" aria-label="Controls">
   <div class="ic"><h4>Elastic Band</h4><p>The path is a chain of points pᵢ between fixed start and goal — a <b>rubber band</b> pulled taut by internal tension, pushed off obstacles, and optimised by gradient descent (Quinlan &amp; Khatib, 1993).</p><p>This demo keeps the time step ΔT between points <b>fixed</b>. A true <b>Timed</b>-Elastic-Band (TEB, Rösmann et al., 2012) also optimises every time interval ΔTᵢ (and the poses' headings), which is what lets it enforce velocity/acceleration limits exactly and minimise travel time.</p></div>
   <div class="ic"><h4>Obstacle Repulsion</h4><span class="ma">F_obs = k_obs·(1/d² − 1/ρ₀²)·n̂   (d &lt; ρ₀)</span><p>d = clearance from pᵢ to the obstacle edge (clamped ≥ 0.2), n̂ = unit vector away from the obstacle centre, ρ₀ = 1.5 (shaded halo). ∝ 1/d² close in, falling smoothly to 0 at ρ₀.</p></div>
   <div class="ic"><h4>Smoothness (tension)</h4><span class="ma">F_sm = k_s·(pᵢ₋₁ − 2pᵢ + pᵢ₊₁)

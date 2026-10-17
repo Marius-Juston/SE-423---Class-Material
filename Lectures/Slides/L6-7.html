@@ -1,0 +1,870 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L6-7: SE 423: Introduction to MechatronicsLecture 6-7: Encoders &amp; PWMMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L6-7: SE 423: Introduction to MechatronicsLecture 6-7: Encoders &amp; PWMMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L6-7.pdf">PDF</a> · <a href="L6-7.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (85)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 6-7: Encoders &amp; PWMMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Optical Encoder</a></li><li><a href='#s5'>Optical Encoder</a></li><li><a href='#s6'>Optical Encoder</a></li><li><a href='#s7'>Optical Encoder</a></li><li><a href='#s8'>Optical Encoder - Resolution</a></li><li><a href='#s9'>What are some problems?</a></li><li><a href='#s10'>Optical Encoder - Direction</a></li><li><a href='#s11'>Optical Encoder - Direction</a></li><li><a href='#s12'>Optical Encoder - Direction</a></li><li><a href='#s13'>Optical Encoder - Direction</a></li><li><a href='#s14'>Optical Encoder - Direction</a></li><li><a href='#s15'>Optical Encoder - Direction</a></li><li><a href='#s16'>What if you turn the robot off?</a></li><li><a href='#s17'>Optical Encoder</a></li><li><a href='#s18'>Optical Encoder</a></li><li><a href='#s19'>Optical Encoder</a></li><li><a href='#s20'>Optical Encoder</a></li><li><a href='#s21'>Optical Encoder</a></li><li><a href='#s22'>eQEP</a></li><li><a href='#s23'>eQEP</a></li><li><a href='#s24'>eQEP – Overview diagram</a></li><li><a href='#s25'>eQEP</a></li><li><a href='#s26'>eQEP - QPxQSELn</a></li><li><a href='#s27'>eQEP - QPxQSELn</a></li><li><a href='#s28'>eQEP</a></li><li><a href='#s29'>eQEP</a></li><li><a href='#s30'>eQEP – QDECCTL:QSRC</a></li><li><a href='#s31'>eQEP – QDECCTL:QSRC – Quadrature Count Mode</a></li><li><a href='#s32'>eQEP – QDECCTL:QSRC – Others Mode</a></li><li><a href='#s33'>eQEP</a></li><li><a href='#s34'>eQEP - CAP</a></li><li><a href='#s35'>Optical Encoder</a></li><li><a href='#s36'>eQEP</a></li><li><a href='#s37'>Optical Encoder</a></li><li><a href='#s38'>Absolute Optical Encoder</a></li><li><a href='#s39'>Absolute Encoder</a></li><li><a href='#s40'>SSI</a></li><li><a href='#s41'>SSI</a></li><li><a href='#s42'>SSI</a></li><li><a href='#s43'>SSI</a></li><li><a href='#s44'>SSI</a></li><li><a href='#s45'>SSI</a></li><li><a href='#s46'>SSI</a></li><li><a href='#s47'>SSI</a></li><li><a href='#s48'>Absolute Encoder</a></li><li><a href='#s49'>SSI</a></li><li><a href='#s50'>FIFO</a></li><li><a href='#s51'>FIFO</a></li><li><a href='#s52'>FIFO</a></li><li><a href='#s53'>FIFO</a></li><li><a href='#s54'>FIFO – Example 18-1</a></li><li><a href='#s55'>SSI</a></li><li><a href='#s56'>PWM</a></li><li><a href='#s57'>How do LEDs become dimmer?</a></li><li><a href='#s58'>PWM - Introduction</a></li><li><a href='#s59'>PWM - Introduction</a></li><li><a href='#s60'>PWM</a></li><li><a href='#s61'>PWM</a></li><li><a href='#s62'>PWM – Counter mode</a></li><li><a href='#s63'>PWM – Counter-Compare Submodule</a></li><li><a href='#s64'>PWM</a></li><li><a href='#s65'>PWM – Duty cycle</a></li><li><a href='#s66'>PWM – Duty cycle</a></li><li><a href='#s67'>PWM – Duty cycle</a></li><li><a href='#s68'>PWM – Duty cycle</a></li><li><a href='#s69'>PWM – Duty cycle</a></li><li><a href='#s70'>PWM – Duty cycle</a></li><li><a href='#s71'>PWM – Duty cycle</a></li><li><a href='#s72'>PWM – Duty cycle</a></li><li><a href='#s73'>PWM – DAC</a></li><li><a href='#s74'>Motor / Servo</a></li><li><a href='#s75'>H-Bridge</a></li><li><a href='#s76'>H-Bridge</a></li><li><a href='#s77'>H bridge</a></li><li><a href='#s78'>H bridge</a></li><li><a href='#s79'>RC Servo</a></li><li><a href='#s80'>RC Servo</a></li><li><a href='#s81'>RC Servo – Example Datasheet</a></li><li><a href='#s82'>Piezo Buzzer</a></li><li><a href='#s83'>Piezo Buzzer</a></li><li><a href='#s84'>Questions?</a></li><li><a href='#s85'>End of Lectures 6–7</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 6-7: Encoders &amp; PWMMarius Juston</h2>
+<p>Monday, February 9th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 3 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 1 &amp; 2 are due <strong>February 17, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 3 &amp; 4 are due <strong>February 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for homework 2 are due <strong>February 17, 9AM</strong>
+</li></ul>
+<p><strong>LabVIEW:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW2.pdf'>LabVIEW 2</a> are due <strong>February 26, 5PM</strong>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW questions?</p>
+<p>(All submission times / days are final! Be early, as you see these HW can be very long! The times / days are always on Canvas / Gradescope / Lectures)</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Optical Encoder</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Optical Encoder</h2>
+<p>How do we measure angular position or motion of a shaft into a digital value? Ideas?</p>
+<p>The optical encoder is composed of a light emitting device (<strong>LED</strong>), <strong>photo sensors</strong>, and a disc called a <strong>code wheel </strong>with slits (holes) in the radial direction and detects rotational position information as an optical pulse signal.</p>
+<p>When a code wheel attached to a rotating shaft such as a motor rotates, an optical pulse is generated depending on whether light emitted from a fixed light emitting element passes through a slit of the code wheel or not.</p>
+<p>Photo sensor detects the optical pulse, converts it into an electrical signal, and outputs it.</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Optical Encoder</h2>
+<figure><img src='L6-7_files/e125844d797a.png' alt='04 Principle and advantages of optical encoder | Tutorials | Rotation Angle  Sensors | Products | Asahi Kasei Microdevices (AKM)' loading='lazy'></figure>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/optical-encoder/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/optical-encoder/</a></p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Optical Encoder</h2>
+<p>2 Different types of optical encoders,</p>
+<p>An <strong>incremental</strong> optical encoder:</p>
+<ul>
+<li>The code disc divided into sectors that are alternately transparent and opaque.
+</li>
+<li>A light source is positioned on one side of the disc, and a light sensor on the other side.
+</li>
+<li>As the disc rotates, the output from the detector switches alternately on and off, depending on whether the sector appearing between the light source and the detector is transparent or opaque.
+</li></ul>
+<p>The encoder produces a stream of square wave pulses which, when counted, indicate the angular position of the shaft.</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Optical Encoder - Resolution</h2>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+<figure><img src='L6-7_files/5ea7fd757016.png' alt='Figure 2a. 4-slit incremental type rotary encoder' loading='lazy'></figure>
+<figure><img src='L6-7_files/b3f7bdba7535.png' alt='Figure 2b. 8-slit incremental type rotary encoder' loading='lazy'></figure>
+<p>4-slit incremental type rotary encoder</p>
+<p>8-slit incremental type rotary encoder</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> What are some problems?</h2>
+
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Optical Encoder - Direction</h2>
+<figure><img src='L6-7_files/3562681ce341.gif' alt='Figure 3a. Waveforms of phase A and B in clockwise' loading='lazy'></figure>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Optical Encoder - Direction</h2>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+<figure><img src='L6-7_files/97175d57484b.gif' alt='Figure 3b. Waveforms of phase A and B in counterclockwise' loading='lazy'></figure>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Optical Encoder - Direction</h2>
+<figure><img src='L6-7_files/3562681ce341.gif' alt='Figure 3a. Waveforms of phase A and B in clockwise' loading='lazy'></figure>
+<figure><img src='L6-7_files/97175d57484b.gif' alt='Figure 3b. Waveforms of phase A and B in counterclockwise' loading='lazy'></figure>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Optical Encoder - Direction</h2>
+<ul>
+<li>To encode the direction you have 2 channels, each of them offset by a phase of 90 degrees
+</li>
+<li>The rotational direction can be determined depending on which pulse of the phase A or phase B rises B.
+</li></ul>
+<ul>
+<li>By subtracting the number of pulses in reverse rotation, the amount of rotation can be accurately determined.
+</li></ul>
+<figure><img src='L6-7_files/3cdb0d147ff7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Optical Encoder - Direction</h2>
+<ul>
+<li>The combined output of (A, B), forms a 2-bit <strong>Gray code sequence</strong> (only 1 bit changes each timestep).
+</li>
+<li>The states cycle through 4 quadrants (00, 01, 10, 11)
+</li></ul>
+<p>If <strong>clockwise </strong>(CW): A leads B, the sequence is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\ 0) \rightarrow (1,0) \rightarrow (1,1) \rightarrow (0,1) \rightarrow (0,0)</annotation></semantics></math></p>
+<p>If <strong>counter-clockwise</strong> (CCW): B leads C, the sequence is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mspace width="0.222em"></mspace><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo><mo>→</mo><mo stretchy="false" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(0,\ 0) \rightarrow (0,1) \rightarrow (1,1) \rightarrow (1,0) \rightarrow (0,0)</annotation></semantics></math></p>
+<p>If I do not have an animation, I did not have time to make it.</p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Optical Encoder - Direction</h2>
+<figure><img src='L6-7_files/2d119ea5b192.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L6-7_files/769b21859ada.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> What if you turn the robot off?</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Optical Encoder</h2>
+<p>An <strong>absolute </strong>optical encoder</p>
+<ul>
+<li>An absolute optical encoder&#x27;s disc is divided up into N sectors
+<li>
+<ul>
+<li>Each sector is further divided radially along its length into opaque and transparent sections, forming a unique N-bit digital word with a maximum count of 2N – 1.
+</li></ul>
+</li>
+<li>The digital word formed radially by each sector increments in value from one sector to the next, usually employing <strong>Gray code</strong>.
+</li>
+<li><strong>Binary coding </strong>could be used but can produce large errors if a single bit is incorrectly interpreted by the sensors.
+</li>
+<li>Gray code overcomes this defect: the maximum error produced by an error in any single bit of the Gray code is only 1 LSB after the Gray code is converted into binary code.
+</li>
+<li>A set of N light sensors responds to the <strong>N-bit digital word </strong>which corresponds to the <strong>disc&#x27;s absolute angular position</strong>.
+</li></ul>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Optical Encoder</h2>
+<figure><img src='L6-7_files/13f1f1a87556.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.analog.com/media/en/training-seminars/tutorials/mt-029.pdf'>https://www.analog.com/media/en/training-seminars/tutorials/mt-029.pdf</a></p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Optical Encoder</h2>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+<figure><img src='L6-7_files/1b14ceb8d558.png' alt='Figure 4b. Absolute rotary encoder with 5 rows of slits' loading='lazy'></figure>
+<p>What type of encoding is this? Gray or binary?</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Optical Encoder</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=VKmMoT5hpVY'>YouTube video: Gray Code&#x27;s Error Reduction with Encoders (Marius Juston)</a></p>
+<p><a href='https://youtu.be/VKmMoT5hpVY'>https://youtu.be/VKmMoT5hpVY</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Optical Encoder</h2>
+<p><a href='https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/'>https://www.akm.com/global/en/products/rotation-angle-sensor/tutorial/type-mechanism-2/</a></p>
+<figure><img src='L6-7_files/e0df94c17097.gif' alt='Figure 7. Parallel output signal and serial converted output signal' loading='lazy'></figure>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> eQEP</h2>
+
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> eQEP</h2>
+<p>The eQEP peripheral is used to read data from an <strong>incremental </strong>optical encoder only.</p>
+<p>As such what is the main data that needs to be read in?</p>
+<p>The 2 phase signals!</p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> eQEP – Overview diagram</h2>
+<figure><img src='L6-7_files/eb6e71200920.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Does the decoding base on the phase signal</p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> eQEP</h2>
+<p>// setup eQEP1 pins for input</p>
+<p>EALLOW;</p>
+<p>//Disable internal pull-up for the selected output pins for reduced power consumption</p>
+<p>GpioCtrlRegs.GPAPUD.bit.GPIO20 = 1;    // Disable pull-up on GPIO20 (EQEP1A)</p>
+<p>GpioCtrlRegs.GPAPUD.bit.GPIO21 = 1;    // Disable pull-up on GPIO21 (EQEP1B)</p>
+<p>GpioCtrlRegs.GPAQSEL2.bit.GPIO20 = 2;   // Qual every 6 samples</p>
+<p>GpioCtrlRegs.GPAQSEL2.bit.GPIO21 = 2;   // Qual every 6 samples</p>
+<p>EDIS;</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> eQEP - QPxQSELn</h2>
+<p>The number of times the signal is sampled is either three samples or six samples as specified in the qualification selection (GPAQSEL1, GPAQSEL2, GPBQSEL1, and GPBQSEL2) registers. When three or six consecutive cycles are the same, then the input change will be passed through to the MCU.</p>
+<p>All the samples must be <strong>consistent within that sampling period </strong>to change its output for the next output range.</p>
+<p>Helps with reducing noise as a random change would not change the result.</p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> eQEP - QPxQSELn</h2>
+<figure><img src='L6-7_files/fba89aa955f0.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>All samples are 0, change output next cycle to be 0!</p>
+<p>Set GPIO value to 0</p>
+<p>Not all samples are 0, keep the output next cycle to be 0!</p>
+<p>Keep GPIO value to 0</p>
+<p>All samples are 1, change output next cycle to be 1!</p>
+<p>Change GPIO value to 1</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> eQEP</h2>
+<p>// setup eQEP1 pins for input</p>
+<p>// This specifies which of the possible GPIO pins will be EQEP1 functional pins.</p>
+<p>GPIO_SetupPinMux(20, GPIO_MUX_CPU1, 1); // set pin mux EQEP2A</p>
+<p>GPIO_SetupPinMux(21, GPIO_MUX_CPU1, 1); // set pin mux EQEP2B</p>
+<p>EQep1Regs.QEPCTL.bit.QPEN = 0;          // make sure eQEP in reset</p>
+<p>EQep1Regs.QDECCTL.bit.QSRC = 0;         // Quadrature count mode</p>
+<p>EQep1Regs.QPOSCTL.all = 0x0;            // Disable eQEP Position Compare</p>
+<p>EQep1Regs.QCAPCTL.all = 0x0;            // Disable eQEP Capture</p>
+<p>EQep1Regs.QEINT.all = 0x0;              // Disable all eQEP interrupts</p>
+<p>EQep1Regs.QPOSMAX = 0xFFFFFFFF;         // use full range of the 32-bit count</p>
+<p>EQep1Regs.QEPCTL.bit.FREE_SOFT = 2;     // eQEP unaffected by emulation suspend in Code Composer</p>
+<p>EQep1Regs.QPOSCNT = 0;                  // Set the initial position of the encoder</p>
+<p>EQep1Regs.QEPCTL.bit.QPEN = 1;          // Enable eQEP</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> eQEP</h2>
+<figure><img src='L6-7_files/fe5b8c47893c.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> eQEP – QDECCTL:QSRC</h2>
+<p>Position-counter source selection</p>
+<ul>
+<li>0h (R/W) = Quadrature count mode (QCLK = iCLK, QDIR = iDIR)
+</li>
+<li>1h (R/W) = Direction-count mode (QCLK = xCLK, QDIR = xDIR)
+</li>
+<li>2h (R/W) = UP count mode for frequency measurement (QCLK = xCLK, QDIR = 1)
+</li>
+<li>3h (R/W) = DOWN count mode for frequency measurement (QCLK= xCLK, QDIR = 0)
+</li></ul>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> eQEP – QDECCTL:QSRC – Quadrature Count Mode</h2>
+<p>The quadrature decoder generates the direction and clock to the position counter in quadrature count</p>
+<p>mode. Uses the 2-phase input to get the position and direction, this is the standard method.</p>
+<figure><img src='L6-7_files/2d119ea5b192.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> eQEP – QDECCTL:QSRC – Others Mode</h2>
+<p><strong>Direction-Count Mode</strong></p>
+<p>Some position encoders provide direction and clock outputs, instead of quadrature outputs. In such cases,</p>
+<p>direction-count mode can be used.</p>
+<ul>
+<li>QEPA input will provide the clock for the position counter
+</li>
+<li>QEPB input will have the direction information.
+</li></ul>
+<p>The position counter is incremented on every rising edge of a QEPA input when the direction input is high, and decremented when the direction input is low.</p>
+<p><strong>Up-Count Mode / Down-Count Mode</strong></p>
+<p>The counter direction signal is hard-wired for up / down -count and the position counter is used to measure the frequency of the QEPA input.</p>
+<p>In up-count mode, it is recommended that the application not configure QEPB as a GPIO mux option, or ensure that a signal edge is not generated on the QEPB input.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> eQEP</h2>
+<figure><img src='L6-7_files/a3c2c4a9fac6.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Quadrature count mode</p>
+<p>Direction count mode</p>
+<p>Up/Down count</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> eQEP - CAP</h2>
+<p>The eQEP peripheral includes an integrated edge capture unit to measure the elapsed time between the unit position.</p>
+<p>This feature is typically used for low-speed measurement using the following equation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mfrac><mi>X</mi><mrow><mi>t</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo><mo>−</mo><mi>t</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">)</mo></mrow></mfrac><mo>=</mo><mfrac><mi>X</mi><mrow><mi mathvariant="normal">Δ</mi><mi>T</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">v(k) = \frac{X}{t(k) - t(k - 1)} = \frac{X}{\mathrm{\Delta}T}</annotation></semantics></math></p>
+<p>Where,</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math>: Unit position defined by integer multiple of quadrature edges
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">\mathrm{\Delta}T</annotation></semantics></math>: Elapsed time between unit position events
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo stretchy="false" form="prefix">(</mo><mi>k</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">v(k)</annotation></semantics></math>: Velocity at time instant “<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>”
+</li></ul>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Optical Encoder</h2>
+<figure><img src='L6-7_files/99b704ff8591.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> eQEP</h2>
+<p>The eQEP peripheral includes a 32-bit timer (QUTMR) that is clocked by SYSCLKOUT to generate periodic interrupts for velocity calculations. Whenever the unit timer (QUTMR) matches the unit period register (QUPRD), it resets the unit timer (QUPRD) it resets the unit timer (QUTMR).</p>
+<p>Time measurement (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">\mathrm{\Delta}T</annotation></semantics></math>) between unit position events will be correct if the following conditions are met:</p>
+<ul>
+<li>No more than 65,535 counts have occurred between unit position events (16-bit register).
+</li>
+<li>No direction change between unit position events.
+</li></ul>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Optical Encoder</h2>
+<p>float readEncLeft(void) {</p>
+<p>int32_t raw = EQep1Regs.QPOSCNT;</p>
+<p>return (raw*(-2*PI/(2000.0*20.0)));</p>
+<p>}</p>
+<p>Simple as that! You just read the registry!</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Absolute Optical Encoder</h2>
+
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Absolute Encoder</h2>
+<p>There are multiple protocols for reading data from an optical encoder. We only use <strong>incremental </strong>encoders in this class.</p>
+<p>Some protocols use SPI, some use UART or some kind of DAC signal, etc… the only way to be sure is to look at the official documentation!</p>
+<p>For the following <a href='https://www.rls.si/eng/fileuploader/download/download/?d=1&amp;id=88&amp;title=Data+sheet%3A+AM4096+%E2%80%93+12+bit+angular+magnetic+encoder+IC+%28AM4096D02%29'>Magnetic Rotary Encoder </a>(an absolute encoder that uses a magnet on top of the IC), we can extract the data from the SSI communication protocol.</p>
+<figure><img src='L6-7_files/4650d5e5a8f1.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.rls.si/eng/am4096-12-bit-rotary-magnetic-encoder-chip'>https://www.rls.si/eng/am4096-12-bit-rotary-magnetic-encoder-chip</a></p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> SSI</h2>
+<figure><img src='L6-7_files/5e7927024050.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> SSI</h2>
+<p>Like UART, start with high, then to start communication you start with a low value. The difference is that you are not sending “data” to ask, you are just sending a clock signal. The sensor is sending its preconfigured “data”.</p>
+<p>This is a full-duplex signal (you send and receive at the same time).</p>
+<p>The data below is specifically for the <a href='https://look.ams-osram.com/m/5835d15632039c2e/original/AS5145-DS000398.pdf'>AS5145H – 12 bit angular magnetic encoder IC</a></p>
+<figure><img src='L6-7_files/51f58d17903b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://look.ams-osram.com/m/5835d15632039c2e'>https://look.ams-osram.com/m/5835d15632039c2e</a></p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> SSI</h2>
+<p>We can send the clock signal using SPI</p>
+<figure><img src='L6-7_files/9e49ef1f9cde.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> SSI</h2>
+<p>Communicate through the SPI</p>
+<p>//need clock polarity = 1 (falling edge)</p>
+<p>//collect data on falling edge -&gt; phase = 1 (with delay)</p>
+<p>SpiaRegs.SPICCR.bit.SPISWRESET = 0;     //put spi in reset (reset before changin configurations)</p>
+<p>SpiaRegs.SPICCR.bit.CLKPOLARITY = 1;    //falling edge clock (starts high)</p>
+<p>SpiaRegs.SPICCR.bit.SPICHAR = 7;        //shift length for one character is 8 bits</p>
+<p>SpiaRegs.SPICTL.all = 0x000E;           //0000000000001110-&gt;clkphase = 1 (with delay), master mode,</p>
+<p>//enable talk, spi int disabled, transmit on falling edge</p>
+<p>SpiaRegs.SPIBRR.bit.SPI_BIT_RATE = 49;  //set bit rate to 1Mhz so 50Mhz/50?</p>
+<p>SpiaRegs.SPIPRI.bit.FREE = 1;           //spi contunes even when emu halted</p>
+<p>SpiaRegs.SPISTS.all=0x0000;             //clear all flags</p>
+<p>SpiaRegs.SPIFFCT.all=0x00;              //set tx delay to no delays for full duplex ( read and write at the same time )</p>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> SSI</h2>
+<p>SpiaRegs.SPIFFTX.bit.TXFIFO = 0;        //put tx fifo in reset and hold there</p>
+<p>SpiaRegs.SPIFFTX.bit.TXFFINTCLR = 1;    //clear tx fifo interrupt flag (will not be using)</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFIFORESET = 0;   //put rx fifo in reset and hold there</p>
+<p>SpiaRegs.SPIFFTX.bit.SPIFFENA = 1;      //spi fifo enhancements enable</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFINTCLR = 1;    //clear receive fifo interrupt flag</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFIL = 3;        //interrupt level is one word</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFIENA = 1;      //rx fifo interrupt enable</p>
+<p>SpiaRegs.SPICTL.bit.OVERRUNINTENA = 1;  //overrun interrupt enable</p>
+<p>SpiaRegs.SPICTL.bit.SPIINTENA = 1;      //interrupt enable</p>
+<p>SpiaRegs.SPIFFTX.bit.TXFIFO = 1;          //release tx fifo to operate</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFIFORESET = 1;     //release rx fifo to operate</p>
+<p>SpiaRegs.SPIFFTX.bit.SPIRST = 1;        //spi can resume tx or rx (pull out of reset)</p>
+<p>SpiaRegs.SPICCR.bit.SPISWRESET = 1;     //pull spi out of reset (enable spi)</p>
+<p>//pie and cpu enables for group 6 done in setupSpib (6.1 and 6.2 for spia)</p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> SSI</h2>
+<p>This sensor send’s its information from most significant bit to least significant bit (left-to-right)</p>
+<p>0b101000101010</p>
+<p>This sensor sends it information as 18 bits of information; however, only on the rising edge of the clock signal!</p>
+<p>Since how many bits at minimum to do we need to get the full signal?</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>18</mn><annotation encoding="application/x-tex">18</annotation></semantics></math>-bits!</p>
+<figure><img src='L6-7_files/9509cdea6f92.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://look.ams-osram.com/m/5835d15632039c2e'>https://look.ams-osram.com/m/5835d15632039c2e</a></p>
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> SSI</h2>
+<p>Problem is that SPICHAR (how many bits SPI sends at a time), has a maximum of 16-bits and we need to send 24-bits. So, what do we do?</p>
+<p>// Send 8-bit words</p>
+<p>SpiaRegs.SPICCR.bit.SPICHAR = 7;</p>
+<p>// Sending data function</p>
+<p>void sendSPIData(void){</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFIL = 3;                //Going to R/W 3 entries</p>
+<p>GpioDataRegs.GPCCLEAR.bit.GPIO73 = 1;           //pull cs low to get ready to tx/rx</p>
+<p>// since we have SPICHAR=7 (8-bits), we only store the top 8-bits</p>
+<p>// SPI is set to FIFO mode so this works in a special way</p>
+<p>for(i = 0; i &lt; 3; i++) {</p>
+<p>SpiaRegs.SPITXBUF = 0xAA00u; // You need to send something to receive something (does not matter what)!</p>
+<p>}</p>
+<p>}</p>
+
+</section>
+<section id='s47' aria-labelledby='h47'>
+<h2 id='h47'><span class='num'>47.</span> SSI</h2>
+<p>void spiaRxFifoIsr(void)</p>
+<p>{</p>
+<p>//received data right justified</p>
+<p>spiaRxData[0] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[1] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[2] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>theta.d = (((unsigned int) (spiaRxData[0] &amp; 0x7F)) &lt;&lt; 5) + (((unsigned int) (spiaRxData[1] &amp; 0xF8)) &gt;&gt; 3);</p>
+<p>// ... other math, ignore ...</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFOVFCLR = 1;  // Clear Overflow flag</p>
+<p>SpiaRegs.SPIFFRX.bit.RXFFINTCLR = 1;  // Clear Interrupt flag</p>
+<p>PieCtrlRegs.PIEACK.all |= 0x20;       // Issue PIE ack</p>
+<p>}</p>
+
+</section>
+<section id='s48' aria-labelledby='h48'>
+<h2 id='h48'><span class='num'>48.</span> Absolute Encoder</h2>
+<p>You need a minimum of 19 low going edges to read in the first always high bit and then the remaining 18 bits.</p>
+<p>We are sending 24 bits; the rest does not matter as it gets filtered out.</p>
+<figure><img src='L6-7_files/dc8186aa99b6.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.rls.si/eng/am4096-12-bit-rotary-magnetic-encoder-chip'>https://www.rls.si/eng/am4096-12-bit-rotary-magnetic-encoder-chip</a></p>
+
+</section>
+<section id='s49' aria-labelledby='h49'>
+<h2 id='h49'><span class='num'>49.</span> SSI</h2>
+<figure><img src='L6-7_files/3f706f4edce5.svg' alt='Picture without a description' loading='lazy'></figure>
+<table><thead><tr><th scope='col'>Polarity</th><th scope='col'>Phase</th></tr></thead><tbody><tr><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td></tr></tbody></table>
+
+</section>
+<section id='s50' aria-labelledby='h50'>
+<h2 id='h50'><span class='num'>50.</span> FIFO</h2>
+
+
+</section>
+<section id='s51' aria-labelledby='h51'>
+<h2 id='h51'><span class='num'>51.</span> FIFO</h2>
+<p>Previously with the SPI we see that we did 2 weird things:</p>
+<p>for(i = 0; i &lt; 3; i++) {</p>
+<p>SpiaRegs.SPITXBUF = 0xAA00u;</p>
+<p>}</p>
+<p>And,</p>
+<p>spiaRxData[0] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[1] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[2] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>What is weird here?</p>
+<p><strong>We are writing / reading from the same place!</strong> Why would the output be different?!</p>
+
+</section>
+<section id='s52' aria-labelledby='h52'>
+<h2 id='h52'><span class='num'>52.</span> FIFO</h2>
+<figure><img src='L6-7_files/9e49ef1f9cde.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Instead of waiting every interrupt cycle to write long pieces of text to the SPI connection, we can instead use FIFO (First-In-First-Out), which is a buffer queuing system.</p>
+<p>When you fill in one of the buffers RX / TX, the value automatically goes to one of the 16 FIFO slots (instantaneously), to be used later!</p>
+<p>This allows you to store, in one function call, 16 FIFO buffer values both for transmit and receive!</p>
+<p>Uses only “16 CPU cycles” instead of 16 interrupt calls!</p>
+<p>Allows for large read / writes.</p>
+
+</section>
+<section id='s53' aria-labelledby='h53'>
+<h2 id='h53'><span class='num'>53.</span> FIFO</h2>
+<p>Looking back:</p>
+<p>// Shifts into SPIDATA on the MSB side</p>
+<p>for(i = 0; i &lt; 3; i++) {</p>
+<p>SpiaRegs.SPITXBUF = 0xAA00u;</p>
+<p>}</p>
+<p>// Shifts into SPIDATA on the LSB side</p>
+<p>spiaRxData[0] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[1] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>spiaRxData[2] = SpiaRegs.SPIRXBUF &amp; 0xFF;</p>
+<p>For the <strong>TX</strong>, TX FIFO_{0,..,15} start empty.</p>
+<p>i = 0, TX FIFO_0 = 0xAAu;</p>
+<p>i = 1, TX FIFO_{0,1} = 0xAAu;</p>
+<p>i = 2, TX FIFO_{0,1,2} = 0xAAu;</p>
+<p>For the <strong>RX</strong>, RX FIFO_{0,1,2} has data</p>
+<p>Takes from RX FIFO_0 FIFO_{1,2} has data</p>
+<p>Takes from RX FIFO_1 FIFO_{2} has data</p>
+<p>Takes from RX FIFO_2 FIFO has no more data</p>
+<p>(technically the next FIFO is always FIFO_0)</p>
+
+</section>
+<section id='s54' aria-labelledby='h54'>
+<h2 id='h54'><span class='num'>54.</span> FIFO – Example 18-1</h2>
+<figure><img src='L6-7_files/c23a73772257.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s55' aria-labelledby='h55'>
+<h2 id='h55'><span class='num'>55.</span> SSI</h2>
+<p>The four-bit SPICHAR register field specifies the number of bits in the data character (1 to 16). The following statements apply to characters with fewer than 16 bits:</p>
+<ul>
+<li>Data must be left-justified when written to SPIDAT and SPITXBUF.
+</li>
+<li>Data read back from SPIRXBUF is right-justified.
+</li>
+<li>SPIRXBUF contains the most recently received character, right-justified, plus any bits that remain from previous transmission(s) that have been shifted to the left (shown in Example 18-1).
+</li></ul>
+
+</section>
+<section id='s56' aria-labelledby='h56'>
+<h2 id='h56'><span class='num'>56.</span> PWM</h2>
+
+
+</section>
+<section id='s57' aria-labelledby='h57'>
+<h2 id='h57'><span class='num'>57.</span> How do LEDs become dimmer?</h2>
+
+
+</section>
+<section id='s58' aria-labelledby='h58'>
+<h2 id='h58'><span class='num'>58.</span> PWM - Introduction</h2>
+<p>Stands for Pulse Width Modulation</p>
+<ul>
+<li>Rapidly turns the output signal on and off to adjust the <em>average power delivered</em>
+</li></ul>
+<p>2 main parameters:</p>
+<ul>
+<li><strong>Period / carrier frequency</strong> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mrow><mi>p</mi><mi>w</mi><mi>m</mi></mrow></msub><annotation encoding="application/x-tex">T_{pwm}</annotation></semantics></math>): The total time of one cycle
+</li>
+<li><strong>Duty cycle </strong>(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">D)</annotation></semantics></math><strong>: </strong>The fraction of time the signal is high <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><mfrac><msub><mi>T</mi><mrow><mi>o</mi><mi>n</mi></mrow></msub><msub><mi>T</mi><mrow><mi>p</mi><mi>w</mi><mi>m</mi></mrow></msub></mfrac></mrow><annotation encoding="application/x-tex">D = \frac{T_{on}}{T_{pwm}}</annotation></semantics></math>
+</li></ul>
+<p>Again, if the period is fast enough, since our eyes only see at 30-40 Hz, we only see the <strong>average </strong>power! Which is why we see a continuous dinner or brighter light!</p>
+
+</section>
+<section id='s59' aria-labelledby='h59'>
+<h2 id='h59'><span class='num'>59.</span> PWM - Introduction</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=IO5RBfq_5Uo'>YouTube video: PWM Animation (Marius Juston)</a></p>
+<p><a href='https://youtu.be/IO5RBfq_5Uo?si=KMDtMRWZ-Gs9MQLh'>https://youtu.be/IO5RBfq_5Uo?si=KMDtMRWZ-Gs9MQLh</a></p>
+
+</section>
+<section id='s60' aria-labelledby='h60'>
+<h2 id='h60'><span class='num'>60.</span> PWM</h2>
+<figure><img src='L6-7_files/9cc027d24e11.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Clock signal</p>
+
+</section>
+<section id='s61' aria-labelledby='h61'>
+<h2 id='h61'><span class='num'>61.</span> PWM</h2>
+<p>The frequency of PWM events is controlled by the <strong>time-base period</strong> (TBPRD) register and the mode of the time-base counter. The time increment for each step is defined by the <strong>time-base clock </strong>(TBCLK) which is a prescaled version of the ePWM clock (EPWMCLK).</p>
+<p>The time-base counter has <strong>three modes </strong>of operation selected by the time-base control register (TBCTL):</p>
+<ul>
+<li><strong>Up-Down-Count Mode</strong>: In up-down-count mode, the time-base counter starts from zero and increments until the period (TBPRD) value is reached. When the period value is reached, the time-base counter then decrements until it reaches zero.
+</li>
+<li><strong>Up-Count Mode</strong>: In this mode, the time-base counter starts from zero and increments until it reaches the value in the period register (TBPRD).
+</li>
+<li><strong>Down-Count Mode</strong>: In down-count mode, the time-base counter starts from the period (TBPRD) value and decrements until it reaches zero.
+</li></ul>
+
+</section>
+<section id='s62' aria-labelledby='h62'>
+<h2 id='h62'><span class='num'>62.</span> PWM – Counter mode</h2>
+<figure><img src='L6-7_files/1562db38cfda.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Up count</p>
+<p>Down count</p>
+<p>Up-down count</p>
+
+</section>
+<section id='s63' aria-labelledby='h63'>
+<h2 id='h63'><span class='num'>63.</span> PWM – Counter-Compare Submodule</h2>
+<p>The counter-compare submodule takes as input the time-base counter value.</p>
+<ul>
+<li>This value is continuously compared to the counter-compare A (CMPA) counter-compare B (CMPB) counter-compare C (CMPC) and counter-compare D (CMPD) registers.
+</li>
+<li>When the time-base counter is <strong>equal to one of the compare registers</strong>, the counter-compare unit <strong>generates an appropriate event</strong>.
+</li></ul>
+<figure><img src='L6-7_files/21c6f6e8a810.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s64' aria-labelledby='h64'>
+<h2 id='h64'><span class='num'>64.</span> PWM</h2>
+<figure><img src='L6-7_files/164b7c6568b0.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s65' aria-labelledby='h65'>
+<h2 id='h65'><span class='num'>65.</span> PWM – Duty cycle</h2>
+<p>From the result of the comparison that get triggered, you can then output a signal to the ePWMA or ePWMB signals</p>
+<p>The possible actions imposed on outputs EPWMxA and EPWMxB are:</p>
+<ul>
+<li><strong>Set High</strong>: Set output EPWMxA or EPWMxB to a high level.
+</li>
+<li><strong>Clear Low</strong>: Set output EPWMxA or EPWMxB to a low level.
+</li>
+<li><strong>Toggle</strong>: Toggle EPWMxA or EPWMxB
+</li>
+<li><strong>Do Nothing</strong>.
+</li></ul>
+<p>Allows you create complex signals.</p>
+
+</section>
+<section id='s66' aria-labelledby='h66'>
+<h2 id='h66'><span class='num'>66.</span> PWM – Duty cycle</h2>
+<p>Each registry bits allows you to configure the different comparison events</p>
+<p>struct AQCTLA_BITS {                 // bits description</p>
+<p>Uint16 ZRO:2;                    // 1:0 Action Counter = Zero</p>
+<p>Uint16 PRD:2;                    // 3:2 Action Counter = Period</p>
+<p>Uint16 CAU:2;                    // 5:4 Action Counter = Compare A Up</p>
+<p>Uint16 CAD:2;                    // 7:6 Action Counter = Compare A Down</p>
+<p>Uint16 CBU:2;                    // 9:8 Action Counter = Compare B Up</p>
+<p>Uint16 CBD:2;                    // 11:10 Action Counter = Compare B Down</p>
+<p>Uint16 rsvd1:4;                  // 15:12 Reserved</p>
+<p>};</p>
+
+</section>
+<section id='s67' aria-labelledby='h67'>
+<h2 id='h67'><span class='num'>67.</span> PWM – Duty cycle</h2>
+<figure><img src='L6-7_files/3b80ca03f497.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s68' aria-labelledby='h68'>
+<h2 id='h68'><span class='num'>68.</span> PWM – Duty cycle</h2>
+<figure><img src='L6-7_files/3ec5b79c78af.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>What is this?</p>
+<p>What is it being set to?</p>
+<p>What is it being set to?</p>
+
+</section>
+<section id='s69' aria-labelledby='h69'>
+<h2 id='h69'><span class='num'>69.</span> PWM – Duty cycle</h2>
+<figure><img src='L6-7_files/1f6da7c09062.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>What is this?</p>
+<p>What is this?</p>
+<p>What is this?</p>
+<p>What is this?</p>
+
+</section>
+<section id='s70' aria-labelledby='h70'>
+<h2 id='h70'><span class='num'>70.</span> PWM – Duty cycle</h2>
+<p>For the PWM you can set the clock divide to be very small such that your <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>T</mi><mrow><mi>p</mi><mi>w</mi><mi>m</mi></mrow></msub><annotation encoding="application/x-tex">T_{pwm}</annotation></semantics></math> is very small; however, the problem is that that reduces your duty cycle resolution. As you will run into system clock resolution limitation.</p>
+<figure><img src='L6-7_files/ffcb08cdb692.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s71' aria-labelledby='h71'>
+<h2 id='h71'><span class='num'>71.</span> PWM – Duty cycle</h2>
+<p>EALLOW;</p>
+<p>//    TBCTL</p>
+<p>EPwm12Regs.TBCTL.bit.FREE_SOFT = 0x2;  // Free Soft emulation = Free Run</p>
+<p>EPwm12Regs.TBCTL.bit.CLKDIV = 0;       // Clock divide = 1</p>
+<p>EPwm12Regs.TBCTL.bit.CTRMODE = 1;      // Count down Mode</p>
+<p>EPwm12Regs.TBCTL.bit.PHSEN = 0;        // Do not load time time-base counter from the time-base phase registry</p>
+<p>//    TBCTR</p>
+<p>EPwm12Regs.TBCTR = 0;                  // Start Timer at zero</p>
+<p>//    TBPRD</p>
+<p>//    Set period of the PWM to 2kHz (500 us)</p>
+<p>//    Counter frequency is 50MHz</p>
+<p>EPwm12Regs.TBPRD = 25000;</p>
+<p>//    CMPA</p>
+<p>EPwm12Regs.CMPA.bit.CMPA = 12500;       // Duty cycle at 50%, TBPRD / 2</p>
+<p>EPwm12Regs.AQCTLA.bit.CAD = 0x1;       // PWM12A output pin is set low when CMPA is reached</p>
+<p>EPwm12Regs.AQCTLA.bit.PRD = 0x2;       // the pin be set high when the TBCTR register is Period</p>
+<p>EPwm12Regs.TBPHS.bit.TBPHS = 0;</p>
+<p>EDIS;</p>
+<p>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPW12A</p>
+
+</section>
+<section id='s72' aria-labelledby='h72'>
+<h2 id='h72'><span class='num'>72.</span> PWM – Duty cycle</h2>
+<p>EPwm12Regs.TBPRD = 100;</p>
+<p>EPwm12Regs.CMPA.bit.CMPA = 50;</p>
+<p>What is the duty cycle?</p>
+<p>50%</p>
+<p>EPwm12Regs.TBPRD = 100;</p>
+<p>EPwm12Regs.CMPA.bit.CMPA = 25;</p>
+<p>What is the duty cycle?</p>
+<p>25%</p>
+<p>EPwm12Regs.TBPRD = 100;</p>
+<p>EPwm12Regs.CMPA.bit.CMPA = 75;</p>
+<p>What is the duty cycle?</p>
+<p>75%</p>
+
+</section>
+<section id='s73' aria-labelledby='h73'>
+<h2 id='h73'><span class='num'>73.</span> PWM – DAC</h2>
+<p>It is also possible to use <a href='https://www.ti.com/lit/an/spraa88a/spraa88a.pdf?ts=1770424620716'>PWM as a DAC</a>! By selecting the proper duty cycle, any DAC output voltage can be obtained. You need to remove the high-frequency signals to make this work.</p>
+<figure><img src='L6-7_files/15666c131f28.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s74' aria-labelledby='h74'>
+<h2 id='h74'><span class='num'>74.</span> Motor / Servo</h2>
+
+
+</section>
+<section id='s75' aria-labelledby='h75'>
+<h2 id='h75'><span class='num'>75.</span> H-Bridge</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=3N_4VpzmKY0'>YouTube video: What is an H-Bridge? (CircuitBread)</a></p>
+
+</section>
+<section id='s76' aria-labelledby='h76'>
+<h2 id='h76'><span class='num'>76.</span> H-Bridge</h2>
+<figure><img src='L6-7_files/0469c7f09c42.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s77' aria-labelledby='h77'>
+<h2 id='h77'><span class='num'>77.</span> H bridge</h2>
+<p>For the <a href='https://www.alldatasheet.com/view.jsp?Searchword=A3952&amp;sField=2'>H-bridge chip</a> that we will be using in class, the work has been simplified for you where, you can control the velocity and direction from a single PWM signal.</p>
+<p>The <strong>duty cycle </strong>from the PWM is what determines the motor’s behavior!</p>
+<ul>
+<li>0% = turns the motor to go <strong>backwards</strong>
+</li>
+<li>50% = turns the motor forwards and backwards (makes it so that the motor is stationary)
+</li>
+<li>100% = turns the motor to go <strong>forward</strong>
+</li></ul>
+<p>What happens if we set a duty cycle of 75%?</p>
+<p>We are going 50% of the maximum forward speed!</p>
+
+</section>
+<section id='s78' aria-labelledby='h78'>
+<h2 id='h78'><span class='num'>78.</span> H bridge</h2>
+<figure><img src='L6-7_files/f2b8d7ee64dc.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s79' aria-labelledby='h79'>
+<h2 id='h79'><span class='num'>79.</span> RC Servo</h2>
+<p>RC Servos are position-controlled devices (not continuous rotation) controlled by a specific PWM protocol.</p>
+<p>2-types of servo motor,</p>
+<ul>
+<li><strong>Closed loop</strong>: physically limited to 0-180 degrees (usually) rotation (with an internal pin), you want to be careful to not go to the extremes too often, it is a mechanical stop.
+</li>
+<li><strong>Open loop</strong>: can do a full 360-degree rotation.
+</li></ul>
+<p>3 wires:</p>
+<ul>
+<li><strong>Power </strong>
+</li>
+<li><strong>GND</strong>
+</li>
+<li><strong>Control</strong>: where the PWM signal is injected
+</li></ul>
+<figure><img src='L6-7_files/e940187541d3.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.sparkfun.com/servos'>https://www.sparkfun.com/servos</a></p>
+
+</section>
+<section id='s80' aria-labelledby='h80'>
+<h2 id='h80'><span class='num'>80.</span> RC Servo</h2>
+<p>Maps PWM to desired orientation. For specific servo check the datasheet for:</p>
+<ul>
+<li>For the specific period
+<li>
+<ul>
+<li>Typically, 50Hz if not listed, which means a period of 20 ms = 20,000 μs
+</li></ul>
+</li>
+<li>Operating range and duty cycle mapping.
+</li></ul>
+
+</section>
+<section id='s81' aria-labelledby='h81'>
+<h2 id='h81'><span class='num'>81.</span> RC Servo – Example Datasheet</h2>
+<figure><img src='L6-7_files/a0f47d409717.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Using a PWM period of 20 ms, what is 90 degrees (neutral), 0 and 180?</p>
+<p>This servo is only able to do <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>90</mn><mo>±</mo><mn>40</mn></mrow><annotation encoding="application/x-tex">90 \pm 40</annotation></semantics></math> and not the full 0-180 degrees!</p>
+<p>Represents 90 degrees</p>
+<p>Using a PWM period of 20 ms, what is 90 degrees (neutral), 50 and 130?</p>
+<p>50 = 1100 us = 5.5%</p>
+<p>130 = 1900 us = 9.5%</p>
+<p>Tells you which direction is clockwise ( 130 degrees )</p>
+<p><a href='https://www.sparkfun.com/servo-hitec-hs-85mg-micro-size.html'>https://www.sparkfun.com/servo-hitec-hs-85mg-micro-size.html</a></p>
+
+</section>
+<section id='s82' aria-labelledby='h82'>
+<h2 id='h82'><span class='num'>82.</span> Piezo Buzzer</h2>
+<figure><img src='L6-7_files/fba14b1d1494.png' alt='PS1440P02BT : Detailed Information | Ceramic Switching / Heating, Piezo  Components, Contactors, Buzzers and Microphones - Piezoelectric Buzzers |  TDK Product Center' loading='lazy'></figure>
+<p>Instead of varying the duty cycle, we define notes by the frequency that we put into the buzzer!</p>
+<p>Allows us to have different tones with PWM.</p>
+<p>We thus set CMPA = 0, ZRO = 0b11 so that it toggles the output signal and just modify TBPRD.</p>
+<p>Since we toggle the output, we need to half the period otherwise we would get the wrong note!</p>
+<p>We will go through Fast Fourier Transform next week.</p>
+<p>We set the clock divide (divide by 2) so that we can get lower notes!</p>
+
+</section>
+<section id='s83' aria-labelledby='h83'>
+<h2 id='h83'><span class='num'>83.</span> Piezo Buzzer</h2>
+<p>#define C4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/261.63)) // TBPRD 47777</p>
+<p>#define D4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/293.66)) // TBPRD 42566</p>
+<p>#define E4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/329.63)) // TBPRD 37921</p>
+<p>#define F4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/349.23)) // TBPRD 35793</p>
+<p>#define G4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/392.00)) // TBPRD 31887</p>
+<p>#define A4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/440.00)) // TBPRD 28409</p>
+<p>#define B4NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/493.88)) // TBPRD 25309</p>
+<p>#define C5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/523.25)) // TBPRD 23889</p>
+<p>#define D5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/587.33)) // TBPRD 21282</p>
+<p>#define E5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/659.25)) // TBPRD 18960</p>
+<p>#define F5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/698.46)) // TBPRD 17896</p>
+<p>#define G5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/783.99)) // TBPRD 15944</p>
+<p>#define A5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/880.00)) // TBPRD 14204</p>
+<p>#define B5NOTE       ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/987.77)) // TBPRD 12654</p>
+<p>#define F4SHARPNOTE  ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/369.99)) // TBPRD 33784</p>
+<p>#define G4SHARPNOTE  ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/415.30)) // TBPRD 30098</p>
+<p>#define A4FLATNOTE   ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/415.30)) // TBPRD 30098</p>
+<p>#define C5SHARPNOTE  ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/554.37)) // TBPRD 22548</p>
+<p>#define A5FLATNOTE   ((uint16_t)(((FUDGEFACTORNOTE*50000000/2)/2)/830.61)) // TBPRD 15049</p>
+<p>Note frequency!</p>
+<p>We thus set TBPRD</p>
+<p>Divisions handle the clock divide + half frequency</p>
+
+</section>
+<section id='s84' aria-labelledby='h84'>
+<h2 id='h84'><span class='num'>84.</span> Questions?</h2>
+
+
+</section>
+<section id='s85' aria-labelledby='h85'>
+<h2 id='h85'><span class='num'>85.</span> End of Lectures 6–7</h2>
+
+
+</section>
+</main></body></html>

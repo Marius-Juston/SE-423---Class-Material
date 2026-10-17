@@ -1,0 +1,402 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L1: SE 423: Introduction to MechatronicsLecture 1: IntroductionMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L1: SE 423: Introduction to MechatronicsLecture 1: IntroductionMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L1.pdf">PDF</a> · <a href="L1.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (21)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 1: IntroductionMarius Juston</a></li><li><a href='#s2'>Course Information</a></li><li><a href='#s3'>Course Information</a></li><li><a href='#s4'>Syllabus and evaluation</a></li><li><a href='#s5'>The Class - Intro</a></li><li><a href='#s6'>The Class - The “Red Board”</a></li><li><a href='#s7'>The Class – C Programming</a></li><li><a href='#s8'>The Class – C Programming</a></li><li><a href='#s9'>The Class - Goal</a></li><li><a href='#s10'>The Class - Goal</a></li><li><a href='#s11'>The Class – AI Content</a></li><li><a href='#s12'>The Class – The first lab</a></li><li><a href='#s13'>The Class – Homework 1</a></li><li><a href='#s14'>The Class – LabVIEW Assignments</a></li><li><a href='#s15'>The Class – Check-offs</a></li><li><a href='#s16'>The Class – Code Submissions</a></li><li><a href='#s17'>The Class – Git</a></li><li><a href='#s18'>The Class – Submission Deadline</a></li><li><a href='#s19'>The Class – Next Steps</a></li><li><a href='#s20'>Questions?(Students that have been unable to register, come talk to me after class)</a></li><li><a href='#s21'>End of Lecture 1</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 1: IntroductionMarius Juston</h2>
+<p>Wednesday January 21th, 2026</p>
+<details><summary>Speaker notes</summary><p>My name is Marius Juston, a PhD candidate in the ISE program. You can call me Marius or Professor, whichever you prefer!</p><p>This class will be different from others you might have had, with a lot of learning-by-doing. In the lab and in homework,</p></details>
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Course Information</h2>
+<p><strong>Lectures: </strong>Monday and Wednesday 9:00am-9:50am</p>
+<p><strong>Locations: </strong></p>
+<ul>
+<li><strong>Lecture: </strong>Here!
+</li>
+<li><strong>Lab: </strong>ECEB 3080
+</li></ul>
+<p><strong>The Team:</strong></p>
+<ul>
+<li><strong>Marius Juston: </strong>Instructor
+</li>
+<li><strong>Dan Block: </strong>Lab Instructor
+</li>
+<li><strong>Lakshmi Manoj: </strong>TA
+</li>
+<li><strong>Samuel Folorunsho</strong>: TA
+</li></ul>
+<p><strong>Office hours: </strong>announced and posted on Canvas when finalized.</p>
+<p><strong>Recordings: </strong>Available on Illinois Media Space. Link available on course webpage</p>
+<figure><img src='L1_files/1310b9fb3e77.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Course Information</h2>
+<p><strong>Canvas: </strong><a href='https://canvas.illinois.edu/courses/64094'>https://canvas.illinois.edu/courses/64094</a></p>
+<ul>
+<li>Will post the lecture slides
+</li></ul>
+<p><strong>Gradescope</strong><strong>:</strong> <a href='https://www.gradescope.com/courses/1232277'>https://www.gradescope.com/courses/1232277</a></p>
+<ul>
+<li>Should have already been automatically enrolled.
+</li></ul>
+<p><strong>Recordings: </strong>Available on Illinois Media Space. Link available on course webpage</p>
+<p><strong>Most important link: </strong><a href='https://coecsl.ece.illinois.edu/se423/'>https://coecsl.ece.illinois.edu/se423/</a></p>
+<ul>
+<li>You will be using it very often this class, has the HWs, labs and final project documents
+</li></ul>
+<p><strong>Converted documents in LaTeX</strong>:</p>
+<ul>
+<li>Compiled PDFs: <a href='https://marius-juston.github.io/SE-423---Class-Material/'>https://marius-juston.github.io/SE-423---Class-Material/</a>
+</li>
+<li>Raw LaTeX: <a href='https://github.com/Marius-Juston/SE-423---Class-Material'>https://github.com/Marius-Juston/SE-423---Class-Material</a>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Syllabus and evaluation</h2>
+<p><strong>Syllabus: </strong>see course website</p>
+<p><strong>Course deliverables:</strong></p>
+<ul>
+<li>Check-off on all labs 30%
+</li>
+<li>Homework 25%
+</li>
+<li>LabVIEW Assignments 5%
+</li>
+<li>Quizzes 5%
+</li>
+<li>Semester Project 35%
+</li></ul>
+<p>Check-offs will be discussed later.</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> The Class - Intro</h2>
+<ul>
+<li>Very different from others you might have had, learn-by-doing!
+</li>
+<li>No “hard” theory being taught.
+</li>
+<li>You will start immediately, with lab this week.
+</li>
+<li>Working on some soldering and setting up your HW board!
+</li></ul>
+<ul>
+<li>You get to keep the board afterwards.
+</li></ul>
+<figure><img src='L1_files/f71eafb5ef69.jpg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> The Class - The “Red Board”</h2>
+<ul>
+<li>What are you going to be doing with the Red Board?
+</li>
+<li>Playing with LEDs, push buttons, light sensors, RC servo, microphone, IMU
+</li>
+<li>Texas Instruments Digital Signal Processor (DSP) running at <strong>150 MHz</strong>
+<li>
+<ul>
+<li>Arduino at 20–40 MHz
+</li></ul>
+</li>
+<li>16-bit and 32-bit integers, only
+</li>
+<li>Floating-point capabilities
+</li>
+<li>You get to keep it for future mechatronic projects!
+</li></ul>
+<figure><img src='L1_files/bae1a78b5130.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> The Class – C Programming</h2>
+<p>Who here knows how to program in C?</p>
+<figure><img src='L1_files/647e07a5dddd.png' alt='C Program Icon SVG Vector &amp; PNG Free Download | UXWing' loading='lazy'></figure>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> The Class – C Programming</h2>
+<ul>
+<li>This class will be using the C programming language to code the embedded system
+</li>
+<li>You will not be taught C, you will have to learn by yourself
+</li></ul>
+<ul>
+<li>Plenty of people have come in this class and have had near zero programming experience and have done fine, if you do the work.
+</li>
+<li>This week you will not be doing C programming
+<li>
+<ul>
+<li>Next week you will, so be sure to brush up / start learning it!
+</li></ul>
+</li>
+<li>You will not be doing anything complicated in the language
+<li>
+<ul>
+<li>minimal pointers usage
+</li>
+<li>No special structures such as graphs, trees, linked-lists, etc.
+</li></ul>
+</li>
+<li>Be especially familiar with the printf, especially useful in troubleshooting!
+</li></ul>
+<figure><img src='L1_files/647e07a5dddd.png' alt='C Program Icon SVG Vector &amp; PNG Free Download | UXWing' loading='lazy'></figure>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> The Class - Goal</h2>
+<ul>
+<li>By 2/3rd through the semester you are done with the HW green board ( not the Red Board )
+</li>
+<li>Really going into HWs at the beginning of the semester
+</li>
+<li>Gradually teaching you the robot car in Lab
+</li>
+<li>By the end of the semester, you are going to be programming robot car to <strong>autonomously:</strong>
+<li>
+<ul>
+<li><strong>Path Planning:</strong> Go from A to B, with or without a map
+</li>
+<li><strong>Sensing and Perception: </strong>Use LiDAR, camera to make real-time decisions
+</li>
+<li><strong>Control Systems: </strong>Implement control loops (PID)
+</li>
+<li>Groups of 3-5 people.
+</li>
+<li>Participation is graded, so be sure to be able to contribute!
+</li></ul>
+</li>
+<li><strong>Learn how to learn to program a microcontroller!</strong>
+<li>
+<ul>
+<li>Be able to read documentation and apply the documentation
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> The Class - Goal</h2>
+<ul>
+<li>We have a long way to go!
+</li>
+<li>Do all these things scare you a bit? That is good, we will teach you a lot of material by the end of the semester!
+</li>
+<li>We do not sit here and teach theory;
+<li>
+<ul>
+<li>We are not going to teach you why a PI controller is stable,
+</li>
+<li>Why the A* star algorithm is optimal
+</li></ul>
+</li>
+<li>We are going to tell you: “let us implement this algorithm”.
+</li>
+<li>We are going to talk a lot about implementation.
+<li>
+<ul>
+<li>How do we make sure that this is the circuit board?
+</li>
+<li>Most of the code will be running on the little processor. It runs at 150 MHz, which is fast for an embedded system.
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> The Class – AI Content</h2>
+<ul>
+<li>You will never start with a blank C code file; you will always have a starter code.
+</li>
+<li>For all your HWs, you will always have a starter code file for each HW, which will be added to this project with the C code you need.
+</li>
+<li>Students are allowed to use AI tools to help with their work, primarily for brainstorming, debugging, and conceptual support;
+<li>
+<ul>
+<li>avoid for whole-code generation, especially if you are a beginner software engineer
+</li>
+<li>Learn by doing!
+</li></ul>
+</li>
+<li>If you use AI tools, you should understand it, be able to explain it in detail, and be able to re-implement it without using AI. You are here to learn, not just copy and paste!
+</li>
+<li>You are expected to comment the lines that have been copied and pasted from AI with code comments stating the AI model used at the lines that have been copied and pasted.
+</li></ul>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> The Class – The first lab</h2>
+<ul>
+<li>Recommend you bring your laptop to lab so that you can install the software we will be using:
+<li>
+<ul>
+<li><a href='https://www.ti.com/tool/CCSTUDIO'>CodeComposer</a> v12x (the testing of the v20x is still under process)
+</li></ul>
+</li>
+<li>Bring your I-Card to the lab this week to obtain lab access.
+</li>
+<li>You will have 24-hour access to the lab, and you can take your board home.
+</li></ul>
+<ul>
+<li>You will be in groups of 2 working together.
+</li></ul>
+<p><strong>Do not come late to labs</strong>!!!</p>
+<p>We do not want to have to start docking points for attendance!</p>
+<ul>
+<li>Please try to read them beforehand. It will make things easier for you and speed things up, making things much quicker between you and your lab partner.
+</li></ul>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> The Class – Homework 1</h2>
+<ul>
+<li>There is a high-level frustration in this class. Working with hardware and software takes a lot of time, especially if you are completely new to this.
+</li>
+<li>Asks C programming questions, with a link to a Linked-In class to teach you more-or-less all you need for this class.
+</li>
+<li>Get started early!
+</li>
+<li>We do not mind you working on the HWs together.
+</li>
+<li>We do not want to see is identical C code.
+<li>
+<ul>
+<li>Individual comments in your code to explain what you just did, put your initials at the beginning of the line
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> The Class – LabVIEW Assignments</h2>
+<ul>
+<li>Used for visualization, real-time GUI to visualize the robot’s coordinates
+</li>
+<li>Trying to convert to Python instead,
+</li>
+<li>You can get started right now:
+<li>
+<ul>
+<li>Install it in <a href='https://webstore.illinois.edu/shop/product.aspx?zpid=1254'>WebStore</a> ( can take up to 4 hours to install so be carefull )
+</li>
+<li>Use CitrixWorkspace (EWS workstations)
+</li></ul>
+</li></ul>
+<ul>
+<li><a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW1.pdf'>Get started </a>early on it as well, already used in Lab 2
+</li>
+<li>All straightforward, just follow the videos and copy the image inside the assignment document
+</li>
+<li>Only checked for completion.
+</li>
+<li>LabVIEW 3 and 4 are optional
+</li></ul>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> The Class – Check-offs</h2>
+<ul>
+<li>Throughout the assignments (labs, HWs, LabVIEW) you will be asked to show checkpoints to the TAs
+<li>
+<ul>
+<li>Show something working
+</li>
+<li>Answering a question
+</li></ul>
+</li>
+<li>Both you and your teammate MUST be present for these checks. You will be asked to do the checks at another time otherwise.
+</li>
+<li>Contact instructors, TAs to schedule another time.
+</li></ul>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> The Class – Code Submissions</h2>
+<ul>
+<li>You will submit your commented code in Gradescope
+<li>
+<ul>
+<li>If you do not you will have points taken off
+</li>
+<li>Compile assignment as PDF
+</li></ul>
+</li></ul>
+<ul>
+<li>Answer any other questions inside the assignment
+</li></ul>
+<p>// cpu_timer1_isr - CPU Timer1 ISR</p>
+<p>__interrupt <strong>void</strong><strong> cpu_timer1_isr(</strong><strong>void</strong><strong>)</strong></p>
+<p>{</p>
+<p>CpuTimer1.InterruptCount++; // MJ: Increments the timer&#x27;s internal interrupt counter</p>
+<p>}</p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> The Class – Git</h2>
+<ul>
+<li>You will be using a version control (think of it as a backup system) called “git”
+</li>
+<li>For it to be effective, be sure that you are “committing” and “pushing often! If you do not, then you will most likely lose your data
+</li>
+<li>You are sharing the machines with all the sections; it is HIGHLY probably someone will accidentally change your code. ( yes, it happens very often )
+</li>
+<li>Any software related job uses it, so best to get started on good practices now!
+</li></ul>
+<figure><img src='L1_files/18bf7f30916d.png' alt='GitHub - shahzaneer/Git-and-Github-Fundamentals: All about Git Version  Controlling System and GitHub the web based git-repositories hosting  platform' loading='lazy'></figure>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> The Class – Submission Deadline</h2>
+<ul>
+<li>Checkoffs will always be due Tuesdays at 5PM
+</li>
+<li>Code submission / Questions will always be due Wednesdays at 9AM
+</li>
+<li>Lab submission deadlines, Tuesday of the week when the next lab starts lab
+</li></ul>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> The Class – Next Steps</h2>
+<ul>
+<li>HW1 Question 1 and Reading Question 4
+</li>
+<li>LabVIEW Assignment 1
+</li>
+<li>Reading Lab 1 before next week
+</li></ul>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Questions?(Students that have been unable to register, come talk to me after class)</h2>
+
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> End of Lecture 1</h2>
+
+
+</section>
+</main></body></html>

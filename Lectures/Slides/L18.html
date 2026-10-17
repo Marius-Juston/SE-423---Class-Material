@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L18: SE 423: Introduction to MechatronicsLecture 18: Path planningMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L18: SE 423: Introduction to MechatronicsLecture 18: Path planningMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L18.pdf">PDF</a> · <a href="L18.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (52)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 18: Path planningMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Path planning</a></li><li><a href='#s6'>Preface</a></li><li><a href='#s7'>Graphs</a></li><li><a href='#s8'>Graphs</a></li><li><a href='#s9'>Graphs</a></li><li><a href='#s10'>Map Representation</a></li><li><a href='#s11'>Graphs</a></li><li><a href='#s12'>Graphs</a></li><li><a href='#s13'>Graphs</a></li><li><a href='#s14'>Graphs</a></li><li><a href='#s15'>Graphs</a></li><li><a href='#s16'>Graphs</a></li><li><a href='#s17'>Graphs</a></li><li><a href='#s18'>Graphs</a></li><li><a href='#s19'>Graphs</a></li><li><a href='#s20'>Graphs</a></li><li><a href='#s21'>Graphs</a></li><li><a href='#s22'>Graphs</a></li><li><a href='#s23'>Path Planning</a></li><li><a href='#s24'>Path Planning</a></li><li><a href='#s25'>Path Planning - BFS</a></li><li><a href='#s26'>Path Planning - BFS</a></li><li><a href='#s27'>Path Planning - BFS</a></li><li><a href='#s28'>Path Planning - BFS</a></li><li><a href='#s29'>Path Planning - BFS</a></li><li><a href='#s30'>Path Planning - BFS</a></li><li><a href='#s31'>Path Planning – Early Exit</a></li><li><a href='#s32'>Path Planning – Movement Cost</a></li><li><a href='#s33'>Path Planning – Dijkstra’s Algorithm</a></li><li><a href='#s34'>Path Planning – Movement Cost</a></li><li><a href='#s35'>Path Planning – Movement Cost</a></li><li><a href='#s36'>Path Planning – Movement Cost</a></li><li><a href='#s37'>Heuristic search</a></li><li><a href='#s38'>Path Planning – Movement Cost</a></li><li><a href='#s39'>Path Planning – Movement Cost</a></li><li><a href='#s40'>Path Planning – Movement Cost</a></li><li><a href='#s41'>Path Planning – Movement Cost</a></li><li><a href='#s42'>Path Planning – Movement Cost</a></li><li><a href='#s43'>Path Planning – Movement Cost</a></li><li><a href='#s44'>Path Planning – Movement Cost</a></li><li><a href='#s45'>Path Planning – Movement Cost</a></li><li><a href='#s46'>Path Planning – Movement Cost</a></li><li><a href='#s47'>Path Planning – Movement Cost</a></li><li><a href='#s48'>Path Planning – Movement Cost</a></li><li><a href='#s49'>Path Planning – Movement Cost</a></li><li><a href='#s50'>Path Planning – Movement Cost</a></li><li><a href='#s51'>Questions?</a></li><li><a href='#s52'>End of Lecture 18</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 18: Path planningMarius Juston</h2>
+<p>Monday, March 30th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>Last lecture we said we used “BFS”, what does it stand for? What did we use it for?
+</li>
+<li>Open on the lecture’s website the path planning visualization that was made for this lecture (<a href='https://marius-juston.github.io/SE-423---Class-Material/path_planning.html'>https://marius-juston.github.io/SE-423---Class-Material/path_planning.html</a>), play around and draw some things and press the run button. You don’t need to understand what A* Search, BFS, Dijkstra&#x27;s is yet, but I would recommend having this up during lecture so that you can see the different algorithms.
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 6 this week. This a 3-week lab!</p>
+<ul>
+<li>Don’t forget to have the Lab LabVIEW application implemented before lab.
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 2 and 3 are due <strong>March 31, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> Ex 4 are due <strong>April 7, 5PM (The end of office hours)</strong>
+</li>
+<li>Remainder of <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW4.pdf'>homework 4</a> due on Gradescope on <strong>April 8, 9AM</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Path planning</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Preface</h2>
+<p>I would HIGHLY recommend you looking at:</p>
+<ul>
+<li><a href='https://theory.stanford.edu/~amitp/GameProgramming/MapRepresentations.html'>https://theory.stanford.edu/~amitp/GameProgramming/MapRepresentations.html</a>
+</li>
+<li><a href='https://www.redblobgames.com/pathfinding/a-star/introduction.html'>https://www.redblobgames.com/pathfinding/a-star/introduction.html</a>
+</li></ul>
+<p>This is a series of interactable tutorial for path planning, it is very useful and goes through all the material in this lecture!</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Graphs</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Graphs</h2>
+<p>Discrete path planning works on a graph data structure, it can be directed or undirected.</p>
+<p>A graph is composed of 2 simple components:</p>
+<ul>
+<li>Edges - E: Paths or transitions between nodes
+</li>
+<li>Vertices (Nodes) - V: Locations, states, or positions in space
+</li>
+<li>Weights (Costs) - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>w</mi><mo stretchy="false" form="prefix">(</mo><mi>e</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">w(e)</annotation></semantics></math>: Distance, time, energy or terrain difficult to traverse specific edge
+</li></ul>
+<figure><img src='L18_files/f461f18d248c.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Graphs</h2>
+<ul>
+<li>An undirected (or simple) graph has edges that are bi-directions, you can to and from vertices where nodes are connected
+</li></ul>
+<figure><img src='L18_files/230fc044cc5f.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>A directed graph has edges that have a direction, you can only go from “a” to “b” and not “b” to “a”</p>
+<figure><img src='L18_files/f2029dafe199.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>What type would you likely use in robotic applications?</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Map Representation</h2>
+
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Graphs</h2>
+<p>Because we live in a Euclidian space, we can often represent the locations that the robot can move to in discrete 2D as a <strong>2D map</strong>.</p>
+<p><strong>The map representation can make a huge difference in the performance and path quality.</strong></p>
+<p>Pathfinding algorithms tend to be worse than linear (time complexity): if you double the distance needed to travel, it takes more than twice as long to find the path.</p>
+<p>You can think of pathfinding as searching some area like a circle—when the circle’s diameter doubles, it has four times the area.</p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Graphs</h2>
+<p>In general, the fewer nodes in your map representation, the faster the path planning will be.</p>
+<p>Also, the more closely your nodes match the positions that units will move to, the better your path quality will be.</p>
+<p>The best map representation is defined based on the data that you have, and map visibility.</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Graphs</h2>
+<p>A grid map uses a uniform subdivision of the world into small regular shapes sometimes called “tiles”. Common grids in use are <strong>square</strong>, <strong>triangular</strong>, and <strong>hexagonal</strong>.</p>
+<p>Grids are simple and easy to understand, and many games and robotic applications use them for world representation.</p>
+<p>With grids you usually move between tiles, where the movement costs are uniform.</p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Graphs</h2>
+<figure><img src='L18_files/fbbbf86c48cb.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Graphs</h2>
+<p>In grid spaces, we have something called connectivity, the most used is 4-connected neighbors and 8-connected components.</p>
+<p>Neighbor connectivity informs us which neighbors we could potentially reach at the next time step.</p>
+<p>Which is 4-connected neighbors?</p>
+<figure><img src='L18_files/cce91ba98e5c.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>4 Valid neighbor</p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Graphs</h2>
+<p>What is are some potential problems with grid maps?</p>
+<p>Based on the resolution of the grid and the total area of the grid the following happens:</p>
+<ul>
+<li>Requires quadratic amount of memory per resolution increase
+</li>
+<li>The time it takes to solve the path is based on the resolution and the area
+</li>
+<li>A lot of the grid is “redundant” information, adjacent neighbors do not advance the robot in a substantial way
+</li></ul>
+<p>However, it is extremely simple to implement! It is just a 2D (or 1D) array!</p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Graphs</h2>
+<p>The most common alternative to grids is to use a polygonal representation.</p>
+<p>If the movement cost across large areas is uniform, and if your units can move in straight lines instead of following a grid, you may want to use a non-grid representation.</p>
+<p>You can use a non-grid graph for pathfinding even if your game uses a grid for other things.</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Graphs</h2>
+<p>The shortest path will be between corners of the obstacles.</p>
+<p>So, we choose those corners as the key “<strong>navigation points</strong>” points; these can be computed once per map change.</p>
+<p>If your obstacles are aligned on a grid, the navigation points will be aligned with the vertices of the grid.</p>
+<p>In addition, the start and end points for pathfinding need to be in the graph; these are added once per navigation task.</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Graphs</h2>
+<figure><img src='L18_files/5fa70c022286.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Graphs</h2>
+<p>In addition to the navigation points, we need to know which points are <strong>connected</strong>.</p>
+<p>The simple algorithm is to build a <strong>visibility graph</strong>: pairs of points that can be seen from each other without colliding with the obstacles.</p>
+<p>However, this representation increase time complexity but potentially greatly reduces the search space.</p>
+<p>The third piece of information we needs is travel times between the points. That will be <strong>Manhattan distance </strong>or <strong>diagonal grid </strong>distance if your units move on a grid, or <strong>straight-line </strong>distance if they can move directly between the navigation points.</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Graphs</h2>
+<p>Because we work on rectangular grids, we can define different <strong>distance metrics</strong>.</p>
+<figure><img src='L18_files/8aed7b4be053.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>We are traveling on this grid, order which is the shortest path distance-wise?</p>
+<p>Which gives the closest travel distance when traveling on the grid?</p>
+<p>The green is the shortest (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>6</mn><msqrt><mn>2</mn></msqrt></mrow><annotation encoding="application/x-tex">6\sqrt{2}</annotation></semantics></math>), all the others are the same distance (12)</p>
+<p>The red, blue and yellow, since we cannot move diagonally</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Graphs</h2>
+<p>The most common distance metrics in path planning are <strong>Euclidian</strong>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mo stretchy="true" form="prefix">∥</mo><mi>p</mi><mspace width="0.222em"></mspace><mo>−</mo><mi>q</mi><mo stretchy="true" form="postfix">∥</mo></mrow><mn>2</mn></msub><mo>=</mo><msqrt><mrow><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>p</mi><mi>i</mi></msub><mo>−</mo><msub><mi>q</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup></mrow></msqrt></mrow><annotation encoding="application/x-tex">d(p,q) = \left\| p\  - q \right\|_{2} = \sqrt{\sum_{i = 1}^{n}\left( p_{i} - q_{i} \right)^{2}}</annotation></semantics></math></p>
+<p>Or <strong>Manhattan</strong> (also known as Taxicab):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo stretchy="false" form="prefix">(</mo><mi>p</mi><mo>,</mo><mi>q</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msub><mrow><mo stretchy="true" form="prefix">∥</mo><mi>p</mi><mspace width="0.222em"></mspace><mo>−</mo><mi>q</mi><mo stretchy="true" form="postfix">∥</mo></mrow><mn>1</mn></msub><mo>=</mo><munderover><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></munderover><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>p</mi><mi>i</mi></msub><mo>−</mo><msub><mi>q</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow><annotation encoding="application/x-tex">d(p,q) = \left\| p\  - q \right\|_{1} = \sum_{i = 1}^{n}\left| p_{i} - q_{i} \right|</annotation></semantics></math></p>
+<p>To have the most representative path planner you need to ensure the correct distance metric for your grid / task.</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Path Planning</h2>
+
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Path Planning</h2>
+<p>Once we have a graph representation of the environment, we now want to find the <strong>“shortest” path</strong>!</p>
+<p>The shortest path is not necessarily what we always want. In what real-world situation would not want to take the shortest path?</p>
+<ul>
+<li>Go up climb up a mountain to go to the other side of it instead of just going around it.
+</li>
+<li>Driving in mud or water vs dry road for safety.
+</li></ul>
+<p>What we actually want is the <strong>lowest-cost path!</strong></p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Path Planning - BFS</h2>
+<p>The key idea for all of these algorithms is that we keep track of an expanding ring called the <strong>frontier</strong>.</p>
+<p>On a grid, this process is sometimes called “flood fill”, but the same technique also works for non-grids.</p>
+<p>The simplest path planning algorithm that uses this is BFS (Breadth First Search),</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Path Planning - BFS</h2>
+<p>It is incredibly simple to implement <strong>BFS</strong>, only 10 lines of code!</p>
+<p><strong>frontier</strong> = Queue()</p>
+<p><strong>frontier</strong>.put(<strong>start</strong> )</p>
+<p><strong>reached</strong> = set()</p>
+<p><strong>reached</strong>.add(<strong>start</strong>)</p>
+<p><strong>while</strong> not <strong>frontier</strong>.empty():</p>
+<p><strong>current</strong> = <strong>frontier</strong>.get()</p>
+<p><strong>for</strong> <strong>next</strong> in graph.neighbors(<strong>current</strong>):</p>
+<p><strong>if</strong> <strong>next</strong> not in <strong>reached</strong>:</p>
+<p><strong>frontier</strong>.put(<strong>next</strong>)</p>
+<p><strong>reached</strong>.add(<strong>next</strong>)</p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Path Planning - BFS</h2>
+<p>But how do we find the shortest path?</p>
+<p>The loop doesn’t actually construct the paths; it only tells us how to visit everything on the map.</p>
+<p>That’s because Breadth First Search can be used for a lot more than just finding paths; for example, in the previous lecture it was used for connected component finding for “blob” search.</p>
+<p>Here though we want to use it for finding paths, so let’s modify the loop to keep track of where we came from for every location that’s been reached, and rename the <strong>reached</strong> set to a <strong>came_from</strong> table (the keys of the table are the reached set)</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Path Planning - BFS</h2>
+<p><strong>frontier</strong> = Queue()</p>
+<p><strong>frontier</strong>.put(<strong>start</strong> )</p>
+<p><em><strong>came_from</strong></em> = dict() # <strong>path</strong> A-&gt;B is stored as <strong>came_from</strong>[B] == A</p>
+<p><em><strong>came_from</strong></em>[<strong>start</strong>] = <em>None</em></p>
+<p><strong>while</strong> not <strong>frontier</strong>.empty():</p>
+<p><strong>current</strong> = <strong>frontier</strong>.get()</p>
+<p><strong>for</strong> <strong>next</strong> in graph.neighbors(<strong>current</strong>):</p>
+<p><strong>if</strong> <strong>next</strong> not in <em><strong>came_from</strong></em>:</p>
+<p><strong>frontier</strong>.put(<strong>next</strong>)</p>
+<p><em><strong>came_from</strong></em>[<strong>next</strong>] = <em><strong>current</strong></em></p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Path Planning - BFS</h2>
+<p>Now <strong>came_from</strong> for each location points to the place where we came from.</p>
+<p>They form a “flow field” and act like “<strong>breadcrumbs</strong>”.</p>
+<p>They’re enough to reconstruct the entire path!</p>
+<figure><img src='L18_files/86eb85e1b87d.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Path Planning - BFS</h2>
+<p>To reconstruct paths: <em>follow the arrows backwards </em><em><strong>from</strong></em><em> the goal </em><em><strong>to</strong></em><em> the start</em>. A path is a <em>sequence of edges</em>, but often it’s easier to store the nodes:</p>
+<p><strong>current</strong> = <strong>goal</strong></p>
+<p><strong>path</strong> = []</p>
+<p><strong>while</strong> <strong>current</strong> != <strong>start</strong>:</p>
+<p><strong>path</strong>.append(<strong>current</strong>)</p>
+<p><strong>current</strong> = <strong>came_from</strong>[<strong>current</strong>]</p>
+<p><strong>path</strong>.append(<strong>start</strong>) # optional</p>
+<p><strong>path</strong>.reverse() # optional</p>
+<p>That’s the simplest pathfinding algorithm. It works not only on grids as shown here but on any sort of graph structure</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Path Planning – Early Exit</h2>
+<p>We’ve found paths from one location to <strong>all other locations</strong>. Often, we don’t need all the paths; we only need a path from one location to one other location.</p>
+<p>We can <strong>stop</strong> expanding the frontier as soon as we’ve <strong>found our goal!</strong></p>
+<p>Early exit does not necessarily need to be based on when you reach your goal what are other early termination criteria&#x27;s?</p>
+<ul>
+<li>Distance limit
+</li>
+<li>Number of goals reached
+</li>
+<li>Area limit (number of tiles reached)
+</li></ul>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Path Planning – Movement Cost</h2>
+<p>So far, we’ve made steps have the same “<strong>cost</strong>”.</p>
+<p>In some pathfinding scenarios there are different costs for different types of movement.</p>
+<p>One example is diagonal movement on a grid that costs more than axial movement (1 vs <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msqrt><mn>2</mn></msqrt><annotation encoding="application/x-tex">\sqrt{2}</annotation></semantics></math> ).</p>
+<p>We’d like the pathfinder to take these costs into account.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Path Planning – Dijkstra’s Algorithm</h2>
+<p>For this we want Dijkstra’s Algorithm (or Uniform Cost Search).</p>
+<p>How does it differ from Breadth First Search?</p>
+<p>We need to track movement costs, so let’s add a new variable, <strong>cost_so_far</strong>. This stores the total movement cost from the start location, also called a “<strong>distance field</strong>”.</p>
+<p>We want to take the movement costs into account when deciding how to evaluate locations; let’s turn our queue into a <strong>priority queue</strong>.</p>
+<p>A <strong>priority queue </strong>(min priority queue), is like a <strong>queue</strong> but instead of first-in-first-out, you get lowest-cost-out! This changes how the <strong>frontier </strong>expands!</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Path Planning – Movement Cost</h2>
+<figure><img src='L18_files/4cf79e409c73.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L18_files/282b2a0d92ee.png' alt='Picture without a description' loading='lazy'></figure>
+<p>Dijkstra’s Algorithm</p>
+<p>Breadth First Search</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Path Planning – Movement Cost</h2>
+<p>Less obviously, we may end up <strong>visiting a location multiple times</strong>, with different costs, so we need to alter the logic a little bit.</p>
+<p>This is because you can have 2 paths to reach one node with the same unit distance but different costs.</p>
+<p>Instead of adding a location to the frontier if the location has never been reached, we’ll add it if the new path to the location is <strong>better than the best previous path</strong>.</p>
+<figure><img src='L18_files/c16a53e142d3.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Path Planning – Movement Cost</h2>
+<p><strong>frontier</strong> = <em>PriorityQueue</em><em>()</em></p>
+<p><strong>frontier</strong>.put(<strong>start</strong><em>, 0</em>)</p>
+<p><strong>came_from</strong> = dict()</p>
+<p><strong>cost_so_far</strong> = dict()</p>
+<p><strong>came_from</strong>[<strong>start</strong>] = None</p>
+<p><strong>cost_so_far</strong>[<strong>start</strong>] = 0</p>
+<p><strong>while</strong> not <strong>frontier</strong>.empty():</p>
+<p><strong>current</strong> = <strong>frontier</strong>.get()</p>
+<p><strong>if</strong> <strong>current</strong> == <strong>goal</strong>:</p>
+<p><strong>break</strong></p>
+<p><strong>for</strong> <strong>next</strong> in graph.neighbors(<strong>current</strong>):</p>
+<p><em><strong>new_cost</strong></em><em> = </em><em><strong>cost_so_far</strong></em><em>[</em><em><strong>current</strong></em><em>] + </em><em>graph.cost</em><em>(</em><em><strong>current</strong></em><em>, </em><em><strong>next</strong></em><em>)</em></p>
+<p><em><strong>if</strong></em> <em><strong>next</strong></em><em> not in </em><em><strong>cost_so_far</strong></em><em> or </em><em><strong>new_cost</strong></em><em> &lt; </em><em><strong>cost_so_far</strong></em><em>[</em><em><strong>next</strong></em><em>]:</em></p>
+<p><strong>cost_so_far</strong>[<strong>next</strong>] = <em><strong>new_cost</strong></em></p>
+<p><em>priority = </em><em><strong>new_cost</strong></em></p>
+<p><strong>frontier</strong>.put(<strong>next</strong><em>, priority</em>)</p>
+<p><strong>came_from</strong>[<strong>next</strong>] = <strong>current</strong></p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Heuristic search</h2>
+
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Path Planning – Movement Cost</h2>
+<p>With Breadth First Search and Dijkstra’s Algorithm, the frontier expands in <strong>all</strong> directions.</p>
+<p>Why might that be a problem?</p>
+<p>This is a reasonable choice if you’re trying to find a path to <strong>all </strong>locations or to <strong>many </strong>locations.</p>
+<p>However, a common case is to <strong>find a path to only one location</strong>.</p>
+<p>Let’s make the frontier expand <strong>towards the goal </strong>more than it expands in other directions.</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Path Planning – Movement Cost</h2>
+<p>We need to <strong>guide</strong> the path planner’s frontier expansion towards how would what is an intuitive way of doing this?</p>
+<p>You try to minimize the distance to the goal, assuming there is no obstacle!</p>
+<p>In Dijkstra’s Algorithm we used the actual <strong>distance from the start </strong>for the priority queue ordering.</p>
+<p>Here instead, in Greedy Best First Search, we’ll use the <strong>estimated distance to the goal </strong>for the priority queue ordering.</p>
+<p>The location closest to the goal will be explored first.</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Path Planning – Movement Cost</h2>
+<p><strong>frontier</strong> = PriorityQueue()</p>
+<p><strong>frontier</strong>.put(<strong>start</strong>, 0)</p>
+<p><strong>came_from</strong> = dict()</p>
+<p><strong>came_from</strong>[<strong>start</strong>] = None</p>
+<p><strong>while</strong> not <strong>frontier</strong>.empty():</p>
+<p><strong>current</strong> = <strong>frontier</strong>.get()</p>
+<p><strong>if</strong> <strong>current</strong> == <strong>goal</strong>:</p>
+<p><strong>break</strong></p>
+<p><strong>for</strong> <strong>next</strong> in graph.neighbors(<strong>current</strong>):</p>
+<p><strong>if</strong> <strong>next</strong> not in <strong>came_from</strong>:</p>
+<p><em>priority = heuristic(</em><em><strong>goal</strong></em><em>, </em><em><strong>next</strong></em><em>)</em></p>
+<p><strong>frontier</strong>.put(<strong>next</strong>, priority)</p>
+<p><strong>came_from</strong>[<strong>next</strong>] = <strong>current</strong></p>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Path Planning – Movement Cost</h2>
+<p>Those paths aren’t the shortest; however, this algorithm runs much faster when there aren’t a lot of obstacles.</p>
+<p>The problem is that the paths aren’t as good, they are not <strong>optimally the shortest </strong>path like Dijkstra&#x27;s and BFS.</p>
+<p>Can we fix this?</p>
+<p>Yes!</p>
+<p>Here comes the magical A* algorithm!</p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Path Planning – Movement Cost</h2>
+<p><strong>Dijkstra’s</strong> Algorithm works well to find the <strong>shortest path</strong>, but it wastes time <strong>exploring in directions that aren’t promising</strong>.</p>
+<p><strong>Greedy Best First Search </strong>explores in <strong>promising directions, </strong>but it may <strong>not find the shortest path</strong>.</p>
+<p>A* is the combination of the two algorithm to get the best of both worlds, with no real downsides!</p>
+<p>The A* algorithm uses both the <strong>actual distance</strong> from the start and the <strong>estimated distance</strong> to the goal.</p>
+<p>It is extremely similar to Dijkstra’s.</p>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> Path Planning – Movement Cost</h2>
+<p><strong>frontier</strong> = PriorityQueue()</p>
+<p><strong>frontier</strong>.put(<strong>start</strong>, 0)</p>
+<p><strong>came_from</strong> = dict()</p>
+<p><strong>cost_so_far</strong> = dict()</p>
+<p><strong>came_from</strong>[<strong>start</strong>] = None</p>
+<p><strong>cost_so_far</strong>[<strong>start</strong>] = 0</p>
+<p><strong>while</strong> not <strong>frontier</strong>.empty():</p>
+<p><strong>current</strong> = <strong>frontier</strong>.get()</p>
+<p><strong>if</strong> <strong>current</strong> == <strong>goal</strong>:</p>
+<p><strong>break</strong></p>
+<p><strong>for</strong> <strong>next</strong> in graph.neighbors(<strong>current</strong>):</p>
+<p><strong>new_cost</strong> = <strong>cost_so_far</strong>[<strong>current</strong>] + graph.cost(<strong>current</strong>, <strong>next</strong>)</p>
+<p><strong>if</strong> <strong>next</strong> not in <strong>cost_so_far</strong> or <strong>new_cost</strong> &lt; <strong>cost_so_far</strong>[<strong>next</strong>]:</p>
+<p><strong>cost_so_far</strong>[<strong>next</strong>] = <strong>new_cost</strong></p>
+<p>priority = <strong>new_cost</strong><em> + heuristic(</em><em><strong>goal</strong></em><em>, </em><em><strong>next</strong></em><em>)</em></p>
+<p><strong>frontier</strong>.put(<strong>next</strong>, priority)</p>
+<p><strong>came_from</strong>[<strong>next</strong>] = <strong>current</strong></p>
+<p><br></p>
+<p>This is the only new thing that was added!</p>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> Path Planning – Movement Cost</h2>
+<p>A* is the best of both worlds.</p>
+<p>As long as the heuristic does not overestimate distances, A* finds an optimal path, like Dijkstra’s Algorithm does.</p>
+<p>A* uses the heuristic to reorder the nodes so that it’s more likely that the goal node will be encountered sooner.</p>
+<p><strong>And … that’s it! That’s the A* algorithm.</strong></p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Path Planning – Movement Cost</h2>
+<p>A* selects the next node to expand based on the function:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(n) = g(n) + h(n)</annotation></semantics></math></p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">g(n)</annotation></semantics></math>: The actual cost from the start node to node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>.
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(n)</annotation></semantics></math>: The estimated cost from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">n\ </annotation></semantics></math>to the goal (the heuristic).
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>:</mo></mrow><annotation encoding="application/x-tex">f(n):</annotation></semantics></math> The estimated total cost of the path through <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">n\ </annotation></semantics></math>to the goal.
+</li></ul>
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> Path Planning – Movement Cost</h2>
+<p>Assume there is an optimal goal node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>G</mi><annotation encoding="application/x-tex">G</annotation></semantics></math> with a true minimum cost <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>C</mi><mo>*</mo></msup><annotation encoding="application/x-tex">C^{\ast}</annotation></semantics></math>.</p>
+<p>Now, suppose A* is about to <strong>terminate</strong> by selecting a suboptimal goal node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mn>2</mn></msub><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math> from the priority queue, where the cost <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">g\left( G_{2} \right) &gt; C^{\ast}</annotation></semantics></math>.</p>
+<p>For A* to be optimal, we must prove that the algorithm will <strong>always find </strong>and expand a node on the optimal path <strong>before it ever reaches </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mn>2</mn></msub><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math>.</p>
+
+</section>
+<section id='s47' aria-labelledby='h47'>
+<h2 id='h47'><span class='num'>47.</span> Path Planning – Movement Cost</h2>
+<p>Frontier assumption:</p>
+<p>At any point before reaching the optimal goal, there must be at least one node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">n\ </annotation></semantics></math> on the optimal path that is currently in the &quot;Open Set&quot; (the frontier).</p>
+<p>Otherwise, it is impossible to reach the optimal goal since this would imply that no path node from the optimal goal is part of the frontier.</p>
+<p>Any idea when this assumption might not happen?</p>
+<p>This could happen if you have disconnected graphs and your start and end nodes are in different connected components.</p>
+
+</section>
+<section id='s48' aria-labelledby='h48'>
+<h2 id='h48'><span class='num'>48.</span> Path Planning – Movement Cost</h2>
+<p>Heuristic underestimation assumption:</p>
+<p>If the heuristic <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(n)</annotation></semantics></math> is <strong>admissible</strong>, it satisfies:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><msup><mi>h</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(n) \leq h^{\ast}(n)</annotation></semantics></math></p>
+<p>where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>h</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h^{\ast}(n)</annotation></semantics></math> is the true cost from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> to the goal.</p>
+
+</section>
+<section id='s49' aria-labelledby='h49'>
+<h2 id='h49'><span class='num'>49.</span> Path Planning – Movement Cost</h2>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> is on the optimal path, we know that:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(n) = g(n) + h(n)</annotation></semantics></math></p>
+<p>Since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><msup><mi>h</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">h(n) \leq h^{\ast}(n)</annotation></semantics></math>, then:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mi>h</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">f(n) \leq g(n) + h^{\ast}(n)</annotation></semantics></math></p>
+<p>By definition, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>g</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>+</mo><msup><mi>h</mi><mo>*</mo></msup><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>=</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">g(n) + h^{\ast}(n) = C^{\ast}</annotation></semantics></math> (the optimal cost).</p>
+<p>Therefore:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">f(n) \leq C^{\ast}</annotation></semantics></math></p>
+
+</section>
+<section id='s50' aria-labelledby='h50'>
+<h2 id='h50'><span class='num'>50.</span> Path Planning – Movement Cost</h2>
+<p>Now, consider our suboptimal goal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mn>2</mn></msub><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math>.</p>
+<p>Since <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mn>2</mn></msub><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math> is a goal node, its heuristic <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>h</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">h\left( G_{2} \right) = 0</annotation></semantics></math>.</p>
+<p>Thus:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>g</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mn>0</mn><mo>&gt;</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">f\left( G_{2} \right) = g\left( G_{2} \right) + 0 &gt; C^{\ast}</annotation></semantics></math></p>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>≤</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">f(n) \leq C^{\ast}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>&gt;</mo><msup><mi>C</mi><mo>*</mo></msup></mrow><annotation encoding="application/x-tex">f\left( G_{2} \right) &gt; C^{\ast}</annotation></semantics></math>, it follows that: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>f</mi><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo stretchy="false" form="postfix">)</mo><mo>&lt;</mo><mi>f</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>G</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">f(n) &lt; f\left( G_{2} \right)</annotation></semantics></math></p>
+<p>Since A* always expands the node with the <strong>lowest </strong><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi mathvariant="bold-italic">𝒇</mi><annotation encoding="application/x-tex">\mathbf{f}</annotation></semantics></math><strong>-value first</strong>, it will always choose the node <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math> on the optimal path before it ever picks the suboptimal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>G</mi><mn>2</mn></msub><annotation encoding="application/x-tex">G_{2}</annotation></semantics></math>. This ensures the optimal path is found first.</p>
+
+</section>
+<section id='s51' aria-labelledby='h51'>
+<h2 id='h51'><span class='num'>51.</span> Questions?</h2>
+
+
+</section>
+<section id='s52' aria-labelledby='h52'>
+<h2 id='h52'><span class='num'>52.</span> End of Lecture 18</h2>
+
+
+</section>
+</main></body></html>

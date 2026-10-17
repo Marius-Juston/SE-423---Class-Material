@@ -1,0 +1,592 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L14: SE 423: Introduction to MechatronicsLecture 14: Sensors &amp; Maze following &amp; LocalizationsMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L14: SE 423: Introduction to MechatronicsLecture 14: Sensors &amp; Maze following &amp; LocalizationsMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L14.pdf">PDF</a> · <a href="L14.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (46)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 14: Sensors &amp; Maze following &amp; LocalizationsMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Sensors</a></li><li><a href='#s6'>Sensors</a></li><li><a href='#s7'>Sensors</a></li><li><a href='#s8'>Sensors</a></li><li><a href='#s9'>Sensors</a></li><li><a href='#s10'>IR</a></li><li><a href='#s11'>IR Sensor</a></li><li><a href='#s12'>IR Sensor</a></li><li><a href='#s13'>IR Sensor</a></li><li><a href='#s14'>IR Sensor</a></li><li><a href='#s15'>IR Sensor</a></li><li><a href='#s16'>LiDAR</a></li><li><a href='#s17'>LiDAR</a></li><li><a href='#s18'>LiDAR</a></li><li><a href='#s19'>LiDAR</a></li><li><a href='#s20'>LiDAR</a></li><li><a href='#s21'>LiDAR</a></li><li><a href='#s22'>LiDAR</a></li><li><a href='#s23'>LiDAR</a></li><li><a href='#s24'>LiDAR</a></li><li><a href='#s25'>LiDAR</a></li><li><a href='#s26'>LiDAR</a></li><li><a href='#s27'>LiDAR</a></li><li><a href='#s28'>Wall Following</a></li><li><a href='#s29'>Wall Following</a></li><li><a href='#s30'>Wall Following</a></li><li><a href='#s31'>Wall Following</a></li><li><a href='#s32'>Wall Following – Inner Loop</a></li><li><a href='#s33'>Wall Following – Outer Loop</a></li><li><a href='#s34'>State Machine</a></li><li><a href='#s35'>Wall Following – State Machine</a></li><li><a href='#s36'>Wall Following – State Machine</a></li><li><a href='#s37'>Wall Following – State Machine</a></li><li><a href='#s38'>Wall Following – State Machine</a></li><li><a href='#s39'>Wall Following – State Machine</a></li><li><a href='#s40'>Wall Following – State Machine</a></li><li><a href='#s41'>Mechatronics Example</a></li><li><a href='#s42'>Mechatronics Example</a></li><li><a href='#s43'>Mechatronics Example</a></li><li><a href='#s44'>Wall Following – State Machine</a></li><li><a href='#s45'>Questions?</a></li><li><a href='#s46'>End of Lecture 14</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 14: Sensors &amp; Maze following &amp; LocalizationsMarius Juston</h2>
+<p>Monday, March 16th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>With the IMU onboard the lab robot, how would I measure its current position?
+</li></ul>
+<ul>
+<li>With the current knowledge you have with the robot and the current set of sensors would we be able to send it out to go from point A-to-B in real world scenarios (more of an open-ended question)?
+<li>
+<ul>
+<li>If not, what do you think we are missing from the current robot?
+</li>
+<li>If yes, are there any assumptions that have been made?
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel, NO OFFICE HOURS THIS WEEK (MIGHT BE RESCHEDULED)
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 5 this week. This a 1-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 1, 2, 3 &amp; 4 are due <strong>March 10, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Sensors</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Sensors</h2>
+<p>We currently have explored a couple of way to sense information about the robot’s internal state (IMU, encoders).</p>
+<p>What are we missing?</p>
+<p>Sensing external objects!</p>
+<p>What are some examples?</p>
+<ul>
+<li>Walls
+</li>
+<li>People
+</li>
+<li>Water
+</li>
+<li>Doors
+</li>
+<li>Etc.
+</li></ul>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Sensors</h2>
+<p>There are 2 types of sensors,</p>
+<p><strong>Passive </strong>sensors: Measure the environment without emitting their own signals</p>
+<p>Examples:</p>
+<ul>
+<li>Standard camera
+</li>
+<li>Thermometer
+</li></ul>
+<p><strong>Active</strong> sensors: Emit energy into the environment and measure the reflection / reaction to determine object properties</p>
+<p>Examples:</p>
+<ul>
+<li>LiDAR
+</li>
+<li>Radar
+</li>
+<li>Sonar
+</li></ul>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Sensors</h2>
+<p>Is the accelerometer a passive or active sensor?</p>
+<p><strong>Passive</strong></p>
+<p>Is the gyroscope a passive or active sensor?</p>
+<p><strong>Active</strong> (the gyro has a drive motor; thus, you have provided energy)</p>
+<p>Is the magnetometer a passive or active sensor?</p>
+<p><strong>Passive</strong></p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Sensors</h2>
+<p>Which type of sensor do you think operates better in complete pitch-black darkness for finding walls?</p>
+<p><strong>Active</strong></p>
+<p>Which type of sensor do you think operates best in measuring location of forest fires?</p>
+<p><strong>Passive</strong></p>
+<p>Which type of sensor do you think operates best in measuring the current environment in the visible spectrum?</p>
+<p><strong>Passive</strong> (this is just a camera!)</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> IR</h2>
+
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> IR Sensor</h2>
+<p>We want to be able to detect if there is an obstacle in front of us. The best / simplest way to do this is though an active sensor.</p>
+<p>IR sensors emit an invisible infrared light beam and measures the reflection that bounces back.</p>
+<p>The intensity of the returning light indicates the distance of an object.</p>
+<p>Composed of 2 parts:</p>
+<ul>
+<li>PSD (position sensitive detector)
+</li>
+<li>IR-LED (infrared emitting diode)
+</li></ul>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> IR Sensor</h2>
+<figure><img src='L14_files/b49cb3b5fe6d.jpg' alt='Picture without a description' loading='lazy'></figure>
+<p>Light detector</p>
+<p>LED</p>
+<p>Basic operation principle:</p>
+<ul>
+<li>The IR LED emitter sends out and infrared light beam (invisible to the human eye)
+</li>
+<li>The light travels forward until it hits and object or obstacle
+</li>
+<li>The object reflects some of the IR light
+</li>
+<li>The receiver detects the reflectance light
+</li>
+<li>The sensor determines the approximate distance
+</li></ul>
+<p>Distance is measured from reflectance:</p>
+<p>Closer object  = stronger reflected signal</p>
+<p>Further object = weaker reflected signal</p>
+<p><a href='https://www.smart-prototyping.com/Sharp-IR-Distance-Sensor-GP2Y0A41SK0F-4-30-cm'>https://www.smart-prototyping.com/Sharp-IR-Distance-Sensor-GP2Y0A41SK0F-4-30-cm</a></p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> IR Sensor</h2>
+<p>Advantages:</p>
+<ul>
+<li>Simple and inexpensive
+</li>
+<li>Small size and lightweight
+</li>
+<li>Fast response time
+</li>
+<li>Low power consumption
+</li></ul>
+<p>Limitations:</p>
+<ul>
+<li>Performance affected by <strong>surface color and reflectivity</strong>
+</li>
+<li>Limited detection range (signal power disperses at a rate of d2)
+</li>
+<li>Sensitive to ambient IR light (sunlight)
+</li>
+<li>They provide a single point of data, acting like a flashlight beam rather than a wide field of view
+</li></ul>
+<p>Typical Range:</p>
+<p>2 to 80 cm</p>
+<figure><img src='L14_files/c9c388d3ecb5.jpg' alt='Types of Distance Sensors and How to Select One? - Latest News from Seeed  Studio' loading='lazy'></figure>
+<p><a href='https://www.seeedstudio.com/blog/2019/12/23/distance-sensors-types-and-selection-guide/?srsltid=AfmBOoqqTzG5IXwUkxoz5_Zqd1hbp99oPKSt_J4rwNNXKZuSm4sWI-MF'>https://www.seeedstudio.com/blog/2019/12/23/distance-sensors-types-and-selection-guide/?srsltid=AfmBOoqqTzG5IXwUkxoz5_Zqd1hbp99oPKSt_J4rwNNXKZuSm4sWI-MF</a></p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> IR Sensor</h2>
+<p>Why do these light signals not do very well in long ranges? Why do we need more powerful LEDs to be able to see further?</p>
+<p>Signal dissipation!</p>
+<p>When an IR LED emits light, the energy spreads out in <strong>all directions</strong>!</p>
+<p>As distance increases, the same energy covers a <strong>larger surface area</strong>!</p>
+<p>Therefore, the signal intensity <strong>decreases with distance</strong>.</p>
+<p>This relationship is called the <strong>Inverse Square Law</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>I</mi><mspace width="0.222em"></mspace><mo>∝</mo><mfrac><mn>1</mn><msup><mi>r</mi><mn>2</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">I\  \propto \frac{1}{r^{2}}</annotation></semantics></math></p>
+<p>Where:</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>I</mi><annotation encoding="application/x-tex">I</annotation></semantics></math> = signal intensity
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>r</mi><annotation encoding="application/x-tex">r</annotation></semantics></math> = distance traveled from the source
+</li></ul>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> IR Sensor</h2>
+<p>However, these IR type distance sensing is worse than <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><mn>1</mn><msup><mi>r</mi><mn>2</mn></msup></mfrac><annotation encoding="application/x-tex">\frac{1}{r^{2}}</annotation></semantics></math>!</p>
+<p>Because the signal travels 2 paths:</p>
+<ul>
+<li>Emitter to Object
+</li>
+<li>Object to Receiver
+</li></ul>
+<p>So, the returned signal is roughly:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mi>e</mi><mi>c</mi><mi>e</mi><mi>i</mi><mi>v</mi><mi>e</mi><mi>d</mi><mspace width="0.222em"></mspace><mi>S</mi><mi>i</mi><mi>g</mi><mi>n</mi><mi>a</mi><mi>l</mi><mspace width="0.222em"></mspace><mo>∝</mo><mfrac><mn>1</mn><msup><mi>r</mi><mn>4</mn></msup></mfrac></mrow><annotation encoding="application/x-tex">Received\ Signal\  \propto \frac{1}{r^{4}}</annotation></semantics></math></p>
+<p>So, to see very far and be able to remove noise you need an extremely powerful LED!</p>
+<p>Same goes for most active sensors such as Radar / Sonar / LiDAR!</p>
+<figure><img src='L14_files/4dfc21e470bb.jpg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.jpl.nasa.gov/edu/resources/lesson-plan/collecting-light-inverse-square-law-demo/'>https://www.jpl.nasa.gov/edu/resources/lesson-plan/collecting-light-inverse-square-law-demo/</a></p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> LiDAR</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> LiDAR</h2>
+<p>What if you want to see the distance of all the obstacles around you instantaneously? Would IR be enough? How would you use IR sensors to create a 360 view of the world?</p>
+<p>A basic IR distance sensor only measures <strong>distance in one direction.</strong></p>
+<p>If we want a complete view of obstacles around a robot, we will need:</p>
+<ul>
+<li>Many IR sensors
+</li>
+<li>Each pointing in a <strong>different direction</strong> to cover the 360 degrees around the robot
+</li></ul>
+<p>Problems with this approach:</p>
+<ul>
+<li>Large number of sensors required
+</li>
+<li>Limited accuracy (bleed from the other sensors)
+</li>
+<li>Slow updates if scanned sequentially
+</li>
+<li>Difficult calibration
+</li></ul>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> LiDAR</h2>
+<p>When a single-point IR isn’t enough, we turn to Light Detection and Ranging (LiDAR)!</p>
+<p>LiDAR solves this by using a laser that scans the environment.</p>
+<p>Key idea:</p>
+<ul>
+<li>Send a laser pulse
+</li>
+<li>Measure how long it takes to bounce back
+</li>
+<li>Convert that time into distance
+</li></ul>
+<p>Main components:</p>
+<ul>
+<li>Laser emitter
+</li>
+<li>Photodetector
+</li>
+<li>Precise timing electronics
+</li>
+<li>Rotating motor / scanning system
+</li></ul>
+<p>The system rapidly scans the environment and generates a <strong>point cloud</strong>, which represents the surrounding world.</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> LiDAR</h2>
+<figure><img src='L14_files/fdb322a87b6b.gif' alt='Things you need to know about LiDAR: the more lasers, the better? | Hesai' loading='lazy'></figure>
+<figure><img src='L14_files/2ea3513ce74f.gif' alt='New Part Day: Very Cheap LIDAR | Hackaday' loading='lazy'></figure>
+<p><a href='https://hackaday.com/2017/04/20/new-part-day-very-cheap-lidar/'>https://hackaday.com/2017/04/20/new-part-day-very-cheap-lidar/</a></p>
+<p><a href='https://www.hesaitech.com/things-you-need-to-know-about-lidar-the-more-lasers-the-better/'>https://www.hesaitech.com/things-you-need-to-know-about-lidar-the-more-lasers-the-better/</a></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> LiDAR</h2>
+<p>LiDAR determines distance using Time-of-Flight (ToF). Instead of signal intensity, since it can measure that precisely and thus is can get a more accurate distance measurement.</p>
+<ul>
+<li>A laser pulse is emitted.
+</li>
+<li>The pulse travels to an object.
+</li>
+<li>The object reflects the pulse back.
+</li>
+<li>The sensor measures the round-trip travel time.
+</li></ul>
+<p>Distance is calculated using:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>c</mi><mo>×</mo><mi>t</mi></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">d\  = \ \frac{c \times t}{2}</annotation></semantics></math></p>
+<p>Where:</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>d</mi><annotation encoding="application/x-tex">d</annotation></semantics></math> = distance to the object
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>c</mi><annotation encoding="application/x-tex">c</annotation></semantics></math> = speed of light (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>≈</mo><mn>3</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup></mrow><annotation encoding="application/x-tex">\approx 3 \times 10^{8}</annotation></semantics></math> m/s)
+</li>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> = measured round-trip time
+</li></ul>
+<p>Why is there a division by 2 in the equation?</p>
+<figure><img src='L14_files/b208fbe3763a.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Time-of-flight_camera'>https://en.wikipedia.org/wiki/Time-of-flight_camera</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> LiDAR</h2>
+<p>Only possible to use ToF flight sensors since clocks are now extremely fast and accurate.</p>
+<p>Example:</p>
+<p>If the pulse returns in <strong>20 nanoseconds</strong>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mn>3</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mo>×</mo><mn>20</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>9</mn></mrow></msup></mrow><mn>2</mn></mfrac><mo>=</mo><mn>3</mn><mspace width="0.222em"></mspace><mi>m</mi><mi>e</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">d\  = \ \frac{3 \times 10^{8} \times 20 \times 10^{- 9}}{2} = 3\ meters</annotation></semantics></math></p>
+<p>The Red Board’s clock runs at 200 MHz ( not that you would use the Red Board ). Which has a clock cycle of <strong>5 nanoseconds</strong>.</p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> LiDAR</h2>
+<p>What happens if the clock is too slow?</p>
+<ul>
+<li>You get a lower accuracy since the time is not as accurate
+</li>
+<li>You cannot measure distances that are too close! (there is usually a minimum distance for LiDARs as well as the field of view)
+</li></ul>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mi>i</mi><mi>n</mi><mi>i</mi><mi>m</mi><mi>u</mi><mi>m</mi><mspace width="0.222em"></mspace><mi>d</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mn>3</mn><mo>×</mo><msup><mn>10</mn><mn>8</mn></msup><mo>×</mo><mn>5</mn><mo>×</mo><msup><mn>10</mn><mrow><mi>−</mi><mn>9</mn></mrow></msup></mrow><mn>2</mn></mfrac><mo>=</mo><mn>0.75</mn><mspace width="0.222em"></mspace><mi>m</mi><mi>e</mi><mi>t</mi><mi>e</mi><mi>r</mi><mi>s</mi></mrow><annotation encoding="application/x-tex">minimum\ d\  = \ \frac{3 \times 10^{8} \times 5 \times 10^{- 9}}{2} = 0.75\ meters</annotation></semantics></math></p>
+<ul>
+<li>In addition, if you are not far enough your receiver cannot see the signal
+</li></ul>
+<figure><img src='L14_files/69540bd73fe6.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.ti.com/lit/ug/tiducm1b/tiducm1b.pdf'>https://www.ti.com/lit/ug/tiducm1b/tiducm1b.pdf</a></p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> LiDAR</h2>
+<p>Why use lasers?</p>
+<p>The problem is that Inverse Square Law it is based on the surface expanding in space. What are 2 ways to improve the intensity of the signal returned?</p>
+<ul>
+<li>Increase the power.
+</li>
+<li>Reduce how dispersed the signal is
+</li></ul>
+<p>IR LEDs spread light over a wide angle, which causes:</p>
+<ul>
+<li>Rapid signal loss
+</li>
+<li>Poor directional accuracy
+</li>
+<li>Lower range
+</li></ul>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> LiDAR</h2>
+<p>Lasers are preferred because they have:</p>
+<p>High Directionality:</p>
+<ul>
+<li>Laser beams are very narrow, so most energy travels in one direction.
+</li>
+<li>This allows detection of objects much farther away.
+</li></ul>
+<p>High Optical Power Density:</p>
+<ul>
+<li>Because the beam is concentrated, the returned signal is stronger.
+</li></ul>
+<p>Precise Timing:</p>
+<ul>
+<li>Laser pulses can be extremely short, enabling nanosecond-level timing accuracy.
+</li></ul>
+<p>Better Spatial Resolution:</p>
+<ul>
+<li>A narrow beam allows LiDAR to detect fine details and small objects.
+</li></ul>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> LiDAR</h2>
+<p>Pulsed LiDAR, you send a small light pulse and get the time that it arrived. Allows for the precise timing.</p>
+<p>The LiDAR sends pulses at set intervals and waits for the return.</p>
+<p>The maximum distance that you measure is based on that pulse width. As otherwise it would bleed into other pulses.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>D</mi><mi mathvariant="normal">max</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>c</mi><mspace width="0.222em"></mspace><msub><mi>t</mi><mn>0</mn></msub></mrow><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">D_{\max}\  = \ \frac{c\ t_{0}}{2}</annotation></semantics></math></p>
+<p>Where:</p>
+<ul>
+<li><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>0</mn></msub><annotation encoding="application/x-tex">t_{0}</annotation></semantics></math> = the pulse width.
+</li></ul>
+<figure><img src='L14_files/cc97241e2639.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> LiDAR</h2>
+<p>Given a long pulse width, it is possible to receive multiple returns.</p>
+<p>Which can help with additional information in the environment allowing you to enter different materials.</p>
+<p><a href='https://iopscience.iop.org/article/10.1088/1361-6501/abc867'>https://iopscience.iop.org/article/10.1088/1361-6501/abc867</a></p>
+<figure><img src='L14_files/0ef57a5c46bc.jpg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> LiDAR</h2>
+<figure><img src='L14_files/54cbc8d97a14.gif' alt='undefined' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Lidar'>https://en.wikipedia.org/wiki/Lidar</a></p>
+<p>By rapidly spinning the laser via a motor, we can generate a dense 2D or 3D map of the environment.</p>
+<p>Given that we know the constant rate of turn, we thus know where each pulse will be located radially and the distance returned. We can thus generate a <strong>point cloud</strong>.</p>
+<p>For 2D, the location of an obstacle relative to the LiDAR would be,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>i</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><msub><mi>d</mi><mi>i</mi></msub><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">cos</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo>,</mo><msub><mi>d</mi><mi>i</mi></msub><mspace width="0.222em"></mspace><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">)</mo><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">p_{i}\  = \ (d_{i}\ \ \cos(\theta_{i}),d_{i}\ \sin(\theta_{i}))</annotation></semantics></math></p>
+<p>A point cloud is a map of 2D/3D points in space where objects are located.</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Wall Following</h2>
+
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Wall Following</h2>
+<p>We now have sensors to figure out where obstacles are and where the robot itself is located!</p>
+<p>In lab we will be using the LiDAR and the IMU to perform some wall following.</p>
+<p>However, raw data from a sensor does not magically steer a robot; we must map these distance readings to the wheel motor controls.</p>
+<p>The Hokuyo URG-04LX LADAR updates every 100 ms (10Hz), whereas the motor controllers require new voltage commands every 1 ms to remain stable. (We will go through this sensor and the code specifically after Spring Break)</p>
+<p>To resolve this extreme timing discrepancy, we split the robot&#x27;s logic into a Cascade Control architecture comprising an <strong>Inner Loop </strong>and an <strong>Outer Loop</strong>.</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Wall Following</h2>
+<p>For this robot it might not be extremely critical; however, think about fighter jets, they have lots of different sensors all working at different speeds and requiring different priorities. Any delay could be catastrophic!</p>
+<figure><img src='L14_files/f8e3a58e7ef0.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>ME 547 Robust and Adaptive Controller – Week 1 Review 2025 slides</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Wall Following</h2>
+<p>To manage these dual control loops on the F28379D processor, we rely on a strict hierarchy of Hardware Interrupts (HWIs) and Software Interrupts (SWIs).</p>
+<p>The <strong>Inner Loop </strong>executes inside an HWI, completely pausing the main code every 1ms to ensure the motors receive perfect, uninterrupted timing.</p>
+<p>The <strong>Outer Loop</strong> (processing LADAR math) executes inside a SWI. SWIs are powerful because they allow complex math to run in the background but can be safely interrupted by the 1 ms HWI to prevent motor stalling.</p>
+<p>If the LADAR trigonometry takes 3.5 ms to compute in an SWI, exactly how many times will the Inner Loop HWI pause it?</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Wall Following – Inner Loop</h2>
+<p>The <strong>Inner Loop </strong>acts as the low-level controller, setting and calculating the wheel velocities using the PI controller used in lab.</p>
+<p>We also use it to calculate the robot’s spatial coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(X,\ Y)</annotation></semantics></math> by integrating the IMU and the left-right speed.</p>
+<p>We also use the MPU-9250 Z-axis rate gyro to compute the robot’s heading, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>θ</mi><annotation encoding="application/x-tex">\theta</annotation></semantics></math>.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Wall Following – Outer Loop</h2>
+<p>The <strong>Outer Loop</strong> does the heavy lifting.</p>
+<p>Every 100 ms, the LIDAR transmits 228 distance points to the F28379D via the UART serial port.</p>
+<p>Processing 228 trigonometric projections (calculating sines and cosines) is computationally heavy, so we extract strategic named sub-vectors to govern navigation.</p>
+<p>These represent key regions of interest such as “front”, “left front”, “right front”.</p>
+<p>Why do we extract the minimum of a 5-point cluster rather than simply trusting a single laser ray or taking the mean?</p>
+<figure><img src='L14_files/9deb27ec654a.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Front</p>
+<p>Left Front</p>
+<p>Right Front</p>
+<details><summary>Speaker notes</summary><p>It is more dangerous to actual hit something. So it is better to be safer, so that is why we use the minimum!</p></details>
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> State Machine</h2>
+
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Wall Following – State Machine</h2>
+<p>Autonomous navigation requires rigid decision-making architectures; the most robust paradigm for maze-solving is the Finite State Machine (FSM).</p>
+<p>An FSM divides continuous mechatronic behavior into discrete operational modes, or &quot;States,&quot; governed by strict conditional transitions.</p>
+<p>For each “State” specific actions happen inside, such as going forward or turning left, do nothing, each can be completely unique. To be able to switch states we then must be able to put specific conditions to say which state we should go to.</p>
+<p>For continuous right-wall following, we can construct a simple 2-State FSM interface:</p>
+<ul>
+<li>State 1 (Wall Follow)
+</li>
+<li>State 2 (Left Turn).
+</li></ul>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Wall Following – State Machine</h2>
+<p>Allows for separation of tasks and enables complex independent behaviors.</p>
+<p>This also helps with software as having states means that you can modularize (have separate files / functions) for each of your different states instead of one big function. This makes things easier to debug and extend to include additional states.</p>
+<p>For the right-wall following we would have 2 states:</p>
+<ul>
+<li>State 1, ensures that the robot maintains a specific distance from the wall based on the LiDAR values
+<li>
+<ul>
+<li>If we see an obstacle in front of us, another wall, we want to change state 2
+</li></ul>
+</li>
+<li>State 2, handles the case when there is an obstacle in front of us, to avoid collision we want to stop and turn left
+<li>
+<ul>
+<li>If we no longer see any obstacles, then we can continue following the wall from the right side (state 1)
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Wall Following – State Machine</h2>
+<figure><img src='L14_files/fcf292e62a57.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Wall Following – State Machine</h2>
+<p>A critical flaw in naive FSM design is &quot;chattering&quot; (Zeno behavior), where minor sensor noise causes the logic to rapidly oscillate between States 1 and State 2 infinitely fast.</p>
+<p>To prevent this, we ensure a robust enough “<strong>deadband / hysteresis</strong>” zone into the transition boundaries.</p>
+<p>A <strong>deadband</strong> zone typically represents an inactive region where no action is taken.</p>
+<p>For example, instead of setting a velocity of close to zero, just set it to zero to reduce power consumption and potential small noise or backlash. When <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">|</mo><mi>v</mi><mo stretchy="false" form="prefix">|</mo><mspace width="0.222em"></mspace><mo>&lt;</mo><mi>ε</mi></mrow><annotation encoding="application/x-tex">|v|\  &lt; \varepsilon</annotation></semantics></math>, set <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mn>0</mn></mrow><annotation encoding="application/x-tex">v\  = \ 0</annotation></semantics></math>.</p>
+<figure><img src='L14_files/a9065b2867a3.png' alt='undefined' loading='lazy'></figure>
+<details><summary>Speaker notes</summary><p>Zeno behavior means “the system makes an infinite number of jumps, in finite time”</p></details>
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Wall Following – State Machine</h2>
+<p><strong>Hysteresis </strong>is path-dependent, where the output relies on whether the variable is rising or falling.</p>
+<figure><img src='L14_files/788aced47ea1.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Wall Following – State Machine</h2>
+<figure><img src='L14_files/fcf292e62a57.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>In this case we do not authorize the return to State 2 until <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>f</mi><mi>r</mi><mi>o</mi><mi>n</mi><mi>t</mi></mrow></msub><mspace width="0.222em"></mspace><mo>&gt;</mo><mspace width="0.222em"></mspace><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>o</mi><mi>p</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub><mspace width="0.222em"></mspace></mrow><annotation encoding="application/x-tex">d_{front}\  &gt; \ d_{stop\_ thresh}\ </annotation></semantics></math>where the stop threshold is strictly greater than the start threshold, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>o</mi><mi>p</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub><mspace width="0.222em"></mspace><mo>&gt;</mo><msub><mi>d</mi><mrow><mi>s</mi><mi>t</mi><mi>a</mi><mi>r</mi><mi>t</mi><mi>_</mi><mi>t</mi><mi>h</mi><mi>r</mi><mi>e</mi><mi>s</mi><mi>h</mi></mrow></msub></mrow><annotation encoding="application/x-tex">d_{stop\_ thresh}\  &gt; d_{start\_ thresh}</annotation></semantics></math>.</p>
+<p>If the start threshold is 1.0 meter and the stop threshold is 1.5 meters. What state is the robot in at 1.2 meters?</p>
+<p>It just <strong>stays at its current state</strong>! It has not reached on of the transition threshold yet!</p>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Mechatronics Example</h2>
+
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Mechatronics Example</h2>
+<p>Fantastic video of mechatronics, the tight integration of hardware, software and understanding the environment you operate it and building the robot for it!</p>
+<p>The forefront of micro-optimizations to just improve performance as much as possible!</p>
+<p>Uses everything that we do as well!</p>
+<ul>
+<li>IR Sensor
+</li>
+<li>Gyroscope
+</li>
+<li>Encoders
+</li>
+<li>DC motors
+</li>
+<li>Micro-controllers!
+</li></ul>
+<p>The some of the code can be found <a href='https://github.com/ukmars/mazerunner-core/blob/main/mazerunner-core/maze.h'>here</a>.</p>
+<p><a href='https://hackaday.com/2008/11/26/vacuum-micromouse/'>https://hackaday.com/2008/11/26/vacuum-micromouse/</a></p>
+<figure><img src='L14_files/f7031846546e.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> Mechatronics Example</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=ZMQbHMgK2rw'>YouTube video: The Fastest Maze-Solving Competition On Earth (Veritasium)</a></p>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> Wall Following – State Machine</h2>
+<figure><img src='L14_files/bbabf95083b2.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Questions?</h2>
+
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> End of Lecture 14</h2>
+
+
+</section>
+</main></body></html>

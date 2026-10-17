@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L4: SE 423: Introduction to MechatronicsLecture 4: Numbers, Strings, SCI and InterruptsMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L4: SE 423: Introduction to MechatronicsLecture 4: Numbers, Strings, SCI and InterruptsMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L4.pdf">PDF</a> · <a href="L4.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (42)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 4: Numbers, Strings, SCI and InterruptsMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Integers</a></li><li><a href='#s5'>Integers Size</a></li><li><a href='#s6'>Signed Integers</a></li><li><a href='#s7'>2’s Complement</a></li><li><a href='#s8'>2’s Complement</a></li><li><a href='#s9'>String</a></li><li><a href='#s10'>ASCII</a></li><li><a href='#s11'>ASCII</a></li><li><a href='#s12'>printf and sprintf</a></li><li><a href='#s13'>printf and sprint - format</a></li><li><a href='#s14'>printf and sprint – format – specifier &amp; length</a></li><li><a href='#s15'>printf and sprint – format – additional flags</a></li><li><a href='#s16'>RS-232 Serial Port</a></li><li><a href='#s17'>SCI</a></li><li><a href='#s18'>SCI</a></li><li><a href='#s19'>SCI</a></li><li><a href='#s20'>SCI</a></li><li><a href='#s21'>SCI</a></li><li><a href='#s22'>CPU Interrupts</a></li><li><a href='#s23'>CPU Interrupts ( Modern computers )</a></li><li><a href='#s24'>Hardware Interrupts (Timer)</a></li><li><a href='#s25'>Hardware Interrupts (Timer)</a></li><li><a href='#s26'>Hardware Interrupts</a></li><li><a href='#s27'>Software Interrupts</a></li><li><a href='#s28'>Interrupts</a></li><li><a href='#s29'>Enabling Interrupts</a></li><li><a href='#s30'>Interrupts - Timers</a></li><li><a href='#s31'>Interrupts - Sensors</a></li><li><a href='#s32'>Interrupts – External Hardware Events</a></li><li><a href='#s33'>Interrupts – Actuation ( will go into more details later)</a></li><li><a href='#s34'>Interrupts – Communication (RX = receive, TX = transmit)</a></li><li><a href='#s35'>Interrupts – Errors</a></li><li><a href='#s36'>Interrupts – CPU Accelerator</a></li><li><a href='#s37'>Interrupts – CPU Accelerator – CLA ( floating point engine )</a></li><li><a href='#s38'>Interrupts – High-Speed Peripherals</a></li><li><a href='#s39'>Interrupts – Placeholders &amp; User Definitions</a></li><li><a href='#s40'>Interrupts – Debugging</a></li><li><a href='#s41'>Questions?(don’t forget to submit the homework!)</a></li><li><a href='#s42'>End of Lecture 4</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 4: Numbers, Strings, SCI and InterruptsMarius Juston</h2>
+<p>Monday, February 2nd, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 2 this week. This is also a 1-week lab!</p>
+<p><strong>Homeworks</strong><strong> (This week):</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW1.pdf'>homework 1</a> are due <strong>February 3, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for homework 1 are due <strong>February 4, 9AM</strong>
+</li></ul>
+<p><strong>LabVIEW (This week):</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW1.pdf'>LabVIEW 1</a> are  due <strong>February 5, 5PM</strong>
+</li></ul>
+<p><strong>FIRST ASSIGNMENTS ARE DUE THIS WEEK!</strong></p>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW, quiz questions?</p>
+<p>(Enjoyed the first actual lab?)</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Integers</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Integers Size</h2>
+<p>The C2000 MCU is a 32-bit CPU, meaning its registers and Arithmetic Logic Unit (ALU) are optimized for 32-bit operations, though it can also handle 16-bit data types. As seen in the Homework the minimum data size is 16-bits!</p>
+<p>In most programming classes you will have learned that 1-byte = 8-bits; however, in the C2000, given that TMS320C28x char is 16 bits and the ANSI/ISO (C programming standard) further stipulates that when sizeof is applied to char, the result is 1. So, 1-byte = 16-bits for this system!!!</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Signed Integers</h2>
+<p>How do we represent negative numbers in a system that only understands 0 and 1?</p>
+<p>What is the problem with just setting a single bit to represent positive or negative?</p>
+<p>The problem is that you just use a single bit to define the positive or negative, i.e.</p>
+<p>0b101 = -1 vs 0b001 = 1</p>
+<p>What happens at 0?</p>
+<p>0b100 = -0 vs 0vb000 = 0</p>
+<p>Which doesn’t make much sense, we waste a single number for a -0!</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> 2’s Complement</h2>
+<p>This utilizes Modular Arithmetic to derive that:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>x</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo>∼</mo><mi>x</mi><mo>+</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">- x\  = \ \sim x + 1</annotation></semantics></math></p>
+<p>Extremely simple and CPU operation wisely efficient!</p>
+<p>Achieves full range of:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><msup><mrow><mi>−</mi><mn>2</mn></mrow><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>,</mo><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow></msup><mo>−</mo><mn>1</mn><mo stretchy="false" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\lbrack{- 2}^{N - 1},2^{N - 1} - 1\rbrack</annotation></semantics></math></p>
+<p>Most significant bit ( the left-most bit in this case ), represents the sign (0=positive, 1=negative)</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> 2’s Complement</h2>
+<p>Additional resource: <a href='https://www.youtube.com/watch?v=lKTsv6iVxV4'>https://www.youtube.com/watch?v=lKTsv6iVxV4</a></p>
+<p class='video'><a href='https://www.youtube.com/watch?v=N4J3ahpWZhk'>YouTube video: Two&#x27;s Complement (Marius Juston)</a></p>
+<p><a href='https://youtu.be/N4J3ahpWZhk?si=9yfcMM29Usgl5A34'>https://youtu.be/N4J3ahpWZhk?si=9yfcMM29Usgl5A34</a></p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> String</h2>
+
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> ASCII</h2>
+<p>Remember that everything in the CPU is binary. So how do we define what a `a`, `b`, `&lt;` represents as a character?</p>
+<p>The <a href='https://www.ascii-code.com/'>ASCII character set</a>! It is a 7-bit mapping, 0-127, with an 8-bit character extended edition (not the same as UNICODE).</p>
+<p>In C a character is a single letter and represented as `x`, you CANNOT use “x” for a character in C, in Python there is no such thing as a char, just strings!</p>
+<p>Strings “abcd” in C represent an array of characters char*. The most important character is 0x00 (NULL), which represents a sentence stopper.</p>
+<p>In C, a string is a contiguous (where the pointers are sequentially next to each other) block of memory containing ASCII character, terminated with NULL. Without it the CPU would read forever until a segfaul occurs (reading restricted memory)!</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> ASCII</h2>
+<figure><img src='L4_files/b5b47712caa2.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>If there are less than 7 bits, just put 0s in front of the binary representation</p>
+<p><a href='https://commons.wikimedia.org/wiki/File:ASCII-Table.svg'>https://commons.wikimedia.org/wiki/File:ASCII-Table.svg</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> printf and sprintf</h2>
+<p>We want to write content to the output stream ( the stream can be your console output, serial communication, a file, a string ). The function sprintf, outputs to a buffer, printf outputs to the default output stream.</p>
+<p>serial_printf(&amp;SerialA,&quot;Num Timer2:%ld Num SerialRX: %ld\r\n&quot;,CpuTimer2.InterruptCount,numRXA);</p>
+<figure><img src='L4_files/5861b20a400d.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.cppreference.com/w/c/io/fprintf.html'>https://en.cppreference.com/w/c/io/fprintf.html</a></p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> printf and sprint - format</h2>
+<p>The format options are available <a href='https://cplusplus.com/reference/cstdio/printf/'>here</a>. Given that you need to format you string based on your pattern, the runtime is non-deterministic and printing usually takes a “very long” (in computer speed) time.</p>
+<p>A format specifier follows this prototype:</p>
+<p><strong>%[flags][width][.precision][length]specifier</strong></p>
+<p>/* printf example */</p>
+<p>#include &lt;stdio.h&gt;</p>
+<p>int main()</p>
+<p>{</p>
+<p>printf (&quot;Characters: %c %c \n&quot;, &#x27;a&#x27;, 65);</p>
+<p>printf (&quot;Decimals: %d %ld\n&quot;, 1977, 650000L);</p>
+<p>printf (&quot;Preceding with blanks: %10d \n&quot;, 1977);</p>
+<p>printf (&quot;Preceding with zeros: %010d \n&quot;, 1977);</p>
+<p>printf (&quot;Some different radices: %d %x %o %#x %#o \n&quot;, 100, 100, 100, 100, 100);</p>
+<p>printf (&quot;floats: %4.2f %+.0e %E \n&quot;, 3.1416, 3.1416, 3.1416);</p>
+<p>printf (&quot;Width trick: %*d \n&quot;, 5, 10);</p>
+<p>printf (&quot;%s \n&quot;, &quot;A string&quot;);</p>
+<p>return 0;</p>
+<p>}</p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> printf and sprint – format – specifier &amp; length</h2>
+<figure><img src='L4_files/69cb4305bdd9.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L4_files/92ab32c976e0.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>%[flags][width][.precision]<strong>[length]</strong><strong>specifier</strong></p>
+<p><a href='https://cplusplus.com/reference/cstdio/printf/'>https://cplusplus.com/reference/cstdio/printf/</a></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> printf and sprint – format – additional flags</h2>
+<figure><img src='L4_files/b9e776ad1ac5.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>%<strong>[flags]</strong><strong>[width]</strong><strong>[.precision]</strong>[length]specifier</p>
+<p><a href='https://cplusplus.com/reference/cstdio/printf/'>https://cplusplus.com/reference/cstdio/printf/</a></p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> RS-232 Serial Port</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> SCI</h2>
+<p>An RS-232 serial port is a standard for serial communication, sending data one bit at a time. It sends specifically <strong>8-bits </strong>of data.</p>
+<p><a href='https://www.ti.com/lit/ug/spnu196a/spnu196a.pdf?ts=1769788477858'>SCI</a> is the hardware peripheral inside the C2000 MCU that implements the UART (Universal Asynchronous Receiver-Transmitter) protocol.</p>
+<p>The Protocol:</p>
+<ul>
+<li><strong>Asynchronous</strong>: No shared clock wire. Timing relies on agreed-upon Baud Rate.
+</li>
+<li><strong>Frame</strong>: Start Bit (Logic 0) → Data Bits (LSB first) → Stop Bit (Logic 1).
+</li></ul>
+<p>init_serialSCIA(&amp;SerialA,115200);</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> SCI</h2>
+<figure><img src='L4_files/259883a97376.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> SCI</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=sTHckUyxwp8'>YouTube video: Understanding UART (Rohde &amp; Schwarz)</a></p>
+<p><a href='https://www.youtube.com/watch?v=sTHckUyxwp8'>https://www.youtube.com/watch?v=sTHckUyxwp8</a></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> SCI</h2>
+<p>TTL (Transistor-Transistor Logic):</p>
+<p>The native language of the MCU (GPIO pins).</p>
+<ul>
+<li>Logic 1: 3.3V (or 5V).
+</li>
+<li>Logic 0: 0V (Ground).
+</li></ul>
+<p>RS-232 (Reference Standard 232):</p>
+<p>Voltage Levels: Uses bipolar signaling to resist noise.</p>
+<ul>
+<li>Logic 0: +3V to +15V.
+</li>
+<li>Logic 1: -3V to -15V.
+</li></ul>
+<p>Notice that RS-232 Logic 1 is negative voltage. This is an inverted logic compared to TTL.</p>
+<p>Hardware: You cannot connect a C2000 GPIO directly to a PC&#x27;s RS-232 port. You need a transceiver to invert and boost the voltages. ( this is done inside the red board)</p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> SCI</h2>
+<figure><img src='L4_files/1b1c65357ae5.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> CPU Interrupts</h2>
+
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> CPU Interrupts ( Modern computers )</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=G7bqvpAw7HE'>YouTube video: How Interrupts Work in Modern Computers (BitLemon)</a></p>
+<p><a href='https://www.youtube.com/watch?v=G7bqvpAw7HE'>https://www.youtube.com/watch?v=G7bqvpAw7HE</a></p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Hardware Interrupts (Timer)</h2>
+<figure><img src='L4_files/b405c214a0f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>OR</p>
+<p>AND</p>
+<p>NOT</p>
+<details><summary>Speaker notes</summary><p>SYSCLKOUT is the system clock (e.g., 200 MHz).</p><p>TCR.4 is the Timer Control Register bit that enables or disables counting.</p><p>The timer only receives clock pulses when software sets the START bit. This is why timers do nothing until you explicitly enable them in software.</p><p>16-bit Divide-Down (TDDRH:TDDR)</p><p>This block divides the incoming clock frequency.</p><p>This allows the timer to operate at manageable speeds</p><p>16-bit Prescale Counter (PSCH:PSC)</p><p>This is an additional counter that:</p><p>Counts down</p><p>Generates a borrow when it underflows</p><p>That borrow is what advances the main 32-bit timer.</p><p>The prescaler slows time down before it reaches the main timer counter.</p><p>32-bit Period Register (PRDH:PRD)</p><p>This is the value the timer reloads from.</p><p>32-bit Counter (TIMH:TIM)</p><p>This is the actual counter:</p><p>Decrements every prescaled clock tick</p><p>When it reaches zero:</p><p>A borrow occurs</p><p>An interrupt is generated</p><p>The counter reloads from PRD</p></details>
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Hardware Interrupts (Timer)</h2>
+<figure><img src='L4_files/dc7e7f506877.svg' alt='Picture without a description' loading='lazy'></figure>
+<details><summary>Speaker notes</summary><p>Timer 0</p><p>TINT0</p><p>INT1–INT12 via PIE</p><p>Timer 1</p><p>TINT1</p><p>INT13 (direct)</p><p>Timer 2</p><p>TINT2</p><p>INT14 (direct)</p><p>The Peripheral Interrupt Expansion (PIE) is an interrupt router.</p><p>It:</p><p>Takes many peripheral interrupts</p><p>Maps them to CPU interrupt vectors</p><p>Timer 0 is routed through the PIE because:</p><p>It is commonly used for application-level tasks</p><p>It supports prioritization and masking</p><p>Software Consequence</p><p>To use Timer 0:</p><p>Enable the timer interrupt</p><p>Enable the PIE group</p><p>Enable the CPU interrupt</p><p>Acknowledge the PIE inside the ISR</p><p>This makes Timer 0 ideal for:</p><p>Control loops</p><p>Scheduling</p><p>RTOS ticks</p><p>Timers 1 and 2 Bypass the PIE</p><p>Timer 1 → INT13Timer 2 → INT14</p><p>These are dedicated CPU interrupts.</p><p>Why?</p><p>They are intended for:</p><p>High-priority system tasks</p><p>Real-time services</p><p>Deterministic timing</p><p>They:</p><p>Have lower latency</p><p>Are simpler to configure</p><p>Are harder to misuse accidentally</p></details>
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Hardware Interrupts</h2>
+<p>EALLOW;</p>
+<p>PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</p>
+<p>PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</p>
+<p>PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</p>
+<p>PieVectTable.SCIA_RX_INT = &amp;RXAINT_recv_ready;</p>
+<p>PieVectTable.SCIB_RX_INT = &amp;RXBINT_recv_ready;</p>
+<p>PieVectTable.SCIC_RX_INT = &amp;RXCINT_recv_ready;</p>
+<p>PieVectTable.SCID_RX_INT = &amp;RXDINT_recv_ready;</p>
+<p>PieVectTable.SCIA_TX_INT = &amp;TXAINT_data_sent;</p>
+<p>PieVectTable.SCIB_TX_INT = &amp;TXBINT_data_sent;</p>
+<p>PieVectTable.SCIC_TX_INT = &amp;TXCINT_data_sent;</p>
+<p>PieVectTable.SCID_TX_INT = &amp;TXDINT_data_sent;</p>
+<p>EDIS;</p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> Software Interrupts</h2>
+<p>EALLOW;</p>
+<p>PieVectTable.EMIF_ERROR_INT = &amp;SWI_isr;</p>
+<p>EDIS;</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Interrupts</h2>
+<p>All the interrupt options are available inside the PIE Vector Table inside <a href='https://github.com/COECSL/SE423Spring26/blob/main/C2000Ware_4_01_00_00/device_support/f2837xd/common/source/F2837xD_PieVect.c'>F2837xD_pievect.h</a></p>
+<p>Table 3-2 shows the PIE group and channel assignments for each peripheral interrupt. Each row is a group, and each column is a channel within that group. When multiple interrupts are pending, the lowest-numbered channel is the lowest-numbered group is serviced first. Thus, the interrupts at the top of the table have the highest priority, and the interrupts at the bottom have the lowest priority.</p>
+<figure><img src='L4_files/0e17db4bbfa2.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Enabling Interrupts</h2>
+<p>// Enable CPU int1 which is connected to CPU-Timer 0, CPU int13</p>
+<p>// which is connected to CPU-Timer 1, and CPU int 14, which is connected</p>
+<p>// to CPU-Timer 2:  int 12 is for the SWI.</p>
+<p>IER |= M_INT1;</p>
+<p>IER |= M_INT8;  // SCIC SCID</p>
+<p>IER |= M_INT9;  // SCIA</p>
+<p>IER |= M_INT12;</p>
+<p>IER |= M_INT13;</p>
+<p>IER |= M_INT14;</p>
+<p>// Enable TINT0 in the PIE: Group 1 interrupt 7</p>
+<p>PieCtrlRegs.PIEIER1.bit.INTx7 = 1;</p>
+<p>// Enable SWI in the PIE: Group 12 interrupt 9</p>
+<p>PieCtrlRegs.PIEIER12.bit.INTx9 = 1;</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> Interrupts - Timers</h2>
+<p><strong>TIMER0_INT, TIMER1_INT, TIMER2_INT</strong>:</p>
+<p>The standard CPU countdown timers.</p>
+<p><strong>RTOS_INT</strong>:</p>
+<p>A dedicated interrupt line for Real-Time Operating System context switching.</p>
+<p><strong>WAKE_INT</strong>:</p>
+<p>Wakes the CPU from Low-Power (IDLE/STANDBY) modes.</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> Interrupts - Sensors</h2>
+<p><strong>ADCA1_INT </strong>through <strong>ADCD4_INT </strong>(The ADCs):</p>
+<p>These trigger when the Analog-to-Digital Converter finishes a batch of conversions.</p>
+<p>Classification: <strong>ADCx_EVT_INT</strong> (Threshold event), <strong>ADCx1_INT </strong>(High Priority Loop), <strong>ADCx2/3/4_INT </strong>(Lower priority monitoring).</p>
+<p><strong>EQEP1_INT, EQEP2_INT, EQEP3_INT</strong>:</p>
+<p>Enhanced Quadrature Encoder Pulse. These trigger on position events (e.g., Index pulse or Unit Timeout) from a motor encoder. Crucial for speed calculations.</p>
+<p><strong>ECAP1_INT </strong>through <strong>ECAP6_INT</strong>:</p>
+<p>Enhanced Capture. Used to measure the width of incoming pulses (e.g., measuring the frequency of an incoming PWM signal from another sensor).</p>
+<p><strong>SD1_INT</strong>, <strong>SD2_INT</strong>:</p>
+<p>Sigma-Delta Filter. These define interrupts for high-fidelity, isolated current sensing, typically used in high-voltage motor drives.</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> Interrupts – External Hardware Events</h2>
+<p><strong>XINT1_INT</strong> through <strong>XINT5_INT </strong>(External Interrupts):</p>
+<p>These are triggered by voltage transitions (Rising Edge, Falling Edge, or Both) on physical pins. These vectors represent the C2000&#x27;s direct interface with the outside world via General Purpose Input/Output (GPIO) pins.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> Interrupts – Actuation ( will go into more details later)</h2>
+<p><strong>EPWM1_TZ_INT </strong>through <strong>EPWM12_TZ_INT </strong>(Trip Zones):</p>
+<p>Highest Priority Control Interrupts. These fire when a hardware comparator (CMPSS) detects an over-current or over-voltage event. The PWM hardware shuts off instantly (nanoseconds) and then informs the CPU via this interrupt.</p>
+<p><strong>EPWM1_INT </strong>through <strong>EPWM12_INT</strong>:</p>
+<p>Standard PWM interrupts, usually triggered at TBCTR = 0 or TBCTR = PRD. Used to update duty cycles for the next cycle.</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> Interrupts – Communication (RX = receive, TX = transmit)</h2>
+<p><strong>SPIA/B/C_RX_INT &amp; SPIA/B/C_TX_INT: </strong></p>
+<p>Synchronous Serial Interface (High speed sensors/DACs).</p>
+<p><strong>I2CA/B_INT &amp; FIFO_INT: </strong></p>
+<p>Inter-Integrated Circuit (EEPROMs, temperature sensors).</p>
+<p><strong>SCIA/B/C/D_RX_INT &amp; TX_INT</strong>:</p>
+<p>UART (RS-232, discussed in the lecture). Connecting to PC/MATLAB.</p>
+<p><strong>CANA0/1_INT &amp; CANB0/1_INT</strong>:</p>
+<p>Controller Area Network. The standard automotive bus for communicating with other ECUs.</p>
+<p><strong>MCBSPA/B_RX_INT &amp; TX_INT</strong>: Multichannel Buffered Serial Port. (Legacy Audio/DSP protocol).</p>
+<p><strong>USBA_INT</strong>:</p>
+<p>Universal Serial Bus (Bulk data transfer).</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> Interrupts – Errors</h2>
+<p><strong>NMI_INT </strong>(Non-Maskable Interrupt):</p>
+<p>The only interrupt that cannot be ignored by the CPU. Used for critical hardware failures.</p>
+<p><strong>ILLEGAL_INT: </strong></p>
+<p>Triggered if the CPU attempts to decode an opcode that does not exist. (Common pointer corruption symptom).</p>
+<p><strong>EMIF_ERROR_INT: </strong></p>
+<p>External Memory Interface error. Indicates a hardware timing violation or disconnect with external RAM/Flash.</p>
+<p><strong>RAM_CORRECTABLE_ERROR_INT / FLASH_CORRECTABLE_ERROR_INT: </strong></p>
+<p>The ECC (Error Correction Code) logic detected a bit-flip but fixed it. The ISR usually logs this event for predictive maintenance.</p>
+<p><strong>RAM_ACCESS_VIOLATION_INT: </strong></p>
+<p>The CPU tried to write to a protected memory region.</p>
+<p><strong>SYS_PLL_SLIP_INT / AUX_PLL_SLIP_INT: </strong></p>
+<p>The Phase Locked Loop (clock generator) has lost its lock. The CPU clock is unstable. The system must immediately halt PWM generation to prevent blowing up power electronics.</p>
+<p><strong>FPU_OVERFLOW_INT / FPU_UNDERFLOW_INT: </strong></p>
+<p>The Floating-Point Unit calculated a value exceeding IEEE-754 limits (creating <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>±</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">\pm \infty</annotation></semantics></math> or <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>a</mi><mi>N</mi></mrow><annotation encoding="application/x-tex">NaN</annotation></semantics></math>)</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> Interrupts – CPU Accelerator</h2>
+<p><strong>DMA_CH1_INT through DMA_CH6_INT:</strong></p>
+<p>Direct Memory Access. Triggers when a large block of memory (e.g., an ADC buffer) has been moved without CPU intervention.</p>
+<p><strong>IPC0_INT through IPC3_INT:</strong></p>
+<p>Inter-Processor Communication. This device is Dual Core (CPU1 and CPU2). These interrupts are the &quot;phone lines&quot; allowing CPU1 to signal CPU2.</p>
+<p><strong>VCU_INT: </strong></p>
+<p>Viterbi Complex Unit. An accelerator for vibration analysis (FFT) and communications encoding.</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Interrupts – CPU Accelerator – CLA ( floating point engine )</h2>
+<p><strong>CLA_OVERFLOW_INT / CLA_UNDERFLOW_INT: </strong></p>
+<p>Mathematical errors specifically within the CLA core.</p>
+<p><strong>CLA1_1_INT </strong>through <strong>CLA1_8_INT:</strong></p>
+<p>The Control Law Accelerator (CLA) is an independent 32-bit floating-point math engine. Called once a floating point operation is done.</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Interrupts – High-Speed Peripherals</h2>
+<p><strong>UPPA_INT: </strong>Parallel Interface Communication</p>
+<p>This is a high-speed, multi-channel parallel bus often used to interface with high-speed ADCs or FPGAs</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Interrupts – Placeholders &amp; User Definitions</h2>
+<p><strong>PIE1_RESERVED_INT </strong>through<strong> PIE88_RESERVED_INT:</strong></p>
+<p>The hardware architecture allocates a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>12</mn><mo>×</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">12 \times 16</annotation></semantics></math> grid, but not every slot is connected to a peripheral in this specific chip. These must be mapped to a &quot;Default ISR&quot; that essentially does nothing, to prevent system crashes if noise triggers a phantom interrupt.</p>
+<p><strong>USER1_INT </strong>through<strong> USER12_INT:</strong></p>
+<p>These are software traps. You can trigger these manually in code using the assembly instruction TRAP #20. They are often used by RTOS kernels to implement system calls.</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Interrupts – Debugging</h2>
+<p><strong>DATALOG_INT </strong>(Datalogging Interrupt):</p>
+<p>Used primarily by TI&#x27;s data-logging modules to trigger a capture of internal variables at a specific sample rate. Helpful for logging data for visualization.</p>
+<p><strong>EMU_INT:</strong></p>
+<p>Triggered by the on-chip debug logic (JTAG). This handles hardware breakpoints or software &quot;Halt&quot; commands. It allows the CPU to enter a suspended state while maintaining the integrity of the peripheral registers.</p>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Questions?(don’t forget to submit the homework!)</h2>
+
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> End of Lecture 4</h2>
+
+
+</section>
+</main></body></html>

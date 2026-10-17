@@ -1,0 +1,413 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L2: SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L2: SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L2.pdf">PDF</a> · <a href="L2.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (29)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston</a></li><li><a href='#s2'>Questions?</a></li><li><a href='#s3'>Office Hours</a></li><li><a href='#s4'>Due Dates</a></li><li><a href='#s5'>Semester Project</a></li><li><a href='#s6'>Semester Project</a></li><li><a href='#s7'>Registers</a></li><li><a href='#s8'>Memory-Mapped I/O</a></li><li><a href='#s9'>System and Peripheral Registers</a></li><li><a href='#s10'>Peripheral Base Address</a></li><li><a href='#s11'>System Peripheral</a></li><li><a href='#s12'>EALLOW / EDIS</a></li><li><a href='#s13'>Peripheral Registers</a></li><li><a href='#s14'>Using DAT</a></li><li><a href='#s15'>Digital I/O (GPIO)</a></li><li><a href='#s16'>Bits</a></li><li><a href='#s17'>Binary</a></li><li><a href='#s18'>Hexadecimal</a></li><li><a href='#s19'>Bits, Bit Positions and Masks</a></li><li><a href='#s20'>Bitwise Operations</a></li><li><a href='#s21'>Timers</a></li><li><a href='#s22'>What is a timer?</a></li><li><a href='#s23'>What is a timer?</a></li><li><a href='#s24'>What is a timer?</a></li><li><a href='#s25'>What is a timer?</a></li><li><a href='#s26'>What is a timer?</a></li><li><a href='#s27'>What is a timer?</a></li><li><a href='#s28'>Questions?(Lecture Wednesday online or not?)</a></li><li><a href='#s29'>End of Lecture 2</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 2: PeripheralsMarius Juston</h2>
+<p>Monday, January 26th, 2026</p>
+<figure><img src='L2_files/0564a09f2221.png' alt='Picture without a description' loading='lazy'></figure>
+<details><summary>Speaker notes</summary><p>Well I hope that most of your classes have been cancled or are on Zoom</p><p>Did all of you get my Canvas email or do I need to it through email? Or announcements?</p></details>
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Questions?</h2>
+<p>How was the first lab? Enjoyed it?</p>
+<details><summary>Speaker notes</summary><p>Office</p></details>
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Office Hours</h2>
+<p><strong>Times:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li>
+<li>There to help with setting up CodeComposer ( not necessary but helpful for homeworks ), finishing the solder, getting checked off for the homeworks, labs or LabVIEW
+</li>
+<li>Close to deadlines it will be busy so be sure to come in early!
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Due Dates</h2>
+<p><strong>Lab:</strong></p>
+<ul>
+<li>Starting <a href='https://marius-juston.github.io/SE-423---Class-Material/Labs/Lab1.pdf'>Lab 1</a> this week, will be using C so be sure to be prepared!
+</li>
+<li>Do Exercise 1 of Homework 1 to get started in C.
+<li>
+<ul>
+<li>You cannot use CodeComposer for that. You can just use an online C compile.
+</li></ul>
+</li>
+<li>Lab 1 is a 1-week lab, some are longer
+</li></ul>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW1.pdf'>homework 1</a> are due <strong>February 3, 5PM</strong>
+<li>
+<ul>
+<li>Questions 2, 3, 5, 7, 8, 9 and 10 need to be checked-off by instructors / TAs
+</li></ul>
+</li>
+<li>Answers and code submissions for homework 1 are due <strong>February 4, 9AM</strong>
+</li>
+<li>No late acceptations, since these are individual!
+</li>
+<li>Soldering is Exercise 2 of Homework 1.
+</li></ul>
+<p><strong>LabVIEW:</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW1.pdf'>LabVIEW 1</a> are  due <strong>February 5, 5PM</strong>
+</li></ul>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Semester Project</h2>
+<p>Thursday May 14th, 11AM – 2PM</p>
+<p><strong>Last day of Finals!!! </strong></p>
+<p>( yes, I know that’s annoying)</p>
+<p><strong>Attendance is </strong><strong>mandatory</strong><strong>!!</strong></p>
+<details><summary>Speaker notes</summary><p>Office</p></details>
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Semester Project</h2>
+<p><strong>Website</strong></p>
+<p>You will be creating a <a href='https://www.hackster.io/jay118/se-423-astar-ball-collection-and-drop-off-project-3daa28?f=1'>Hackster.io </a>website to show what you have done by the end of the semester to showcase to everyone.</p>
+<ul>
+<li>Show the video working,
+</li>
+<li>Put code,
+</li>
+<li><strong>Show any other cool stuff you do!</strong>
+</li></ul>
+<p>You are posting this to be publicly visible, so put your best effort in doing this. You can show the work for interviews, etc…</p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Registers</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Memory-Mapped I/O</h2>
+<p>The CPU only knows one thing: <strong>memory addresses</strong></p>
+<p>On the TMS320F2837xD:</p>
+<ul>
+<li>RAM has addresses
+</li>
+<li>Flash has addresses
+</li>
+<li>Peripherals also have addresses
+</li></ul>
+<p>This is called Memory-Mapped I/O (<strong>MMIO</strong>)</p>
+<p>A peripheral is a hardware module whose control and status registers are mapped to fixed memory addresses, allowing the CPU to configure and control hardware by reading from and writing to memory.</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> System and Peripheral Registers</h2>
+<p><strong>Peripheral:</strong></p>
+<p>A <strong>Peripheral</strong> is a hardware device with a specific address in memory that it writes data to and/or reads data from.</p>
+<p>All peripherals can be described by an offset from the <strong>Peripheral Base Address.</strong></p>
+<p>On the TMS320F2837xD, registers are typically <strong>32-bits </strong>or <strong>16-bit</strong> wide</p>
+<p>Each bit usually represents to:</p>
+<ul>
+<li>A hardware switch (ON / OFF)
+</li>
+<li>A configuration option
+</li>
+<li>A hardware status flag ( Error code, OK )
+</li></ul>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Peripheral Base Address</h2>
+<p>TI groups peripherals into address regions.</p>
+<p>For example:</p>
+<ul>
+<li>GPIO register live in one address range
+</li>
+<li>Timers in another
+</li>
+<li>ePWM in another
+</li>
+<li>ADC (Analog to Digital Converters ) in another
+</li>
+<li>Etc…
+</li></ul>
+<p>Each register is located at:</p>
+<p><strong>Peripheral Base Address + Register Offset</strong></p>
+<p>You do not need to calculate these <a href='https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf'>addresses manually</a>; TI provides C structures and header files that do this manually.</p>
+<p>EPwm1Regs.TBCTL.bit.CLKDIV = 1;</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> System Peripheral</h2>
+<p><strong>System registers </strong>control the <em>behavior of the CPU itself</em></p>
+<p>These registers affect the <strong>entire chip.</strong> These system registers are protected.</p>
+<p>These can modify:</p>
+<ul>
+<li>Clock configuration
+</li>
+<li>Resets
+</li>
+<li>Peripheral interrupts
+</li>
+<li>Memory configuration
+</li>
+<li>Timer
+</li></ul>
+<p>Full list is available in <a href='https://coecsl.ece.illinois.edu/se423/tms320f28379D_TechRefi.pdf'>Table 3-17 - System Control Base Address Table</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> EALLOW / EDIS</h2>
+<p>Some registers are protected to prevent accidental damage ( most / all system peripherals ).</p>
+<p>Thus, an additional layer of protection is allowed for accidental writes ( memory leaked code or otherwise ).</p>
+<ul>
+<li><strong>EALLOW</strong>: unlocks protected registers
+</li>
+<li><strong>EDIS: </strong>locks them again
+</li></ul>
+<p>EALLOW;  // This is needed to write to EALLOW protected registers</p>
+<p>PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</p>
+<p>PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</p>
+<p>PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</p>
+<p>PieVectTable.EMIF_ERROR_INT = &amp;SWI_isr;</p>
+<p>EDIS;    // This is needed to disable write to EALLOW protected registers</p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Peripheral Registers</h2>
+<p>Peripheral registers control individual hardware modules. Usually do not have any write protection</p>
+<p>Examples:</p>
+<ul>
+<li>GPIO (General Purpose Input-Output)
+</li>
+<li>Timers
+</li>
+<li>ADC (Analog-to-Digital Converter)
+</li>
+<li>PWM (Pulse Width Modulation)
+</li>
+<li>SPI (Serial Peripheral Interface)
+</li></ul>
+<p>Each peripheral has a Read (DAT), Write (SET), Clear (CLEAR) and Toggle (TOGGLE) register.</p>
+<p>GpioDataRegs.GPBDAT.bit.GPIO37; // Do not use to set</p>
+<p>GpioDataRegs.GPBSET.bit.GPIO37 = 1; // Sets GPIO37 to 1</p>
+<p>GpioDataRegs.GPBCLEAR.bit.GPIO37 = 1; // Sets GPIO37 to 0</p>
+<p>GpioDataRegs.GPBTOGGLE.bit.GPIO37 = 1; // Sets GPIO37 to 0-&gt;1</p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Using DAT</h2>
+<p>There are problems that arise from writing directly to DAT</p>
+<p>Writing to DAT requires,</p>
+<ol>
+<li>Read
+</li>
+<li>Modify
+</li>
+<li>Write
+</li></ol>
+<p>An interrupt ( code that runs on certain events ) can run between these steps and corrupt data</p>
+<p>SET / CLEAR registers avoid this by being <strong>atomic </strong>hardware operations.</p>
+<p>Atomic operations guarantee that a variable will be locked during the operations and cannot be modified by anyone else during that time.</p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Digital I/O (GPIO)</h2>
+<p>Each <strong>physical </strong>pin can serve <a href='https://coecsl.ece.illinois.edu/se423/hw/PinMuxTableF28379DLaunchPad.pdf'><strong>multiple functions</strong></a></p>
+<ul>
+<li>GPIO
+</li>
+<li>PWM
+</li>
+<li>SPI
+</li>
+<li>SCI
+</li>
+<li>CAN
+</li></ul>
+<p>You must first select the function</p>
+<p>GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);</p>
+<p>GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);</p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Bits</h2>
+
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Binary</h2>
+<p>The CPU only reads binary, 1s or 0s; however, for humans it is difficult to understand long string of numbers.</p>
+<p>A 32-bit register could be represented as such with 32 bits (unsigned 3,357,083,684):</p>
+<p>int32_t x = 0b110010000001100100000100000100100;</p>
+<p>What is a potential problem?</p>
+<p>Prone to make mistakes if you need to manually type this out! For example, there are <strong>33-bits </strong>above, not 32!</p>
+<p>Why not use Decimal system? Not as simple to convert from decimal to binary!</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Hexadecimal</h2>
+<p>Instead of base 10, let’s explore base 16, i.e., hexadecimal base system</p>
+<p>Very easy to convert binary to hex (0-9 then A-F):</p>
+<table><thead><tr><th scope='col'>Binary</th><th scope='col'>Hexidecimal</th><th scope='col'>Decimal</th></tr></thead><tbody><tr><td>0000</td><td>0</td><td>0</td></tr><tr><td>0001</td><td>1</td><td>1</td></tr><tr><td>1010</td><td>A</td><td>10</td></tr><tr><td>1111</td><td>F</td><td>15</td></tr></tbody></table>
+<p>Every 4-bits = 1 hex value, makes things much easier to compress, much easier to look at!</p>
+<p>int32_t x = 0xC8190824;</p>
+<p>int16_t x = 0x0824;</p>
+<p>Windows Calculator set to programming mode can easily do the conversion!</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Bits, Bit Positions and Masks</h2>
+<p>Bit number starts at 0</p>
+<p>Bit 0 → 20</p>
+<p>Bit 1 → 21</p>
+<p>Bit 5 → 25 = 32 = 0x20</p>
+<p>Creating a bit shifting:</p>
+<ul>
+<li>Left shifting: x &lt;&lt; n, shifts bits in x to the left by n. 0b01 &lt;&lt; 1 = 0b10
+</li>
+<li>Right shifting: x &gt;&gt; n, shifts bits in x to the right by n. 0b10 &gt;&gt; 1 = 0b01
+</li></ul>
+<p>Commonly used to create bit “masks”:</p>
+<p>int32_t bit5Mask = 1 &lt;&lt; 5; // 0x20, sets only bit 5 to 1!</p>
+<p>What are masks? What are they used for?</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Bitwise Operations</h2>
+<p><strong>AND (&amp;) – Masking</strong></p>
+<p><strong>if</strong><strong> (reg &amp; (1 &lt;&lt; 3)) {</strong></p>
+<p>// Bit 3 is set</p>
+<p><strong>}</strong></p>
+<p><strong>OR    (|)  – Setting Bits</strong></p>
+<p>reg |= (1 &lt;&lt; 3);</p>
+<p><strong>NOT (~) – Clearing Bits</strong></p>
+<p>reg &amp;= ~(1 &lt;&lt; 3);</p>
+<p><strong>XOR (^) – Toggling Bits</strong></p>
+<p>reg ^= (1 &lt;&lt; 3);</p>
+<table><thead><tr><th scope='col'>REG</th><th scope='col'>MASK</th><th scope='col'>AND</th><th scope='col'>OR</th><th scope='col'>XOR</th></tr></thead><tbody><tr><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>0</td><td>0</td><td>1</td><td>1</td></tr><tr><td>1</td><td>1</td><td>1</td><td>1</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th scope='col'>MASK</th><th scope='col'>NOT</th></tr></thead><tbody><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr></tbody></table>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Timers</h2>
+
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> What is a timer?</h2>
+<p>Just like a clock that you have; however, in hardware it is EXTREMELY important.</p>
+<p>A <strong>timer </strong>is a hardware counter that:</p>
+<ul>
+<li>Counts clock cycles
+</li>
+<li>Triggers an interrupt when it reaches a specified condition
+</li></ul>
+<p>The TMS320F2837xD has <strong>3</strong> 32-bit CPU timers.</p>
+<ul>
+<li>CPU-Timer0 and CPU-Timer1 can be used in user applications
+</li>
+<li>CPU-Timer2 is reserved for real-time operating system uses ( if not being uses in an operating system that uses this timer, it can used in the application).
+</li></ul>
+<p>These clocks run off the system’s internal clock (SYSCLK) (CPU-Timer2, has additional options)</p>
+<p>System’s internal clock runs at 200 MHz</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> What is a timer?</h2>
+<figure><img src='L2_files/b405c214a0f9.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>OR</p>
+<p>AND</p>
+<p>NOT</p>
+<details><summary>Speaker notes</summary><p>SYSCLKOUT is the system clock (e.g., 200 MHz).</p><p>TCR.4 is the Timer Control Register bit that enables or disables counting.</p><p>The timer only receives clock pulses when software sets the START bit. This is why timers do nothing until you explicitly enable them in software.</p><p>16-bit Divide-Down (TDDRH:TDDR)</p><p>This block divides the incoming clock frequency.</p><p>This allows the timer to operate at manageable speeds</p><p>16-bit Prescale Counter (PSCH:PSC)</p><p>This is an additional counter that:</p><p>Counts down</p><p>Generates a borrow when it underflows</p><p>That borrow is what advances the main 32-bit timer.</p><p>The prescaler slows time down before it reaches the main timer counter.</p><p>32-bit Period Register (PRDH:PRD)</p><p>This is the value the timer reloads from.</p><p>32-bit Counter (TIMH:TIM)</p><p>This is the actual counter:</p><p>Decrements every prescaled clock tick</p><p>When it reaches zero:</p><p>A borrow occurs</p><p>An interrupt is generated</p><p>The counter reloads from PRD</p></details>
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> What is a timer?</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=AB0ehpoGNZU'>YouTube video: CPU Timer Animation (Marius Juston)</a></p>
+<p><a href='https://youtu.be/AB0ehpoGNZU?si=qzp9HoeXxZYwsuXb'>https://youtu.be/AB0ehpoGNZU?si=qzp9HoeXxZYwsuXb</a></p>
+<details><summary>Speaker notes</summary><p>SYSCLKOUT is the system clock (e.g., 200 MHz).</p><p>TCR.4 is the Timer Control Register bit that enables or disables counting.</p><p>The timer only receives clock pulses when software sets the START bit. This is why timers do nothing until you explicitly enable them in software.</p><p>16-bit Divide-Down (TDDRH:TDDR)</p><p>This block divides the incoming clock frequency.</p><p>This allows the timer to operate at manageable speeds</p><p>16-bit Prescale Counter (PSCH:PSC)</p><p>This is an additional counter that:</p><p>Counts down</p><p>Generates a borrow when it underflows</p><p>That borrow is what advances the main 32-bit timer.</p><p>The prescaler slows time down before it reaches the main timer counter.</p><p>32-bit Period Register (PRDH:PRD)</p><p>This is the value the timer reloads from.</p><p>32-bit Counter (TIMH:TIM)</p><p>This is the actual counter:</p><p>Decrements every prescaled clock tick</p><p>When it reaches zero:</p><p>A borrow occurs</p><p>An interrupt is generated</p><p>The counter reloads from PRD</p></details>
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> What is a timer?</h2>
+<p>Why are there 2-counter blocks?</p>
+<p>System clock: SYSCLKOUT = 200 MHz → Tclk = 2 ns</p>
+<p>Problem is that the clock is too fast for software:</p>
+<p>At 200 MHz:</p>
+<ul>
+<li>1 ms requires: 200,000 clock ticks
+</li>
+<li>10 ms requires: 2,000,000 clock ticks
+</li></ul>
+<p>Split the job into 2 counters:</p>
+<ul>
+<li>Prescaler Counter (PSC, TDDR) – Controls speed, defines a unit of time
+</li>
+<li>Main Timer Counter (TIM, PRD) – Controls duration, how much time should pass
+</li></ul>
+<p>One counter decides how <em>fast time flows </em>and the other decides <em>how much time passes.</em></p>
+<p>With a prescaler set to TTDR=199 for example, you now have that a single tick for the main timer counter represents a clean 1 μs, thus, to ensure that your timer runs every 10 ms you can set PRD = 10,000! Much simpler!</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> What is a timer?</h2>
+<figure><img src='L2_files/dc7e7f506877.svg' alt='Picture without a description' loading='lazy'></figure>
+<details><summary>Speaker notes</summary><p>Timer 0</p><p>TINT0</p><p>INT1–INT12 via PIE</p><p>Timer 1</p><p>TINT1</p><p>INT13 (direct)</p><p>Timer 2</p><p>TINT2</p><p>INT14 (direct)</p><p>The Peripheral Interrupt Expansion (PIE) is an interrupt router.</p><p>It:</p><p>Takes many peripheral interrupts</p><p>Maps them to CPU interrupt vectors</p><p>Timer 0 is routed through the PIE because:</p><p>It is commonly used for application-level tasks</p><p>It supports prioritization and masking</p><p>Software Consequence</p><p>To use Timer 0:</p><p>Enable the timer interrupt</p><p>Enable the PIE group</p><p>Enable the CPU interrupt</p><p>Acknowledge the PIE inside the ISR</p><p>This makes Timer 0 ideal for:</p><p>Control loops</p><p>Scheduling</p><p>RTOS ticks</p><p>Timers 1 and 2 Bypass the PIE</p><p>Timer 1 → INT13Timer 2 → INT14</p><p>These are dedicated CPU interrupts.</p><p>Why?</p><p>They are intended for:</p><p>High-priority system tasks</p><p>Real-time services</p><p>Deterministic timing</p><p>They:</p><p>Have lower latency</p><p>Are simpler to configure</p><p>Are harder to misuse accidentally</p></details>
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> What is a timer?</h2>
+<p>The timer controls:</p>
+<ul>
+<li>Control loop sampling rate ( user defined controller )
+</li>
+<li>Task scheduling
+</li>
+<li>PWM updates
+</li></ul>
+<p>Can control interrupt how often the software interrupts get called:</p>
+<p>// Configure CPU-Timer 0, 1, and 2 to interrupt every given period:</p>
+<p>// 200MHz CPU Freq,                       Period (in uSeconds)</p>
+<p>ConfigCpuTimer(&amp;CpuTimer0, LAUNCHPAD_CPU_FREQUENCY, 10000);</p>
+<p>ConfigCpuTimer(&amp;CpuTimer1, LAUNCHPAD_CPU_FREQUENCY, 20000);</p>
+<p>ConfigCpuTimer(&amp;CpuTimer2, LAUNCHPAD_CPU_FREQUENCY, 40000);</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Questions?(Lecture Wednesday online or not?)</h2>
+
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> End of Lecture 2</h2>
+
+
+</section>
+</main></body></html>

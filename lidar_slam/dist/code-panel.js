@@ -218,23 +218,24 @@
     }
   };
   const TOK_COLOR = {
-    kw: "oklch(0.78 0.13 320)",
+    // Lightness chosen for >= 4.5:1 (WCAG AA) on the panel and the highlighted line.
+    kw: "oklch(0.86 0.10 320)",
     // magenta
-    bi: "oklch(0.80 0.13 75)",
+    bi: "oklch(0.88 0.11 75)",
     // amber
-    cls: "oklch(0.82 0.10 95)",
+    cls: "oklch(0.88 0.09 95)",
     // soft yellow
-    fn: "oklch(0.80 0.13 220)",
+    fn: "oklch(0.88 0.10 220)",
     // cyan
-    num: "oklch(0.78 0.10 30)",
+    num: "oklch(0.86 0.08 30)",
     // peach
-    str: "oklch(0.74 0.10 145)",
+    str: "oklch(0.86 0.10 145)",
     // green
-    com: "oklch(0.50 0.012 248)",
+    com: "oklch(0.80 0.02 248)",
     // muted
-    dec: "oklch(0.80 0.13 75)",
-    op: "oklch(0.70 0.012 248)",
-    punc: "oklch(0.70 0.012 248)",
+    dec: "oklch(0.88 0.11 75)",
+    op: "oklch(0.84 0.012 248)",
+    punc: "oklch(0.84 0.012 248)",
     id: "var(--text-0)",
     ws: "var(--text-0)"
   };
@@ -280,7 +281,8 @@
       const target = el.querySelector(`[data-line="${fa}"]`);
       if (!target) return;
       const t = target.offsetTop - 80;
-      el.scrollTo({ top: t, behavior: "smooth" });
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      el.scrollTo({ top: t, behavior: reduce ? "auto" : "smooth" });
     }, [stage.id, fa]);
     return /* @__PURE__ */ React.createElement("div", { style: CODE_STYLES.panel }, /* @__PURE__ */ React.createElement("div", { style: CODE_STYLES.header }, /* @__PURE__ */ React.createElement("div", { style: { display: "flex", alignItems: "center", gap: 10 } }, /* @__PURE__ */ React.createElement("span", { style: {
       width: 10,
@@ -288,7 +290,7 @@
       borderRadius: 2,
       background: "var(--cyan)",
       boxShadow: "0 0 8px var(--cyan)"
-    } }), /* @__PURE__ */ React.createElement("span", { style: CODE_STYLES.fileName }, stage.file), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-3)", fontFamily: "JetBrains Mono, monospace", fontSize: 11 } }, lines.length, " lines")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: CODE_STYLES.pill }, "L ", a, "\u2013", b))), /* @__PURE__ */ React.createElement("div", { ref: scrollRef, style: CODE_STYLES.scroll }, lines.map((line, i) => {
+    } }), /* @__PURE__ */ React.createElement("span", { style: CODE_STYLES.fileName }, stage.file), /* @__PURE__ */ React.createElement("span", { style: { color: "var(--text-3)", fontFamily: "JetBrains Mono, monospace", fontSize: 11 } }, lines.length, " lines")), /* @__PURE__ */ React.createElement("div", { style: { display: "flex", gap: 6 } }, /* @__PURE__ */ React.createElement("span", { style: CODE_STYLES.pill }, "L ", a, "\u2013", b))), /* @__PURE__ */ React.createElement("div", { ref: scrollRef, style: CODE_STYLES.scroll, tabIndex: 0, role: "region", "aria-label": "Source code" }, lines.map((line, i) => {
       const n = i + 1;
       const inRange = n >= a && n <= b;
       const inFocus = n >= fa && n <= fb;

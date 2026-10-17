@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L5: SE 423: Introduction to MechatronicsLecture 5: DAC &amp; ADCMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L5: SE 423: Introduction to MechatronicsLecture 5: DAC &amp; ADCMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L5.pdf">PDF</a> · <a href="L5.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (30)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 5: DAC &amp; ADCMarius Juston</a></li><li><a href='#s2'>Reminders</a></li><li><a href='#s3'>Questions?</a></li><li><a href='#s4'>Introduction</a></li><li><a href='#s5'>DAC(Digital-to-Analog Converter)</a></li><li><a href='#s6'>DAC</a></li><li><a href='#s7'>DAC – R-2R resistor ladder</a></li><li><a href='#s8'>DAC – Buffered</a></li><li><a href='#s9'>DAC</a></li><li><a href='#s10'>DAC – For later reference</a></li><li><a href='#s11'>DAC</a></li><li><a href='#s12'>ADC(Analog-to-Digital Converter)</a></li><li><a href='#s13'>ADC</a></li><li><a href='#s14'>ADC</a></li><li><a href='#s15'>ADC</a></li><li><a href='#s16'>ADC</a></li><li><a href='#s17'>ADC - Differential</a></li><li><a href='#s18'>ADC - Calculate</a></li><li><a href='#s19'>ADC – SAR (Successive Approximation Register)</a></li><li><a href='#s20'>ADC – SAR (Successive Approximation Register)</a></li><li><a href='#s21'>SOC(Start-of-Conversion)</a></li><li><a href='#s22'>SOC - Intro</a></li><li><a href='#s23'>SOC – Trigger Sources</a></li><li><a href='#s24'>SOC – Trigger Sources</a></li><li><a href='#s25'>SOC – Acquisition Window</a></li><li><a href='#s26'>SOC – Interrupts</a></li><li><a href='#s27'>ADC – Single Conversion from ePWM</a></li><li><a href='#s28'>ADC – FFT Code (much more complicated example)</a></li><li><a href='#s29'>Questions?</a></li><li><a href='#s30'>End of Lecture 5</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 5: DAC &amp; ADCMarius Juston</h2>
+<p>Wednesday, February 4th 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 2 this week. This is also a 1-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 1 &amp; 2 are due <strong>February 17, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW2.pdf'>homework 2</a> Ex 3 &amp; 4 are due <strong>February 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for homework 2 are due <strong>February 17, 9AM</strong>
+</li></ul>
+<p><strong>LabVIEW (This week):</strong></p>
+<ul>
+<li>All check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/LabVIEW1.pdf'>LabVIEW 1</a> are  due <strong>February 5, 5PM</strong>
+</li></ul>
+<p><strong>LabVIEW will be quickly checked-off at the beginning / end of your lab session.</strong></p>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW, quiz questions?</p>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Introduction</h2>
+<p>In the real world we have continuous signals:</p>
+<ul>
+<li>Temperature
+</li>
+<li>Sound
+</li>
+<li>Velocity
+</li>
+<li>Pressure
+</li>
+<li>Luminosity
+</li></ul>
+<p>Again, we have the CPU only able to process discrete binary values (0 or 1).</p>
+<p><strong>ADC (Analog-to-Digital Converter): </strong></p>
+<ul>
+<li>&quot;The Eyes/Ears.&quot; Converts physical signals into numbers the CPU can process.
+</li></ul>
+<p><strong>DAC (Digital-to-Analog Converter): </strong></p>
+<ul>
+<li>&quot;The Hands/Voice.&quot; Converts processed numbers back into voltages to drive motors, speakers, etc.
+</li></ul>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> DAC(Digital-to-Analog Converter)</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> DAC</h2>
+<p>A device that convert binary input number into a proportional analog voltage symbol.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>o</mi><mi>u</mi><mi>t</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub><mo>×</mo><mfrac><mi>X</mi><msup><mn>2</mn><mi>N</mi></msup></mfrac></mrow><annotation encoding="application/x-tex">V_{out} = V_{ref} \times \frac{X}{2^{N}}</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> represents the resolution, the larger <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math>, the more possible subdivision values you can have (the more you have the more expensive it is!)</p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> is the reference value you input to be converted.</p>
+<p>Specifically for our microcontroller we have,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mi>A</mi><mi>C</mi><mi>O</mi><mi>U</mi><mi>T</mi><mo>=</mo><mfrac><mrow><mi>D</mi><mi>A</mi><mi>C</mi><mi>V</mi><mi>A</mi><mi>L</mi><mi>A</mi><mo>×</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>R</mi><mi>E</mi><mi>F</mi></mrow><mn>4096</mn></mfrac></mrow><annotation encoding="application/x-tex">DACOUT = \frac{DACVALA \times DACREF}{4096}</annotation></semantics></math></p>
+<p>How many bits of resolution do we have? <strong>12</strong></p>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> DAC – R-2R resistor ladder</h2>
+<p>A voltage mode resistor R-2R resistor ladder network.</p>
+<p>If the image is still here, I did not have time to make an animation</p>
+<figure><img src='L5_files/4e83c0c2dbf6.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>It produces an analog output voltage from the digital integer <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>X</mi><annotation encoding="application/x-tex">X</annotation></semantics></math> composed of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>  bits: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>n</mi><mo>−</mo><mn>1</mn></mrow></msub><annotation encoding="application/x-tex">a_{n - 1}</annotation></semantics></math> (most significant bit, MSB) through bit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mn>0</mn></msub><annotation encoding="application/x-tex">a_{0}</annotation></semantics></math> (least significant bit, LSB).</p>
+<p><a href='https://en.wikipedia.org/wiki/Resistor_ladder'>https://en.wikipedia.org/wiki/Resistor_ladder</a></p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> DAC – Buffered</h2>
+<figure><img src='L5_files/2e8d8ee90e58.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>D</mi><mi>A</mi><mi>C</mi><mi>V</mi><mi>A</mi><mi>L</mi><mi>A</mi><mo>×</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>R</mi><mi>E</mi><mi>F</mi></mrow><mn>4096</mn></mfrac><mo>=</mo><mi>D</mi><mi>A</mi><mi>C</mi><mi>O</mi><mi>U</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">\frac{DACVALA \times DACREF}{4096} = DACOUT</annotation></semantics></math></p>
+<p>Pull-down resistor</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> DAC</h2>
+<p>Each buffered DAC has the following features:</p>
+<ul>
+<li>12-bit programmable internal DAC
+</li>
+<li>Selectable reference voltage source
+<li>
+<ul>
+<li>Internal <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>D</mi><mi>A</mi><mi>C</mi></mrow><annotation encoding="application/x-tex">VDAC</annotation></semantics></math>
+</li>
+<li>External <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>V</mi><mi>R</mi><mi>E</mi><mi>F</mi><mi>H</mi><mi>I</mi></mrow><annotation encoding="application/x-tex">VREFHI</annotation></semantics></math>
+</li></ul>
+</li>
+<li>Pull-down resistor on output
+</li>
+<li>Ability to synchronize with EPWMSYNCPER
+</li></ul>
+<p>MCU DACs include an operational amplifier (Op-Amp) buffer at the output to drive loads (speakers, motor drivers) without dropping voltage due to impedance loading.</p>
+<p>EPWMSYNCPER comes from the Time-Base submodule of the EPWM. (For a detailed description of how this signal is generated, refer to the Time-Base submodule chapter of the EPWM).</p>
+<p>There are <strong>3</strong> DAC, DACA, DACB, DACC</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> DAC – For later reference</h2>
+<figure><img src='L5_files/c57b81ea61aa.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> DAC</h2>
+<p><strong>Setup</strong></p>
+<p>EALLOW;</p>
+<p>DacaRegs.DACCTL.bit.DACREFSEL = 0;  // 0 from internal reference, 1 for external</p>
+<p>DacaRegs.DACOUTEN.bit.DACOUTEN = 1; // DAC output enabled? (DAC-OUT-EN)</p>
+<p>DacaRegs.DACVALS.all = 0;           // Clears current output value</p>
+<p>DELAY_US(10);                       // Delay for buffered DAC to power up</p>
+<p>EDIS;</p>
+<p><strong>Setting</strong></p>
+<p>DacaRegs.DACVALS.all = val;         // Sets DAC output (only keeps to first 12 bits)</p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> ADC(Analog-to-Digital Converter)</h2>
+
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> ADC</h2>
+<p>Converts continuous voltage into discrete digital numbers.</p>
+<p>3 step process:</p>
+<ul>
+<li><strong>Sample</strong>: A switch closes, charging a tiny internal capacitor to match the input voltage
+</li>
+<li><strong>Holding</strong>: The switch open, trapping the charge on the capacitor so it does not change during measurement
+</li>
+<li><strong>Quantizing</strong>: The ADC circuitry measures the stored charge against a reference
+</li></ul>
+<figure><img src='L5_files/244006809f91.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> ADC</h2>
+<p>Each ADC has the following features:</p>
+<ul>
+<li>Selectable resolution of 12 bits or 16 bits ( for the precision you want)
+</li>
+<li>Ratiometric external reference set by VREFHI and VREFLO pins
+</li>
+<li>Differential signal conversions (16-bit mode only)
+</li>
+<li>Single-ended signal conversions (12-bit mode only)
+</li>
+<li>Input multiplexer with up to 16 channels (single-ended) or 8 channels (differential)
+</li>
+<li>16 configurable SOCs ( we will go through what this is a bit later)
+</li>
+<li>16 individually addressable result registers
+</li></ul>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> ADC</h2>
+<p>Each ADC has the following features:</p>
+<ul>
+<li>Multiple trigger sources
+<li>
+<ul>
+<li>S/W - software immediate start
+</li>
+<li>All ePWMs - ADCSOC A or B
+</li>
+<li>GPIO XINT2
+</li>
+<li>CPU Timers 0/1/2 (from each C28x core present)
+</li>
+<li>ADCINT1/2
+</li></ul>
+</li>
+<li>Four flexible PIE interrupts
+</li>
+<li>Burst mode
+</li>
+<li>Four post-processing blocks, each with:
+<li>
+<ul>
+<li>Saturating offset calibration
+</li>
+<li>Error from setpoint calculation
+</li>
+<li>High, low, and zero-crossing compare, with interrupt and ePWM trip capability
+</li>
+<li>Trigger-to-sample delay capture
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> ADC</h2>
+<p>Not every channel may be pinned out from all ADCs. Check the datasheet for your device to</p>
+<p>determine which channels are available!</p>
+<figure><img src='L5_files/851fb503a302.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> ADC - Differential</h2>
+<p>The ADC supports two signal modes: <strong>single-ended</strong> and <strong>differential</strong>.</p>
+<ul>
+<li>In <strong>single-ended</strong> mode, the input voltage to the converter is sampled through a single pin (ADCINx), referenced to VREFLO.
+</li>
+<li>In <strong>differential</strong> signaling mode, the input voltage to the converter is sampled through a pair of input pins, one of which is the positive input (ADCINxP) and the other is the negative input (ADCINxN). The actual input voltage is the difference between the two (ADCINxP – ADCINxN).
+</li>
+<li><strong>Differential</strong> signaling mode is advantageous because noise encountered on both inputs will be largely cancelled. Allowing for higher 16-bit precision.
+</li></ul>
+<figure><img src='L5_files/f7cf9f49d3c1.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L5_files/244006809f91.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> ADC - Calculate</h2>
+<figure><img src='L5_files/6aff0dadcf9b.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> ADC – SAR (Successive Approximation Register)</h2>
+<p>F28379D uses SAR. It works like a &quot;binary search”. Convert continuous to digital.</p>
+<p>For iteration <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> (where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> goes from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mo>−</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">N - 1</annotation></semantics></math> down to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mn>0</mn><annotation encoding="application/x-tex">0</annotation></semantics></math> ):</p>
+<ol>
+<li><strong>Trial Step</strong>: The SAR logic sets the current bit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_{i}</annotation></semantics></math> to 1 (tentatively) and all lower bits to 0.
+</li>
+<li><strong>DAC Output</strong>: The internal DAC generates a trial voltage: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>t</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi></mrow></msub><mo>=</mo><msub><mi>V</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi><mi>u</mi><mi>m</mi><mi>u</mi><mi>l</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi></mrow></msub><mo>+</mo><mfrac><msub><mi>V</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mn>1</mn><mo>−</mo><mi>i</mi></mrow></msup></mfrac><mo>×</mo><mfrac><msub><mi>V</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub><mn>2</mn></mfrac></mrow><annotation encoding="application/x-tex">V_{trial} = V_{accumulated} + \frac{V_{ref}}{2^{N - 1 - i}} \times \frac{V_{ref}}{2}</annotation></semantics></math> <em>(Note: This simplifies to testing the half-way point of the remaining search interval).</em>
+</li>
+<li><strong>Comparison</strong>: The analog comparator checks the condition: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>V</mi><mrow><mi>i</mi><mi>n</mi></mrow></msub><mo>≥</mo><msub><mi>V</mi><mrow><mi>t</mi><mi>r</mi><mi>i</mi><mi>a</mi><mi>l</mi></mrow></msub></mrow><annotation encoding="application/x-tex">V_{in} \geq V_{trial}</annotation></semantics></math>
+</li>
+<li><strong>Decision</strong>:
+</li>
+<li>If <strong>True</strong>: The comparator outputs &#x27;1&#x27;. The bit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_{i}</annotation></semantics></math> remains 1. The trial voltage is kept as part of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>V</mi><mrow><mi>a</mi><mi>c</mi><mi>c</mi><mi>u</mi><mi>m</mi><mi>u</mi><mi>l</mi><mi>a</mi><mi>t</mi><mi>e</mi><mi>d</mi></mrow></msub><annotation encoding="application/x-tex">V_{accumulated}</annotation></semantics></math>
+</li>
+<li>If <strong>False</strong>: The comparator outputs &#x27;0&#x27;. The bit <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mi>i</mi></msub><annotation encoding="application/x-tex">b_{i}</annotation></semantics></math> is cleared to 0. The trial voltage is discarded.
+</li></ol>
+<p>This process converges logarithmically (because it is binary search). The error at step <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> is strictly bounded by</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mfrac><msub><mi>V</mi><mrow><mi>r</mi><mi>e</mi><mi>f</mi></mrow></msub><msup><mn>2</mn><mrow><mi>N</mi><mo>−</mo><mi>i</mi></mrow></msup></mfrac><annotation encoding="application/x-tex">\frac{V_{ref}}{2^{N - i}}</annotation></semantics></math></p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> ADC – SAR (Successive Approximation Register)</h2>
+<figure><img src='L5_files/249ab6678715.gif' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://en.wikipedia.org/wiki/Successive-approximation_ADC'>https://en.wikipedia.org/wiki/Successive-approximation_ADC</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> SOC(Start-of-Conversion)</h2>
+
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> SOC - Intro</h2>
+<p>In simple microcontrollers (like Arduino), you usually just say “Read analog value from pin A0 now!”. In more advanced controllers we use <strong>SOCs</strong></p>
+<p>SOCs is a configuration set that defines <em>what </em>happens, not just <em>when:</em></p>
+<p>You do not configure the ADC directly, you configure “SOC0” “SOC1”, etc…</p>
+<p>Each SOC defines:</p>
+<ul>
+<li><strong>Trigger Source</strong>: What causes the same? (Timer, Software, ePWM, GPIO).
+</li>
+<li><strong>Channel: </strong>Which pin to sample? (e.g. ADCINA4).
+</li>
+<li><strong>Acquisition Window (ACQPS): </strong>How long to hold the “sample” switch open?
+</li></ul>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> SOC – Trigger Sources</h2>
+<p>The ADC is an event-based machine.</p>
+<p>For example, you can set SOC1 to trigger on <strong>ePWM1</strong> (for motor currents) and SOC1 to trigger on <strong>CPU Timer 2 </strong>( for temperature monitoring)</p>
+<p>What to do if multiple triggers arrive at once? We use a <strong>Round Robin</strong>, to decide which SOC converts first.</p>
+<p>You can assign SOCs to have strict priority over others (critical safety loops)</p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> SOC – Trigger Sources</h2>
+<figure><img src='L5_files/2a19e3d6a6f9.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> SOC – Acquisition Window</h2>
+<p>The internal capacitor <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mi>h</mi></msub><annotation encoding="application/x-tex">C_{h}</annotation></semantics></math> needs time to charge. If the source impedance is high (weak signal), it takes longer</p>
+<p>AdcxRegs.ADCSOCxCTL.bit.ACQPS</p>
+<p>ACQPS is a 9-bit register that can be set to a value between 0 and 511, resulting in an acquisition window duration of:</p>
+<p>Acquisition Window = <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>A</mi><mi>C</mi><mi>Q</mi><mi>P</mi><mi>S</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn><mo stretchy="false" form="postfix">)</mo><mo>×</mo><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mi>y</mi><mi>s</mi><mi>t</mi><mi>e</mi><mi>m</mi><mspace width="0.222em"></mspace><mi>C</mi><mi>l</mi><mi>o</mi><mi>c</mi><mi>k</mi><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>S</mi><mi>Y</mi><mi>S</mi><mi>C</mi><mi>L</mi><mi>K</mi><mo stretchy="false" form="postfix">)</mo><mspace width="0.222em"></mspace><mi>c</mi><mi>y</mi><mi>c</mi><mi>l</mi><mi>e</mi><mspace width="0.222em"></mspace><mi>t</mi><mi>i</mi><mi>m</mi><mi>e</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(ACQPS\  + \ 1) \times (System\ Clock\ (SYSCLK)\ cycle\ time)</annotation></semantics></math>.</p>
+<p>The acquisition window duration is based on the System Clock (SYSCLK), not the ADC clock (ADCCLK)!</p>
+<p>Why it matters: If you make this too short, the capacitor won&#x27;t fully charge, and you will read the previous channel&#x27;s &quot;ghost&quot; voltage (cross-talk).</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> SOC – Interrupts</h2>
+<p>You don’t need an interrupt for <em>every </em>sample ( bit ).</p>
+<p>You can set an interrupt to fire only after a <em>sequence </em>(e.g. After SOC3 completes)</p>
+<p><strong>Early vs Late Interrupts</strong>:</p>
+<ul>
+<li><strong>Early</strong>: First the interrupt at the end of acquisition
+</li>
+<li><strong>Late</strong>: At the end of conversion
+</li></ul>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> ADC – Single Conversion from ePWM</h2>
+<p>AdcaRegs.ADCSOC5CTL.bit.CHSEL = 1;    //SOC5 will convert ADCINA1</p>
+<p>AdcaRegs.ADCSOC5CTL.bit.ACQPS = 19;   //SOC5 will use sample duration of 20 SYSCLK cycles</p>
+<p>AdcaRegs.ADCSOC5CTL.bit.TRIGSEL = 10; //SOC5 will begin conversion on ePWM3 SOCB</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> ADC – FFT Code (much more complicated example)</h2>
+<p>EALLOW;                                    //write configurations for all ADCs ADCB</p>
+<p>AdcbRegs.ADCCTL2.bit.PRESCALE = 6;         //set ADCCLK divider to /4</p>
+<p>AdcSetMode(ADC_ADCB, <em>ADC_RESOLUTION_12BIT</em><em>, ADC_SIGNALMODE_SINGLE); </em><em>//read calibration settings</em></p>
+<p>//Set pulse positions to late</p>
+<p>AdcbRegs.ADCCTL1.bit.INTPULSEPOS = 1;      //power up the ADCs</p>
+<p>AdcbRegs.ADCCTL1.bit.ADCPWDNZ = 1;</p>
+<p>DELAY_US(1000);                            //delay for 1ms to allow ADC time to power up</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.CHSEL = 4;         //SOC0 will convert Channel you choose Does not have to be B0</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.ACQPS = 99;        //sample window is acqps + 1 SYSCLK cycles = 500ns</p>
+<p>AdcbRegs.ADCSOC0CTL.bit.TRIGSEL = 0x11;    // EPWM7 ADCSOCA or another trigger you choose will trigger SOC0</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1SEL = 0;     //set to last SOC that is converted and it will set INT1 flag ADCB1</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1E = 1;       //enable INT1 flag, originally = 1 (need to set to 1 for non-DMA)</p>
+<p>AdcbRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;     //make sure INT1 flag is cleared</p>
+<p>AdcbRegs.ADCINTSEL1N2.bit.INT1CONT = 1;    // Interrupt pulses regardless of flag state</p>
+<p>EDIS;</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> Questions?</h2>
+
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> End of Lecture 5</h2>
+
+
+</section>
+</main></body></html>

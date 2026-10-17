@@ -789,16 +789,18 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
         <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-4 border-b border-gray-200 pb-3">Accessibility Requirements</h2>
 
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          UIUC requires course materials to meet <strong>WCAG 2.1 AA</strong> accessibility standards. This repo's CI pipeline automatically handles most of it — but you need to follow a few rules when writing content.
+          UIUC requires course materials to meet <strong>WCAG 2.1 AA</strong> (the ADA Title II rule for public universities applies since April 2026). This repo aims for <strong>WCAG 2.2 AA</strong> and <strong>PDF/UA-2</strong>, and checks it automatically — but you need to follow a few rules when writing content.
         </p>
 
         <div class="callout-info rounded-lg p-4 mb-6">
           <p class="font-semibold text-blue-800 dark:text-blue-300 mb-1">ℹ What the repo handles automatically</p>
           <ul class="text-blue-700 dark:text-blue-200 text-sm list-disc list-inside space-y-1">
-            <li>PDF/UA-2 accessibility tagging (via <span class="ic">tagpdf</span> package)</li>
-            <li>Dark mode support on the website (system preference detection)</li>
-            <li>Accessible HTML conversion with ARIA attributes</li>
-            <li>WCAG AA color contrast for code blocks</li>
+            <li>Tagged PDF/UA-2 handouts, validated with veraPDF; tagged slide PDFs</li>
+            <li>Every handout also as accessible HTML (MathML equations, alt text, light/dark), EPUB 3 and a large-print PDF</li>
+            <li>Every lecture deck also as a text page (slide titles as headings, alt text, MathML, speaker notes)</li>
+            <li>Checks on every pull request: LaTeX and slide lint, veraPDF, epubcheck, axe-core on every web page in light and dark mode, figure colours under colour-blindness simulation</li>
+            <li>A ratchet (<span class="ic">a11y-baseline.json</span>): existing problems are tolerated, new ones fail the pull request</li>
+            <li>A public <a href="accessibility.html" class="url underline">accessibility report</a> with the current status</li>
           </ul>
         </div>
 
@@ -844,14 +846,26 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
 
           <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
             <p class="font-semibold text-sm mb-2">4. Do not use color alone to convey meaning</p>
-            <p class="text-sm text-gray-600 dark:text-gray-400">For example, don't write "the red wire connects to pin 3" without also providing a label or pattern. Users who are colorblind will miss color-only cues.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">For example, don't write "the red wire connects to pin 3" without also providing a label or pattern. Users who are colorblind will miss color-only cues. Plots from SE423Animations get a colour-blind-safe palette with distinct line styles from <span class="ic">course_style.apply()</span>.</p>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">5. Slides: real titles and alt text</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Give every slide a title in the layout's title placeholder (screen readers navigate by it) and every picture alt text (PowerPoint: right-click → View Alt Text; mark logos and decoration "decorative"). For pictures without alt text, <span class="ic">uv run tools/a11y/draft_alt_text.py submit</span> drafts it with Claude, and <span class="ic">uv run tools/a11y/review_alt.py</span> opens a page to approve or edit each draft; only approved text goes into the decks.</p>
+          </div>
+
+          <div class="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 p-4 shadow-sm">
+            <p class="font-semibold text-sm mb-2">6. TikZ figures: a <span class="ic">% alt:</span> line</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400">Start every <span class="ic">Lectures/Figures/*.tex</span> with <span class="ic">% alt: &lt;what the figure shows&gt;</span>. It becomes the published SVG's description and the gallery's alt text.</p>
           </div>
         </div>
 
         <h3 class="font-bold text-lg mb-3">Checking your work</h3>
         <ul class="space-y-2 text-sm text-gray-700 dark:text-gray-300">
-          <li>• Run the <a href="https://wave.webaim.org/" class="url underline" target="_blank">WebAIM WAVE tool</a> on any HTML page you publish to check for errors</li>
-          <li>• For PDFs: open in Adobe Acrobat and run the built-in Accessibility Checker</li>
+          <li>• <span class="ic">sh tools/install-hooks.sh</span> once: every commit then checks the documents and decks it touches</li>
+          <li>• <span class="ic">uv run tools/a11y/run_all.py</span> runs the linters; pull requests run everything and show new problems inline</li>
+          <li>• After fixing problems: <span class="ic">uv run tools/a11y/run_all.py --update-baseline</span> and commit <span class="ic">a11y-baseline.json</span></li>
+          <li>• Manual spot checks are still worth it: a screen reader (NVDA, VoiceOver) on one deck and page, the <a href="https://wave.webaim.org/" class="url underline" target="_blank">WebAIM WAVE tool</a>, Acrobat's Accessibility Checker</li>
           <li>• UIUC's accessibility guide: <a href="https://uofi.app.box.com/s/yabddvw7vb7rpo88cl1amr9reygvbyyr" class="url underline" target="_blank">Box link</a></li>
         </ul>
 
@@ -878,7 +892,7 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
             <tr><td>Change course name</td><td>Edit <span class="ic">\def\CourseCode</span> and <span class="ic">\def\CourseName</span> in <span class="ic">header.tex</span></td></tr>
             <tr><td>Change semester start date</td><td>Edit <span class="ic">\def\StartDate</span> in <span class="ic">timline.tex</span></td></tr>
             <tr><td>Add a lecture slide deck</td><td>Put <span class="ic">L23.pptx</span> in <span class="ic">Lectures/Slides/</span>, add entry to <span class="ic">data.lectures</span> in <span class="ic">site/index.html</span></td></tr>
-            <tr><td>Add a new lab</td><td>Create <span class="ic">Labs/Lab4.tex</span>, add line to <span class="ic">pdf-list.txt</span>, add card to <span class="ic">data.labs</span> in <span class="ic">site/index.html</span></td></tr>
+            <tr><td>Add a new lab</td><td>Create <span class="ic">Labs/Lab4.tex</span>, add card to <span class="ic">data.labs</span> in <span class="ic">site/index.html</span>. The current labs are published by the official course website, so they are not in <span class="ic">pdf-list.txt</span>; add a lab there only when this repo should build and publish it</td></tr>
             <tr><td>Add a new homework</td><td>Create <span class="ic">Homeworks/HW7.tex</span>, add line to <span class="ic">pdf-list.txt</span>, add card to <span class="ic">data.hw</span> in <span class="ic">site/index.html</span></td></tr>
             <tr><td>Add a figure to the gallery</td><td>Put a <span class="ic">.tex</span> or <span class="ic">.svg</span> file in <span class="ic">Lectures/Figures/</span> — gallery updates automatically on next CI run</td></tr>
             <tr><td>Force a full rebuild</td><td>GitHub → Actions → Build LaTeX PDFs → Run workflow</td></tr>

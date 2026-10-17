@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L12: SE 423: Introduction to MechatronicsLecture 12: IMUMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L12: SE 423: Introduction to MechatronicsLecture 12: IMUMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L12.pdf">PDF</a> · <a href="L12.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (43)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 12: IMUMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>Questions?</a></li><li><a href='#s5'>Thank you to everyone that responded to my feedback form!There was a lot of great feedback that I will try to incorporate!</a></li><li><a href='#s6'>Accelerometer</a></li><li><a href='#s7'>Accelerometer</a></li><li><a href='#s8'>Accelerometer</a></li><li><a href='#s9'>Accelerometer</a></li><li><a href='#s10'>Accelerometer</a></li><li><a href='#s11'>Accelerometer</a></li><li><a href='#s12'>Accelerometer</a></li><li><a href='#s13'>Accelerometer</a></li><li><a href='#s14'>Gyroscope</a></li><li><a href='#s15'>Gyroscope</a></li><li><a href='#s16'>Gyroscope</a></li><li><a href='#s17'>Gyroscope</a></li><li><a href='#s18'>Gyroscope</a></li><li><a href='#s19'>Gyroscope</a></li><li><a href='#s20'>Gyroscope</a></li><li><a href='#s21'>Gyroscope</a></li><li><a href='#s22'>Gyroscope</a></li><li><a href='#s23'>Magnetometer</a></li><li><a href='#s24'>Magnetometer</a></li><li><a href='#s25'>Magnetometer</a></li><li><a href='#s26'>Magnetometer</a></li><li><a href='#s27'>IMU</a></li><li><a href='#s28'>IMU</a></li><li><a href='#s29'>IMU</a></li><li><a href='#s30'>IMU</a></li><li><a href='#s31'>IMU</a></li><li><a href='#s32'>IMU</a></li><li><a href='#s33'>IMU</a></li><li><a href='#s34'>IMU</a></li><li><a href='#s35'>IMU</a></li><li><a href='#s36'>IMU</a></li><li><a href='#s37'>IMU</a></li><li><a href='#s38'>IMU</a></li><li><a href='#s39'>IMU</a></li><li><a href='#s40'>SPI</a></li><li><a href='#s41'>IMU</a></li><li><a href='#s42'>Questions?</a></li><li><a href='#s43'>End of Lecture 12</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 12: IMUMarius Juston</h2>
+<p>Monday, February 2nd, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these review questions.</p>
+<ul>
+<li>To receive data, you must also ____ data.
+</li>
+<li>What is FIFO? Why is it used?
+</li>
+<li>What is the maximum size for the buffer’s data in bits?
+</li>
+<li>What does SPICHAR = 0xF mean?
+</li>
+<li>What do absolute / incremental encoders measure? When do they fail at measuring travel distance?
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 4 this week. This a 2-week lab!</p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 1, 2, 3 &amp; 4 are due <strong>March 10, 5PM (The end of office hours)</strong>
+</li>
+<li>Check-offs for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3 </a>Ex 5 are due <strong>March 24, 5PM (The end of office hours)</strong>
+</li>
+<li>Answers and code submissions for <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW3.pdf'>homework 3</a> are due <strong>March 25, 9AM</strong>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Thank you to everyone that responded to my feedback form!There was a lot of great feedback that I will try to incorporate!</h2>
+
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Accelerometer</h2>
+
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Accelerometer</h2>
+<p>We cannot and should not rely on a single sensor source (sensor fusion will be covered later), and sometimes we cannot attach encoders.</p>
+<p>So, what can we do?</p>
+<p>The goal is to measure direction and rotation. What is the most basic component that we can measure?</p>
+<p>Forces!</p>
+<p>How do calculate velocity and position from forces?</p>
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> Accelerometer</h2>
+<figure><img src='L12_files/71518cefaf13.png' alt='Figure 3. Acceleration associated with a single moving mass.' loading='lazy'></figure>
+<p><a href='https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html'>https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html</a></p>
+<p>A MEMS (Micro-Electro-Mechanical Systems) accelerometer measure linear acceleration.</p>
+<p>Accelerometers work like a weight suspended by springs. When the mass is moved you measure the displacement, the springs bring it back to the center.</p>
+<p>In chips, we use the change of capacitors. The capacitance is based on the distance between the 2 materials. So, the smaller the distance, the larger the returned capacitance.</p>
+<p>You then measure this capacitance.</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> Accelerometer</h2>
+<p>Force causes a displacement of the mass which, in turn, causes a capacitance change.</p>
+<p>Placing multiple electrodes in parallel allows for a larger capacitance, which will be more easily detected.</p>
+<p>By calculating the difference between <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mn>1</mn></msub><annotation encoding="application/x-tex">C_{1}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>C</mi><mn>2</mn></msub><annotation encoding="application/x-tex">C_{2}</annotation></semantics></math>, we can derive the displacement of the mass and its direction.</p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> Accelerometer</h2>
+<p>Since we can measure the displacement and the system acts as a string we can do the following. We start with:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>m</mi><mi>a</mi></mrow><annotation encoding="application/x-tex">F\  = \ ma</annotation></semantics></math></p>
+<p>The force from a spring is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>k</mi><mspace width="0.222em"></mspace><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">F\  = \ k\ \mathrm{\Delta}x</annotation></semantics></math></p>
+<p>Given that <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>m</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>k</mi></mrow><annotation encoding="application/x-tex">m,\ k</annotation></semantics></math> are known (design choices), and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">\mathrm{\Delta}x</annotation></semantics></math> is measured from the capacitors, we get that:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><mspace width="0.222em"></mspace><mi>m</mi><mi>a</mi><mo>=</mo><mi>k</mi><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">F = \ ma = k\mathrm{\Delta}x</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mi>k</mi><mi>m</mi></mfrac><mi mathvariant="normal">Δ</mi><mi>x</mi></mrow><annotation encoding="application/x-tex">a\  = \ \frac{k}{m}\mathrm{\Delta}x</annotation></semantics></math></p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> Accelerometer</h2>
+<p>You keep stacking these to remove the noise to get more accurate readings. In turn we get the following internal system. It is incredible how small these are!</p>
+<p>How many axis can the following accelerometers measure?</p>
+<figure><img src='L12_files/2b4be7620088.jpg' alt='The Little Machines That are Making it Big - Physics Today' loading='lazy'></figure>
+<p><a href='https://physicstoday.aip.org/features/the-little-machines-that-are-making-it-big'>https://physicstoday.aip.org/features/the-little-machines-that-are-making-it-big</a></p>
+<figure><img src='L12_files/c2cdb494c33d.jpg' alt='Analytical study and compensation for temperature drifts of a bulk silicon  MEMS capacitive accelerometer - ScienceDirect' loading='lazy'></figure>
+<p><a href='https://www.sciencedirect.com/science/article/pii/S0924424716300267'>https://www.sciencedirect.com/science/article/pii/S0924424716300267</a></p>
+<figure><img src='L12_files/e0b90334baa3.png' alt='Figure 6. A mechanical model of an actual accelerometer.' loading='lazy'></figure>
+<p><a href='https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html'>https://www.analog.com/cn/resources/technical-articles/accelerometer-and-gyroscopes-sensors-operation-sensing-and-applications.html</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> Accelerometer</h2>
+<figure><img src='L12_files/bfe41ab6e3b9.png' alt='A Monolithic Three-Axis Accelerometer with Wafer-Level Package by CMOS MEMS  Process' loading='lazy'></figure>
+<p>Think of the z-axis as a trampoline!</p>
+<p>What happens if you have too large of an acceleration (think of the combs)?</p>
+<p>An accelerometer that is sitting still on a desk reads _g pointing upwards.</p>
+<p>What if it gets dropped out of the window in a perfect vacuum?</p>
+<p><a href='https://www.mdpi.com/2504-3900/1/4/337'>https://www.mdpi.com/2504-3900/1/4/337</a></p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> Accelerometer</h2>
+<p class='video'><a href='https://www.youtube.com/watch?v=KuekQ-m9xpw'>YouTube video: How does an Accelerometer work? | 3D Animation (CircuitBread)</a></p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> Gyroscope</h2>
+
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> Gyroscope</h2>
+<p>The accelerometer measures linear acceleration, which allows us to measure acceleration, velocity and displacement.</p>
+<p>How many degrees of freedom are there in 3D?</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo>,</mo><msub><mi>θ</mi><mi>x</mi></msub><mo>,</mo><msub><mi>θ</mi><mi>y</mi></msub><mo>,</mo><msub><mi>θ</mi><mi>z</mi></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y,\ z,\theta_{x},\theta_{y},\theta_{z})</annotation></semantics></math></p>
+<p>How many does the accelerometer handle?</p>
+<p>3: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,\ y,\ z)</annotation></semantics></math></p>
+<p>We are missing the angular DOF!</p>
+<figure><img src='L12_files/bb7fe0637e32.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> Gyroscope</h2>
+<p>A MEMS Gyroscope does not use a spinning wheel like classical mechanical gyroscopes. Similarly, you have a tiny mass that is moving when rotating. If the device start rotating, the moving mass experiences a sideways force.</p>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> Gyroscope</h2>
+<p>Very similar to accelerometers,</p>
+<p>The mass sits between capacitors plates.</p>
+<p>When the it moves sideways, capacitance changes.</p>
+<p>This returns a displacement from which we can compute angular velocity.</p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> Gyroscope</h2>
+<p>The device shown has 2 axis, the <strong>Drive Axis </strong>(x) and the <strong>Sense Axis </strong>(y).</p>
+<p>The inner mass is electrically forced to vibrate continuously back and force along the x-axis at a resonant frequency <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ω</mi><mi>r</mi></msub><annotation encoding="application/x-tex">\omega_{r}</annotation></semantics></math>. The instantaneous velocity is <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>.</p>
+<p>When an angular velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><annotation encoding="application/x-tex">\Omega_{z}</annotation></semantics></math>, along the z-axis, is applied, the Coriolis force acting along the y-axis is generated.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>F</mi><mi>C</mi></msub><mspace width="0.222em"></mspace><mo>=</mo><mi>−</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>m</mi><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><mo>×</mo><mspace width="0.222em"></mspace><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F_{C}\  = - \ 2m(\Omega_{z} \times \ v)</annotation></semantics></math></p>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> Gyroscope</h2>
+<p>The Coriolis force pushes the mass along the y-axis.</p>
+<p>Thus, to solve for angular velocity we again derive that:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mspace width="0.222em"></mspace><mo>=</mo><mi>k</mi><mi mathvariant="normal">Δ</mi><mi>y</mi><mspace width="0.222em"></mspace><mo>=</mo><mi>−</mi><mspace width="0.222em"></mspace><mn>2</mn><mi>m</mi><mo stretchy="false" form="prefix">(</mo><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><mo>×</mo><mspace width="0.222em"></mspace><mi>v</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">F\  = k\mathrm{\Delta}y\  = - \ 2m(\Omega_{z} \times \ v)</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><mo>=</mo><mspace width="0.222em"></mspace><mfrac><mrow><mi>k</mi><mi mathvariant="normal">Δ</mi><mi>y</mi></mrow><mrow><mn>2</mn><mi>m</mi><mspace width="0.222em"></mspace><mi>v</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\Omega_{z} = \ \frac{k\mathrm{\Delta}y}{2m\ v}</annotation></semantics></math></p>
+<p>We know the mass <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>m</mi><annotation encoding="application/x-tex">m</annotation></semantics></math>, spring stiffness <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>k</mi><annotation encoding="application/x-tex">k</annotation></semantics></math>, drive velocity <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>v</mi><annotation encoding="application/x-tex">v</annotation></semantics></math>, so we just compute the displacement <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Δ</mi><mi>y</mi></mrow><annotation encoding="application/x-tex">\mathrm{\Delta}y</annotation></semantics></math> to measure <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi mathvariant="normal">Ω</mi><mi>z</mi></msub><annotation encoding="application/x-tex">\Omega_{z}</annotation></semantics></math>.</p>
+<p>Very similar to the accelerometer!</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> Gyroscope</h2>
+<figure><img src='L12_files/606ace8bbe77.png' alt='Schematic Illustration of MEMS Vibratory Gyroscope | Download Scientific  Diagram' loading='lazy'></figure>
+<p><a href='https://www.semanticscholar.org/paper/Modeling-and-simulation-of-the-MEMS-vibratory-Patel-McCluskey/8dec6605fc5b603df07d74f7b9eb6875b2c17c3a'>https://www.semanticscholar.org/paper/Modeling-and-simulation-of-the-MEMS-vibratory-Patel-McCluskey/8dec6605fc5b603df07d74f7b9eb6875b2c17c3a</a></p>
+<figure><img src='L12_files/a268b18bbbd4.gif' alt='100:1 3D printed MEMS Gyroscope : r/3Dprinting' loading='lazy'></figure>
+<p><a href='https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/'>https://www.reddit.com/r/3Dprinting/comments/103v6ef/1001_3d_printed_mems_gyroscope/</a></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Gyroscope</h2>
+<figure><img src='L12_files/21de57f5a75b.gif' alt='Getting Started with the MPU6050: Beginner-Friendly Guide with Visual  Explanations - Sensors - Arduino Forum' loading='lazy'></figure>
+<p><a href='https://forum.arduino.cc/t/getting-started-with-the-mpu6050-beginner-friendly-guide-with-visual-explanations/1364064'>https://forum.arduino.cc/t/getting-started-with-the-mpu6050-beginner-friendly-guide-with-visual-explanations/1364064</a></p>
+<figure><img src='L12_files/50e658a84840.gif' alt='How cloud-based multiphysics simulations improve MEMS gyroscope design' loading='lazy'></figure>
+<p><a href='https://quanscient.com/blog/enhancing-mems-gyroscope-design'>https://quanscient.com/blog/enhancing-mems-gyroscope-design</a></p>
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> Gyroscope</h2>
+<figure><img src='L12_files/08dd755068eb.png' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://www.printables.com/model/413667-mems-model-six-axis-imu-device'>https://www.printables.com/model/413667-mems-model-six-axis-imu-device</a></p>
+<p>What is this? The gyros or accelerometers?</p>
+<p>What is this? The gyros or accelerometers?</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> Magnetometer</h2>
+
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> Magnetometer</h2>
+<p>What is a device that has been used for traveling for a very long time? That has helped sailors travel?</p>
+<p>The compass!</p>
+<p>The magnetometer acts as an absolute reference. It measures the strength and direction of the Earth’s magnetic field, allowing the system to establish a global “North”</p>
+<p>The more popular method uses the Hall Effect sensor to measure the magnetic field; however, next slide is a slightly different, method, and was chosen since it is more like the previous accelerometer and gyroscope sensors. Although they measure the same thing in the end!</p>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> Magnetometer</h2>
+<p>The magnetic field acts like a counterbalance and you measure the torque</p>
+<figure><img src='L12_files/30636b12adec.png' alt='Illustration of a ferromagnetic MEMS magnetometer design. | Download  Scientific Diagram' loading='lazy'></figure>
+<p><a href='https://www.researchgate.net/figure/llustration-of-a-ferromagnetic-MEMS-magnetometer-design_fig18_255663586'>https://www.researchgate.net/figure/llustration-of-a-ferromagnetic-MEMS-magnetometer-design_fig18_255663586</a></p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> Magnetometer</h2>
+<p><a href='https://www.mdpi.com/1424-8220/9/9/6951'>https://www.mdpi.com/1424-8220/9/9/6951</a></p>
+<figure><img src='L12_files/0925d6d21ffe.png' alt='Sensors 09 06951f1' loading='lazy'></figure>
+<figure><img src='L12_files/f4343d979a43.png' alt='Sensors 09 06951f4' loading='lazy'></figure>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> IMU</h2>
+
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> IMU</h2>
+<p>IMU – stands for Inertial Measurement Unit</p>
+<p>Which is just a single chip that packages 3-axis accelerometers, 3-axis gyroscopes and a 3-axis magnetometer (sometimes).</p>
+<p>Sometimes includes additional noise filtering, sensor fusion.</p>
+<p>Allows to collect all the information about the robot’s inertial state.</p>
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> IMU</h2>
+<p>We will specially be using the MPU-9250. This specifically contains a 3-axis accelerometer, 3-axis gyroscope and a 3-axis magnetometer.</p>
+<p>There are multiple sensitivity levels that you can set the sensors:</p>
+<ul>
+<li>Gyroscope: ±250, ±500, ±1000, and ±2000 dps (degrees per second)
+</li>
+<li>Accelerometer: ±2g, ±4g, ±8g, and ±16g
+</li>
+<li>Magnetometer: ±4800µT (Tesla)
+</li></ul>
+<p>We can communicate to it through I2C at 400kHz or SPI at 1MHz (up to 20MHz).</p>
+<p>These sensors are meant to be read extremely fast, why is that the case?</p>
+<p>We need to integrate to get velocity and position so the smaller the dt the more accurate!</p>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> IMU</h2>
+<p>We will be communicating through SPI.</p>
+<p>Each the returned results will be 16-bit signed integers. As such:</p>
+<p>Acceleration X, Y, Z: [-32768, 32767] = [-4g, 4g]</p>
+<p>Gyro X, Y, Z: [-32768, 32767] = [-250 dps, 250 dsp]</p>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> IMU</h2>
+<p>There are 2 components for this sensor, writing configurations vs reading data. This is encoded inside the SPI data. We separate the message into 2 8-bit parts.</p>
+<p>The <strong>address (top 8-bits)</strong>: Says if we are trying to read/write and from where (accel vs gyro)</p>
+<p>The <strong>data (bottom 8-bits)</strong>: what we are trying to send to write to that address (ignored if reading)</p>
+<figure><img src='L12_files/9f7616e6320b.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>16-bit message</p>
+<p>The address</p>
+<p>The data</p>
+<p>The read/write bit</p>
+<p>(1 = read, 0 = write)</p>
+<p>The 7-bit reference address 0x00 to 0x74</p>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> IMU</h2>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>The address</p>
+<p>If you can read / write to this address</p>
+<p>Data is split into 8-bit high and low bits</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> IMU</h2>
+<p>As you previously saw we want to write 16-bits of data and potentially read 16-bits at a time to reduce the complexity of having to bit shift the high and low bits into the same variable.</p>
+<p>To do this what would we need to set SPICHAR to?</p>
+<p>0xA      0x11      0xF      0x8</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> IMU</h2>
+<p>When writing configuration to the MPU board, such as the accelerometer X offset (initial bias)</p>
+<p>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;   // Start SPI</p>
+<p>// 0x77 = 0111 0111 is this read or writing?</p>
+<p>SpibRegs.SPITXBUF = (0x7700 | 0x00EB);  // Address + data</p>
+<p>while(SpibRegs.SPIFFRX.bit.RXFFST !=1); // Waiting for response</p>
+<p>GpioDataRegs.GPCSET.bit.GPIO66 = 1;     // Disable SPI</p>
+<p>temp = SpibRegs.SPIRXBUF;               // Read value even though not needed</p>
+<p>DELAY_US(10);  // Delay a bit before issuing another MPU-9250 SPI transfer</p>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> IMU</h2>
+<p>What if we want to write multiple pieces of data at once?</p>
+<p>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</p>
+<p>SpibRegs.SPITXBUF = (0x1900 | 0x0013);  // One write</p>
+<p>SpibRegs.SPITXBUF = (0x0200 | 0x0000);  // Second write</p>
+<p>while(SpibRegs.SPIFFRX.bit.RXFFST !=2); // Wait that both have been sent</p>
+<p>GpioDataRegs.GPCSET.bit.GPIO66 = 1;</p>
+<p>temp = SpibRegs.SPIRXBUF;  // Read value even though not needed</p>
+<p>temp = SpibRegs.SPIRXBUF;  // Read second value even though not needed</p>
+<p>DELAY_US(10);  // Delay a bit before issuing another MPU-9250 SPI transfer</p>
+<p>What is the maximum number of writes at a time?</p>
+<p>The maximum size of the TX/RX FIFO is 16!</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> IMU</h2>
+<p>When explicitly wanting to read the data, especially if there is a lot we want to read, accel X, Y, Z, gyro X, Y, Z, each of them having a high and low address. Is there a smart way of doing this?</p>
+<p>Yes!</p>
+<p>This MPU you send an address that you want to <strong>start </strong>reading from. If you continue to give it clock cycles it will just <strong>continue down to the next address </strong>and read down!</p>
+<p>Allows us to read the 16-bit data into a single 16-bit read!</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> IMU</h2>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Start reading (sent 8-bit start address)</p>
+<p>Continue reading 16-bits</p>
+<p>Continue reading 16-bits</p>
+<p>Continue reading 16-bits</p>
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> IMU</h2>
+<p>// Code inside CPU Timer 0</p>
+<p>GpioDataRegs.GPCCLEAR.bit.GPIO66 = 1;</p>
+<p>SpibRegs.SPIFFRX.bit.RXFFIL = 3;</p>
+<p>// 0x8 = 1000 = read</p>
+<p>// 0x3C = address to read from</p>
+<p>SpibRegs.SPITXBUF = ((0x8000) | (0x3C00));</p>
+<p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
+<p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
+<p>int16_t dummy= 0;</p>
+<p>int16_t accelYraw = 0;</p>
+<p>int16_t accelZraw = 0;</p>
+<p>float accelYreading = 0;</p>
+<p>float accelZreading = 0;</p>
+<p>__interrupt void SPIB_isr(void){</p>
+<p>GpioDataRegs.GPCSET.bit.GPIO66 = 1; // Stop SPI transmit</p>
+<p>dummy = SpibRegs.SPIRXBUF; // reads from 0x3C Accel x low only</p>
+<p>accelYraw = SpibRegs.SPIRXBUF; // reads 0x3D | 0x3E = Accel y out</p>
+<p>accelZraw = SpibRegs.SPIRXBUF; // reads 0x3F | 0x40 = Accel z out</p>
+<p>accelYreading = accelYraw*4.0/32767.0;</p>
+<p>accelZreading = accelZraw*4.0/32767.0;</p>
+<p>SpibRegs.SPIFFRX.bit.RXFFOVFCLR=1;  // Clear Overflow flag</p>
+<p>SpibRegs.SPIFFRX.bit.RXFFINTCLR=1;  // Clear Interrupt flag</p>
+<p>PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;</p>
+<p>}</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> IMU</h2>
+<figure><img src='L12_files/304db0c0c72e.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>SpibRegs.SPITXBUF = ((0x8000) | (0x3C00));</p>
+<p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
+<p>SpibRegs.SPITXBUF = 0; // 0x0000 continue</p>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> SPI</h2>
+<figure><img src='L12_files/3f706f4edce5.svg' alt='Picture without a description' loading='lazy'></figure>
+<table><thead><tr><th scope='col'>Polarity</th><th scope='col'>Phase</th></tr></thead><tbody><tr><td>0</td><td>0</td></tr><tr><td>0</td><td>1</td></tr><tr><td>1</td><td>0</td></tr><tr><td>1</td><td>1</td></tr></tbody></table>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> IMU</h2>
+<figure><img src='L12_files/a00296090d43.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>What is the clock polarity?</p>
+<p>What is the clock phase?</p>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Questions?</h2>
+
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> End of Lecture 12</h2>
+
+
+</section>
+</main></body></html>

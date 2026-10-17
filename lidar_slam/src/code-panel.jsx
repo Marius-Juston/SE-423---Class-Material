@@ -175,16 +175,17 @@ const CODE_STYLES = {
 };
 
 const TOK_COLOR = {
-  kw:   "oklch(0.78 0.13 320)",   // magenta
-  bi:   "oklch(0.80 0.13 75)",    // amber
-  cls:  "oklch(0.82 0.10 95)",    // soft yellow
-  fn:   "oklch(0.80 0.13 220)",   // cyan
-  num:  "oklch(0.78 0.10 30)",    // peach
-  str:  "oklch(0.74 0.10 145)",   // green
-  com:  "oklch(0.50 0.012 248)",  // muted
-  dec:  "oklch(0.80 0.13 75)",
-  op:   "oklch(0.70 0.012 248)",
-  punc: "oklch(0.70 0.012 248)",
+  // Lightness chosen for >= 4.5:1 (WCAG AA) on the panel and the highlighted line.
+  kw:   "oklch(0.86 0.10 320)",   // magenta
+  bi:   "oklch(0.88 0.11 75)",    // amber
+  cls:  "oklch(0.88 0.09 95)",    // soft yellow
+  fn:   "oklch(0.88 0.10 220)",   // cyan
+  num:  "oklch(0.86 0.08 30)",    // peach
+  str:  "oklch(0.86 0.10 145)",   // green
+  com:  "oklch(0.80 0.02 248)",   // muted
+  dec:  "oklch(0.88 0.11 75)",
+  op:   "oklch(0.84 0.012 248)",
+  punc: "oklch(0.84 0.012 248)",
   id:   "var(--text-0)",
   ws:   "var(--text-0)",
 };
@@ -239,7 +240,8 @@ function CodePanel({ source, stage }) {
     const target = el.querySelector(`[data-line="${fa}"]`);
     if (!target) return;
     const t = target.offsetTop - 80;
-    el.scrollTo({ top: t, behavior: "smooth" });
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    el.scrollTo({ top: t, behavior: reduce ? "auto" : "smooth" });
   }, [stage.id, fa]);
 
   return (
@@ -259,7 +261,7 @@ function CodePanel({ source, stage }) {
           <span style={CODE_STYLES.pill}>L {a}–{b}</span>
         </div>
       </div>
-      <div ref={scrollRef} style={CODE_STYLES.scroll}>
+      <div ref={scrollRef} style={CODE_STYLES.scroll} tabIndex={0} role="region" aria-label="Source code">
         {lines.map((line, i) => {
           const n = i + 1;
           const inRange = n >= a && n <= b;

@@ -1,0 +1,981 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>L22-23: SE 423: Introduction to MechatronicsLecture 22: 3D Vision, Structure from Motion, and Deep DepthMarius Juston (accessible slides)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&display=swap">
+<style>
+:root { --bg:#fff; --fg:#1a1a1a; --muted:#555; --accent:#13294B; --link:#0b3d91; --rule:#d9d9d9; }
+@media (prefers-color-scheme: dark) { :root { --bg:#121212; --fg:#eee; --muted:#bbb; --accent:#9db7e8; --link:#9db7e8; --rule:#333; } }
+body { margin:0 auto; max-width:60rem; padding:1rem; background:var(--bg); color:var(--fg);
+       font: 1.125rem/1.6 'Atkinson Hyperlegible Next', system-ui, sans-serif; }
+a { color:var(--link); } :focus-visible { outline:3px solid #FF5F05; outline-offset:2px; }
+.skip { position:absolute; left:-999px; } .skip:focus { left:1rem; top:1rem; background:var(--bg); padding:.5rem; }
+h1 { color:var(--accent); } h2 { color:var(--accent); border-top:1px solid var(--rule); padding-top:1rem; }
+.num { color:var(--muted); font-size:.9em; font-weight:normal; }
+figure { margin:1rem 0; } img { max-width:100%; height:auto; background:#fff; }
+table { border-collapse:collapse; margin:1rem 0; } th, td { border:1px solid var(--rule); padding:.3rem .6rem; text-align:left; }
+details { margin:.5rem 0 1rem; } summary { cursor:pointer; color:var(--muted); }
+math[display=block] { margin:.5rem 0; max-width:100%; }
+nav ol { columns: 2 18rem; }
+</style></head>
+<body><a class="skip" href="#main">Skip to the slides</a>
+<header><h1>L22-23: SE 423: Introduction to MechatronicsLecture 22: 3D Vision, Structure from Motion, and Deep DepthMarius Juston</h1>
+<p>Text version of the lecture slides, one section per slide.
+<a href="L22-23.pdf">PDF</a> · <a href="L22-23.pptx">PowerPoint</a></p></header>
+<nav aria-label="Slides"><details><summary>All slides (103)</summary><ol><li><a href='#s1'>SE 423: Introduction to MechatronicsLecture 22: 3D Vision, Structure from Motion, and Deep DepthMarius Juston</a></li><li><a href='#s2'>Review – 5-minute partner discussion</a></li><li><a href='#s3'>Reminders</a></li><li><a href='#s4'>In the class material questionnaire, a lot of you did not specify if there was a specific application of AI / Computer Vision / Algorithms that you were interested in. For the people that come to class what would you find useful for the final project?</a></li><li><a href='#s5'>Questions?</a></li><li><a href='#s6'>Preface</a></li><li><a href='#s7'>Camera Geometry</a></li><li><a href='#s8'>The 3D to 2D project</a></li><li><a href='#s9'>The 3D to 2D project</a></li><li><a href='#s10'>The Pinhole Camera Model</a></li><li><a href='#s11'>The Pinhole Camera Model</a></li><li><a href='#s12'>The Pinhole Camera Model</a></li><li><a href='#s13'>The Pinhole Camera Model</a></li><li><a href='#s14'>The 3D to 2D project</a></li><li><a href='#s15'>The Pinhole Camera Model</a></li><li><a href='#s16'>The Pinhole Camera Model</a></li><li><a href='#s17'>The Pinhole Camera Model</a></li><li><a href='#s18'>The Pinhole Camera Model</a></li><li><a href='#s19'>The Pinhole Camera Model</a></li><li><a href='#s20'>The Pinhole Camera Model</a></li><li><a href='#s21'>Camera Intrinsics</a></li><li><a href='#s22'>The Pinhole Camera Model</a></li><li><a href='#s23'>The Pinhole Camera Model</a></li><li><a href='#s24'>The Pinhole Camera Model</a></li><li><a href='#s25'>The Pinhole Camera Model</a></li><li><a href='#s26'>The Pinhole Camera Model</a></li><li><a href='#s27'>The Pinhole Camera Model</a></li><li><a href='#s28'>Camera Extrinsics</a></li><li><a href='#s29'>The Pinhole Camera Model</a></li><li><a href='#s30'>The Pinhole Camera Model</a></li><li><a href='#s31'>The Pinhole Camera Model</a></li><li><a href='#s32'>The Pinhole Camera Model</a></li><li><a href='#s33'>The Pinhole Camera Model</a></li><li><a href='#s34'>The Pinhole Camera Model</a></li><li><a href='#s35'>The Pinhole Camera Model</a></li><li><a href='#s36'>The Pinhole Camera Model</a></li><li><a href='#s37'>Stereo Vision</a></li><li><a href='#s38'>Stereo Vision</a></li><li><a href='#s39'>Stereo Vision</a></li><li><a href='#s40'>Stereo Vision</a></li><li><a href='#s41'>Stereo Vision</a></li><li><a href='#s42'>Stereo Vision</a></li><li><a href='#s43'>Stereo Vision</a></li><li><a href='#s44'>Stereo Vision</a></li><li><a href='#s45'>Stereo Matching</a></li><li><a href='#s46'>Stereo Vision</a></li><li><a href='#s47'>Stereo Vision</a></li><li><a href='#s48'>Stereo Vision</a></li><li><a href='#s49'>Stereo Vision</a></li><li><a href='#s50'>The Essential and Fundamental Matrices</a></li><li><a href='#s51'>Review – 5-minute partner discussion</a></li><li><a href='#s52'>Reminders</a></li><li><a href='#s53'>Questions?</a></li><li><a href='#s54'>Stereo Vision</a></li><li><a href='#s55'>Stereo Vision</a></li><li><a href='#s56'>Stereo Vision</a></li><li><a href='#s57'>Stereo Vision</a></li><li><a href='#s58'>Stereo Vision</a></li><li><a href='#s59'>Stereo Vision</a></li><li><a href='#s60'>Stereo Vision</a></li><li><a href='#s61'>Stereo Vision</a></li><li><a href='#s62'>Stereo Vision</a></li><li><a href='#s63'>Stereo Vision</a></li><li><a href='#s64'>Stereo Vision</a></li><li><a href='#s65'>April Tags</a></li><li><a href='#s66'>Stereo Vision</a></li><li><a href='#s67'>Stereo Vision</a></li><li><a href='#s68'>Stereo Vision</a></li><li><a href='#s69'>Stereo Vision</a></li><li><a href='#s70'>Stereo Vision</a></li><li><a href='#s71'>Stereo Vision</a></li><li><a href='#s72'>Stereo Vision</a></li><li><a href='#s73'>Stereo Vision</a></li><li><a href='#s74'>Stereo Vision</a></li><li><a href='#s75'>Stereo Vision</a></li><li><a href='#s76'>Stereo Vision</a></li><li><a href='#s77'>Stereo Vision</a></li><li><a href='#s78'>Stereo Vision</a></li><li><a href='#s79'>Single View Metrology</a></li><li><a href='#s80'>Stereo Vision</a></li><li><a href='#s81'>Stereo Vision</a></li><li><a href='#s82'>Stereo Vision</a></li><li><a href='#s83'>Stereo Vision</a></li><li><a href='#s84'>Stereo Vision</a></li><li><a href='#s85'>Stereo Vision</a></li><li><a href='#s86'>Stereo Vision</a></li><li><a href='#s87'>Stereo Vision</a></li><li><a href='#s88'>Stereo Vision</a></li><li><a href='#s89'>Stereo Vision</a></li><li><a href='#s90'>Stereo Vision</a></li><li><a href='#s91'>Stereo Vision</a></li><li><a href='#s92'>Stereo Vision</a></li><li><a href='#s93'>Stereo Vision</a></li><li><a href='#s94'>Stereo Vision</a></li><li><a href='#s95'>Stereo Vision</a></li><li><a href='#s96'>Stereo Vision</a></li><li><a href='#s97'>Stereo Vision</a></li><li><a href='#s98'>Stereo Vision</a></li><li><a href='#s99'>Stereo Vision</a></li><li><a href='#s100'>Stereo Vision</a></li><li><a href='#s101'>Stereo Vision</a></li><li><a href='#s102'>Questions?</a></li><li><a href='#s103'>End of Lectures 22–23</a></li></ol></details></nav>
+<main id="main">
+<section id='s1' aria-labelledby='h1'>
+<h2 id='h1'><span class='num'>1.</span> SE 423: Introduction to MechatronicsLecture 22: 3D Vision, Structure from Motion, and Deep DepthMarius Juston</h2>
+<p>Monday, April 13th, 2026</p>
+
+</section>
+<section id='s2' aria-labelledby='h2'>
+<h2 id='h2'><span class='num'>2.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>Why do we use CIE Lab color space instead of RGB for object tracking?
+</li>
+<li>How do we calculate the centroid of a binary blob using Image Moments?
+</li>
+<li>If a red ball enters a dark shadow, which CIE Lab parameter drops? Which ones remain constant to help us track it? (You can look at the website <a href='https://marius-juston.github.io/SE-423---Class-Material/color_spaces.html'>https://marius-juston.github.io/SE-423---Class-Material/color_spaces.html</a> ) for a reminder.
+</li>
+<li>Put an object in front of yourself, grab it with both eyes open, now close one eye and try to grab it again. Did you feel like it was a different distance than expected?
+</li></ul>
+
+</section>
+<section id='s3' aria-labelledby='h3'>
+<h2 id='h3'><span class='num'>3.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 7 this week. This a 2-week lab! This is the final lab! Afterwards you will just be working on your final project in your teams.</p>
+<p>Make sure that you fill in the Google Sheet from the Announcement: <a href='https://docs.google.com/spreadsheets/d/1lh2lSsxLq3i58cWuxZ1K7XvA4rPz2CyiUasCmF61Gnc/edit?usp=sharing'>https://docs.google.com/spreadsheets/d/1lh2lSsxLq3i58cWuxZ1K7XvA4rPz2CyiUasCmF61Gnc/edit?usp=sharing</a></p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Remainder of <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW5.pdf'>homework 5</a> due on Gradescope on <strong>April 21, 5PM</strong>
+</li>
+<li>Next homework is primarily the <strong>personal project </strong>due on <strong>April 22, 9AM</strong>.
+<li>
+<ul>
+<li>I would highly recommend you thinking now and maybe even starting it now if you have a good idea already!
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s4' aria-labelledby='h4'>
+<h2 id='h4'><span class='num'>4.</span> In the class material questionnaire, a lot of you did not specify if there was a specific application of AI / Computer Vision / Algorithms that you were interested in. For the people that come to class what would you find useful for the final project?</h2>
+
+
+</section>
+<section id='s5' aria-labelledby='h5'>
+<h2 id='h5'><span class='num'>5.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s6' aria-labelledby='h6'>
+<h2 id='h6'><span class='num'>6.</span> Preface</h2>
+<p>Again I would <strong>HIGHLY</strong> recommend you looking at:</p>
+<ul>
+<li><a href='https://visionbook.mit.edu/'>https://visionbook.mit.edu/</a>
+</li>
+<li>The webpage is a textbook with all the math, background and information for computer vision.
+</li>
+<li>We will only be doing a tiny portion of this in this lecture (there are whole grad classes for computer vision).
+</li>
+<li>It is containerized very nicely, has lots of pictures, diagrams. Each section takes 5 minutes to read.
+</li></ul>
+<p><strong>All the material and pictures were taken there today</strong></p>
+<figure><img src='L22-23_files/1558f8a15d76.jpg' alt='Book Cover' loading='lazy'></figure>
+
+</section>
+<section id='s7' aria-labelledby='h7'>
+<h2 id='h7'><span class='num'>7.</span> Camera Geometry</h2>
+
+
+</section>
+<section id='s8' aria-labelledby='h8'>
+<h2 id='h8'><span class='num'>8.</span> The 3D to 2D project</h2>
+<p>Cameras map the 3D world into a 2D image plane.</p>
+<p>Is this a lossy or lossless transformation? If lossy give an example.</p>
+<p>Infinite points on a single ray maps to the exact same pixel.</p>
+<p>However, we would like to control robots in 3D space, as such we must invert the projection.</p>
+<p>The first step is representing the model of the camera.</p>
+<p>If infinite 3D points map to one pixel, is the inverse function mathematically solvable with a single image?</p>
+
+</section>
+<section id='s9' aria-labelledby='h9'>
+<h2 id='h9'><span class='num'>9.</span> The 3D to 2D project</h2>
+<figure><img src='L22-23_files/21e9e5f7c630.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
+
+</section>
+<section id='s10' aria-labelledby='h10'>
+<h2 id='h10'><span class='num'>10.</span> The Pinhole Camera Model</h2>
+<p>A pinhole camera projects 3D coordinates in the world to 2D positions on the projection plane of the camera through the straight-line path of each light ray through the pinhole.</p>
+<p>There are 3 coordinate systems that we will use.</p>
+
+</section>
+<section id='s11' aria-labelledby='h11'>
+<h2 id='h11'><span class='num'>11.</span> The Pinhole Camera Model</h2>
+<p><strong>World coordinates</strong>: Let the origin of a World Cartesian coordinate system be the camera’s pinhole.</p>
+<p>The coordinates of 3D position of a point, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, in the world will be <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">P\  = \ (X,\ Y,\ Z)</annotation></semantics></math>, where the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> axis is perpendicular to the camera’s sensing plane (projection plane).</p>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
+
+</section>
+<section id='s12' aria-labelledby='h12'>
+<h2 id='h12'><span class='num'>12.</span> The Pinhole Camera Model</h2>
+<p><strong>Camera coordinates </strong>in the <strong>virtual camera plane.</strong></p>
+<p>The camera projection plane is behind the pinhole and at a distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> of the origin.</p>
+<p>Because the rays get inverted through the pinhole, it is useful to reflect the project plane so that the coordinates are easier to understand</p>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
+
+</section>
+<section id='s13' aria-labelledby='h13'>
+<h2 id='h13'><span class='num'>13.</span> The Pinhole Camera Model</h2>
+<p><strong>Image coordinates</strong>, are typically measured in pixels.</p>
+<p>Both the camera coordinate system <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math> and the image coordinate system <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>n</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>m</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(n,\ m)</annotation></semantics></math>  are related by an affine transform as we will discuss later.</p>
+<figure><img src='L22-23_files/a8b8188ad0b2.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
+
+</section>
+<section id='s14' aria-labelledby='h14'>
+<h2 id='h14'><span class='num'>14.</span> The 3D to 2D project</h2>
+<figure><img src='L22-23_files/1fede8ee0e95.svg' alt='Picture without a description' loading='lazy'></figure>
+<p><a href='https://visionbook.mit.edu/imaging.html#fig-orthographics'>https://visionbook.mit.edu/imaging.html#fig-orthographics</a></p>
+
+</section>
+<section id='s15' aria-labelledby='h15'>
+<h2 id='h15'><span class='num'>15.</span> The Pinhole Camera Model</h2>
+<p>The pinhole model assumes the light passes through a single infinitively small aperture.</p>
+<p>By similar triangles, a 3D point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mi>Y</mi><mo>,</mo><mi>Z</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(X,Y,Z)</annotation></semantics></math>, projects to the image plane at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>x</mi><mo>,</mo><mi>y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(x,y)</annotation></semantics></math>.</p>
+<p>The ideal projection equations are:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mo>=</mo><mi>f</mi><mfrac><mi>X</mi><mi>Z</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>y</mi><mo>=</mo><mi>f</mi><mfrac><mi>Y</mi><mi>Z</mi></mfrac></mrow><annotation encoding="application/x-tex">x = f\frac{X}{Z},\ \ y = f\frac{Y}{Z}</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>, represents the focal length.</p>
+<p>These equations are called the <strong>perspective projection equations</strong>.</p>
+
+</section>
+<section id='s16' aria-labelledby='h16'>
+<h2 id='h16'><span class='num'>16.</span> The Pinhole Camera Model</h2>
+<p>Under perspective projection, distant objects become smaller, through the inverse scaling by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>.</p>
+<p>The perspective projection equations apply not just to pinhole cameras but to most lens-based cameras, and human vision as well. The pixel coordinated can be computed as,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>n</mi><mo>=</mo><mi>−</mi><mi>a</mi><mi>x</mi><mo>+</mo><msub><mi>n</mi><mn>0</mn></msub><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>m</mi><mo>=</mo><mi>a</mi><mi>y</mi><mo>+</mo><msub><mi>m</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">n = - ax + n_{0},\ \ m = ay + m_{0}</annotation></semantics></math></p>
+<figure><img src='L22-23_files/795fb9ef842f.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s17' aria-labelledby='h17'>
+<h2 id='h17'><span class='num'>17.</span> The Pinhole Camera Model</h2>
+<p><strong>Homogeneous</strong> coordinates represent a vector of length <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> by a vector of length <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mspace width="0.222em"></mspace><mo>+</mo><mspace width="0.222em"></mspace><mn>1</mn></mrow><annotation encoding="application/x-tex">N\  + \ 1</annotation></semantics></math>. The transformation rule from <strong>heterogeneous</strong> to <strong>homogeneous</strong> coordinates is simply to add an additional coordinate, 1, to the heterogeneous coordinates as shown here:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>→</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{pmatrix}
+x \\
+y
+\end{pmatrix} \rightarrow \begin{bmatrix}
+x \\
+y \\
+1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>To go from homogeneous coordinates back to the <strong>heterogeneous</strong> representation of the point, we divide all the entries of the homogeneous coordinate vector by their last dimension</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>w</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>→</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi><mi>/</mi><mi>w</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi><mi>/</mi><mi>w</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+x \\
+y \\
+w
+\end{bmatrix} \rightarrow \begin{pmatrix}
+x/w \\
+y/w
+\end{pmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s18' aria-labelledby='h18'>
+<h2 id='h18'><span class='num'>18.</span> The Pinhole Camera Model</h2>
+<p>As we have already discussed, the perspective projection equations are nonlinear and involve a division by the point’s <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>-location.</p>
+<p>That is, a 3D point with coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">(</mo><mi>X</mi><mo>,</mo><mspace width="0.222em"></mspace><mi>Y</mi><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(X,\ Y)</annotation></semantics></math> appears in the image at coordinates</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>x</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>f</mi><mspace width="0.222em"></mspace><mfrac><mi>X</mi><mi>Z</mi></mfrac><mo>,</mo><mspace width="0.222em"></mspace><mspace width="0.222em"></mspace><mi>y</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>f</mi><mspace width="0.222em"></mspace><mfrac><mi>Y</mi><mi>Z</mi></mfrac></mrow><annotation encoding="application/x-tex">x\  = \ f\ \frac{X}{Z},\ \ y\  = \ f\ \frac{Y}{Z}</annotation></semantics></math></p>
+<p>This division complicates algebraic relations.</p>
+<p>Projective geometry and homogeneous coordinates help that simplify those algebraic relations and thus simplify many of the equations that involve geometric transformations.</p>
+
+</section>
+<section id='s19' aria-labelledby='h19'>
+<h2 id='h19'><span class='num'>19.</span> The Pinhole Camera Model</h2>
+<p>Consider a coordinate system with the origin fixed at the center of projection of the camera and the 3D point in homogeneous coordinates,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">P\  = \ \begin{bmatrix}
+X \\
+Y \\
+Z \\
+1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>We can verify that the that matrix, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>K</mi><annotation encoding="application/x-tex">K</annotation></semantics></math>, multiplies, by the vector describing the 3D <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, returns the position of its <strong>perspective projection</strong>!</p>
+
+</section>
+<section id='s20' aria-labelledby='h20'>
+<h2 id='h20'><span class='num'>20.</span> The Pinhole Camera Model</h2>
+<p>We thus can convert the 3D coordinate <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">P,</annotation></semantics></math> to it’s projected 2D position <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>!</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mi>P</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>f</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>z</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>λ</mi><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">KP\  = \ \begin{bmatrix}
+f &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; f &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}\begin{bmatrix}
+X \\
+Y \\
+z \\
+1
+\end{bmatrix} = \begin{bmatrix}
+fX \\
+fY \\
+Z
+\end{bmatrix} = \lambda\begin{bmatrix}
+x \\
+y \\
+1
+\end{bmatrix}</annotation></semantics></math></p>
+<p>Transforming the product vector from homogeneous coordinates to heterogeneous coordinates yields</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>X</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>Y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>Z</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>→</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>X</mi><mi>/</mi><mi>Z</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mi>Y</mi><mi>/</mi><mi>Z</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>p</mi></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+fX \\
+fY \\
+Z
+\end{bmatrix} \rightarrow \begin{pmatrix}
+fX/Z \\
+fY/Z
+\end{pmatrix} = \begin{pmatrix}
+cx \\
+y
+\end{pmatrix} = p</annotation></semantics></math></p>
+
+</section>
+<section id='s21' aria-labelledby='h21'>
+<h2 id='h21'><span class='num'>21.</span> Camera Intrinsics</h2>
+
+
+</section>
+<section id='s22' aria-labelledby='h22'>
+<h2 id='h22'><span class='num'>22.</span> The Pinhole Camera Model</h2>
+<p>This formulation is one of the biggest benefits of using homogeneous coordinates. It allows writing perspective projection as a <strong>linear operator </strong>in homogeneous coordinates.</p>
+<p>We have the world in pixels but that is not very useful! We want to use an actual measurement system such as metric or feet.</p>
+<p>To do this we need to find the <strong>pixel to measurement unit </strong>relationship!</p>
+
+</section>
+<section id='s23' aria-labelledby='h23'>
+<h2 id='h23'><span class='num'>23.</span> The Pinhole Camera Model</h2>
+<p>Cameras translate the world into pixels, but the relationship between the 3D scene and the 2D image captured by the camera is not always straightforward.</p>
+<p>To start with, the world is measured in units of meters while points in images are measured in pixels.</p>
+<p>Factors such as geometric distortions can influence this relationship, and we need to account for these elements in our camera model.</p>
+
+</section>
+<section id='s24' aria-labelledby='h24'>
+<h2 id='h24'><span class='num'>24.</span> The Pinhole Camera Model</h2>
+<p>We need to account for the perspective projection of the point, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, described in camera coordinates, to pixel coordinates in the sensor plane of the camera.</p>
+<figure><img src='L22-23_files/8a978d5065a5.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s25' aria-labelledby='h25'>
+<h2 id='h25'><span class='num'>25.</span> The Pinhole Camera Model</h2>
+<p>The units of the position in pixel space may be different than those of the world coordinates, which scales the focal length, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math>, to some other value. Let’s call that value <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">K = \begin{bmatrix}
+a &amp; 0 &amp; 0 &amp; 0 \\
+0 &amp; a &amp; 0 &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}</annotation></semantics></math></p>
+<p>Where the constant <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math>, is related to the physical camera parameters:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>a</mi><mspace width="0.222em"></mspace><mo>=</mo><mspace width="0.222em"></mspace><mi>f</mi><mspace width="0.222em"></mspace><mi>N</mi><mspace width="0.222em"></mspace><mi>/</mi><mspace width="0.222em"></mspace><mi>w</mi></mrow><annotation encoding="application/x-tex">a\  = \ f\ N\ /\ w</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>f</mi><annotation encoding="application/x-tex">f</annotation></semantics></math> is the focal length (in meters), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>w</mi><annotation encoding="application/x-tex">w</annotation></semantics></math> is the width of the senor in meters, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>N</mi><annotation encoding="application/x-tex">N</annotation></semantics></math> is the image width in pixels. The ratio <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mi>/</mi><mspace width="0.222em"></mspace><mi>w</mi></mrow><annotation encoding="application/x-tex">N/\ w</annotation></semantics></math> is the number of pixels per meter in the sensor</p>
+
+</section>
+<section id='s26' aria-labelledby='h26'>
+<h2 id='h26'><span class='num'>26.</span> The Pinhole Camera Model</h2>
+<p>Also, the image center might not be the pixel <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">[</mo><mn>0</mn><mo>,</mo><mn>0</mn><msup><mo stretchy="false" form="postfix">]</mo><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\lbrack 0,0\rbrack^{T}</annotation></semantics></math>. If the optical axis coincides with the image center, we need to apply a translation so that a 3D point on the optical axis (the location of the pinhole, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>=</mo><mi>Y</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">X = Y = 0</annotation></semantics></math>) projects to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>c</mi><mi>x</mi></msub><mo>,</mo><msub><mi>c</mi><mi>y</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>T</mi></msup><annotation encoding="application/x-tex">\left\lbrack c_{x},c_{y} \right\rbrack^{T}</annotation></semantics></math>.</p>
+<p>For example, for an image of size <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>N</mi><mspace width="0.222em"></mspace><mo>×</mo><mi>M</mi></mrow><annotation encoding="application/x-tex">N\  \times M</annotation></semantics></math>, we will have <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>x</mi></msub><mo>=</mo><mi>N</mi><mtext mathvariant="normal">/</mtext><mn>2</mn></mrow><annotation encoding="application/x-tex">c_{x} = N\text{/}2</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>c</mi><mi>y</mi></msub><mo>=</mo><mi>M</mi><mtext mathvariant="normal">/</mtext><mn>2</mn></mrow><annotation encoding="application/x-tex">c_{y} = M\text{/}2</annotation></semantics></math></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>c</mi><mi>x</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>c</mi><mi>y</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">K = \begin{bmatrix}
+a &amp; 0 &amp; c_{x} &amp; 0 \\
+0 &amp; a &amp; c_{y} &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s27' aria-labelledby='h27'>
+<h2 id='h27'><span class='num'>27.</span> The Pinhole Camera Model</h2>
+<p>It is also possible that the pixels are not square, in which case we must account for different scaling along both axis:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>K</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>a</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>c</mi><mi>x</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>b</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>c</mi><mi>y</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">K = \begin{bmatrix}
+a &amp; 0 &amp; c_{x} &amp; 0 \\
+0 &amp; b &amp; c_{y} &amp; 0 \\
+0 &amp; 0 &amp; 1 &amp; 0
+\end{bmatrix}</annotation></semantics></math></p>
+<p>Why might <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>a</mi><annotation encoding="application/x-tex">a</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>b</mi><annotation encoding="application/x-tex">b</annotation></semantics></math>, be slightly different on cheap CMOS sensors?</p>
+
+</section>
+<section id='s28' aria-labelledby='h28'>
+<h2 id='h28'><span class='num'>28.</span> Camera Extrinsics</h2>
+
+
+</section>
+<section id='s29' aria-labelledby='h29'>
+<h2 id='h29'><span class='num'>29.</span> The Pinhole Camera Model</h2>
+<p>In all our previous examples, we have been assuming that the camera origin was located at the origin of the world coordinate system with the optical axis aligned with the world</p>
+<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>-axis.</p>
+<p>In practice, there will be many situations where placing the camera at a special position will be more convenient.</p>
+<figure><img src='L22-23_files/9ab153f9d5af.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s30' aria-labelledby='h30'>
+<h2 id='h30'><span class='num'>30.</span> The Pinhole Camera Model</h2>
+<p>Let’s say that our camera has its camera center displaced by vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> and the axes are rotated by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>R</mi><mi>⊤</mi></msup><annotation encoding="application/x-tex">R^{\top}</annotation></semantics></math> with respect to the world-coordinates system.</p>
+<p>We are now given a point in the world <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mi>w</mi></msub><annotation encoding="application/x-tex">P_{w}</annotation></semantics></math>, with its coordinates are described in terms of the world-coordinate system. Our goal is to find how that point projects into the image captured by the camera.</p>
+<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s31' aria-labelledby='h31'>
+<h2 id='h31'><span class='num'>31.</span> The Pinhole Camera Model</h2>
+<p>Based on coordinate transformations of the camera, we can describe the transformation as,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>c</mi></msub><mo>=</mo><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mi>W</mi></msub><mo>−</mo><mi>T</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mi>R</mi><msub><mi>P</mi><mi>W</mi></msub><mo>−</mo><mi>R</mi><mi>T</mi></mrow><annotation encoding="application/x-tex">P_{c} = R\left( P_{W} - T \right) = RP_{W} - RT</annotation></semantics></math></p>
+<figure><img src='L22-23_files/408f6a68e08d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s32' aria-labelledby='h32'>
+<h2 id='h32'><span class='num'>32.</span> The Pinhole Camera Model</h2>
+<p>Using homogeneous coordinates, to describe the transformation from world coordinates to coordinates, the result is,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>C</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>R</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>R</mi><mi>T</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mn>0</mn><mi>⊤</mi></msup></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><msub><mi>P</mi><mi>W</mi></msub></mrow><annotation encoding="application/x-tex">P_{C} = \begin{bmatrix}
+R &amp; - RT \\
+0^{\top} &amp; 1
+\end{bmatrix}P_{W}</annotation></semantics></math></p>
+<p>The camera parameters, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math>, that relate the camera to the world are called the <strong>extrinsic camera </strong>parameters. These parameters are external to the camera.</p>
+<p>We have seen now how to transform a point described in the <strong>world-coordinate</strong> system into the <strong>camera-coordinates</strong> system. We can now use the intrinsic camera parameters to project the <strong>point</strong> into the <strong>image plane</strong>.</p>
+
+</section>
+<section id='s33' aria-labelledby='h33'>
+<h2 id='h33'><span class='num'>33.</span> The Pinhole Camera Model</h2>
+<p>The concatenation of the <strong>extrinsic</strong> and <strong>intrinsic</strong> transformation matrices yields the desired <strong>transformation matrix</strong>, which will transform world coordinates to rendered pixel coordinates:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>C</mi></msub><mo>=</mo><mi>K</mi><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>R</mi></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>R</mi><mi>T</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msup><mn>0</mn><mi>⊤</mi></msup></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><msub><mi>P</mi><mi>W</mi></msub></mrow><annotation encoding="application/x-tex">P_{C} = K\begin{bmatrix}
+R &amp; - RT \\
+0^{\top} &amp; 1
+\end{bmatrix}P_{W}</annotation></semantics></math></p>
+<p>How many degrees of freedom does the extrinsic matrix have?</p>
+<p>The full 6! Translation + Rotation in 3D</p>
+
+</section>
+<section id='s34' aria-labelledby='h34'>
+<h2 id='h34'><span class='num'>34.</span> The Pinhole Camera Model</h2>
+<figure><img src='L22-23_files/07abd8a94e63.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s35' aria-labelledby='h35'>
+<h2 id='h35'><span class='num'>35.</span> The Pinhole Camera Model</h2>
+<p>Real lenses are not perfect pinholes; they bend light, causing distortion.</p>
+<p>Radial distortion (barrel/pincushion) occurs due to spherical lens shapes.</p>
+<p>Tangential distortion occurs if the lens is not perfectly parallel to the CMOS sensor.</p>
+<p>Why do we need to undistort an image before doing 3D geometry calculations?</p>
+<p>We assume that all our math is planar and linear. If we have the distortions, we have non-linear systems and thus our math no longer works!</p>
+
+</section>
+<section id='s36' aria-labelledby='h36'>
+<h2 id='h36'><span class='num'>36.</span> The Pinhole Camera Model</h2>
+<figure><img src='L22-23_files/05373dec9555.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/6597b58fc069.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/e6468003f9dc.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>Barrel</p>
+<p>Pincushion</p>
+<p>Mustache</p>
+
+</section>
+<section id='s37' aria-labelledby='h37'>
+<h2 id='h37'><span class='num'>37.</span> Stereo Vision</h2>
+
+
+</section>
+<section id='s38' aria-labelledby='h38'>
+<h2 id='h38'><span class='num'>38.</span> Stereo Vision</h2>
+<p>How do we figure out how far an object is?</p>
+<p>Keep both of your eyes open and then try to grab an object.</p>
+<p>Now close one of your eyes and try picking it up. Does it feel different? Harder to judge the distance?</p>
+<p>Now alternate closing the left and right eyes, do they both see the same thing? No? This is exactly what stereo vision exploits!</p>
+
+</section>
+<section id='s39' aria-labelledby='h39'>
+<h2 id='h39'><span class='num'>39.</span> Stereo Vision</h2>
+<p>There are two typical methods to check for distance:</p>
+<p>The first method measures the location of the boat relative to the horizon line. An observer is standing on top of an elevated point at a known height <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>h</mi><annotation encoding="application/x-tex">h</annotation></semantics></math>.</p>
+<p>The observer measures the angle <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mi>.</mi></mrow><annotation encoding="application/x-tex">\alpha.</annotation></semantics></math> You can derive the distance using simple trigonometric relation.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mfrac><mi>h</mi><mrow><mrow><mi mathvariant="normal">tan</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">d = \frac{h}{\tan(\alpha)}</annotation></semantics></math></p>
+<p>This method is not very accurate and might require high observation points, which might not be available, but it allows as to estimate with a single observation point.</p>
+<figure><img src='L22-23_files/ce909a60e1eb.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s40' aria-labelledby='h40'>
+<h2 id='h40'><span class='num'>40.</span> Stereo Vision</h2>
+<p>The second method requires two different observation points along the coast separated by a distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math>.</p>
+<p>At each point, we measure the angles, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>, between the direction of the boat and the line connecting the two observation points.</p>
+<p>Then we can apply the following relation:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>d</mi><mo>=</mo><mi>t</mi><mfrac><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>α</mi><mo stretchy="false" form="postfix">)</mo><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mo stretchy="false" form="prefix">(</mo><mi>β</mi><mo stretchy="false" form="postfix">)</mo></mrow><mrow><mrow><mi mathvariant="normal">sin</mi><mo>&#8289;</mo></mrow><mrow><mi>α</mi><mo>+</mo><mi>β</mi></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">d = t\frac{\sin(\alpha)\sin(\beta)}{\sin{\alpha + \beta}}</annotation></semantics></math></p>
+<p>This method is called <strong>triangulation</strong>. For it to work we need a large distance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> so that the angles are significantly different from 90 degrees.</p>
+<figure><img src='L22-23_files/d19ca382363f.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s41' aria-labelledby='h41'>
+<h2 id='h41'><span class='num'>41.</span> Stereo Vision</h2>
+<p>Stereo vision uses two cameras separated by a known baseline distance. By observing the same 3D point from two different views, we can triangulate its position.</p>
+<p>When observing the world with two eyes we get two different views of the world. The relative displacement of features across the two images (<strong>parallax effect</strong>) is related to the distance between the observer and the observed scene.</p>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s42' aria-labelledby='h42'>
+<h2 id='h42'><span class='num'>42.</span> Stereo Vision</h2>
+<p>A simple way to triangulate the depth, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math>, of a point visible in both images is through similar triangles. The two triangles shown in are similar (same angles), and so the ratios of their height to base must be the same. Thus we have:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>T</mi><mo>+</mo><msub><mi>x</mi><mi>r</mi></msub><mo>−</mo><msub><mi>x</mi><mi>L</mi></msub></mrow><mrow><mi>Z</mi><mo>−</mo><mi>f</mi></mrow></mfrac><mo>=</mo><mfrac><mi>T</mi><mi>Z</mi></mfrac></mrow><annotation encoding="application/x-tex">\frac{T + x_{r} - x_{L}}{Z - f} = \frac{T}{Z}</annotation></semantics></math></p>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s43' aria-labelledby='h43'>
+<h2 id='h43'><span class='num'>43.</span> Stereo Vision</h2>
+<p>Solving for <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> we get that:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Z</mi><mo>=</mo><mfrac><mrow><mi>f</mi><mi>T</mi></mrow><mrow><msub><mi>x</mi><mi>L</mi></msub><mo>−</mo><msub><mi>x</mi><mi>R</mi></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">Z = \frac{fT}{x_{L} - x_{R}}</annotation></semantics></math></p>
+<figure><img src='L22-23_files/542906a1e5f7.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s44' aria-labelledby='h44'>
+<h2 id='h44'><span class='num'>44.</span> Stereo Vision</h2>
+<p>The difference in horizontal position of any given world point, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>, as seen in the left and right camera images, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>L</mi></msub><mo>−</mo><msub><mi>x</mi><mi>R</mi></msub></mrow><annotation encoding="application/x-tex">x_{L} - x_{R}</annotation></semantics></math> , is called the <strong>disparity</strong>, and is <em>inversely proportional</em> to the depth <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> of the point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> for this configuration of the two cameras–parallel orientation.</p>
+<p>The task of inferring depth of any point in either image of a stereo pair thus reduces to measuring the disparity everywhere.</p>
+<p>What is a problem in this situation in the real world?</p>
+<p>One important assumption we have made is that we <strong>know</strong> the two corresponding projections of the point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>; however, in the real world the two images will be complex, and we will not know which points in one camera correspond to the same 3D point on the other camera.</p>
+<p>This is what the problem of <strong>stereo matching </strong>solves!</p>
+
+</section>
+<section id='s45' aria-labelledby='h45'>
+<h2 id='h45'><span class='num'>45.</span> Stereo Matching</h2>
+
+
+</section>
+<section id='s46' aria-labelledby='h46'>
+<h2 id='h46'><span class='num'>46.</span> Stereo Vision</h2>
+<p><strong>Stereo matching </strong>is the process of finding key points inside the images and finding the displacement between the two images.</p>
+<p>Like your eyes, you don’t necessarily notice individual pixels change but you can see key points (corners, objects). That have are different positions from one eye to another.</p>
+<p>You then match the difference between the 2 images to match the points and retrieve <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>.</p>
+
+</section>
+<section id='s47' aria-labelledby='h47'>
+<h2 id='h47'><span class='num'>47.</span> Stereo Vision</h2>
+<p>We know that depth <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Z</mi><annotation encoding="application/x-tex">Z</annotation></semantics></math> is is inversely proportional to disparity, but how do we find the exact same point in both images to calculate disparity?</p>
+<p>A naive approach is a 2D search: take a patch of pixels from the left image and slide it across the entire right image to find the best match.</p>
+<p>What is the problem with that?</p>
+<p>This is computationally expensive for real-time mechatronics; searching a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>1080</mn><mi>p</mi></mrow><annotation encoding="application/x-tex">1080p</annotation></semantics></math> image takes over <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>2</mn><mo>×</mo><msup><mn>10</mn><mn>6</mn></msup></mrow><annotation encoding="application/x-tex">2 \times 10^{6}</annotation></semantics></math> comparisons per feature!</p>
+<p>Furthermore, if the image has repetitive textures (like a brick wall), the algorithm will easily match the wrong brick, destroying our depth calculation!</p>
+
+</section>
+<section id='s48' aria-labelledby='h48'>
+<h2 id='h48'><span class='num'>48.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/dd9087d522af.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/adb1d7ef54e0.jpg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/9ab4beed920f.jpg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s49' aria-labelledby='h49'>
+<h2 id='h49'><span class='num'>49.</span> Stereo Vision</h2>
+<p>The task of finding disparity at each point is often broken into two parts:</p>
+<ol>
+<li><strong>finding </strong>features, and<strong> matching </strong>the features across images
+</li>
+<li><strong>interpolating</strong> between, or adjusting, the feature matches to obtain a reliable disparity estimate everywhere.
+</li></ol>
+<p>These two steps are often called matching and filtering, because the interpolation can be performed using filtering methods.</p>
+
+</section>
+<section id='s50' aria-labelledby='h50'>
+<h2 id='h50'><span class='num'>50.</span> The Essential and Fundamental Matrices</h2>
+
+
+</section>
+<section id='s51' aria-labelledby='h51'>
+<h2 id='h51'><span class='num'>51.</span> Review – 5-minute partner discussion</h2>
+<p>Talk to the person next to you and answer these questions.</p>
+<ul>
+<li>Is it possible to figure out the distance to an object using a single camera? If so, what are the constraints? If not what needs to be done?
+</li>
+<li>When the target matching point is placed further away, does that increase the disparity or decrease it? Disparity is the pixel difference between the left and right images.
+</li>
+<li>What was the conversion of heterogenous coordinates to homogeneous coordinates?
+</li>
+<li>What was the advantage of using homogeneous coordinates?
+</li></ul>
+
+</section>
+<section id='s52' aria-labelledby='h52'>
+<h2 id='h52'><span class='num'>52.</span> Reminders</h2>
+<p><strong>Office Hours:</strong></p>
+<ul>
+<li><strong>Monday: </strong>4-6 PM<strong>, </strong>Neel
+</li>
+<li><strong>Tuesday: </strong>11-1 PM<strong>, </strong>Lakshmi
+</li>
+<li><strong>Tuesday: </strong>1-3 PM<strong>, </strong>Samuel
+</li>
+<li><strong>Tuesday: </strong>2-5 PM<strong>, </strong>Dan &amp; Marius
+</li></ul>
+<p><strong>Lab: </strong>Starting Lab 7 this week. This a 2-week lab! This is the final lab! Afterwards you will just be working on your final project in your teams. Make sure that you fill in the Google Sheet from the Announcement, otherwise a “random” group will be assigned: <a href='https://docs.google.com/spreadsheets/d/1lh2lSsxLq3i58cWuxZ1K7XvA4rPz2CyiUasCmF61Gnc/edit?usp=sharing'>https://docs.google.com/spreadsheets/d/1lh2lSsxLq3i58cWuxZ1K7XvA4rPz2CyiUasCmF61Gnc/edit?usp=sharing</a></p>
+<p><strong>Homeworks</strong><strong>:</strong></p>
+<ul>
+<li>Remainder of <a href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/HW5.pdf'>homework 5</a> due on Gradescope on <strong>April 21, 5PM</strong>
+</li>
+<li>Next homework is primarily the <strong>personal project </strong>due on <strong>April 22, 9AM</strong>.
+<li>
+<ul>
+<li>I would highly recommend you thinking now and maybe even starting it now if you have a good idea already!
+</li></ul>
+</li></ul>
+
+</section>
+<section id='s53' aria-labelledby='h53'>
+<h2 id='h53'><span class='num'>53.</span> Questions?</h2>
+<p>Homework, Lab, LabVIEW?</p>
+
+</section>
+<section id='s54' aria-labelledby='h54'>
+<h2 id='h54'><span class='num'>54.</span> Stereo Vision</h2>
+<p>Until now we have considered only the case where the two cameras are parallel, but in general the two images will be produced by cameras that can have arbitrary orientations.</p>
+<p>Does the disparity relation still match if the cameras have different orientations?</p>
+<figure><img src='L22-23_files/92157aee329e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s55' aria-labelledby='h55'>
+<h2 id='h55'><span class='num'>55.</span> Stereo Vision</h2>
+<p>Assume we know the intrinsic and extrinsic parameters for both cameras, and we thus know the generic translation and rotation.  How do we find the point produced form one image to another?</p>
+<p>Are there any geometric constraints that can help us to identify candidate matches?</p>
+<figure><img src='L22-23_files/92157aee329e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s56' aria-labelledby='h56'>
+<h2 id='h56'><span class='num'>56.</span> Stereo Vision</h2>
+<p>We know that the observed point in camera 1, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math>, corresponds to a 3D point that lies within the ray that connects the camera 1 origin and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math> (shown in red). Therefore <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>2</mn></msub><annotation encoding="application/x-tex">p_{2}</annotation></semantics></math> must be constrained to constrained to be within the line that results of projecting the ray into camera 2.</p>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s57' aria-labelledby='h57'>
+<h2 id='h57'><span class='num'>57.</span> Stereo Vision</h2>
+<p>The first point is the projection of the camera center of camera 1 into the camera 2 plane.</p>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s58' aria-labelledby='h58'>
+<h2 id='h58'><span class='num'>58.</span> Stereo Vision</h2>
+<p>The second point is the projection of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>p</mi><mn>1</mn></msub><annotation encoding="application/x-tex">p_{1}</annotation></semantics></math> into the camera 2 plane. Since we know the intrinsic and extrinsic parameters, we can easily compute these points. We have just reduced a massive 2D search problem into a simple 1D line search!</p>
+<figure><img src='L22-23_files/ed4b7a748924.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s59' aria-labelledby='h59'>
+<h2 id='h59'><span class='num'>59.</span> Stereo Vision</h2>
+<p>The <strong>epipolar plane </strong>is the plane that contains the two camera origins and a 3D point,</p>
+<p>The <strong>epipolar lines </strong>are the intersection between the epipolar plane and the camera planes. When the point  moves in space, the epipolar plane and epipolar lines change.</p>
+<p>The <strong>epipoles</strong> are the intersection points between the line that connects both camera origins and the camera planes. Therefore, all the <strong>epipolar</strong> lines intersect at the <strong>same epipoles</strong>.</p>
+<figure><img src='L22-23_files/29820203bcd0.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s60' aria-labelledby='h60'>
+<h2 id='h60'><span class='num'>60.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/b0556f249bd8.svg' alt='Picture without a description' loading='lazy'></figure>
+<p>A-2, B-5, C-4, D-6, E-3, F-1</p>
+
+</section>
+<section id='s61' aria-labelledby='h61'>
+<h2 id='h61'><span class='num'>61.</span> Stereo Vision</h2>
+<p>If we have the 3D point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> in the camera 1 and 2’s coordinates systems as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">P_{1},P_{2}</annotation></semantics></math>, both systems are related as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>2</mn></msub><mo>=</mo><mi>R</mi><msub><mi>P</mi><mn>1</mn></msub><mo>+</mo><mi>T</mi></mrow><annotation encoding="application/x-tex">P_{2} = RP_{1} + T</annotation></semantics></math></p>
+<p>The 3D point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mn>1</mn></msub><annotation encoding="application/x-tex">P_{1}</annotation></semantics></math>, projects into camera 1 at coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mn>1</mn></msub><mo>=</mo><mi>f</mi><msub><mi>P</mi><mn>1</mn></msub><mtext mathvariant="normal">/</mtext><msub><mi>Z</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">p_{1} = fP_{1}\text{/}Z_{1}</annotation></semantics></math>.</p>
+<p>We can get the following equality:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>P</mi><mn>2</mn><mi>⊤</mi></msubsup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>×</mo><mi>R</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>P</mi><mn>1</mn><mi>⊤</mi></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">P_{2}^{\top}(T \times R)P_{1}^{\top} = 0</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>×</mi><annotation encoding="application/x-tex">\times</annotation></semantics></math>, represents the cross product</p>
+<p>The matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>E</mi><mo>=</mo><mi>T</mi><mo>×</mo><mi>R</mi><mo>=</mo><msub><mi>T</mi><mo>×</mo></msub><mi>R</mi></mrow><annotation encoding="application/x-tex">E = T \times R = T_{\times}R</annotation></semantics></math>, represents the <strong>essential matrix.</strong></p>
+
+</section>
+<section id='s62' aria-labelledby='h62'>
+<h2 id='h62'><span class='num'>62.</span> Stereo Vision</h2>
+<p>If we divide equation by <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Z</mi><mn>1</mn></msub><msub><mi>Z</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">Z_{1}Z_{2}</annotation></semantics></math>  we will obtain the same relationship but relating the image coordinates:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>p</mi><mn>2</mn><mi>⊤</mi></msubsup><mo stretchy="false" form="prefix">(</mo><mi>T</mi><mo>×</mo><mi>R</mi><mo stretchy="false" form="postfix">)</mo><msubsup><mi>p</mi><mn>1</mn><mi>⊤</mi></msubsup><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">p_{2}^{\top}(T \times R)p_{1}^{\top} = 0</annotation></semantics></math></p>
+<p>This equation relates the <strong>coordinates of the two projections of a 3D point into two cameras</strong>.</p>
+<p>If we fix the coordinates from one of the cameras, the equation reduces to the <strong>equation of a line </strong>for the coordinates of the other camera, which is consistent with the geometric reasoning that we made before.</p>
+
+</section>
+<section id='s63' aria-labelledby='h63'>
+<h2 id='h63'><span class='num'>63.</span> Stereo Vision</h2>
+<p>We have been using camera coordinates. If we want to use image coordinates (pixels), in homogeneous coordinates <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mo>=</mo><mo stretchy="false" form="prefix">[</mo><mi>n</mi><mo>,</mo><mi>m</mi><mo>,</mo><mn>1</mn><msup><mo stretchy="false" form="postfix">]</mo><mi>⊤</mi></msup></mrow><annotation encoding="application/x-tex">c = \lbrack n,m,1\rbrack^{\top}</annotation></semantics></math></p>
+<p>What do we need to do? (What do we use to transform camera to pixel coordinates?)</p>
+<p>We need to use the intrinsic camera parameters!</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>c</mi><mn>2</mn><mi>⊤</mi></msubsup><mi>F</mi><msub><mi>c</mi><mn>1</mn></msub><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">c_{2}^{\top}Fc_{1} = 0</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>F</mi><annotation encoding="application/x-tex">F</annotation></semantics></math> is the <strong>fundamental matrix</strong>.</p>
+<p>The fundamental and essential matrices are related as such:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>F</mi><mo>=</mo><msup><mi>K</mi><mrow><mi>−</mi><mi>⊤</mi></mrow></msup><mi>E</mi><msup><mi>K</mi><mi>⊤</mi></msup></mrow><annotation encoding="application/x-tex">F = K^{- \top}EK^{\top}</annotation></semantics></math></p>
+
+</section>
+<section id='s64' aria-labelledby='h64'>
+<h2 id='h64'><span class='num'>64.</span> Stereo Vision</h2>
+<p>Stereo matching relies on finding distinct corners or textures (features) to match across the epipolar lines.</p>
+<p>What happens if a robot is navigating a pristine, featureless environment like a hospital corridor or an empty warehouse?</p>
+<p>No features mean no stereo matches. No stereo matches mean no depth.</p>
+<p>The robot is effectively blind.</p>
+<p>If the environment lacks natural geometry, we must engineer the environment by adding artificial, features.</p>
+
+</section>
+<section id='s65' aria-labelledby='h65'>
+<h2 id='h65'><span class='num'>65.</span> April Tags</h2>
+
+
+</section>
+<section id='s66' aria-labelledby='h66'>
+<h2 id='h66'><span class='num'>66.</span> Stereo Vision</h2>
+<p><strong>AprilTags</strong> are a visual marker system, artificial markers designed explicitly for fast, robust computer vision detection.</p>
+<p>Unlike QR codes, which hold massive amounts of data (like URLs or executables), AprilTags hold a tiny amount of data (just a single ID number), optimized for geometric localization</p>
+<p>The high-contrast black and white square border allows gradient algorithms to easily find the tag&#x27;s four corners from almost any angle or lighting condition.</p>
+<p>By knowing the <strong>exact physical size </strong>of the printed tag, we can instantly deduce <strong>how far away</strong> it is based on its pixel size in the image.</p>
+<p>Why is a square a better shape for a visual marker system than a circle?</p>
+
+</section>
+<section id='s67' aria-labelledby='h67'>
+<h2 id='h67'><span class='num'>67.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/1d7308828f0f.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/9e5315235ad0.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/22701af8a90c.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s68' aria-labelledby='h68'>
+<h2 id='h68'><span class='num'>68.</span> Stereo Vision</h2>
+<p>Because the AprilTag is perfectly flat, the math simplifies from 3D projection to a 2D-to-2D planar mapping.</p>
+<p>This mapping is governed by the Homography matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math>, a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mspace width="0.222em"></mspace><mo>×</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">3\  \times 3</annotation></semantics></math> matrix that transforms points on the tag to pixels on the sensor:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mrow><mi>p</mi><mi>i</mi><mi>x</mi><mi>e</mi><mi>l</mi></mrow></msub><mo>=</mo><mi>H</mi><msub><mi>x</mi><mrow><mi>t</mi><mi>a</mi><mi>g</mi></mrow></msub></mrow><annotation encoding="application/x-tex">x_{pixel} = Hx_{tag}</annotation></semantics></math></p>
+<p>By finding the four corners of the tag in the image, we can solve for the 8 degrees of freedom inside <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> using Direct Linear Transformation (DLT).</p>
+<p>This means we can perfectly &quot;un-warp&quot; the tag to read its ID, regardless of the camera&#x27;s viewing angle!</p>
+
+</section>
+<section id='s69' aria-labelledby='h69'>
+<h2 id='h69'><span class='num'>69.</span> Stereo Vision</h2>
+<p>If an AprilTag is perfectly parallel to the camera sensor, what geometric transformation does <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> mostly represent?</p>
+<p><strong>Identity</strong>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<p><strong>Translation</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>x</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>y</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+1 &amp; 0 &amp; x \\
+0 &amp; 1 &amp; y \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<p><strong>Reflection</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>−</mi><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+ - 1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s70' aria-labelledby='h70'>
+<h2 id='h70'><span class='num'>70.</span> Stereo Vision</h2>
+<p>If an AprilTag is perfectly parallel to the camera sensor, what geometric transformation does <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> mostly represent?</p>
+<p><strong>Scale</strong>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mi>x</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mi>y</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+s_{x} &amp; 0 &amp; 0 \\
+0 &amp; s_{y} &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<p><strong>Rotate</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi><mi>o</mi><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>−</mi><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>s</mi><mi>i</mi><mi>n</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>c</mi><mi>o</mi><mi>s</mi><mo stretchy="false" form="prefix">(</mo><mi>θ</mi><mo stretchy="false" form="postfix">)</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+cos(\theta) &amp; - sin(\theta) &amp; 0 \\
+sin(\theta) &amp; cos(\theta) &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<p><strong>Shear</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0.5</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0.5</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><annotation encoding="application/x-tex">\begin{bmatrix}
+1 &amp; 0.5 &amp; 0 \\
+0.5 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1
+\end{bmatrix}</annotation></semantics></math></p>
+<figure><img src='L22-23_files/e9e38b993aa6.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f29bee907d10.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/c8a67a3ab758.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s71' aria-labelledby='h71'>
+<h2 id='h71'><span class='num'>71.</span> Stereo Vision</h2>
+<p>Applying starching and skewing can transform squares into trapezoids, which follows the  perspective transform.</p>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/f55d4efff45d.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s72' aria-labelledby='h72'>
+<h2 id='h72'><span class='num'>72.</span> Stereo Vision</h2>
+<p>The true power of the AprilTag is that we can extract the camera&#x27;s exact 3D position and rotation from just one image!</p>
+<p>Because <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>H</mi><annotation encoding="application/x-tex">H</annotation></semantics></math> encapsulates the camera&#x27;s projection, we can decompose it into our <strong>extrinsic rotation</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math> and <strong>translation</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>T</mi><annotation encoding="application/x-tex">T</annotation></semantics></math> matrices.</p>
+<p>If we multiply the homography by the inverse of our camera&#x27;s intrinsic matrix <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi mathvariant="bold-italic">𝑲</mi><mrow><mi>−</mi><mn mathvariant="bold">𝟏</mn></mrow></msup><annotation encoding="application/x-tex">\mathbf{K}^{- \mathbf{1}}</annotation></semantics></math>, the columns of the resulting matrix give us the exact 3D orientation of the tag in the world.</p>
+<p>We have just achieved retrieving the 3D coordinates without needing a stereo camera pair!</p>
+<figure><img src='L22-23_files/265b6b549ea6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s73' aria-labelledby='h73'>
+<h2 id='h73'><span class='num'>73.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/5ee7291511c7.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s74' aria-labelledby='h74'>
+<h2 id='h74'><span class='num'>74.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/d1de972bcc07.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s75' aria-labelledby='h75'>
+<h2 id='h75'><span class='num'>75.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s76' aria-labelledby='h76'>
+<h2 id='h76'><span class='num'>76.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/3ff83dc67b6c.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/00a2eac39f9c.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s77' aria-labelledby='h77'>
+<h2 id='h77'><span class='num'>77.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/d708d76e325a.png' alt='Picture without a description' loading='lazy'></figure>
+<figure><img src='L22-23_files/81f16b603180.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s78' aria-labelledby='h78'>
+<h2 id='h78'><span class='num'>78.</span> Stereo Vision</h2>
+<p>% Loop over remaining video frames.</p>
+<p>while hasFrame(reader)</p>
+<p>% Read next video frame.</p>
+<p>I = readFrame(reader);</p>
+<p>% Estimate AprilTag pose.</p>
+<p>[~, ~, tagPose] = readAprilTag(I, tagFamily, intrinsics, tagSize);</p>
+<p>% Update the tag pose to have z-axis pointing out of the tag.</p>
+<p>tagPose = rigidtform3d(tagPose.A*tform.A);</p>
+<p>% Project cuboid vertices from the world to image.</p>
+<p>projectedVertices = world2img(cuboidVertices, tagPose, intrinsics);</p>
+<p>% Insert cuboid into video frame.</p>
+<p>augmentedImage = insertShape(I, &quot;projected-cuboid&quot;, projectedVertices, ...</p>
+<p>ShapeColor=&quot;green&quot;, LineWidth=6);</p>
+<p>% Display the augmented video frame.</p>
+<p>player(augmentedImage)</p>
+<p>% Update the camera position in the virtual scene.</p>
+<p>camExtrinsics = pose2extr(tagPose);</p>
+<p>cam.AbsolutePose = camExtrinsics;</p>
+<p>% Update camera trajectory in the virtual scene.</p>
+<p>addpoints(camTrajectory, ...</p>
+<p>camExtrinsics.Translation(1),...</p>
+<p>camExtrinsics.Translation(2),...</p>
+<p>camExtrinsics.Translation(3));</p>
+<p>% Flush the graphics pipeline.</p>
+<p>drawnow limitrate</p>
+<p>end</p>
+<p>% Create a video player to display video content.</p>
+<p>player = vision.VideoPlayer();</p>
+<p>% Create an animated line to display camera trajectory.</p>
+<p>camTrajectory = animatedline(ax, ...</p>
+<p>camExtrinsics.Translation(1),...</p>
+<p>camExtrinsics.Translation(2),...</p>
+<p>camExtrinsics.Translation(3),...</p>
+<p>Color=&quot;blue&quot;, ...</p>
+<p>LineWidth=2);</p>
+
+</section>
+<section id='s79' aria-labelledby='h79'>
+<h2 id='h79'><span class='num'>79.</span> Single View Metrology</h2>
+
+
+</section>
+<section id='s80' aria-labelledby='h80'>
+<h2 id='h80'><span class='num'>80.</span> Stereo Vision</h2>
+<p>AprilTags are great, but what if we only have one camera and cannot modify the environment with stickers?</p>
+<p>What would you do?</p>
+<p>We can use <strong>Single View Metrology</strong>: extracting 3D measurements from a single 2D image using the inherent, known geometry of the scene.</p>
+<p>Under perspective projection, do parallel lines in the 3D world appear parallel in the images?</p>
+<p>No, they intersect! What is the name of the intersection point?</p>
+<p>The <strong>Vanishing Point</strong>!</p>
+
+</section>
+<section id='s81' aria-labelledby='h81'>
+<h2 id='h81'><span class='num'>81.</span> Stereo Vision</h2>
+<p>What building is closer? Why do you think so?</p>
+<figure><img src='L22-23_files/4ef283362a67.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s82' aria-labelledby='h82'>
+<h2 id='h82'><span class='num'>82.</span> Stereo Vision</h2>
+<p>We perceive everything we see in the sketch as 3D, even when we know that it’s merely a 2D image. Our 3D processing is ingrained that we cannot easily switch off.</p>
+<p>We are aware that it is just a collection of lines and geometric figures drawn on a flat piece of paper, but the 3D interpretation transforms the way in which we perceive the sketch.</p>
+<p>Linear perspective uses parallel and orthogonal lines, vanishing points, the ground plane and the horizon line to infer the 3D scene structure from a 2D image.</p>
+
+</section>
+<section id='s83' aria-labelledby='h83'>
+<h2 id='h83'><span class='num'>83.</span> Stereo Vision</h2>
+<p>In perspective projection, 3D lines project into 2D lines in the camera plane. Let’s start writing the parametric vector form of a 3D line using heterogeneous coordinates.</p>
+<p>We can parameterize a 3D line with a point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mn>0</mn></msub><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>X</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>Z</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>⊤</mi></msup></mrow><annotation encoding="application/x-tex">P_{0} = \left\lbrack X_{0},Y_{0},Z_{0} \right\rbrack^{\top}</annotation></semantics></math>, and a direction vector <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mo>=</mo><msup><mrow><mo stretchy="true" form="prefix">[</mo><msub><mi>D</mi><mi>X</mi></msub><mo>,</mo><msub><mi>D</mi><mi>Y</mi></msub><mo>,</mo><msub><mi>D</mi><mi>Z</mi></msub><mo stretchy="true" form="postfix">]</mo></mrow><mi>⊤</mi></msup></mrow><annotation encoding="application/x-tex">D = \left\lbrack D_{X},D_{Y},D_{Z} \right\rbrack^{\top}</annotation></semantics></math> as:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>P</mi><mi>t</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>X</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>x</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>Y</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>y</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>Z</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>z</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">P_{t} = \begin{bmatrix}
+X_{0} + tD_{x} \\
+Y_{0} + tD_{y} \\
+Z_{0} + tD_{z}
+\end{bmatrix}</annotation></semantics></math></p>
+<p>The 3D point <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mi>t</mi></msub><annotation encoding="application/x-tex">P_{t}</annotation></semantics></math> moves along a line when the independent variable goes from <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>−</mi><mi>∞</mi></mrow><annotation encoding="application/x-tex">- \infty</annotation></semantics></math> to <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∞</mi><annotation encoding="application/x-tex">\infty</annotation></semantics></math>. A camera located in the world coordinates origin will observe a 2D line resulting from projecting the 3D line into the camera plane.</p>
+
+</section>
+<section id='s84' aria-labelledby='h84'>
+<h2 id='h84'><span class='num'>84.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/282fbce7f688.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s85' aria-labelledby='h85'>
+<h2 id='h85'><span class='num'>85.</span> Stereo Vision</h2>
+<p>We can get the equation of the 2D line that appears in the image by using the perspective projection equations, resulting in:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>p</mi><mi>t</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>x</mi><mi>t</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mi>t</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mfrac><mrow><msub><mi>X</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>x</mi></msub></mrow><mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>z</mi></msub></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mfrac><mrow><msub><mi>Y</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>y</mi></msub></mrow><mrow><msub><mi>Z</mi><mn>0</mn></msub><mo>+</mo><mi>t</mi><msub><mi>D</mi><mi>z</mi></msub></mrow></mfrac></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">p_{t} = \begin{bmatrix}
+x_{t} \\
+y_{t}
+\end{bmatrix} = \begin{bmatrix}
+f\frac{X_{0} + tD_{x}}{Z_{0} + tD_{z}} \\
+f\frac{Y_{0} + tD_{y}}{Z_{0} + tD_{z}}
+\end{bmatrix}</annotation></semantics></math></p>
+<p>Even though a line in 3D space extends infinitely, its 2D projection doesn’t. According to equation, at the limit when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math> goes to infinity, the line converges to a finite point (<strong>Vanishing Point</strong>):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><munder><mi mathvariant="normal">lim</mi><mrow><mi>t</mi><mo>→</mo><mi>∞</mi></mrow></munder><msub><mi>p</mi><mi>t</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mfrac><msub><mi>D</mi><mi>x</mi></msub><msub><mi>D</mi><mi>z</mi></msub></mfrac></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>f</mi><mfrac><msub><mi>D</mi><mi>y</mi></msub><msub><mi>D</mi><mi>z</mi></msub></mfrac></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">v = \lim_{t \rightarrow \infty}p_{t} = \begin{bmatrix}
+f\frac{D_{x}}{D_{z}} \\
+f\frac{D_{y}}{D_{z}}
+\end{bmatrix}</annotation></semantics></math></p>
+
+</section>
+<section id='s86' aria-labelledby='h86'>
+<h2 id='h86'><span class='num'>86.</span> Stereo Vision</h2>
+<p>Each group of parallel lines converges to a different vanishing point. Lines that are parallel to the camera plane remain parallel as they converge to a vanishing point in infinity.</p>
+<p>Vanishing points are very useful to recover the missing depth of the scene as we will see later. The human visual system also makes use of vanishing points for 3D perception</p>
+<figure><img src='L22-23_files/e78ad5441db6.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s87' aria-labelledby='h87'>
+<h2 id='h87'><span class='num'>87.</span> Stereo Vision</h2>
+<p>The vanishing point, in homogeneous coordinates, is the result of projecting <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>P</mi><mi>∞</mi></msub><annotation encoding="application/x-tex">P_{\infty}</annotation></semantics></math> using the camera model,</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><mi>M</mi><msub><mi>P</mi><mi>∞</mi></msub><mo>=</mo><mi>K</mi><mo stretchy="false" form="prefix">[</mo><mi>R</mi><mi>T</mi><mo stretchy="false" form="postfix">]</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>D</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mi>K</mi><mi>R</mi><mi>D</mi></mrow><annotation encoding="application/x-tex">v = MP_{\infty} = K\lbrack RT\rbrack\begin{bmatrix}
+D \\
+0
+\end{bmatrix} = KRD</annotation></semantics></math></p>
+<p>it shows that the vanishing point coordinates do not depend on camera translation.</p>
+<p>Only a camera rotation will change the location of the vanishing points in an image.</p>
+<p>If a scene is captured by <strong>two identical cameras translated </strong>from each other, their <strong>corresponding images </strong>will have the <strong>same vanishing points</strong>.</p>
+
+</section>
+<section id='s88' aria-labelledby='h88'>
+<h2 id='h88'><span class='num'>88.</span> Stereo Vision</h2>
+<p>Any 3D plane becomes a half-plane in the image and has a horizon line. The horizon line is the line that passes by all the vanishing points of all the lines contained in the plane.</p>
+<figure><img src='L22-23_files/a0a74c127b86.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s89' aria-labelledby='h89'>
+<h2 id='h89'><span class='num'>89.</span> Stereo Vision</h2>
+<p>As parallel lines converge to the same vanishing point, parallel planes also have the same horizon line.</p>
+<p>To detect the horizon line using homogeneous coordinates. If lines <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>l</mi><mn>1</mn></msub><annotation encoding="application/x-tex">l_{1}</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>l</mi><mn>2</mn></msub><annotation encoding="application/x-tex">l_{2}</annotation></semantics></math>, in homogeneous coordinates, correspond to the 2D projection of 3D parallel lines, we can obtain the vanishing point as their intersection (cross-product, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>l</mi><mn>1</mn></msub><mo>×</mo><msub><mi>l</mi><mn>2</mn></msub></mrow><annotation encoding="application/x-tex">l_{1} \times l_{2}</annotation></semantics></math>).</p>
+<p>If we now have another set of parallel lines, contained in the same plane, we can get another vanishing point by computing their cross-product.</p>
+<p>Finally, the horizon line is the line that passes through both points that can be computed as the cross-product of the vanishing points in homogeneous coordinates.</p>
+
+</section>
+<section id='s90' aria-labelledby='h90'>
+<h2 id='h90'><span class='num'>90.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/3200636f048a.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s91' aria-labelledby='h91'>
+<h2 id='h91'><span class='num'>91.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/4a35277d1b82.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s92' aria-labelledby='h92'>
+<h2 id='h92'><span class='num'>92.</span> Stereo Vision</h2>
+<p>Let’s now use what we have seen up to now to measurement distances in the world from a single image.</p>
+<p>We will discuss in this section how to make those measurements using three vanishing points, or just the horizon line and one vanishing point.</p>
+<p>As we have discussed before, perspective projection transforms many aspects of the 3D world when projecting into the 2D image. What are the properties that do not get preserved?</p>
+<ul>
+<li>Angles between lines are not preserved
+</li>
+<li>The relative lengths
+</li>
+<li>Parallel 3D lines do not project into 2D parallel lines in the image, etc.
+</li></ul>
+
+</section>
+<section id='s93' aria-labelledby='h93'>
+<h2 id='h93'><span class='num'>93.</span> Stereo Vision</h2>
+<p>What properties do get preserved though?</p>
+<ul>
+<li>Straight lines remain straight
+</li></ul>
+<p>Anything else?</p>
+<p>The cross-ratio is one of these!</p>
+<figure><img src='L22-23_files/99aa2abdb682.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s94' aria-labelledby='h94'>
+<h2 id='h94'><span class='num'>94.</span> Stereo Vision</h2>
+<p>The cross-ratio of four collinear points is defined by the expression:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub><mo>,</mo><msub><mi>P</mi><mn>4</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>3</mn></msub><mo>−</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>4</mn></msub><mo>−</mo><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow><mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>3</mn></msub><mo>−</mo><msub><mi>P</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mn>4</mn></msub><mo>−</mo><msub><mi>P</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow></mfrac></mrow><annotation encoding="application/x-tex">CR\left( P_{1},P_{2},P_{3},P_{4} \right) = \frac{\left| P_{3} - P_{1} \right|\left| P_{4} - P_{2} \right|}{\left| P_{3} - P_{2} \right|\left| P_{4} - P_{1} \right|}</annotation></semantics></math></p>
+<p>Where <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>P</mi><mi>i</mi></msub><mo>−</mo><msub><mi>P</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">|</mo></mrow><annotation encoding="application/x-tex">\left| P_{i} - P_{j} \right|</annotation></semantics></math> is the Euclidian distance between the points using heterogeneous coordinates.</p>
+<p>The order maters!</p>
+<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s95' aria-labelledby='h95'>
+<h2 id='h95'><span class='num'>95.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/062d82314e3f.png' alt='Picture without a description' loading='lazy'></figure>
+<p>All these have the same cross-ratio (you can check that it is 1.6 for all 3 images)!</p>
+
+</section>
+<section id='s96' aria-labelledby='h96'>
+<h2 id='h96'><span class='num'>96.</span> Stereo Vision</h2>
+<p>When one of the points is at infinity, all the terms that contain that point are cancelled out (this can also be seen by taking a limit). In the case of the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>R</mi><mn>1</mn></msub><annotation encoding="application/x-tex">R_{1}</annotation></semantics></math>, we get the cross-ratio of:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>C</mi><mi>R</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>P</mi><mn>1</mn></msub><mo>,</mo><msub><mi>P</mi><mn>2</mn></msub><mo>,</mo><msub><mi>P</mi><mn>3</mn></msub><mo>,</mo><msub><mi>P</mi><mn>4</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mfrac><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>R</mi><mn>4</mn></msub><mo>−</mo><msub><mi>R</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>R</mi><mn>3</mn></msub><mo>−</mo><msub><mi>R</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mfrac></mrow><annotation encoding="application/x-tex">CR\left( P_{1},P_{2},P_{3},P_{4} \right) = \frac{\left| R_{4} - R_{2} \right|}{\left| R_{3} - R_{2} \right|}</annotation></semantics></math></p>
+<p>This cross-ratios value is equal to those of <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>Q</mi><annotation encoding="application/x-tex">Q</annotation></semantics></math>!</p>
+<figure><img src='L22-23_files/6e91f629a23e.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s97' aria-labelledby='h97'>
+<h2 id='h97'><span class='num'>97.</span> Stereo Vision</h2>
+<p>So, the big problem is how do measure the height of one object given the height of a reference object in a scene.</p>
+<p>Due to perspective projection, we can not directly compare the relative heights using distances measured over the image.</p>
+<p>To be able to compare 3D distances using 2D image distances both objects need to be put in correspondence first.</p>
+<p>We find common points, compute the ground plane, find the vanishing point from the horizon line and then get the intersecting point. Measure the height from the reference.</p>
+
+</section>
+<section id='s98' aria-labelledby='h98'>
+<h2 id='h98'><span class='num'>98.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/56bdb50d6cdf.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s99' aria-labelledby='h99'>
+<h2 id='h99'><span class='num'>99.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/b51da2804f96.svg' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s100' aria-labelledby='h100'>
+<h2 id='h100'><span class='num'>100.</span> Stereo Vision</h2>
+<p>The method described in the previous section relies on using vertical lines in contact with the ground plane to propagate information from one point in space to another to make measurements.</p>
+<p>The method can not work if we can not establish the vertical projection of a point into the ground plane (or any other plane of reference).</p>
+<p>But once we have estimated the height of objects that are in contact with the ground, we can use them to propagate 3D information to other objects not directly on top of the ground.</p>
+<p>We can estimate the height of objects that are not in contact with the ground if they are on top of objects of known height.</p>
+
+</section>
+<section id='s101' aria-labelledby='h101'>
+<h2 id='h101'><span class='num'>101.</span> Stereo Vision</h2>
+<figure><img src='L22-23_files/ff859050ae3b.png' alt='Picture without a description' loading='lazy'></figure>
+
+</section>
+<section id='s102' aria-labelledby='h102'>
+<h2 id='h102'><span class='num'>102.</span> Questions?</h2>
+
+
+</section>
+<section id='s103' aria-labelledby='h103'>
+<h2 id='h103'><span class='num'>103.</span> End of Lectures 22–23</h2>
+
+
+</section>
+</main></body></html>
