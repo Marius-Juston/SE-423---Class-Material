@@ -116,11 +116,17 @@ def axe_source():
     if not cache.exists():
         cache.parent.mkdir(parents=True, exist_ok=True)
         with urllib.request.urlopen(AXE_URL, timeout=60) as r:
-            cache.write_bytes(r.read())
+            data = r.read()
+        if hashlib.sha256(data).hexdigest() != AXE_SHA256:
+            sys.exit(f"axe-core download does not match the pinned SHA-256 ({AXE_URL})")
+        # Write then rename: a reader never sees a half-written file.
+        tmp = cache.with_suffix(f".{os.getpid()}.tmp")
+        tmp.write_bytes(data)
+        tmp.replace(cache)
     data = cache.read_bytes()
     if hashlib.sha256(data).hexdigest() != AXE_SHA256:
-        cache.unlink()
-        sys.exit(f"axe-core download does not match the pinned SHA-256 ({AXE_URL})")
+        cache.unlink(missing_ok=True)
+        sys.exit(f"axe-core cache does not match the pinned SHA-256 ({cache})")
     return data.decode()
 
 
@@ -235,6 +241,7 @@ def check(pages, root):
 
 def sharded(pages, root, jobs):
     """Split the pages over `jobs` processes (each its own server and browser) and merge."""
+    axe_source()  # download and verify axe-core once, before the groups read the cache
     groups = [pages[i::jobs] for i in range(jobs) if pages[i::jobs]]
     with tempfile.TemporaryDirectory() as tmp:
         procs = []
