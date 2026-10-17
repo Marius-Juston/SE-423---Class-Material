@@ -1,14 +1,5 @@
 [
  {
-  "tool": "pdf",
-  "file": "Lectures/Slides/L20-21.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.3-1",
-  "message": "Figure tags shall include an alternative representation or replacement text that represents the contents marked with the Figure tag as noted in ISO 32000-1:2008, 14.7.2, Table 323",
-  "where": "",
-  "severity": "warning",
-  "count": 1
- },
- {
   "tool": "pptx",
   "file": "Lectures/Slides/L1.pptx",
   "rule": "pptx/small-text",
