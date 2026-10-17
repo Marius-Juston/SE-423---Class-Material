@@ -82,7 +82,7 @@ The `\ifSEhtml` flag switches between `minted` (PDF) and a verbatim fallback (HT
 6. Injects SVG gallery (top-level `Lectures/Figures/svg/*.svg` only) into the site's `index.html`
 7. Deploys everything to the `artifacts` branch
 
-Incremental builds only rebuild files that changed: editing `header.tex`, `fontsetup.tex`, `se423.cfg` or `icons.tex` does **not** rebuild existing PDFs/HTML. Trigger the workflow manually (workflow_dispatch) after such changes.
+Incremental builds only rebuild files that changed, except that a change to a file every document reads (`header.tex`, `fontsetup.tex`, `icons.tex`, `timline.tex`, any `*.cfg`) rebuilds every document in `pdf-list.txt`, and a change to `tools/a11y/pptx_to_html.py` re-exports every deck. Trigger the workflow manually (workflow_dispatch) to rebuild everything.
 
 ### Site (`site/`)
 
@@ -99,6 +99,9 @@ uv scripts: `lint_latex.py`, `lint_pptx.py`, `check_pdf.py` (veraPDF `ua2`), `ch
 - Slide fixers (all write only the parts they change, through `Deck.save`; render and compare the slides afterwards): `fix_contrast.py` (smallest colour change to 4.6:1), `fix_duplicate_titles.py` (" (k/N)" on repeated titles; keep titles unique when adding slides), `fix_slide_titles.py`, `fix_video_alt.py`.
 - Lecture notes: every slide has notes (description of the slide, explanation, links to the neighbouring slides). `draft_notes.py submit/collect/apply` regenerates them with Claude from slide renders; keep existing notes' information when editing. A silent video needs a description saying "no sound" (lint convention).
 - Tables in LaTeX: declare header rows with `\SETableHeaders{1}` (header.tex; a no-op in HTML; not with tabularx).
+- Layout (`check_layout.py`, on every built handout PDF, normal and large print): no text over other text (tables taller than the page run over the footer: keep tables to natural-width columns that fit a page), no text across table/frame rules, nothing off the page, no content taller than the page. Code lines in `minted` blocks: at most 72 characters, so they fit the large print; put a long trailing comment on its own lines above the statement (keep aligned comment columns, e.g. register structs, aligned) and never wrap code itself. Images taller than the page: add `height=0.8\textheight,keepaspectratio`.
+- Code must paste into an editor unchanged: no curly quotes, dashes, ellipses or special spaces inside `minted`/`lstlisting`/`\verb`/`\lstinline`/`\mintinline` (lint `latex/code-typographic-char`); HTML code blocks get plain spaces (`fix_code_spaces.py`, `epub_repair.py`; `check_html.py` reports `html/code-nbsp`).
+- HTML reflow (WCAG 1.4.10): `check_html.py` also opens every page 320 px wide. Text must wrap (CSS `overflow-wrap`, never inserted characters); tables, display equations and code may scroll inside their own box (made focusable and named by a small script only when they overflow); pictures shrink to the column; fixed-size apps need a narrow layout (see `lidar_slam/src/app.jsx`, `useNarrow`).
 - Site search and gallery: `search_index.py` (CI) writes `search-index.json` (slides + every described image) and `figures/` (thumbnails, browser-viewable copies); `site/search.js` renders results and the gallery with DOM methods only (no innerHTML: CodeQL).
 - Other formats: `<doc>-large.pdf` (`\SElargeprint`, fontsetup.tex/header.tex), `<doc>.epub` (`tex4ebook -c se423-ebook`, then `epub_repair.py`; `check_epub.py` runs epubcheck), `accessibility.html` (`report_page.py`). `svg_gallery.py` describes published SVGs and fills the gallery; `cvd_check.py` warns about colour-blind collisions in figures.
 - `pptx_to_html.py` builds the accessible HTML of each deck (CI publishes `Lectures/Slides/<deck>.html`); equations go OMML → MathML through pandoc.

@@ -90,10 +90,12 @@ jobs:
         with:
           files: |
             **/*.tex
+            **/*.cfg
             **/L*.pptx
             Lectures/Figures/**
             Lectures/Slides/figures.toml
             tools/sync_deck_figures.py
+            tools/a11y/pptx_to_html.py
 
       - name: List all changed files
         env:
@@ -121,9 +123,16 @@ jobs:
           else
             FILES="$CHANGED"
             PPTX="$CHANGED"
+            # Files every document reads (preamble, fonts, HTML config): rebuild all of
+            # them, else the published PDFs/HTML keep the old version.
+            if echo "$CHANGED" | grep -qE '(^| )(header|fontsetup|icons|timline)\.tex|\.cfg( |$)'; then
+              echo "Shared LaTeX file changed — rebuilding every document."
+              FILES="$FILES $(grep -v '^[[:space:]]*$' pdf-list.txt | tr '\n' ' ')"
+              FILES=$(echo $FILES | tr ' ' '\n' | sort -u | tr '\n' ' ')
+            fi
             # Decks that embed a changed figure source must be re-exported too
             # (every deck when the manifest or the sync tool itself changed).
-            if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py'; then
+            if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py|tools/a11y/pptx_to_html\.py'; then
               PPTX="$PPTX $(find Lectures/Slides -name 'L*.pptx' | tr '\n' ' ')"
             else
               PPTX="$PPTX $(uv run --quiet --locked tools/sync_deck_figures.py decks $CHANGED)"
@@ -454,6 +463,9 @@ jobs:
                      mkdir -p build/a11y; echo "$texfile" >> build/a11y/make4ht-failures.txt; }
             fi
           done
+          # Code blocks: plain spaces instead of tex4ht's U+00A0, so copied code compiles.
+          pages=$(find build/site -name '*.html' 2>/dev/null)
+          [ -z "$pages" ] || uv run --quiet --locked tools/a11y/fix_code_spaces.py $pages
 
       # EPUB 3 edition of every handout (reflowable, MathML, alt text), repaired for
       # strict EPUB validity by tools/a11y/epub_repair.py; checked by check_epub.py.
