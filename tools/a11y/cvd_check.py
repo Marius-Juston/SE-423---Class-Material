@@ -36,6 +36,7 @@ DISTINCT = 15.0  # ΔE2000 between two colours that are meant to be told apart
 CONFUSED = 8.0  # ΔE2000 below which they look alike
 MIN_CHROMA = 0.05  # OKLCh chroma: greys and near-greys carry no hue information
 MIN_USES = 2  # ignore colours used only once (often a single annotation)
+MAX_CATEGORICAL = 12  # more distinct colours than this is a colour map (viridis, ...), not categories
 DEFICIENCIES = ("protan", "deutan", "tritan")
 NAMES = {"protan": "protanopia", "deutan": "deuteranopia", "tritan": "tritanopia"}
 COLOUR = re.compile(
@@ -59,8 +60,12 @@ def colours(svg_text):
 
 
 def confusable(palette):
-    """{deficiency: [(a, b), ...]} of pairs distinct normally but alike under it."""
+    """{deficiency: [(a, b), ...]} of pairs distinct normally but alike under it.
+    A continuous colour map's neighbouring shades are not meant to be told apart, so
+    figures with more than MAX_CATEGORICAL colours are not checked."""
     out = {}
+    if len(palette) > MAX_CATEGORICAL:
+        return out
     for a, b in itertools.combinations(sorted(palette), 2):
         ca, cb = Color(a), Color(b)
         if ca.delta_e(cb, method="2000") < DISTINCT:
