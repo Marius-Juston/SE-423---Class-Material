@@ -1,11 +1,17 @@
-# To get started with Dependabot version updates, you'll need to specify which
-# package ecosystems to update and where the package manifests are located.
-# Please see the documentation for all configuration options:
-# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
-
+# Dependabot keeps the GitHub Actions up to date. Actions are pinned by commit SHA
+# (with the version in a comment); Dependabot updates both.
+# Python tooling (uv scripts in tools/ and .github/assets/) is not handled here: each
+# script pins exact versions and has a committed <script>.py.lock. To upgrade, raise
+# the `==` pin in the script header, then `uv lock --script tools/a11y/<script>.py`
+# (resolution only sees releases at least 14 days old; see CONTRIBUTING.md).
 version: 2
 updates:
-  - package-ecosystem: "github-actions" # See documentation for possible values
-    directory: "/" # Location of package manifests
+  - package-ecosystem: "github-actions"
+    directory: "/"
     schedule:
       interval: "weekly"
+    cooldown:
+      default-days: 14 # only versions released at least two weeks ago
+    groups:
+      actions:
+        patterns: ["*"]

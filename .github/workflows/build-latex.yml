@@ -31,6 +31,7 @@ on:
 
 permissions:
   contents: write
+  security-events: write # accessibility findings as code-scanning alerts (SARIF)
 
 # Ensures that if a new commit arrives it does not cancel the in-progress build, but instead queues it to run immediately after. 
 # This way we guarantee that every commit gets built and deployed, even if multiple commits arrive in quick succession.
@@ -50,7 +51,7 @@ jobs:
       TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
       TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
       TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
-      CACHE_VERSION: v13 # Bumped for collection-luatex (luatex85: standalone figures under LuaLaTeX)
+      CACHE_VERSION: v14 # Bumped for collection-luatex (luatex85) and tex4ebook (EPUB 3 handouts)
 
       LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
@@ -58,15 +59,30 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
 
       - name: Set up uv
-        uses: astral-sh/setup-uv@c18668ad3cf93ea998bef934396af7bb5c839dc7 # v10.2.0
+        uses: astral-sh/setup-uv@1c37ad07a6a961277cf70c0d37d6f313000f5884 # v10.3.0
         with:
+          version: "0.13.1" # pinned: same resolver and lockfile format everywhere
           enable-cache: true
-          cache-dependency-glob: "tools/**/*.py"
+          cache-dependency-glob: |
+            tools/**/*.py
+            tools/**/*.py.lock
+
+      # Every uv script runs from its committed lockfile (exact versions + hashes,
+      # resolved with a 14-day release cooldown). Fail early when a lockfile no longer
+      # matches its script, or the tooling fails lint/format.
+      - name: Check Python tooling (lockfiles, lint, format)
+        run: |
+          for s in $(grep -rl --include='*.py' '^# /// script' tools .github/assets); do
+            uv lock --check --quiet --script "$s" \
+              || { echo "::error file=$s::lockfile out of date: run 'uv lock --script $s' and commit $s.lock"; exit 1; }
+          done
+          uvx --quiet ruff@0.16.9 check --output-format=github .
+          uvx --quiet ruff@0.16.9 format --check .
 
       - name: Get changed files
         id: changed-files
@@ -110,7 +126,7 @@ jobs:
             if echo "$CHANGED" | grep -qE 'Lectures/Slides/figures\.toml|tools/sync_deck_figures\.py'; then
               PPTX="$PPTX $(find Lectures/Slides -name 'L*.pptx' | tr '\n' ' ')"
             else
-              PPTX="$PPTX $(uv run --quiet tools/sync_deck_figures.py decks $CHANGED)"
+              PPTX="$PPTX $(uv run --quiet --locked tools/sync_deck_figures.py decks $CHANGED)"
             fi
             PPTX=$(echo $PPTX | tr ' ' '\n' | sort -u | tr '\n' ' ')
           fi
@@ -138,7 +154,7 @@ jobs:
           echo "Resolved files: $ALL"
 
       - name: Checkout Artifacts Branch
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           ref: artifacts
           path: deploy_target
@@ -165,7 +181,7 @@ jobs:
       - name: Cache TeX Live
         id: cache-texlive
         if: steps.resolve.outputs.has_tex == 'true'
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ${{ env.TL_DIR }}
@@ -179,8 +195,25 @@ jobs:
           # 1. Install Dependencies (Added python3-pygments)
           sudo apt-get update && sudo apt-get install -y perl wget xz-utils python3-pygments
 
-          # 2. Download Installer
-          wget https://mirror.ctan.org/systems/texlive/tlnet/install-tl-unx.tar.gz
+          # 2. Download Installer from the first mirror that works. mirror.ctan.org
+          # redirects to a random mirror, and a broken one (bad TLS certificate,
+          # outage) used to fail the whole build. The chosen mirror is used for
+          # install-tl and every later tlmgr call (TL_REPO in $GITHUB_ENV).
+          TL_REPO=""
+          for repo in \
+            https://mirrors.mit.edu/CTAN/systems/texlive/tlnet \
+            https://mirrors.rit.edu/CTAN/systems/texlive/tlnet \
+            https://mirror.las.iastate.edu/tex-archive/systems/texlive/tlnet \
+            https://mirror.ctan.org/systems/texlive/tlnet; do
+            if wget -q --tries=2 --timeout=60 -O install-tl-unx.tar.gz "$repo/install-tl-unx.tar.gz" \
+               && tar -tzf install-tl-unx.tar.gz > /dev/null; then
+              TL_REPO="$repo"; break
+            fi
+            echo "::warning::TeX Live mirror $repo failed, trying the next one"
+          done
+          [ -n "$TL_REPO" ] || { echo "::error::No TeX Live mirror reachable"; exit 1; }
+          echo "TL_REPO=$TL_REPO" >> "$GITHUB_ENV"
+          echo "Using TeX Live mirror $TL_REPO"
           tar -xzf install-tl-unx.tar.gz
           TL_SRC_DIR=$(find . -maxdepth 1 -name "install-tl-*" -type d | head -1)
 
@@ -205,7 +238,7 @@ jobs:
           EOF
           
           # 5. Run Install
-          ./install-tl --profile=texlive.profile
+          ./install-tl --profile=texlive.profile --repository "$TL_REPO"
 
       - name: Normalize TeX Live permissions
         if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
@@ -220,8 +253,10 @@ jobs:
           # ENSURE TEXMFOUTPUT IS NOT SET HERE
           unset TEXMFOUTPUT
 
-          # 1. Disable auto-formats to prevent latex-dev crashes
+          # 1. Disable auto-formats to prevent latex-dev crashes; use the mirror
+          #    install-tl used (see "Install TeX Live 2026").
           tlmgr option create_formats 0
+          tlmgr option repository "$TL_REPO"
           
           # 2. Install Packages
           tlmgr install \
@@ -242,6 +277,7 @@ jobs:
             fontspec \
             luaotfload \
             make4ht \
+            tex4ebook \
             tex4ht \
             collection-luatex \
             luatex85 \
@@ -269,7 +305,7 @@ jobs:
           luaotfload-tool --update
       - name: Save TeX Live Cache
         if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: |
             ${{ env.TL_DIR }}
@@ -289,7 +325,7 @@ jobs:
       - name: Restore derived asset cache
         id: cache-derived
         if: steps.resolve.outputs.has_tex == 'true'
-        uses: actions/cache@v6
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
         with:
           path: .ci-cache
           key: derived-${{ runner.os }}-${{ github.run_id }}
@@ -316,6 +352,12 @@ jobs:
 
               latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
                 -shell-escape -outdir="$out_dir" "$texfile"
+
+              # Large-print edition, <doc>-large.pdf: fonts 1.3x, 1.5 line spacing
+              # (\SElargeprint, see fontsetup.tex / header.tex).
+              latexmk -pdflua -interaction=nonstopmode -file-line-error -halt-on-error \
+                -shell-escape -outdir="$out_dir" -jobname="$(basename "$texfile" .tex)-large" \
+                -usepretex='\def\SElargeprint{}' "$texfile"
             fi
           done
 
@@ -405,12 +447,34 @@ jobs:
               # TeX's kpathsea already searches the source file's own directory
               # for \input{header} etc., so no cd needed.
               # -c se423 → load se423.cfg (high-contrast CSS, WCAG-compliant)
+              # "mathml": equations become MathML that screen readers can read.
               make4ht -s -l -c se423 -d "$GITHUB_WORKSPACE/$out_dir" \
-                "$texfile" \
+                "$texfile" "mathml" \
                 || { echo "::warning::HTML build failed for $texfile (continuing)"; \
                      mkdir -p build/a11y; echo "$texfile" >> build/a11y/make4ht-failures.txt; }
             fi
           done
+
+      # EPUB 3 edition of every handout (reflowable, MathML, alt text), repaired for
+      # strict EPUB validity by tools/a11y/epub_repair.py; checked by check_epub.py.
+      - name: Compile EPUB versions (accessible)
+        if: steps.resolve.outputs.has_tex == 'true'
+        env:
+          TEXMFOUTPUT: ${{ github.workspace }}/texmf-output
+        run: |
+          books=""
+          for texfile in ${{ steps.resolve.outputs.tex_files }}; do
+            if [[ $texfile == *.tex ]] && grep -q "^$texfile$" pdf-list.txt; then
+              out_dir="build/$(dirname "$texfile")"
+              mkdir -p "$out_dir"
+              if tex4ebook -c se423-ebook -f epub3 -d "$GITHUB_WORKSPACE/$out_dir" "$texfile" "mathml"; then
+                books="$books $out_dir/$(basename "$texfile" .tex).epub"
+              else
+                echo "::warning::EPUB build failed for $texfile (continuing)"
+              fi
+            fi
+          done
+          [ -z "$books" ] || uv run --quiet --locked tools/a11y/epub_repair.py $books
 
       - name: Convert TikZ Figures to SVG
         if: steps.resolve.outputs.has_tex == 'true'
@@ -469,13 +533,14 @@ jobs:
           # before this push: an edited source file updates the deck (so the PDFs and
           # published .pptx carry it); a picture edited in PowerPoint is kept and its
           # source updated. Nothing is committed back; conflicts only warn.
-          uv run --quiet tools/sync_deck_figures.py auto --base "$BEFORE" \
+          uv run --quiet --locked tools/sync_deck_figures.py auto --base "$BEFORE" \
             || echo "::warning::Slide figure conflicts (see log); the decks were exported as committed."
-          uv run --quiet tools/sync_deck_figures.py check > /dev/null \
+          uv run --quiet --locked tools/sync_deck_figures.py check > /dev/null \
             || echo "::warning::Some slide pictures differ from their source files; run tools/install-hooks.sh, or 'uv run tools/sync_deck_figures.py auto --base origin/main', and commit."
 
           # Find all PPTX files starting with 'L' (Lecture files) and convert them to PDF.
           # On workflow_dispatch, resolve.pptx_files holds the full L*.pptx inventory.
+          DECKS=""
           for pptx in ${{ steps.resolve.outputs.pptx_files }}; do
             if [[ $(basename "$pptx") == L*.pptx ]]; then
               echo "State change detected: Converting $pptx..."
@@ -497,8 +562,14 @@ jobs:
 
               echo "Propagating source artifact ($pptx) to $out_dir..."
               cp "$pptx" "$out_dir/"
+              DECKS="$DECKS $pptx"
             fi
           done
+
+          # Accessible text version of each deck (headings, lists, alt text, MathML).
+          if [ -n "$DECKS" ]; then
+            uv run --quiet --locked tools/a11y/pptx_to_html.py --out "${{ env.PPTX_OUTPUT_DIR }}/Lectures/Slides" $DECKS
+          fi
 
       - name: Move files to Deployment Target
         env:
@@ -517,7 +588,10 @@ jobs:
           
           # Map build directory structure over to target (rsync acts as a spatial integration function)
           if [ -d "build" ]; then
+            # *-luamml-mathml.html are luamml's by-products of the tagged PDF build,
+            # not pages: never publish them (and drop copies left by older builds).
             rsync -av --prune-empty-dirs \
+              --exclude="*-luamml-mathml.html" \
               --include="*/" \
               --include="*.pdf" \
               --include="*.pptx" \
@@ -526,8 +600,13 @@ jobs:
               --include="*.css" \
               --include="*.png" \
               --include="*.jpg" \
+              --include="*.jpeg" \
+              --include="*.gif" \
+              --include="*.epub" \
               --exclude="*" build/ deploy_target/
           fi
+
+          find deploy_target -name "*-luamml-mathml.html" -not -path "*/.git/*" -delete
 
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
           if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then
@@ -560,57 +639,42 @@ jobs:
           bash site/lidar_slam/build.sh site/lidar_slam deploy_target/lidar_slam/dist
           rm -f deploy_target/lidar_slam/data/slam_cache.json
 
-      - name: Inject Dynamic SVG Gallery into HTML
-        run: |
-          # Navigate into the deployment staging area
-          cd deploy_target
-          
-          FIGURES_ARRAY=""
+      # Names and descriptions for the published figure SVGs (<title>/<desc>, from
+      # reviewed alt text in figures.toml or `% alt:` lines in the TikZ sources), and
+      # the gallery entries in index.html (JSON-escaped).
+      - name: Describe figures and fill the gallery
+        run: uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
 
-          # Check if any SVGs exist recursively
-          if find Lectures/Figures -type f -name "*.svg" | grep -q .; then
-              echo "Generating gallery data from SVGs..."
-
-              while IFS= read -r svg_path; do
-              # Extract filename without extension
-              filename=$(basename "$svg_path" .svg)
-
-              # Format Title: Replace underscores/dashes with spaces and Capitalize Each Word
-              title=$(echo "$filename" | tr '_-' ' ' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
-
-              # Append the JS object to our payload string
-              FIGURES_ARRAY+="                { title: \"$title\", file: \"$svg_path\" },\n"
-
-              done < <(find Lectures/Figures -type f -name "*.svg" | sort)
-
-          else
-              echo "No SVGs found in Lectures/Figures/. Proceeding with empty gallery."
-          fi
-
-          # Use Perl to safely inject the multiline payload between the target comment blocks
-          if [ -f "index.html" ]; then
-              perl -0777 -pi -e "s|/\* INJECT_FIGURES_START \*/.*?/\* INJECT_FIGURES_END \*/|/* INJECT_FIGURES_START */\n$FIGURES_ARRAY                /* INJECT_FIGURES_END */|s" index.html
-              echo "Injection complete."
-          else
-              echo "Warning: index.html not found. Skipping injection."
-          fi
-          
       - name: Set up accessibility checkers
         run: |
           # Headless Chromium for axe-core (HTML) and the pinned veraPDF image (PDF/UA-2).
-          uv run --quiet --with playwright==1.64.0 playwright install --with-deps chromium
-          docker pull --quiet verapdf/cli:v1.30.2
+          uv run --quiet --locked tools/a11y/check_html.py --install-browser --with-deps
+          docker pull --quiet "verapdf/cli:v1.30.2@sha256:d5ee329657cf9bc4b2400392dd54c7d0a0ce9980ff6fa2da5590eebeec007cdb"
 
       # Ratchet (tools/a11y, a11y-baseline.json): pull requests fail on new or worse
       # accessibility problems; on main the results are reported but never block deploy.
       - name: Accessibility checks
         continue-on-error: ${{ github.event_name != 'pull_request' }}
         run: |
-          uv run --quiet tools/a11y/run_all.py \
-            --pdf-root build --docker \
+          uv run --quiet --locked tools/a11y/run_all.py \
+            --pdf-root build --docker --epub-root build \
             --html-root deploy_target \
-            --make4ht-failures build/a11y/make4ht-failures.txt
-          mkdir -p deploy_target/a11y && cp build/a11y/report.json deploy_target/a11y/report.json
+            --make4ht-failures build/a11y/make4ht-failures.txt \
+            --sarif build/a11y/a11y.sarif
+          # Public status page (accessibility.html) and the merged report it reads.
+          uv run --quiet --locked tools/a11y/report_page.py --report build/a11y/report.json \
+            --checked build/a11y/checked.json --site deploy_target
+
+      # The same findings as code-scanning alerts: annotated on the changed files of a
+      # pull request (only the ones it introduces), tracked over time on main. Skipped
+      # for forks, whose token cannot write security events.
+      - name: Upload accessibility findings (SARIF)
+        if: always() && hashFiles('build/a11y/a11y.sarif') != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        continue-on-error: true
+        uses: github/codeql-action/upload-sarif@6f2ac81f5cd81fe351a197ba0b00d91d03cd2aee # v4.39.0
+        with:
+          sarif_file: build/a11y/a11y.sarif
+          category: accessibility
 
       - name: Deploy Incremental Updates
         if: github.event_name != 'pull_request'

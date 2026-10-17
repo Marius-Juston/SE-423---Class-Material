@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Pathfinding Visualizer</title>
 <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,200..800;1,200..800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
@@ -23,7 +23,7 @@
   /* Text on Illini Blue — contrasts checked */
   --text:#FFFFFF;           /* 14.2:1 (AAA) */
   --text-mid:#C8C6C7;       /* Storm-light — 8.7:1 (AAA) */
-  --text-dim:#9C9A9D;       /* Storm-mid — 5.3:1 (AA, smallest acceptable) */
+  --text-dim:#ADABAE;       /* Storm-mid, lightened: ≥ 4.7:1 on every surface (AA) */
   /* Brand accent — Illini Orange. 4.8:1 on Illini Blue (AA). */
   --accent:#FF5F05;
   --accent-dim:rgba(255,95,5,.18);
@@ -47,10 +47,10 @@ body{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;background:va
 .sep{width:1px;height:22px;background:var(--border);flex-shrink:0}
 .cg{display:flex;gap:2px;background:var(--bg);border-radius:7px;padding:2px;border:1px solid var(--border)}
 .b{font-family:'Atkinson Hyperlegible Next',system-ui,sans-serif;font-size:10.5px;font-weight:500;padding:3px 8px;border:none;border-radius:5px;cursor:pointer;background:transparent;color:var(--text-mid);transition:all .12s;white-space:nowrap;line-height:1.4}
-.b:hover{color:var(--text);background:var(--border)} .b.on{background:var(--accent);color:#fff}
+.b:hover{color:var(--text);background:var(--border)} .b.on{background:var(--accent);color:#13294B;font-weight:700} /* 4.8:1 */
 .b.go{color:var(--green);font-weight:600} .b.go:hover{background:var(--green-dim)} .b.go.running{color:var(--yellow);animation:blink 1.2s infinite}
 .b.danger{color:var(--red)} .b.danger:hover{background:var(--red-dim)}
-.b.compare{color:var(--purple);font-weight:600} .b.compare:hover{background:var(--purple-dim)} .b.compare.on{background:var(--purple);color:#fff}
+.b.compare{color:var(--purple);font-weight:600} .b.compare:hover{background:var(--purple-dim)} .b.compare.on{background:var(--purple);color:#13294B}
 .b.explain{color:var(--yellow)} .b.explain:hover{background:var(--yellow-dim)} .b.explain.on{background:var(--yellow);color:var(--bg)}
 .b.import-b{color:var(--accent)} .b.import-b:hover{background:var(--accent-dim)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.4}}
@@ -149,6 +149,14 @@ canvas{display:block}
 button:focus-visible,select:focus-visible,input:focus-visible,.tgl:focus-visible,.b:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
 input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:4px}
 
+/* === Accessibility: 24px minimum targets (WCAG 2.5.8) === */
+.b,.tgl,select.sel{min-height:24px;min-width:24px} .info-btn{width:24px;height:24px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+/* Keyboard grid cursor */
+canvas:focus-visible{outline:3px solid var(--focus);outline-offset:2px}
+/* Import-format dialog (native <dialog>) */
+dialog.modal{padding:0;color:var(--text);margin:auto} dialog.modal::backdrop{background:rgba(0,0,0,.65)}
+
 /* === Accessibility: respect reduced-motion preference (WCAG 2.3.3) === */
 @media(prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
@@ -178,39 +186,41 @@ input[type=range]:focus-visible{outline:3px solid var(--focus);outline-offset:4p
 <body>
 <div class="header">
   <div class="logo"><div class="ic">P</div>Pathfinding</div><div class="sep"></div>
-  <select class="sel" id="algoSel" onchange="onAlgo()"><option value="bfs">BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy Best-First</option><option value="astar" selected>A* Search</option></select>
-  <div class="compare-sels" id="compareSels"><span class="algo-label l-label">L</span><select class="sel" id="algoL" onchange="onAlgoC()"><option value="bfs">BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar" selected>A*</option></select><span class="algo-label r-label">R</span><select class="sel" id="algoR" onchange="onAlgoC()"><option value="bfs" selected>BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar">A*</option></select></div>
+  <select class="sel" id="algoSel" onchange="onAlgo()" aria-label="Search algorithm"><option value="bfs">BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy Best-First</option><option value="astar" selected>A* Search</option></select>
+  <div class="compare-sels" id="compareSels"><span class="algo-label l-label">L</span><select class="sel" id="algoL" onchange="onAlgoC()" aria-label="Left algorithm"><option value="bfs">BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar" selected>A*</option></select><span class="algo-label r-label">R</span><select class="sel" id="algoR" onchange="onAlgoC()" aria-label="Right algorithm"><option value="bfs" selected>BFS</option><option value="dijkstra">Dijkstra</option><option value="greedy">Greedy</option><option value="astar">A*</option></select></div>
   <div class="sep"></div>
-  <div class="cg" id="tg">
-    <button class="b on" data-t="wall" onclick="setT('wall')">▪ Wall</button><button class="b" data-t="forest" onclick="setT('forest')">⚘ Forest</button><button class="b" data-t="water" onclick="setT('water')">〜 Water</button><button class="b" data-t="start" onclick="setT('start')">● Start</button><button class="b" data-t="end" onclick="setT('end')">◆ End</button><button class="b" data-t="erase" onclick="setT('erase')">✕ Erase</button><button class="b" data-t="inspect" onclick="setT('inspect')">⊙ Inspect</button>
+  <div class="cg" id="tg" role="group" aria-label="Drawing tool">
+    <button type="button" class="b on" data-t="wall" aria-pressed="true" onclick="setT('wall')">▪ Wall</button><button type="button" class="b" data-t="forest" aria-pressed="false" onclick="setT('forest')">⚘ Forest</button><button type="button" class="b" data-t="water" aria-pressed="false" onclick="setT('water')">〜 Water</button><button type="button" class="b" data-t="start" aria-pressed="false" onclick="setT('start')">● Start</button><button type="button" class="b" data-t="end" aria-pressed="false" onclick="setT('end')">◆ End</button><button type="button" class="b" data-t="erase" aria-pressed="false" onclick="setT('erase')">✕ Erase</button><button type="button" class="b" data-t="inspect" aria-pressed="false" onclick="setT('inspect')">⊙ Inspect</button>
   </div><div class="sep"></div>
   <div class="cg"><button class="b" onclick="genMaze()">Maze</button><button class="b" onclick="genRand()">Random</button><button class="b" onclick="genTerrain()">Terrain</button></div><div class="sep"></div>
   <div class="cg"><button class="b go" id="btnR" onclick="doRun()">▶ Run</button><button class="b" onclick="doStep()">⏭ Step</button><button class="b danger" onclick="doClear()">Clear</button><button class="b danger" onclick="doReset()">Reset</button></div><div class="sep"></div>
-  <div class="cg"><button class="b compare" id="btnCmp" onclick="toggleCompare()">⧉ Compare</button><button class="b explain" id="btnExp" onclick="toggleExplain()">⟐ Explain</button></div><div class="sep"></div>
+  <div class="cg"><button type="button" class="b compare" id="btnCmp" aria-pressed="false" onclick="toggleCompare()">⧉ Compare</button><button type="button" class="b explain" id="btnExp" aria-pressed="false" aria-controls="explainPanel" onclick="toggleExplain()">⟐ Explain</button></div><div class="sep"></div>
   <div class="cg"><button class="b import-b" onclick="document.getElementById('fileIn').click()">⬆ Import</button><button class="info-btn" onclick="openModal()" title="Import format" aria-label="Show import format help">?</button></div>
   <input type="file" id="fileIn" accept=".json,.txt,.csv" style="display:none" onchange="handleImport(event)" aria-label="Import grid file"><div class="sep"></div>
   <div class="tgl on" id="tEE" onclick="tglEE()" role="switch" aria-checked="true" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tglEE()}"><div class="tgl-t"></div>Early Exit</div>
   <div class="tgl on" id="tDG" onclick="tglDG()" role="switch" aria-checked="true" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tglDG()}"><div class="tgl-t"></div>Diag</div>
   <div class="tgl on" id="tSC" onclick="tglSC()" role="switch" aria-checked="true" tabindex="0" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();tglSC()}"><div class="tgl-t"></div>Costs</div><div class="sep"></div>
   <div class="spd"><label for="spd">SPD</label><input type="range" id="spd" min="1" max="100" value="60" aria-label="Animation speed"></div>
+  <div class="sr-only" id="srLive" role="status" aria-live="polite" aria-atomic="true"></div>
 </div>
 <div class="info-bar" id="infoBar" role="status" aria-live="polite"></div>
-<div class="modal-overlay" id="infoModal" role="dialog" aria-modal="true" aria-labelledby="infoModalTitle"><div class="modal"><div class="modal-hdr"><h2 id="infoModalTitle"><span class="dot" aria-hidden="true"></span>Grid Import Format</h2><button class="modal-close" onclick="closeModal()" aria-label="Close dialog">✕</button></div><div class="modal-body">
-<h3>JSON</h3><pre>{ "grid": [[1,1,-1,3.5],[1,8,-1,1]], "start":[0,0], "end":[1,3] }</pre>
-<h3>TXT / CSV</h3><pre>S  1 -1  1
+<dialog class="modal" id="infoModal" aria-labelledby="infoModalTitle"><div class="modal-hdr"><h2 id="infoModalTitle"><span class="dot" aria-hidden="true"></span>Grid Import Format</h2><button class="modal-close" onclick="closeModal()" aria-label="Close dialog">✕</button></div><div class="modal-body">
+<h3>JSON</h3><pre tabindex="0">{ "grid": [[1,1,-1,3.5],[1,8,-1,1]], "start":[0,0], "end":[1,3] }</pre>
+<h3>TXT / CSV</h3><pre tabindex="0">S  1 -1  1
 1  8 -1  E</pre>
 <h3>Cell values</h3><div class="fmt-row"><span class="fmt-val">1 / 0</span><span class="fmt-desc">Normal (cost=1); other values ≤0 except −1 also = normal</span></div><div class="fmt-row"><span class="fmt-val">-1</span><span class="fmt-desc">Wall</span></div><div class="fmt-row"><span class="fmt-val">N&gt;1</span><span class="fmt-desc">Custom weight (cost=N)</span></div><div class="fmt-row"><span class="fmt-val">0&lt;N&lt;1</span><span class="fmt-desc">Clamped to 1 — costs below 1 would make the heuristic inadmissible</span></div><div class="fmt-row"><span class="fmt-val">S / E</span><span class="fmt-desc">Start / End (TXT only)</span></div>
 <h3>Weight coloring</h3><div class="weight-grad" aria-label="Cell weight scale from low (cool green) to high (warm orange)"><div style="background:#5DB47A"></div><div style="background:#A5C77F"></div><div style="background:#FCB316"></div><div style="background:#FF8A3E"></div><div style="background:#FF5F05"></div><div style="background:#C84113"></div></div>
 <div class="note">Max grid: 80×50. Forest/Water tools override custom weights. Entering a cell costs its weight (×√2 for a diagonal move); diagonals may not cut wall corners.</div>
-</div></div></div>
-<div class="toast" id="toast"></div>
+</div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
 <div class="main">
   <div class="grid-area" id="gridArea">
     <div class="grids-row" id="gridsRow">
-      <div class="grid-panel" id="panelL"><div class="panel-hdr l-hdr" id="panelLHdr" style="display:none">A*</div><div class="gw" id="gwL"><canvas id="cvL"></canvas><div class="tip" id="tipL"></div></div><div class="panel-stats l-stats" id="panelLStats" style="display:none"><span>V:<span class="sv" id="sVL">0</span></span><span>Moves:<span class="sv" id="sPL">—</span></span><span>Cost:<span class="sv" id="sCL">—</span></span></div></div>
-      <div class="grid-panel" id="panelR" style="display:none"><div class="panel-hdr r-hdr" id="panelRHdr">BFS</div><div class="gw" id="gwR"><canvas id="cvR"></canvas><div class="tip" id="tipR"></div></div><div class="panel-stats r-stats" id="panelRStats"><span>V:<span class="sv" id="sVR">0</span></span><span>Moves:<span class="sv" id="sPR">—</span></span><span>Cost:<span class="sv" id="sCR">—</span></span></div></div>
+      <div class="grid-panel" id="panelL"><div class="panel-hdr l-hdr" id="panelLHdr" style="display:none">A*</div><div class="gw" id="gwL"><canvas id="cvL" tabindex="0" role="application" aria-roledescription="grid editor" aria-describedby="gridHelp"></canvas><div class="tip" id="tipL"></div></div><div class="panel-stats l-stats" id="panelLStats" style="display:none"><span>V:<span class="sv" id="sVL">0</span></span><span>Moves:<span class="sv" id="sPL">—</span></span><span>Cost:<span class="sv" id="sCL">—</span></span></div></div>
+      <div class="grid-panel" id="panelR" style="display:none"><div class="panel-hdr r-hdr" id="panelRHdr">BFS</div><div class="gw" id="gwR"><canvas id="cvR" tabindex="-1" aria-hidden="true"></canvas><div class="tip" id="tipR"></div></div><div class="panel-stats r-stats" id="panelRStats"><span>V:<span class="sv" id="sVR">0</span></span><span>Moves:<span class="sv" id="sPR">—</span></span><span>Cost:<span class="sv" id="sCR">—</span></span></div></div>
     </div>
-    <div class="scrubber-bar" id="scrubberBar"><span>Step</span><input type="range" class="scrub-range" id="scrubRange" min="0" max="0" value="0" oninput="onScrub()"><span id="scrubVal">0 / 0</span></div>
+    <p class="sr-only" id="gridHelp">Arrow keys move the cursor over the grid; Enter or Space applies the selected drawing tool to the cell (with the Inspect tool, it shows the cell's search values). Home and End jump to the start and end cells. R runs or pauses the search, S takes one step.</p>
+    <div class="scrubber-bar" id="scrubberBar"><span>Step</span><input type="range" class="scrub-range" id="scrubRange" min="0" max="0" value="0" oninput="onScrub()" aria-label="Search step"><span id="scrubVal">0 / 0</span></div>
   </div>
   <div class="explain" id="explainPanel"><div class="explain-inner" id="explainInner">
     <div class="ex-title"><div class="dot" style="background:var(--yellow)"></div>Algorithm Inspector</div>
@@ -362,6 +372,11 @@ function drawGrid(cvEl,gwEl,st,sz,isRight){
     const[lr,lc]=st.lastNode;const x=GAP+lc*(sz+GAP),y=GAP+lr*(sz+GAP);
     cx.save();cx.strokeStyle='rgba(255,255,255,.65)';cx.lineWidth=2;cx.beginPath();cx.roundRect(x-1,y-1,sz+2,sz+2,cr+1);cx.stroke();cx.restore();
   }
+  // Keyboard cursor
+  if(kbCell&&!isRight&&document.activeElement===cvEl){
+    const x=GAP+kbCell.c*(sz+GAP),y=GAP+kbCell.r*(sz+GAP);
+    cx.save();cx.strokeStyle='#FCB316';cx.lineWidth=3;cx.beginPath();cx.roundRect(x-2,y-2,sz+4,sz+4,cr+2);cx.stroke();cx.restore();
+  }
   // Inspect highlight
   if(inspCell){
     const x=GAP+inspCell.c*(sz+GAP),y=GAP+inspCell.r*(sz+GAP);
@@ -397,12 +412,16 @@ function startAnim(){
     const batch=sp2>85?8:sp2>65?4:sp2>40?2:1;
     animStep=Math.min(animStep+batch,maxAll);
     replayBoth(animStep);draw();updStats();updateExplain();updateScrub();
-    if(animStep>=maxAll){stopAnim();return;}
+    if(animStep>=maxAll){stopAnim();announce();return;}
     timer=setTimeout(tick,getDelay());
   }
   tick();
 }
-function doStep(){if(!searchDone)computeSearch();stopAnim();const maxAll=Math.max(maxStL,maxStR);animStep=Math.min(animStep+1,maxAll);replayBoth(animStep);draw();updStats();updateExplain();updateScrub();}
+function doStep(){if(!searchDone)computeSearch();stopAnim();const maxAll=Math.max(maxStL,maxStR);animStep=Math.min(animStep+1,maxAll);replayBoth(animStep);draw();updStats();updateExplain();updateScrub();announce();}
+// Screen readers: announce how a run ended (the canvas itself is silent).
+function say(msg){const el=document.getElementById('srLive');el.textContent='';setTimeout(()=>{el.textContent=msg;},50);}
+function resultText(st){const n=AN[st.algo]||st.algo;if(st.failed)return n+': no path, '+st.steps+' cells visited.';if(st.done)return n+': path found, '+st.pathLen+' moves, cost '+(st.pathCost!=null?st.pathCost.toFixed(1):'unknown')+', '+st.steps+' cells visited.';return n+': step '+st.steps+'.';}
+function announce(){say(compareMode?resultText(stL)+' '+resultText(stR):resultText(stL));}
 function stopAnim(){if(timer){clearTimeout(timer);timer=null;}document.getElementById('btnR').classList.remove('running');document.getElementById('btnR').textContent='\u25B6 Run';}
 function doClear(){stopAnim();searchDone=false;animStep=0;maxStL=0;maxStR=0;stL.reset();stR.reset();inspCell=null;updStats();updateExplain();updateScrub();draw();}
 function doReset(){stopAnim();searchDone=false;animStep=0;maxStL=0;maxStR=0;stL.reset();stR.reset();inspCell=null;COLS=40;ROWS=25;initGrid();recalcCW();updStats();updateExplain();updateScrub();setTimeout(resizeCanvas,10);}
@@ -415,15 +434,16 @@ function updStats(){
 }
 function onAlgo(){stL.algo=document.getElementById('algoSel').value;document.getElementById('infoBar').innerHTML=AD[stL.algo];doClear();}
 function onAlgoC(){stL.algo=document.getElementById('algoL').value;stR.algo=document.getElementById('algoR').value;document.getElementById('infoBar').innerHTML=AD[stL.algo]+' <b>vs</b> '+AD[stR.algo];doClear();}
-function tglEE(){earlyExit=!earlyExit;document.getElementById('tEE').classList.toggle('on',earlyExit);doClear();}
-function tglDG(){allowDiag=!allowDiag;document.getElementById('tDG').classList.toggle('on',allowDiag);doClear();}
-function tglSC(){showCost=!showCost;document.getElementById('tSC').classList.toggle('on',showCost);draw();}
+function setSwitch(id,on){const el=document.getElementById(id);el.classList.toggle('on',on);el.setAttribute('aria-checked',on);}
+function tglEE(){earlyExit=!earlyExit;setSwitch('tEE',earlyExit);doClear();}
+function tglDG(){allowDiag=!allowDiag;setSwitch('tDG',allowDiag);doClear();}
+function tglSC(){showCost=!showCost;setSwitch('tSC',showCost);draw();}
 
 /* ═══════ COMPARE ═══════ */
-function toggleCompare(){doClear();compareMode=!compareMode;document.getElementById('btnCmp').classList.toggle('on',compareMode);document.getElementById('panelR').style.display=compareMode?'':'none';document.getElementById('panelLHdr').style.display=compareMode?'':'none';document.getElementById('panelLStats').style.display=compareMode?'':'none';document.getElementById('panelRStats').style.display=compareMode?'':'none';document.getElementById('algoSel').style.display=compareMode?'none':'';document.getElementById('compareSels').classList.toggle('visible',compareMode);document.getElementById('singleStats').classList.toggle('visible',!compareMode);document.getElementById('exTabs').style.display=compareMode?'':'none';if(compareMode){stL.algo=document.getElementById('algoL').value;stR.algo=document.getElementById('algoR').value;document.getElementById('infoBar').innerHTML=AD[stL.algo]+' <b>vs</b> '+AD[stR.algo];}else{document.getElementById('infoBar').innerHTML=AD[document.getElementById('algoSel').value];}setTimeout(resizeCanvas,30);}
+function toggleCompare(){doClear();compareMode=!compareMode;document.getElementById('btnCmp').classList.toggle('on',compareMode);document.getElementById('btnCmp').setAttribute('aria-pressed',compareMode);document.getElementById('panelR').style.display=compareMode?'':'none';document.getElementById('panelLHdr').style.display=compareMode?'':'none';document.getElementById('panelLStats').style.display=compareMode?'':'none';document.getElementById('panelRStats').style.display=compareMode?'':'none';document.getElementById('algoSel').style.display=compareMode?'none':'';document.getElementById('compareSels').classList.toggle('visible',compareMode);document.getElementById('singleStats').classList.toggle('visible',!compareMode);document.getElementById('exTabs').style.display=compareMode?'':'none';if(compareMode){stL.algo=document.getElementById('algoL').value;stR.algo=document.getElementById('algoR').value;document.getElementById('infoBar').innerHTML=AD[stL.algo]+' <b>vs</b> '+AD[stR.algo];}else{document.getElementById('infoBar').innerHTML=AD[document.getElementById('algoSel').value];}setTimeout(resizeCanvas,30);}
 
 /* ═══════ EXPLAIN ═══════ */
-function toggleExplain(){explainOpen=!explainOpen;document.getElementById('btnExp').classList.toggle('on',explainOpen);document.getElementById('explainPanel').classList.toggle('open',explainOpen);setTimeout(resizeCanvas,220);}
+function toggleExplain(){explainOpen=!explainOpen;document.getElementById('btnExp').classList.toggle('on',explainOpen);document.getElementById('btnExp').setAttribute('aria-pressed',explainOpen);document.getElementById('explainPanel').classList.toggle('open',explainOpen);setTimeout(resizeCanvas,220);}
 function setExTab(t){exTab=t;document.getElementById('exTabL').classList.toggle('on',t==='L');document.getElementById('exTabR').classList.toggle('on',t==='R');updateExplain();}
 function updateExplain(){
   if(!explainOpen)return;
@@ -472,7 +492,7 @@ function updateExplain(){
 }
 
 /* ═══════ TOOLS ═══════ */
-function setT(t){tool=t;document.querySelectorAll('#tg .b').forEach(b=>b.classList.toggle('on',b.dataset.t===t));}
+function setT(t){tool=t;document.querySelectorAll('#tg .b').forEach(b=>{b.classList.toggle('on',b.dataset.t===t);b.setAttribute('aria-pressed',b.dataset.t===t);});}
 function cellFromEvent(e,cvEl,sz){const r2=cvEl.getBoundingClientRect(),dpr=window.devicePixelRatio||1;const logW=cvEl.width/dpr,logH=cvEl.height/dpr;const sx=logW/r2.width,sy=logH/r2.height;const mx=(e.clientX-r2.left)*sx,my=(e.clientY-r2.top)*sy;const c2=Math.floor((mx-GAP)/(sz+GAP)),r3=Math.floor((my-GAP)/(sz+GAP));if(r3>=0&&r3<ROWS&&c2>=0&&c2<COLS)return{r:r3,c:c2};return null;}
 function applyT(r,c){
   if(tool==='inspect'){
@@ -504,6 +524,33 @@ function setupCanvas(cvEl,gwEl,tipEl,szFn){
   cvEl.addEventListener('touchend',()=>drawing=false);
 }
 setupCanvas(document.getElementById('cvL'),document.getElementById('gwL'),document.getElementById('tipL'),()=>SZL);
+/* ═══════ KEYBOARD ═══════ */
+let kbCell={r:Math.floor(ROWS/2),c:Math.floor(COLS/2)};
+function cellText(r,c){
+  const st=stL,K=k(r,c),v=grid[r][c];
+  const what=v===ST?'Start':v===EN?'End':terrName(r,c);
+  const state=st.path.has(K)?', on path':st.closed.has(K)?', visited':st.open.has(K)?', in frontier':'';
+  const g=st.costSoFar[K];
+  return 'Row '+r+', column '+c+': '+what+state+(g!=null&&state?', g '+g.toFixed(1):'');
+}
+(function(){
+  const cv=document.getElementById('cvL');
+  cv.addEventListener('focus',()=>{kbCell.r=Math.min(kbCell.r,ROWS-1);kbCell.c=Math.min(kbCell.c,COLS-1);draw();say(cellText(kbCell.r,kbCell.c)+'. Tool: '+tool+'.');});
+  cv.addEventListener('blur',()=>draw());
+  cv.addEventListener('keydown',e=>{
+    const mv={ArrowUp:[-1,0],ArrowDown:[1,0],ArrowLeft:[0,-1],ArrowRight:[0,1]}[e.key];
+    if(mv){
+      const n=e.shiftKey?5:1;
+      kbCell={r:Math.max(0,Math.min(ROWS-1,kbCell.r+mv[0]*n)),c:Math.max(0,Math.min(COLS-1,kbCell.c+mv[1]*n))};
+      draw();say(cellText(kbCell.r,kbCell.c));e.preventDefault();return;
+    }
+    if(e.key==='Home'&&sp){kbCell={r:sp.r,c:sp.c};draw();say(cellText(kbCell.r,kbCell.c));e.preventDefault();return;}
+    if(e.key==='End'&&ep){kbCell={r:ep.r,c:ep.c};draw();say(cellText(kbCell.r,kbCell.c));e.preventDefault();return;}
+    if(e.key==='Enter'||e.key===' '){applyT(kbCell.r,kbCell.c);say(cellText(kbCell.r,kbCell.c));e.preventDefault();return;}
+    if(e.key==='r'||e.key==='R'){doRun();e.preventDefault();return;}
+    if(e.key==='s'||e.key==='S'){doStep();e.preventDefault();return;}
+  });
+})();
 setupCanvas(document.getElementById('cvR'),document.getElementById('gwR'),document.getElementById('tipR'),()=>SZR);
 
 /* ═══════ GENERATORS ═══════ */
@@ -514,8 +561,9 @@ function vn(x,y){const ix=Math.floor(x),iy=Math.floor(y),fx=x-ix,fy=y-iy,sx=fx*f
 
 /* ═══════ FILE IMPORT ═══════ */
 function showToast(m,t){const e=document.getElementById('toast');e.textContent=m;e.className='toast show '+(t||'');clearTimeout(e._t);e._t=setTimeout(()=>e.classList.remove('show'),3500);}
-function openModal(){document.getElementById('infoModal').classList.add('open');}
-function closeModal(){document.getElementById('infoModal').classList.remove('open');}
+// Native modal dialog: focus moves in, Esc closes, focus returns to the "?" button.
+function openModal(){document.getElementById('infoModal').showModal();}
+function closeModal(){document.getElementById('infoModal').close();}
 document.getElementById('infoModal').addEventListener('click',e=>{if(e.target===document.getElementById('infoModal'))closeModal();});
 function handleImport(ev){const file=ev.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=function(e2){try{const txt=e2.target.result;const data=file.name.endsWith('.json')?parseJSON(txt):parseTXT(txt);applyFileImport(data);showToast('Loaded '+data.rows+'\u00D7'+data.cols+(data.hc?' with weights':''),'ok');}catch(err){showToast('Error: '+err.message,'err');}ev.target.value='';};reader.readAsText(file);}
 function cl(v,n){v=Math.floor(Number(v));return Number.isFinite(v)?Math.max(0,Math.min(v,n-1)):0;}

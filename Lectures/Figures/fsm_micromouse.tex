@@ -1,3 +1,4 @@
+% alt: State machine for a micromouse maze robot. State 0 idle/calibrate (zero IMU, initialise SLAM) goes on a push button to state 1 search forward (wall-following speed and steering). After each cell, state 4 SLAM and flood-fill updates the map and path cost and chooses: forward (state 1), a 90 degree pivot (state 2) or, at a dead end, a 180 degree U-turn (state 3), each returning to state 1. Reaching the centre goes to state 5 goal reached (optimise diagonal path). A second push button starts state 6 speed sprint, which alternates with state 7 high-G curves; the finish line or a fault leads to state 8 hard deceleration and back to state 0.
 % Marius-Juston 2026
 \documentclass[tikz, border=10pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)

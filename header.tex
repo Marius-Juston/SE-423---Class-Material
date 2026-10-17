@@ -93,6 +93,11 @@
   % Setting commands become no-ops in HTML mode
   \providecommand{\setminted}[2][]{}
   \providecommand{\setmintedinline}[2][]{}
+  % xcolor's [table] option puts a row-colour hook (\@rowc@lors) into every
+  % alignment; tex4ht fails on it inside math matrices and booktabs rules
+  % ("Misplaced \noalign": HW4, HW6, syllabus). No document uses \rowcolors,
+  % so in HTML mode the hook does nothing.
+  \makeatletter\AtBeginDocument{\def\@rowc@lors{}}\makeatother
 \else
   \usepackage{minted}
 \fi
@@ -160,6 +165,13 @@
 % ============================
 \input{fontsetup}
 
+% Large print (\SElargeprint, see fontsetup.tex): 1.5 line spacing and wider
+% margins on top of the 1.3x fonts.
+\ifdefined\SElargeprint
+  \geometry{left=0.75in, right=0.75in, top=0.75in, bottom=1.0in}
+  \AtBeginDocument{\setstretch{1.5}}
+\fi
+
 \definecolor{highlight}{rgb}{0.788235294, 0.0117647059, 0.0431372549}
 
 % pgfcalendar must be loaded in the preamble (here, in header.tex) rather
@@ -198,10 +210,12 @@
 }
 \makeatother
 
-% Document title (PDF metadata, shown by viewers and screen readers),
-% e.g. "SE 423 Mechatronics: Homework Assignment 3". A document can override
-% it with its own \hypersetup{pdftitle=...} after \input{header}.
-\hypersetup{pdftitle={\CourseCode\ \CourseName: \AssignmentType\ \HWNum}}
+% Document title, used for the PDF metadata and the HTML <title> (shown by viewers
+% and announced by screen readers), e.g. "SE 423 Mechatronics: Homework Assignment 3".
+% A document can override it after \input{header}:
+%   \renewcommand{\SEDocTitle}{...}\hypersetup{pdftitle={\SEDocTitle}}
+\newcommand{\SEDocTitle}{\CourseCode\ \CourseName: \AssignmentType\ \HWNum}
+\hypersetup{pdftitle={\SEDocTitle}}
 
 % ============================
 % Header / footer
@@ -299,7 +313,9 @@
 % Convenience wrappers \AltImg, \AltTikz, \AltMath are defined below
 % for the most common cases.
 \ifSEhtml
-  \NewDocumentCommand{\AltStart}{m}{\HCode{<span role="img" aria-label="#1">}}
+  % The description also becomes the alt text of an image inside the block
+  % (instead of tex4ht's placeholder "PIC").
+  \NewDocumentCommand{\AltStart}{m}{\HCode{<span role="img" aria-label="#1">}\Configure{GraphicsAlt}{#1}}
   \NewDocumentCommand{\AltEnd}{}{\HCode{</span>}}
 \else
   % accsupp's \BeginAccSupp{Alt={text}} ... \EndAccSupp{} writes a
@@ -319,9 +335,16 @@
 
 % \AltImg[opts]{path}{alt} — \includegraphics with an alt description
 % suitable for PDF/UA-2 (Figure structure) and HTML (aria-label).
-\NewDocumentCommand{\AltImg}{O{} m m}{%
-  \AltStart{#3}\includegraphics[#1]{#2}\AltEnd
-}
+\ifSEhtml
+  % HTML: the description becomes the <img> alt attribute itself (tex4ht's alt key).
+  \NewDocumentCommand{\AltImg}{O{} m m}{%
+    \includegraphics[#1,alt={#3}]{#2}%
+  }
+\else
+  \NewDocumentCommand{\AltImg}{O{} m m}{%
+    \AltStart{#3}\includegraphics[#1]{#2}\AltEnd
+  }
+\fi
 
 % \AltMath{alt}{math} — display equation tagged as a Formula with an
 % English-prose alt description. The math is typeset via \[ ... \].

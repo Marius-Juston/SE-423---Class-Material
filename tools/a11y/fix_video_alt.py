@@ -2,6 +2,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = []
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Describe online (YouTube) videos in the decks from YouTube's own metadata.
 

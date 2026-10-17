@@ -1,7 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12"
-# dependencies = ["anthropic==1.11.0", "pillow==12.3.0"]
+# dependencies = ["anthropic==1.11.0", "pillow==12.3.0", "python-pptx==1.0.2", "coloraide==8.13"]
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Draft alt text for slide pictures with Claude (vision), for a person to review.
 
@@ -24,13 +26,14 @@ import base64
 import io
 import json
 import os
-import re
 import sys
 import time
 from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(HERE))
 sys.path.insert(0, str(HERE.parent))
+import deck_reader as dr  # noqa: E402
 import sync_deck_figures as sdf  # noqa: E402
 
 MODEL = "claude-opus-5-5"
@@ -87,19 +90,26 @@ def image_block(path):
     return {"type": "image", "source": {"type": "base64", "media_type": media, "data": base64.b64encode(data).decode()}}
 
 
-def slide_context(deck, entry):
-    """Title and other text of the slide holding this picture."""
-    pics = deck.find(entry["picture"])
-    if not pics:
+def open_deck(name, cache):
+    """The deck Lectures/Slides/<name>, opened once per run."""
+    if name not in cache:
+        cache[name] = dr.open_deck(sdf.SLIDES / name)
+    return cache[name]
+
+
+def slide_context(prs, entry):
+    """Title and other text of the slide holding this picture (entry key: <slide id>/...)."""
+    slide = prs.slides.get(int(entry["picture"].split("/")[0]))
+    if slide is None:
         return "", ""
-    x = deck.data[pics[0].slide_part].decode()
     title, body = "", []
-    for sp in re.findall(r"<p:sp>.*?</p:sp>", x, re.S):
-        paras = ["".join(re.findall(r"<a:t>([^<]*)</a:t>", p)).strip() for p in re.findall(r"<a:p>.*?</a:p>", sp, re.S)]
+    for sp in dr.xp(slide._element, ".//p:sp"):
+        paras = [dr.text_of(p).strip() for p in dr.xp(sp, "./p:txBody/a:p")]
         text = "\n".join(p for p in paras if p)
-        if re.search(r'<p:ph\b[^>]*type="(?:title|ctrTitle)"', sp):
+        kind = dr.ph_type(sp)
+        if kind in dr.TITLE_TYPES:
             title = text
-        elif text and not re.search(r'type="(?:sldNum|ftr|dt)"', sp):
+        elif text and kind not in ("sldNum", "ftr", "dt"):
             body.append(text)
     return title, "\n".join(body)[:3000]
 
@@ -125,8 +135,7 @@ def cmd_submit(args):
     requests, ids = [], {}
     for i, source in enumerate(sources):
         entry = groups[source][0]
-        deck = decks.setdefault(entry["deck"], sdf.Deck(sdf.SLIDES / entry["deck"]))
-        title, body = slide_context(deck, entry)
+        title, body = slide_context(open_deck(entry["deck"], decks), entry)
         hint = (
             f"\nAn earlier caption (often just a web page title, may be unhelpful): {entry['alt']}"
             if entry.get("alt")

@@ -78,7 +78,7 @@ function Timeline({
 
       {/* Frame scrubber */}
       <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <button onClick={() => setPlaying(p => !p)} style={{
+        <button type="button" aria-label={playing ? "Pause" : "Play"} onClick={() => setPlaying(p => !p)} style={{
           ...btnStyle, width: 36,
           background: playing ? "var(--cyan)" : "var(--bg-3)",
           color: playing ? "var(--bg-0)" : "var(--text-0)",
@@ -86,9 +86,9 @@ function Timeline({
         }}>
           {playing ? "❚❚" : "▶"}
         </button>
-        <button onClick={() => setStep(0)} style={btnStyle}>↺</button>
-        <button onClick={() => setStep(Math.max(0, step - 1))} style={btnStyle}>‹</button>
-        <button onClick={() => setStep(Math.min(totalSteps - 1, step + 1))} style={btnStyle}>›</button>
+        <button type="button" aria-label="Back to the start" onClick={() => setStep(0)} style={btnStyle}>↺</button>
+        <button type="button" aria-label="Previous step" onClick={() => setStep(Math.max(0, step - 1))} style={btnStyle}>‹</button>
+        <button type="button" aria-label="Next step" onClick={() => setStep(Math.min(totalSteps - 1, step + 1))} style={btnStyle}>›</button>
         <div style={{
           fontFamily: "JetBrains Mono, monospace",
           fontSize: 10.5, color: "var(--text-3)",
@@ -97,6 +97,7 @@ function Timeline({
           t = {(step * 0.02).toFixed(2)}s
         </div>
         <input type="range" min={0} max={totalSteps - 1}
+               aria-label="Time step" aria-valuetext={`t = ${(step * 0.02).toFixed(2)} s`}
                value={step}
                onChange={(e) => setStep(parseInt(e.target.value))}
                style={{

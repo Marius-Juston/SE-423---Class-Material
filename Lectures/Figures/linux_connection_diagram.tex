@@ -1,3 +1,4 @@
+% alt: Diagram of the Linux programs on the robot and how they communicate. The central hub serial_COMandOpti talks to the RedBoard (F28379D) over serial/UDP. It exchanges data with LVCOMApp (TCP/IP server to LabVIEW), LinuxCMDApp (command-line control) and AstarApp (path planner) through named POSIX shared-memory blocks (e.g. sharedmem-LVCOMApp-readfrom with 32 chars and 8 floats; AstarApp's pose, obstacle and path blocks), each signalled with a semaphore (sem_post). A separate ladar_server reads the LiDAR on UART ttyAMA2 into posix-shared-mem-ladar-dist (228 floats).
 % Marius-Juston 2026
 \documentclass[tikz, border=10pt]{standalone}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)

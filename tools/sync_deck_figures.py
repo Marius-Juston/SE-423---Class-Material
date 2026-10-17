@@ -2,6 +2,8 @@
 # /// script
 # requires-python = ">=3.12"
 # dependencies = []
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Keep the pictures in the lecture decks and their source files in step.
 

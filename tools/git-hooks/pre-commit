@@ -12,11 +12,14 @@
 # 2. Accessibility (when a .tex document or a deck is staged), via
 #    tools/a11y/run_all.py --files: stops the commit only on problems that are new
 #    compared with a11y-baseline.json (missing alt text, missing slide titles, ...).
+# 3. Python tooling (when a .py script, its .py.lock or ruff.toml is staged): the
+#    uv lockfiles match the scripts' dependencies, ruff lint and format pass.
 
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
 echo "$staged" | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' && sync=1 || sync=
 echo "$staged" | grep -qE '\.(tex|pptx)$' && a11y=1 || a11y=
-[ -n "$sync$a11y" ] || exit 0
+echo "$staged" | grep -qE '(\.py|\.py\.lock|^ruff\.toml)$' && py=1 || py=
+[ -n "$sync$a11y$py" ] || exit 0
 
 if ! command -v uv >/dev/null 2>&1; then
   echo "pre-commit: uv not found, slide figures and accessibility not checked." >&2
@@ -34,9 +37,9 @@ if [ -n "$sync" ]; then
   base=HEAD
   git rev-parse -q --verify HEAD >/dev/null || base=
 
-  uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
+  uv run --quiet --locked "$root/tools/sync_deck_figures.py" --written "$list" extract || exit 1
   if [ -n "$base" ]; then
-    uv run --quiet "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
+    uv run --quiet --locked "$root/tools/sync_deck_figures.py" --written "$list" auto --base "$base" || status=$?
   fi
 
   sort -u "$list" | while IFS= read -r f; do
@@ -53,10 +56,21 @@ if [ -n "$a11y" ]; then
   # Re-read the staged list: the sync above may have staged more decks.
   files=$(git diff --cached --name-only --diff-filter=ACMR | grep -E '\.(tex|pptx)$')
   # shellcheck disable=SC2086
-  if ! (cd "$root" && uv run --quiet tools/a11y/run_all.py --files $files); then
+  if ! (cd "$root" && uv run --quiet --locked tools/a11y/run_all.py --files $files); then
     echo "pre-commit: new accessibility problems (above). Fix them, or see CONTRIBUTING.md#accessibility." >&2
     status=1
   fi
+fi
+
+if [ -n "$py" ]; then
+  # Keep the ruff version in step with the CI workflow ("Check Python tooling").
+  for s in $(cd "$root" && grep -rl --include='*.py' '^# /// script' tools .github/assets); do
+    if ! uv lock --check --quiet --script "$root/$s" 2>/dev/null; then
+      echo "pre-commit: $s.lock is out of date: run 'uv lock --script $s' and stage it" >&2
+      status=1
+    fi
+  done
+  (cd "$root" && uvx --quiet ruff@0.16.9 check . && uvx --quiet ruff@0.16.9 format --check .) || status=1
 fi
 
 exit "$status"

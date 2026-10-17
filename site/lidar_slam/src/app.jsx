@@ -510,8 +510,9 @@ function DriftPanel({ index, levelIdx, setLevelIdx, level, liveErr, thetaModel }
 }
 
 function DriftSlider({ label, unit, value, onChange, min, max, step, display, readOnly, master }) {
+  // Read-only rows dim only the slider, so their text keeps its contrast.
   return (
-    <div style={{ marginBottom: 9, opacity: readOnly ? 0.6 : 1 }}>
+    <div style={{ marginBottom: 9 }}>
       <div style={{
         display: "flex", justifyContent: "space-between", alignItems: "baseline",
         marginBottom: 3,
@@ -529,6 +530,8 @@ function DriftSlider({ label, unit, value, onChange, min, max, step, display, re
         </span>
       </div>
       <input type="range"
+             aria-label={label} aria-valuetext={`${display} ${unit || ""}`.trim()}
+             aria-readonly={readOnly || undefined}
              min={min} max={max} step={step} value={value}
              onChange={readOnly ? () => {} : onChange}
              style={{
@@ -536,6 +539,7 @@ function DriftSlider({ label, unit, value, onChange, min, max, step, display, re
                accentColor: master ? "var(--amber)" : "var(--text-3)",
                height: readOnly ? 2 : (master ? 6 : 4),
                pointerEvents: readOnly ? "none" : "auto",
+               opacity: readOnly ? 0.6 : 1,
              }} />
     </div>
   );

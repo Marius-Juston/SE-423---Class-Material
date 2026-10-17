@@ -2,6 +2,8 @@
 # /// script
 # requires-python = ">=3.10"
 # dependencies = ["fonttools", "uharfbuzz", "resvg-py"]
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """SE 423 GitHub repo card: a flat isometric diorama of the mechatronics lab.
 
@@ -22,6 +24,7 @@ given, the 1280x640 out.png that GitHub's social preview needs.
 
 Before writing, validate() runs geometric/accessibility checks; any failure aborts.
 """
+import itertools
 import math
 import sys
 from pathlib import Path
@@ -77,7 +80,7 @@ def text_path(s, x, y, size, font, fill, spacing=0.0, anchor="start", extra=""):
         x -= total
     pen = SVGPathPen(gs)
     cx = x
-    for info, pos in zip(buf.glyph_infos, buf.glyph_positions):
+    for info, pos in zip(buf.glyph_infos, buf.glyph_positions, strict=True):
         name = order[info.codepoint]
         tp = TransformPen(pen, (scale, 0, 0, -scale, cx + pos.x_offset * scale, y - pos.y_offset * scale))
         gs[name].draw(tp)
@@ -121,7 +124,7 @@ def box(x, y, z, dx, dy, dz, cols, extra=""):
 def cyl(cx, cy, z0, z1, r, top, side_l, side_r, extra=""):
     """Vertical cylinder (side shaded with a left→right gradient)."""
     rx, ry = r * C * math.sqrt(2) * K, r * S * math.sqrt(2) * K
-    (tx, ty), (bx, by) = P(cx, cy, z1), P(cx, cy, z0)
+    (tx, ty), (_bx, by) = P(cx, cy, z1), P(cx, cy, z0)
     gid = f"cy{abs(hash((cx, cy, z0, z1, r))) % 10**8}"
     g = (f'<linearGradient id="{gid}" x1="{tx-rx:.1f}" x2="{tx+rx:.1f}" y1="0" y2="0" gradientUnits="userSpaceOnUse">'
          f'<stop offset="0" stop-color="{side_l}"/><stop offset="1" stop-color="{side_r}"/></linearGradient>')
@@ -260,7 +263,7 @@ def prism(poly2, z0, z1, top, light, dark, extra=""):
 def _mix(c1, c2, t):
     a = [int(c1[i:i + 2], 16) for i in (1, 3, 5)]
     b = [int(c2[i:i + 2], 16) for i in (1, 3, 5)]
-    return "#" + "".join(f"{round(x + (y - x) * t):02X}" for x, y in zip(a, b))
+    return "#" + "".join(f"{round(x + (y - x) * t):02X}" for x, y in zip(a, b, strict=True))
 
 
 def disc_x(x, yc, zc, r, fill):
@@ -781,7 +784,7 @@ check(not cell_blocked(*start_c), "robot start cell is free in the inflated map"
 check(not cell_blocked(*goal_c), "goal (orange ball) cell is free in the inflated map")
 apath, aclosed = astar4(start_c, goal_c)
 check(len(apath) > 1, "A* found a path")
-check(all(abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1 for a, b in zip(apath, apath[1:])), "A* path is 4-connected")
+check(all(abs(a[0] - b[0]) + abs(a[1] - b[1]) == 1 for a, b in itertools.pairwise(apath)), "A* path is 4-connected")
 check(all(not cell_blocked(*c) for c in apath), "every A* path cell is collision-free")
 if len(apath) > 1:
     first = (apath[1][0] - apath[0][0], apath[1][1] - apath[0][1])

@@ -1,7 +1,9 @@
 #!/usr/bin/env -S uv run --script
 # /// script
 # requires-python = ">=3.12"
-# dependencies = []
+# dependencies = ["python-pptx==1.0.2", "coloraide==8.13"]
+# [tool.uv]
+# exclude-newer = "14 days"  # only releases at least two weeks old (supply-chain cooldown)
 # ///
 """Review drafted alt text in the browser and approve, edit or reject it.
 
@@ -30,7 +32,7 @@ HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE.parent))
 sys.path.insert(0, str(HERE))
 import sync_deck_figures as sdf  # noqa: E402
-from draft_alt_text import slide_context  # noqa: E402
+from draft_alt_text import open_deck, slide_context  # noqa: E402
 
 LOCK = threading.Lock()
 
@@ -48,8 +50,7 @@ def page():
     decks, cards = {}, []
     for i, (source, entries) in enumerate(sorted(groups.items(), key=lambda kv: sdf.natural(kv[0]))):
         e = entries[0]
-        deck = decks.setdefault(e["deck"], sdf.Deck(sdf.SLIDES / e["deck"]))
-        title, body = slide_context(deck, e)
+        title, body = slide_context(open_deck(e["deck"], decks), e)
         where = ", ".join(f"{x['deck'][:-5]} slide {x['slide']}" for x in entries)
         text = "" if e["alt"] == "(decorative)" else e["alt"]
         note = "<p class='hint'>Suggested: decorative</p>" if e["alt"] == "(decorative)" else ""

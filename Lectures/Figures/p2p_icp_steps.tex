@@ -1,3 +1,4 @@
+% alt: Series on solving point-to-point ICP. Step 1: compute the centroids p-bar and q-bar of the source triangle P and the rotated, shifted target triangle Q. Step 2: centre both clouds on their centroids and form the cross-covariance H = sum of (p_i - p-bar)(q_i - q-bar) transpose. Later steps take the SVD of H to get the rotation and then the translation.
 \documentclass{article}
 \input{fontsetup} % Atkinson Hyperlegible Next (needs LuaLaTeX; run from repo root)
 \usepackage{tikz}
