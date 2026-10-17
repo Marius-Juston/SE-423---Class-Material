@@ -88,7 +88,7 @@ def figures_without_alt(root):
                 else:
                     ok = False  # an annotation or something unexpected: leave it alone
                     break
-            if ok and (mcids or structure):
+            if ok:  # an empty Figure (no content at all) is simply dropped
                 out.append((el, mcids, structure))
             return
         for c in children:
