@@ -106,5 +106,24 @@
     "warning": 4113
    }
   }
+ },
+ {
+  "date": "2026-10-17",
+  "errors": 0,
+  "warnings": 48647,
+  "by_tool": {
+   "epub": {
+    "error": 0,
+    "warning": 1
+   },
+   "pdf": {
+    "error": 0,
+    "warning": 44533
+   },
+   "pptx": {
+    "error": 0,
+    "warning": 4113
+   }
+  }
  }
 ]
