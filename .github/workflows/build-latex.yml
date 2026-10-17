@@ -643,7 +643,10 @@ jobs:
       # reviewed alt text in figures.toml or `% alt:` lines in the TikZ sources), and
       # the gallery entries in index.html (JSON-escaped).
       - name: Describe figures and fill the gallery
-        run: uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
+        run: |
+          uv run --quiet --locked tools/a11y/svg_gallery.py --root deploy_target
+          # Search index (slides + every described image) and web-viewable figure copies.
+          uv run --quiet --locked tools/a11y/search_index.py --root deploy_target
 
       - name: Set up accessibility checkers
         run: |
