@@ -92,30 +92,30 @@ As discussed in the lecture, the EPWM peripheral has many more options than we w
 To set up the PWM peripheral and its output channels, you will need to program the PWM peripheral registers through the “bit-field” unions TI defined. Let us look at the definition of the bit-fields for the registers \mintinline{c}{TBCTL} and \mintinline{c}{AQCTLA}.  (\textbf{Note}: you can find these definitions in Code Composer Studio also by typing in the text \mintinline{c}{EPwm12Regs}, somewhere in your \lstinline|main()| function, and then right clicking and selecting “Open Declaration.”  Then do that one more time on the \lstinline|TBCTL_REG| union. YOU DO NOT cut and paste the code below into your code. I am just showing you how to view variable definitions using “Open Declaration”. Make sure to delete this single line of code where you typed \mintinline{c}{EPwm12Regs}, otherwise you will receive a compiler error later.)
 %
 \begin{minted}{c}
-struct TBCTL_BITS {                     // bits description
-    Uint16 CTRMODE:2;                   // 1:0 Counter Mode
-    Uint16 PHSEN:1;                     // 2 Phase Load Enable
-    Uint16 PRDLD:1;                     // 3 Active Period Load
-    Uint16 SYNCOSEL:2;                  // 5:4 Sync Output Select
-    Uint16 SWFSYNC:1;                   // 6 Software Force Sync Pulse
-    Uint16 HSPCLKDIV:3;                 // 9:7 High Speed TBCLK Pre-scaler
-    Uint16 CLKDIV:3;                    // 12:10 Time Base Clock Pre-scaler
-    Uint16 PHSDIR:1;                    // 13 Phase Direction Bit
-    Uint16 FREE_SOFT:2;                 // 15:14 Emulation Mode Bits
+struct TBCTL_BITS {      // bits description
+    Uint16 CTRMODE:2;    // 1:0 Counter Mode
+    Uint16 PHSEN:1;      // 2 Phase Load Enable
+    Uint16 PRDLD:1;      // 3 Active Period Load
+    Uint16 SYNCOSEL:2;   // 5:4 Sync Output Select
+    Uint16 SWFSYNC:1;    // 6 Software Force Sync Pulse
+    Uint16 HSPCLKDIV:3;  // 9:7 High Speed TBCLK Pre-scaler
+    Uint16 CLKDIV:3;     // 12:10 Time Base Clock Pre-scaler
+    Uint16 PHSDIR:1;     // 13 Phase Direction Bit
+    Uint16 FREE_SOFT:2;  // 15:14 Emulation Mode Bits
 };
 union TBCTL_REG {
     Uint16 all;
     struct TBCTL_BITS bit;
 };
 
-struct AQCTLA_BITS {                    // bits description
-    Uint16 ZRO:2;                       // 1:0 Action Counter = Zero
-    Uint16 PRD:2;                       // 3:2 Action Counter = Period
-    Uint16 CAU:2;                       // 5:4 Action Counter = Compare A Up
-    Uint16 CAD:2;                       // 7:6 Action Counter = Compare A Down
-    Uint16 CBU:2;                       // 9:8 Action Counter = Compare B Up
-    Uint16 CBD:2;                       // 11:10 Action Counter = Compare B Down
-    Uint16 rsvd1:4;                     // 15:12 Reserved
+struct AQCTLA_BITS {  // bits description
+    Uint16 ZRO:2;     // 1:0 Action Counter = Zero
+    Uint16 PRD:2;     // 3:2 Action Counter = Period
+    Uint16 CAU:2;     // 5:4 Action Counter = Compare A Up
+    Uint16 CAD:2;     // 7:6 Action Counter = Compare A Down
+    Uint16 CBU:2;     // 9:8 Action Counter = Compare B Up
+    Uint16 CBD:2;     // 11:10 Action Counter = Compare B Down
+    Uint16 rsvd1:4;   // 15:12 Reserved
 };
 
 union AQCTLA_REG {
@@ -266,15 +266,19 @@ We want to command the ADCA peripheral to sample ADCINA4. There are a few ways t
 EALLOW;
 EPwm4Regs.ETSEL.bit.SOCAEN = 0; // Disable SOC on A group
 EPwm4Regs.TBCTL.bit.CTRMODE = 3; // freeze counter
-EPwm4Regs.ETSEL.bit.SOCASEL = ???; // Select event when counter equal to PRD
-EPwm4Regs.ETPS.bit.SOCAPRD = ???; // Generate pulse on 1st event (“pulse” is the same as “trigger”)
+// Select event when counter equal to PRD
+EPwm4Regs.ETSEL.bit.SOCASEL = ???;
+// Generate pulse on 1st event ("pulse" is the same as "trigger")
+EPwm4Regs.ETPS.bit.SOCAPRD = ???;
 
 EPwm4Regs.TBCTR = 0x0; // Clear counter
 EPwm4Regs.TBPHS.bit.TBPHS = 0x0000; // Phase is 0
 EPwm4Regs.TBCTL.bit.PHSEN = 0; // Disable phase loading
 EPwm4Regs.TBCTL.bit.CLKDIV = 0; // divide by 1 50Mhz Clock
-EPwm4Regs.TBPRD = ???;  // Set Period to 1ms sample. The input clock is 50MHz.
-// Notice here that we are not setting CMPA or CMPB because we are not using the PWM signal
+// Set Period to 1ms sample. The input clock is 50MHz.
+EPwm4Regs.TBPRD = ???;
+// Notice here that we are not setting CMPA or
+// CMPB because we are not using the PWM signal
 EPwm4Regs.ETSEL.bit.SOCAEN = 1; //enable SOCA
 EPwm4Regs.TBCTL.bit.CTRMODE = ???; //unfreeze, and enter up count mode
 EDIS;
@@ -288,7 +292,8 @@ Some of the given code I found in an ADC example. It retrieves the default calib
 EALLOW;
 //write configurations for ADCA
 AdcaRegs.ADCCTL2.bit.PRESCALE = 6; //set ADCCLK divider to /4
-AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);  //read calibration settings
+// read calibration settings
+AdcSetMode(ADC_ADCA, ADC_RESOLUTION_12BIT, ADC_SIGNALMODE_SINGLE);
 //Set pulse positions to late
 AdcaRegs.ADCCTL1.bit.INTPULSEPOS = 1;
 //power up the ADCs
@@ -298,19 +303,26 @@ DELAY_US(1000);
 
 //Select the channels to convert and the end of conversion flag
 //ADCA
-AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???; //SOC0 will convert Channel you choose Does not have to be A0
-AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
+// SOC0 will convert Channel you choose Does not have to be A0
+AdcaRegs.ADCSOC0CTL.bit.CHSEL = ???;
+// sample window is acqps + 1 SYSCLK cycles = 500ns
+AdcaRegs.ADCSOC0CTL.bit.ACQPS = 99;
 AdcaRegs.ADCSOC0CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???; //SOC1 will conv Channel you choose Does not have to be A1
-//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
+// SOC1 will conv Channel you choose Does not have to be A1
+//AdcaRegs.ADCSOC1CTL.bit.CHSEL = ???;
+// sample window is acqps + 1 SYSCLK cycles = 500ns
+//AdcaRegs.ADCSOC1CTL.bit.ACQPS = 99;
 //AdcaRegs.ADCSOC1CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???; //SOC2 will conv Channel you choose Does not have to be A2
-//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99; //sample window is acqps + 1 SYSCLK cycles = 500ns
+// SOC2 will conv Channel you choose Does not have to be A2
+//AdcaRegs.ADCSOC2CTL.bit.CHSEL = ???;
+// sample window is acqps + 1 SYSCLK cycles = 500ns
+//AdcaRegs.ADCSOC2CTL.bit.ACQPS = 99;
 //AdcaRegs.ADCSOC2CTL.bit.TRIGSEL = ???; // EPWM4 ADCSOCA 
 
-//set to last or only SOC that is converted, and it will set INT1 flag ADCA1
+// set to last or only SOC that is converted,
+// and it will set INT1 flag ADCA1
 AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;
 AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag
 AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared	
@@ -329,8 +341,8 @@ __interrupt void ADCA_ISR (void)
     
     // Here covert ADCINA4 to volts
 
-    // Print ADCINA4’s voltage value to TeraTerm every 100ms by setting UARTPrint to one every 100th 
-    //time in this function.
+    // Print ADCINA4's voltage value to TeraTerm every 100ms by
+    // setting UARTPrint to one every 100th time in this function.
 
     AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1;  //clear interrupt flag
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
