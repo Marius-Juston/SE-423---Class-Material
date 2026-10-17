@@ -17,7 +17,7 @@ Rules:
   pptx/video-no-alt          video/audio placeholder without a description
   pptx/slide-no-title        slide without a title placeholder (or with an empty one);
                              counted per deck
-  pptx/table-no-header       table without a header row (tblPr firstRow)
+  pptx/table-no-header       data table (two or more rows) without a header row (tblPr firstRow)
   pptx/low-contrast          text whose colour and background are both known and have a
                              contrast ratio under 4.5:1 (3:1 for large text)
   pptx/duplicate-title       (warning) a slide title repeated in the same deck
@@ -114,8 +114,10 @@ def lint(path, ignore):
                 )
 
         # Tables.
+        # Data tables need a header row; a single-row table (a list of fields, e.g. a
+        # packet format) has no data under it, so it is described with alt text instead.
         for frame in dr.xp(root, ".//p:graphicFrame[.//a:tbl]"):
-            if not dr.xp(frame, ".//a:tbl/a:tblPr[@firstRow='1']"):
+            if len(dr.xp(frame, ".//a:tbl/a:tr")) > 1 and not dr.xp(frame, ".//a:tbl/a:tblPr[@firstRow='1']"):
                 finding(
                     "pptx/table-no-header",
                     f"table on slide {no} has no header row",

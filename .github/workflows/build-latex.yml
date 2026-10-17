@@ -607,6 +607,8 @@ jobs:
           fi
 
           find deploy_target -name "*-luamml-mathml.html" -not -path "*/.git/*" -delete
+          # Pages renamed or retired since an earlier deploy (deploys only add files).
+          rm -f deploy_target/path-planning.html
 
           # Adds the svg figures to the deployment target as well, ensuring they are available for the gallery injection step.
           if [ -d "${{ env.SVG_INCLUDE_DIR }}" ]; then
