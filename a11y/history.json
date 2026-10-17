@@ -125,5 +125,20 @@
     "warning": 4113
    }
   }
+ },
+ {
+  "date": "2026-10-17",
+  "errors": 0,
+  "warnings": 48646,
+  "by_tool": {
+   "pdf": {
+    "error": 0,
+    "warning": 44533
+   },
+   "pptx": {
+    "error": 0,
+    "warning": 4113
+   }
+  }
  }
 ]

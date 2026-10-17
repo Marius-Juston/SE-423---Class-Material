@@ -1,12 +1,201 @@
 [
  {
-  "tool": "epub",
-  "file": "syllabus.epub",
-  "rule": "epub/HTM-025",
-  "message": "Non-registered URI scheme type found in href.",
+  "tool": "pdf",
+  "file": "Lectures/Slides/L24-25.pdf",
+  "rule": "pdf/ISO 14289-1:2014 7.1-10",
+  "message": "The document catalog dictionary shall include a ViewerPreferences dictionary containing a DisplayDocTitle key, whose value shall be true",
   "where": "",
   "severity": "warning",
   "count": 1
+ },
+ {
+  "tool": "pdf",
+  "file": "Lectures/Slides/L24-25.pdf",
+  "rule": "pdf/ISO 14289-1:2014 7.1-3",
+  "message": "Content shall be marked as Artifact or tagged as real content",
+  "where": "",
+  "severity": "warning",
+  "count": 28047
+ },
+ {
+  "tool": "pdf",
+  "file": "Lectures/Slides/L24-25.pdf",
+  "rule": "pdf/ISO 14289-1:2014 7.1-9",
+  "message": "The Metadata stream in the document's catalog dictionary shall contain a dc:title entry, where dc is the recommended prefix for the Dublin Core metadata schema as defined in the XMP specification, whi",
+  "where": "",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "pdf",
+  "file": "Lectures/Slides/L24-25.pdf",
+  "rule": "pdf/ISO 14289-1:2014 7.18.5-1",
+  "message": "Links shall be tagged according to ISO 32000-1:2008, 14.8.4.4.2, Link Element",
+  "where": "",
+  "severity": "warning",
+  "count": 14
+ },
+ {
+  "tool": "pdf",
+  "file": "Lectures/Slides/L24-25.pdf",
+  "rule": "pdf/ISO 14289-1:2014 7.3-1",
+  "message": "Figure tags shall include an alternative representation or replacement text that represents the contents marked with the Figure tag as noted in ISO 32000-1:2008, 14.7.2, Table 323",
+  "where": "",
+  "severity": "warning",
+  "count": 330
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L1.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 31
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L10.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 191
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L11.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 105
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L12.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 161
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L13.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 531
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L14.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 1
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L16.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 494
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L17.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 4
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L18.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 370
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L2.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 4
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L22-23.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 106
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L24-25.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 355
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L3.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 91
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L4.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 201
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L5.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 118
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L6-7.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 547
+ },
+ {
+  "tool": "pptx",
+  "file": "Lectures/Slides/L8-9.pptx",
+  "rule": "pptx/small-text",
+  "message": "text runs under 18 pt",
+  "where": "",
+  "severity": "warning",
+  "count": 803
  },
  {
   "tool": "pdf",
@@ -640,51 +829,6 @@
  },
  {
   "tool": "pdf",
-  "file": "Lectures/Slides/L24-25.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.1-10",
-  "message": "The document catalog dictionary shall include a ViewerPreferences dictionary containing a DisplayDocTitle key, whose value shall be true",
-  "where": "",
-  "severity": "warning",
-  "count": 1
- },
- {
-  "tool": "pdf",
-  "file": "Lectures/Slides/L24-25.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.1-3",
-  "message": "Content shall be marked as Artifact or tagged as real content",
-  "where": "",
-  "severity": "warning",
-  "count": 28047
- },
- {
-  "tool": "pdf",
-  "file": "Lectures/Slides/L24-25.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.1-9",
-  "message": "The Metadata stream in the document's catalog dictionary shall contain a dc:title entry, where dc is the recommended prefix for the Dublin Core metadata schema as defined in the XMP specification, whi",
-  "where": "",
-  "severity": "warning",
-  "count": 1
- },
- {
-  "tool": "pdf",
-  "file": "Lectures/Slides/L24-25.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.18.5-1",
-  "message": "Links shall be tagged according to ISO 32000-1:2008, 14.8.4.4.2, Link Element",
-  "where": "",
-  "severity": "warning",
-  "count": 14
- },
- {
-  "tool": "pdf",
-  "file": "Lectures/Slides/L24-25.pdf",
-  "rule": "pdf/ISO 14289-1:2014 7.3-1",
-  "message": "Figure tags shall include an alternative representation or replacement text that represents the contents marked with the Figure tag as noted in ISO 32000-1:2008, 14.7.2, Table 323",
-  "where": "",
-  "severity": "warning",
-  "count": 330
- },
- {
-  "tool": "pdf",
   "file": "Lectures/Slides/L3.pdf",
   "rule": "pdf/ISO 14289-1:2014 7.1-10",
   "message": "The document catalog dictionary shall include a ViewerPreferences dictionary containing a DisplayDocTitle key, whose value shall be true",
@@ -889,158 +1033,5 @@
   "where": "",
   "severity": "warning",
   "count": 89
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L1.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 31
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L10.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 191
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L11.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 105
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L12.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 161
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L13.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 531
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L14.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 1
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L16.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 494
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L17.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 4
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L18.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 370
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L2.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 4
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L22-23.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 106
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L24-25.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 355
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L3.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 91
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L4.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 201
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L5.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 118
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L6-7.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 547
- },
- {
-  "tool": "pptx",
-  "file": "Lectures/Slides/L8-9.pptx",
-  "rule": "pptx/small-text",
-  "message": "text runs under 18 pt",
-  "where": "",
-  "severity": "warning",
-  "count": 803
  }
 ]
