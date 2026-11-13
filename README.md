@@ -24,6 +24,14 @@ The TAs and the instructors should make use of a Master Google Sheet https://doc
 
 ## Resources
 
+### Practice game (Bringup)
+
+A practice game for the whole course: short levels that go from voltage, C and bits up to the robot, with interactive figures, puzzles, and real course-style C that runs on a simulated F28379D board (LEDs, timers, interrupts, serial, ADC, PWM, SPI, encoders, LIDAR). Every level links back to the lecture slide, lab or homework it practises.
+
+- Play in the browser, nothing to install: https://marius-juston.github.io/SE423-Bringup/
+- Desktop app, one line (Linux and macOS): `curl -fsSL https://marius-juston.github.io/SE423-Bringup/install.sh | bash`; on Windows (PowerShell): `irm https://marius-juston.github.io/SE423-Bringup/install.ps1 | iex`
+- Source: https://github.com/Marius-Juston/SE423-Bringup
+
 ### Animations
 
 The animations creation is available in the following repo: https://github.com/Marius-Juston/SE423Animations and are posted in the following YouTube channel https://www.youtube.com/playlist?list=PLc6LuUpXlDnnyZrtYWuCMLDYuijEMPsBh
