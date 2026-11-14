@@ -1,0 +1,13 @@
+# tex-fmt (https://github.com/WGUNDERWOOD/tex-fmt): one layout for every .tex file.
+# Run by the pre-commit hook on staged files and checked (warning only) by CI;
+# by hand: tex-fmt <file.tex>   or   tex-fmt --check <file.tex>
+#
+# It only touches the layout of the source (indentation, trailing spaces, runs of
+# blank lines). Text is never rewrapped: a paragraph stays on one line, so diffs
+# stay per paragraph. minted, lstlisting and verbatim blocks are left alone.
+wrap = false
+tabsize = 4
+tabchar = "space"
+format-tables = false
+no-indent-envs = ["document"]
+lists = ["checkoff"]

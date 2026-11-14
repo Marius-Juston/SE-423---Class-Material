@@ -50,6 +50,8 @@ uv run tools/sync_deck_figures.py decks <files>     # which decks use these sour
 sh tools/install-hooks.sh                            # pre-commit hook: extract + auto, stages results
 ```
 
+**LaTeX layout** (tex-fmt, pinned release, settings in `tex-fmt.toml`): `sh tools/tex-fmt.sh` formats the handouts (`Homeworks/*.tex`, `Labs/*.tex`, `syllabus.tex`), `--check` only reports. The pre-commit hook formats staged handouts; CI only warns (Overleaf edits arrive unformatted, which is fine).
+
 **Repo card:** `uv run .github/assets/make_repo_card.py` (rewrites `repo-card.svg` + `.png`; ~300 layout/accessibility checks must pass).
 
 **Local TeX caveat:** Debian/Ubuntu's packaged TeX Live (2023) lacks `luaotfload` unless `texlive-luatex` is installed, and its LaTeX kernel is too old for the PDF/UA tagging in the homeworks. Use TeX Live 2026 (as CI does) to reproduce CI builds.
@@ -158,6 +160,7 @@ Follow these precisely to keep the build and accessibility pipeline happy:
 - **Code:** use `minted` (`\begin{minted}{c}` for C, `\mintinline{c}{...}` inline)
 - **Arrows:** use `$\rightarrow$`, never `->`
 - **List items:** `\item`, not manual numbering
+- **Layout:** `tex-fmt` decides indentation (4 spaces), never rewraps text (a paragraph is one line) and leaves `minted`/`lstlisting` bodies alone. Don't hand-format against it. It counts braces per line: a lone `{` or `\{` in running text (e.g. inline code ending in `{`) shifts the indentation of the rest of the file; write `\textbraceleft` there. No tab characters in code blocks. The shared macro files and `Lectures/Figures/*.tex` are not formatted.
 - **Blank lines:** use a `%` comment line as a visual separator before/after `\begin{}`/`\end{}` blocks, not actual blank lines
 - **Colors:** use only the named UIUC palette from `header.tex`; do not define new colors
 - **Fonts:** never call `\setmainfont`/`\usepackage{helvet}` etc. in a document; the typeface comes from `fontsetup.tex` only

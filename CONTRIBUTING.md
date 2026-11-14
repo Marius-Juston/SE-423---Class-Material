@@ -128,6 +128,17 @@ Labs and homeworks are written in **LaTeX** and compiled to PDF by the CI pipeli
 - Avoid double-spacing before `\begin{}` blocks. Use a `%` comment line as a visual separator instead.
 - Use `$\rightarrow$` instead of `->` in text.
 
+### Source layout (automatic)
+
+The handouts' source is laid out by [tex-fmt](https://github.com/WGUNDERWOOD/tex-fmt) (settings in `tex-fmt.toml`): 4-space indentation inside environments, no trailing spaces, no runs of blank lines. It never rewraps text (keep one paragraph per line) and leaves code blocks alone, so the PDF and HTML do not change.
+
+You do not have to run anything:
+
+- **Working in a clone:** after `sh tools/install-hooks.sh` (once), every commit formats the handouts it contains. The formatter is downloaded once (a pinned, checksummed release).
+- **Working in Overleaf:** just write. Overleaf's commits arrive unformatted; CI adds a "LaTeX layout" reminder to the run and nothing else happens. The file is formatted the next time someone commits it from a clone, or all at once with `sh tools/tex-fmt.sh`.
+
+One thing to know: tex-fmt counts braces line by line, so a lone `{` in running text (inline code such as `if (x) {`) shifts the indentation of everything after it. Write `\textbraceleft` for such a brace.
+
 ### Code listings
 
 Use the `minted` package for code snippets. Specify the language explicitly (e.g., `\begin{minted}{c}` for C code targeting the F28379D).

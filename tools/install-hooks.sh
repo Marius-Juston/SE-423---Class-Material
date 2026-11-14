@@ -1,6 +1,7 @@
 #!/bin/sh
 # Use the repository's git hooks (tools/git-hooks). Run once per clone.
-# The pre-commit hook keeps slide pictures and their source files in step.
+# The pre-commit hook keeps slide pictures and their source files in step, formats
+# the LaTeX handouts being committed (tools/tex-fmt.sh) and runs the accessibility lint.
 set -e
 root=$(git rev-parse --show-toplevel)
 chmod +x "$root/tools/git-hooks/"*
