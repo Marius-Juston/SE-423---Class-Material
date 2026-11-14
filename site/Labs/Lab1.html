@@ -253,77 +253,76 @@ sessions.
 <span class='fancyvrblineno'><a id='x1-7048r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#define TWOPI       6.283185307179586476925286766559</span></span> 
 <span class='fancyvrblineno'><a id='x1-7050r25'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#define HALFPI      1.5707963267948966192313216916398</span></span> 
 <span class='fancyvrblineno'><a id='x1-7052r26'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7054r27'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Interrupt Service Routines predefinition</span></span> 
-<span class='fancyvrblineno'><a id='x1-7058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer1_isr(void);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7062r31'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7064r32'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void SWI_isr(void);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7066r33'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7068r34'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Count variables</span></span> 
-<span class='fancyvrblineno'><a id='x1-7070r35'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numTimer0calls = 0;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7072r36'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numSWIcalls = 0;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7074r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>extern uint32_t numRXA;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7076r38'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t UARTPrint = 0;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7078r39'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t LEDdisplaynum = 0;</span></span></pre>
-<!-- l. 157 --><p class='noindent'>For these C exercises, this is where I would like you to create any global variables or global functions. Actually, the
+</span><span class='fancyvrblineno'><a id='x1-7054r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Interrupt Service Routines predefinition</span></span> 
+<span class='fancyvrblineno'><a id='x1-7056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer1_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7062r31'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void SWI_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7064r32'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7066r33'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Count variables</span></span> 
+<span class='fancyvrblineno'><a id='x1-7068r34'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numTimer0calls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7070r35'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numSWIcalls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7072r36'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>extern uint32_t numRXA;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7074r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7076r38'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t LEDdisplaynum = 0;</span></span></pre>
+<!-- l. 156 --><p class='noindent'>For these C exercises, this is where I would like you to create any global variables or global functions. Actually, the
 only kind of functions we will create this semester will be global functions. We will never need to create
 a function inside another function and that includes not creating functions inside your <span class='rm-lmtt-10x-x-109'>main() </span>function.
 You can of course put your global functions anywhere outside of other functions. It is just nice to have all
 your functions defined in one spot of your code so they are easier for you to find. The same goes for global
 variables.
 </p>   
-<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-7080r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>void main(void)</span></span> 
-<span class='fancyvrblineno'><a id='x1-7082r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-7084r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // PLL, WatchDog, enable Peripheral Clocks</span></span> 
-<span class='fancyvrblineno'><a id='x1-7086r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // This example function is found in the F2837xD_SysCtrl.c file.</span></span> 
-<span class='fancyvrblineno'><a id='x1-7088r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitSysCtrl();</span></span> 
-<span class='fancyvrblineno'><a id='x1-7090r6'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7092r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitGpio();</span></span> 
-<span class='fancyvrblineno'><a id='x1-7094r8'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7096r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blue LED on LaunchPad</span></span> 
-<span class='fancyvrblineno'><a id='x1-7098r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7100r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7102r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPASET.bit.GPIO31 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7104r13'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7106r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Red LED on LaunchPad</span></span> 
-<span class='fancyvrblineno'><a id='x1-7108r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7110r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7112r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPBSET.bit.GPIO34 = 1;</span></span></pre>
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-7078r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>void main(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7080r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7082r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // PLL, WatchDog, enable Peripheral Clocks</span></span> 
+<span class='fancyvrblineno'><a id='x1-7084r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // This example function is found in the F2837xD_SysCtrl.c file.</span></span> 
+<span class='fancyvrblineno'><a id='x1-7086r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitSysCtrl();</span></span> 
+<span class='fancyvrblineno'><a id='x1-7088r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7090r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitGpio();</span></span> 
+<span class='fancyvrblineno'><a id='x1-7092r8'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7094r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blue LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-7096r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7098r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7100r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPASET.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7102r13'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7104r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Red LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-7106r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7108r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7110r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPBSET.bit.GPIO34 = 1;</span></span></pre>
                                                                                                        
                                                                                                        
-<!-- l. 179 --><p class='noindent'>… <span class='rm-lmri-10x-x-109'>Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
+<!-- l. 178 --><p class='noindent'>… <span class='rm-lmri-10x-x-109'>Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
 here </span>…
 </p>   
-<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-7114r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;  // This is needed to write to EALLOW protected registers</span></span> 
-<span class='fancyvrblineno'><a id='x1-7116r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7118r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7120r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</span></span></pre>
-<!-- l. 188 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-7112r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;  // This is needed to write to EALLOW protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-7114r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7116r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7118r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</span></span></pre>
+<!-- l. 187 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
 </p>   
-<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-7122r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
-<span class='fancyvrblineno'><a id='x1-7124r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
-<span class='fancyvrblineno'><a id='x1-7126r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7128r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7130r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7132r6'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7134r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable CpuTimer Interrupt bit TIE</span></span> 
-<span class='fancyvrblineno'><a id='x1-7136r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0Regs.TCR.all = 0x4000;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7138r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer1Regs.TCR.all = 0x4000;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7140r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2Regs.TCR.all = 0x4000;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7142r11'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7144r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    init_serial(&amp;SerialA,115200);</span></span></pre>
-<!-- l. 205 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-7120r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
+<span class='fancyvrblineno'><a id='x1-7122r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7124r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7126r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7128r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7130r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7132r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable CpuTimer Interrupt bit TIE</span></span> 
+<span class='fancyvrblineno'><a id='x1-7134r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7136r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer1Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7138r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7140r11'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7142r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    init_serial(&amp;SerialA,115200);</span></span></pre>
+<!-- l. 204 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
 </p>   
-<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-7146r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable global Interrupts and higher priority real-time debug</span></span> 
-<span class='fancyvrblineno'><a id='x1-7148r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // events</span></span> 
-<span class='fancyvrblineno'><a id='x1-7150r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EINT;  // Enable Global interrupt INTM</span></span> 
-<span class='fancyvrblineno'><a id='x1-7152r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ERTM;  // Enable Global realtime interrupt DBGM</span></span> 
-<span class='fancyvrblineno'><a id='x1-7154r5'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7156r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // IDLE loop. Just sit and loop forever (optional):</span></span> 
-<span class='fancyvrblineno'><a id='x1-7158r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    while(1)</span></span> 
-<span class='fancyvrblineno'><a id='x1-7160r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    {</span></span></pre>
-<!-- l. 218 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
+<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-7144r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable global Interrupts and higher priority real-time debug</span></span> 
+<span class='fancyvrblineno'><a id='x1-7146r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // events</span></span> 
+<span class='fancyvrblineno'><a id='x1-7148r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EINT;  // Enable Global interrupt INTM</span></span> 
+<span class='fancyvrblineno'><a id='x1-7150r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ERTM;  // Enable Global realtime interrupt DBGM</span></span> 
+<span class='fancyvrblineno'><a id='x1-7152r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7154r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // IDLE loop. Just sit and loop forever (optional):</span></span> 
+<span class='fancyvrblineno'><a id='x1-7156r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    while(1)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7158r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    {</span></span></pre>
+<!-- l. 217 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
 time the timer 2’s function is entered. So both the rate at which timer 2’s function is called and this modulus 50
 determines the rate at which the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function is called. <span class='rm-lmtt-10x-x-109'>serial_printf </span>prints text to Tera Term or some
 other serial terminal program. Also notice that after the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function call, <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set back to 0. Think
@@ -331,76 +330,76 @@ about why that is important. Add a comment to the <span class='rm-lmtt-10x-x-109
 zero here to make this code work correctly. (Correctly means that the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function is called at a periodic
 rate.)
 </p>   
-<pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-7162r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      if (UARTPrint == 1 ) {</span></span></pre>
-<!-- l. 224 --><p class='noindent'>For this exercise, I would like you to put most of your written code here. In future labs you will find that code run here, in
+<pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-7160r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      if (UARTPrint == 1 ) {</span></span></pre>
+<!-- l. 223 --><p class='noindent'>For this exercise, I would like you to put most of your written code here. In future labs you will find that code run here, in
 this continuous while loop “<span class='rm-lmtt-10x-x-109'>while(1)</span>”, is less important code. It will be your lower priority code that does not have as
 strict of timing. Also this is the only place in your code that you should call <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>(and <span class='rm-lmtt-10x-x-109'>serial_printf </span>for
 this lab). <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>is somewhat of a large function and depending on how many variables you print can take
 some time and is not deterministic.
 </p>   
-<pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-7164r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Normally on the Robot Car we only use the below</span></span> 
-<span class='fancyvrblineno'><a id='x1-7166r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // UART_printfLine functions to write to the</span></span> 
-<span class='fancyvrblineno'><a id='x1-7168r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // on board LCD screen. This below serial_printf is only used</span></span> 
-<span class='fancyvrblineno'><a id='x1-7170r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // in lab 1 to print to a serial</span></span> 
-<span class='fancyvrblineno'><a id='x1-7172r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // terminal over a USB cable like you will for your Homeworks.</span></span> 
-<span class='fancyvrblineno'><a id='x1-7174r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //serial_printf(&amp;SerialA,"Num Timer2:%ld Num SerialRX: %ld\r\n",</span></span> 
-<span class='fancyvrblineno'><a id='x1-7176r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //              CpuTimer2.InterruptCount,numRXA);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7178r8'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7180r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //IMPORTANT!! %ld is for an int32_t. To print an int16_t use %d</span></span> 
-<span class='fancyvrblineno'><a id='x1-7182r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(1,"Timer2 Calls %ld",CpuTimer2.InterruptCount);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7184r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(2,"T0 %ld,T1 %ld",CpuTimer0.InterruptCount,</span></span> 
-<span class='fancyvrblineno'><a id='x1-7186r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>                        CpuTimer1.InterruptCount);</span></span> 
-<span class='fancyvrblineno'><a id='x1-7188r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 0;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7190r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      }</span></span> 
-<span class='fancyvrblineno'><a id='x1-7192r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
-<span class='fancyvrblineno'><a id='x1-7194r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 245 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
+<pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-7162r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Normally on the Robot Car we only use the below</span></span> 
+<span class='fancyvrblineno'><a id='x1-7164r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // UART_printfLine functions to write to the</span></span> 
+<span class='fancyvrblineno'><a id='x1-7166r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // on board LCD screen. This below serial_printf is only used</span></span> 
+<span class='fancyvrblineno'><a id='x1-7168r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // in lab 1 to print to a serial</span></span> 
+<span class='fancyvrblineno'><a id='x1-7170r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // terminal over a USB cable like you will for your Homeworks.</span></span> 
+<span class='fancyvrblineno'><a id='x1-7172r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //serial_printf(&amp;SerialA,"Num Timer2:%ld Num SerialRX: %ld\r\n",</span></span> 
+<span class='fancyvrblineno'><a id='x1-7174r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //              CpuTimer2.InterruptCount,numRXA);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7176r8'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7178r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //IMPORTANT!! %ld is for an int32_t. To print an int16_t use %d</span></span> 
+<span class='fancyvrblineno'><a id='x1-7180r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(1,"Timer2 Calls %ld",CpuTimer2.InterruptCount);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7182r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(2,"T0 %ld,T1 %ld",CpuTimer0.InterruptCount,</span></span> 
+<span class='fancyvrblineno'><a id='x1-7184r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>                        CpuTimer1.InterruptCount);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7186r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7188r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7190r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7192r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<!-- l. 244 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
 soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>is called every 10ms, without fail, in this starter code. (It actually
 “interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 10000
 (microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span>” to have it be called at a different
 rate.
 </p>   
-<pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-7196r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
-<span class='fancyvrblineno'><a id='x1-7198r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
-<span class='fancyvrblineno'><a id='x1-7200r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-7202r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0.InterruptCount++;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7204r5'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7206r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    numTimer0calls++;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7208r7'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7210r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((numTimer0calls%5) == 0) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-7212r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Blink LaunchPad Red LED</span></span> 
-<span class='fancyvrblineno'><a id='x1-7214r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7216r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
-<span class='fancyvrblineno'><a id='x1-7218r12'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7220r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
-<span class='fancyvrblineno'><a id='x1-7222r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7224r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 265 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
+<pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-7194r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-7196r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7198r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7200r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0.InterruptCount++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7202r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7204r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    numTimer0calls++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7206r7'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7208r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((numTimer0calls%5) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-7210r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Blink LaunchPad Red LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-7212r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7214r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7216r12'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7218r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-7220r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7222r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<!-- l. 264 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
 soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>is called every 40ms, without fail, in this starter code. (It actually
 “interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 40000
 (microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span>” to have it be called at a different
 rate.
 </p>   
-<pre class='fancyvrb' id='fancyvrb9'><span class='fancyvrblineno'><a id='x1-7226r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer2_isr CPU Timer2 ISR</span></span> 
-<span class='fancyvrblineno'><a id='x1-7228r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void)</span></span> 
-<span class='fancyvrblineno'><a id='x1-7230r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
-<span class='fancyvrblineno'><a id='x1-7232r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blink LaunchPad Blue LED</span></span> 
-<span class='fancyvrblineno'><a id='x1-7234r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPATOGGLE.bit.GPIO31 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7236r6'></a></span><span class='fancyvrbline'> 
-</span><span class='fancyvrblineno'><a id='x1-7238r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2.InterruptCount++;</span></span></pre>
-<!-- l. 277 --><p class='noindent'>Since “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, this below if statement sets <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to 1
+<pre class='fancyvrb' id='fancyvrb9'><span class='fancyvrblineno'><a id='x1-7224r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer2_isr CPU Timer2 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-7226r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7228r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7230r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blink LaunchPad Blue LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-7232r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPATOGGLE.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7234r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7236r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2.InterruptCount++;</span></span></pre>
+<!-- l. 276 --><p class='noindent'>Since “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, this below if statement sets <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to 1
 every 10th time into this function “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>”. The % in C is modulus. Modulus returns the remainder of the
 divide operation. So 23 % 10 equals 3, 67 % 10 equals 7, etc.
 </p>   
-<pre class='fancyvrb' id='fancyvrb10'><span class='fancyvrblineno'><a id='x1-7240r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((CpuTimer2.InterruptCount % 10) == 0) {</span></span> 
-<span class='fancyvrblineno'><a id='x1-7242r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-7244r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
-<span class='fancyvrblineno'><a id='x1-7246r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<pre class='fancyvrb' id='fancyvrb10'><span class='fancyvrblineno'><a id='x1-7238r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((CpuTimer2.InterruptCount % 10) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-7240r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7242r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7244r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
 
                                                                                                        
                                                                                                        
    <h3 class='likesectionHead' id='lab-checkoff'> <a id='x1-8000'></a>Lab Checkoff</h3>
-<!-- l. 288 --><p class='noindent'>     
+<!-- l. 287 --><p class='noindent'>     
 </p>
 <ol class='enumerate1'>
 <li class='enumerate' id='x1-8002x1'>Demonstrate to your TA that you have successfully created, built and ran your first DSP project.
@@ -414,11 +413,11 @@ when you type ‘a’ The RED LED turns ON and when you type ‘b’ RED LED tur
 <li class='enumerate' id='x1-8008x4'>Show your program that also turns on and off LEDS 1 through 5 (O<span class='rm-lmri-10x-x-109'>n the Oscilloscope)</span>.</li></ol>
    
 <h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-9000'></a>Check-Off Summary</h3>
-<!-- l. 297 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: First DSP project built and running</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off
+<!-- l. 296 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: First DSP project built and running</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off
 2: Changed LED blink period</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: How often UARTPrint is set</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Red LED controlled from the
 terminal</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5: LEDs 1 through 5 on the oscilloscope</a></li></ul>
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 301 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 300 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See</span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>

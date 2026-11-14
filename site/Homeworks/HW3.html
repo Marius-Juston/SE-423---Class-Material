@@ -267,7 +267,7 @@ called.
 <span class='fancyvrblineno'><a id='x1-3178r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>SpibRegs.SPITXBUF = 0xB517;</span></span></pre>
 </li>
 <li class='enumerate' id='x1-3180x3'>     
-<!-- l. 243 --><p class='noindent'>     
+<!-- l. 244 --><p class='noindent'>     
 </p>
 <ol class='enumerate2'>
 <li class='enumerate' id='x1-3182x1'>At the top of your C file, add a predefinition of <span class='rm-lmtt-10x-x-109'>__interrupt void SPIB_isr(void)</span>.
@@ -281,7 +281,7 @@ interrupt by both enabling the major interrupt in the IER: <span class='rm-lmtt-
 <li class='enumerate' id='x1-3188x4'>Finally insert the <span class='rm-lmtt-10x-x-109'>SPIB_isr </span>function below and correct the ???</li></ol>
                                                                                                        
                                                                                                        
-     <!-- l. 249 --><p class='noindent'>
+     <!-- l. 250 --><p class='noindent'>
 </p>     
 <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-3190r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>int16_t spivalue1 = 0;</span></span> 
 <span class='fancyvrblineno'><a id='x1-3192r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>int16_t spivalue2 = 0;</span></span> 
@@ -313,7 +313,7 @@ being transmitted, and probably zero is being received.</li></ol>
    
 <h3 class='likesectionHead' id='exercise-4-spi-z-gyro-reading-'>  <a id='x1-4000'></a>Exercise 4: SPI z gyro reading </h3>
 <p id='exercise-4-spi-z-gyro-reading'><a id='Q1-1-9'></a>
-<!-- l. 279 --></p><p class='noindent'>Before you start the more prolonged Exercise 5, which has you study the registers of the MPU-9250 and write both
+<!-- l. 280 --></p><p class='noindent'>Before you start the more prolonged Exercise 5, which has you study the registers of the MPU-9250 and write both
 initialization code and code that reads the gyros and accelerometers every 1ms, I want to start you out with a simpler
 exercise that reads only one 16-bit gyro reading. This will both verify that your MPU-9250 is working and give you a more
 straightforward introduction to it, rather than jumping right into the initialization of this complex IMU. Upon power-up,
@@ -322,7 +322,7 @@ function that changes some of the MPU-9250’s default settings, but for this ex
 settings. So, change the following code to read the MPU-9250’s Gyro Z-axis every 1 ms. Print its value to Tera
 Term every 100ms. Also, make sure you scope your SPI signals SS, SCLK, MOSI, and MISO as in exercise
 3.
-</p><!-- l. 281 --><p class='indent'>   In the exercise 3 code that you wrote, change the values being sent through the SPITXBUF register to the following:
+</p><!-- l. 282 --><p class='indent'>   In the exercise 3 code that you wrote, change the values being sent through the SPITXBUF register to the following:
 <span class='rm-lmri-10x-x-109'>All these lines are the same, you are just changing the number being sent</span>
 </p>   
 <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-4002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioDataRegs.?????  = ???;  // Clear GPIO66 Low to select MPU9250 chip</span></span> 
@@ -332,12 +332,12 @@ Term every 100ms. Also, make sure you scope your SPI signals SS, SCLK, MOSI, and
 <span class='fancyvrblineno'><a id='x1-4010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>SpibRegs.SPITXBUF = (0x8000 | 0x4600);</span></span> 
 <span class='fancyvrblineno'><a id='x1-4012r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Send 16 zeros in order that we receive the 16 GyroZ reading</span></span> 
 <span class='fancyvrblineno'><a id='x1-4014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>SpibRegs.SPITXBUF = 0x0000;</span></span></pre>
-<!-- l. 293 --><p class='noindent'>You will understand this code better after several lectures on the MPU-9250, studying its datasheet, and working through
+<!-- l. 294 --><p class='noindent'>You will understand this code better after several lectures on the MPU-9250, studying its datasheet, and working through
 exercise 5. This code tells the MPU-9250 to start reading from the GyroY’s Low byte. The reason we start reading at
 the Gyro Y’s Low byte is that it is the register before both the Gyro Z’s high byte and then the Gyro
 Z’s low byte. The goal is to read the full 16-bit value of Gyro Z in the second 16 bits received from the
 MPU-9250.
-</p><!-- l. 295 --><p class='indent'>   Inside the <span class='rm-lmtt-10x-x-109'>SPIB_isr() </span>function you wrote for Exercise 3 you are reading <span class='rm-lmtt-10x-x-109'>spivalue1 </span>and <span class='rm-lmtt-10x-x-109'>spivalue2</span>. <span class='rm-lmtt-10x-x-109'>spivalue1</span>
+</p><!-- l. 296 --><p class='indent'>   Inside the <span class='rm-lmtt-10x-x-109'>SPIB_isr() </span>function you wrote for Exercise 3 you are reading <span class='rm-lmtt-10x-x-109'>spivalue1 </span>and <span class='rm-lmtt-10x-x-109'>spivalue2</span>. <span class='rm-lmtt-10x-x-109'>spivalue1</span>
 contains no important information, but <span class='rm-lmtt-10x-x-109'>spivalue2 </span>now contains the “raw” gyroZ reading, which is a number between
 -32768 and 32767. (In exercise 5, you will see how to convert this raw reading to units of degrees per second.) Create a
 global <span class='rm-lmtt-10x-x-109'>int16_t </span>variable and call it something like “<span class='rm-lmtt-10x-x-109'>gyroz_raw</span>.” Each time in <span class='rm-lmtt-10x-x-109'>SPIB_isr() </span>set your <span class='rm-lmtt-10x-x-109'>gyroz_raw</span>
@@ -352,11 +352,11 @@ off.
                                                                                                        
                                                                                                        
 <p id='exercise-5-initializing-the-mpu9250-and-reading-its-3-gyro-and-3-accelerometer-axes'><a id='Q1-1-11'></a>
-<!-- l. 299 --></p><p class='noindent'>For this exercise, you are going to initialize the MPU-9250 and then every 1 ms. Read its three accelerometer readings and
+<!-- l. 300 --></p><p class='noindent'>For this exercise, you are going to initialize the MPU-9250 and then every 1 ms. Read its three accelerometer readings and
 its three gyro readings. Use the <a href='http://coecsl.ece.illinois.edu/se423/PS-MPU-9250A-01-v1.1.pdf'>MPU-9250 Datasheet</a>, <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Register-Map.pdf'>MPU-9250 Register Reference</a>, and especially my <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf'>MPU-9250 SPI
 Programming Tips</a> for the explanation on how to fill in the needed code below. You should also continue scoping the SPI
 signals to see if your code is working correctly.
-</p><!-- l. 301 --><p class='indent'>   First, finish the <span class='rm-lmtt-10x-x-109'>setupSpib() </span>function given below by filling in the ???. Much of the code is provided to you, but you
+</p><!-- l. 302 --><p class='indent'>   First, finish the <span class='rm-lmtt-10x-x-109'>setupSpib() </span>function given below by filling in the ???. Much of the code is provided to you, but you
 will need to add the parts described to this function. Copy this function to the bottom of your project’s C file and create
 a predefinition of the function at the top of your C file. Then make sure to call <span class='rm-lmtt-10x-x-109'>setupSpib() </span>in <span class='rm-lmtt-10x-x-109'>main() </span>after the
 “<span class='rm-lmtt-10x-x-109'>init_serial()</span>” statement and before interrupts are enabled.
@@ -406,7 +406,7 @@ a predefinition of the function at the top of your C file. Then make sure to cal
 <span class='fancyvrblineno'><a id='x1-5086r43'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // read the additional number of garbage receive</span></span> 
 <span class='fancyvrblineno'><a id='x1-5088r44'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // values off the RX FIFO to clear out the RX FIFO</span></span> 
 <span class='fancyvrblineno'><a id='x1-5090r45'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    DELAY_US(10);  // Delay 10us to allow time for the MPU-2950</span></span> 
-<span class='fancyvrblineno'><a id='x1-5092r46'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>                   // to get ready for the next transfer.                </span></span> 
+<span class='fancyvrblineno'><a id='x1-5092r46'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>                   // to get ready for the next transfer.</span></span> 
 <span class='fancyvrblineno'><a id='x1-5094r47'></a></span><span class='fancyvrbline'> 
 </span><span class='fancyvrblineno'><a id='x1-5096r48'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>Step 3.</span></span> 
 <span class='fancyvrblineno'><a id='x1-5098r49'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>     // perform a multiple 16-bit transfer to initialize</span></span> 
@@ -445,7 +445,7 @@ a predefinition of the function at the top of your C file. Then make sure to cal
 </span><span class='fancyvrblineno'><a id='x1-5164r82'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // wait for one byte to be received</span></span> 
 <span class='fancyvrblineno'><a id='x1-5166r83'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    while(SpibRegs.SPIFFRX.bit.RXFFST !=1);</span></span> 
 <span class='fancyvrblineno'><a id='x1-5168r84'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPCSET.bit.GPIO66 = 1;</span></span> 
-<span class='fancyvrblineno'><a id='x1-5170r85'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    temp = SpibRegs.SPIRXBUF;        </span></span> 
+<span class='fancyvrblineno'><a id='x1-5170r85'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    temp = SpibRegs.SPIRXBUF;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5172r86'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    DELAY_US(10);</span></span> 
 <span class='fancyvrblineno'><a id='x1-5174r87'></a></span><span class='fancyvrbline'> 
 </span><span class='fancyvrblineno'><a id='x1-5176r88'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // The Remainder of this code is given to you.</span></span> 
@@ -534,11 +534,11 @@ a predefinition of the function at the top of your C file. Then make sure to cal
 <span class='fancyvrblineno'><a id='x1-5342r171'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    SpibRegs.SPIFFRX.bit.RXFFINTCLR=1;  // Clear Interrupt flag</span></span> 
 <span class='fancyvrblineno'><a id='x1-5344r172'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;</span></span> 
 <span class='fancyvrblineno'><a id='x1-5346r173'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
-<!-- l. 479 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>At Check off for Ex 5, answer this question</span>. In the above initialization of the MPU-9250, you were given the values to
+<!-- l. 480 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>At Check off for Ex 5, answer this question</span>. In the above initialization of the MPU-9250, you were given the values to
 write to certain registers. I would like you to read the <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Register-Map.pdf'>Register Map document</a> and explain how the following register
 assignments set up the MPU-9250. Setting <span class='rm-lmtt-10x-x-109'>CONFIG </span>(address 0x1A) to 0x2, <span class='rm-lmtt-10x-x-109'>GYRO_CONFIG </span>(0x1B) to 0x0, <span class='rm-lmtt-10x-x-109'>ACCEL_CONFIG</span>
 (0x1C) to 0x8 and <span class='rm-lmtt-10x-x-109'>ACCEL_CONFIG2 </span>(0x1D) to 0x6.
-</p><!-- l. 481 --><p class='indent'>   After studying the <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf'>MPU-9250 SPI Programming Tips</a> and its example code, write the following code to read the
+</p><!-- l. 482 --><p class='indent'>   After studying the <a href='http://coecsl.ece.illinois.edu/se423/MPU-9250-Addendum.pdf'>MPU-9250 SPI Programming Tips</a> and its example code, write the following code to read the
 MPU9250. Every 1ms inside your CPU Timer 0 interrupt function, transmit the correct 16-bit values and the correct
 number of 16-bit values to the MPU-9250 so that it will transmit back the three accelerometer readings and the three gyro
 readings. <span class='rm-lmri-10x-x-109'>I am going to leave reading and processing the magnetometer readings as a possible final project for the class, so
@@ -546,7 +546,7 @@ we will not worry about them for this lab. </span>Make sure to set <span class='
 that the SPIB interrupt function will be called when the SPI transmission from the master to the slave
 and also from the slave to the master is complete. Remember, these transmissions happen at the same
 time.
-</p><!-- l. 483 --><p class='indent'>   Inside the SPIB interrupt function, make sure to pull Slave Select high. Then read the three accelerometer and three
+</p><!-- l. 484 --><p class='indent'>   Inside the SPIB interrupt function, make sure to pull Slave Select high. Then read the three accelerometer and three
 gyro integer readings. <span class='rm-lmri-10x-x-109'>To read these three 16-bit accelerometer readings and the three 16-bit gyro readings in one chip select
 cycle, you should notice that you also have to read the 16-bit temperature reading, which falls in between. </span>Scale the
 accelerometer readings to units of g. Remember that the initialization sets the accelerometer range to -4 g to 4 g. Also,
@@ -567,7 +567,7 @@ TA.</span>
 </p>   
 <h3 class='likesectionHead' id='exercise-6-state-machine-part-1-'> <a id='x1-6000'></a>Exercise 6: State machine part 1 </h3>
 <p id='exercise-6-state-machine-part-1'><a id='Q1-1-13'></a>
-<!-- l. 487 --></p><p class='noindent'>This homework problem is the start of a homework problem that will continue to build in the remaining homework sets.
+<!-- l. 488 --></p><p class='noindent'>This homework problem is the start of a homework problem that will continue to build in the remaining homework sets.
 The goal of this homework problem and the continuing homework problems is to start you early thinking about the states
 the robot will have when autonomously navigating the final project course at the end of the semester. There is
                                                                                                        
@@ -578,10 +578,10 @@ with the real robot may lead you to change your ideas about how to define the sy
 transitions look very good, but then you find out they do not work too well on the actual robot. That is
 ok, because you will be ahead of the game in your thoughts on how to program the robot for the desired
 tasks.
-</p><!-- l. 489 --><p class='indent'>   Grading of these homework problems will be more lenient, but I am looking for some good thought. I want your answers
+</p><!-- l. 490 --><p class='indent'>   Grading of these homework problems will be more lenient, but I am looking for some good thought. I want your answers
 written out very neatly so I can read all parts of the diagram and code. Do not give me garbage! Also study the State
 Machine lecture handout at <a class='url' href='http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/se423/lecturenotes/KuriStateMachineExample.pdf</span></a>
-</p><!-- l. 491 --><p class='indent'>   So, to start, I want you to create a state transition diagram and pseudocode (with switch case structure) with only
+</p><!-- l. 492 --><p class='indent'>   So, to start, I want you to create a state transition diagram and pseudocode (with switch case structure) with only
 three (you can use more if you wish) states:
 </p>     
 <ol class='enumerate1'>
@@ -596,7 +596,7 @@ and continue to the X, Y waypoint.
 color is seen, stop the robot and turn so that the color is directly in front of the car. Then drive forward until
 the color disappears below the camera’s view. Once the color disappears, resume moving to the desired X,
 Y waypoint.</li></ol>
-<!-- l. 498 --><p class='noindent'>The pseudocode does not include all the programming details for making the robot go to an X, Y point, follow the right wall,
+<!-- l. 499 --><p class='noindent'>The pseudocode does not include all the programming details for making the robot go to an X, Y point, follow the right wall,
 or follow a bright pink color. When you are coming up with the pseudocode, think of a function that needs to be called
 every 1 millisecond to drive the robot to an X, Y point, or to follow the right wall or the pink. Every millisecond, your
 pseudocode should call this function, and every millisecond, there should be if statements that make the decision what
@@ -613,7 +613,7 @@ sets.
                                                                                                        
    
 <div class='tcolorbox tcolorbox' id='tcolobox-2'>     
-<div class='tcolorbox-content'><!-- l. 501 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+<div class='tcolorbox-content'><!-- l. 502 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
 submission! See</span>
 <a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
 <span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>

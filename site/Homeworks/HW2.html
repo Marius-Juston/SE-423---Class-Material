@@ -359,7 +359,7 @@ also convert the Joystick channels.
 <span class='fancyvrblineno'><a id='x1-3106r34'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// and it will set INT1 flag ADCA1</span></span> 
 <span class='fancyvrblineno'><a id='x1-3108r35'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1SEL=???;</span></span> 
 <span class='fancyvrblineno'><a id='x1-3110r36'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTSEL1N2.bit.INT1E = 1; //enable INT1 flag</span></span> 
-<span class='fancyvrblineno'><a id='x1-3112r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared        </span></span> 
+<span class='fancyvrblineno'><a id='x1-3112r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>AdcaRegs.ADCINTFLGCLR.bit.ADCINT1 = 1; //make sure INT1 flag is cleared</span></span> 
 <span class='fancyvrblineno'><a id='x1-3114r38'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
 <!-- l. 332 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Note</span>: <span class='rm-lmri-10x-x-109'>The naming can get confusing here. There are ADCA inputs channels labeled ADCINA0, ADCINA1, ADCINA2,
 ADCINA3, ADCINA4, ADCINA5 and there are also four ADCA interrupts labeled ADCA1, ADCA2, ADCA3 and

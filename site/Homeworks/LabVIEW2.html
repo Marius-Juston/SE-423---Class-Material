@@ -20,7 +20,7 @@
  
 </div> 
 </div>
-<!-- l. 35 --><p class='noindent'><span class='rm-lmri-10x-x-109'>Note: There are a lot of small blocks in the LabVIEW code I give you below for Exercises 1 and 2. I have
+<!-- l. 34 --><p class='noindent'><span class='rm-lmri-10x-x-109'>Note: There are a lot of small blocks in the LabVIEW code I give you below for Exercises 1 and 2. I have
 found that if you open the Word document, you can zoom in on the code pictures better than in the PDF
 file.</span>
 
@@ -28,12 +28,12 @@ file.</span>
 <h3 class='likesectionHead' id='exercise-1-shift-registry-'> <a id='x1-1000'></a>Exercise 1: Shift Registry </h3>
 <p id='exercise-1-shift-registry'><a id='Q1-1-2'></a>                                                                                                       
                                                                                                        
-<!-- l. 38 --></p><p class='noindent'>First, watch these two YouTube videos about shift registers (or find other tutorials online). </p>
+<!-- l. 37 --></p><p class='noindent'>First, watch these two YouTube videos about shift registers (or find other tutorials online). </p>
      <ul class='itemize1'>
 <li class='itemize'><a class='url' href='https://www.youtube.com/watch?v=wRvpb9jtRlE'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=wRvpb9jtRlE</span></a>
 </li>
 <li class='itemize'><a class='url' href='https://www.youtube.com/watch?v=4ivYARn2fy8'><span class='rm-lmtt-10x-x-109'>https://www.youtube.com/watch?v=4ivYARn2fy8</span></a></li></ul>
-<!-- l. 44 --><p class='noindent'>For this assignment, we will start working with the 2D Picture block in LabVIEW. After performing this exercise, you could,
+<!-- l. 43 --><p class='noindent'>For this assignment, we will start working with the 2D Picture block in LabVIEW. After performing this exercise, you could,
 for example, use what you learn to create a 2D pictured environment for your robot and draw where the robot is located
 in this environment. Below is the LabVIEW program I would like you to reproduce for this assignment. It shows you how
 to draw lines in a 2D Picture. Each time through the while loop, it generates a random number between 0 and 1 and
@@ -42,48 +42,48 @@ Rectangle block, but I wanted to show how to combine multiple draw commands). Th
 to keep track of all the lines printed in the 2D Picture as long as the Boolean LED is true. If you click
 the Boolean LED to make it false, the lines drawn in the previous loops should not be printed to the 2D
 Picture.
-</p><!-- l. 46 --><p class='indent'>   If your screen is large enough, set the 2D Picture to <!-- l. 46 --><math display='inline'><mrow><mn>800</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>800</mn></mrow></math>
+</p><!-- l. 45 --><p class='indent'>   If your screen is large enough, set the 2D Picture to <!-- l. 45 --><math display='inline'><mrow><mn>800</mn> <mo class='MathClass-bin' stretchy='false'>×</mo> <mn>800</mn></mrow></math>
 pixels.
-</p><!-- l. 48 --><p class='indent'>   Location of the blocks that may be new to you for this assignment: </p>
+</p><!-- l. 47 --><p class='indent'>   Location of the blocks that may be new to you for this assignment: </p>
 <ul class='itemize1'>     
 <li class='itemize'>
-<!-- l. 51 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>From the Front Panel:</span>
+<!-- l. 50 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>From the Front Panel:</span>
 </p>          
 <ol class='enumerate1'>
-<li class='enumerate' id='x1-1002x1'>Modern<!-- l. 53 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graph<!-- l. 53 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Controls<!-- l. 53 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>2D
+<li class='enumerate' id='x1-1002x1'>Modern<!-- l. 52 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graph<!-- l. 52 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Controls<!-- l. 52 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>2D
 Picture
 </li>
-<li class='enumerate' id='x1-1004x2'>Modern<!-- l. 54 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Boolean<!-- l. 54 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Round
+<li class='enumerate' id='x1-1004x2'>Modern<!-- l. 53 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Boolean<!-- l. 53 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Round
 LED</li></ol>
 </li>     
 <li class='itemize'>
-<!-- l. 56 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>From the block diagram:</span>
+<!-- l. 55 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>From the block diagram:</span>
 </p>          
 <ol class='enumerate1'>
-<li class='enumerate' id='x1-1006x1'>Programming<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
-&amp; Sound<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
-Functions<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Move
+<li class='enumerate' id='x1-1006x1'>Programming<!-- l. 57 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
+&amp; Sound<!-- l. 57 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
+Functions<!-- l. 57 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Move
 Pen
                                                                                                        
                                                                                                        
           </li>
-<li class='enumerate' id='x1-1008x2'>Programming<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
-&amp; Sound<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
-Functions<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Draw
+<li class='enumerate' id='x1-1008x2'>Programming<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
+&amp; Sound<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
+Functions<!-- l. 58 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Draw
 Line
 </li>
-<li class='enumerate' id='x1-1010x3'>Programming<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
-&amp; Sound<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
-Functions<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Empty
+<li class='enumerate' id='x1-1010x3'>Programming<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Graphics
+&amp; Sound<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Picture
+Functions<!-- l. 59 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Empty
 Picture
 </li>
-<li class='enumerate' id='x1-1012x4'>Programming<!-- l. 61 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Numeric<!-- l. 61 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Random
+<li class='enumerate' id='x1-1012x4'>Programming<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Numeric<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Random
 Number (0-1)
 </li>
-<li class='enumerate' id='x1-1014x5'>Programming<!-- l. 62 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Numeric<!-- l. 62 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Conversion<!-- l. 62 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>I16
+<li class='enumerate' id='x1-1014x5'>Programming<!-- l. 61 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Numeric<!-- l. 61 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Conversion<!-- l. 61 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>I16
 </li>
-<li class='enumerate' id='x1-1016x6'>Programming<!-- l. 63 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Cluster,
-Class &amp; Variant<!-- l. 63 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Unbundle
+<li class='enumerate' id='x1-1016x6'>Programming<!-- l. 62 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Cluster,
+Class &amp; Variant<!-- l. 62 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Unbundle
 and Bundle</li></ol>
 </li></ul>
 <figure class='figure' id='x1-1017r1'><span id='reference-vi-front-panel'></span> 
@@ -97,7 +97,7 @@ map raw I16 ADC counts to engineering units and assemble the result into a clust
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 86 --><p class='noindent' id='i16conversion-vi-block-diagram-true-case'><img alt='Block diagram (true case) of the I16-conversion VI: the true branch of a Case structure unbundles the input
+<!-- l. 85 --><p class='noindent' id='i16conversion-vi-block-diagram-true-case'><img alt='Block diagram (true case) of the I16-conversion VI: the true branch of a Case structure unbundles the input
 cluster, applies scaling math, and re-bundles the converted values for output.' height='145' src='Homeworks/Figures/LabVIEW2/Picture2.png' width='542' /> <a id='x1-1018r2'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>I16-conversion VI block diagram (true case)                                                      </span></figcaption><!-- tex4ht:label?: x1-1018r2  -->
@@ -110,7 +110,7 @@ cluster, applies scaling math, and re-bundles the converted values for output.' 
                                                                                                        
                                                                                                        
                                                                                                        
-<!-- l. 95 --><p class='noindent' id='false-case'><img alt='Block diagram, false case: the input cluster is passed through to the output unchanged when the case selector is
+<!-- l. 94 --><p class='noindent' id='false-case'><img alt='Block diagram, false case: the input cluster is passed through to the output unchanged when the case selector is
 false.' height='104' src='Homeworks/Figures/LabVIEW2/Picture3.png' width='108' /> <a id='x1-1019r3'></a>
 </p>
 <figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>False Case                                                                                    </span></figcaption><!-- tex4ht:label?: x1-1019r3  -->
@@ -121,14 +121,14 @@ false.' height='104' src='Homeworks/Figures/LabVIEW2/Picture3.png' width='108' /
    
 <h3 class='likesectionHead' id='exercise-2-tcp-ethernet-protocol-'>  <a id='x1-2000'></a>Exercise 2: TCP Ethernet protocol </h3>
 <p id='exercise-2-tcp-ethernet-protocol'><a id='Q1-1-7'></a>
-<!-- l. 103 --></p><p class='noindent'>For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP
+<!-- l. 101 --></p><p class='noindent'>For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP
 Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a
 single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a
 nice, simple Echo Server that we are going to use.) Then the Echo Server echoes the exact string back. We
 receive this string with the “TCP Read” command and assume it is different information from what we just
 sent. We use the “Scan From String” command to pull the two real numbers out of the string and display
 them.
-</p><!-- l. 105 --><p class='indent'>   Copy this VI and demonstrate it working. <span class='rm-lmri-10x-x-109'>The first time you try to write data across a TCP socket from an
+</p><!-- l. 103 --><p class='indent'>   Copy this VI and demonstrate it working. <span class='rm-lmri-10x-x-109'>The first time you try to write data across a TCP socket from an
 application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in those
 pop-up windows, allowing public and private networks</span>. Because we are using this echo server, you may
 find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you
@@ -137,31 +137,31 @@ You will need to find your computer’s IP address. The easiest way is to run �
 prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first
 one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection”
 block.
-</p><!-- l. 107 --><p class='indent'>   Then, before running the LabVIEW application, open MATLAB and type the command
+</p><!-- l. 105 --><p class='indent'>   Then, before running the LabVIEW application, open MATLAB and type the command
 </p>   
 <pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>echotcpip("on",12321)</span></span></pre>
-<!-- l. 113 --><p class='noindent'>12321 is the port the echo server will listen on. Later, if you want to turn off the echo server, type the command
+<!-- l. 111 --><p class='noindent'>12321 is the port the echo server will listen on. Later, if you want to turn off the echo server, type the command
 “<span class='obeylines-h'><code class='verb'>echotcpip("off")</code></span>” to turn off the server. Once the echo server is running in MATLAB, you can run your LabVIEW
 application. Type in some real numbers into the two Send Values and then click “SEND”. Play with different
 numbers and see that you get the exact numbers back. When you are done, you can click the “STOP”
 button.
-</p><!-- l. 115 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Location of blocks you may not have used for the Block Diagram view:</span> </p>
+</p><!-- l. 113 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Location of blocks you may not have used for the Block Diagram view:</span> </p>
 <ul class='itemize1'>     
-<li class='itemize'>String<!-- l. 117 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Carriage
-Return Constant and String<!-- l. 117 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Line
-Feed Constant and String<!-- l. 117 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Scan
+<li class='itemize'>String<!-- l. 115 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Carriage
+Return Constant and String<!-- l. 115 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Line
+Feed Constant and String<!-- l. 115 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Scan
 From String
 </li>
-<li class='itemize'>String<!-- l. 118 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Number/String
-Conversion<!-- l. 118 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Number
+<li class='itemize'>String<!-- l. 116 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Number/String
+Conversion<!-- l. 116 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Number
 To Fractional String
 </li>
-<li class='itemize'>Structures<!-- l. 119 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Local
+<li class='itemize'>Structures<!-- l. 117 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Local
 Variable
                                                                                                        
                                                                                                        
      </li>
-     <li class='itemize'>Data Communication<!-- l. 120 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Protocols<!-- l. 120 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>TCP<!-- l. 120 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>“TCP
+     <li class='itemize'>Data Communication<!-- l. 118 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Protocols<!-- l. 118 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>TCP<!-- l. 118 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>“TCP
 Open Connection” and “TCP Read” and “TCP Write” and “TCP Close Connection.”</li></ul>
 <figure class='figure' id='x1-2003r4'><span id='tcp-echo-vi-front-panel'></span> 
  <img alt='TCP echo VI front panel: numeric controls for two values to send, indicators for the two values received back, an
@@ -175,19 +175,19 @@ IP address text box, SEND and STOP buttons, and a connection- status indicator.'
                                                                                                        
                                                                                                        
 <div class='subfigure'>
-<!-- l. 137 --><p class='noindent'></p><!-- l. 145 --><p class='noindent'><img alt='TCP echo VI block diagram: TCP Open Connection, an Event structure inside a While loop with cases for
+<!-- l. 135 --><p class='noindent'></p><!-- l. 143 --><p class='noindent'><img alt='TCP echo VI block diagram: TCP Open Connection, an Event structure inside a While loop with cases for
 SEND, Timeout, and STOP, formatting the two numbers into a string, TCP Write, TCP Read, Scan From
 String to recover the two numbers, and TCP Close Connection on exit.' height='212' src='Homeworks/Figures/LabVIEW2/Picture5.png' width='514' />                                 </p></div>
 <div class='subfigure'>
-<!-- l. 148 --><p class='noindent'><a id='x1-2004r1'></a></p>
+<!-- l. 146 --><p class='noindent'><a id='x1-2004r1'></a></p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(a) </span></span><span class='content'><span class='rm-lmr-10'>Showing the Timeout Event</span>                        </span></div>
-<!-- l. 155 --><p class='noindent'><img alt='Detail of the Event structure’s Timeout frame: when
+<!-- l. 153 --><p class='noindent'><img alt='Detail of the Event structure’s Timeout frame: when
 no front-panel event fires within the timeout interval,
 the VI polls connection state and updates a heartbeat
 indicator.' height='107' src='Homeworks/Figures/LabVIEW2/Picture6.png' width='262' />                                         </p></div>                                                     <div class='subfigure'>
-<!-- l. 159 --><p class='noindent'><a id='x1-2005r2'></a></p>
+<!-- l. 157 --><p class='noindent'><a id='x1-2005r2'></a></p>
 <div class='caption'><span class='id'><span class='rm-lmr-10'>(b) </span></span><span class='content'><span class='rm-lmr-10'>Stop: Value Change Event</span>                         </span></div>
-<!-- l. 167 --><p class='noindent'><img alt='Detail of the Event structure’s ”Stop: Value Change”
+<!-- l. 165 --><p class='noindent'><img alt='Detail of the Event structure’s ”Stop: Value Change”
 frame: when the Stop button is pressed, the loop’s
 continue input is wired false, terminating the While
 loop after closing the TCP connection.' height='108' src='Homeworks/Figures/LabVIEW2/Picture7.png' width='262' />               </p></div>
