@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -36,7 +36,7 @@
 %
 \begin{enumerate}
     \item Start using the Final Project’s starter code. \SEstruck{This code uses the motion tracking system, OptiTrack, to help the robot keep track of its Pose.} This code also allows the robot to travel from one X, Y position to another X, Y position.
-    \item Learn to use the OpenMV camera. First program a simple blob detect algorithm. Then use the OpenMV’s \mintinline{python}{find_blobs} function to find multiple blobs of a certain color.
+        \item Learn to use the OpenMV camera. First program a simple blob detect algorithm. Then use the OpenMV’s \mintinline{python}{find_blobs} function to find multiple blobs of a certain color.
     \item Use the camera to find the distance a golf ball is away from the robot assuming that the golf ball is on the floor.
     \item Add a state to the given code’s state machine that has the robot follow a colored golf ball when it is seen close to the robot. When the robot sees the golf ball large enough it knows that the ball is close so start following. When the golf ball disappears from the field of view of the camera, go back to X, Y point following.
 \end{enumerate}
@@ -66,52 +66,52 @@ The flow of the code is the same as Lab 6:
 \begin{itemize}
     \item CPU Timer1 is called every 100ms and commands the LADAR to collect its 228 distance readings. 100ms is the fastest rate the LADAR can be commanded to produce readings. Also remember that distance index 0 and index 227 should not be used as they are blocked by the handle rails of the robot.
     \item ADCC is triggered by EPWM4 every 1ms. ADCC reads the four readings of the LPR510 rate gyro sensor. Currently we are not using this sensor data but I left it here just in case it becomes useful in the final project.
-    \item When ADCC’s four channels have converted, \mintinline{c}{ADCC_ISR} is called. Here the ADCC four channels are read. In addition in \mintinline{c}{ADCC_ISR} the SPIB communication with the MPU-9250 is initiated by writing the correct 8 16bit words over SPIB along with pulling MPU-9250 SS (GPIO66) low to select the MPU-9250.
-    \item Once 8, 16 bit, words have been received over SPIB the \mintinline{c}{SPIB_ISR} is called. Here we read the IMU raw data and post \mintinline{c}{SWI1_HighestPriority}.
-    \item When priority permits, \mintinline{c}{SWI1_HighestPriority} is called. Inside SWI1 will be where you develop most of you F28379D code for Lab 7 and the Final Project. Taking a look:
-    %
-    \begin{itemize}
-        \item The IMU raw data is scaled to acceleration in g and rates in degrees/second.
-        \item Then the sensor zero values are found by the first 2 seconds doing nothing, the next 2 seconds summing up 2000 readings, at 4 seconds dividing the sum by 2000 to find the average zero and finally after four seconds subtract the zero value from the sensor reading.
-        \item For the next 2000 samples (2 seconds) a new feature is added and that is finding an average value for integral drift. This is a factor that can be subtracted for the gyro integral to help even more with the drift of the gyro’s integral.
-        \item Finally after 6 seconds all zeroing has finished and the control code can be run.
-        \item Calculate gyro bearing
-        \item Calculate wheel velocity
-        \item Check to see if there is any new data from LinuxCMDapp, OpenMV camera data, LabVIEW data, or new data from OptiTrack (Motion capture data).
-        \item Perform Dead Reckoning and Kalman Filter data fusion of the motion tracking data. For now just know that this works to find the best value for \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y}, \mintinline{c}{ROBOTps.angle}. I will be lecturing on this towards the end of the semester.
-        \item Then here after ROBOTps is found, is where you will be developing most of your code for Lab 7 and the final project. The function \mintinline{c}{xy_control} is called to command the robot to a new X,Y coordinate. Then the control state machine, switch case statement is used to transition between the many states the robot can have. In each of these states you are making the decision of what “vref” and “turn” are equal to, to make the robot perform correctly. Right now there are only three states: 1: commanding the robot to an X, Y point in the course, 10: Wall Following if an obstacle gets in the way of the robot. Currently the robot walls follows for a minimum of 5 seconds then tries go back to driving towards an X, Y point. 20: Follow at Orange or Purple golf ball. There is no code here currently and neither state 1 or state 10 transition to this state. You will be developing this code later in this lab.
-        \item After the state machine switch case statement, notice that \mintinline{c}{PIcontrol()} is called. This function implements the PI speed control of lab 5. Your code MUST call this \mintinline{c}{PIcontrol()} function every time \mintinline{c}{SWI1_HighestPriority} is called (every 1ms) for your wheel motors to run correctly.
-    \end{itemize}
-    %
-    \item Just as in Lab 6 \mintinline{c}{SWI2_MiddlePriority()} processes the LADAR data.
-    \item \mintinline{c}{SWI3_LowestPriority()} is currently not used and you can find a purpose for it in the final project.
+        \item When ADCC’s four channels have converted, \mintinline{c}{ADCC_ISR} is called. Here the ADCC four channels are read. In addition in \mintinline{c}{ADCC_ISR} the SPIB communication with the MPU-9250 is initiated by writing the correct 8 16bit words over SPIB along with pulling MPU-9250 SS (GPIO66) low to select the MPU-9250.
+        \item Once 8, 16 bit, words have been received over SPIB the \mintinline{c}{SPIB_ISR} is called. Here we read the IMU raw data and post \mintinline{c}{SWI1_HighestPriority}.
+        \item When priority permits, \mintinline{c}{SWI1_HighestPriority} is called. Inside SWI1 will be where you develop most of you F28379D code for Lab 7 and the Final Project. Taking a look:
+        %
+        \begin{itemize}
+            \item The IMU raw data is scaled to acceleration in g and rates in degrees/second.
+            \item Then the sensor zero values are found by the first 2 seconds doing nothing, the next 2 seconds summing up 2000 readings, at 4 seconds dividing the sum by 2000 to find the average zero and finally after four seconds subtract the zero value from the sensor reading.
+            \item For the next 2000 samples (2 seconds) a new feature is added and that is finding an average value for integral drift. This is a factor that can be subtracted for the gyro integral to help even more with the drift of the gyro’s integral.
+            \item Finally after 6 seconds all zeroing has finished and the control code can be run.
+            \item Calculate gyro bearing
+            \item Calculate wheel velocity
+            \item Check to see if there is any new data from LinuxCMDapp, OpenMV camera data, LabVIEW data, or new data from OptiTrack (Motion capture data).
+                \item Perform Dead Reckoning and Kalman Filter data fusion of the motion tracking data. For now just know that this works to find the best value for \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y}, \mintinline{c}{ROBOTps.angle}. I will be lecturing on this towards the end of the semester.
+                \item Then here after ROBOTps is found, is where you will be developing most of your code for Lab 7 and the final project. The function \mintinline{c}{xy_control} is called to command the robot to a new X,Y coordinate. Then the control state machine, switch case statement is used to transition between the many states the robot can have. In each of these states you are making the decision of what “vref” and “turn” are equal to, to make the robot perform correctly. Right now there are only three states: 1: commanding the robot to an X, Y point in the course, 10: Wall Following if an obstacle gets in the way of the robot. Currently the robot walls follows for a minimum of 5 seconds then tries go back to driving towards an X, Y point. 20: Follow at Orange or Purple golf ball. There is no code here currently and neither state 1 or state 10 transition to this state. You will be developing this code later in this lab.
+                \item After the state machine switch case statement, notice that \mintinline{c}{PIcontrol()} is called. This function implements the PI speed control of lab 5. Your code MUST call this \mintinline{c}{PIcontrol()} function every time \mintinline{c}{SWI1_HighestPriority} is called (every 1ms) for your wheel motors to run correctly.
+        \end{itemize}
+        %
+        \item Just as in Lab 6 \mintinline{c}{SWI2_MiddlePriority()} processes the LADAR data.
+        \item \mintinline{c}{SWI3_LowestPriority()} is currently not used and you can find a purpose for it in the final project.
 \end{itemize}
 %
 Now you are ready to flash your F28379D board with the code and see how the robot is controlled with this starter code. \SEstruck{Before you can run this code your instructor needs to show you how to setup and start the motion tracking system called the OptiTrack system. Steps below are to remind you:}
 %
 \begin{enumerate}
     \item \SEstruck{Log into the Motion Tracking PC with username “dan5” and password “f33dback5”.}
-    %
-    \begin{figure}[H]
-        \centering
-        \AltImg[width=0.3\linewidth]{Labs/Figures/Lab7/motive_desktop_icons.png}{%
-            Three shortcut icons on a black Windows desktop, in the top right corner of the screen.
-            Top row: “GE423Pyth... - Shortcut” on the left and “Motive” on the right.
-            Below them on the right: “SampleClie... - Shortcut”.
-            These are the three programs started in the steps of this list.%
-        }
-        \caption{Motive, SampleClient and GE423Python icons on the Motion Tracking PC}
-    \end{figure}
-    %
+        %
+        \begin{figure}[H]
+            \centering
+            \AltImg[width=0.3\linewidth]{Labs/Figures/Lab7/motive_desktop_icons.png}{%
+                Three shortcut icons on a black Windows desktop, in the top right corner of the screen.
+                Top row: “GE423Pyth... - Shortcut” on the left and “Motive” on the right.
+                Below them on the right: “SampleClie... - Shortcut”.
+                These are the three programs started in the steps of this list.%
+            }
+            \caption{Motive, SampleClient and GE423Python icons on the Motion Tracking PC}
+        \end{figure}
+        %
     \item \SEstruck{Run the Application “Motive”. Icon in top right corner of left monitor.}
-    %
-    \begin{enumerate}
-        \SEenumlabel{ii}{alph}%
-        \item \SEstruck{Inside Motive a Pop Up window will display and select “Open Existing Project” and select the most current project that starts with “SE423….” To give you some more space move the Motive application to the right monitor.}
-        \item \SEstruck{Then double click the “SampleClient –Shortcut” icon, also in the top right corner. Wait for this terminal to start displaying a bunch of data really fast.}
-        \item \SEstruck{Then finally double click the “GE423Python – Shortcut” icon, also in the top right corner. Wait for this terminal to start displaying the coordinates of the robots it sees in the course.}
-        \item \SEstruck{Now you are ready to run your robot. The Raspberry Pi application “serial\_COMandOpti” receives the motion tracking data and sends it to the F28379D board.}
-    \end{enumerate}
+        %
+        \begin{enumerate}
+                \SEenumlabel{ii}{alph}%
+            \item \SEstruck{Inside Motive a Pop Up window will display and select “Open Existing Project” and select the most current project that starts with “SE423….” To give you some more space move the Motive application to the right monitor.}
+            \item \SEstruck{Then double click the “SampleClient –Shortcut” icon, also in the top right corner. Wait for this terminal to start displaying a bunch of data really fast.}
+            \item \SEstruck{Then finally double click the “GE423Python – Shortcut” icon, also in the top right corner. Wait for this terminal to start displaying the coordinates of the robots it sees in the course.}
+            \item \SEstruck{Now you are ready to run your robot. The Raspberry Pi application “serial\_COMandOpti” receives the motion tracking data and sends it to the F28379D board.}
+        \end{enumerate}
 \end{enumerate}
 %
 \SEstruck{Once OptiTrack is running}, you can try out this code.
@@ -124,17 +124,17 @@ Now you are ready to flash your F28379D board with the code and see how the robo
     \item Now place your robot at x=0, y=0 and theta=0 \SEstruck{anywhere in the course} and press its yellow reset button. Wait the eight seconds for the robot to initialize its sensors and the flip on the motor amplifier switch to start the robot. NOTE: you should notice that the blue LED on the red board stops blinking when the sensors have found their zero values.
     \item Once your robot’s motors have been turned on, the robot should go to X, Y -4, 10; then -4, 2; then 0, 2; then 0, -3; then 0, 2; then 4, 2; then 4, 10; then 0, 9; and then repeat.
     \item After your robot has repeated its X, Y points a few times but a single 2ft by 2ft obstacle in its path. How well does it avoid the obstacle?
-    \item Study the code a bit more to see how this X, Y control code is working. Find the \mintinline{c}{robotdest} array in your code. Look in \mintinline{c}{main()} for the values its elements are initialized to. The function \mintinline{c}{xy_control()} returns 1 (or true) whenever the robot has reached within 0.5 feet of the desired X, Y point.
-    %
-    \begin{checkoff}[Explain the waypoint code]
-    Look at the call to \mintinline{c}{xy_control()} in \mintinline{c}{SWI1_HighestPriority()} and figure out and \textbf{Explain to your Instructor} how the code moves from one point to another point listed in the \mintinline{c}{robotdest} array.
-    \end{checkoff}
-    %
-    \mintinline{c}{NUMWAYPOINTS} is currently defined as 8. Change it to 10 and add two more way points (X, Y points) in the path for the robot to traverse. Feel free to add the points anywhere in the array.
-    %
-    \begin{checkoff}[Robot drives ten waypoints]
-    \textbf{Demo this working to your Instructor.}
-    \end{checkoff}
+        \item Study the code a bit more to see how this X, Y control code is working. Find the \mintinline{c}{robotdest} array in your code. Look in \mintinline{c}{main()} for the values its elements are initialized to. The function \mintinline{c}{xy_control()} returns 1 (or true) whenever the robot has reached within 0.5 feet of the desired X, Y point.
+        %
+        \begin{checkoff}[Explain the waypoint code]
+                Look at the call to \mintinline{c}{xy_control()} in \mintinline{c}{SWI1_HighestPriority()} and figure out and \textbf{Explain to your Instructor} how the code moves from one point to another point listed in the \mintinline{c}{robotdest} array.
+        \end{checkoff}
+        %
+        \mintinline{c}{NUMWAYPOINTS} is currently defined as 8. Change it to 10 and add two more way points (X, Y points) in the path for the robot to traverse. Feel free to add the points anywhere in the array.
+        %
+        \begin{checkoff}[Robot drives ten waypoints]
+                \textbf{Demo this working to your Instructor.}
+        \end{checkoff}
 \end{itemize}
 %
 \Ex[Up and Running with OpenMV Cam Hello World]
@@ -142,7 +142,7 @@ Now you are ready to flash your F28379D board with the code and see how the robo
 In this exercise, we’ll get started working with the OpenMV Cam. The OpenMV project began in 2013, when Ibrahim Abdelkader took it upon himself to build a small, affordable, expandable machine vision module. Unlike the microcontrollers we’re used to working with in SE423, the OpenMV uses MicroPython, a lightweight version of Python 3 that includes a small subset of the Python standard library and is optimized to run on microcontrollers. In addition to the standard MicroPython libraries, the OpenMV camera includes extensive machine vision and image processing libraries. To easily interface with the device, debug code, and capture snapshots to find color thresholds, the OpenMV team created an IDE. The IDE is available at OpenMV’s downloads page:
 %
 \begin{center}
-\url{https://openmv.io/pages/download}
+    \url{https://openmv.io/pages/download}
 \end{center}
 %
 Specs (If you’re curious): The OpenMV H7 Plus camera features a STM32H743VI ARM Cortex M7 processor running at 480 MHz. It incorporates 1MB static RAM and 2MB of flash storage. Its MT9M114 image sensor can record up to 640x480 8-bit images at 40fps, and 320x240 (or lower) images at 80fps. The standard lens 2.1mm, but can be replaced with specialized lenses thanks to an M12 lens mount. Other features of the board include a 12-bit ADC and DAC, 3 I/O pins for servo control, and interrupts and PWM on the board’s 10 I/O pins.
@@ -188,7 +188,7 @@ Now, press the “Start” button (Cntrl+R). The “helloworld.py” example run
 The frame resolution and pixel format are set using the \mintinline{python}{sensor.set_framesize()} and \mintinline{python}{sensor.set_pixformat()} methods. Many more camera settings can be adjusted in the sensor library. See the docs here:
 %
 \begin{center}
-\url{https://docs.openmv.io/library/omv.sensor.html}
+    \url{https://docs.openmv.io/library/omv.sensor.html}
 \end{center}
 %
 Now, we’re going to capture a test image that we’ll use to set the color threshold values. With no battery in your robot, place the robot on the floor with a few orange and purple golf balls in the camera’s field of view and connect the camera to the OpenMV IDE. Make sure two colored golf balls are close to the camera and two are farther away. For color tracking OpenMV examples recommend that “auto gain” and “auto white balance” be disabled. So you need to add code to the Hello World program. But be sure to change the name of the helloworld program because the OpenMV IDE seems to rewrite the default \texttt{helloworld\_1.py} file over the top of one that you have saved. The best place to save your OpenMV files is in your “workspace\textbackslash{}OpenMV” folder. The code you need to add after the \mintinline{python}{sensor.set_framesize} command is:
@@ -224,7 +224,7 @@ Once you’ve made the required changes, connect to the camera and run the progr
 For this exercise you will use/open another python (.py) file you already copied to your “workspace\textbackslash{}OpenMV” folder, MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py. This script uses the \mintinline{python}{image.find_blobs} method to find the three largest blobs that fall within two color thresholds. In addition to highlighting the blobs and drawing crosshairs at the centroids, it sends the areas and centroids over UART to the RedBoard. For now, we can ignore the communication protocol while we modify our vision algorithm. First, enter both of your color thresholds values into the “\mintinline{python}{threshold1}” and “\mintinline{python}{threshold2}” variables. Connect the camera again and run the script. You should see a rectangle drawn around the desired object with a cross hair in the center. Notice how much more quickly the built-in blob search algorithm performs and notice the frames per second (fps) printed to the terminal. We have a few additional knobs here to adjust the blob search algorithm. The “\mintinline{python}{pixels_threshold}” and “\mintinline{python}{area_threshold}” arguments of the ”\mintinline{python}{find_blobs}” method set a minimum allowable area for the number of pixels in the blob and the area of the blob, respectively. If the algorithm doesn’t find the object, try reducing these threshold values until it reliably finds the object. If the algorithm picks up extraneous blobs smaller than the desired object, try increasing the values. If none of these methods work, you may need to go back and verify your threshold values. Play with these two thresholds so you see how they work.
 %
 \begin{checkoff}[MultiBlob finds the golf balls]
-\textbf{Demonstrate this code working to your TA.}
+        \textbf{Demonstrate this code working to your TA.}
 \end{checkoff}
 %
 \Ex[Interfacing with F28379D Board and Distance Calculation (This section will be finished Week Two)]
@@ -232,30 +232,30 @@ For this exercise you will use/open another python (.py) file you already copied
 In the previous exercises you used the OpenMV’s IDE to debug and download micro-Python programs to the OpenMV board. We will again use this IDE to modify starter code to search for both orange and light purple golf balls. After we have our OpenMV code ready to run continuously, the below steps will explain how to save the Python code on the OpenMV’s SD card so that when it is either powered on or reset, with a press of the reset button, it will be the default code running.
 %
 \begin{enumerate}
-    \item The OpenMV code we will use for Ex. 4 and Ex.5 is again the file MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py. Open this file in the OpenMV IDE. Again it will be the best if you can use your own laptop to run the OpenMV IDE so you can move the robot to the floor. Either copy the MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py file to your laptop or pull the latest code in your repository. Looking through the given code, it performs the “\mintinline{python}{find_blobs}” algorithm to search for two color thresholds. It then sends the largest three blobs of \mintinline{python}{threshold1} and the largest three blobs of \mintinline{python}{threshold2} to the F28379D board over UART. If it does not find all three blobs of a color, it sends Area = 0, Column = 0, Row = 0 to indicate that this blob was not found. Also notice that the given thresholds are approximate ranges for orange and purple. As a first step change “\mintinline{python}{threshold1}” so that it is the color range you found for the orange golf ball in Exercise 3. Change “\mintinline{python}{threshold2}” to the range you found for the purple golf ball. Run this code from the OpenMV IDE and put the robot on the floor in the course. Put both orange and purple balls in the field of view of the camera and make sure on the LCD screen that both colors are found and cross hairs are placed on the blobs. Move the robot around the course and make sure nothing else on the floor besides golf balls are recognized by the camera.
+        \item The OpenMV code we will use for Ex. 4 and Ex.5 is again the file MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py. Open this file in the OpenMV IDE. Again it will be the best if you can use your own laptop to run the OpenMV IDE so you can move the robot to the floor. Either copy the MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py file to your laptop or pull the latest code in your repository. Looking through the given code, it performs the “\mintinline{python}{find_blobs}” algorithm to search for two color thresholds. It then sends the largest three blobs of \mintinline{python}{threshold1} and the largest three blobs of \mintinline{python}{threshold2} to the F28379D board over UART. If it does not find all three blobs of a color, it sends Area = 0, Column = 0, Row = 0 to indicate that this blob was not found. Also notice that the given thresholds are approximate ranges for orange and purple. As a first step change “\mintinline{python}{threshold1}” so that it is the color range you found for the orange golf ball in Exercise 3. Change “\mintinline{python}{threshold2}” to the range you found for the purple golf ball. Run this code from the OpenMV IDE and put the robot on the floor in the course. Put both orange and purple balls in the field of view of the camera and make sure on the LCD screen that both colors are found and cross hairs are placed on the blobs. Move the robot around the course and make sure nothing else on the floor besides golf balls are recognized by the camera.
     \item Now that the OpenMV code seems to be working well, we would like to make this code the default code that the camera runs after power on or reset. To do this all you have to do is copy this MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py to the OpenMV’s SD card and rename the file “\texttt{main.py}”. When you connect the OpenMV camera to your laptop’s USB port, it should bring up a folder. This folder is OpenMV’s SD card. Look at the files and notice that one of the files is “\texttt{main.py}.” So first copy your MultiBlobtwoColorwithLCDQQVGA\_firmware4\_5\_9.py file to the OpenMV SD card. Then in the SD card delete the \texttt{main.py} file. Finally rename \texttt{MultiBlobtwoColorwithLCD.py} to \texttt{main.py}. Once saved as \texttt{main.py} you can either press the OpenMV’s reset button or unplug the OpenMV camera from USB and plug it back in. Once you do this your \texttt{main.py} code will start running. Notice how the OpenMV’s blue LED is just on for a short burst about 2 times a second.
     \item Before you go on and write code for the F28379D to receive this centroid data from the OpenMV camera, notice one more thing about the OpenMV camera. The OpenMV does not need to use a SD card. Remove the SD card from the camera and power on the OpenMV without the SD card. Notice that it also pulls open a folder. Also notice that the blue LED is blinking at a different rate. Technically you could copy your code to the \texttt{main.py} file directly on the OpenMV and it would run the same as if you copied it to the SD card. When first working with the OpenMV we found ourselves copying code that we thought was bug free to \texttt{main.py} but then found out later that we had some errors that caused the OpenMV to crash. For that reason I want you to leave the \texttt{main.py} file that is on the OpenMV itself alone and only change the \texttt{main.py} file that is on the SD card. When the SD card is inserted it is the only \texttt{main.py} file that the OpenMV uses. But if you make a mistake in that \texttt{main.py} file on the SD card you can power off the OpenMV camera, remove the SD card and power back on the OpenMV camera to see that the default \texttt{main.py} code still runs. This makes for a good “sanity” check to see that the OpenMV is still working.
 \end{enumerate}
 %
 \begin{itemize}
     \item Now let’s move to code on the F28379D board. The starter code is all set to read the centroid data sent from the OpenMV camera to the F28379D’s UART\_SCIA. All you need to do is flash this starter code to the F28379D. Also your TA will show you how to plug the OpenMV camera’s USB port into one of the Raspberry PI’s USB ports. With the code flashed to the F28379D, place the robot on the floor in the course and press the reset button of the F28379D along with the reset button of the OpenMV. Once running put some golf balls in the camera’s view and you can see the “Max Blob Area, Max Blob Column Centroid, Max Blob Row Centriod” printed to the text LCD screen if you press button 1. The top line is the orange color and the second line is purple. Move the robot around a bit and notice the values changing on the text LCD. Put three purple and three orange balls in front of the robot and now press button 2. Notice the second largest blob coordinates are printed to the text LCD. Finally if you press button 3 the third largest blob coordinates are printed to the text LCD.
-    %
-    \begin{checkoff}[Blob data on the text LCD]
-    \textbf{Show this working to your instructor.}
-    \end{checkoff}
-    %
+        %
+        \begin{checkoff}[Blob data on the text LCD]
+                \textbf{Show this working to your instructor.}
+        \end{checkoff}
+        %
     \item Now that you have areas and centroids printing to the text LCD (when you press the correct button), collect some data to find an equation that relates row centroid to the distance the golf ball is away from the robot. One very important assumption you will be making here is that the golf ball is always on the floor. Also since the camera has a fish eye lens, you will make sure the ball is in the center columns of the camera image. Ask your instructor for a yard stick and use it to measure the distance the center of the robot is away from the golf ball. Take measurements every 0.5 feet, starting at 1 foot, up to 4.5 feet away from the center of the robot. Record the distance from the robot and the row centroid at that distance. Then when you have the data recorded, use curve fitting in Matlab to find a good equation that calculates the distance in feet from the robot to the ball given the ball’s row centroid. This will not be a linear equation. Calculate this equation in your SWI1 function when a new centroid is found and every 100ms print the distance the ball is away from the robot to the text LCD screen.
-    %
-    \begin{checkoff}[Distance to the golf ball]
-    \textbf{Demonstrate this working to your instructor.}
-    \end{checkoff}
+        %
+        \begin{checkoff}[Distance to the golf ball]
+                \textbf{Demonstrate this working to your instructor.}
+        \end{checkoff}
 \end{itemize}
 %
 \Ex[Color Following (This section will be finished Week Two)]
 %
 \begin{itemize}
-    \item For this exercise you will start to implement RobotState 20 (Follow/Pickup Orange Golf ball) and RobotState 30 (Follow/Pickup Purple Golf ball). Looking at SWI1’s code you will notice there is an empty RobotState 20 case statement. You will be adding a case 30 later. For now let’s just focus on following the largest orange blob the OpenMV finds. For this reason at the line before the statement “switch (RobotState) \{“, add “\mintinline{c}{RobotState = 20}”. This will make the state machine code always run state 20. Inside state 20 keep the code pretty simple for now. The goal is to follow the orange golf ball so it always stays in the center of the camera’s view. Because we are interested in the center of the camera’s view left to right, the following code will use the column centroid. Also since the goal is to keep the blob in the center columns of the camera’s view, it is nice to change the centroid so that zero is in the center of the view. So create a global float variable \mintinline{c}{colcentroid} and since our camera image has 160 columns set it to \mintinline{c}{colcentroid = MaxColThreshold1 - 80;} \mintinline{c}{colcentroid} will now be a value between -80 and 80. Additionally inside case 20 implement the following code listed as Pseudocode:
-%
+        \item For this exercise you will start to implement RobotState 20 (Follow/Pickup Orange Golf ball) and RobotState 30 (Follow/Pickup Purple Golf ball). Looking at SWI1’s code you will notice there is an empty RobotState 20 case statement. You will be adding a case 30 later. For now let’s just focus on following the largest orange blob the OpenMV finds. For this reason at the line before the statement “switch (RobotState) \textbraceleft“, add “\mintinline{c}{RobotState = 20}”. This will make the state machine code always run state 20. Inside state 20 keep the code pretty simple for now. The goal is to follow the orange golf ball so it always stays in the center of the camera’s view. Because we are interested in the center of the camera’s view left to right, the following code will use the column centroid. Also since the goal is to keep the blob in the center columns of the camera’s view, it is nice to change the centroid so that zero is in the center of the view. So create a global float variable \mintinline{c}{colcentroid} and since our camera image has 160 columns set it to \mintinline{c}{colcentroid = MaxColThreshold1 - 80;} \mintinline{c}{colcentroid} will now be a value between -80 and 80. Additionally inside case 20 implement the following code listed as Pseudocode:
+        %
 \begin{minted}{text}
 If MaxColThreshold1 == 0 || MaxAreaThreshold1 < 3
     Vref = 0
@@ -266,38 +266,38 @@ Else
     // start kpvision out as 0.05 and kpvision could need to be
     // negative.
 \end{minted}
-%
-    Run this code on the floor pushing an orange golf ball around making the robot follow. Tune your \mintinline{c}{kpvision} value to make the robot flow nicely.
-    \item With the robot being able to follow orange, modify RobotState 1 and RobotState 20 to do the following:
-    %
-    \begin{enumerate}
-        \SEenumlabel{i}{alph}%
-        \item Get rid of the hard coding of \mintinline{c}{RobotState = 20} at the top of the state machine code.
-        \item In RobotState 1, if MaxAreaTheshold1 is great than some area, switch to RobotState 20. To find this area, put the robot on the floor and move a golf ball towards the robot to the distance when you would want to start following towards the golf ball. Use this as the area to switch to RobotState 20.
-        \item In RobotState 20: here use the code you developed above that has the robot turn towards the golf ball and drive towards it keeping the largest orange blob in the center columns of the camera’s view. If MaxRowThreshold1 $>$ “a large (bottom) row number” (you will need to play with this number) then switch to RobotState 22.
-        \item In RobotState 22: set Vref and turn to zero to stop the robot. This is simulating you waiting for your gripper door to open. Keep track with a count variable how long you have been in RobotState 22. When 1 second has gone by switch to RobotState 24.
-        \item In RobotState 24: set turn to zero and Vref to 0.5. Keep track with a count variable how long you have been in RobotState 24. When 1 second has gone by switch to RobotState 26.
-        \item In RobotState 26: set turn and Vref to 0. Keep track with a count variable how long you have been in RobotState 26. When 1 second has gone by switch back to RobotState 1 and the robot will continue to its X, Y point.
-        \item Using a similar count variable, modify RobotState 1 so that once you switch back to RobotState 1, you cannot switch to RobotState 20 or 30 (coming up in the next bullet) for 2 seconds.
-        \item Finally make sure “RobotState”, which is an \mintinline{c}{int16_t}, is printed to the text LCD.
-        \item \leavevmode
         %
-        \begin{checkoff}[Robot follows an orange ball]
-        \textbf{Show this working to your instructor}
-        \end{checkoff}
-    \end{enumerate}
-    %
+        Run this code on the floor pushing an orange golf ball around making the robot follow. Tune your \mintinline{c}{kpvision} value to make the robot flow nicely.
+    \item With the robot being able to follow orange, modify RobotState 1 and RobotState 20 to do the following:
+        %
+        \begin{enumerate}
+                \SEenumlabel{i}{alph}%
+                \item Get rid of the hard coding of \mintinline{c}{RobotState = 20} at the top of the state machine code.
+            \item In RobotState 1, if MaxAreaTheshold1 is great than some area, switch to RobotState 20. To find this area, put the robot on the floor and move a golf ball towards the robot to the distance when you would want to start following towards the golf ball. Use this as the area to switch to RobotState 20.
+            \item In RobotState 20: here use the code you developed above that has the robot turn towards the golf ball and drive towards it keeping the largest orange blob in the center columns of the camera’s view. If MaxRowThreshold1 $>$ “a large (bottom) row number” (you will need to play with this number) then switch to RobotState 22.
+            \item In RobotState 22: set Vref and turn to zero to stop the robot. This is simulating you waiting for your gripper door to open. Keep track with a count variable how long you have been in RobotState 22. When 1 second has gone by switch to RobotState 24.
+            \item In RobotState 24: set turn to zero and Vref to 0.5. Keep track with a count variable how long you have been in RobotState 24. When 1 second has gone by switch to RobotState 26.
+            \item In RobotState 26: set turn and Vref to 0. Keep track with a count variable how long you have been in RobotState 26. When 1 second has gone by switch back to RobotState 1 and the robot will continue to its X, Y point.
+            \item Using a similar count variable, modify RobotState 1 so that once you switch back to RobotState 1, you cannot switch to RobotState 20 or 30 (coming up in the next bullet) for 2 seconds.
+                \item Finally make sure “RobotState”, which is an \mintinline{c}{int16_t}, is printed to the text LCD.
+            \item \leavevmode
+                %
+                \begin{checkoff}[Robot follows an orange ball]
+                        \textbf{Show this working to your instructor}
+                \end{checkoff}
+        \end{enumerate}
+        %
     \item Create a case 30, 32, 34, 36 that performs all the same steps as 20, 22, 24,26 but for purple and in case 1 switch to case 30 if the largest ball found was a purple golf ball. You will also have to change your case 1 switch to case 20 to check both orange and purple to see which is the largest if both are seen.
-    %
-    \begin{checkoff}[Robot follows orange and purple]
-    \textbf{Show this working to your instructor.}
-    \end{checkoff}
+        %
+        \begin{checkoff}[Robot follows orange and purple]
+                \textbf{Show this working to your instructor.}
+        \end{checkoff}
 \end{itemize}
 %
 \section*{Lab Check Off}
 %
 \begin{checkoff}[Final waypoint and ball following]
-Show your TA the final F28379D program and LABVIEW program commanding the robot to go to the different x, y points and then if a golf ball is seen go towards the golf ball until it disappears. Stall for two seconds once it disappears and then return to commanding the robot to x, y points.
+        Show your TA the final F28379D program and LABVIEW program commanding the robot to go to the different x, y points and then if a golf ball is seen go towards the golf ball until it disappears. Stall for two seconds once it disappears and then return to commanding the robot to x, y points.
 \end{checkoff}
 %
 \section*{Check-Off Summary}

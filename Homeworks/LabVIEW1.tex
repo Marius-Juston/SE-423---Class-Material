@@ -2,12 +2,12 @@
 % We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
 % (testphase = phase-III) is incompatible with the htlatex DVI pipeline
 % and would error with "Generic hooks cannot be added to '\addcontentsline'".
-% \HCode is defined by tex4ht before our file is read, so this branch is safe. 
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -28,13 +28,13 @@
 %
 \begin{document}
 
-\MakeAssignmentTitle 
+\MakeAssignmentTitle
 
 \Ex[Temperature]
 
 Read through at least the first two sections at the site \url{http://www.ni.com/gettingstarted/labviewbasics} \textit{LABVIEW Environment Basics and Dataflow Programming Basics} and watch at least the first two videos and the tenth video at the site \url{https://www.youtube.com/playlist?list=PLB968815D7BB78F9C}
 
-Reproduce (does not have to be exactly the same) the Fahrenheit to Celsius LABVIEW program that \textbf{uses a loop structure} to continuously run until a Stop button is pressed. Add some bells and whistles if you would like.  
+Reproduce (does not have to be exactly the same) the Fahrenheit to Celsius LABVIEW program that \textbf{uses a loop structure} to continuously run until a Stop button is pressed. Add some bells and whistles if you would like.
 %
 \begin{figure}[H]
     \centering
@@ -62,7 +62,7 @@ You can find other good YouTube videos. Here are a few others I found to get you
 %
 Furthermore, watch the YouTube video below that introduces sequence structures: \url{https://www.youtube.com/watch?v=DjN5Fpsjwng}.
 
-To give you an introduction to sequence structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=03PykG1O1x0}. You may need to find online help on “Case structures” as they are used in this video, but are not explained.  
+To give you an introduction to sequence structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=03PykG1O1x0}. You may need to find online help on “Case structures” as they are used in this video, but are not explained.
 %
 \begin{figure}[H]
     \centering
@@ -77,7 +77,7 @@ To give you an introduction to sequence structures, reproduce the VI demonstrate
 %
 \Ex[Event Structures]
 
-To give you an introduction to event structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=8eO64fo3Pho}. You do not need to demonstrate the initial “polling” VI. Just the event structure VI.  
+To give you an introduction to event structures, reproduce the VI demonstrated in the YouTube video \url{https://www.youtube.com/watch?v=8eO64fo3Pho}. You do not need to demonstrate the initial “polling” VI. Just the event structure VI.
 %
 \begin{figure}[H]
     \centering
@@ -109,7 +109,7 @@ Read through the Array and Clusters Tutorial at \url{https://www.youtube.com/wat
 %
 \Ex[Cluster]
 
-Create a Cluster and then produce two Clusters similar to the first.  
+Create a Cluster and then produce two Clusters similar to the first.
 %
 \begin{figure}[H]
     \centering

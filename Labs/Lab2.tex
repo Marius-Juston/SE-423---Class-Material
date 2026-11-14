@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -22,8 +22,8 @@
 \input{header}
 
 \def\AssignmentText{(One Week Lab) \\
-Introduction to Raspberry PI4 and \\
-Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code Composer Studio \par
+    Introduction to Raspberry PI4 and \\
+    Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code Composer Studio \par
 \CheckOffNotice}
 %
 \begin{document}
@@ -33,29 +33,29 @@ Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code Compos
 \section*{A few questions to get your brain thinking in binary number representation}
 %
 \begin{enumerate}
-    \SEenumlabel{ii}{roman}
+        \SEenumlabel{ii}{roman}
     \item If there was such thing as a 24 bit signed integer, what would be the largest positive number it could represent and what is the smallest negative number it could represent?
-    \item Below are three (signed) \mintinline{c}{int16_t} integers represented in binary format. What are these numbers in decimal format? Use the Windows Calculator and put it in Programmer Mode and select the WORD size (which is 16 bits).
-%
-    \begin{enumerate}
-        \item \texttt{1101110000011011}
-        \item \texttt{0001111100110101}
-        \item \texttt{1000000010110011}
-    \end{enumerate}
-%
+        \item Below are three (signed) \mintinline{c}{int16_t} integers represented in binary format. What are these numbers in decimal format? Use the Windows Calculator and put it in Programmer Mode and select the WORD size (which is 16 bits).
+        %
+        \begin{enumerate}
+            \item \texttt{1101110000011011}
+            \item \texttt{0001111100110101}
+            \item \texttt{1000000010110011}
+        \end{enumerate}
+        %
     \item In question 2i, is bit 10 high 1 or low 0? Remember we start numbering with bit 0 as right most bit.
     \item \leavevmode
-%
-    \begin{checkoff}[Meaning of the if statement]
-    \textbf{Explain to your TA} what this if statement is checking for (think in binary) (\& is bitwise AND)
-%
+        %
+        \begin{checkoff}[Meaning of the if statement]
+                \textbf{Explain to your TA} what this if statement is checking for (think in binary) (\& is bitwise AND)
+                %
 \begin{minted}{c}
 if ((myregister & 0x4) == 0x4) {
 
 }
 \end{minted}
-%
-    \end{checkoff}
+                %
+        \end{checkoff}
 \end{enumerate}
 %
 \section*{Goals for this Lab Assignment}
@@ -71,32 +71,32 @@ if ((myregister & 0x4) == 0x4) {
 \section*{LED’s Default GPIO Assignments}
 %
 \begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.76\textwidth}|}
-\hline
-LED1 & GPIO22, Controlled with Registers GPADAT, GPASET, GPACLEAR and GPATOGGLE \\ \hline
-LED2 & GPIO94, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and GPCTOGGLE \\ \hline
-LED3 & GPIO95, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and GPCTOGGLE \\ \hline
-LED4 & GPIO97, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and GPDTOGGLE \\ \hline
-LED5 & GPIO111, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and GPDTOGGLE \\ \hline
-\end{tabular}
-\caption{GPIO pin and registers of each LED}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.76\textwidth}|}
+        \hline
+        LED1 & GPIO22, Controlled with Registers GPADAT, GPASET, GPACLEAR and GPATOGGLE \\ \hline
+        LED2 & GPIO94, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and GPCTOGGLE \\ \hline
+        LED3 & GPIO95, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and GPCTOGGLE \\ \hline
+        LED4 & GPIO97, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and GPDTOGGLE \\ \hline
+        LED5 & GPIO111, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and GPDTOGGLE \\ \hline
+    \end{tabular}
+    \caption{GPIO pin and registers of each LED}
 \end{table}
 %
 \section*{Push Button’s Default GPIO Assignments}
 %
 \begin{table}[H]
-\centering
-\renewcommand{\arraystretch}{1.2}
-\begin{tabular}{|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.6\textwidth}|}
-\hline
-PB1 & GPIO157, Read bit status with Register GPEDAT \\ \hline
-PB2 & GPIO158, Read bit status with Register GPEDAT \\ \hline
-PB3 & GPIO159, Read bit status with Register GPEDAT \\ \hline
-PB4 & GPIO160, Read bit status with Register GPFDAT \\ \hline
-\end{tabular}
-\caption{GPIO pin and register of each push button}
+    \centering
+    \renewcommand{\arraystretch}{1.2}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.12\textwidth}|>{\centering\arraybackslash}p{0.6\textwidth}|}
+        \hline
+        PB1 & GPIO157, Read bit status with Register GPEDAT \\ \hline
+        PB2 & GPIO158, Read bit status with Register GPEDAT \\ \hline
+        PB3 & GPIO159, Read bit status with Register GPEDAT \\ \hline
+        PB4 & GPIO160, Read bit status with Register GPFDAT \\ \hline
+    \end{tabular}
+    \caption{GPIO pin and register of each push button}
 \end{table}
 %
 \textbf{GPIO Register Use when GPIO pin set as Output:} The GPIO Registers are 32 bit registers but we use unions and bitfields in the C/C++ programming language to control just one bit of the 32 bit register at a time. The “\lstinline|.all|” part of the C/C++ union is the entire 32bit register. The “\lstinline|.bit.GPIO11|” is just one bit in the 32 bit register. So these two lines of C code perform the same operation:
@@ -111,50 +111,50 @@ GpioDataRegs.GPASET.bit.GPIO11 = 1;
 \end{minted}
 %
 \begin{table}[H]
-\centering
-\footnotesize
-\renewcommand{\arraystretch}{1.2}
-\SETableHeaders{1}
-\begin{tabular}{|>{\centering\arraybackslash}p{0.14\textwidth}|>{\centering\arraybackslash}p{0.28\textwidth}|>{\centering\arraybackslash}p{0.46\textwidth}|}
-\hline
-\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
-GP?DAT &
-GP?DAT.bit.GPIO? = 1, Sets that Pin High, 3.3V \newline
-GP?DAT.bit.GPIO? = 0, Sets that Pin Low, 0V/GND \newline
-\textbf{BUT FOR TECHNICAL REASONS DO NOT USE DAT FOR TURNING ON AND OFF LEDS JUST USE TO READ STATE OF PUSHBUTTONS BELOW} & \\ \hline
-GP?SET &
-GP?SET.bit.GPIO? = 1, Sets that Pin High, 3.3V \newline
-GP?SET.bit.GPIO? = 0, Does Nothing &
-\textbf{GpioDataRegs.GPBSET.bit.GPIO37 = 1; Sets GPIO37 High/3.3V} \newline
-\textbf{GpioDataRegs.GPBSET.bit.GPIO37 = 0; Does Nothing} \\ \hline
-GP?CLEAR &
-GP?CLEAR.bit.GPIO? = 1, Sets that Pin Low, 0V/GND \newline
-GP?CLEAR.bit.GPIO? = 0, Does Nothing &
-\textbf{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; Sets GPIO70 Low/0V} \newline
-\textbf{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; Does Nothing} \\ \hline
-GP?TOGGLE &
-GP?TOGGLE.bit.GPIO? = 1, Sets Pin opposite of its current state. \newline
-GP?TOGGLE.bit.GPIO? = 0, Does Nothing &
-\textbf{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; was 3.3V then 0V or was 0V then 3.3V} \newline
-\textbf{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0; Does Nothing} \\ \hline
-\end{tabular}
-\caption{GPIO registers of a pin set as output}
+    \centering
+    \footnotesize
+    \renewcommand{\arraystretch}{1.2}
+    \SETableHeaders{1}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.14\textwidth}|>{\centering\arraybackslash}p{0.28\textwidth}|>{\centering\arraybackslash}p{0.46\textwidth}|}
+        \hline
+        \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+        GP?DAT &
+        GP?DAT.bit.GPIO? = 1, Sets that Pin High, 3.3V \newline
+        GP?DAT.bit.GPIO? = 0, Sets that Pin Low, 0V/GND \newline
+        \textbf{BUT FOR TECHNICAL REASONS DO NOT USE DAT FOR TURNING ON AND OFF LEDS JUST USE TO READ STATE OF PUSHBUTTONS BELOW} & \\ \hline
+        GP?SET &
+        GP?SET.bit.GPIO? = 1, Sets that Pin High, 3.3V \newline
+        GP?SET.bit.GPIO? = 0, Does Nothing &
+        \textbf{GpioDataRegs.GPBSET.bit.GPIO37 = 1; Sets GPIO37 High/3.3V} \newline
+        \textbf{GpioDataRegs.GPBSET.bit.GPIO37 = 0; Does Nothing} \\ \hline
+        GP?CLEAR &
+        GP?CLEAR.bit.GPIO? = 1, Sets that Pin Low, 0V/GND \newline
+        GP?CLEAR.bit.GPIO? = 0, Does Nothing &
+        \textbf{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; Sets GPIO70 Low/0V} \newline
+        \textbf{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; Does Nothing} \\ \hline
+        GP?TOGGLE &
+        GP?TOGGLE.bit.GPIO? = 1, Sets Pin opposite of its current state. \newline
+        GP?TOGGLE.bit.GPIO? = 0, Does Nothing &
+        \textbf{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; was 3.3V then 0V or was 0V then 3.3V} \newline
+        \textbf{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0; Does Nothing} \\ \hline
+    \end{tabular}
+    \caption{GPIO registers of a pin set as output}
 \end{table}
 %
 \textbf{GPIO Register Use When GPIO Pin Set as Input:} Each GPIO pin, when setup as an input, has an internal pull-up resistor that can either enabled/connected or disabled/disconnected to that GPIO pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.
 %
 \begin{table}[H]
-\centering
-\small
-\renewcommand{\arraystretch}{1.2}
-\SETableHeaders{1}
-\begin{tabular}{|>{\centering\arraybackslash}p{0.1\textwidth}|>{\centering\arraybackslash}p{0.27\textwidth}|p{0.51\textwidth}|}
-\hline
-\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
-GP?DAT &
-If GP?DAT.bit.GPIO? is equal to 1 then the Pin is High, 3.3V \newline
-If GP?DAT.bit.GPIO? is equal to 0 then the Pin is Low, 0V/GND &
-\begin{minipage}[t]{\linewidth}
+    \centering
+    \small
+    \renewcommand{\arraystretch}{1.2}
+    \SETableHeaders{1}
+    \begin{tabular}{|>{\centering\arraybackslash}p{0.1\textwidth}|>{\centering\arraybackslash}p{0.27\textwidth}|p{0.51\textwidth}|}
+        \hline
+        \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+        GP?DAT &
+        If GP?DAT.bit.GPIO? is equal to 1 then the Pin is High, 3.3V \newline
+        If GP?DAT.bit.GPIO? is equal to 0 then the Pin is Low, 0V/GND &
+        \begin{minipage}[t]{\linewidth}
 \begin{minted}[fontsize=\footnotesize]{c}
 if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {
 //code that needs to run when input pin
@@ -164,10 +164,10 @@ if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {
 // GPIO19 is Low/0V
 }
 \end{minted}
-\end{minipage}
-\\ \hline
-\end{tabular}
-\caption{GPIO register of a pin set as input}
+        \end{minipage}
+        \\ \hline
+    \end{tabular}
+    \caption{GPIO register of a pin set as input}
 \end{table}
 %
 \section*{Laboratory Exercises}
@@ -202,10 +202,10 @@ In this exercise 1 you will create a simple LABVIEW VI from scratch to communica
     \item The Timeout and Stop events are simple. In both events pass the “Connection ID” output of the “TCP Open Connection” block through to the output on its way to the “TCP Close Connection” block. For the Timeout event connect a False Boolean constant to the Stop button port. Also in the top left of the event structure there is a small hour glass icon. Right click on the input of this hour glass icon and create a constant and set the Timeout to 50ms. In the Stop button event connect a True Boolean constant to the Stop button port. Also here in the Stop button event place the Stop button icon. Double check the below picture, but your LABVIEW program should be finished now.
     \item Next step is to get the correct program running on your Raspberry PI4 board on your robot. We need a TCPIP server application to be running that is waiting for text from your LABVIEW program and then will receive that test and send it right back (echo) to your LABVIEW program. You will use a program on your lab PCs called “putty.” To run putty, open a Windows cmd prompt. At the command prompt type “\texttt{putty pi@192.168.1.7?}” filling in the ? with your robot’s IP. (pi is the username @ its ip address) A terminal window should display and request you type in the password. Type the password, “\lstinline|f33dback5|”, and then you have a wireless terminal of your RPI4’s Linux operating system. Type \textbf{ls} (list) and see all the folders of the user \textbf{pi}’s home directory. The program we want to run is called LVecho and it is located in the folder lvecho. Change directory into the lvecho folder by typing “\lstinline|cd lvecho|” (cd is change directory). Run the Linux application \textbf{LVecho} by typing “\texttt{./LVecho}”. The “\texttt{./}” tells Linux to look in the current directory for the application to execute. This application will be used to verify your LABVIEW GUI is working. It simply receives the messages you send from LABVIEW, prints them to the Linux console and echoes them back to your LABVIEW application.
     \item Run your LABVIEW application, and type a message into your Send String control. Click on the \textbf{Send} button and your message should print at the Linux console and echo back to the Received String indicator.
-%
-    \begin{checkoff}[LabVIEW talking to the Raspberry Pi]
-    Demonstrate your LabVIEW programming talking back and forth to your robot’s Raspberry Pi board.
-    \end{checkoff}
+        %
+        \begin{checkoff}[LabVIEW talking to the Raspberry Pi]
+                Demonstrate your LabVIEW programming talking back and forth to your robot’s Raspberry Pi board.
+        \end{checkoff}
     \item When you are done playing with this end, click the STOP button and close the LVecho application at that Linux console by typing Ctrl-C.
     \item \textbf{Leave the Raspberry PI on for now and leave the terminal running that is connected to your PI. You will be told to Shutdown the PI at the end of the lab.}
 \end{enumerate}
@@ -247,56 +247,56 @@ In this exercise 1 you will create a simple LABVIEW VI from scratch to communica
 In this exercise we are back to working with Code Composer Studio and the F28379D Laundpad board (red board) on the robot car. Import “LABstarter”, instructions in Lab 1 or your HowTo document, to create a new project in your workspace and call it \lstinline|lab2<yourinitials>|. Once you have your new lab2 project perform the below steps.
 %
 \begin{enumerate}
-    \item For this lab, you will only be using CPU Timer 2’s interrupt service routine “\mintinline{c}{cpu_timer2_isr(void)}”. We will leave the timer0 and timer1 functions in our source code but we will not enable timer0 or timer1. So in \mintinline{c}{main()} find the two lines of code that set the TIE (Timer Interrupt Enable) bit to enable timer 0 and timer 1. Comment these two lines so they are not included in your program. i.e.
-%
+        \item For this lab, you will only be using CPU Timer 2’s interrupt service routine “\mintinline{c}{cpu_timer2_isr(void)}”. We will leave the timer0 and timer1 functions in our source code but we will not enable timer0 or timer1. So in \mintinline{c}{main()} find the two lines of code that set the TIE (Timer Interrupt Enable) bit to enable timer 0 and timer 1. Comment these two lines so they are not included in your program. i.e.
+        %
 \begin{minted}{c}
 //CpuTimer0Regs.TCR.all = 0x4000;
 //CpuTimer1Regs.TCR.all = 0x4000;
 \end{minted}
-%
-    \item In \mintinline{c}{main()} find the “\mintinline{c}{ConfigCpuTimer}” function call for CPU Timer 2 and set its period to 0.25 seconds. Also find CPU Timer 2’s interrupt function “\mintinline{c}{cpu_timer2_isr}.” Note that in this function, it is blinking the blue LED on the Launchpad on and off. Build and Debug this code to make sure that the code compiles and runs. You should see the blue LED blinking on and off every half second. Once that is working, terminate your debug session so you are back in Edit mode. Before going to the next step, let’s take a few minutes to think about the period value that you passed to the “\mintinline{c}{ConfgiCpuTimer}” function. 0.25 seconds is a large number of microseconds so you may have thought about what the largest acceptable number is to pass to this period parameter. To find this largest period setting we need to look at the TIM (timer register) and PRD (period register) registers of the CPU Timers. Both the PRD and TIM registers are 32 bits long and they each store a 32 bit unsigned integer. The TIM register starts at the value set in the PRD register and counts down by 1 every 1/200000000 seconds (200Mhz). (Note here that we are not use the pre-scaler of the CPU timer.) Whenever the TIM register counts down to 0 an interrupt event is issued calling the CpuTimer2 interrupt service routine. At this moment, the TIM register is also set back to the value set in the PRD register to start timing again.
-%
-    \begin{checkoff}[Largest CPU Timer period]
-    Knowing that a 32 bit unsigned integer has a maximum value, what is the largest period in seconds that the CPU Timers can be set to? \textbf{Explain your answer to your TA.}
-    \end{checkoff}
-    \item Take a look at the global \mintinline{c}{uint32_t} variable \mintinline{c}{numTimer2calls}. Inside the \mintinline{c}{cpu_timer2_isr(void)} function, this variable increments by one each time that function is entered. In addition, every 10th time the function is entered, the global variable \mintinline{c}{UARTPrint} is set to 1. Change the code so that \mintinline{c}{UARTPrint} is set to 1 each time the \mintinline{c}{cpu_timer2_isr} function is entered. \textit{You can do this by changing the modulus to 1 or better just remove the if statement.} Setting \mintinline{c}{UARTPrint} to 1, tells the \mintinline{c}{main()} while loop to print text through a UART serial port to the robot’s text LCD dispaly. Find the \mintinline{c}{UART_printfLine(1, ...)} function call in the \mintinline{c}{main()} while loop.
-%
-    \begin{checkoff}[Why UARTPrint is set and cleared]
-    Does it make sense that when you set \mintinline{c}{UARTPrint} to 1, the while loop will call the \mintinline{c}{UART_printfLine (1, ...)} function? Why is \mintinline{c}{UARTPrint} set to zero inside the if statement after \mintinline{c}{UART_printfLine (1, ...)} is called? \textbf{Explain to your TA.}
-    \end{checkoff}
-    \item Notice that the print statement prints the \mintinline{c}{numTimer2calls} global variable. Since \mintinline{c}{numTimer2calls} is a 32-bit integer the \textbf{\%ld} formatter is used. Change the “line 2” \mintinline{c}{UART_printfLine(2, ...)} call so that both \mintinline{c}{4*numTimer2calls} and \mintinline{c}{6*numTimer2calls} is printed with a comma between the two numbers. Look at the line 2 call of \mintinline{c}{UART_printfLine} to see how to use two formatters to print two items.
-%
-    \begin{checkoff}[Two numbers printed on the LCD]
-    Debug and run your code and check that the LaunchPad’s blue LED is still blinking and your text is printing to the LCD. \textbf{Show your TA.}
-    \end{checkoff}
-    \item Write two worker functions “\mintinline{c}{void SetLEDsOnOff(int16_t LEDvalue)}” and “\mintinline{c}{int16_t ReadSwitches(void)}”.
-%
-    \begin{itemize}
-        \item \mintinline{c}{void SetLEDsOnOff(int16_t LEDvalue)} takes a 16 bit integer as a parameter. The five least significant bits of this integer determine if the five LEDs are on or off. Bit 0 determines LED1’s state. Bit 1 determines LED2’s state. Bit 2 determines LED3’s state. Bit 3 determines LED4’s state. Bit 4 determines LED5’s state. So for example if 18 (0x12, which is binary 10010) is passed to your function then LED5 and LED2 should be ON. Use five if statements inside your function to check, using the bitwise AND, \&, operator, if the integer passed to your function has the least significant five bits either individually set or cleared. If set, turn ON the corresponding LED. If cleared, turn OFF the corresponding LED. See the above tables for LED GPIO assignments. I want you using the GP?SET and GP?CLEAR registers to turn on or off the LEDs. To test this function call it each time in your CPUTimer2 interrupt function and pass to it your global variable \mintinline{c}{numTimer2calls}. \mintinline{c}{numTimer2calls} is getting incremented by one each timer interrupt so you should see the five LEDs counting in binary.
-%
-        \begin{checkoff}[SetLEDsOnOff counting in binary]
-        What happens if the number passed to \mintinline{c}{SetLEDsOnOff()} is greater than 31? Also what happens when you pass a 32 bit integer to a function that is asking for a 16 bit integer like your \mintinline{c}{SetLEDsOnOff} function? {\bfseries Demo and explain to your TA before writing your \mintinline{c}{ReadSwitches()} function below.}
+        %
+        \item In \mintinline{c}{main()} find the “\mintinline{c}{ConfigCpuTimer}” function call for CPU Timer 2 and set its period to 0.25 seconds. Also find CPU Timer 2’s interrupt function “\mintinline{c}{cpu_timer2_isr}.” Note that in this function, it is blinking the blue LED on the Launchpad on and off. Build and Debug this code to make sure that the code compiles and runs. You should see the blue LED blinking on and off every half second. Once that is working, terminate your debug session so you are back in Edit mode. Before going to the next step, let’s take a few minutes to think about the period value that you passed to the “\mintinline{c}{ConfgiCpuTimer}” function. 0.25 seconds is a large number of microseconds so you may have thought about what the largest acceptable number is to pass to this period parameter. To find this largest period setting we need to look at the TIM (timer register) and PRD (period register) registers of the CPU Timers. Both the PRD and TIM registers are 32 bits long and they each store a 32 bit unsigned integer. The TIM register starts at the value set in the PRD register and counts down by 1 every 1/200000000 seconds (200Mhz). (Note here that we are not use the pre-scaler of the CPU timer.) Whenever the TIM register counts down to 0 an interrupt event is issued calling the CpuTimer2 interrupt service routine. At this moment, the TIM register is also set back to the value set in the PRD register to start timing again.
+        %
+        \begin{checkoff}[Largest CPU Timer period]
+                Knowing that a 32 bit unsigned integer has a maximum value, what is the largest period in seconds that the CPU Timers can be set to? \textbf{Explain your answer to your TA.}
         \end{checkoff}
-        \item \mintinline{c}{int16_t ReadSwitches(void)} returns a 16 bit integer that the least significant four bits indicates the state of the four push buttons. (Note that when each of the push buttons are not pressed the GPIO pin reads a 1 or high voltage. When pressed the GPIO pin reads a 0 or ground. This is because the IO pin is using an internal pullup resistor.) This function should have four if statements and use the bitwise OR, “\texttt{|}” operator to appropriately set bits of a local variable that will be returned by this function. So start the return variable at zero. Then if switch 1 is pressed OR 0x1 with local variable. If switch 2 is pressed OR 0x2 with variable. If switch 3 is pressed OR ??? with variable. If switch 4 is pressed OR ??? with variable. Finally return the local variable with the “return” instruction. See the above table for the GPIO pins that are connected to the push buttons and that are setup as inputs with pull-up resistor enabled in the default code.
-    \end{itemize}
-%
-    \item Now that you have these worker functions, make your program a bit more interesting. Add code in your CPU timer 2 interrupt function so that you display to the LEDs the value returned from your \mintinline{c}{ReadSwitches()} function. Do this by creating a global \mintinline{c}{int16_t} variable and assign it the value returned from \mintinline{c}{ReadSwitches()}. Pass this global variable to your \mintinline{c}{SetLEDsOnOff(value)} function to see its binary value displayed on the LEDs. Also print this global variable by adding text (or shortening the text so it fits on the LCD) to one of the \mintinline{c}{UART_printfLine} function calls in \mintinline{c}{main()}’s while loop. Make sure to use the \texttt{\%d} formatter because this is an \mintinline{c}{int16_t} variable.
-%
-    \begin{checkoff}[Push buttons shown on the LEDs]
-    \textbf{Show this working to your TA.}
-    \end{checkoff}
+        \item Take a look at the global \mintinline{c}{uint32_t} variable \mintinline{c}{numTimer2calls}. Inside the \mintinline{c}{cpu_timer2_isr(void)} function, this variable increments by one each time that function is entered. In addition, every 10th time the function is entered, the global variable \mintinline{c}{UARTPrint} is set to 1. Change the code so that \mintinline{c}{UARTPrint} is set to 1 each time the \mintinline{c}{cpu_timer2_isr} function is entered. \textit{You can do this by changing the modulus to 1 or better just remove the if statement.} Setting \mintinline{c}{UARTPrint} to 1, tells the \mintinline{c}{main()} while loop to print text through a UART serial port to the robot’s text LCD dispaly. Find the \mintinline{c}{UART_printfLine(1, ...)} function call in the \mintinline{c}{main()} while loop.
+        %
+        \begin{checkoff}[Why UARTPrint is set and cleared]
+                Does it make sense that when you set \mintinline{c}{UARTPrint} to 1, the while loop will call the \mintinline{c}{UART_printfLine (1, ...)} function? Why is \mintinline{c}{UARTPrint} set to zero inside the if statement after \mintinline{c}{UART_printfLine (1, ...)} is called? \textbf{Explain to your TA.}
+        \end{checkoff}
+        \item Notice that the print statement prints the \mintinline{c}{numTimer2calls} global variable. Since \mintinline{c}{numTimer2calls} is a 32-bit integer the \textbf{\%ld} formatter is used. Change the “line 2” \mintinline{c}{UART_printfLine(2, ...)} call so that both \mintinline{c}{4*numTimer2calls} and \mintinline{c}{6*numTimer2calls} is printed with a comma between the two numbers. Look at the line 2 call of \mintinline{c}{UART_printfLine} to see how to use two formatters to print two items.
+        %
+        \begin{checkoff}[Two numbers printed on the LCD]
+                Debug and run your code and check that the LaunchPad’s blue LED is still blinking and your text is printing to the LCD. \textbf{Show your TA.}
+        \end{checkoff}
+        \item Write two worker functions “\mintinline{c}{void SetLEDsOnOff(int16_t LEDvalue)}” and “\mintinline{c}{int16_t ReadSwitches(void)}”.
+        %
+        \begin{itemize}
+                \item \mintinline{c}{void SetLEDsOnOff(int16_t LEDvalue)} takes a 16 bit integer as a parameter. The five least significant bits of this integer determine if the five LEDs are on or off. Bit 0 determines LED1’s state. Bit 1 determines LED2’s state. Bit 2 determines LED3’s state. Bit 3 determines LED4’s state. Bit 4 determines LED5’s state. So for example if 18 (0x12, which is binary 10010) is passed to your function then LED5 and LED2 should be ON. Use five if statements inside your function to check, using the bitwise AND, \&, operator, if the integer passed to your function has the least significant five bits either individually set or cleared. If set, turn ON the corresponding LED. If cleared, turn OFF the corresponding LED. See the above tables for LED GPIO assignments. I want you using the GP?SET and GP?CLEAR registers to turn on or off the LEDs. To test this function call it each time in your CPUTimer2 interrupt function and pass to it your global variable \mintinline{c}{numTimer2calls}. \mintinline{c}{numTimer2calls} is getting incremented by one each timer interrupt so you should see the five LEDs counting in binary.
+                %
+                \begin{checkoff}[SetLEDsOnOff counting in binary]
+                        What happens if the number passed to \mintinline{c}{SetLEDsOnOff()} is greater than 31? Also what happens when you pass a 32 bit integer to a function that is asking for a 16 bit integer like your \mintinline{c}{SetLEDsOnOff} function? {\bfseries Demo and explain to your TA before writing your \mintinline{c}{ReadSwitches()} function below.}
+                \end{checkoff}
+                \item \mintinline{c}{int16_t ReadSwitches(void)} returns a 16 bit integer that the least significant four bits indicates the state of the four push buttons. (Note that when each of the push buttons are not pressed the GPIO pin reads a 1 or high voltage. When pressed the GPIO pin reads a 0 or ground. This is because the IO pin is using an internal pullup resistor.) This function should have four if statements and use the bitwise OR, “\texttt{|}” operator to appropriately set bits of a local variable that will be returned by this function. So start the return variable at zero. Then if switch 1 is pressed OR 0x1 with local variable. If switch 2 is pressed OR 0x2 with variable. If switch 3 is pressed OR ??? with variable. If switch 4 is pressed OR ??? with variable. Finally return the local variable with the “return” instruction. See the above table for the GPIO pins that are connected to the push buttons and that are setup as inputs with pull-up resistor enabled in the default code.
+        \end{itemize}
+        %
+        \item Now that you have these worker functions, make your program a bit more interesting. Add code in your CPU timer 2 interrupt function so that you display to the LEDs the value returned from your \mintinline{c}{ReadSwitches()} function. Do this by creating a global \mintinline{c}{int16_t} variable and assign it the value returned from \mintinline{c}{ReadSwitches()}. Pass this global variable to your \mintinline{c}{SetLEDsOnOff(value)} function to see its binary value displayed on the LEDs. Also print this global variable by adding text (or shortening the text so it fits on the LCD) to one of the \mintinline{c}{UART_printfLine} function calls in \mintinline{c}{main()}’s while loop. Make sure to use the \texttt{\%d} formatter because this is an \mintinline{c}{int16_t} variable.
+        %
+        \begin{checkoff}[Push buttons shown on the LEDs]
+                \textbf{Show this working to your TA.}
+        \end{checkoff}
 \end{enumerate}
 %
 \Ex
 %
 \begin{enumerate}
     \item Continue with your code from Exercise 2. Change the period of CPU timer 2 to 0.1 seconds.
-    \item Create another global \mintinline{c}{int32_t} variable similar to “\mintinline{c}{numTimer2calls}” but call this variable “\mintinline{c}{countsWhenNotPressed}”. Then in your \mintinline{c}{cpu_timer2_isr}, for now, increment this new global variable by one each time \mintinline{c}{cpu_timer2_isr} is called just like you did for the \mintinline{c}{numTimer2calls} variable. Pass this new count variable to the \mintinline{c}{SetLEDsOnOff()} function to display the least significant 5 bits of your count variable to the five LEDs. {\itshape This is similar to what you coded to test your \mintinline{c}{SetLEDsOnOff()} function in exercise 2.} Compile, download to the DSP and verify that indeed the LEDs are counting in binary.
-    \item Add one more item to this code as an exercise to see the use of bitwise operators in C. Calling the \mintinline{c}{ReadSwitches()} function, use an “if” statement and the bitwise C operator \& to check if push buttons 2 and 3 are pressed. If both of these push buttons are pressed, stop incrementing the “\mintinline{c}{countsWhenNotPressed}” variable. If one or both of the pushbuttons are released, continue counting. Again, compile and download to the microcontroller.
-%
-    \begin{checkoff}[Counter that stops with buttons 2 and 3]
-    When your code is working, \textbf{demonstrate your application to your TA}.
-    \end{checkoff}
+        \item Create another global \mintinline{c}{int32_t} variable similar to “\mintinline{c}{numTimer2calls}” but call this variable “\mintinline{c}{countsWhenNotPressed}”. Then in your \mintinline{c}{cpu_timer2_isr}, for now, increment this new global variable by one each time \mintinline{c}{cpu_timer2_isr} is called just like you did for the \mintinline{c}{numTimer2calls} variable. Pass this new count variable to the \mintinline{c}{SetLEDsOnOff()} function to display the least significant 5 bits of your count variable to the five LEDs. {\itshape This is similar to what you coded to test your \mintinline{c}{SetLEDsOnOff()} function in exercise 2.} Compile, download to the DSP and verify that indeed the LEDs are counting in binary.
+        \item Add one more item to this code as an exercise to see the use of bitwise operators in C. Calling the \mintinline{c}{ReadSwitches()} function, use an “if” statement and the bitwise C operator \& to check if push buttons 2 and 3 are pressed. If both of these push buttons are pressed, stop incrementing the “\mintinline{c}{countsWhenNotPressed}” variable. If one or both of the pushbuttons are released, continue counting. Again, compile and download to the microcontroller.
+        %
+        \begin{checkoff}[Counter that stops with buttons 2 and 3]
+                When your code is working, \textbf{demonstrate your application to your TA}.
+        \end{checkoff}
 \end{enumerate}
 %
 \Ex[Breakpoints and Watch Windows]
@@ -307,29 +307,29 @@ Starting with the code you just finished, we want to experiment with adding brea
     \item In your previous code (with the DSP halted), put your cursor over the integer variable that you are incrementing. You should see that the value of the variable appears. Run your code, halt it again, and again put your cursor over the variable to confirm that it changes.
     \item An easier method than using the cursor repeatedly is to add the variable to the Expressions window. When the DSP is halted, the Expressions window displays the current value of each variable in the Expressions window. To add your counting integer variable to the Expressions window, highlight the variable and then right-click, then select \textbf{Add Watch Expression…}. The variable will appear in the Expressions window with the current value of the variable. The Expressions window dialog is also found under the View menu.
     \item Next play a bit with adding breakpoints and single stepping through a section of code. The code you have written to this point is very small. Add the following nonsense code to allow for easy use of breakpoints and code stepping. At the top of your C-file, but below the \#includes, add the following global variables:
-%
+        %
 \begin{minted}{c}
 float x1= 6.0;
 float x2= 2.3;
 float x3= 7.3;
 float x4= 7.1;
 \end{minted}
-%
-    Then inside your CPU timer 2 interrupt function add this nonsense code:
-%
+        %
+        Then inside your CPU timer 2 interrupt function add this nonsense code:
+        %
 \begin{minted}{c}
 x4 = x3 + 2.0;
 x3 = x4 + 1.3;
 x1 = 9*x2;
 x2 = 34*x3;
 \end{minted}
-%
-    Build and load your code. Add a breakpoint to your code by double clicking on the left gray margin of your source file. A breakpoint is a location where the program will literally halt during execution. This allows you to check the values of your variables during operation. After a breakpoint, you can single step through your code (F5) and watch the variables update as different calculations are performed. You remove breakpoints by again clicking in the left gray margin.
+        %
+        Build and load your code. Add a breakpoint to your code by double clicking on the left gray margin of your source file. A breakpoint is a location where the program will literally halt during execution. This allows you to check the values of your variables during operation. After a breakpoint, you can single step through your code (F5) and watch the variables update as different calculations are performed. You remove breakpoints by again clicking in the left gray margin.
     \item If you happened not to receive any compiler errors during any of the above exercises, you should intentionally add some errors to your code so that you will see how CCS will alert you during the build process. Try double clicking on the error message. The editor will then take you to the line of code that has the error.
-%
-    \begin{checkoff}[Breakpoints and the Watch Window]
-    Demonstrate that you know how to use Breakpoints and the Watch Window to debug your source code.
-    \end{checkoff}
+        %
+        \begin{checkoff}[Breakpoints and the Watch Window]
+                Demonstrate that you know how to use Breakpoints and the Watch Window to debug your source code.
+        \end{checkoff}
 \end{enumerate}
 %
 \Ex
@@ -339,7 +339,7 @@ For many of our lab assignments we will want to have at least one of our timers 
 The F28379D can perform a large number of instructions every 1ms, but there are some things you do not want the processor performing every 1ms. For example the printing to the robot’s text LCD, if we printed every 1ms our eyes would not be able to see all the text spilling to the screen. Also calling the \mintinline{c}{SetLEDsOnOff()} function every 1ms would cause a blur if LED changes. Add code to your CPU Timer 2 interrupt function to only print every 100\textsuperscript{th} time the function is called. The \% (mod) operator is perfect for this. Mod returns the remainder of an integer divided by another integer. i.e. (56 \% 5) = 1. Using “\mintinline{c}{numTimer2calls}” that you are incrementing every time in the timer interrupt, write an if statement with a \% (mod) condition that causes the if statement to be true every 100\textsuperscript{th} time in the timer interrupt. Inside this if statement, perform all code that makes sense to run at the slower rate.
 %
 \begin{checkoff}[1 ms timer period code]
-\textbf{Demo this to your TA.}
+        \textbf{Demo this to your TA.}
 \end{checkoff}
 %
 \textbf{Now that you are done with the lab power off your Raspberry Pi by} going back to the Putty terminal that is connected to your PI and typing “\lstinline|sudo shutdown now|”. This will shutdown the Pi and it takes about 5 seconds or so to shutdown.

@@ -2,12 +2,12 @@
 % We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
 % (testphase = phase-III) is incompatible with the htlatex DVI pipeline
 % and would error with "Generic hooks cannot be added to '\addcontentsline'".
-% \HCode is defined by tex4ht before our file is read, so this branch is safe. 
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -30,12 +30,11 @@
 
 \MakeAssignmentTitle
 
-
 \textit{Note: There are a lot of small blocks in the LabVIEW code I give you below for Exercises 1 and 2. I have found that if you open the Word document, you can zoom in on the code pictures better than in the PDF file.
 }
-\Ex[Shift Registry] 
+\Ex[Shift Registry]
 
-First, watch these two YouTube videos about shift registers (or find other tutorials online).  
+First, watch these two YouTube videos about shift registers (or find other tutorials online).
 \begin{itemize}
     \item \url{https://www.youtube.com/watch?v=wRvpb9jtRlE}
     \item \url{https://www.youtube.com/watch?v=4ivYARn2fy8}
@@ -43,25 +42,25 @@ First, watch these two YouTube videos about shift registers (or find other tutor
 %
 For this assignment, we will start working with the 2D Picture block in LabVIEW. After performing this exercise, you could, for example, use what you learn to create a 2D pictured environment for your robot and draw where the robot is located in this environment. Below is the LabVIEW program I would like you to reproduce for this assignment. It shows you how to draw lines in a 2D Picture. Each time through the while loop, it generates a random number between 0 and 1 and draws a 25-pixel-by-30-pixel rectangle (of course, this could have been done more easily by using the Draw Rectangle block, but I wanted to show how to combine multiple draw commands). Then a shift register is used to keep track of all the lines printed in the 2D Picture as long as the Boolean LED is true. If you click the Boolean LED to make it false, the lines drawn in the previous loops should not be printed to the 2D Picture.
 
-If your screen is large enough, set the 2D Picture to $800 \times 800$ pixels.  
+If your screen is large enough, set the 2D Picture to $800 \times 800$ pixels.
 
 Location of the blocks that may be new to you for this assignment:
 %
 \begin{itemize}
     \item \textbf{From the Front Panel:}
-    \begin{enumerate}
-        \item Modern$\rightarrow$Graph$\rightarrow$Controls$\rightarrow$2D Picture
-        \item Modern$\rightarrow$Boolean$\rightarrow$Round LED
-    \end{enumerate}
+        \begin{enumerate}
+            \item Modern$\rightarrow$Graph$\rightarrow$Controls$\rightarrow$2D Picture
+            \item Modern$\rightarrow$Boolean$\rightarrow$Round LED
+        \end{enumerate}
     \item \textbf{From the block diagram:}
-    \begin{enumerate}
-        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Move Pen
-        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Draw Line
-        \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Empty Picture
-        \item Programming$\rightarrow$Numeric$\rightarrow$Random Number (0-1)
-        \item Programming$\rightarrow$Numeric$\rightarrow$Conversion$\rightarrow$I16
-        \item Programming$\rightarrow$Cluster, Class \& Variant$\rightarrow$Unbundle and Bundle
-    \end{enumerate}
+        \begin{enumerate}
+            \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Move Pen
+            \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Draw Line
+            \item Programming$\rightarrow$Graphics \& Sound$\rightarrow$Picture Functions$\rightarrow$Empty Picture
+            \item Programming$\rightarrow$Numeric$\rightarrow$Random Number (0-1)
+            \item Programming$\rightarrow$Numeric$\rightarrow$Conversion$\rightarrow$I16
+            \item Programming$\rightarrow$Cluster, Class \& Variant$\rightarrow$Unbundle and Bundle
+        \end{enumerate}
 \end{itemize}
 %
 \begin{figure}[H]
@@ -84,7 +83,7 @@ Location of the blocks that may be new to you for this assignment:
             cluster, applies scaling math, and re-bundles the
             converted values for output.%
         }
-    \caption{I16-conversion VI block diagram (true case)}
+        \caption{I16-conversion VI block diagram (true case)}
     \end{figure}
     \begin{figure}[H]
         \centering
@@ -99,10 +98,9 @@ Location of the blocks that may be new to you for this assignment:
 %
 \Ex[TCP Ethernet protocol]
 
+For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a nice, simple Echo Server that we are going to use.)  Then the Echo Server echoes the exact string back. We receive this string with the “TCP Read” command and assume it is different information from what we just sent. We use the “Scan From String” command to pull the two real numbers out of the string and display them.
 
-For this exercise, I want to give you an introduction to communicating with and from LabVIEW using the TCP Ethernet protocol. The goal of the VI is to take two double-precision numbers and combine them into a single string. This string is then sent to an Echo Server with the “TCP Write” command. (Matlab has a nice, simple Echo Server that we are going to use.)  Then the Echo Server echoes the exact string back. We receive this string with the “TCP Read” command and assume it is different information from what we just sent. We use the “Scan From String” command to pull the two real numbers out of the string and display them.  
-
-Copy this VI and demonstrate it working. \textit{The first time you try to write data across a TCP socket from an application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in those pop-up windows, allowing public and private networks}. Because we are using this echo server, you may find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you have MATLAB installed on your laptop. If you have things to do on your laptop, give the lab PCs a try. You will need to find your computer's IP address. The easiest way is to run “\verb|ipconfig|” from a command prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection” block.  
+Copy this VI and demonstrate it working. \textit{The first time you try to write data across a TCP socket from an application, the Windows Firewall will pop up with dialogs asking for permissions. Make sure to “check” all boxes in those pop-up windows, allowing public and private networks}. Because we are using this echo server, you may find it easier to run this LabVIEW application on the lab PCs rather than on your laptop, even if you have MATLAB installed on your laptop. If you have things to do on your laptop, give the lab PCs a try. You will need to find your computer's IP address. The easiest way is to run “\verb|ipconfig|” from a command prompt. Make sure to find the IP of the primary Ethernet connection. On the lab PCs, it is usually the first one listed. This is the IPv4 address you will type into the text box, entering the “TCP Open Connection” block.
 
 Then, before running the LabVIEW application, open MATLAB and type the command
 %
@@ -132,42 +130,42 @@ echotcpip("on",12321)
 \end{figure}
 %
 \begin{landscape}
-\begin{figure}[H]
-\centering
-\begin{subfigure}[b]{0.95\linewidth}
-\centering
-    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture5.png}{%
-        TCP echo VI block diagram: TCP Open Connection, an Event
-        structure inside a While loop with cases for SEND, Timeout,
-        and STOP, formatting the two numbers into a string,
-        TCP Write, TCP Read, Scan From String to recover the two
-        numbers, and TCP Close Connection on exit.%
-    }
-% \caption{First image}
-\end{subfigure}
-\begin{subfigure}[b]{0.485\linewidth}
-\centering
-\caption{Showing the Timeout Event}
-    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture6.png}{%
-        Detail of the Event structure's Timeout frame: when no
-        front-panel event fires within the timeout interval, the VI
-        polls connection state and updates a heartbeat indicator.%
-    }
-% \caption{First image}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.485\linewidth}
-\centering
-\caption{Stop: Value Change Event}
-    \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture7.png}{%
-        Detail of the Event structure's "Stop: Value Change" frame:
-        when the Stop button is pressed, the loop's continue input
-        is wired false, terminating the While loop after closing the
-        TCP connection.%
-    }
-% 
-\end{subfigure}
-\end{figure}
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.95\linewidth}
+            \centering
+            \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture5.png}{%
+                TCP echo VI block diagram: TCP Open Connection, an Event
+                structure inside a While loop with cases for SEND, Timeout,
+                and STOP, formatting the two numbers into a string,
+                TCP Write, TCP Read, Scan From String to recover the two
+                numbers, and TCP Close Connection on exit.%
+            }
+            % \caption{First image}
+        \end{subfigure}
+        \begin{subfigure}[b]{0.485\linewidth}
+            \centering
+            \caption{Showing the Timeout Event}
+            \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture6.png}{%
+                Detail of the Event structure's Timeout frame: when no
+                front-panel event fires within the timeout interval, the VI
+                polls connection state and updates a heartbeat indicator.%
+            }
+            % \caption{First image}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.485\linewidth}
+            \centering
+            \caption{Stop: Value Change Event}
+            \AltImg[width=1\linewidth]{Homeworks/Figures/LabVIEW2/Picture7.png}{%
+                Detail of the Event structure's "Stop: Value Change" frame:
+                when the Stop button is pressed, the loop's continue input
+                is wired false, terminating the While loop after closing the
+                TCP connection.%
+            }
+            %
+        \end{subfigure}
+    \end{figure}
 \end{landscape}
 %
 \end{document}

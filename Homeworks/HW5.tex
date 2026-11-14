@@ -2,12 +2,12 @@
 % We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
 % (testphase = phase-III) is incompatible with the htlatex DVI pipeline
 % and would error with "Generic hooks cannot be added to '\addcontentsline'".
-% \HCode is defined by tex4ht before our file is read, so this branch is safe. 
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -31,9 +31,9 @@ Remainder Due On GradeScope, by \textcolor{highlight}{\HWSubmitTime~\GetDate{13}
 \begin{document}
 \MakeAssignmentTitle
 
-\Ex[State Machine Part 3] 
+\Ex[State Machine Part 3]
 
- For this assignment, I would like you to expand on the state machine and pseudocode of HW \#3 and HW \#4. I would like you to think about the state transition diagram for collecting a brightly colored blue golf ball or an orange golf ball. The vision code you will learn will easily find these two bright colors. In Lab 7, you will also program the robot to follow these bright colors. So when the robot sees one of the golf balls on the ground, it will be able to drive towards it. One big issue is that you have to drive the robot over the golf ball to collect it. In part of your state machine, the robot’s camera will not detect the bright color. How do you handle this? Also, you will want to record the golf ball's X and Y positions. When in your state machine would be the best time to record the X, Y position of the golf ball? Make sure to include your state transition diagram and your pseudocode. You may find a nice way to accomplish this task is to have a “sub” state machine inside the larger state machine you created in HW 3 and HW 4. 
+For this assignment, I would like you to expand on the state machine and pseudocode of HW \#3 and HW \#4. I would like you to think about the state transition diagram for collecting a brightly colored blue golf ball or an orange golf ball. The vision code you will learn will easily find these two bright colors. In Lab 7, you will also program the robot to follow these bright colors. So when the robot sees one of the golf balls on the ground, it will be able to drive towards it. One big issue is that you have to drive the robot over the golf ball to collect it. In part of your state machine, the robot’s camera will not detect the bright color. How do you handle this? Also, you will want to record the golf ball's X and Y positions. When in your state machine would be the best time to record the X, Y position of the golf ball? Make sure to include your state transition diagram and your pseudocode. You may find a nice way to accomplish this task is to have a “sub” state machine inside the larger state machine you created in HW 3 and HW 4.
 
 \Ex[Personal Project Demo]
 
@@ -49,19 +49,19 @@ Choose any one of the following:
     \item Microphone
 \end{itemize}
 %
-Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So, in other words, we are not expecting an elaborate, finely polished design.  
+Anything goes, but keep in mind that you also have a final project with the robot to complete by the end of the semester. So, in other words, we are not expecting an elaborate, finely polished design.
 
-You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer you have access to. Also, there are some building materials in the Mechatronics Lab, like machine screws, plastic sheets, and “Super Velcro”. (\textit{Ask if there is a part that you need and we will see if we have it in the lab}).          
+You can send us STL (units in mm) files for printing on the lab’s 3D printers, or use another printer you have access to. Also, there are some building materials in the Mechatronics Lab, like machine screws, plastic sheets, and “Super Velcro”. (\textit{Ask if there is a part that you need and we will see if we have it in the lab}).
 
-This assignment spans both HW \#4 and HW \#5. Your finished product should be completed and checked off by \GetDate{13}{1}.  
+This assignment spans both HW \#4 and HW \#5. Your finished product should be completed and checked off by \GetDate{13}{1}.
 
-\textbf{Demo and what needs to be turned into Gradescope for HW \#5 Question 2.}  
+\textbf{Demo and what needs to be turned into Gradescope for HW \#5 Question 2.}
 %
 \begin{enumerate}
-    \item In-person demonstration of your project working.     
-    \item Source code you developed for this project. This source code must be commented well and submitted to Gradescope!  
+    \item In-person demonstration of your project working.
+    \item Source code you developed for this project. This source code must be commented well and submitted to Gradescope!
     \item A wiring schematic of all the electronic parts of your project. Pencil and paper are fine as long as they are neat.
-    \item Take a video and a few still pictures of your final design working, and submit links for us to view.  
+    \item Take a video and a few still pictures of your final design working, and submit links for us to view.
 \end{enumerate}
 %
 %

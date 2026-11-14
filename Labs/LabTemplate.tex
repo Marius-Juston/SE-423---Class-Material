@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -21,7 +21,7 @@
 
 % Title box: the lab's title, its length, and the number of TA check-offs.
 \def\AssignmentText{Title of the Lab \\
-One-Week Lab \par
+    One-Week Lab \par
 \CheckOffNotice}
 %
 \begin{document}
@@ -48,7 +48,7 @@ GpioDataRegs.GPBSET.bit.GPIO34 = 1;
 % Wherever something must be shown to a TA: a numbered call-out with a tick box
 % (see checkoff.tex). It also works inside \item.
 \begin{checkoff}[Short title of what is checked]
-\textbf{Demo this working to your TA.}
+        \textbf{Demo this working to your TA.}
 \end{checkoff}
 %
 \section*{Check-Off Summary}

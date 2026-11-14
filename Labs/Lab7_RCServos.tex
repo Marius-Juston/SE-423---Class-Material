@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -47,20 +47,20 @@ The robot car can connect and drive five RC Servos (we will probably not use mor
 %
 \begin{enumerate}
     \item In Timer2’s ISR, (which is called by default every 40ms.) Just call the function:
-%
+        %
 \begin{minted}{c}
 PostSWI3();
 \end{minted}
-%
-    {\itshape This will cause the \mintinline{c}{SWI3_LowestPriority} software interrupt to be called every 40ms. From here forward most of your code will need to be placed in the \mintinline{c}{SWI1_HighestPriority} function. You can also place less important code in the \mintinline{c}{SWI3_LowestPriority} function.}
-    \item In \mintinline{c}{SWI3_LowestPriority}, first read the value of the encWheel:
-%
+        %
+        {\itshape This will cause the \mintinline{c}{SWI3_LowestPriority} software interrupt to be called every 40ms. From here forward most of your code will need to be placed in the \mintinline{c}{SWI1_HighestPriority} function. You can also place less important code in the \mintinline{c}{SWI3_LowestPriority} function.}
+        \item In \mintinline{c}{SWI3_LowestPriority}, first read the value of the encWheel:
+        %
 \begin{minted}{c}
 RCangle = readEncWheel();
 \end{minted}
-%
-    Then call the five RC servo functions and pass \mintinline{c}{RCangle} to each of them:
-%
+        %
+        Then call the five RC servo functions and pass \mintinline{c}{RCangle} to each of them:
+        %
 \begin{minted}{c}
 setEPWM3A_RCServo(RCangle) //RCangle is a value from -90 to 90
 setEPWM3B_RCServo(RCangle) //RCangle is a value from -90 to 90
@@ -68,12 +68,12 @@ setEPWM5A_RCServo(RCangle) //RCangle is a value from -90 to 90
 setEPWM5B_RCServo(RCangle) //RCangle is a value from -90 to 90
 setEPWM6A_RCServo(RCangle) //RCangle is a value from -90 to 90
 \end{minted}
-%
-    \item Then print the value of \mintinline{c}{RCangle} to the robot’s text LCD screen. Run your code. Now by spinning the encoder wheel in your hand, you can watch the text LCD screen and dial in the angle that moves the RC servos to certain angles.
-%
-    \begin{checkoff}[All five RC servo connections]
-    \textbf{Show this code working to your Instructor and test that all 5 RC Servo connections work.}
-    \end{checkoff}
+        %
+        \item Then print the value of \mintinline{c}{RCangle} to the robot’s text LCD screen. Run your code. Now by spinning the encoder wheel in your hand, you can watch the text LCD screen and dial in the angle that moves the RC servos to certain angles.
+        %
+        \begin{checkoff}[All five RC servo connections]
+                \textbf{Show this code working to your Instructor and test that all 5 RC Servo connections work.}
+        \end{checkoff}
 \end{enumerate}
 %
 \section*{Check-Off Summary}

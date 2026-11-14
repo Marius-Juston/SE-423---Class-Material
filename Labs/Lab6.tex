@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -22,7 +22,7 @@
 \input{header}
 
 \def\AssignmentText{LADAR Sensor, LABVIEW/RPI4/Linux Communication, Wall Following and Dead Reckoning \\
-Three Week Lab \par
+    Three Week Lab \par
 \CheckOffNotice}
 %
 \begin{document}
@@ -61,10 +61,10 @@ Our first and third exercises are to merge code together to be used in one F2837
 The first step when merging code is to make a backup of the code you are merging into. We are going to start merging into your Lab 5 project, so make sure to back up your current Lab5main.c file somewhere you can find it easily. We will be creating a Lab 6 project in Exercise 2, but for now we will work in your Lab 5 project. Perform the following steps to merge your HW\#3 code into Lab 5’s code:
 %
 \begin{enumerate}
-    \item Copy your \mintinline{c}{void setupSpib(void)} function into Lab 5’s main file. Also remember to put a predefinition of the function at the top and call this function in \mintinline{c}{main()} somewhere after the \mintinline{c}{init_serial()} functions. At the end of this exercise you will be asked to zero the Accelx, Accely and Accelz readings by modifying the accel offsets sent to the MPU-9250 at the end of the \mintinline{c}{setupSpib()} function’s code.
-    \item Copy your \mintinline{c}{__interrupt void SPIB_isr()} function into your Lab 5 code. Put a predefinition of the function at the top. Copy the lines of code in HW\#3 \mintinline{c}{main()} that adds \mintinline{c}{SPIB_isr()} to the PieVectTable, the line that enables \mintinline{c}{M_INT6} and the line that enables \mintinline{c}{PIEIER6.bit.INTx3}.
-    \item The goal of this next step is start the transmission to SPIB and the MPU-9250 inside the \mintinline{c}{ADCC_ISR()} interrupt which is occurring every 1ms and move all your zeroing and PI control code into the \mintinline{c}{SPIB_isr()} function instead of the \mintinline{c}{ADCC_ISR()} function. The reason for this is that I want all the sampling of sensors to be complete before the PI control (and any other future control) is calculated. In HW\#3, you setup a timer to interrupt every 1ms and inside that interrupt function you pulled low the MPU-9250’s Slave Select and sent the correct number of 16 bit words to SPIB for communication to the MPU-9250. Here I would like this SPIB code copied to your Lab5’s \mintinline{c}{ADCC_ISR()} function right after your \mintinline{c}{ADCC_ISR()} code reads the four Results registers and converts the readings to volts. Since the \mintinline{c}{ADCC_ISR()} function is called every 1ms your \mintinline{c}{SPIB_isr()} function will also be called every 1ms after the short number of microseconds it takes to transmit (and receive) the SPI data to/from the MPU-9250. Your \mintinline{c}{ADCC_ISR()} function should have a structure similar to this after you copy in the SPIB start transmission code.
-%
+        \item Copy your \mintinline{c}{void setupSpib(void)} function into Lab 5’s main file. Also remember to put a predefinition of the function at the top and call this function in \mintinline{c}{main()} somewhere after the \mintinline{c}{init_serial()} functions. At the end of this exercise you will be asked to zero the Accelx, Accely and Accelz readings by modifying the accel offsets sent to the MPU-9250 at the end of the \mintinline{c}{setupSpib()} function’s code.
+        \item Copy your \mintinline{c}{__interrupt void SPIB_isr()} function into your Lab 5 code. Put a predefinition of the function at the top. Copy the lines of code in HW\#3 \mintinline{c}{main()} that adds \mintinline{c}{SPIB_isr()} to the PieVectTable, the line that enables \mintinline{c}{M_INT6} and the line that enables \mintinline{c}{PIEIER6.bit.INTx3}.
+        \item The goal of this next step is start the transmission to SPIB and the MPU-9250 inside the \mintinline{c}{ADCC_ISR()} interrupt which is occurring every 1ms and move all your zeroing and PI control code into the \mintinline{c}{SPIB_isr()} function instead of the \mintinline{c}{ADCC_ISR()} function. The reason for this is that I want all the sampling of sensors to be complete before the PI control (and any other future control) is calculated. In HW\#3, you setup a timer to interrupt every 1ms and inside that interrupt function you pulled low the MPU-9250’s Slave Select and sent the correct number of 16 bit words to SPIB for communication to the MPU-9250. Here I would like this SPIB code copied to your Lab5’s \mintinline{c}{ADCC_ISR()} function right after your \mintinline{c}{ADCC_ISR()} code reads the four Results registers and converts the readings to volts. Since the \mintinline{c}{ADCC_ISR()} function is called every 1ms your \mintinline{c}{SPIB_isr()} function will also be called every 1ms after the short number of microseconds it takes to transmit (and receive) the SPI data to/from the MPU-9250. Your \mintinline{c}{ADCC_ISR()} function should have a structure similar to this after you copy in the SPIB start transmission code.
+        %
 \begin{minted}{c}
 __interrupt void ADCC_ISR(void)
 {
@@ -95,9 +95,9 @@ __interrupt void ADCC_ISR(void)
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;
 }
 \end{minted}
-%
-    \item Now cut all the zeroing and PI control code you wrote in your \mintinline{c}{ADCC_ISR()} function in Lab 5. Paste this code into your \mintinline{c}{SPIB_isr()} function so it has the below structure: (Note if the count variable you are using in this code has a name associated with ADCC, like \mintinline{c}{numADCCcalls}, change the name to i.e. \mintinline{c}{numSPIBcalls})
-%
+        %
+        \item Now cut all the zeroing and PI control code you wrote in your \mintinline{c}{ADCC_ISR()} function in Lab 5. Paste this code into your \mintinline{c}{SPIB_isr()} function so it has the below structure: (Note if the count variable you are using in this code has a name associated with ADCC, like \mintinline{c}{numADCCcalls}, change the name to i.e. \mintinline{c}{numSPIBcalls})
+        %
 \begin{minted}{c}
 __interrupt void SPIB_isr(void){
 
@@ -107,26 +107,24 @@ __interrupt void SPIB_isr(void){
     // converts the accel readings to +/-4g range and gyro to 250
     // degrees/second range
 
-
     // then here paste all your ADCC_ISR() code that finds the zeros
     // and then calculates
     // the PI control
-
 
     SpibRegs.SPIFFRX.bit.RXFFOVFCLR=1; // Clear Overflow flag
     SpibRegs.SPIFFRX.bit.RXFFINTCLR=1; // Clear Interrupt flag
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;
 }
 \end{minted}
-%
-    \item In your \mintinline{c}{SPIB_isr()} function you now have code that for the first 2 seconds ignores the ADCC readings. Then for the next two seconds sums up the ADCC readings to find the LPR510 gyro readings zero starting value. In the same way, add to this code to find the zero starting value for the MPU9250’s GyroZ sensor reading. Then after this initial four seconds, always subtract this zero value from the GyroZ reading.
+        %
+        \item In your \mintinline{c}{SPIB_isr()} function you now have code that for the first 2 seconds ignores the ADCC readings. Then for the next two seconds sums up the ADCC readings to find the LPR510 gyro readings zero starting value. In the same way, add to this code to find the zero starting value for the MPU9250’s GyroZ sensor reading. Then after this initial four seconds, always subtract this zero value from the GyroZ reading.
     \item Every 100ms print to the text LCD screen this zeroed GyroZ value along with one of the ADCC gyroZ readings and both the left and right wheel velocities. Then in Watch Expressions view all 6 MPU-9250 sensor readings to make sure everything is working correctly with your newly merged code.
     \item Run your code and see if everything working with your sensor readings and your PI speed control of the robot. NOTE! We are now having the RPI4 boot when the robot is turned on. Always remember to shutdown the RPI4 before turning power off on your robot.
-    \item As a final step, just as you did at the end of HW\#3, change the MPU-9250 accel zero registers so that the accelx, accely and accelz readings are close to zero at rest. Remember that these zero registers are the last 6 registers you write to in the \mintinline{c}{setupSpib()} function.
-%
-    \begin{checkoff}[Merged IMU and speed control]
-    \textbf{Demo this all working to your TA.}
-    \end{checkoff}
+        \item As a final step, just as you did at the end of HW\#3, change the MPU-9250 accel zero registers so that the accelx, accely and accelz readings are close to zero at rest. Remember that these zero registers are the last 6 registers you write to in the \mintinline{c}{setupSpib()} function.
+        %
+        \begin{checkoff}[Merged IMU and speed control]
+                \textbf{Demo this all working to your TA.}
+        \end{checkoff}
 \end{enumerate}
 %
 \Ex[LADAR Starter Code]
@@ -165,19 +163,19 @@ Again inside the C file F28379dSerial.c, see the SerialD receive interrupt funct
 Now look back at your project’s main C file and find that the last three functions are the three SWI (Software Interrupts) that I have created for your use. Notice that their names are \mintinline{c}{SWI1_HighestPriority}, \mintinline{c}{SWI2_MiddlePriority} and \mintinline{c}{SWI2_LowestPriority}. These three SWIs are giving you additional locations to place code that is important but could take a little while to complete and therefore should not be put in a normal hardware interrupt. Remember normal hardware interrupts disable the global interrupt not allowing any other interrupt function, even one with higher priority, to interrupt it. This is where the SWI interrupts are different. They can be interrupted by normal hardware interrupt functions.
 %
 \begin{enumerate}
-    \item Interrupt hierarchy for \mintinline{c}{SWI1_HighestPriority}:
+        \item Interrupt hierarchy for \mintinline{c}{SWI1_HighestPriority}:
 
-    Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI1_HighestPriority} ; All HWIs can interrupt SWI1.
-    \item Interrupt hierarchy for \mintinline{c}{SWI2_MiddlePriority}:
+        Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI1_HighestPriority} ; All HWIs can interrupt SWI1.
+        \item Interrupt hierarchy for \mintinline{c}{SWI2_MiddlePriority}:
 
-    Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI2_MiddlePriority} ; SWI1 can interrupt SWI2 ;
+        Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI2_MiddlePriority} ; SWI1 can interrupt SWI2 ;
 
-    All HWIs can interrupt SWI2.
-    \item Interrupt hierarchy for \mintinline{c}{SWI3_LowestPriority}:
+        All HWIs can interrupt SWI2.
+        \item Interrupt hierarchy for \mintinline{c}{SWI3_LowestPriority}:
 
-    Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI3_LowestPriority} ; SWI1 can interrupt SWI3 ;
+        Main’s \mintinline{c}{while(1)} loop can be interrupted by \mintinline{c}{SWI3_LowestPriority} ; SWI1 can interrupt SWI3 ;
 
-    SWI2 can interrupt SWI3 ; All HWIs can interrupt SWI3.
+        SWI2 can interrupt SWI3 ; All HWIs can interrupt SWI3.
 \end{enumerate}
 %
 Look at the SWI1 function. Notice the code here is using the LVvalues (LABVIEW) and \mintinline{c}{LinuxCommands} arrays. This is where in later exercises you will look at the values received from both Linux and LABVIEW. Also in SWI1 you will be implementing your PI speed control and wall following control every 1ms.
@@ -190,29 +188,29 @@ In CCS, first make a copy of your main Lab 6 source file to this point. Call in 
 %
 \begin{enumerate}
     \item Starting from the top of Lab6original.c and working our way down, copy and paste
-%
+        %
 \begin{minted}{c}
 #include "F2837xD_SWPrioritizedIsrLevels.h"
 \end{minted}
-%
-    This include file adds support for the Software Interrupts (SWI) described above
+        %
+        This include file adds support for the Software Interrupts (SWI) described above
     \item Copy and paste the \#define
-%
+        %
 \begin{minted}{c}
 #define FEETINONEMETER 3.28083989501312
 \end{minted}
-%
+        %
     \item Copy and paste
-%
+        %
 \begin{minted}{c}
 __interrupt void SWI1_HighestPriority(void);
 __interrupt void SWI2_MiddlePriority(void);
 __interrupt void SWI3_LowestPriority(void);
 \end{minted}
-%
-    These are the predefinitions of the three SWIs
+        %
+        These are the predefinitions of the three SWIs
     \item Copy and paste the list of global variables. Please copy from your Lab6original.c file just in case I missed one here
-%
+        %
 \begin{minted}{c}
 uint32_t timecount = 0;
 extern datapts ladar_data[228]; //distance data from LADAR
@@ -247,9 +245,9 @@ pose LADARps = {3.5/12.0,0,1};
 float printLinux1 = 0;
 float printLinux2 = 0;
 \end{minted}
-%
-    \item In \mintinline{c}{main()} copy and paste the initialization of GPIO61 and GPIO67.
-%
+        %
+        \item In \mintinline{c}{main()} copy and paste the initialization of GPIO61 and GPIO67.
+        %
 \begin{minted}{c}
 GPIO_SetupPinMux(61, GPIO_MUX_CPU1, 0);
 GPIO_SetupPinOptions(61, GPIO_OUTPUT, GPIO_PUSHPULL);
@@ -258,30 +256,30 @@ GPIO_SetupPinMux(67, GPIO_MUX_CPU1, 0);
 GPIO_SetupPinOptions(67, GPIO_OUTPUT, GPIO_PUSHPULL);
 GpioDataRegs.GPCCLEAR.bit.GPIO67 = 1;
 \end{minted}
-%
-    \item Copy and paste the PieVectTable initialization of the three SWIs (Make sure these lines are inside the \mintinline{c}{EALLOW} and \mintinline{c}{EDIS} statements
-%
+        %
+        \item Copy and paste the PieVectTable initialization of the three SWIs (Make sure these lines are inside the \mintinline{c}{EALLOW} and \mintinline{c}{EDIS} statements
+            %
 \begin{minted}{c}
 //Interrupt12 interrupts that are not used as SWIs
 PieVectTable.EMIF_ERROR_INT = &SWI1_HighestPriority;
 PieVectTable.RAM_CORRECTABLE_ERROR_INT = &SWI2_MiddlePriority;
 PieVectTable.FLASH_CORRECTABLE_ERROR_INT = &SWI3_LowestPriority;
 \end{minted}
-%
-    And Delete this line that sets up the old single SWI
-%
+            %
+            And Delete this line that sets up the old single SWI
+            %
 \begin{minted}{c}
 PieVectTable.EMIF_ERROR_INT = &SWI_isr;
 \end{minted}
-%
-    \item Set CPU Timer1 to calls it’s interrupt every 100ms.
-%
+            %
+        \item Set CPU Timer1 to calls it’s interrupt every 100ms.
+            %
 \begin{minted}{c}
 ConfigCpuTimer(&CpuTimer1, LAUNCHPAD_CPU_FREQUENCY, 100000);
 \end{minted}
-%
-    \item Still in \mintinline{c}{main()}, copy and paste the \mintinline{c}{DELAY_US} line, the \mintinline{c}{init_serial} lines of code and LADAR for loop over the old and commented out “\mintinline{c}{init_serial()}” function calls.
-%
+            %
+            \item Still in \mintinline{c}{main()}, copy and paste the \mintinline{c}{DELAY_US} line, the \mintinline{c}{init_serial} lines of code and LADAR for loop over the old and commented out “\mintinline{c}{init_serial()}” function calls.
+            %
 \begin{minted}{c}
 // Delay 1 second giving Ladar Time to power on after system power on
 DELAY_US(1000000);
@@ -295,17 +293,17 @@ for (LADARi = 0; LADARi < 228; LADARi++) {
    ladar_data[LADARi].angle = ((3*LADARi+44)*0.3515625-135)*0.01745329;
 }
 \end{minted}
-%
-    \item Copy and paste these lines of code enabling the three SWI’s interrupt source
-%
+            %
+        \item Copy and paste these lines of code enabling the three SWI’s interrupt source
+            %
 \begin{minted}{c}
 PieCtrlRegs.PIEIER12.bit.INTx9 = 1; //SWI1
 PieCtrlRegs.PIEIER12.bit.INTx10 = 1; //SWI2
 PieCtrlRegs.PIEIER12.bit.INTx11 = 1; //SWI3 Lowest priority
 \end{minted}
-%
-    \item Final step in the \mintinline{c}{main()} function, copy and paste these lines of code and notice that they occur after the \mintinline{c}{EINT;} and \mintinline{c}{ERTM;} statements which enable interrupts. For the UARTC functions to work correctly, interrupts need to be enabled. This code sets the baud rate of the LADAR to 115200 which on power up starts at the baud rate of 19200 bits/second.
-%
+            %
+            \item Final step in the \mintinline{c}{main()} function, copy and paste these lines of code and notice that they occur after the \mintinline{c}{EINT;} and \mintinline{c}{ERTM;} statements which enable interrupts. For the UARTC functions to work correctly, interrupts need to be enabled. This code sets the baud rate of the LADAR to 115200 which on power up starts at the baud rate of 19200 bits/second.
+            %
 \begin{minted}{c}
 //this change the baud rate to 115200
 char S_command[19] = "S1152000124000\n";
@@ -315,46 +313,46 @@ serial_sendSCIC(&SerialC, S_command, S_len);
 DELAY_US(1000000); // Delay letting Ladar change its Baud rate
 init_serialSCIC(&SerialC,115200);
 \end{minted}
-%
-    \item Above you setup CPU Timer 1 to have its interrupt function called every 100ms. Find CPU Timer 1’s interrupt function in Lab6original.c and notice that the “G\_command” or Go command is sent to the LADAR. Paste this line into your CPU Timer 1 ISR. Note that the fastest rate you can command the LADAR is every 100ms so we are receiving data from the LADAR at its highest rate.
-%
+            %
+        \item Above you setup CPU Timer 1 to have its interrupt function called every 100ms. Find CPU Timer 1’s interrupt function in Lab6original.c and notice that the “G\_command” or Go command is sent to the LADAR. Paste this line into your CPU Timer 1 ISR. Note that the fastest rate you can command the LADAR is every 100ms so we are receiving data from the LADAR at its highest rate.
+            %
 \begin{minted}{c}
     serial_sendSCIC(&SerialC, G_command, G_len);
 \end{minted}
-%
-    \item Find your CPU Timer 2’s ISR. Find the line of code and comment it out.
-%
+            %
+        \item Find your CPU Timer 2’s ISR. Find the line of code and comment it out.
+            %
 \begin{minted}{c}
 // Manually cause the interrupt for the SWI1
 PieCtrlRegs.PIEIFR12.bit.INTx9 = 1;
 \end{minted}
-%
-    Here SWI1 is being “Posted”, or told to run when it can, by setting the PIEIFR12.9 bit. Comment this line out. We will come back to this and use this same line of code in the \mintinline{c}{SPIB_ISR()} function to post SWI1.
-    \item Search your C file and find the function \mintinline{c}{SWI_isr()} and delete the entire function and its predefinition. Then copy and paste all the source code of the last three SWI functions given in Lab6original.c. The three SWI functions are:
-%
+            %
+            Here SWI1 is being “Posted”, or told to run when it can, by setting the PIEIFR12.9 bit. Comment this line out. We will come back to this and use this same line of code in the \mintinline{c}{SPIB_ISR()} function to post SWI1.
+            \item Search your C file and find the function \mintinline{c}{SWI_isr()} and delete the entire function and its predefinition. Then copy and paste all the source code of the last three SWI functions given in Lab6original.c. The three SWI functions are:
+            %
 \begin{minted}{c}
 __interrupt void SWI1_HighestPriority(void)
 \end{minted}
-%
-    How we are going to use SWI1 will be described in more detail below. SWI1 can be interrupted by all hardware interrupts (HWI), but SWI2 and SWI3 cannot interrupt SWI1. SWI1 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop, SWI2 and SWI3.
-%
+            %
+            How we are going to use SWI1 will be described in more detail below. SWI1 can be interrupted by all hardware interrupts (HWI), but SWI2 and SWI3 cannot interrupt SWI1. SWI1 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop, SWI2 and SWI3.
+            %
 \begin{minted}{c}
 __interrupt void SWI2_MiddlePriority(void)
 \end{minted}
-%
-    Take a look at SWI2. It is being used the process the LADAR distance data every 100ms. This code is creating another 228 element structure array that holds the x,y coordinates of each LADAR distance. It takes into account the pose (x,y,bearing) of the robot when calculating these x,y coordinates of the feature it is detecting. Currently the robot’s pose is remaining at 0,0,0. In the last exercise of this lab, you will calculate the pose of the robot with wheel speed and the integral of the MPU-9250’s GyroZ sensor.
+            %
+            Take a look at SWI2. It is being used the process the LADAR distance data every 100ms. This code is creating another 228 element structure array that holds the x,y coordinates of each LADAR distance. It takes into account the pose (x,y,bearing) of the robot when calculating these x,y coordinates of the feature it is detecting. Currently the robot’s pose is remaining at 0,0,0. In the last exercise of this lab, you will calculate the pose of the robot with wheel speed and the integral of the MPU-9250’s GyroZ sensor.
 
-    SWI2 can be interrupted by all hardware interrupts (HWI) and SWI1. SWI2 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop and SWI3.
-%
+            SWI2 can be interrupted by all hardware interrupts (HWI) and SWI1. SWI2 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop and SWI3.
+            %
 \begin{minted}{c}
 __interrupt void SWI3_LowestPriority(void)
 \end{minted}
-%
-    SWI3 is currently not being used.
+            %
+            SWI3 is currently not being used.
 
-    SWI3 can be interrupted by all hardware interrupts (HWI), SWI1 and SWI2. SWI3 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop.
-    \item Create two functions to issue or “Post” two of the SWIs. (SWI2 is already posted for you in UARTC’s receive interrupt function.) This way you do not have to remember the interrupt number. Don’t forget to create predefinitions for these functions at the top of your C file.
-%
+            SWI3 can be interrupted by all hardware interrupts (HWI), SWI1 and SWI2. SWI3 can interrupt the \mintinline{c}{main()} \mintinline{c}{while(1)} loop.
+        \item Create two functions to issue or “Post” two of the SWIs. (SWI2 is already posted for you in UARTC’s receive interrupt function.) This way you do not have to remember the interrupt number. Don’t forget to create predefinitions for these functions at the top of your C file.
+            %
 \begin{minted}{c}
 void PostSWI1(void) {
     // Manually cause the interrupt for the SWI1
@@ -365,11 +363,11 @@ void PostSWI3(void) {
     PieCtrlRegs.PIEIFR12.bit.INTx11 = 1;
 }
 \end{minted}
-%
-    Note here that posting does not mean call. What is happening is you are telling the PIE interrupt manager that you would like this interrupt function to be called whenever priority permits. Most of the time you will post these SWIs inside a hardware interrupt. Since hardware interrupts cannot be interrupted the SWI’s interrupt function will not be called until the current HWI exits and also will not be called if there are any other HWIs waiting to be called. The SWIs function will be called when all other higher priority interrupts are finished processing.
-    \item Finally we want to move all the zeroing and PI control code from your \mintinline{c}{SPIB_ISR()} function into SWI1’s interrupt function. This is getting us ready for future code that may take a little more time to compute. This longer compute time is not a problem in a SWI interrupt function because HWIs can interrupt the SWIs. Paste all this zeroing and PI control code in SWI1’s function after the \mintinline{c}{uint16_t i = 0;} line of code and before \mintinline{c}|if (newLinuxCommands == 1) {| line of code. ALSO, this code you just pasted is probably using a count variable something like \mintinline{c}{numSPIBcalls}. Replace all the places \mintinline{c}{numSPIBcalls} is used with SWI1’s count variable \mintinline{c}{timecount}.
-    \item In the spot where you just cut all your zeroing and PI control code from \mintinline{c}{SPIB_ISR()}, add a call to \mintinline{c}{PostSWI1();} to request that SWI1’s interrupt function be called when priority permits. Your \mintinline{c}{SPIB_ISR()} and SWI1 ISR should have similar formats to below
-%
+            %
+            Note here that posting does not mean call. What is happening is you are telling the PIE interrupt manager that you would like this interrupt function to be called whenever priority permits. Most of the time you will post these SWIs inside a hardware interrupt. Since hardware interrupts cannot be interrupted the SWI’s interrupt function will not be called until the current HWI exits and also will not be called if there are any other HWIs waiting to be called. The SWIs function will be called when all other higher priority interrupts are finished processing.
+            \item Finally we want to move all the zeroing and PI control code from your \mintinline{c}{SPIB_ISR()} function into SWI1’s interrupt function. This is getting us ready for future code that may take a little more time to compute. This longer compute time is not a problem in a SWI interrupt function because HWIs can interrupt the SWIs. Paste all this zeroing and PI control code in SWI1’s function after the \mintinline{c}{uint16_t i = 0;} line of code and before \texttt{if (newLinuxCommands == 1) \textbraceleft} line of code. ALSO, this code you just pasted is probably using a count variable something like \mintinline{c}{numSPIBcalls}. Replace all the places \mintinline{c}{numSPIBcalls} is used with SWI1’s count variable \mintinline{c}{timecount}.
+            \item In the spot where you just cut all your zeroing and PI control code from \mintinline{c}{SPIB_ISR()}, add a call to \mintinline{c}{PostSWI1();} to request that SWI1’s interrupt function be called when priority permits. Your \mintinline{c}{SPIB_ISR()} and SWI1 ISR should have similar formats to below
+            %
 \begin{minted}{c}
 __interrupt void SPIB_isr(void){
 
@@ -379,15 +377,12 @@ __interrupt void SPIB_isr(void){
     // converts the accel readings to +/-4g range and gyro to 250
     // degrees/second range
 
-
     PostSWI1();
-
 
     SpibRegs.SPIFFRX.bit.RXFFOVFCLR=1; // Clear Overflow flag
     SpibRegs.SPIFFRX.bit.RXFFINTCLR=1; // Clear Interrupt flag
     PieCtrlRegs.PIEACK.all = PIEACK_GROUP6;
 }
-
 
 __interrupt void SWI1_HighestPriority(void) // EMIF_ERROR
 {
@@ -450,80 +445,80 @@ __interrupt void SWI1_HighestPriority(void) // EMIF_ERROR
   PieCtrlRegs.PIEIER12.all = TempPIEIER;
 }
 \end{minted}
-%
-    \item Print a number of your sensor readings to the text LCD every 100ms. and also use Watch Expressions to check if you code is sampling all needed sensors. You can also use CCS watch expressions to debug the sensor readings. Perform a search for \mintinline{c}{UARTPrint} and make sure your code is only setting it to one in one place and every 100ms.
-    \item We have written quite a bit if code here, so a good check would be to use the Oscilloscope and one of its digital channels to see if our SWI1 function is being called every 1ms. GPIO61 is a free GPIO that the robot does not have a current use for so we will you it. Set GPIO61 high at the beginning of your SWI1 function and then set GPIO61 low at the end of the SWI1 function. Before you run your code connect one of the digital scope channels to GPIO61 and don’t forget to connect GND.
-    \item Use the hammer icon to build your code and fix any type Os or variables you didn’t copy. Then “bug” your code and verify that all parts are working.
-%
-    \begin{checkoff}[SWI1 timing and PI control]
-    \textbf{Demo this code to your TA: 1. Show the timing of the GPIO61 on the oscilloscope. 2. Make sure your PI controller is still working by plugging in the “Knob” encoder which should be the “turn” value of your PI controller. Enable the motors and your PI controller should turn the robot to the left and right.}
+            %
+            \item Print a number of your sensor readings to the text LCD every 100ms. and also use Watch Expressions to check if you code is sampling all needed sensors. You can also use CCS watch expressions to debug the sensor readings. Perform a search for \mintinline{c}{UARTPrint} and make sure your code is only setting it to one in one place and every 100ms.
+        \item We have written quite a bit if code here, so a good check would be to use the Oscilloscope and one of its digital channels to see if our SWI1 function is being called every 1ms. GPIO61 is a free GPIO that the robot does not have a current use for so we will you it. Set GPIO61 high at the beginning of your SWI1 function and then set GPIO61 low at the end of the SWI1 function. Before you run your code connect one of the digital scope channels to GPIO61 and don’t forget to connect GND.
+        \item Use the hammer icon to build your code and fix any type Os or variables you didn’t copy. Then “bug” your code and verify that all parts are working.
+            %
+            \begin{checkoff}[SWI1 timing and PI control]
+                    \textbf{Demo this code to your TA: 1. Show the timing of the GPIO61 on the oscilloscope. 2. Make sure your PI controller is still working by plugging in the “Knob” encoder which should be the “turn” value of your PI controller. Enable the motors and your PI controller should turn the robot to the left and right.}
+            \end{checkoff}
+    \end{enumerate}
+    %
+    \Ex[Build a Linux Application to Steer the robot and then later use it to tune your wall following algorithm]
+
+    Here in Exercise 4 we are going to mainly work in Linux on the Raspberry Pi 4 (RPI4) board. Before we get into Linux you need make a few small changes to your CCS project code you finished in exercise 3. Search through your code and find where you a setting “vref” and “turn”. For example you may be setting “turn” to the value of the encoder wheel. Comment out any lines of code that are setting “vref” or “turn”. It is OK for you to set them to an initial value when you declare them as globals. Then in your SWI1 function, find where the variables “printLinux1” and “printLinux2” are assigned to \mintinline{c}{LinuxCommands[0]} and \mintinline{c}{LinuxCommands[1]} and change the code so that “vref” is set to \mintinline{c}{LinuxCommands[0]} and “turn” is set to \mintinline{c}{LinuxCommands[1]}. This way you will be able to change the values of “vref” and “turn” from the Linux application we are going to build.
+
+    Now you need to get familiar with some applications to interface the lab PCs with your robot’s Raspberry Pi. For all of these methods you need to remember the IP of your RPI4 which is printed on your lab benches PC. 192.168.1.7?. The user name for the RPI4 is always “pi” and the password is always “f33dback5”.
+
+    In this document, I am going to explain the use of a file transfer program “WinSCP’ and a terminal program “putty”. WinSCP allows you to copy files back and forth to/from your RPI4 and putty gives you a wireless terminal interface to the RPI4. I will not be explaining all the details of these Windows apps, so you will probably have to do some experimenting on your own.
+
+    To run putty, open a Windows cmd prompt. At the command prompt type “putty pi@192.168.1.7?” filling in the ? with your robot’s IP. A terminal window should display and request you type in the password. Type the password and then you have a terminal wirelessly connected. Type \textbf{ls} and see all the folders in the username pi’s home folder. Go back to the Windows cmd prompt and press the “arrow up” key and run the same putty command again and see that you can connect to another putty terminal session You can run as many putty terminals as you need to run the applications the robot needs. By the end of the semester you will be running at least 3 if not 4 applications on the RPI4.
+
+    I want you to create a folder on the RPI4 to store your code and compiled applications. Type “mkdir nameforyourfolder” to create a unique folder name that you can store your files in. Using one or both of your netids in the directory name is one idea.
+
+    To copy files back and forth to the RPI4, you need to use another program, WinSCP. Run WinSCP and it should open with a login dialog box. The Host name is your robot’s IP. Username pi and Password f33dback5. Once you login you should see files and folders on both the left and right sides. The left side is folders on the Lab PC and the right side is folders on the RPI4. On the right side explore into the folder you just created on the RPI4. Then on the left side, explore to your repository folder on the lab PC and find the folder RPI4Code. In that folder select all three folders (LinuxCMDApp, LVCOMApp and serial\_COMandOpti) and drag them into your RPI4 folder on the right panel. This will copy all the RPI4 files you will need for this lab to the RPI4’s SD card. The other very nice feature of WinSCP, is that it allows you to edit files on the RPI4 using a text editor on the Lab PCs. Explore into the LinuxCMDApp folder, right click on the LinuxCMPApp.c file and select Edit and notice that you can edit the file with WinSCPs internal editor (quite basic) and you can choose “Edit With” and select and save another editor to use like notepad++ or vscode. Ask your TA to help you find where those other editors are located on the Lab PCs. Go ahead and edit the LinuxCMDApp.c file.
+
+    Before we build and run the LinuxCMDApp application lets go through its code. In order for the F28379D to communicate with the RPI4 we will be using UARTD (SCID) of the F28379D connected to the RPI4’s UART2. You will also find that we will want to have multiple RPI4 applications communicate information with the F28379. For that reason I give you a “COM” application (serial\_COMandOpti) that will take care of the UART interface and protocol. Your application will just need to communicate to this “COM” application the data needing to be transmitted. The method we will use to communicate between these applications is shared memory. Linux allows you to create files that are sitting in RAM instead of an actual file saved to the SD card. So looking at the top of LinuxCMDApp.c notice the definition of the shared memory structure \mintinline{c}{shared_mem_ptr_recvfrom_LINUXCMDApp}. Scroll down into the \mintinline{c}{main()} function and find \mintinline{c}{sem_open()}, \mintinline{c}{shm_open()} and \mintinline{c}{mmap()} function calls. This is how the LinuxCMDApp connects to the shared memory already created by the serial\_COMandOpti application. Since serial\_COMandOpti creates the shared memory, you will have to remember to run this application first before you run LinuxCMDApp. You will note here that we are also creating a semaphore. A semaphore is an operating system flag that allows you to signal to another application that an event has occurred. In our case we will be signaling that new data is ready in the shared memory for the serial\_COMandOpti to read and send to the F28379D.
+
+    Scroll down a bit farther and find the while loop. In the while loop a list of commands are printed out. Then the “mygetch” function is called that waits for the user to type in one of the letters in the list of commands. For example if you type ‘e’ the program exists. If you type ‘s’ the program will prompt you to type in a floating point number that will set the value of “vref” in your PI control. Study the code to see what the other commands perform. Notice that after you press a command letter the shared memory is filled with the values to send. Currently only vref and turn are being sent. At the end of this exercise you will fill in the remaining 9 of 11 floating point values that can be transmitted to the F28379D. Finally the \mintinline{c}{recvfrom_LINUXCMDApp_mutex_sem} is posted communicating to serial\_COMandOpti that there is data to send over UART to the F28379D. Since the code is in a while loop it goes back to the top and prints out the list of commands again and waits for the user to enter another command.
+
+    Ok enough explanation, let’s drive around your robot car. If you do not have a battery powering your robot, first shutdown the RPI4 and then power off the robot. Get a battery and power on. Change your F28379D code so that it prints “vref” and “turn” every 100ms to the text LCD screen. Then flash and run your F28379D code.
+
+    Start two putty sessions on your RPI4. “cd” into your folder and then into the serial\_COMandOpti folder. Build the serial\_COMand Opti application by typing “make”. Also type “make shm”. This creates a script file, shmdelete.sh, that cleans up the files serial\_COMandOpti creates if it is exited incorrectly or with error. Each time you want to run serial\_COMandOpti you can execute this script just in case the files were not deleted the last time serial\_COMandOpti exited. So to run serial\_COMandOPti first type “./shmdelete.sh” and then run the application by typing “./serial\_COMandOpti. You should see print outs on the screen. (This is actually the data that is going to be sent to LABVIEW in a few exercises).
+
+    Then switch to the second putty session and “cd” into your folder and then into the LinuxCMDApp folder. Type “make” to build the LinuxCMDApp. Then type ./LinuxCMDApp to run the application. You should now be able to steer around your robot by adjusting vref and turn. First experiment with turn by pressing ‘q’ multiple times to turn to the left and the ‘p’ to turn to the right. Then press ‘s’ and enter in a different value for vref. \textbf{Put the robot on the floor and steer it around the room.}
+
+    Before you go on to the next exercise, which is wall following, I would like you to get this application and your F28379D code ready for tuning your wall following parameters. Using the ‘s’ command as a guide, add the following floating point variables and create a menu option that will allow you to type in a new value for each and send it to the F28379D: Note that you will also have to create these same floating point variables in your F28379D code.
+    %
+    {\SEenumlabel{i}{alph}%
+        \begin{enumerate}
+                \item \mintinline{c}{ref_right_wall} distance, in feet, the robot should stay to the left of a right wall when right wall following. Place the robot on the floor next to a right wall and figure out a good value for this variable using LADAR readings.
+                \item \mintinline{c}{left_turn_Start_threshold} distance in feet from the front wall when your algorithm will switch from the right wall-follow state to the left turn state. Again place the robot on the floor about a foot in front of a wall and figure out a good start threshold value for this variable.
+                \item \mintinline{c}{left_turn_Stop_threshold}, when the front LADAR distance is greater than this distance, switch back to the right wall-follow state. This value should always be a few feet greater than the left turn start threshold.
+                \item \mintinline{c}{Kp_right_wall} proportional gain for controlling distance of robot to wall. Start with 0.1 and remember it could be negative.
+                \item \mintinline{c}{Kp_front_wall} proportional gain for turning robot when front wall error is high. Start with 0.1 and remember it could be negative.
+                \item \mintinline{c}{front_turn_velocity} velocity when the robot starts to turn to avoid a front wall. Start slow, say 0.4 feet/second.
+                \item \mintinline{c}{forward_velocity} velocity at which the robot travels when right wall following. Start at 1 ft/s
+                % The original letters this item "g." a second time; kept as printed.
+                \item[g.] \mintinline{c}{turn_command_saturation} maximum turn command to prevent robot from spinning quickly if error jumps too high, start with 1.0 but make sure to tune this parameter as it is very helpful with wall following.
+            \item Add all these additional variables to the ‘l’ command that lists the current values of all the parameters.
+    \end{enumerate}}
+    %
+    Type “make” to build this Linux program. If there are errors they will be printed out in the terminal. Fix any errors until you are able to build your application.
+
+    Once you have the LinuxCMDApp built, you need to make a few changes and additions to your F28379D code. Add all these same float variables in your F28379D code as global variables. Then down in your SWI1 function, find the \mintinline{c}{if(newLinuxCommands==1)} statement. \mintinline{c}{newLinuxCommands} is set to one whenever LinuxCMDApp has sent new parameters. In the same order you assigned these variables to the shared memory in LinuxCMDApp, assign these variables in the F28379D code to the correct \mintinline{c}{LinuxCommands[]} array element. Finally print these values to the text LCD screen every 100ms.
+
+    To test that everything is working, first Debug and Run your F28379D code. Then in one putty terminal run the serial\_COMandOpti application (first type ./shmdelete.sh and then ./serial\_COMandOpti). In a second putty terminal run your LinuxCMDApp. Adjust the value of each of the parameter values and check that the correct value is printed to the robot’s text LCD screen.
+    %
+    \begin{checkoff}[Linux parameter tuning application]
+            \textbf{Demonstrate this working to your instructor.}
     \end{checkoff}
-\end{enumerate}
-%
-\Ex[Build a Linux Application to Steer the robot and then later use it to tune your wall following algorithm]
+    %
+    \Ex[Right Wall-following]
 
-Here in Exercise 4 we are going to mainly work in Linux on the Raspberry Pi 4 (RPI4) board. Before we get into Linux you need make a few small changes to your CCS project code you finished in exercise 3. Search through your code and find where you a setting “vref” and “turn”. For example you may be setting “turn” to the value of the encoder wheel. Comment out any lines of code that are setting “vref” or “turn”. It is OK for you to set them to an initial value when you declare them as globals. Then in your SWI1 function, find where the variables “printLinux1” and “printLinux2” are assigned to \mintinline{c}{LinuxCommands[0]} and \mintinline{c}{LinuxCommands[1]} and change the code so that “vref” is set to \mintinline{c}{LinuxCommands[0]} and “turn” is set to \mintinline{c}{LinuxCommands[1]}. This way you will be able to change the values of “vref” and “turn” from the Linux application we are going to build.
+    Our next task is to use the LADAR’s distance readings to control the robot in such a fashion that it follows a wall on its right. By the end of lab 5 we had implemented a coupled closed-loop PI control for the speed of the robot’s wheels. That control algorithm had two input variables that you could change to make the robot speed up and turn. We defined those variables \mintinline{c}{vref} and \mintinline{c}{turn}. Our wall-following algorithm is going to control these two variables to make the robot perform as we desire.
 
-Now you need to get familiar with some applications to interface the lab PCs with your robot’s Raspberry Pi. For all of these methods you need to remember the IP of your RPI4 which is printed on your lab benches PC. 192.168.1.7?. The user name for the RPI4 is always “pi” and the password is always “f33dback5”.
+    READ the next three paragraphs before starting to write your code wall following code. A shell of starter code is below.
 
-In this document, I am going to explain the use of a file transfer program “WinSCP’ and a terminal program “putty”. WinSCP allows you to copy files back and forth to/from your RPI4 and putty gives you a wireless terminal interface to the RPI4. I will not be explaining all the details of these Windows apps, so you will probably have to do some experimenting on your own.
+    So of the 228 distance readings the LADAR measures, which ones should you use for wall-following? You can use any of the measurements for wall following but the LADAR starter code creates two variables that are good measurements to start with. One variable is called \mintinline{c}{LADARfront} and has the minimum of the five front distance readings indexes [111, 112, 113, 114, 115] $\approx$ [-2.1º, -1.05º, 0º, 1.05º, 2.1º]. The second variable \mintinline{c}{LADARfrontright} stores the minimum distance of the indexes [52, 53, 54, 55, 56] which is a right distance at about a 62º angle from the front for the robot. Use these two variables initially when coding your wall following code but know that you can use other LADAR distance readings if you want as you tune your system. You will also want to use LADAR readings that look slightly behind the robot. You will need to look slightly behind your robot in order to determine when to turn to the right when the wall edge has no front wall but just open space.
 
-To run putty, open a Windows cmd prompt. At the command prompt type “putty pi@192.168.1.7?” filling in the ? with your robot’s IP. A terminal window should display and request you type in the password. Type the password and then you have a terminal wirelessly connected. Type \textbf{ls} and see all the folders in the username pi’s home folder. Go back to the Windows cmd prompt and press the “arrow up” key and run the same putty command again and see that you can connect to another putty terminal session You can run as many putty terminals as you need to run the applications the robot needs. By the end of the semester you will be running at least 3 if not 4 applications on the RPI4.
+    Initially implement a wall following algorithm that only has two situations the robot will encounter. The highest priority (i.e. the situation that should be checked for first) case is when the front distance reading detects an object within a certain distance. In this case we need to tell the robot to turn to the left until the front reading no longer detects the object. To do this we are going to define an error state \mintinline{c}{front_wall_error}. \mintinline{c}{front_wall_error} will be defined as the error between the maximum distance the LADAR can detect in the course (14 feet) and its current distance reading. Then a simple proportional control law can be defined that is \textit{turn = Kp\_front*front\_wall\_error}. Also, set the reference speed of the robot slower, \mintinline{c}{front_turn_velocity}, to allow time for the turn. These two adjustments will cause the robot to continue turning to the left until \mintinline{c}{front_wall_error} is small.
 
-I want you to create a folder on the RPI4 to store your code and compiled applications. Type “mkdir nameforyourfolder” to create a unique folder name that you can store your files in. Using one or both of your netids in the directory name is one idea.
+    The second situation is when no obstacles are in front of the robot and there is a wall close on its right. In this case we want to tell the robot to follow the object (or wall) seen by the right LADAR distance with a desired gap between the robot and the right object. For this situation we define an error term \mintinline{c}{right_wall_error} that is the error between the desired gap distance and the actual measured distance. Use here the proportional control law \textit{turn = Kp\_right*right\_wall\_error} and set the robot’s speed to the desired forward speed \mintinline{c}{vref}. This will servo the robot close to the right wall or obstacle. Set the desired speed, \mintinline{c}{vref}, to 1.0 foot/second initially. Try to see how \textit{smooth} of a control you can create.
 
-To copy files back and forth to the RPI4, you need to use another program, WinSCP. Run WinSCP and it should open with a login dialog box. The Host name is your robot’s IP. Username pi and Password f33dback5. Once you login you should see files and folders on both the left and right sides. The left side is folders on the Lab PC and the right side is folders on the RPI4. On the right side explore into the folder you just created on the RPI4. Then on the left side, explore to your repository folder on the lab PC and find the folder RPI4Code. In that folder select all three folders (LinuxCMDApp, LVCOMApp and serial\_COMandOpti) and drag them into your RPI4 folder on the right panel. This will copy all the RPI4 files you will need for this lab to the RPI4’s SD card. The other very nice feature of WinSCP, is that it allows you to edit files on the RPI4 using a text editor on the Lab PCs. Explore into the LinuxCMDApp folder, right click on the LinuxCMPApp.c file and select Edit and notice that you can edit the file with WinSCPs internal editor (quite basic) and you can choose “Edit With” and select and save another editor to use like notepad++ or vscode. Ask your TA to help you find where those other editors are located on the Lab PCs. Go ahead and edit the LinuxCMDApp.c file.
-
-Before we build and run the LinuxCMDApp application lets go through its code. In order for the F28379D to communicate with the RPI4 we will be using UARTD (SCID) of the F28379D connected to the RPI4’s UART2. You will also find that we will want to have multiple RPI4 applications communicate information with the F28379. For that reason I give you a “COM” application (serial\_COMandOpti) that will take care of the UART interface and protocol. Your application will just need to communicate to this “COM” application the data needing to be transmitted. The method we will use to communicate between these applications is shared memory. Linux allows you to create files that are sitting in RAM instead of an actual file saved to the SD card. So looking at the top of LinuxCMDApp.c notice the definition of the shared memory structure \mintinline{c}{shared_mem_ptr_recvfrom_LINUXCMDApp}. Scroll down into the \mintinline{c}{main()} function and find \mintinline{c}{sem_open()}, \mintinline{c}{shm_open()} and \mintinline{c}{mmap()} function calls. This is how the LinuxCMDApp connects to the shared memory already created by the serial\_COMandOpti application. Since serial\_COMandOpti creates the shared memory, you will have to remember to run this application first before you run LinuxCMDApp. You will note here that we are also creating a semaphore. A semaphore is an operating system flag that allows you to signal to another application that an event has occurred. In our case we will be signaling that new data is ready in the shared memory for the serial\_COMandOpti to read and send to the F28379D.
-
-Scroll down a bit farther and find the while loop. In the while loop a list of commands are printed out. Then the “mygetch” function is called that waits for the user to type in one of the letters in the list of commands. For example if you type ‘e’ the program exists. If you type ‘s’ the program will prompt you to type in a floating point number that will set the value of “vref” in your PI control. Study the code to see what the other commands perform. Notice that after you press a command letter the shared memory is filled with the values to send. Currently only vref and turn are being sent. At the end of this exercise you will fill in the remaining 9 of 11 floating point values that can be transmitted to the F28379D. Finally the \mintinline{c}{recvfrom_LINUXCMDApp_mutex_sem} is posted communicating to serial\_COMandOpti that there is data to send over UART to the F28379D. Since the code is in a while loop it goes back to the top and prints out the list of commands again and waits for the user to enter another command.
-
-Ok enough explanation, let’s drive around your robot car. If you do not have a battery powering your robot, first shutdown the RPI4 and then power off the robot. Get a battery and power on. Change your F28379D code so that it prints “vref” and “turn” every 100ms to the text LCD screen. Then flash and run your F28379D code.
-
-Start two putty sessions on your RPI4. “cd” into your folder and then into the serial\_COMandOpti folder. Build the serial\_COMand Opti application by typing “make”. Also type “make shm”. This creates a script file, shmdelete.sh, that cleans up the files serial\_COMandOpti creates if it is exited incorrectly or with error. Each time you want to run serial\_COMandOpti you can execute this script just in case the files were not deleted the last time serial\_COMandOpti exited. So to run serial\_COMandOPti first type “./shmdelete.sh” and then run the application by typing “./serial\_COMandOpti. You should see print outs on the screen. (This is actually the data that is going to be sent to LABVIEW in a few exercises).
-
-Then switch to the second putty session and “cd” into your folder and then into the LinuxCMDApp folder. Type “make” to build the LinuxCMDApp. Then type ./LinuxCMDApp to run the application. You should now be able to steer around your robot by adjusting vref and turn. First experiment with turn by pressing ‘q’ multiple times to turn to the left and the ‘p’ to turn to the right. Then press ‘s’ and enter in a different value for vref. \textbf{Put the robot on the floor and steer it around the room.}
-
-Before you go on to the next exercise, which is wall following, I would like you to get this application and your F28379D code ready for tuning your wall following parameters. Using the ‘s’ command as a guide, add the following floating point variables and create a menu option that will allow you to type in a new value for each and send it to the F28379D: Note that you will also have to create these same floating point variables in your F28379D code.
-%
-{\SEenumlabel{i}{alph}%
-\begin{enumerate}
-    \item \mintinline{c}{ref_right_wall} distance, in feet, the robot should stay to the left of a right wall when right wall following. Place the robot on the floor next to a right wall and figure out a good value for this variable using LADAR readings.
-    \item \mintinline{c}{left_turn_Start_threshold} distance in feet from the front wall when your algorithm will switch from the right wall-follow state to the left turn state. Again place the robot on the floor about a foot in front of a wall and figure out a good start threshold value for this variable.
-    \item \mintinline{c}{left_turn_Stop_threshold}, when the front LADAR distance is greater than this distance, switch back to the right wall-follow state. This value should always be a few feet greater than the left turn start threshold.
-    \item \mintinline{c}{Kp_right_wall} proportional gain for controlling distance of robot to wall. Start with 0.1 and remember it could be negative.
-    \item \mintinline{c}{Kp_front_wall} proportional gain for turning robot when front wall error is high. Start with 0.1 and remember it could be negative.
-    \item \mintinline{c}{front_turn_velocity} velocity when the robot starts to turn to avoid a front wall. Start slow, say 0.4 feet/second.
-    \item \mintinline{c}{forward_velocity} velocity at which the robot travels when right wall following. Start at 1 ft/s
-    % The original letters this item "g." a second time; kept as printed.
-    \item[g.] \mintinline{c}{turn_command_saturation} maximum turn command to prevent robot from spinning quickly if error jumps too high, start with 1.0 but make sure to tune this parameter as it is very helpful with wall following.
-    \item Add all these additional variables to the ‘l’ command that lists the current values of all the parameters.
-\end{enumerate}}
-%
-Type “make” to build this Linux program. If there are errors they will be printed out in the terminal. Fix any errors until you are able to build your application.
-
-Once you have the LinuxCMDApp built, you need to make a few changes and additions to your F28379D code. Add all these same float variables in your F28379D code as global variables. Then down in your SWI1 function, find the \mintinline{c}{if(newLinuxCommands==1)} statement. \mintinline{c}{newLinuxCommands} is set to one whenever LinuxCMDApp has sent new parameters. In the same order you assigned these variables to the shared memory in LinuxCMDApp, assign these variables in the F28379D code to the correct \mintinline{c}{LinuxCommands[]} array element. Finally print these values to the text LCD screen every 100ms.
-
-To test that everything is working, first Debug and Run your F28379D code. Then in one putty terminal run the serial\_COMandOpti application (first type ./shmdelete.sh and then ./serial\_COMandOpti). In a second putty terminal run your LinuxCMDApp. Adjust the value of each of the parameter values and check that the correct value is printed to the robot’s text LCD screen.
-%
-\begin{checkoff}[Linux parameter tuning application]
-\textbf{Demonstrate this working to your instructor.}
-\end{checkoff}
-%
-\Ex[Right Wall-following]
-
-Our next task is to use the LADAR’s distance readings to control the robot in such a fashion that it follows a wall on its right. By the end of lab 5 we had implemented a coupled closed-loop PI control for the speed of the robot’s wheels. That control algorithm had two input variables that you could change to make the robot speed up and turn. We defined those variables \mintinline{c}{vref} and \mintinline{c}{turn}. Our wall-following algorithm is going to control these two variables to make the robot perform as we desire.
-
-READ the next three paragraphs before starting to write your code wall following code. A shell of starter code is below.
-
-So of the 228 distance readings the LADAR measures, which ones should you use for wall-following? You can use any of the measurements for wall following but the LADAR starter code creates two variables that are good measurements to start with. One variable is called \mintinline{c}{LADARfront} and has the minimum of the five front distance readings indexes [111, 112, 113, 114, 115] $\approx$ [-2.1º, -1.05º, 0º, 1.05º, 2.1º]. The second variable \mintinline{c}{LADARfrontright} stores the minimum distance of the indexes [52, 53, 54, 55, 56] which is a right distance at about a 62º angle from the front for the robot. Use these two variables initially when coding your wall following code but know that you can use other LADAR distance readings if you want as you tune your system. You will also want to use LADAR readings that look slightly behind the robot. You will need to look slightly behind your robot in order to determine when to turn to the right when the wall edge has no front wall but just open space.
-
-Initially implement a wall following algorithm that only has two situations the robot will encounter. The highest priority (i.e. the situation that should be checked for first) case is when the front distance reading detects an object within a certain distance. In this case we need to tell the robot to turn to the left until the front reading no longer detects the object. To do this we are going to define an error state \mintinline{c}{front_wall_error}. \mintinline{c}{front_wall_error} will be defined as the error between the maximum distance the LADAR can detect in the course (14 feet) and its current distance reading. Then a simple proportional control law can be defined that is \textit{turn = Kp\_front*front\_wall\_error}. Also, set the reference speed of the robot slower, \mintinline{c}{front_turn_velocity}, to allow time for the turn. These two adjustments will cause the robot to continue turning to the left until \mintinline{c}{front_wall_error} is small.
-
-The second situation is when no obstacles are in front of the robot and there is a wall close on its right. In this case we want to tell the robot to follow the object (or wall) seen by the right LADAR distance with a desired gap between the robot and the right object. For this situation we define an error term \mintinline{c}{right_wall_error} that is the error between the desired gap distance and the actual measured distance. Use here the proportional control law \textit{turn = Kp\_right*right\_wall\_error} and set the robot’s speed to the desired forward speed \mintinline{c}{vref}. This will servo the robot close to the right wall or obstacle. Set the desired speed, \mintinline{c}{vref}, to 1.0 foot/second initially. Try to see how \textit{smooth} of a control you can create.
-
-Now we are ready to code the wall-following algorithm. Below is a code outline you should use in SWI1’s interrupt function before you calculate the PI speed control. You have already created most of these variable in the previous exercise.
-%
+    Now we are ready to code the wall-following algorithm. Below is a code outline you should use in SWI1’s interrupt function before you calculate the PI speed control. You have already created most of these variable in the previous exercise.
+    %
 \begin{minted}{c}
 // Add declarations for tunable global variables to include:
 //    ref_right_wall - desired distance from right wall.  You will have
@@ -552,7 +547,6 @@ Now we are ready to code the wall-following algorithm. Below is a code outline y
 
 // declare other globals that you will need
 
-
 // inside SWI1 before PI speed control
 switch (right_wall_follow_state) {
 case 1:
@@ -576,134 +570,134 @@ case 2:
 // Add code here to saturate the turn command so that it is not larger
 // than turn_command_saturation or less than -turn_command_saturation
 \end{minted}
-%
-Now tune your wall following. Try to make the robot follow smoothly around the course. Take advantage of your Linux program to tune the different parts of your control algorithm.
+    %
+    Now tune your wall following. Try to make the robot follow smoothly around the course. Take advantage of your Linux program to tune the different parts of your control algorithm.
 
-Add one more option to your wall following robot. Be able to handle the situation where the robot is following along a right wall that ends without a front wall. In this situation the robot should turn to the right until it finds a right wall to follow. This could happen at a corner that goes to the right or a wall that is just sticking out in the course. Here it will be useful to look at LADAR measurements that look slightly behind the robot to determine when to turn to the right so the robot does not hit the wall on the right when turning.
-%
-\begin{checkoff}[Right wall following]
-\textbf{Demo your working Wall-following to your instructor.}
-\end{checkoff}
-%
-\Ex[Integration of the MPU-9250 Gyro Z axis, Dead Reckoning and displaying robot’s XY position in LABVIEW]
-
-Since you started Lab 6 with your Lab 5 code, your code should already be finding the robot’s bearing angle by integrating the Z gyro readings of the LPR510 sensor. This sensor works to give a pretty precise angle but we have found that integrating the MPU-9250’s Z gyro axis does an even better job when it comes to integral drift. This is more than likely due to the LPR510 producing and analog output read by ADCs and the MPU-9250 has an digital SPI serial output. For example when the robot’s motors are turned on and driven, this produces electric noise that could be seen on analog inputs.
-
-So just like you integrated the LPR510 Z gyro readings, integrate the MPU-9250’s Z axis gyro reading using units of radians. Perform this code inside the SWI1 interrupt function and after the zero\_offset of the gyro has been found and subtracted from the gyro reading. (This should be the same place in the code where you are integrating the LPR510 readings.) I have created a global structure variable called \mintinline{c}{ROBOTps}. It has three float elements \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y} and \mintinline{c}{ROBOTps.theta}. Assign \mintinline{c}{ROBOTps.theta} to the integral of the MPU-9250’s Z gyro axis you just calculated. Print this angle to the text LCD every 100ms. Debug and run your code and verify that the angle produced is correct.
-%
-\begin{checkoff}[Gyro Z bearing angle]
-\textbf{Demo this working to your instructor.}
-\end{checkoff}
-%
-Next we would like calculate an approximation of where the center of the robot is X,Y in the room. The picture below shows the world coordinate frame we will use for the lab room and also shows the robot’s coordinate frame. Robot positive X is robot straight forward and robot positive Y is robot left. Robot positive theta is counter clockwise to the robot’s left. To think about how to find an X, Y approximation of the robot’s position first assume that the robot can only move straight ahead. Y would always be zero but X can be found by integrating the average of the left and right wheel speeds in ft/s. \texttt{ROBOTps.x = robotxprev + ((spdaverage+spdaverage\_prev)/2)*0.001}. Now given that you have calculated \mintinline{c}{ROBOTps.theta} use it with \mintinline{c}{sin()} and \mintinline{c}{cos()} to integrate the average of the left and right speeds and find \mintinline{c}{ROBOTps.x} and \mintinline{c}{ROBOTps.y}. Display these x,y coordinates to the text LCD screen and then build and run this code.
-%
-\begin{checkoff}[Dead reckoning XY position]
-\textbf{Demo this working to your instructor.}
-\end{checkoff}
-%
-\begin{figure}[H]
-    \centering
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \AltImg[width=\linewidth]{Labs/Figures/Lab6/robot_coordinate_frame.jpg}{%
-            Photo from above of the robot car on the lab floor with arrows drawn on it. From the
-            robot's centre, the arrow RobotX points straight ahead of the robot and the arrow RobotY
-            points to the robot's left; a curved arrow labelled Positive Theta turns counter clockwise
-            from RobotX towards RobotY. To the lower right of the robot is the world origin, labelled
-            (0,0), with the arrow World X pointing in the same direction as RobotX and the arrow
-            World Y pointing in the same direction as RobotY.%
-        }
-        \caption{Robot coordinate frame}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}[b]{0.49\textwidth}
-        \centering
-        \AltImg[width=\linewidth]{Labs/Figures/Lab6/world_coordinate_frame.jpg}{%
-            Photo of the robot course in the lab room: a floor area enclosed by low wooden walls,
-            with a wooden box obstacle near the far wall and an opening in the middle of the near
-            wall. The robot stands inside the course near the opening. The world origin is drawn in
-            the opening of the near wall, with the arrow World X pointing to the right along the near
-            wall and the arrow World Y pointing into the course towards the far wall.%
-        }
-        \caption{World coordinate frame of the course}
-    \end{subfigure}
-    \caption{Robot and world coordinate frames}
-\end{figure}
-%
-This final step puts everything we did in this lab all together. Look in your code at the end of SW1’s function and notice that every 250ms \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y} and \mintinline{c}{ROBOTps.theta} are assigned to a \mintinline{c}{DataToLabView} structure. Then after the data is organized correctly, it is sent over UARTD to the RPI4 with the function \mintinline{c}{serial_sendSCID()}. This is the data your LABVIEW program will receive and use to plot the x,y position of the robot in its picture window. Use the two below pictures to update your LABVIEW program to send and receive 8 floating point values and use the first two received values and the x and y location of the robot.
-%
-\begin{figure}[H]
-    \centering
-    \AltImg[width=0.85\linewidth]{Labs/Figures/Lab6/labview_front_panel.png}{%
-        Screenshot of the LabVIEW front panel RobotCOMM.vi. In the middle is a large empty white
-        2D Picture indicator; above it are a Display History light and a Size of Rectangle numeric
-        control set to 20. On the left are a STOP button, a Send button labelled Send Button, and
-        below them eight numeric controls SendValue1 to SendValue8, all 0. On the right are eight
-        numeric indicators, all 0: X, Y, RecvValue3, RecvValue4, RecvValue5, RecValue6, RecvValue7
-        and RecvValue8.%
-    }
-    \caption{LABVIEW front panel with eight send values and eight received values}
-\end{figure}
-%
-\begin{figure}[H]
-    \centering
-    \AltImg[width=\linewidth]{Labs/Figures/Lab6/labview_block_diagram.png}{%
-        Screenshot of the LabVIEW block diagram. On the left a TCP Open Connection uses address
-        192.168.1.73, port 10001 and timeout 1000, and Display History and stop are initialised to
-        false. An upper while loop holds an event structure showing the case "Send Button": Value
-        Change: SendValue1 to SendValue8 are wired into a Format Into String with the format of
-        eight \%f separated by spaces, the result is put between the strings \textbackslash FD and
-        \textbackslash FF and written with TCP Write (timeout 100); a note says the event structure
-        has two other events, Timeout and Stop button Value Change, as in Lab 2's LabView exercise.
-        A lower while loop does a TCP Read (CRLF mode, 200 bytes, timeout 25000) into a Scan From
-        String with the format of eight \%f, whose outputs go to the indicators X, Y, RecvValue3,
-        RecvValue4, RecvValue5, RecValue6, RecvValue7 and RecvValue8. X plus 8 and 12 minus Y are
-        each multiplied by 50, converted to 16-bit integers and combined with Size of Rectangle to
-        form the corners of a rectangle drawn into the 2D Picture; a case structure on Display
-        History chooses whether the previous picture is kept. The loop waits 1 ms with the note
-        "Every 1ms check to see if new data can be read from the TCPIP Port" and ends on stop.
-        After the loops a 500 ms wait and TCP Close finish the program.%
-    }
-    \caption{LABVIEW block diagram that sends and receives 8 floating point values}
-\end{figure}
-%
-Looking at the LABVIEW application you just finished notice that there is a “Send” button. When you press the button the eight SendValues are sent over WiFi to the RPI4. The RPI4 “LVCOMApp” receives these values and transfers them with shared memory to “serial\_COMandOpti” and then to the F28379D. Look in your F28379D code again in the SWI1 function. Notice that there is a “\mintinline{c}{if (NewLVData == 1)}” statement and that the first two values sent from LABVIEW are assigned to \mintinline{c}{printLV1} and \mintinline{c}{printLV2}. There are 6 more parameters that you can use in the future to send parameters from LABVIEW to your robot. For this lab simply print these two values to the text LCD screen every 100ms. Once you get your LABVIEW program running send some values and notice that the values update on the text LCD screen.
-
-Steps to run this LABVIEW application:
-%
-\begin{enumerate}
-    \item Open two putty terminals that connect to your RPI4. Three if you need to run your LinuxCMDApp to get the robot wall-following.
-    \item In terminal one, cd to your directory and then to serial\_COMandOpti. Do not run yet but get ready to run by first typing are running ./shmdelete.sh and then just typing ./serial\_COMandOpti. You will run this when you have the robot ready to go.
-    \item In terminal two, cd to your directory and then to LVCOMapp. Do not run yet but get ready to run by typing ./LVCOMApp
-    \item If you have not yet, flash your program to the F28379D. Disconnect your JTAG and place the robot close to 0, 0 in the course and pointing so that theta starts at zero.
-    \item Then press the reset button on your F28379D board. This will start over your F28379D program and re-zero the gyro sensor before going into the wall-following code. Don’t enable the motors yet. First run the Linux and LABVIEW apps.
-    \item In terminal one run ./serial\_COMandOpti.
-    \item In terminal two run ./LVCOMApp
-    \item Then run your LABVIEW application.
-    \item Finally flip on the robot’s motor enable switch. Your robot should start wall-following and looking at your LABVIEW program the location of the robot should be displayed in the picture window.
-    \item Send of few parameters from LABVIEW to your F28379D and verify the correct values display to the text LCD screen.
-    \item \mbox{}
-%
-    \begin{checkoff}[Wall following plotted in LABVIEW]
-    \textbf{Demo all this working to your instructor.}
+    Add one more option to your wall following robot. Be able to handle the situation where the robot is following along a right wall that ends without a front wall. In this situation the robot should turn to the right until it finds a right wall to follow. This could happen at a corner that goes to the right or a wall that is just sticking out in the course. Here it will be useful to look at LADAR measurements that look slightly behind the robot to determine when to turn to the right so the robot does not hit the wall on the right when turning.
+    %
+    \begin{checkoff}[Right wall following]
+            \textbf{Demo your working Wall-following to your instructor.}
     \end{checkoff}
-\end{enumerate}
-%
-\section*{Lab Check Off}
-%
-\begin{checkoff}[Final wall following in LABVIEW]
-Show your TA the final LABVIEW program as your robot follows the right wall. Use the rate gyro measurement to determine the orientation of your robot. Upload this data to the LABVIEW program and update the robot’s position on a XY grid. Your robot should run smoothly as it follows the wall inside the course. You will need to adjust your wall-following gains if your robot is swaying or jerking a lot.
-\end{checkoff}
-%
-\begin{checkoff}[LABVIEW grid lines, shown in Lab 7]
-\textbf{LABVIEW Exercise:} Add horizontal and vertical grid lines to the picture window displaying the robot’s work area. The grid lines should be every 1 foot or 50 pixels. The best way to do this is with the LABVIEW for loop structures but first play with drawing just one grid line to get started. Demonstrate this working in Lab 7 when you are again asked to use the LABVIEW program.
-\end{checkoff}
-%
-\section*{Check-Off Summary}
+    %
+    \Ex[Integration of the MPU-9250 Gyro Z axis, Dead Reckoning and displaying robot’s XY position in LABVIEW]
 
-Tick each box once your TA or instructor has checked you off.
-%
-\CheckOffSummary
+    Since you started Lab 6 with your Lab 5 code, your code should already be finding the robot’s bearing angle by integrating the Z gyro readings of the LPR510 sensor. This sensor works to give a pretty precise angle but we have found that integrating the MPU-9250’s Z gyro axis does an even better job when it comes to integral drift. This is more than likely due to the LPR510 producing and analog output read by ADCs and the MPU-9250 has an digital SPI serial output. For example when the robot’s motors are turned on and driven, this produces electric noise that could be seen on analog inputs.
 
-\MakeFooter
-\end{document}
+    So just like you integrated the LPR510 Z gyro readings, integrate the MPU-9250’s Z axis gyro reading using units of radians. Perform this code inside the SWI1 interrupt function and after the zero\_offset of the gyro has been found and subtracted from the gyro reading. (This should be the same place in the code where you are integrating the LPR510 readings.) I have created a global structure variable called \mintinline{c}{ROBOTps}. It has three float elements \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y} and \mintinline{c}{ROBOTps.theta}. Assign \mintinline{c}{ROBOTps.theta} to the integral of the MPU-9250’s Z gyro axis you just calculated. Print this angle to the text LCD every 100ms. Debug and run your code and verify that the angle produced is correct.
+    %
+    \begin{checkoff}[Gyro Z bearing angle]
+            \textbf{Demo this working to your instructor.}
+    \end{checkoff}
+    %
+    Next we would like calculate an approximation of where the center of the robot is X,Y in the room. The picture below shows the world coordinate frame we will use for the lab room and also shows the robot’s coordinate frame. Robot positive X is robot straight forward and robot positive Y is robot left. Robot positive theta is counter clockwise to the robot’s left. To think about how to find an X, Y approximation of the robot’s position first assume that the robot can only move straight ahead. Y would always be zero but X can be found by integrating the average of the left and right wheel speeds in ft/s. \texttt{ROBOTps.x = robotxprev + ((spdaverage+spdaverage\_prev)/2)*0.001}. Now given that you have calculated \mintinline{c}{ROBOTps.theta} use it with \mintinline{c}{sin()} and \mintinline{c}{cos()} to integrate the average of the left and right speeds and find \mintinline{c}{ROBOTps.x} and \mintinline{c}{ROBOTps.y}. Display these x,y coordinates to the text LCD screen and then build and run this code.
+    %
+    \begin{checkoff}[Dead reckoning XY position]
+            \textbf{Demo this working to your instructor.}
+    \end{checkoff}
+    %
+    \begin{figure}[H]
+        \centering
+        \begin{subfigure}[b]{0.49\textwidth}
+            \centering
+            \AltImg[width=\linewidth]{Labs/Figures/Lab6/robot_coordinate_frame.jpg}{%
+                Photo from above of the robot car on the lab floor with arrows drawn on it. From the
+                robot's centre, the arrow RobotX points straight ahead of the robot and the arrow RobotY
+                points to the robot's left; a curved arrow labelled Positive Theta turns counter clockwise
+                from RobotX towards RobotY. To the lower right of the robot is the world origin, labelled
+                (0,0), with the arrow World X pointing in the same direction as RobotX and the arrow
+                World Y pointing in the same direction as RobotY.%
+            }
+            \caption{Robot coordinate frame}
+        \end{subfigure}
+        \hfill
+        \begin{subfigure}[b]{0.49\textwidth}
+            \centering
+            \AltImg[width=\linewidth]{Labs/Figures/Lab6/world_coordinate_frame.jpg}{%
+                Photo of the robot course in the lab room: a floor area enclosed by low wooden walls,
+                with a wooden box obstacle near the far wall and an opening in the middle of the near
+                wall. The robot stands inside the course near the opening. The world origin is drawn in
+                the opening of the near wall, with the arrow World X pointing to the right along the near
+                wall and the arrow World Y pointing into the course towards the far wall.%
+            }
+            \caption{World coordinate frame of the course}
+        \end{subfigure}
+        \caption{Robot and world coordinate frames}
+    \end{figure}
+    %
+    This final step puts everything we did in this lab all together. Look in your code at the end of SW1’s function and notice that every 250ms \mintinline{c}{ROBOTps.x}, \mintinline{c}{ROBOTps.y} and \mintinline{c}{ROBOTps.theta} are assigned to a \mintinline{c}{DataToLabView} structure. Then after the data is organized correctly, it is sent over UARTD to the RPI4 with the function \mintinline{c}{serial_sendSCID()}. This is the data your LABVIEW program will receive and use to plot the x,y position of the robot in its picture window. Use the two below pictures to update your LABVIEW program to send and receive 8 floating point values and use the first two received values and the x and y location of the robot.
+    %
+    \begin{figure}[H]
+        \centering
+        \AltImg[width=0.85\linewidth]{Labs/Figures/Lab6/labview_front_panel.png}{%
+            Screenshot of the LabVIEW front panel RobotCOMM.vi. In the middle is a large empty white
+            2D Picture indicator; above it are a Display History light and a Size of Rectangle numeric
+            control set to 20. On the left are a STOP button, a Send button labelled Send Button, and
+            below them eight numeric controls SendValue1 to SendValue8, all 0. On the right are eight
+            numeric indicators, all 0: X, Y, RecvValue3, RecvValue4, RecvValue5, RecValue6, RecvValue7
+            and RecvValue8.%
+        }
+        \caption{LABVIEW front panel with eight send values and eight received values}
+    \end{figure}
+    %
+    \begin{figure}[H]
+        \centering
+        \AltImg[width=\linewidth]{Labs/Figures/Lab6/labview_block_diagram.png}{%
+            Screenshot of the LabVIEW block diagram. On the left a TCP Open Connection uses address
+            192.168.1.73, port 10001 and timeout 1000, and Display History and stop are initialised to
+            false. An upper while loop holds an event structure showing the case "Send Button": Value
+            Change: SendValue1 to SendValue8 are wired into a Format Into String with the format of
+            eight \%f separated by spaces, the result is put between the strings \textbackslash FD and
+            \textbackslash FF and written with TCP Write (timeout 100); a note says the event structure
+            has two other events, Timeout and Stop button Value Change, as in Lab 2's LabView exercise.
+            A lower while loop does a TCP Read (CRLF mode, 200 bytes, timeout 25000) into a Scan From
+            String with the format of eight \%f, whose outputs go to the indicators X, Y, RecvValue3,
+            RecvValue4, RecvValue5, RecValue6, RecvValue7 and RecvValue8. X plus 8 and 12 minus Y are
+            each multiplied by 50, converted to 16-bit integers and combined with Size of Rectangle to
+            form the corners of a rectangle drawn into the 2D Picture; a case structure on Display
+            History chooses whether the previous picture is kept. The loop waits 1 ms with the note
+            "Every 1ms check to see if new data can be read from the TCPIP Port" and ends on stop.
+            After the loops a 500 ms wait and TCP Close finish the program.%
+        }
+        \caption{LABVIEW block diagram that sends and receives 8 floating point values}
+    \end{figure}
+    %
+    Looking at the LABVIEW application you just finished notice that there is a “Send” button. When you press the button the eight SendValues are sent over WiFi to the RPI4. The RPI4 “LVCOMApp” receives these values and transfers them with shared memory to “serial\_COMandOpti” and then to the F28379D. Look in your F28379D code again in the SWI1 function. Notice that there is a “\mintinline{c}{if (NewLVData == 1)}” statement and that the first two values sent from LABVIEW are assigned to \mintinline{c}{printLV1} and \mintinline{c}{printLV2}. There are 6 more parameters that you can use in the future to send parameters from LABVIEW to your robot. For this lab simply print these two values to the text LCD screen every 100ms. Once you get your LABVIEW program running send some values and notice that the values update on the text LCD screen.
+
+    Steps to run this LABVIEW application:
+    %
+    \begin{enumerate}
+        \item Open two putty terminals that connect to your RPI4. Three if you need to run your LinuxCMDApp to get the robot wall-following.
+        \item In terminal one, cd to your directory and then to serial\_COMandOpti. Do not run yet but get ready to run by first typing are running ./shmdelete.sh and then just typing ./serial\_COMandOpti. You will run this when you have the robot ready to go.
+        \item In terminal two, cd to your directory and then to LVCOMapp. Do not run yet but get ready to run by typing ./LVCOMApp
+        \item If you have not yet, flash your program to the F28379D. Disconnect your JTAG and place the robot close to 0, 0 in the course and pointing so that theta starts at zero.
+        \item Then press the reset button on your F28379D board. This will start over your F28379D program and re-zero the gyro sensor before going into the wall-following code. Don’t enable the motors yet. First run the Linux and LABVIEW apps.
+        \item In terminal one run ./serial\_COMandOpti.
+        \item In terminal two run ./LVCOMApp
+        \item Then run your LABVIEW application.
+        \item Finally flip on the robot’s motor enable switch. Your robot should start wall-following and looking at your LABVIEW program the location of the robot should be displayed in the picture window.
+        \item Send of few parameters from LABVIEW to your F28379D and verify the correct values display to the text LCD screen.
+        \item \mbox{}
+            %
+            \begin{checkoff}[Wall following plotted in LABVIEW]
+                    \textbf{Demo all this working to your instructor.}
+            \end{checkoff}
+    \end{enumerate}
+    %
+    \section*{Lab Check Off}
+    %
+    \begin{checkoff}[Final wall following in LABVIEW]
+            Show your TA the final LABVIEW program as your robot follows the right wall. Use the rate gyro measurement to determine the orientation of your robot. Upload this data to the LABVIEW program and update the robot’s position on a XY grid. Your robot should run smoothly as it follows the wall inside the course. You will need to adjust your wall-following gains if your robot is swaying or jerking a lot.
+    \end{checkoff}
+    %
+    \begin{checkoff}[LABVIEW grid lines, shown in Lab 7]
+            \textbf{LABVIEW Exercise:} Add horizontal and vertical grid lines to the picture window displaying the robot’s work area. The grid lines should be every 1 foot or 50 pixels. The best way to do this is with the LABVIEW for loop structures but first play with drawing just one grid line to get started. Demonstrate this working in Lab 7 when you are again asked to use the LABVIEW program.
+    \end{checkoff}
+    %
+    \section*{Check-Off Summary}
+
+    Tick each box once your TA or instructor has checked you off.
+    %
+    \CheckOffSummary
+
+    \MakeFooter
+    \end{document}

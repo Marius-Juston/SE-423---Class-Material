@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -39,7 +39,7 @@ Each team must include the following core components in their project:
 \begin{itemize}
     \item \textbf{Path Planning}: Design algorithms for navigating the robot from one location to another, with or without a predefined map.
     \item \textbf{Sensing and Perception}: Use LIDAR, a camera color, and/or camera AprilTag vision to help the robot perceive its environment and make decisions in real time.
-    \item \textbf{Control Systems}: The implement control loop to decide the values of Vref and Turn each 1ms in the robot’s \mintinline{c}{SWI1_HighestPriority} function. Vref and Turn are the inputs to the given PI speed controller of the robot.
+        \item \textbf{Control Systems}: The implement control loop to decide the values of Vref and Turn each 1ms in the robot’s \mintinline{c}{SWI1_HighestPriority} function. Vref and Turn are the inputs to the given PI speed controller of the robot.
 \end{itemize}
 %
 Each component should have 1–2 members assigned.
@@ -86,26 +86,26 @@ Consider implementing creative or advanced features to enhance your project:
 \subsection*{Week 2: Subsystem Development \& Integration}
 %
 \begin{checkoff}[Week 2 subsystem milestone]
-\textbf{Milestone Due: Thursday, May 7 at 17:00}
-%
-\begin{itemize}
-    \item Demonstrate individual subsystem functionality (e.g., object collection, path planning, etc).
-    \item Show integration of position reporting to LabVIEW, Python, RPI C program, etc.
-    \item Document progress and challenges.
-\end{itemize}
+        \textbf{Milestone Due: Thursday, May 7 at 17:00}
+        %
+        \begin{itemize}
+            \item Demonstrate individual subsystem functionality (e.g., object collection, path planning, etc).
+            \item Show integration of position reporting to LabVIEW, Python, RPI C program, etc.
+            \item Document progress and challenges.
+        \end{itemize}
 \end{checkoff}
 
 \subsection*{Week 3: Final Testing \& Presentation}
 %
 \begin{checkoff}[Final Demo Day]
-\textbf{Final Demo Day: Thursday, May 14, 11:00–14:00}
-%
-\begin{itemize}
-    \item Full system integration and final testing.
-    \item Prepare live demonstration for Demo.
-    \item Capture photos and videos for your report.
-    \item Submit final report (due one day after Demo).
-\end{itemize}
+        \textbf{Final Demo Day: Thursday, May 14, 11:00–14:00}
+        %
+        \begin{itemize}
+            \item Full system integration and final testing.
+            \item Prepare live demonstration for Demo.
+            \item Capture photos and videos for your report.
+            \item Submit final report (due one day after Demo).
+        \end{itemize}
 \end{checkoff}
 %
 \emph{Note}: Demo end time is flexible for those attending the ISE Senior Design Final until 13:00 on the same day.
@@ -120,11 +120,11 @@ Create a web-based final report that includes the following:
     \item A written summary of your project’s strategy and how your team used the robot’s sensors.
     \item Photos and videos of your robot in action (instructor videos from Demo day will also be provided).
     \item A downloadable zip file with all \textbf{commented} project source code:
-    \begin{itemize}
-        \item C code
-        \item Linux code
-        \item LabVIEW files
-    \end{itemize}
+        \begin{itemize}
+            \item C code
+            \item Linux code
+            \item LabVIEW files
+        \end{itemize}
     \item Team photo(s) and full names of all group members.
     \item Please use \textbf{Hackster.io} to host your report, if possible.
 \end{enumerate}
