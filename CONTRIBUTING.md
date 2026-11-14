@@ -206,6 +206,8 @@ Since the repo supports [Overleaf sync](https://github.com/topics/overleaf-sync)
    latexmk -pdflua -shell-escape Labs/<lab>.tex
    ```
 
+CI builds with the TeX Live release named in `.github/texlive-year`. You never change it by hand: a monthly workflow (`.github/workflows/texlive-upgrade.yml`) tries each new release with a full build and opens a pull request that raises the year once everything passes.
+
 ### Verifying your build
 
 The GitHub Actions workflow (`.github/workflows/build-latex.yml`) is the ground truth for the build. Before submitting a PR, confirm that every file listed in `pdf-list.txt` compiles without errors. The CI pipeline will catch failures, but checking locally saves review time.

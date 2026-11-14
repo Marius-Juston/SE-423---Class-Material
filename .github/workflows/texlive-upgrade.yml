@@ -1,0 +1,179 @@
+name: Try the newest TeX Live
+
+# The build uses the TeX Live release named in .github/texlive-year, so a new
+# release (one each spring) never changes or breaks the published material by
+# itself. This workflow moves the course to the newest release as soon as it is
+# safe: once a month it looks for a release newer than the one in use and, when
+# there is one, builds *everything* with it (PDFs, large print, HTML, EPUB, slides,
+# accessibility gate) without publishing anything.
+#   - Everything passes: it opens a pull request that raises .github/texlive-year
+#     (one click to merge). If the repository does not let Actions open pull
+#     requests, it opens an issue with a one-line edit link instead.
+#   - Something fails: it opens an issue linking to the failed run (and adds a
+#     comment on later attempts); the course keeps building with the old release,
+#     which stays installable from TeX Live's historic archive. It tries again
+#     next month: packages are usually fixed within weeks of a release.
+# Run it by hand any time: Actions > Try the newest TeX Live > Run workflow.
+
+on:
+  schedule:
+    - cron: "17 6 3 * *" # the 3rd of each month, 06:17 UTC
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: texlive-upgrade
+  cancel-in-progress: false
+
+jobs:
+  check:
+    name: Is there a newer TeX Live?
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
+    outputs:
+      current: ${{ steps.years.outputs.current }}
+      latest: ${{ steps.years.outputs.latest }}
+      newer: ${{ steps.years.outputs.newer }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Compare the release in use with the newest one
+        id: years
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          current=$(tr -dc '0-9' < .github/texlive-year)
+          # The CTAN mirrors always serve the current release; its installer says which.
+          latest=""
+          for repo in \
+            https://mirrors.mit.edu/CTAN/systems/texlive/tlnet \
+            https://mirrors.rit.edu/CTAN/systems/texlive/tlnet \
+            https://mirror.ctan.org/systems/texlive/tlnet; do
+            if wget -q --tries=2 --timeout=60 -O install-tl-unx.tar.gz "$repo/install-tl-unx.tar.gz"; then
+              latest=$(tar -xzOf install-tl-unx.tar.gz --wildcards '*/release-texlive.txt' \
+                | sed -n 's/.*version \(20[0-9][0-9]\)$/\1/p' | head -1)
+              [ -n "$latest" ] && break
+            fi
+          done
+          [ -n "$latest" ] || { echo "::error::Could not find out the newest TeX Live release"; exit 1; }
+          newer=false
+          if [ "$latest" -gt "$current" ]; then
+            newer=true
+            # Already proposed and waiting to be merged: nothing to do.
+            if [ -n "$(gh pr list --state open --head "update/texlive-$latest" --json number --jq '.[].number')" ]; then
+              echo "TeX Live $latest is already proposed in an open pull request."
+              newer=false
+            fi
+          fi
+          {
+            echo "current=$current"
+            echo "latest=$latest"
+            echo "newer=$newer"
+          } >> "$GITHUB_OUTPUT"
+          echo "In use: TeX Live $current. Newest: TeX Live $latest. Trial build: $newer." | tee -a "$GITHUB_STEP_SUMMARY"
+
+  trial:
+    name: Build everything with the new release (nothing is published)
+    needs: check
+    if: needs.check.outputs.newer == 'true'
+    permissions:
+      contents: write # what build-latex.yml declares; publish is off, nothing is pushed
+      security-events: write
+    uses: ./.github/workflows/build-latex.yml
+    with:
+      texlive_year: ${{ needs.check.outputs.latest }}
+      publish: false
+
+  propose:
+    name: Propose the upgrade, or report what failed
+    needs: [check, trial]
+    if: always() && needs.check.outputs.newer == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      CURRENT: ${{ needs.check.outputs.current }}
+      LATEST: ${{ needs.check.outputs.latest }}
+      RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      REPO_URL: ${{ github.server_url }}/${{ github.repository }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Open a pull request (everything built)
+        if: needs.trial.result == 'success'
+        run: |
+          branch="update/texlive-$LATEST"
+          title="Update TeX Live $CURRENT to $LATEST"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$branch"
+          echo "$LATEST" > .github/texlive-year
+          git commit -q -am "$title"
+          git push --force origin "$branch"
+          {
+            echo "TeX Live $LATEST is out. A full trial build with it passed: every document in"
+            echo "\`pdf-list.txt\` (PDF, large print, HTML, EPUB), the slide decks and the"
+            echo "accessibility gate: $RUN_URL"
+            echo
+            echo "Merging this changes \`.github/texlive-year\`, which makes the next build rebuild"
+            echo "and publish everything with TeX Live $LATEST (the installation is already cached"
+            echo "from the trial build)."
+            echo
+            echo "No checks run on this pull request itself (it was opened by a workflow); the"
+            echo "trial build above is the check. Not merging is fine too: the course keeps"
+            echo "building with TeX Live $CURRENT."
+          } > body.md
+          if ! gh pr create --base "${{ github.event.repository.default_branch }}" --head "$branch" \
+                 --title "$title" --body-file body.md; then
+            # "Allow GitHub Actions to create and approve pull requests" is off
+            # (Settings > Actions > General): say the same in an issue.
+            if [ -z "$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[].number')" ]; then
+              {
+                cat body.md
+                echo
+                echo "---"
+                echo "This repository does not let workflows open pull requests, so here is the"
+                echo "change as an issue. Either open the pull request for the prepared branch:"
+                echo "$REPO_URL/compare/$branch?expand=1"
+                echo "or edit the one line yourself: $REPO_URL/edit/${{ github.event.repository.default_branch }}/.github/texlive-year"
+                echo "(replace $CURRENT with $LATEST)."
+              } > issue.md
+              gh issue create --title "$title" --body-file issue.md
+            fi
+          fi
+          # A report from an earlier, failed attempt is settled now.
+          for n in $(gh issue list --state open --search "\"TeX Live $LATEST does not build the course material yet\" in:title" --json number --jq '.[].number'); do
+            gh issue close "$n" --comment "The trial build passes now: $RUN_URL"
+          done
+
+      - name: Report the failure (the old release stays in use)
+        if: needs.trial.result != 'success'
+        run: |
+          title="TeX Live $LATEST does not build the course material yet"
+          n=$(gh issue list --state open --search "\"$title\" in:title" --json number --jq '.[0].number')
+          if [ -n "$n" ]; then
+            gh issue comment "$n" --body "Tried again, still failing: $RUN_URL"
+          else
+            {
+              echo "TeX Live $LATEST is out, but the trial build with it failed: $RUN_URL"
+              echo
+              echo "Nothing is broken: the course keeps building with TeX Live $CURRENT"
+              echo "(\`.github/texlive-year\`), which stays installable from TeX Live's historic"
+              echo "archive. This workflow tries again every month and will open a pull request"
+              echo "once everything builds; new releases often need a few weeks of package fixes."
+              echo
+              echo "To look into it: open the run above, find the failing step (usually"
+              echo "\"Compile LaTeX Documents\" or \"Accessibility checks\") and fix the document or"
+              echo "\`header.tex\`. To try again right away: Actions > Try the newest TeX Live >"
+              echo "Run workflow."
+            } > issue.md
+            gh issue create --title "$title" --body-file issue.md
+          fi

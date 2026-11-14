@@ -87,6 +87,8 @@ Builds run 4 at a time (LaTeX documents and their large-print editions, HTML, sl
 
 Incremental builds only rebuild files that changed, except that a change to a file every document reads (`header.tex`, `fontsetup.tex`, `icons.tex`, `timline.tex`, `checkoff.tex`, any `*.cfg`) rebuilds every document in `pdf-list.txt`, and a change to `tools/a11y/pptx_to_html.py` or `tools/a11y/tag_slide_pdf.py` re-exports every deck. Trigger the workflow manually (workflow_dispatch) to rebuild everything.
 
+**TeX Live release:** CI builds with the release named in `.github/texlive-year` (one line, e.g. `2026`), installed from the CTAN mirrors while it is the current release and from TeX Live's frozen historic archive (`…/historic/systems/texlive/<year>/tlnet-final`) afterwards, so a new release never changes the build by itself. `.github/workflows/texlive-upgrade.yml` (monthly, or run by hand) builds everything with a newer release without publishing (`build-latex.yml` as a reusable workflow, `texlive_year` + `publish: false`) and opens a pull request raising the year when all of it passes, or an issue when it does not. Never hardcode a TeX Live year in the workflow; changing the year file rebuilds every document.
+
 ### Site (`site/`)
 
 Static HTML/CSS/JS served via GitHub Pages. Uses Three.js (via import map) for the LIDAR SLAM visualization; its JSX in `site/lidar_slam/src/` is compiled by CI (`site/lidar_slam/build.sh`). The `index.html` gallery is auto-populated by CI from the top-level `Lectures/Figures/svg/*.svg` — do not manually edit the SVG injection block.

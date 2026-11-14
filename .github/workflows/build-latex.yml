@@ -1,7 +1,28 @@
-name: Build LaTeX PDFs (TeX Live 2026) and Deploy
+name: Build LaTeX PDFs and Deploy
 
+# TeX Live: the release named in .github/texlive-year is used (see the step "Select
+# the TeX Live release"). .github/workflows/texlive-upgrade.yml tries each new
+# release with a full, unpublished build of this workflow and proposes the change.
 on:
   workflow_dispatch:
+    inputs:
+      texlive_year:
+        description: "TeX Live release to build with (empty: the one in .github/texlive-year)"
+        type: string
+        default: ""
+      publish:
+        description: "Deploy the result (untick for a trial build)"
+        type: boolean
+        default: true
+  # Called by texlive-upgrade.yml for its trial build.
+  workflow_call:
+    inputs:
+      texlive_year:
+        type: string
+        default: ""
+      publish:
+        type: boolean
+        default: true
   push:
     branches: [ main ]
     paths:
@@ -9,6 +30,7 @@ on:
       - '**.pptx'
       - '**.cfg'
       - 'pdf-list.txt'
+      - '.github/texlive-year'
       - 'site/**'
       - 'Lectures/Figures/**'
       - 'Lectures/Slides/figures.toml'
@@ -23,6 +45,7 @@ on:
       - '**.pptx'
       - '**.cfg'
       - 'pdf-list.txt'
+      - '.github/texlive-year'
       - 'site/**'
       - 'Lectures/Figures/**'
       - 'Lectures/Slides/figures.toml'
@@ -44,16 +67,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      # TL_DIR: Installation target
-      TL_DIR: /home/runner/texlive/2026
-      # TEXMFVAR: Where configuration and formats live. MUST be consistent.
-      TEXMFVAR: /home/runner/texlive/2026/texmf-var
-      TEXMFSYSVAR: /home/runner/texlive/2026/texmf-var
-      TEXMFCONFIG: /home/runner/texlive/2026/texmf-config
-      TEXMFSYSCONFIG: /home/runner/texlive/2026/texmf-config
+      # TL_YEAR, TL_DIR, TEXMFVAR, TEXMFSYSVAR, TEXMFCONFIG, TEXMFSYSCONFIG and
+      # LUA_CACHE_DIR are set by the step "Select the TeX Live release".
       CACHE_VERSION: v14 # Bumped for collection-luatex (luatex85) and tex4ebook (EPUB 3 handouts)
-
-      LUA_CACHE_DIR: /home/runner/texlive/2026/texmf-var/luatex-cache
 
       # NOTE: TEXMFOUTPUT removed from global scope to prevent fmtutil corruption
 
@@ -62,6 +78,28 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
+
+
+      # One TeX Live release for the whole run: the year in .github/texlive-year, or
+      # the texlive_year input of a manual/trial run. Everything else follows from
+      # it: the install folder, the cache key and the repository it is installed from.
+      - name: Select the TeX Live release
+        env:
+          WANTED: ${{ inputs.texlive_year }}
+        run: |
+          year="${WANTED:-$(tr -dc '0-9' < .github/texlive-year)}"
+          case "$year" in 20[0-9][0-9]) ;; *) echo "::error::Not a TeX Live year: '$year'"; exit 1 ;; esac
+          dir=/home/runner/texlive/$year
+          {
+            echo "TL_YEAR=$year"
+            echo "TL_DIR=$dir"                       # installation target
+            echo "TEXMFVAR=$dir/texmf-var"           # configuration and formats: MUST be consistent
+            echo "TEXMFSYSVAR=$dir/texmf-var"
+            echo "TEXMFCONFIG=$dir/texmf-config"
+            echo "TEXMFSYSCONFIG=$dir/texmf-config"
+            echo "LUA_CACHE_DIR=$dir/texmf-var/luatex-cache"
+          } >> "$GITHUB_ENV"
+          echo "Building with TeX Live $year"
 
       - name: Set up uv
         uses: astral-sh/setup-uv@07a047e608db84b3d8c06cd9a7c7dcc9c355c18e # v10.3.2
@@ -91,6 +129,7 @@ jobs:
           files: |
             **/*.tex
             **/*.cfg
+            .github/texlive-year
             **/L*.pptx
             Lectures/Figures/**
             Lectures/Slides/figures.toml
@@ -117,8 +156,8 @@ jobs:
           CHANGED: ${{ steps.changed-files.outputs.all_changed_files }}
           EVENT: ${{ github.event_name }}
         run: |
-          if [ "$EVENT" = "workflow_dispatch" ]; then
-            echo "Manual dispatch detected — rebuilding all files."
+          if [ "$EVENT" != "push" ] && [ "$EVENT" != "pull_request" ]; then
+            echo "Manual or trial run — rebuilding all files."
             FILES=$(grep -v '^[[:space:]]*$' pdf-list.txt | tr '\n' ' ')
             PPTX=$(find . -type f -name 'L*.pptx' -not -path './deploy_target/*' | sed 's|^\./||' | tr '\n' ' ')
           else
@@ -126,7 +165,7 @@ jobs:
             PPTX="$CHANGED"
             # Files every document reads (preamble, fonts, HTML config): rebuild all of
             # them, else the published PDFs/HTML keep the old version.
-            if echo "$CHANGED" | grep -qE '(^| )(header|fontsetup|icons|timline|checkoff)\.tex|\.cfg( |$)'; then
+            if echo "$CHANGED" | grep -qE '(^| )(header|fontsetup|icons|timline|checkoff)\.tex|\.cfg( |$)|\.github/texlive-year'; then
               echo "Shared LaTeX file changed — rebuilding every document."
               FILES="$FILES $(grep -v '^[[:space:]]*$' pdf-list.txt | tr '\n' ' ')"
               FILES=$(echo $FILES | tr ' ' '\n' | sort -u | tr '\n' ' ')
@@ -195,11 +234,11 @@ jobs:
         with:
           path: |
             ${{ env.TL_DIR }}
-            ~/.texlive2026
+            ~/.texlive${{ env.TL_YEAR }}
             ~/.cache/fontconfig
             ${{ env.LUA_CACHE_DIR }}
-          key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
-      - name: Install TeX Live 2026
+          key: texlive-${{ env.TL_YEAR }}-${{ runner.os }}-${{ env.CACHE_VERSION }}
+      - name: Install TeX Live
         if: steps.resolve.outputs.has_tex == 'true' && steps.cache-texlive.outputs.cache-hit != 'true'
         run: |
           # 1. Install Dependencies (Added python3-pygments)
@@ -209,19 +248,32 @@ jobs:
           # redirects to a random mirror, and a broken one (bad TLS certificate,
           # outage) used to fail the whole build. The chosen mirror is used for
           # install-tl and every later tlmgr call (TL_REPO in $GITHUB_ENV).
+          #
+          # The CTAN mirrors (.../tlnet) always serve the *current* TeX Live. Once a
+          # newer release is out they no longer hold TL_YEAR, so a mirror only counts
+          # when its installer is for TL_YEAR; otherwise the frozen copy of that year
+          # in the historic archive (.../historic/systems/texlive/YEAR/tlnet-final,
+          # kept for good) is used. The build therefore keeps working, unchanged,
+          # until .github/texlive-year is raised.
           TL_REPO=""
           for repo in \
             https://mirrors.mit.edu/CTAN/systems/texlive/tlnet \
             https://mirrors.rit.edu/CTAN/systems/texlive/tlnet \
             https://mirror.las.iastate.edu/tex-archive/systems/texlive/tlnet \
-            https://mirror.ctan.org/systems/texlive/tlnet; do
+            https://mirror.ctan.org/systems/texlive/tlnet \
+            https://ftp.math.utah.edu/pub/tex/historic/systems/texlive/$TL_YEAR/tlnet-final \
+            https://ftp.tu-chemnitz.de/pub/tug/historic/systems/texlive/$TL_YEAR/tlnet-final; do
             if wget -q --tries=2 --timeout=60 -O install-tl-unx.tar.gz "$repo/install-tl-unx.tar.gz" \
                && tar -tzf install-tl-unx.tar.gz > /dev/null; then
-              TL_REPO="$repo"; break
+              if tar -xzOf install-tl-unx.tar.gz --wildcards '*/release-texlive.txt' | grep -q "version $TL_YEAR\$"; then
+                TL_REPO="$repo"; break
+              fi
+              echo "$repo serves another TeX Live release than $TL_YEAR, trying the next one"
+              continue
             fi
             echo "::warning::TeX Live mirror $repo failed, trying the next one"
           done
-          [ -n "$TL_REPO" ] || { echo "::error::No TeX Live mirror reachable"; exit 1; }
+          [ -n "$TL_REPO" ] || { echo "::error::No TeX Live $TL_YEAR repository reachable"; exit 1; }
           echo "TL_REPO=$TL_REPO" >> "$GITHUB_ENV"
           echo "Using TeX Live mirror $TL_REPO"
           tar -xzf install-tl-unx.tar.gz
@@ -264,7 +316,7 @@ jobs:
           unset TEXMFOUTPUT
 
           # 1. Disable auto-formats to prevent latex-dev crashes; use the mirror
-          #    install-tl used (see "Install TeX Live 2026").
+          #    install-tl used (see "Install TeX Live").
           tlmgr option create_formats 0
           tlmgr option repository "$TL_REPO"
           
@@ -319,10 +371,10 @@ jobs:
         with:
           path: |
             ${{ env.TL_DIR }}
-            ~/.texlive2026
+            ~/.texlive${{ env.TL_YEAR }}
             ~/.cache/fontconfig
             ${{ env.LUA_CACHE_DIR }}
-          key: texlive-2026-${{ runner.os }}-${{ env.CACHE_VERSION }}
+          key: texlive-${{ env.TL_YEAR }}-${{ runner.os }}-${{ env.CACHE_VERSION }}
 
       - name: Add TeX to Path
         if: steps.resolve.outputs.has_tex == 'true'
@@ -714,8 +766,9 @@ jobs:
 
       # Ratchet (tools/a11y, a11y-baseline.json): pull requests fail on new or worse
       # accessibility problems; on main the results are reported but never block deploy.
+      # A trial build (publish off, e.g. of a new TeX Live) is gated like a pull request.
       - name: Accessibility checks
-        continue-on-error: ${{ github.event_name != 'pull_request' }}
+        continue-on-error: ${{ github.event_name == 'push' || (github.event_name != 'pull_request' && inputs.publish) }}
         run: |
           uv run --quiet --locked tools/a11y/run_all.py \
             --pdf-root build --docker --epub-root build \
@@ -730,7 +783,7 @@ jobs:
       # pull request (only the ones it introduces), tracked over time on main. Skipped
       # for forks, whose token cannot write security events.
       - name: Upload accessibility findings (SARIF)
-        if: always() && hashFiles('build/a11y/a11y.sarif') != '' && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository)
+        if: always() && hashFiles('build/a11y/a11y.sarif') != '' && (github.event_name == 'push' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name != 'pull_request' && inputs.publish))
         continue-on-error: true
         uses: github/codeql-action/upload-sarif@9b3254085494b55a0f7c4c2b3d2d52cc712ce370 # v4.39.1
         with:
@@ -738,7 +791,7 @@ jobs:
           category: accessibility
 
       - name: Deploy Incremental Updates
-        if: github.event_name != 'pull_request'
+        if: github.event_name == 'push' || (github.event_name != 'pull_request' && inputs.publish)
         run: |
           cd deploy_target
           git config user.name "github-actions[bot]"
