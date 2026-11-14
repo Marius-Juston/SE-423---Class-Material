@@ -4,7 +4,7 @@
 </p>
 
 # UIUC SE 423: Introduction to Mechatronics (Spring 2026) 
-[![Build LaTeX PDFs (TeX Live 2025) and Deploy](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml/badge.svg)](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml)
+[![Build LaTeX PDFs and Deploy](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml/badge.svg)](https://github.com/Marius-Juston/SE-423---Class-Material/actions/workflows/build-latex.yml)
 
 This repository is meant to act as a place where all the course material for University of Illinois Urbana-Champaign's SE 423 course will be stored, compiled and shown.
 
