@@ -1,0 +1,397 @@
+% This MUST be the very first command, before \documentclass.
+% We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
+% (testphase = phase-III) is incompatible with the htlatex DVI pipeline
+% and would error with "Generic hooks cannot be added to '\addcontentsline'".
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
+\ifdefined\HCode\else
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en-US                             % Sets the document language
+}
+\fi
+
+\documentclass[11pt]{article}
+
+% Original handout (Word/PDF, kept in step by hand):
+% https://coecsl.ece.illinois.edu/se423/SE423_Lab5.pdf
+\def\AssignmentMode{Lab}     % HW | Lab | LabVIEW | Project
+\def\HWNum{5}
+
+% Course metadata
+\input{header}
+
+\def\AssignmentText{DC Motor PI Speed Control and Robot Steering \\
+One Week Lab \par
+\CheckOffNotice}
+
+% Nested list labels as in the original handout: 1. / a. / i.
+\SEenumlabel{ii}{alph}
+\SEenumlabel{iii}{roman}
+
+% ---------------------------------------------------------------------------
+% Block diagrams (Figures 1 and 2), redrawn from the original Simulink plots.
+% Coordinates are those of the original drawing (y grows downwards).
+% The label size is fixed so that both editions (normal and large print, whose
+% fonts are scaled 1.3x) give the same picture; \resizebox then fits the page.
+% ---------------------------------------------------------------------------
+\ifdefined\SElargeprint
+  \newcommand{\LabVDiagramFont}{\fontsize{6.9}{8.3}\selectfont}
+\else
+  \newcommand{\LabVDiagramFont}{\fontsize{9}{10.8}\selectfont}
+\fi
+% Underscore in a diagram label. tex4ht turns \_ into an HTML character, which
+% is lost inside a picture (the SVG then reads "frictioncomp"): draw it there.
+\ifSEhtml
+  \newcommand{\LabVus}{\kern0.05em\rule[-0.3ex]{0.45em}{0.5pt}\kern0.05em}
+\else
+  \newcommand{\LabVus}{\_}
+\fi
+% Signs inside the sum blocks
+\newcommand{\LabVplus}{\textbf{+}}
+\newcommand{\LabVminus}{\rule[0.45ex]{0.6em}{0.7pt}}
+\tikzset{
+  lvline/.style  = {line width=0.7pt, line join=miter},
+  lvarr/.style   = {lvline, -{Triangle[length=2.6mm, width=2.4mm]}},
+  lvsum/.style   = {draw, lvline, circle, inner sep=0pt, minimum size=5.8mm},
+  lvblock/.style = {draw, lvline, rectangle, inner sep=1pt},
+  lvport/.style  = {draw, lvline, rectangle, rounded corners=1.8mm, inner sep=0pt,
+                    minimum width=8mm, minimum height=3.6mm},
+  lvsign/.style  = {inner sep=0pt, font=\LabVDiagramFont\scriptsize},
+  lvdot/.style   = {circle, fill, inner sep=0pt, minimum size=1.1mm},
+  % (no align= key: multi-line nodes are alignments, which break the HTML build)
+  lvlabel/.style = {inner sep=1pt},
+}
+% One PI loop from its error sum block to its motor block.
+% #1 y of the signal line, #2 y of the integrator branch, #3 loop number
+% (2 = right motor, 1 = left motor), #4 motor block name, #5 integrator name
+\newcommand{\LabVPIChain}[5]{%
+  \node[lvsum] (S#3) at (3.85,#1) {};
+  \node[lvsum] (P#3) at (8.03,#1) {};
+  \node[lvsum] (F#3) at (9.63,#1) {};
+  \node[lvblock, minimum width=18mm, minimum height=8.1mm] (M#3) at (12.33,#1) {#4};
+  \node[lvblock, minimum width=8.2mm, minimum height=8mm] (I#3) at (5.21,#2) {$\dfrac{1}{s}$};
+  \node[lvlabel, below] at (I#3.south) {#5};
+  % gain Kp
+  \draw[lvline] (5.18,#1-0.54) -- (6.26,#1) -- (5.18,#1+0.54) -- cycle;
+  \node[lvlabel] at (5.53,#1) {Kp};
+  % gain Ki
+  \draw[lvline] (6.26,#2-0.54) -- (7.34,#2) -- (6.26,#2+0.54) -- cycle;
+  \node[lvlabel] at (6.60,#2) {Ki};
+  % signals
+  \draw[lvarr] (S#3.east) -- (5.18,#1);
+  \node[lvdot] at (4.25,#1) {};
+  \draw[lvarr] (4.25,#1) |- (I#3.west);
+  \draw[lvarr] (I#3.east) -- (6.26,#2);
+  \draw[lvarr] (7.34,#2) -| (P#3.south);
+  \draw[lvarr] (6.26,#1) -- (P#3.west);
+  \draw[lvarr] (P#3.east) -- (F#3.west);
+  \draw[lvarr] (F#3.east) -- (M#3.west);
+  \node[lvlabel] at (4.62,#1-0.2) {e#3};
+  \node[lvlabel] at (10.5,#1-0.27) {u#3};
+  % signs of the P + I sum block: both inputs are added
+  \node[lvsign] at ([xshift=-1.5mm]P#3.center) {\LabVplus};
+  \node[lvsign] at ([yshift=-1.5mm]P#3.center) {\LabVplus};
+  % signs of the first and last sum block on the signal line input
+  \node[lvsign] at ([xshift=-1.5mm]S#3.center) {\LabVplus};
+  \node[lvsign] at ([xshift=-1.5mm]F#3.center) {\LabVplus};
+}
+% The parts both diagrams share: the desired velocity input, the two PI loops
+% and the two friction compensation blocks with their velocity feedback taps.
+\newcommand{\LabVCommonDiagram}{%
+  \LabVPIChain{2.90}{4.36}{2}{right\LabVus motor}{Integrator}
+  \LabVPIChain{6.78}{8.25}{1}{left\LabVus motor}{Integrator1}
+  % desired velocity input
+  \node[lvport] (Vref) at (1.45,2.90) {1};
+  \node[lvlabel] at (1.45,3.31) {desired};
+  \node[lvlabel] at (1.45,3.66) {velocity};
+  \draw[lvarr] (Vref.east) -- (S2.west);
+  \node[lvdot] at (2.65,2.90) {};
+  \draw[lvarr] (2.65,2.90) |- (S1.west);
+  % friction compensation of each motor, fed by that motor's velocity
+  \node[lvblock, minimum width=22.1mm, minimum height=6.7mm] (FC2) at (9.63,1.63) {friction\LabVus comp};
+  \node[lvblock, minimum width=22.1mm, minimum height=6.7mm] (FC1) at (9.63,8.33) {friction\LabVus comp};
+  \node[lvdot] at (9.63,0.60) {};
+  \draw[lvarr] (9.63,0.60) -- (FC2.north);
+  \draw[lvarr] (FC2.south) -- (F2.north);
+  \node[lvdot] at (9.63,9.32) {};
+  \draw[lvarr] (9.63,9.32) -- (FC1.south);
+  \draw[lvarr] (FC1.north) -- (F1.south);
+  \node[lvsign] at ([yshift=1.5mm]F2.center) {\LabVplus};
+  \node[lvsign] at ([yshift=-1.5mm]F1.center) {\LabVplus};
+  % velocity feedback: subtracted in each loop's error sum block
+  \node[lvsign] at ([yshift=1.5mm]S2.center) {\LabVminus};
+  \node[lvsign] at ([yshift=-1.5mm]S1.center) {\LabVminus};
+  \node[lvlabel] at (4.14,1.88) {v2};
+  \node[lvlabel] at (3.55,7.85) {v1};
+}
+
+\begin{document}
+
+\MakeAssignmentTitle
+
+\section*{Goals for this Lab Assignment}
+%
+\begin{enumerate}
+    \item Merge code from previous labs to produce code that samples both ADC channels and optical encoders for feedback and output’s PWM to control and drive the DC motors of the robot.
+    \item Learn to implement the PI control law to control the speed of the robot’s wheels.
+    \item Couple the PI controller for the left and right wheels in order to control both the speed and turn rate of the robot car.
+\end{enumerate}
+%
+\section*{Reading before Lab}
+%
+\begin{enumerate}
+    \item Read through this entire lab.
+    \item Review your notes on the PID controller from the Continuous Control class you have taken, (SE320, ME360, ECE486, …). We will be implementing a PI control in this lab.
+\end{enumerate}
+%
+\section*{Laboratory Exercises}
+
+\Ex[Start from Labstarter but Merge ADCC code from Lab 4]
+
+First start out by creating a new project using LABstarter and rename in LAB5\textless yourinitials\textgreater. Then merge the ADCC code from Lab 4 into this labstarter. There are two ways you can accomplish this. One way would be to go through Lab 4’s Exercise 3 code and copy all the parts needed for sampling ADCC’s four gyro channels every 1ms. The second way would be to copy the entire Lab 4 C file and paste over all the code for this new Lab 5 labstarter. Then you would need to go through this pasted code and remove all the code associated with ADCD (function generator) and ADCB (microphone). Either way you choose, take your time and go through your C code and make sure you have included all parts to sample ADCC channels C2, C3, C4 and C5 and have removed all the parts for ADCB and ADCD. Before you go on to Exercise 2, make sure to run this code and make sure it is working to sample the four ADCC channels every 1ms. Print every 100ms to the robot’s text LCD the degrees/second readings of ADCINC2, ADCINC3, ADCINC4 and ADCINC5 after their respective “zeros” have been subtracted from the readings. Use the below item list to remind you what should be included: (All items are not necessarily listed here. Add other steps as needed.)
+%
+\begin{enumerate}
+    \item Setup EPWM4 and ADCC so that EPWM4 triggers four ADCC SOCs in order that channels C2, C3, C4 and C5 are sampled every 1ms.
+    \item In ADCC’s ISR function convert the four channel’s values to volts.
+    \item For the first 2 seconds in \mintinline{c}{ADCC_ISR} do nothing with the voltage readings allowing the IMU to settle in the case this was a power on cycle.
+    \item For the next 2 seconds sum up each channel’s reading and on the 2000\textsuperscript{th} sample divide by 2000 to find the channel’s zero approximation.
+    \item Then for the remainder of calls to \mintinline{c}{ADCC_ISR} take the channel’s voltage reading and subtract its zero value. Then multiply by the correct factor that converts the voltage reading to degrees/second.
+    \item Print these four readings to the text LCD every 100 ms.
+    \item Remember in \mintinline{c}{main()} that you need to initialize:
+%
+    \begin{enumerate}
+        \item \mintinline{c}{PieVectTable} with the \mintinline{c}{ADCC_ISR} function and remove \mintinline{c}{ADCD_ISR} and \mintinline{c}{ADCB_ISR} if needed.
+        \item \mintinline{c}{PIEIER1} enabling the correct minor interrupt and disable the minor interrupt for ADCD and ADCB if needed.
+    \end{enumerate}
+\end{enumerate}
+%
+\begin{checkoff}[Merged ADCC gyro sampling]
+\textbf{Demo your code working to your TA.}
+\end{checkoff}
+%
+\Ex[Now Merge Lab3 Code to Achieve Open Loop Driving of the Robot Motors and Calculate Speed.]
+
+Exercise 2 is also a code merging exercise that will add all the PWM motor driving and optical encoder velocity calculations we performed in Lab 3. This code merge should be a bit easier as we do not have to worry about new interrupt functions.
+%
+\begin{enumerate}
+    \item Copy from your Lab 3 code to the bottom of your Lab 5 code the functions, \mintinline{c}{setEPWM1A}, \mintinline{c}{setEPWM2A}, \mintinline{c}{init_eQEPs}, \mintinline{c}{readEncLeft}, \mintinline{c}{readEncRight}, \mintinline{c}{readEncWheel}. Also make sure to copy the predefinitions of these functions towards the top of your Lab 5 code.
+    \item In \mintinline{c}{main()} of your Lab 3 code find and copy your initializations of EPWM1 and EPWM2 and paste after the \mintinline{c}{init_serial} functions in Lab 5’s code. Also make sure the call \mintinline{c}{init_eQEP()} after these initializations of EPWM1 and EPWM2.
+    \item Copy all the global variables that you created in Lab 3 to calculate velocity of the left and right motor and command the PWM to the motors.
+    \item In Lab 3, you setup one of the CPU Timers to call its interrupt function every 1ms. In this lab I would like you to use the ADCC’s ISR function instead which is already being called every 1ms. Copy all the code you wrote in Lab 3 that was called every 1 ms in the CPU Timer into your \mintinline{c}{ADCC_ISR} function. The \mintinline{c}{ADCC_ISR} code should be close to the following order: (again I may not list every step here, you add as needed)
+%
+    \begin{enumerate}
+        \item For the first 2 seconds when the ADCC readings are being ignored, simply call your \mintinline{c}{setEPWM1A} and \mintinline{c}{setEPWM2A} functions with zero passed to them so the motors do not move during those first 2 seconds.
+        \item In the same way for the 2\textsuperscript{nd} 2 seconds also call the \mintinline{c}{setEPWM1A} and 2A functions passing zero so the motors do not move.
+        \item Then from 4 seconds on
+%
+        \begin{enumerate}
+            \item Read the left and right wheel encoder values and scale to units of feet.
+            \item Use these wheel encoder values along with the previous encoder reading, 1 ms. prior, to calculate both the left and right wheel velocity in units of feet/second.
+            \item Read Encoder 3’s value. Here we are just using Encoder 3’s value as command to the motors, so set \mintinline{c}{uLeft} and \mintinline{c}{uRight} equal to Encoder 3’s value like you did in Lab 3.
+            \item If you would like to copy your friction compensation code, you can here, but we are going to leave it commented out until exercise 3 when we implement PI speed control.
+            \item Copy your code that makes sure \mintinline{c}{uLeft} and \mintinline{c}{uRight} are not greater than 10 or less than -10.
+            \item Call the \mintinline{c}{setEPWM1A} and 2A functions passing them either \mintinline{c}{uLeft} or \mintinline{c}{uRight} as you did in Lab 3. Don’t forget the negative sign on one of those values.
+            \item Make sure to save your previous encoder positions to be used the next 1 ms. to calculate velocity.
+            \item Print every 100ms to the text LCD your Left and Right velocities and the value of the Encoder Wheel.
+        \end{enumerate}
+    \end{enumerate}
+    \item Compile and run your code. Using the third encoder dial in different commands and make sure the robot wheels spin in the correct direction and the velocities displayed are the correct units.
+%
+    \begin{checkoff}[Open loop driving and wheel speeds]
+    \textbf{Show this working to your TA.}
+    \end{checkoff}
+\end{enumerate}
+%
+\Ex[Closed-Loop Speed Control with Decoupled Control Loops (See Figure 1).]
+
+Partners switch so that the other person can do some codding.
+%
+\begin{enumerate}
+    \item In this exercise you will implement the decoupled PI controller shown in Figure 1. NOTE here that we will change the function of Encoder 3. Instead of being used to set \mintinline{c}{uLeft} and \mintinline{c}{uRight} directly as in exercise 2, the value read from encoder 3 will set the “desired velocity” shown in Figure 1. From here forward we will call this desired velocity “Vref” (Velocity Reference). \mintinline{c}{uLeft} and \mintinline{c}{uRight} will be set to the PI control equation. For example, \mintinline{c}{uLeft = Kp*errKLeft + Ki*IKLeft}.
+%
+    \begin{enumerate}
+        \item Modify the exercise 2 code that after 4 seconds drives the motors in an open-loop fashion to a PI closed-loop controller. After your code that calculates the speed of each wheel, set a \mintinline{c}{Vref} float variable to Encoder 3’s value divided by 20 and calculate \mintinline{c}{errLeft} (e1) and \mintinline{c}{errRight} (e2) using \mintinline{c}{Vref} and the wheel speeds.
+        \item Then with the current error, a previous error and the previous calculated integral, use the trapezoidal rule to find both \mintinline{c}{IKleft} and \mintinline{c}{IKright}.
+        \item Now that you have the error and integral states, you can calculate your \mintinline{c}{uLeft} and \mintinline{c}{uRight} from the equations shown in Figure 1. For friction compensation use 60\% of the columbic and viscous values you found in lab 3. As a start, use \mintinline{c}{Kp = 3.0} and \mintinline{c}{Ki = 5.0}. These are good starting gains assuming that all velocities are measured in ft/second. You will tune these slightly in lab to achieve a more responsive PI control.
+        \item Change what prints to the text LCD to the speeds of each wheel and your \mintinline{c}{Vref} value.
+        \item Build and run your code. Use the encoder wheel to dial in a \mintinline{c}{Vref} command. You should see your wheel’s velocities track this \mintinline{c}{Vref} value. Try both positive and negative speeds.
+        \item Before going onto step 2, observe integral windup. Start your code, but leave the motor amplifier off. Dial in a \mintinline{c}{Vref} of 1 foot/second and after a few seconds turn on the amp. The wheels should take off spinning at maximum speed. After a few seconds the wheels will die back down to the desired speed. To see what is happening add your \mintinline{c}{IKLeft} and \mintinline{c}{IKRight} floating point variables along with \mintinline{c}{uLeft} and \mintinline{c}{uRight} to Code Composer Studio’s Watch Expressions window.
+%
+        \begin{checkoff}[Integral windup observed]
+        What happens to \mintinline{c}{IKLeft} and \mintinline{c}{IKRight} the longer you wait to turn on the motor amp? \textbf{Demo this to your TA.}
+        \end{checkoff}
+    \end{enumerate}
+    \item Correct for integral wind-up. Add two “if” statements after you have calculated \mintinline{c}{uLeft} and \mintinline{c}{uRight} from the PI equation. If the absolute value (\mintinline{c}{fabs()} floating point absolute value) of \mintinline{c}{uLeft}/\mintinline{c}{uRight} is greater than the maximum PWM output value of 10 then stop integrating by setting \mintinline{c}{IKLeft/IKright = IKoldLeft/IKoldRight}. In other words if the control effort is at the maximum value it can output, then there is no reason for the integral to get any larger. NOTE: Make sure the saving of the past states \mintinline{c}{IKoldLeft},\mintinline{c}{IKoldRight} is performed after these if statements.
+    \item Build and run your code. Test the robot on your bench. When you change the desired speed, \mintinline{c}{Vref}, by rotating encoder 3, the robot’s wheel velocity should, after a small transient, match the desired speed. Check that you have corrected the integral windup issue for both positive and negative \mintinline{c}{Vref} set points. Tune the \mintinline{c}{Ki} gain to see if you can achieve a quicker transient response in motor speed. Try 15.0 then 25.0.
+%
+    \begin{checkoff}[Decoupled PI speed control]
+    \textbf{Demo this working to your TA.}
+    \end{checkoff}
+\end{enumerate}
+%
+\begin{figure}[H]
+    \centering
+    \AltStart{%
+        Simulink block diagram of two separate PI speed control loops that share one input,
+        desired velocity (input port 1).
+        Upper loop, right motor: a sum block adds desired velocity and subtracts the measured
+        velocity v2 to give the error e2. The error e2 goes to a gain Kp and, in parallel, through
+        an integrator (1 over s) followed by a gain Ki. A second sum block adds the Kp output and
+        the Ki output. A third sum block adds to that the output of a friction\string_comp block whose
+        input is v2; the result is the control effort u2, which drives the right\string_motor block.
+        The output of right\string_motor is the velocity v2, fed back to the first sum block and to
+        friction\string_comp.
+        Lower loop, left motor: identical, with error e1 equal to desired velocity minus v1, gains
+        Kp and Ki, an integrator named Integrator1, its own friction\string_comp block fed by v1, control
+        effort u1, the left\string_motor block and its output velocity v1.
+        Written out: u2 = Kp e2 + Ki times the integral of e2 + friction\string_comp(v2), and
+        u1 = Kp e1 + Ki times the integral of e1 + friction\string_comp(v1).
+        Nothing connects the two loops except the shared desired velocity.%
+    }%
+    \resizebox{0.84\linewidth}{!}{%
+    \begin{tikzpicture}[x=1cm, y=-1cm, font=\LabVDiagramFont]
+        \LabVCommonDiagram
+        % right motor: velocity v2 back to its error sum block (over the top)
+        \draw[lvarr] (M2.east) -- (13.92,2.90) -- (13.92,0.60) -- (3.85,0.60) -- (S2.north);
+        \node[lvlabel] at (13.50,2.63) {v2};
+        % left motor: velocity v1 back to its error sum block (underneath)
+        \draw[lvarr] (M1.east) -- (13.92,6.78) -- (13.92,9.32) -- (3.85,9.32) -- (S1.south);
+        \node[lvlabel] at (13.65,6.49) {v1};
+    \end{tikzpicture}%
+    }%
+    \AltEnd
+    \caption{Independent PI control loops for the right and left motors.}
+\end{figure}
+%
+\Ex[Closed-Loop Speed Control with Coupled Control Loops (See Figure 2)]
+%
+\begin{enumerate}
+    \item Implement the coupled control algorithm shown in Figure 2. Use a \mintinline{c}{Kp_turn} value of 3.0. Use the tuned \mintinline{c}{Kp} and \mintinline{c}{Ki} gains you found in exercise 3. Pay close attention to the ‘+’ and ‘-‘ in the block diagram sum blocks. Most of your PI control law equations remain the same. It is only the \mintinline{c}{errLeft} and \mintinline{c}{errRight} equations that change and note that they are slightly different from each other.
+    \item For this exercise keep “turn” equal to zero and \mintinline{c}{Vref} equal to Encoder 3 divide by 20.
+    \item Build and run your code. Grab one of the wheels and see what happens to the wheels on the opposite side.
+%
+    \begin{checkoff}[Coupled PI speed control]
+    \textbf{Demo this working to your TA.}
+    \end{checkoff}
+\end{enumerate}
+%
+\begin{figure}[H]
+    \centering
+    \AltStart{%
+        Simulink block diagram of the coupled PI speed controller. It has two inputs:
+        desired velocity (input port 1) and turn command (input port 2).
+        A steering sum block on the right adds the right motor velocity v2, adds the turn command
+        and subtracts the left motor velocity v1; its output is e\string_steer. A gain Kp\string_turn multiplies
+        e\string_steer, and its output goes to the error sum blocks of both loops.
+        Upper loop, right motor: the error sum block adds desired velocity, subtracts v2 and
+        subtracts the Kp\string_turn output, giving e2. Lower loop, left motor: the error sum block
+        adds desired velocity, adds the Kp\string_turn output and subtracts v1, giving e1.
+        The rest of each loop is as in Figure 1: the error goes to a gain Kp and, in parallel,
+        through an integrator (1 over s) and a gain Ki; the two are added; the output of a
+        friction\string_comp block fed by that motor's velocity is added to give the control effort
+        (u2 for right\string_motor, u1 for left\string_motor); the motor block outputs the velocity (v2 or v1).
+        Written out: e\string_steer = v2 - v1 + turn command;
+        e2 = desired velocity - v2 - Kp\string_turn e\string_steer;
+        e1 = desired velocity - v1 + Kp\string_turn e\string_steer.%
+    }%
+    \resizebox{\linewidth}{!}{%
+    \begin{tikzpicture}[x=1cm, y=-1cm, font=\LabVDiagramFont]
+        \LabVCommonDiagram
+        % steering: e_steer = v2 - v1 + turn command
+        \node[lvsum] (T) at (13.92,5.35) {};
+        \node[lvsign] at ([yshift=1.5mm]T.center) {\LabVplus};
+        \node[lvsign] at ([xshift=1.5mm]T.center) {\LabVplus};
+        \node[lvsign] at ([yshift=-1.5mm]T.center) {\LabVminus};
+        \node[lvport] (Turn) at (15.70,5.35) {2};
+        \node[lvlabel, below] at (Turn.south) {turn command};
+        \draw[lvarr] (Turn.west) -- (T.east);
+        % right motor: velocity v2 to its error sum block and to the steering sum block
+        \draw[lvline] (M2.east) -- (13.92,2.90);
+        \node[lvdot] at (13.92,2.90) {};
+        \draw[lvarr] (13.92,2.90) -- (13.92,0.60) -- (3.85,0.60) -- (S2.north);
+        \draw[lvarr] (13.92,2.90) -- (T.north);
+        \node[lvlabel] at (14.18,4.40) {v2};
+        % left motor: velocity v1 to its error sum block and to the steering sum block
+        \draw[lvline] (M1.east) -- (13.92,6.78);
+        \node[lvdot] at (13.92,6.78) {};
+        \draw[lvarr] (13.92,6.78) -- (13.92,9.32) -- (3.85,9.32) -- (S1.south);
+        \draw[lvarr] (13.92,6.78) -- (T.south);
+        \node[lvlabel] at (14.18,6.36) {v1};
+        % gain Kp_turn (points left) and its output to both error sum blocks
+        \draw[lvline] (11.45,4.73) -- (9.50,5.35) -- (11.45,5.97) -- cycle;
+        \node[lvlabel] at (10.72,5.35) {Kp\LabVus turn};
+        \draw[lvarr] (T.west) -- (11.45,5.35);
+        \node[lvlabel] at (12.45,5.15) {e\LabVus steer};
+        \draw[lvline] (9.50,5.35) -- (3.85,5.35);
+        \node[lvdot] at (3.85,5.35) {};
+        \draw[lvarr] (3.85,5.35) -- (S2.south);
+        \draw[lvarr] (3.85,5.35) -- (S1.north);
+        \node[lvsign] at ([yshift=-1.5mm]S2.center) {\LabVminus};
+        \node[lvsign] at ([yshift=1.5mm]S1.center) {\LabVplus};
+    \end{tikzpicture}%
+    }%
+    \AltEnd
+    \caption{Coupled PI Control Block Diagram}
+\end{figure}
+%
+\Ex[Driving Around (See Figure 2)]
+%
+\begin{enumerate}
+    \item The coupled control algorithm has two command inputs, \mintinline{c}{Vref} and \mintinline{c}{turn}. For the remainder of this semester these are the two commands your C code is going to use to drive the robot around its environment. By adjusting the “turn” variable you can control the rate of turn of the robot. It does not have units of degrees or radians per second but it is proportional to the robot’s rate of turn. Change your code so that \mintinline{c}{Vref} is constant at 1 foot/second and \mintinline{c}{turn} is now equal to Encoder 3’s value divided by 20.
+    \item Build and Flash your code to your robot. First run your code on the cake pan at your bench to see that it is working to steer the robot. Then when you know it is working, disconnect the cables to the robot and put it on the floor and power it with a battery. Power on the robot and after four seconds enable the motor amp. Your robot should start going forward at 1 foot/second. Use the encoder wheel to dial in turn values that make the robot steer around its environment.
+%
+    \begin{checkoff}[Steering the robot on the floor]
+    \textbf{Demo this working to your TA.}
+    \end{checkoff}
+\end{enumerate}
+%
+\Ex[Integrate the LPR510 Gyro Rate to Calculate Bearing Angle of Robot]
+%
+\begin{figure}[H]
+    \centering
+    \AltImg[width=0.6\linewidth]{Labs/Figures/Lab5/lpr510_gyro_board.png}{%
+        Two photos of the Pololu LPR510 gyro breakout board. Left: the component side of the
+        small green board with the gyro chip in the middle and a row of nine pin holes along
+        one long edge. Right: the bottom of the board next to a U.S. quarter for scale, with
+        dimensions 1.0 inch long (0.8 inch between the mounting holes) and 0.5 inch wide.
+        The pins are labelled, from top to bottom: VIN, GND, 3.3V, X, 4X, Vref, 4Z, Z, PD, ST.%
+    }
+    \caption{LPR510 gyro breakout board}
+\end{figure}
+%
+\begin{center}
+\small
+4Z(ADCINC4) and 4X(ADCINC3) (4 here means 4 times the accuracy) Voltage Range $\approx$0.23V $\rightarrow$ -100\textsuperscript{0}/s, $\approx$1.23V $\rightarrow$ 0\textsuperscript{0}/s, $\approx$2.23V $\rightarrow$ 100\textsuperscript{0}/s
+
+Z(ADCINC5) and X(ADCINC2) Voltage Range $\approx$0.23V $\rightarrow$ -400\textsuperscript{0}/s, $\approx$1.23V $\rightarrow$ 0\textsuperscript{0}/s, $\approx$2.23V $\rightarrow$ 400\textsuperscript{0}/s
+\end{center}
+%
+\begin{enumerate}
+    \item In this final exercise you will integrate both of the LPR510 Gyro Z readings to find two measurements of the bearing angle of the robot. Recall from your PI controller how you used the trapezoidal integration rule to find the approximation of the integral of the velocity error. Using the trapezoidal integration rule, the current and previous gyro z readings and the previous calculated bearing angle, calculate the current bearing angle in units of radians. Do this for both the Z (+/- 400\textsuperscript{0}/s range) and 4Z (+/- 100\textsuperscript{0}/s range 4 times more accurate) Gyro outputs.
+    \item Build and Run your code. Turn the robot in place back and forth and check that your calculated angles make sense. For example, turn the robot approximately 90 degrees and see that the bearing angle is close to 1.57 radians. Do you notice any difference between the two gyro resolutions? Do you notice a drift in the calculation of the bearing over time? Sit the robot still and watch the rate the bearing drifts from zero.
+%
+    \begin{checkoff}[Gyro bearing angle]
+    Demonstrate that you can integrate the LPR510’s Z gyro axis to find the robot’s bearing. Do you notice a drift in the integral?
+    \end{checkoff}
+\end{enumerate}
+%
+\section*{Lab Check Off}
+%
+\begin{enumerate}
+    \item Demonstrate your merged code from Lab 4 and Lab 3 working together in Lab 5’s project.
+    \item Demonstrate your Decoupled PI Speed control working controlling the speed of the motors with robot sitting on its cake pan. It of course would also work on the floor but that will be shown in Exercise 5.
+    \item Demonstrate your Coupled PI Speed control working controlling the speed of the motors with robot sitting on its cake pan.
+    \item With the robot on the ground, demonstrate that you can steer your robot around its environment.
+    \item Demonstrate that you can integrate the LPR510’s Z gyro axis to find the robot’s bearing. Do you notice a drift in the integral?
+    \item Submit all your written code after adding comments explaining your code and what you learned. Also be clear what code is for what exercise.
+\end{enumerate}
+%
+\section*{Check-Off Summary}
+
+Tick each box once your TA or instructor has checked you off.
+%
+\CheckOffSummary
+
+\MakeFooter
+\end{document}

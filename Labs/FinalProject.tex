@@ -1,0 +1,150 @@
+% This MUST be the very first command, before \documentclass.
+% We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
+% (testphase = phase-III) is incompatible with the htlatex DVI pipeline
+% and would error with "Generic hooks cannot be added to '\addcontentsline'".
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
+\ifdefined\HCode\else
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en-US                             % Sets the document language
+}
+\fi
+
+\documentclass[11pt]{article}
+
+% Original handout (Word/PDF, kept in step by hand):
+% https://coecsl.ece.illinois.edu/se423/SE423_Final_Project_Instructions_SP26.pdf
+\def\AssignmentMode{Project}     % HW | Lab | LabVIEW | Project
+\def\HWNum{}                     % the final project has no number
+
+% Course metadata
+\input{header}
+
+\def\AssignmentText{Final Robotics Project Overview \par
+\CheckOffNotice}
+%
+\begin{document}
+
+\MakeAssignmentTitle
+
+Your final robotics project will be completed in \textbf{teams of 4 or 5 students}. This capstone assignment is an opportunity to showcase your skills in robotics, control systems, sensing, and software integration. Each team must \textbf{propose and execute a unique robotics project}, designed, built, and tested over the next \textbf{three weeks}.
+
+The first week will focus on your \textbf{project pitch}, where you will define your goals, assign roles, and begin your system design. This will be followed by two weeks of development, testing, and iteration.
+
+\section*{Project Requirements and Roles}
+
+Each team must include the following core components in their project:
+%
+\begin{itemize}
+    \item \textbf{Path Planning}: Design algorithms for navigating the robot from one location to another, with or without a predefined map.
+    \item \textbf{Sensing and Perception}: Use LIDAR, a camera color, and/or camera AprilTag vision to help the robot perceive its environment and make decisions in real time.
+    \item \textbf{Control Systems}: The implement control loop to decide the values of Vref and Turn each 1ms in the robot’s \mintinline{c}{SWI1_HighestPriority} function. Vref and Turn are the inputs to the given PI speed controller of the robot.
+\end{itemize}
+%
+Each component should have 1–2 members assigned.
+
+\section*{Sample Project Idea}
+
+An example project could involve \textbf{autonomous hallway navigation}, where your robot:
+%
+\begin{itemize}
+    \item Follows hallway walls using sensor input.
+    \item Avoids obstacles using LIDAR or vision.
+    \item Collects small objects (e.g., golf balls) using the collection system from Lab 7.
+    \item Returns autonomously to the starting point.
+    \item Outputs live position and obstacle data to LabVIEW.
+\end{itemize}
+
+\section*{Sample Advanced Feature Ideas (Optional)}
+
+Consider implementing creative or advanced features to enhance your project:
+%
+\begin{itemize}
+    \item Improve localization by fusing LIDAR and camera data.
+    \item Use A* path planning and adapt to newly discovered obstacles.
+    \item Explore an entire hallway before returning to the start.
+    \item Live obstacle mapping into LabVIEW, logging, and presentation of performance
+    \item Trigger speech or audio responses (via LabVIEW or onboard) when people are detected.
+    \item Use shape, color, and AprilTags to recognize specific objects (e.g., a trash can).
+    \item Deliver objects to multiple pre-known locations with return to a loading zone between each delivery.
+\end{itemize}
+
+\section*{Milestone Timeline}
+
+\subsection*{Week 1: Pitch \& Planning}
+
+\textbf{Pitch Due: Friday, May 1\textsuperscript{st} at 17:00}
+%
+\begin{itemize}
+    \item Submit your project proposal.
+    \item Define project goals and component responsibilities.
+    \item Begin hardware setup and initial code testing.
+    \item Outline initial plan of the steps your are going to take to achieve your goal.
+\end{itemize}
+
+\subsection*{Week 2: Subsystem Development \& Integration}
+%
+\begin{checkoff}[Week 2 subsystem milestone]
+\textbf{Milestone Due: Thursday, May 7 at 17:00}
+%
+\begin{itemize}
+    \item Demonstrate individual subsystem functionality (e.g., object collection, path planning, etc).
+    \item Show integration of position reporting to LabVIEW, Python, RPI C program, etc.
+    \item Document progress and challenges.
+\end{itemize}
+\end{checkoff}
+
+\subsection*{Week 3: Final Testing \& Presentation}
+%
+\begin{checkoff}[Final Demo Day]
+\textbf{Final Demo Day: Thursday, May 14, 11:00–14:00}
+%
+\begin{itemize}
+    \item Full system integration and final testing.
+    \item Prepare live demonstration for Demo.
+    \item Capture photos and videos for your report.
+    \item Submit final report (due one day after Demo).
+\end{itemize}
+\end{checkoff}
+%
+\emph{Note}: Demo end time is flexible for those attending the ISE Senior Design Final until 13:00 on the same day.
+
+\section*{Final Report Requirements}
+
+\textbf{Due: Friday, May 15, 17:00}
+
+Create a web-based final report that includes the following:
+%
+\begin{enumerate}
+    \item A written summary of your project’s strategy and how your team used the robot’s sensors.
+    \item Photos and videos of your robot in action (instructor videos from Demo day will also be provided).
+    \item A downloadable zip file with all \textbf{commented} project source code:
+    \begin{itemize}
+        \item C code
+        \item Linux code
+        \item LabVIEW files
+    \end{itemize}
+    \item Team photo(s) and full names of all group members.
+    \item Please use \textbf{Hackster.io} to host your report, if possible.
+\end{enumerate}
+
+\section*{Grading Criteria}
+
+Your grade will be based on:
+%
+\begin{itemize}
+    \item \textbf{Individual Effort}
+    \item \textbf{Completion and quality of the final report}
+\end{itemize}
+%
+\emph{Note}: Your final grade is \textbf{not dependent} on your robot being fully functional on Demo day — effort and documentation are what count most.
+
+\section*{Check-Off Summary}
+
+Tick each box once your TA or instructor has checked you off.
+%
+\CheckOffSummary
+
+\MakeFooter
+\end{document}

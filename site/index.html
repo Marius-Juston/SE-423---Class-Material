@@ -397,6 +397,8 @@
          * - html: Optional accessible HTML version (default: derived from a local PDF)
          * - large: Optional large-print PDF (default: <file>-large.pdf for a local PDF)
          * - epub: Optional EPUB 3 edition (default: <file>.epub for a local PDF)
+         * - original / originalWord: Optional links to the instructor's original handout
+         *   (PDF / Word on the course website) that a document here was rebuilt from
          * - links: Optional array of { label: string, url: string }
          */
         const data = {
@@ -492,7 +494,9 @@
             labs: [
                 { 
                     title: "Lab 1: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab1.pdf" ,
+                    file: "Labs/Lab1.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab1.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab1.docx",
                      links: [
                         { label: "Using the Lab Repository", url: "https://coecsl.ece.illinois.edu/se423/Using%20the%20SE423%20Repository.docx" },
                         { label: "Lab PinMux Table", url: "https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf" },
@@ -501,14 +505,18 @@
                 },
                     { 
                     title: "Lab 2: Introduction to Raspberry PI4 and TMS320F28379D GPIO Programming", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab2.pdf" ,
+                    file: "Labs/Lab2.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab2.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab2.docx",
                      links: [
                         { label: "Commenting your Code, Example", url: "Homeworks/commenting_code_example.pdf" },
                     ]
                 },
                                 { 
                     title: "Lab 3: Pulse-Width Modulation, Optical Encoders and Friction Compensation", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab3.pdf" ,
+                    file: "Labs/Lab3.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab3.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab3.docx",
                      links: [
                         { label: "Lab PinMux Table", url: "https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf" },
                         { label: "EPWM Condensed Reference", url: "https://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf" },
@@ -518,7 +526,9 @@
                 },
                                 { 
                     title: "Lab 4: Hardware Interrupts, ADC (Analog to Digital Converter), Sampling, Filtering and the FFT (Fast Fourier Transform)", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab4.pdf" ,
+                    file: "Labs/Lab4.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab4.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab4.docx",
                      links: [
                         { label: "ADC Condensed Reference", url: "https://coecsl.ece.illinois.edu/se423/ADC_Peripheral.pdf" },
                         { label: "EPWM Condensed Reference", url: "https://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf" },
@@ -528,11 +538,15 @@
                 },
                                 { 
                     title: "Lab 5: DC Motor PI Speed Control and Robot Steering", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab5.pdf" 
+                    file: "Labs/Lab5.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab5.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab5.docx",
                 },
                                 { 
                     title: "Lab 6: LADAR Sensor, LABVIEW/RPI4/Linux Communication, Wall Following and Dead Reckoning", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Lab6.pdf" ,
+                    file: "Labs/Lab6.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Lab6.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Lab6.docx",
                      links: [
                         { label: "URG-04LX LADAR Datasheets", url: "https://coecsl.ece.illinois.edu/se423/datasheets/ladar/" },
                         { label: "LPY510AL Dual-Axis (Pitch and Yaw) Gyro", url: "http://www.pololu.com/catalog/product/1267" },
@@ -542,11 +556,15 @@
                     ]
                 },{ 
                     title: "Lab 7: RC Servo Exercise", 
-                    file: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7FirstRCServos.pdf" 
+                    file: "Labs/Lab7_RCServos.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7FirstRCServos.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7FirstRCServos.docx",
                 },
                  { 
                     title: "Lab 7: Robot Vision", 
-                    file: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7.pdf" ,
+                    file: "Labs/Lab7.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/Se423_Lab7.docx",
                      links: [
                         { label: "Intro. to Vision Processing", url: "http://coecsl.ece.uiuc.edu/se423/datasheets/vision.pdf" },
                         { label: "Fundamentals of Computer Vision", url: "https://visionbook.mit.edu/" },
@@ -555,9 +573,10 @@
                 },
                  { 
                     title: "Final Project", 
-                    file: "https://coecsl.ece.illinois.edu/se423/SE423_Final_Project_Instructions_SP26.pdf" ,
+                    file: "Labs/FinalProject.pdf",
+                    original: "https://coecsl.ece.illinois.edu/se423/SE423_Final_Project_Instructions_SP26.pdf",
+                    originalWord: "https://coecsl.ece.illinois.edu/se423/SE423_Final_Project_Instructions_SP26.docx",
                      links: [
-                        { label: "Final Project Instructions Spring 2026 (Word)", url: "https://coecsl.ece.illinois.edu/se423/SE423_Final_Project_Instructions_SP26.docx" },
                         { label: "Final Project Used in Previous Semesters", url: "https://coecsl.ece.illinois.edu/se423/se423_OldFinalProject.pdf" },
                         { label: "Possible Parts List for Gripper", url: "https://coecsl.ece.illinois.edu/se423/lecturenotes/gripperparts.docx" },
                         { label: "Explaining How to Change the Dead Reckoning Position", url: "https://coecsl.ece.illinois.edu/se423/ExplainingHowtoChangeDeadReckoningPostion.pdf" },
@@ -568,18 +587,6 @@
                         { label: "Priority Queue code.  Already in given Linux Astar Application. pQueue.h", url: "https://coecsl.ece.illinois.edu/se423/pQueue.h" },
                     ]
                 },
-                // { 
-                //     title: "Lab 1: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
-                //     file: "Labs/Lab1.pdf" 
-                // },
-                // { 
-                //     title: "Lab 2: Introduction to Raspberry PI4 and TMS320F28379D GPIO Programming", 
-                //     file: "Labs/Lab2.pdf" 
-                // },
-                // { 
-                //     title: "Lab 3: Introduction to Programming the Robot Car's TMS320F28379D Processor", 
-                //     file: "Labs/Lab3.pdf" 
-                // },
             ],
             lectures: [{
                 title: `Lecture 1: Introduction`,
@@ -761,6 +768,17 @@
                             Large-print PDF<span class="sr-only"> (opens in a new tab)</span>
                         </a>
                 ` : '';
+                // The instructor's original handout on the course website (labs).
+                const originalLinkHtml = item.original ? `
+                        <span class="mt-1 inline-flex flex-wrap items-center gap-x-2 text-sm font-semibold">
+                            <a href="${item.original}" target="_blank" class="inline-flex items-center html-highlight pdf-link">
+                                Original handout (PDF)<span class="sr-only"> for ${item.title}, on the course website (opens in a new tab)</span>
+                            </a>
+                            ${item.originalWord ? `<a href="${item.originalWord}" class="inline-flex items-center html-highlight pdf-link">
+                                Original (Word)<span class="sr-only"> for ${item.title}, on the course website</span>
+                            </a>` : ''}
+                        </span>
+                ` : '';
                 const htmlLinkHtml = htmlFile ? `
                         <a href="${htmlFile}" target="_blank" class="mt-1 inline-flex items-center text-sm font-semibold html-highlight pdf-link">
                             View HTML (Accessible)<span class="sr-only"> (opens in a new tab)</span>
@@ -788,6 +806,7 @@
                         ${htmlLinkHtml}
                         ${largeLinkHtml}
                         ${epubLinkHtml}
+                        ${originalLinkHtml}
 
                         ${extraLinksHtml}
                     </div>

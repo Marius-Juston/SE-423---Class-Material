@@ -1,0 +1,86 @@
+% This MUST be the very first command, before \documentclass.
+% We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
+% (testphase = phase-III) is incompatible with the htlatex DVI pipeline
+% and would error with "Generic hooks cannot be added to '\addcontentsline'".
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
+\ifdefined\HCode\else
+\DocumentMetadata{
+  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+  lang = en-US                             % Sets the document language
+}
+\fi
+
+\documentclass[11pt]{article}
+
+% Original handout (Word/PDF, kept in step by hand):
+% https://coecsl.ece.illinois.edu/se423/Se423_Lab7FirstRCServos.pdf
+\def\AssignmentMode{Lab}     % HW | Lab | LabVIEW | Project
+\def\HWNum{7}
+
+% Course metadata
+\input{header}
+
+% Two handouts are numbered 7: tell them apart in the PDF/HTML title and footer.
+\renewcommand{\SEDocTitle}{\CourseCode\ \CourseName: \AssignmentType\ \HWNum, RC Servo Test Program}
+\hypersetup{pdftitle={\SEDocTitle}}
+\fancyfoot[R]{// \AssignmentFooter~\HWNum\ RC Servos, Page \thepage\ of \pageref{LastPage}}
+
+\def\AssignmentText{RCServo Test Program \par
+\CheckOffNotice}
+%
+\begin{document}
+
+\MakeAssignmentTitle
+
+\section*{Goals for this Lab Assignment}
+%
+\begin{enumerate}
+    \item Learn where to connect RC Servos to the robot and drive them with similar code you developed in HW \#4.
+\end{enumerate}
+%
+\Ex[Drive RC Servos connected to the Robot]
+
+Your instructor will take you through all the coding for this exercise. You will be using a new “Starter” project called “FinalProjectwithCANAprilStarter”. You will be using this project starter in Lab 7 also.
+
+The robot car can connect and drive five RC Servos (we will probably not use more than two). Your instructor will show you where to connect the RC Servos and that they are driven with PWM outputs EPWM3A, EPWM3B, EPWM5A, EPWM5B and EPWM6A. Perform the following steps to have the robot drive RC Servos:
+%
+\begin{enumerate}
+    \item In Timer2’s ISR, (which is called by default every 40ms.) Just call the function:
+%
+\begin{minted}{c}
+PostSWI3();
+\end{minted}
+%
+    {\itshape This will cause the \mintinline{c}{SWI3_LowestPriority} software interrupt to be called every 40ms. From here forward most of your code will need to be placed in the \mintinline{c}{SWI1_HighestPriority} function. You can also place less important code in the \mintinline{c}{SWI3_LowestPriority} function.}
+    \item In \mintinline{c}{SWI3_LowestPriority}, first read the value of the encWheel:
+%
+\begin{minted}{c}
+RCangle = readEncWheel();
+\end{minted}
+%
+    Then call the five RC servo functions and pass \mintinline{c}{RCangle} to each of them:
+%
+\begin{minted}{c}
+setEPWM3A_RCServo(RCangle) //RCangle is a value from -90 to 90
+setEPWM3B_RCServo(RCangle) //RCangle is a value from -90 to 90
+setEPWM5A_RCServo(RCangle) //RCangle is a value from -90 to 90
+setEPWM5B_RCServo(RCangle) //RCangle is a value from -90 to 90
+setEPWM6A_RCServo(RCangle) //RCangle is a value from -90 to 90
+\end{minted}
+%
+    \item Then print the value of \mintinline{c}{RCangle} to the robot’s text LCD screen. Run your code. Now by spinning the encoder wheel in your hand, you can watch the text LCD screen and dial in the angle that moves the RC servos to certain angles.
+%
+    \begin{checkoff}[All five RC servo connections]
+    \textbf{Show this code working to your Instructor and test that all 5 RC Servo connections work.}
+    \end{checkoff}
+\end{enumerate}
+%
+\section*{Check-Off Summary}
+
+Tick each box once your TA or instructor has checked you off.
+%
+\CheckOffSummary
+
+\MakeFooter
+\end{document}

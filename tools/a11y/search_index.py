@@ -44,7 +44,6 @@ REPO = sdf.REPO
 THUMB = 480  # longest edge of thumbnails (px)
 FULL = 2400  # longest edge of the full-size raster version (px)
 SVG_MAX = 1_500_000  # bytes; larger SVGs are published as a FULL-px raster
-OFFICIAL_LAB = "https://coecsl.ece.illinois.edu/se423/SE423_Lab{n}.pdf"
 
 
 def lecture_label(stem):
@@ -60,14 +59,15 @@ def doc_label(path):
         return f"LabVIEW {m[1]}"
     if m := re.fullmatch(r"Lab(\d+)", stem):
         return f"Lab {m[1]}"
+    if m := re.fullmatch(r"Lab(\d+)_RCServos", stem):
+        return f"Lab {m[1]} (RC servos)"
+    if stem == "FinalProject":
+        return "Final project"
     return stem.replace("_", " ").capitalize()
 
 
 def doc_link(path):
-    """Where a handout is read: the HTML version for documents built here, the
-    official course page for the labs (published by the course website)."""
-    if m := re.fullmatch(r"Lab(\d+)", path.stem):
-        return OFFICIAL_LAB.format(n=m[1])
+    """Where a handout is read: its HTML version (homeworks and labs are built here)."""
     rel = path.relative_to(REPO).with_suffix(".html").as_posix()
     return f"site/{rel}"
 
@@ -230,7 +230,6 @@ def plain(tex):
 
 def handout_images(pub):
     docs = [REPO / line.strip() for line in (REPO / "pdf-list.txt").read_text().splitlines() if line.strip()]
-    docs += sorted((REPO / "Labs").glob("Lab[0-9]*.tex"))
     out = []
     for doc in docs:
         tex = re.sub(r"(?<!\\)%[^\n]*", lambda m: "%" if m[0].strip() == "%" else m[0], doc.read_text())
