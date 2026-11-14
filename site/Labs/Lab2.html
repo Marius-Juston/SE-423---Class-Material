@@ -1,0 +1,662 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 2</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab2.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab2.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 31 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #2</span>
+</p><!-- l. 31 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>(One Week Lab)</span><br />
+<span class='rm-lmbx-10x-x-109'>Introduction to Raspberry PI4 and</span><br />
+<span class='rm-lmbx-10x-x-109'>Introduction to TMS320F28379D GPIO Programming and Texas Instruments Code
+Composer Studio</span>
+</p><!-- l. 31 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 10</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='a-few-questions-to-get-your-brain-thinking-in-binary-number-representation'> <a id='x1-1000'></a>A few questions to get your brain thinking in binary number representation</h3>
+<!-- l. 35 --><p class='noindent'>
+     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>If there was such thing as a 24 bit signed integer, what would be the largest positive number it could represent
+and what is the smallest negative number it could represent?
+</li>
+<li class='enumerate' id='x1-1004x2'>     
+<!-- l. 38 --><p class='noindent'>Below are three (signed) <span class='rm-lmtt-10x-x-109'>int16_t </span>integers represented in binary format. What are these numbers in decimal format?
+Use the Windows Calculator and put it in Programmer Mode and select the WORD size (which is 16
+bits).
+</p>          
+<ol class='enumerate2' style='list-style-type:lower-roman'>
+<li class='enumerate' id='x1-1006x1'><span class='rm-lmtt-10x-x-109'>1101110000011011</span>
+</li>
+<li class='enumerate' id='x1-1008x2'><span class='rm-lmtt-10x-x-109'>0001111100110101</span>
+</li>
+<li class='enumerate' id='x1-1010x3'><span class='rm-lmtt-10x-x-109'>1000000010110011</span></li></ol>
+</li>
+<li class='enumerate' id='x1-1012x3'>In question 2i, is bit 10 high 1 or low 0? Remember we start numbering with bit 0 as right most
+bit.
+</li>
+<li class='enumerate' id='x1-1014x4'>     
+<!-- l. 47 --><p class='noindent'><a id='x1-1015r1'></a></p><a id='checkoff-1'></a><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: Meaning of the if statement</label></p><div class='checkoff-body'>
+<!-- l. 50 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Explain to your TA </span>what this if statement is checking for (think in binary) (&amp; is bitwise AND)
+</p>     
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-1017r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if ((myregister &amp; 0x4) == 0x4) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-1019r2'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-1021r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+</div></div>     
+</li></ol>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-2000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 63 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>Build a simple LabVIEW program to communicate over Ethernet (TCPIP) to the robot’s Raspberry Pi4
+board.
+</li>
+<li class='enumerate' id='x1-2004x2'>Use CPU Timer to periodically perform desired procedures/code.
+</li>
+<li class='enumerate' id='x1-2006x3'>Work with port inputs and port outputs.
+</li>
+<li class='enumerate' id='x1-2008x4'>What to do with a compiler error.
+</li>
+<li class='enumerate' id='x1-2010x5'>Debugging your source code with Breakpoints and the Watch Window.</li></ol>
+   
+<h3 class='likesectionHead' id='leds-default-gpio-assignments'>  <a id='x1-3000'></a>LED’s Default GPIO Assignments</h3>
+<div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 73 --><p class='indent'>   </p><figure class='float' id='x1-3001r1'><span id='gpio-pin-and-registers-of-each-led'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-1' rules='groups'><colgroup id='TBL-1-1g'><col id='TBL-1-1' /></colgroup><colgroup id='TBL-1-2g'><col id='TBL-1-2' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-01-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-01-3-1' style='text-align:left;'>
+ <!-- l. 78 --><p class='noindent'>LED1
+                      </p></td>
+                  <td class='td11' id='TBL-01-3-2' style='text-align:left;'> <!-- l. 78 --><p class='noindent'>GPIO22, Controlled with Registers GPADAT, GPASET, GPACLEAR and 
+GPATOGGLE                                                                                               </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-001-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-001-6-1' style='text-align:left;'>
+ <!-- l. 79 --><p class='noindent'>LED2
+                      </p></td>
+                  <td class='td11' id='TBL-001-6-2' style='text-align:left;'> <!-- l. 79 --><p class='noindent'>GPIO94, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and 
+GPCTOGGLE                                                                                               </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-0001-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-0001-9-1' style='text-align:left;'>
+ <!-- l. 80 --><p class='noindent'>LED3
+                      </p></td>
+                  <td class='td11' id='TBL-0001-9-2' style='text-align:left;'> <!-- l. 80 --><p class='noindent'>GPIO95, Controlled with Registers GPCDAT, GPCSET, GPCCLEAR and 
+GPCTOGGLE                                                                                               </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-00001-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00001-12-1' style='text-align:left;'>
+ <!-- l. 81 --><p class='noindent'>LED4
+                      </p></td>
+<td class='td11' id='TBL-00001-12-2' style='text-align:left;'> <!-- l. 81 --><p class='noindent'>GPIO97, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and 
+GPDTOGGLE                                                                                               </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-000001-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-000001-15-1' style='text-align:left;'>
+ <!-- l. 82 --><p class='noindent'>LED5
+                      </p></td>
+<td class='td11' id='TBL-000001-15-2' style='text-align:left;'> <!-- l. 82 --><p class='noindent'>GPIO111, Controlled with Registers GPDDAT, GPDSET, GPDCLEAR and 
+GPDTOGGLE                                                                                               </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr></table>                                                                                      </div>
+
+<figcaption class='caption'><span class='id'>Table 1: </span><span class='content'>GPIO pin and registers of each LED
+</span></figcaption><!-- tex4ht:label?: x1-3001r1  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+<h3 class='likesectionHead' id='push-buttons-default-gpio-assignments'> <a id='x1-4000'></a>Push Button’s Default GPIO Assignments</h3>
+<div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 89 --><p class='indent'>   </p><figure class='float' id='x1-4001r2'><span id='gpio-pin-and-register-of-each-push-button'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-2' rules='groups'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-02-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-02-3-1' style='text-align:left;'> <!-- l. 94 --><p class='noindent'>PB1               </p></td>
+                  <td class='td11' id='TBL-02-3-2' style='text-align:left;'> <!-- l. 94 --><p class='noindent'>GPIO157, Read bit status with Register GPEDAT                        </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-002-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-002-6-1' style='text-align:left;'> <!-- l. 95 --><p class='noindent'>PB2               </p></td>
+                  <td class='td11' id='TBL-002-6-2' style='text-align:left;'> <!-- l. 95 --><p class='noindent'>GPIO158, Read bit status with Register GPEDAT                        </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-0002-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-0002-9-1' style='text-align:left;'> <!-- l. 96 --><p class='noindent'>PB3               </p></td>
+<td class='td11' id='TBL-0002-9-2' style='text-align:left;'> <!-- l. 96 --><p class='noindent'>GPIO159, Read bit status with Register GPEDAT                        </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr><tr id='TBL-00002-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00002-12-1' style='text-align:left;'> <!-- l. 97 --><p class='noindent'>PB4               </p></td>
+<td class='td11' id='TBL-00002-12-2' style='text-align:left;'> <!-- l. 97 --><p class='noindent'>GPIO160, Read bit status with Register GPFDAT                        </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td></tr></table>                                                                                      </div>
+
+<figcaption class='caption'><span class='id'>Table 2: </span><span class='content'>GPIO pin and register of each push button
+</span></figcaption><!-- tex4ht:label?: x1-4001r2  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+<!-- l. 102 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>GPIO Register Use when GPIO pin set as Output: </span>The GPIO Registers are 32 bit registers but we use unions
+and bitfields in the C/C++ programming language to control just one bit of the 32 bit register at a time. The “<code class='lstinline'><span style='color:#000000'>.all</span></code>” part
+of the C/C++ union is the entire 32bit register. The “<code class='lstinline'><span style='color:#000000'>.bit.GPIO11</span></code>” is just one bit in the 32 bit register. So these two
+lines of C code perform the same operation:
+</p>   
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-4003r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//You have to think a little with this code to know that bit 11 is</span></span> 
+<span class='fancyvrblineno'><a id='x1-4005r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//being set.</span></span> 
+<span class='fancyvrblineno'><a id='x1-4007r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioDataRegs.GPASET.all = 0x00000800;</span></span> 
+<span class='fancyvrblineno'><a id='x1-4009r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//This line of code is somewhat easier to understand that we are</span></span> 
+<span class='fancyvrblineno'><a id='x1-4011r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//setting the 11th bit.</span></span> 
+<span class='fancyvrblineno'><a id='x1-4013r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioDataRegs.GPASET.bit.GPIO11 = 1;</span></span></pre>
+<div class='table'>
+<!-- l. 113 --><p class='indent'>   </p><figure class='float' id='x1-4014r3'><span id='gpio-registers-of-a-pin-set-as-output'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-3' rules='groups'><colgroup id='TBL-3-1g'><col id='TBL-3-1' /></colgroup><colgroup id='TBL-3-2g'><col id='TBL-3-2' /></colgroup><colgroup id='TBL-3-3g'><col id='TBL-3-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-03-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-03-3-1' style='text-align:left;'> <!-- l. 120 --><p class='noindent'><span class='rm-lmbx-9'>Register</span>             </p></td>
+                   <td class='td11' id='TBL-03-3-2' style='text-align:left;'> <!-- l. 120 --><p class='noindent'><span class='rm-lmbx-9'>Usage</span>                                     </p></td>
+                                                    <td class='td11' id='TBL-03-3-3' style='text-align:left;'> <!-- l. 120 --><p class='noindent'><span class='rm-lmbx-9'>Example</span>                                                             </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-003-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-003-6-1' style='text-align:left;'>
+ <!-- l. 121 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT</span>
+                              </p></td>
+                   <td class='td11' id='TBL-003-6-2' style='text-align:left;'> <!-- l. 122 --><p class='noindent'><span class='rm-lmr-9'>GP?DAT.bit.GPIO? = 1, Sets that 
+Pin High, 3.3V </span><br class='newline' /><span class='rm-lmr-9'>GP?DAT.bit.GPIO? = 0, Sets that 
+Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmbx-9'>BUT FOR TECHNICAL 
+REASONS DO NOT USE DAT 
+FOR TURNING ON AND OFF 
+LEDS JUST USE TO READ 
+STATE OF PUSHBUTTONS 
+BELOW</span>                                 </p></td>
+                                                    <td class='td11' id='TBL-003-6-3' style='text-align:left;'> <!-- l. 124 --><p class='noindent'>                                                      </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-0003-9-' style='vertical-align:baseline;'><td class='td11' id='TBL-0003-9-1' style='text-align:left;'>
+ <!-- l. 125 --><p class='noindent'><span class='rm-lmr-9'>GP?SET</span>
+                              </p></td><td class='td11' id='TBL-0003-9-2' style='text-align:left;'> <!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>GP?SET.bit.GPIO? = 1, Sets that 
+Pin High, 3.3V </span><br class='newline' /><span class='rm-lmr-9'>GP?SET.bit.GPIO? = 0, Does 
+Nothing</span>                                         </p></td><td class='td11' id='TBL-0003-9-3' style='text-align:left;'> <!-- l. 128 --><p class='noindent'><span class='rm-lmbx-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 1; Sets 
+GPIO37 High/3.3V </span><br class='newline' /><span class='rm-lmbx-9'>GpioDataRegs.GPBSET.bit.GPIO37 = 0; Does 
+Nothing</span>                                                             </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-00003-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00003-12-1' style='text-align:left;'>
+ <!-- l. 130 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR</span>
+                              </p></td>
+<td class='td11' id='TBL-00003-12-2' style='text-align:left;'> <!-- l. 131 --><p class='noindent'><span class='rm-lmr-9'>GP?CLEAR.bit.GPIO? = 1, Sets 
+that Pin Low, 0V/GND </span><br class='newline' /><span class='rm-lmr-9'>GP?CLEAR.bit.GPIO? = 0, Does 
+Nothing</span>                                         </p></td>
+<td class='td11' id='TBL-00003-12-3' style='text-align:left;'> <!-- l. 133 --><p class='noindent'><span class='rm-lmbx-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1; Sets 
+GPIO70 Low/0V </span><br class='newline' /><span class='rm-lmbx-9'>GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0; Does 
+Nothing</span>                                                             </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-000003-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-000003-15-1' style='text-align:left;'>
+ <!-- l. 135 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE</span>
+                              </p></td>
+<td class='td11' id='TBL-000003-15-2' style='text-align:left;'> <!-- l. 136 --><p class='noindent'><span class='rm-lmr-9'>GP?TOGGLE.bit.GPIO? = 1, Sets 
+Pin opposite of its current state. </span><br class='newline' /><span class='rm-lmr-9'>GP?TOGGLE.bit.GPIO? = 0, Does 
+Nothing</span>                                         </p></td>
+<td class='td11' id='TBL-000003-15-3' style='text-align:left;'> <!-- l. 138 --><p class='noindent'><span class='rm-lmbx-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1; was 
+3.3V then 0V or was 0V then 3.3V </span><br class='newline' /><span class='rm-lmbx-9'>GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0; Does 
+Nothing</span>                                                             </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                     </div>
+
+<figcaption class='caption'><span class='id'>Table 3: </span><span class='content'>GPIO registers of a pin set as output
+</span></figcaption><!-- tex4ht:label?: x1-4014r3  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+</div>
+<!-- l. 144 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>GPIO Register Use When GPIO Pin Set as Input: </span>Each GPIO pin, when setup as an input, has an internal
+pull-up resistor that can either enabled/connected or disabled/disconnected to that GPIO pin. With the passive push
+button on our breakout board, we will need to enable the pull-up resistor. </p><div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 146 --><p class='indent'>   </p><figure class='float' id='x1-4029r4'><span id='gpio-register-of-a-pin-set-as-input'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-4' rules='groups'><colgroup id='TBL-4-1g'><col id='TBL-4-1' /></colgroup><colgroup id='TBL-4-2g'><col id='TBL-4-2' /></colgroup><colgroup id='TBL-4-3g'><col id='TBL-4-3' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-04-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-04-3-1' style='text-align:left;'> <!-- l. 153 --><p class='noindent'><span class='rm-lmbx-10'>Register</span>      </p></td>
+               <td class='td11' id='TBL-04-3-2' style='text-align:left;'> <!-- l. 153 --><p class='noindent'><span class='rm-lmbx-10'>Usage</span>                                </p></td>
+                                                <td class='td11' id='TBL-04-3-3' style='text-align:left;'> <!-- l. 153 --><p class='noindent'><span class='rm-lmbx-10'>Example</span>                                                              </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr><tr id='TBL-004-6-' style='vertical-align:baseline;'><td class='td11' id='TBL-004-6-1' style='text-align:left;'>
+ <!-- l. 154 --><p class='noindent'><span class='rm-lmr-10'>GP?DAT</span>
+                     </p></td>
+               <td class='td11' id='TBL-004-6-2' style='text-align:left;'> <!-- l. 155 --><p class='noindent'><span class='rm-lmr-10'>If GP?DAT.bit.GPIO? is equal 
+to 1 then the Pin is High, 3.3V </span><br class='newline' /><span class='rm-lmr-10'>If GP?DAT.bit.GPIO? is equal to 
+0 then the Pin is Low, 0V/GND</span>   </p></td>
+                                                <td class='td11' id='TBL-004-6-3' style='text-align:left;'> <div class='minipage'><pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-4016r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-4018r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//code that needs to run when input pin</span></span> 
+<span class='fancyvrblineno'><a id='x1-4020r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//GPIO19 is High/3.3V</span></span> 
+<span class='fancyvrblineno'><a id='x1-4022r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>} else {</span></span> 
+<span class='fancyvrblineno'><a id='x1-4024r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// code that needs to run when input ping</span></span> 
+<span class='fancyvrblineno'><a id='x1-4026r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// GPIO19 is Low/0V</span></span> 
+<span class='fancyvrblineno'><a id='x1-4028r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre> </div> </td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td></tr></table>                                                                                         </div>
+
+<figcaption class='caption'><span class='id'>Table 4: </span><span class='content'>GPIO register of a pin set as input
+</span></figcaption><!-- tex4ht:label?: x1-4029r4  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+   
+<h3 class='likesectionHead' id='laboratory-exercises'> <a id='x1-5000'></a>Laboratory Exercises</h3>
+   
+<h3 class='likesectionHead' id='exercise-1-'>  <a id='x1-6000'></a>Exercise 1 </h3>
+<p id='exercise-1'><a id='Q1-1-11'></a>
+<!-- l. 177 --></p><p class='noindent'>First, to give you practice performing these steps if needed in the future, check if the class repo has any changes or
+additional files to merge into your repo already on the lab PC. Under Lab 1, find the Git help file titled “Using the SE423
+Repository” and read and perform the steps of the section of the document titled “Course File Updates.” These steps will
+pull the latest updates from the class repository. Ask your TA for help if needed. <span class='rm-lmri-10x-x-109'>There probably will not be
+any updates but in the future if your instructor makes some additions you will need to perform these steps
+again.</span>
+</p><!-- l. 179 --><p class='indent'>   In this exercise 1 you will create a simple LABVIEW VI from scratch to communicate with your robot. Use the below
+steps along with the picture of the block diagram below to create this LabVIEW application.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-6002x1'>Open a new LABVIEW project and then its VI file. Remember Ctrl-E switches you back and forth between
+the front panel view and the block diagram view.
+</li>
+<li class='enumerate' id='x1-6004x2'>Then in File Explorer find your repo’s folder and explore into “<code class='lstinline'><span style='color:#000000'>workspace\LabView</span></code>”. Create a folder “Lab2”
+here. <span class='rm-lmri-10x-x-109'>In “</span><code class='lstinline'><span style='color:#000000'>workspace\LabView</span></code><span class='rm-lmri-10x-x-109'>” is where I recommend you save all your LabView files. This way when you
+add your CCS projects to Github by running “</span><code class='lstinline'><span style='color:#000000'>git add workspace</span></code><span class='rm-lmri-10x-x-109'>” you will also be adding your LabView files.</span>
+</li>
+<li class='enumerate' id='x1-6006x3'>Save this new project and VI file to your “<code class='lstinline'><span style='color:#000000'>workspace\LabView\Lab2</span></code>” folder.
+</li>
+<li class='enumerate' id='x1-6008x4'>Use the below block diagram picture and the remaining instructions to build your LABVIEW program.
+</li>
+<li class='enumerate' id='x1-6010x5'>Add a 4 frame flat sequence structure to your block diagram. The flat sequence will allow for initializations,
+the main body of the program and termination.
+                                                                                                       
+                                                                                                       
+     </li>
+<li class='enumerate' id='x1-6012x6'>In the second frame add a While Loop.
+</li>
+<li class='enumerate' id='x1-6014x7'>Add a Stop button in the front panel view but do not wire the Stop button in the block diagram yet. Change
+the Mechanical action of the Stop button to “Switch When Released.” For now in the block diagram view,
+place the Stop button outside the While Loop.
+</li>
+<li class='enumerate' id='x1-6016x8'>I like using the Mechanical Action “Switch When Released” (or “Switch When Pressed”) for the Stop button
+but it requires initialization and termination code to make sure it is in the state you wish when you get to
+your main code. To control the state of the Stop button you can use a local variable to change its state. In
+the first sequence frame add a local variable located under “Structures” items. Click on the “?” of the local
+variable and select “Stop” (or whatever you named your stop button.) Connect a “False” Boolean constant
+to the input of the local variable. This will force the state of the Stop button to be false at the beginning of
+the program. The while loop stops when the Stop button returns true. For completeness add a “stop” local
+variable in the third sequence frame and also set it to false there.
+</li>
+<li class='enumerate' id='x1-6018x9'>In below steps we are going to setup a TCPIP connection between the LABVIEW program and a Linux
+program running on the robot. A small delay is necessary at the beginning and end during the TCPIP server
+connection and termination. So in the first and third sequence frame add a “Wait (ms)” of 1 second (1000
+ms) to make sure the first and third frames take at least 1 second.
+</li>
+<li class='enumerate' id='x1-6020x10'>We will finish up the initialization and termination. Add a “TCP Open Connection” found under “Data
+Communication<!-- l. 191 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Protocols<!-- l. 191 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>TCP
+to the first sequence frame. Right click at TCP Open Connection’s “address”. “remote port” and “timeout
+(ms)” ports and select create constant. Set the timeout to 1000 ms, remote port to 10001 and address to
+“192.168.1.7?” where ? is dependent on the robot you are using.
+</li>
+<li class='enumerate' id='x1-6022x11'>In the fourth sequence frame add a “TCP Close Connection.”
+</li>
+<li class='enumerate' id='x1-6024x12'>Now we will add the main code to our VI. The goal of the VI is to open a TCPIP connection to a Linux
+     program running on the robot car. Our front panel will have a string control, a Send button and a string
+     indicator. The user will type a string to send to the robot car in the string control and then press the send
+button to send the text to the robot car. Then the robot car will receive that data and echo it back to the
+LABVIEW program and it will be displayed in the string indicator. This will be repeated until the Stop
+button is pressed.
+</li>
+<li class='enumerate' id='x1-6026x13'>Add an OK button to the front panel and make its Mechanical action “Switch When Released.” Also change
+the OK text to SEND, and change the button’s name to something like “sendbutton.” For now place this
+button outside of the while loop.
+</li>
+<li class='enumerate' id='x1-6028x14'>Inside the While loop add an Event Structure. Add three events to this structure. One (labeled event “0”
+in the block diagram) being the default Timeout event. Second (labeled “1”) a Send button Mouse Down
+event. Third (labeled “2”) a Stop button Value Change event.
+</li>
+<li class='enumerate' id='x1-6030x15'>In the Send button event first place a TCP Write block and a Concatenate String block. Wire the “Connection
+ID” output of the “TCP Open Connection” block to the “Connection ID” input of the TCP Write block.
+Wire the TCP Write block timeout to a constant setting it to 100 ms. Wire the output of the Concatenate
+String block to the “data in” port of the TCP Write block. Finally create an Indicator to display the number
+of bytes written output port.
+</li>
+<li class='enumerate' id='x1-6032x16'>Drag down on the Concatenate String block so that three items will be concatenated together. Create a
+constant string for the first element, a control string for the second element (call it “Send String”) and a
+constant for the third element. The Linux program is waiting for the start character 0xFD to begin the string
+and the stop character 0xFF to end the string. To send these hexadecimal numbers as a character select the
+constant string and right click on it. Down towards the bottom of the displayed menu you should find and
+select <span class='rm-lmbx-10x-x-109'>“ ’\’ Codes Display”</span>. Do this for the two constants and type in the first “<code class='lstinline'><span style='color:#000000'>\FD</span></code>” and the second
+“<code class='lstinline'><span style='color:#000000'>\FF</span></code>”.
+</li>
+<li class='enumerate' id='x1-6034x17'>That completes the sending of a string to the robot, now wire the code to receive the string sent back to
+LABVIEW. Place a “TCP Read” block after the TCP Write block. First wire the “Connection ID” output
+of the TCP Write block to the “Connection ID” input of the “TCP Read” block. Also while we are here,
+wire the “Connection ID” output of the “TCP Read” block to the “Connection ID” input of the “TCP
+Close Connection” block which is located in the fourth sequence panel.
+                                                                                                       
+                                                                                                       
+     </li>
+<li class='enumerate' id='x1-6036x18'>Create constants for the “TCP Read” block setting the Timeout to 3000 ms and the bytes to read to 100.
+Also create an indicator in the front panel view and connect its input to the “data out” of the “TCP Read”
+block in the block diagram. Name this indicator “Received String.”
+</li>
+<li class='enumerate' id='x1-6038x19'>The  final  addition  for  the  “TCP  Read”  block  is  to  create  a  constant  to  connect  to  the  “mode”
+input.  Once  again,  this  is  easiest  to  do  by  right  clicking  on  the  “mode”  input  node  and  selecting
+“Create<!-- l. 200 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Constant”.
+The data transfer method between the robot and LABVIEW is slightly different then the LABVIEW to
+robot transfer. For the LABVIEW to robot transfer we placed a start and stop character at the beginning
+and end of the string. The “TCP Read” block can be set to implement a different transfer waiting until
+the carriage return and line feed characters are seen in sequence. This sequence indicates the end of the
+string. To put the “TCP Read” block in this mode, click the down arrow of the “mode” constant and select
+“CRLF.”
+</li>
+<li class='enumerate' id='x1-6040x20'>So that the event structure works correctly with the Send button that was created in step 12, move the Send
+button’s icon inside the Send Button Mouse Down Event.
+</li>
+<li class='enumerate' id='x1-6042x21'>The Timeout and Stop events are simple. In both events pass the “Connection ID” output of the “TCP Open
+Connection” block through to the output on its way to the “TCP Close Connection” block. For the Timeout
+event connect a False Boolean constant to the Stop button port. Also in the top left of the event structure
+there is a small hour glass icon. Right click on the input of this hour glass icon and create a constant and set
+the Timeout to 50ms. In the Stop button event connect a True Boolean constant to the Stop button port.
+Also here in the Stop button event place the Stop button icon. Double check the below picture, but your
+LABVIEW program should be finished now.
+</li>
+<li class='enumerate' id='x1-6044x22'>Next step is to get the correct program running on your Raspberry PI4 board on your robot. We need a
+TCPIP server application to be running that is waiting for text from your LABVIEW program and then
+will receive that test and send it right back (echo) to your LABVIEW program. You will use a program on
+your lab PCs called “putty.” To run putty, open a Windows cmd prompt. At the command prompt type
+“<span class='rm-lmtt-10x-x-109'>putty pi@192.168.1.7?</span>” filling in the ? with your robot’s IP. (pi is the username @ its ip address) A
+terminal window should display and request you type in the password. Type the password, “<code class='lstinline'><span style='color:#000000'>f33dback5</span></code>”,
+and then you have a wireless terminal of your RPI4’s Linux operating system. Type <span class='rm-lmbx-10x-x-109'>ls </span>(list) and see all the
+folders of the user <span class='rm-lmbx-10x-x-109'>pi</span>’s home directory. The program we want to run is called LVecho and it is located in the
+folder lvecho. Change directory into the lvecho folder by typing “<code class='lstinline'><span style='color:#000000'>cd lvecho</span></code>” (cd is change directory). Run
+the Linux application <span class='rm-lmbx-10x-x-109'>LVecho </span>by typing “<span class='rm-lmtt-10x-x-109'>./LVecho</span>”. The “<span class='rm-lmtt-10x-x-109'>./</span>” tells Linux to look in the current directory
+                                                                                                       
+                                                                                                       
+     for the application to execute. This application will be used to verify your LABVIEW GUI is working. It
+     simply receives the messages you send from LABVIEW, prints them to the Linux console and echoes them
+     back to your LABVIEW application.
+</li>
+<li class='enumerate' id='x1-6046x23'>     
+<!-- l. 204 --><p class='noindent'>Run your LABVIEW application, and type a message into your Send String control. Click on the <span class='rm-lmbx-10x-x-109'>Send </span>button and
+your message should print at the Linux console and echo back to the Received String indicator. <a id='x1-6047r2'></a></p><a id='checkoff-2'></a><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: LabVIEW talking to
+the Raspberry Pi</label></p><div class='checkoff-body'>
+<!-- l. 207 --><p class='noindent'>Demonstrate your LabVIEW programming talking back and forth to your robot’s Raspberry Pi board.
+</p>     
+</div></div>
+</li>
+<li class='enumerate' id='x1-6049x24'>When you are done playing with this end, click the STOP button and close the LVecho application at that Linux
+console by typing Ctrl-C.
+</li>
+<li class='enumerate' id='x1-6051x25'><span class='rm-lmbx-10x-x-109'>Leave the Raspberry PI on for now and leave the terminal running that is connected to your PI. You
+will be told to Shutdown the PI at the end of the lab.</span></li></ol>
+<figure class='figure' id='x1-6052r1'><span id='block-diagram-of-the-labview-program'></span> 
+ <img alt='LabVIEW block diagram of the finished TCP echo program, a flat sequence of four frames. Frame 1 waits 1000
+ms, sets the stop local variable to False and opens a TCP connection to 192.168.1.73, remote port 10001, timeout
+1000. Frame 2 holds a While loop around an Event structure with a 50 ms timeout, shown on its ”SendButton”:
+Mouse Down case: the Send String control is concatenated between the constants \FD and \FF and sent with
+TCP Write (timeout 100), Bytes Sent shows the bytes written, and TCP Read in CRLF mode (100 bytes,
+timeout 6000) fills the Received String indicator. The SendButton icon sits inside this case and a False constant
+goes to the loop’s stop terminal. Frame 3 waits 1000 ms (”Delay 0.5 Seconds before closing TCPIP Connection”)
+and sets stop to False again, and frame 4 closes the TCP connection.' height='229' src='Labs/Figures/Lab2/Picture1.png' width='542' /> 
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Block diagram of the LabVIEW program                                                        </span></figcaption><!-- tex4ht:label?: x1-6052r1  -->
+</figure>   
+<figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 241 --><p class='noindent' id='front-panel-of-the-labview-program'><img alt='LabVIEW front panel of the program: a Send String text box containing ”This is a test”, a Send button, a Bytes
+Sent indicator reading 0, an empty Received String indicator and a STOP button labeled stop.' height='258' src='Labs/Figures/Lab2/Picture2.png' width='271' /> <a id='x1-6053r2'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Front panel of the LabVIEW program                                                           </span></figcaption><!-- tex4ht:label?: x1-6053r2  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   
+   
+<h3 class='likesectionHead' id='exercise-2-'>  <a id='x1-7000'></a>Exercise 2 </h3>
+<p id='exercise-2'><a id='Q1-1-15'></a>
+<!-- l. 247 --></p><p class='noindent'>In this exercise we are back to working with Code Composer Studio and the F28379D Laundpad board (red board) on the
+robot car. Import “LABstarter”, instructions in Lab 1 or your HowTo document, to create a new project in
+your workspace and call it <code class='lstinline'><span style='color:#000000'>lab2&lt;yourinitials&gt;</span></code>. Once you have your new lab2 project perform the below
+steps.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-7002x1'>     
+<!-- l. 250 --><p class='noindent'>For this lab, you will only be using CPU Timer 2’s interrupt service routine “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr(void)</span>”. We will
+leave the timer0 and timer1 functions in our source code but we will not enable timer0 or timer1. So in <span class='rm-lmtt-10x-x-109'>main() </span>find
+the two lines of code that set the TIE (Timer Interrupt Enable) bit to enable timer 0 and timer 1. Comment these
+two lines so they are not included in your program. i.e.
+</p>     
+<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-7004r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//CpuTimer0Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7006r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//CpuTimer1Regs.TCR.all = 0x4000;</span></span></pre>
+</li>
+<li class='enumerate' id='x1-7008x2'>     
+<!-- l. 257 --><p class='noindent'>In <span class='rm-lmtt-10x-x-109'>main() </span>find the “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer</span>” function call for CPU Timer 2 and set its period to 0.25 seconds. Also find
+CPU Timer 2’s interrupt function “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr</span>.” Note that in this function, it is blinking the blue LED on the
+Launchpad on and off. Build and Debug this code to make sure that the code compiles and runs. You should
+see the blue LED blinking on and off every half second. Once that is working, terminate your debug
+session so you are back in Edit mode. Before going to the next step, let’s take a few minutes to think
+about the period value that you passed to the “<span class='rm-lmtt-10x-x-109'>ConfgiCpuTimer</span>” function. 0.25 seconds is a large
+number of microseconds so you may have thought about what the largest acceptable number is to
+pass to this period parameter. To find this largest period setting we need to look at the TIM (timer
+register) and PRD (period register) registers of the CPU Timers. Both the PRD and TIM registers are
+32 bits long and they each store a 32 bit unsigned integer. The TIM register starts at the value set
+in the PRD register and counts down by 1 every 1/200000000 seconds (200Mhz). (Note here that
+we are not use the pre-scaler of the CPU timer.) Whenever the TIM register counts down to 0 an
+interrupt event is issued calling the CpuTimer2 interrupt service routine. At this moment, the TIM
+register is also set back to the value set in the PRD register to start timing again. <a id='x1-7009r3'></a></p><a id='checkoff-3'></a><div aria-labelledby='checkoff-label-3' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='3' id='checkoff-box-3' type='checkbox' /> <label for='checkoff-box-3' id='checkoff-label-3'>TA Check-Off 3: Largest CPU Timer
+period</label></p><div class='checkoff-body'>
+<!-- l. 260 --><p class='noindent'>Knowing that a 32 bit unsigned integer has a maximum value, what is the largest period in seconds that the CPU
+Timers can be set to? <span class='rm-lmbx-10x-x-109'>Explain your answer to your TA.</span> </p></div></div>
+</li>
+<li class='enumerate' id='x1-7011x3'>     
+<!-- l. 262 --><p class='noindent'>Take a look at the global <span class='rm-lmtt-10x-x-109'>uint32_t </span>variable <span class='rm-lmtt-10x-x-109'>numTimer2calls</span>. Inside the <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr(void) </span>function, this
+variable increments by one each time that function is entered. In addition, every 10th time the function is entered,
+the global variable <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1. Change the code so that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 each time the
+<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr </span>function is entered. <span class='rm-lmri-10x-x-109'>You can do this by changing the modulus to 1 or better just remove the if
+                                                                                                       
+                                                                                                       
+     statement. </span>Setting <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to 1, tells the <span class='rm-lmtt-10x-x-109'>main() </span>while loop to print text through a UART serial port to the
+     robot’s text LCD dispaly. Find the <span class='rm-lmtt-10x-x-109'>UART_printfLine(1, ...) </span>function call in the <span class='rm-lmtt-10x-x-109'>main() </span>while loop. <a id='x1-7012r4'></a></p><a id='checkoff-4'></a><div aria-labelledby='checkoff-label-4' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='4' id='checkoff-box-4' type='checkbox' /> <label for='checkoff-box-4' id='checkoff-label-4'>TA Check-Off 4: Why
+     UARTPrint is set and cleared</label></p><div class='checkoff-body'>
+<!-- l. 265 --><p class='noindent'>Does it make sense that when you set <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to 1, the while loop will call the <span class='rm-lmtt-10x-x-109'>UART_printfLine (1, ...)</span>
+function? Why is <span class='rm-lmtt-10x-x-109'>UARTPrint </span>set to zero inside the if statement after <span class='rm-lmtt-10x-x-109'>UART_printfLine (1, ...) </span>is called? <span class='rm-lmbx-10x-x-109'>Explain
+to your TA.</span> </p></div></div>
+</li>
+<li class='enumerate' id='x1-7014x4'>     
+<!-- l. 267 --><p class='noindent'>Notice that the print statement prints the <span class='rm-lmtt-10x-x-109'>numTimer2calls </span>global variable. Since <span class='rm-lmtt-10x-x-109'>numTimer2calls </span>is a 32-bit integer
+the <span class='rm-lmbx-10x-x-109'>%ld </span>formatter is used. Change the “line 2” <span class='rm-lmtt-10x-x-109'>UART_printfLine(2, ...) </span>call so that both <span class='rm-lmtt-10x-x-109'>4*numTimer2calls </span>and
+<span class='rm-lmtt-10x-x-109'>6*numTimer2calls </span>is printed with a comma between the two numbers. Look at the line 2 call of
+<span class='rm-lmtt-10x-x-109'>UART_printfLine </span>to see how to use two formatters to print two items. <a id='x1-7015r5'></a></p><a id='checkoff-5'></a><div aria-labelledby='checkoff-label-5' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='5' id='checkoff-box-5' type='checkbox' /> <label for='checkoff-box-5' id='checkoff-label-5'>TA Check-Off 5: Two numbers printed on the
+LCD</label></p><div class='checkoff-body'>
+<!-- l. 270 --><p class='noindent'>Debug and run your code and check that the LaunchPad’s blue LED is still blinking and your text is printing to the
+LCD. <span class='rm-lmbx-10x-x-109'>Show your TA.</span> </p></div></div>
+</li>
+<li class='enumerate' id='x1-7017x5'>     
+<!-- l. 272 --><p class='noindent'>Write two worker functions “<span class='rm-lmtt-10x-x-109'>void SetLEDsOnOff(int16_t LEDvalue)</span>” and “<span class='rm-lmtt-10x-x-109'>int16_t ReadSwitches(void)</span>”.
+</p>          
+<ul class='itemize1'>
+<li class='itemize'>          
+<!-- l. 275 --><p class='noindent'><span class='rm-lmtt-10x-x-109'>void SetLEDsOnOff(int16_t LEDvalue) </span>takes a 16 bit integer as a parameter. The five least significant bits of
+this integer determine if the five LEDs are on or off. Bit 0 determines LED1’s state. Bit 1 determines LED2’s
+state. Bit 2 determines LED3’s state. Bit 3 determines LED4’s state. Bit 4 determines LED5’s state. So for
+example if 18 (0x12, which is binary 10010) is passed to your function then LED5 and LED2 should be ON. Use
+five if statements inside your function to check, using the bitwise AND, &amp;, operator, if the integer passed to
+your function has the least significant five bits either individually set or cleared. If set, turn ON the
+corresponding LED. If cleared, turn OFF the corresponding LED. See the above tables for LED
+GPIO assignments. I want you using the GP?SET and GP?CLEAR registers to turn on or off the
+LEDs. To test this function call it each time in your CPUTimer2 interrupt function and pass to
+it your global variable <span class='rm-lmtt-10x-x-109'>numTimer2calls</span>. <span class='rm-lmtt-10x-x-109'>numTimer2calls </span>is getting incremented by one each
+timer interrupt so you should see the five LEDs counting in binary. <a id='x1-7018r6'></a></p><a id='checkoff-6'></a><div aria-labelledby='checkoff-label-6' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='6' id='checkoff-box-6' type='checkbox' /> <label for='checkoff-box-6' id='checkoff-label-6'>TA Check-Off 6: SetLEDsOnOff counting in
+binary</label></p><div class='checkoff-body'>
+<!-- l. 278 --><p class='noindent'>What happens if the number passed to <span class='rm-lmtt-10x-x-109'>SetLEDsOnOff() </span>is greater than 31? Also what happens when you pass
+a 32 bit integer to a function that is asking for a 16 bit integer like your <span class='rm-lmtt-10x-x-109'>SetLEDsOnOff </span>function?
+<span class='rm-lmbx-10x-x-109'>Demo and explain to your TA before writing your </span><span class='rm-lmtk-10x-x-109'>ReadSwitches() </span><span class='rm-lmbx-10x-x-109'>function below.</span>
+</p>          
+</div></div>
+</li>          
+<li class='itemize'><span class='rm-lmtt-10x-x-109'>int16_t ReadSwitches(void) </span>returns a 16 bit integer that the least significant four bits indicates the state of
+the four push buttons. (Note that when each of the push buttons are not pressed the GPIO pin reads a 1 or
+high voltage. When pressed the GPIO pin reads a 0 or ground. This is because the IO pin is using an internal
+pullup resistor.) This function should have four if statements and use the bitwise OR, “<span class='rm-lmtt-10x-x-109'>|</span>” operator to
+appropriately set bits of a local variable that will be returned by this function. So start the return variable at
+zero. Then if switch 1 is pressed OR 0x1 with local variable. If switch 2 is pressed OR 0x2 with variable. If
+                                                                                                       
+                                                                                                       
+          switch 3 is pressed OR ??? with variable. If switch 4 is pressed OR ??? with variable. Finally return the local
+          variable with the “return” instruction. See the above table for the GPIO pins that are connected
+          to the push buttons and that are setup as inputs with pull-up resistor enabled in the default
+code.</li></ul>
+</li>
+<li class='enumerate' id='x1-7020x6'>     
+<!-- l. 283 --><p class='noindent'>Now that you have these worker functions, make your program a bit more interesting. Add code in
+your CPU timer 2 interrupt function so that you display to the LEDs the value returned from your
+<span class='rm-lmtt-10x-x-109'>ReadSwitches() </span>function. Do this by creating a global <span class='rm-lmtt-10x-x-109'>int16_t </span>variable and assign it the value returned
+from <span class='rm-lmtt-10x-x-109'>ReadSwitches()</span>. Pass this global variable to your <span class='rm-lmtt-10x-x-109'>SetLEDsOnOff(value) </span>function to see its
+binary value displayed on the LEDs. Also print this global variable by adding text (or shortening the
+text so it fits on the LCD) to one of the <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>function calls in <span class='rm-lmtt-10x-x-109'>main()</span>’s while loop.
+Make sure to use the <span class='rm-lmtt-10x-x-109'>%d </span>formatter because this is an <span class='rm-lmtt-10x-x-109'>int16_t </span>variable. <a id='x1-7021r7'></a></p><a id='checkoff-7'></a><div aria-labelledby='checkoff-label-7' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='7' id='checkoff-box-7' type='checkbox' /> <label for='checkoff-box-7' id='checkoff-label-7'>TA Check-Off 7: Push buttons shown on the
+LEDs</label></p><div class='checkoff-body'>
+<!-- l. 286 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this working to your TA.</span> </p></div></div>
+</li></ol>   
+
+<h3 class='likesectionHead' id='exercise-3-'> <a id='x1-8000'></a>Exercise 3 </h3>
+<p id='exercise-3'><a id='Q1-1-17'></a>
+<!-- l. 292 --></p><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>Continue with your code from Exercise 2. Change the period of CPU timer 2 to 0.1 seconds.
+</li>
+<li class='enumerate' id='x1-8004x2'>Create   another   global   <span class='rm-lmtt-10x-x-109'>int32_t  </span>variable   similar   to   “<span class='rm-lmtt-10x-x-109'>numTimer2calls</span>”   but   call   this   variable
+“<span class='rm-lmtt-10x-x-109'>countsWhenNotPressed</span>”. Then in your <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr</span>, for now, increment this new global variable by
+one each time <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr </span>is called just like you did for the <span class='rm-lmtt-10x-x-109'>numTimer2calls </span>variable. Pass this new
+count variable to the <span class='rm-lmtt-10x-x-109'>SetLEDsOnOff() </span>function to display the least significant 5 bits of your count variable
+to the five LEDs. <span class='rm-lmri-10x-x-109'>This is similar to what you coded to test your </span><span class='rm-lmtti-10x-x-109'>SetLEDsOnOff() </span><span class='rm-lmri-10x-x-109'>function in exercise 2.</span>
+Compile, download to the DSP and verify that indeed the LEDs are counting in binary.
+</li>
+<li class='enumerate' id='x1-8006x3'>     
+<!-- l. 295 --><p class='noindent'>Add one more item to this code as an exercise to see the use of bitwise operators in C. Calling the <span class='rm-lmtt-10x-x-109'>ReadSwitches()</span>
+function, use an “if” statement and the bitwise C operator &amp; to check if push buttons 2 and 3 are pressed. If both of
+these push buttons are pressed, stop incrementing the “<span class='rm-lmtt-10x-x-109'>countsWhenNotPressed</span>” variable. If one or both of the
+pushbuttons are released, continue counting. Again, compile and download to the microcontroller. <a id='x1-8007r8'></a></p><a id='checkoff-8'></a><div aria-labelledby='checkoff-label-8' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='8' id='checkoff-box-8' type='checkbox' /> <label for='checkoff-box-8' id='checkoff-label-8'>TA Check-Off 8: Counter that stops
+with buttons 2 and 3</label></p><div class='checkoff-body'>
+<!-- l. 298 --><p class='noindent'>When your code is working, <span class='rm-lmbx-10x-x-109'>demonstrate your application to your TA</span>. </p></div></div>
+                                                                                                       
+                                                                                                       
+     </li></ol>
+   
+<h3 class='likesectionHead' id='exercise-4-breakpoints-and-watch-windows-'> <a id='x1-9000'></a>Exercise 4: Breakpoints and Watch Windows </h3>
+<p id='exercise-4-breakpoints-and-watch-windows'><a id='Q1-1-19'></a>
+<!-- l. 304 --></p><p class='noindent'>Starting with the code you just finished, we want to experiment with adding breakpoints to your code and using the
+“Expressions window” to edit the values of your variables.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-9002x1'>In  your  previous  code  (with  the  DSP  halted),  put  your  cursor  over  the  integer  variable  that  you  are
+incrementing. You should see that the value of the variable appears. Run your code, halt it again, and again
+put your cursor over the variable to confirm that it changes.
+</li>
+<li class='enumerate' id='x1-9004x2'>An easier method than using the cursor repeatedly is to add the variable to the Expressions window. When
+the DSP is halted, the Expressions window displays the current value of each variable in the Expressions
+window. To add your counting integer variable to the Expressions window, highlight the variable and then
+right-click, then select <span class='rm-lmbx-10x-x-109'>Add Watch Expression…</span>. The variable will appear in the Expressions window with
+the current value of the variable. The Expressions window dialog is also found under the View menu.
+</li>
+<li class='enumerate' id='x1-9006x3'>     
+<!-- l. 309 --><p class='noindent'>Next play a bit with adding breakpoints and single stepping through a section of code. The code you
+have written to this point is very small. Add the following nonsense code to allow for easy use of
+breakpoints and code stepping. At the top of your C-file, but below the #includes, add the following global
+variables:
+</p>     
+<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-9008r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float x1= 6.0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9010r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float x2= 2.3;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9012r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float x3= 7.3;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9014r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float x4= 7.1;</span></span></pre>
+<!-- l. 318 --><p class='noindent'>Then inside your CPU timer 2 interrupt function add this nonsense code:
+</p>     
+<pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-9016r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>x4 = x3 + 2.0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9018r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>x3 = x4 + 1.3;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9020r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>x1 = 9*x2;</span></span> 
+<span class='fancyvrblineno'><a id='x1-9022r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>x2 = 34*x3;</span></span></pre>
+<!-- l. 327 --><p class='noindent'>Build and load your code. Add a breakpoint to your code by double clicking on the left gray margin of your source
+file. A breakpoint is a location where the program will literally halt during execution. This allows you to check the
+values of your variables during operation. After a breakpoint, you can single step through your code (F5) and watch
+the variables update as different calculations are performed. You remove breakpoints by again clicking in the left
+gray margin.
+</p>     
+</li>
+<li class='enumerate' id='x1-9024x4'>
+                                                                                                       
+                                                                                                       
+     <!-- l. 328 --><p class='noindent'>If you happened not to receive any compiler errors during any of the above exercises, you should intentionally add
+     some errors to your code so that you will see how CCS will alert you during the build process. Try double clicking on
+     the error message. The editor will then take you to the line of code that has the error. <a id='x1-9025r9'></a></p><a id='checkoff-9'></a><div aria-labelledby='checkoff-label-9' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='9' id='checkoff-box-9' type='checkbox' /> <label for='checkoff-box-9' id='checkoff-label-9'>TA Check-Off 9: Breakpoints and the Watch
+Window</label></p><div class='checkoff-body'>
+<!-- l. 331 --><p class='noindent'>Demonstrate that you know how to use Breakpoints and the Watch Window to debug your source code.
+</p>     
+</div></div>
+</li></ol>   
+
+<h3 class='likesectionHead' id='exercise-5-'> <a id='x1-10000'></a>Exercise 5 </h3>
+<p id='exercise-5'><a id='Q1-1-21'></a>
+<!-- l. 337 --></p><p class='noindent'>For many of our lab assignments we will want to have at least one of our timers running at a fast periodic rate. Most of
+the time that will be somewhere between a period of 1ms to 5ms. I would not be surprised though, if some of your projects
+will require you to run code at an even faster rates and the F28379D can definitely handle periodic rate of 0.1ms to
+0.02ms. For this exercise, use a period of 1ms. which can also be stated as a sample frequency of 1Khz.
+Change CPU Timer 2’s period to 1ms in order that CPU Timer 2’s interrupt function is call once every
+millisecond.
+</p><!-- l. 339 --><p class='indent'>   The F28379D can perform a large number of instructions every 1ms, but there are some things you do not want the
+processor performing every 1ms. For example the printing to the robot’s text LCD, if we printed every 1ms our eyes
+would not be able to see all the text spilling to the screen. Also calling the <span class='rm-lmtt-10x-x-109'>SetLEDsOnOff() </span>function every 1ms would
+cause a blur if LED changes. Add code to your CPU Timer 2 interrupt function to only print every 100<sup class='textsuperscript'><span class='rm-lmr-10'>th</span></sup> time the
+function is called. The % (mod) operator is perfect for this. Mod returns the remainder of an integer divided by another
+integer. i.e. (56 % 5) = 1. Using “<span class='rm-lmtt-10x-x-109'>numTimer2calls</span>” that you are incrementing every time in the timer interrupt, write an
+if statement with a % (mod) condition that causes the if statement to be true every 100<sup class='textsuperscript'><span class='rm-lmr-10'>th</span></sup> time in the timer interrupt.
+Inside this if statement, perform all code that makes sense to run at the slower rate. <a id='x1-10001r10'></a></p><p><a id='checkoff-10'></a></p><div aria-labelledby='checkoff-label-10' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='10' id='checkoff-box-10' type='checkbox' /> <label for='checkoff-box-10' id='checkoff-label-10'>TA Check-Off 10: 1 ms timer period
+code</label></p><div class='checkoff-body'>
+<!-- l. 342 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demo this to your TA.</span> </p></div></div>
+<!-- l. 345 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Now that you are done with the lab power off your Raspberry Pi by </span>going back to the Putty terminal that is
+connected to your PI and typing “<code class='lstinline'><span style='color:#000000'>sudo shutdown now</span></code>”. This will shutdown the Pi and it takes about 5 seconds or so to
+shutdown.
+
+</p>   
+<h3 class='likesectionHead' id='lab-check-off'>  <a id='x1-11000'></a>Lab Check Off</h3>
+<!-- l. 349 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-11002x1'>Demonstrate your LabVIEW programming talking back and forth to your robot’s Raspberry Pi board.
+</li>
+<li class='enumerate' id='x1-11004x2'>Demonstrate your first application that continually checks the status of the four pushbuttons and displays
+their current state on the five LEDs. One LED should always be off since there are only four push buttons.
+                                                                                                       
+                                                                                                       
+     </li>
+<li class='enumerate' id='x1-11006x3'>Demonstrate your second application that updates a counter every quarter second and outputs the least
+significant 5 bits of the count to the five LEDs. The count should stop if both pushbuttons 2 and 3 are
+pressed and resume when one or both of them are released.
+</li>
+<li class='enumerate' id='x1-11008x4'>Demonstrate that you know how to use Breakpoints and the Watch Window to debug your source code.
+</li>
+<li class='enumerate' id='x1-11010x5'>Demonstrate your 1ms timer period code working.
+</li>
+<li class='enumerate' id='x1-11012x6'>For your lab submission submit your working <span class='rm-lmbx-10x-x-109'>commented </span>code to Gradescope. Take time to add comments
+explaining what you understand is happening in the code you wrote and the functions in which your code
+is running. Please make it obvious in your submission which code is for each exercise. I do not want short,
+hard to understand, comments. Instead, I would like short paragraphs explaining the code you wrote.</li></ol>
+   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-12000'></a>Check-Off Summary</h3>
+<!-- l. 360 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: Meaning of the if statement</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off 2:
+LabVIEW talking to the Raspberry Pi</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: Largest CPU Timer period</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Why UARTPrint is set and
+cleared</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5: Two numbers printed on the LCD</a></li><li><input aria-labelledby='checkoff-sum-6' data-checkoff='6' type='checkbox' /> <a href='#checkoff-6' id='checkoff-sum-6'>Check-Off 6: SetLEDsOnOff counting in binary</a></li><li><input aria-labelledby='checkoff-sum-7' data-checkoff='7' type='checkbox' /> <a href='#checkoff-7' id='checkoff-sum-7'>Check-Off 7: Push
+buttons shown on the LEDs</a></li><li><input aria-labelledby='checkoff-sum-8' data-checkoff='8' type='checkbox' /> <a href='#checkoff-8' id='checkoff-sum-8'>Check-Off 8: Counter that stops with buttons 2 and 3</a></li><li><input aria-labelledby='checkoff-sum-9' data-checkoff='9' type='checkbox' /> <a href='#checkoff-9' id='checkoff-sum-9'>Check-Off 9: Breakpoints and the Watch
+Window</a></li><li><input aria-labelledby='checkoff-sum-10' data-checkoff='10' type='checkbox' /> <a href='#checkoff-10' id='checkoff-sum-10'>Check-Off 10: 1 ms timer period code</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 364 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

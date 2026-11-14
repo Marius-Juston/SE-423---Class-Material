@@ -247,5 +247,16 @@
     "warning": 4113
    }
   }
+ },
+ {
+  "date": "2026-11-14",
+  "errors": 0,
+  "warnings": 4113,
+  "by_tool": {
+   "pptx": {
+    "error": 0,
+    "warning": 4113
+   }
+  }
  }
 ]

@@ -1,0 +1,587 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 7</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab7.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab7.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #7</span>
+</p><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Robot Vision</span><br />
+<span class='rm-lmbx-10x-x-109'>Two Week Lab</span>
+</p><!-- l. 29 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 8</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+<!-- l. 31 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Import Note when Connecting OpenMV camera to Lab PC or your Laptop: Make sure there is no battery
+in the robot car when you have the robot’s OpenMV camera connected to something else than the on
+board Raspberry Pi 4. Also have your TA show you the best way to plug and unplug the OpenMV
+camera from the Raspberry Pi 4. A Dangling USB cable’s ground can short to the Robot’s
+power.</span>
+</p><!-- l. 33 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Also do not update the firmware of the OpenMV camera unless your instructor tells you it is 
+                                                                                                       
+OK.</span>
+   
+</p>   
+<h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-1000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 37 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>Start using the Final Project’s starter code. <s>This code uses the motion tracking system, OptiTrack, to help
+the robot keep track of its Pose.</s> This code also allows the robot to travel from one X, Y position to another
+X, Y position.
+</li>
+<li class='enumerate' id='x1-1004x2'>Learn to use the OpenMV camera. First program a simple blob detect algorithm. Then use the OpenMV’s
+<span class='rm-lmtt-10x-x-109'>find_blobs </span>function to find multiple blobs of a certain color.
+</li>
+<li class='enumerate' id='x1-1006x3'>Use the camera to find the distance a golf ball is away from the robot assuming that the golf ball is on the
+floor.
+</li>
+<li class='enumerate' id='x1-1008x4'>Add a state to the given code’s state machine that has the robot follow a colored golf ball when it is seen
+close to the robot. When the robot sees the golf ball large enough it knows that the ball is close so start
+following. When the golf ball disappears from the field of view of the camera, go back to X, Y point following.</li></ol>
+   
+<h3 class='likesectionHead' id='prelab'>  <a id='x1-2000'></a>Prelab</h3>
+<!-- l. 46 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>If you have not done so already, finish adding gridlines to your LABVIEW application to indicate the tiles
+in the robot’s arena. This was assigned at the end of Lab 6.</li></ol>
+   
+<h3 class='likesectionHead' id='laboratory-exercise'>  <a id='x1-3000'></a>Laboratory Exercise</h3>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='exercise-1-using-the-finalproject-starter-project-and-xy-control-'>  <a id='x1-4000'></a>Exercise 1: Using the FinalProject Starter Project and XY Control. </h3>
+<p id='exercise-1-using-the-finalproject-starter-project-and-xy-control'><a id='Q1-1-5'></a>
+<!-- l. 54 --></p><p class='noindent'>For this lab we are going to start with a starter project called “FinalProjectwithCANAprilStarter”. <span class='rm-lmri-10x-x-109'>Ask your instructor if
+there are any repository updates. If there are use Git document section “Course File Updates” to merge the updates.</span>
+Import the FinalProjectwithCANAprilStarter project into your CCS workspace. Use the hammer icon to make sure you
+can build this project. Also you will probably want to switch the build to “Flash” so that your program is ready to run
+when you reset the Red Board.
+</p><!-- l. 56 --><p class='indent'>   Let’s take a look at this code created with the FinalProjectwithCANAprilStarter. You will find, that for the most part
+it includes all the code you have developed in the previous labs. I moved much of the code into a library file in order to
+reduce the amount of code in the main C file. Open <span class='rm-lmtt-10x-x-109'>SE423Lib.h </span>and <span class='rm-lmtt-10x-x-109'>SE423Lib.c </span>to find all the functions you had created
+in previous labs.
+</p><!-- l. 58 --><p class='indent'>   Also notice there are some new source files <span class='rm-lmtt-10x-x-109'>MatrixMath.c </span>(Matrix functions for the Kalman filter) <span class='rm-lmtt-10x-x-109'>OptiTrack.c</span>
+(Motion tracking system support functions) and <span class='rm-lmtt-10x-x-109'>user_xy.c </span>(Control code to command the robot to X,Y
+positions.)
+</p><!-- l. 60 --><p class='indent'>   Finally take a look at the main C-file. Note, this code implements the Kalman filter to merge the OptiTrack (Motion
+Capture system) data with the Dead Reckoned ROBOTps position.
+</p><!-- l. 62 --><p class='indent'>   Find in <span class='rm-lmtt-10x-x-109'>main() </span>the <span class='rm-lmtt-10x-x-109'>while(1) </span>loop and notice how this code uses the pushbuttons to allow you to print more messages
+to the text LCD screen. When we run the code below, make sure to push the four buttons to see the different messages
+printed.
+</p><!-- l. 64 --><p class='indent'>   The flow of the code is the same as Lab 6: </p>
+<ul class='itemize1'>     
+<li class='itemize'>CPU Timer1 is called every 100ms and commands the LADAR to collect its 228 distance readings. 100ms
+is the fastest rate the LADAR can be commanded to produce readings. Also remember that distance index
+0 and index 227 should not be used as they are blocked by the handle rails of the robot.
+</li>
+<li class='itemize'>ADCC is triggered by EPWM4 every 1ms. ADCC reads the four readings of the LPR510 rate gyro sensor.
+Currently we are not using this sensor data but I left it here just in case it becomes useful in the final project.
+</li>
+<li class='itemize'>When ADCC’s four channels have converted, <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>is called. Here the ADCC four channels are read.
+In addition in <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>the SPIB communication with the MPU-9250 is initiated by writing the correct 8
+16bit words over SPIB along with pulling MPU-9250 SS (GPIO66) low to select the MPU-9250.
+</li>
+<li class='itemize'>Once 8, 16 bit, words have been received over SPIB the <span class='rm-lmtt-10x-x-109'>SPIB_ISR </span>is called. Here we read the IMU raw data
+and post <span class='rm-lmtt-10x-x-109'>SWI1_HighestPriority</span>.
+</li>
+<li class='itemize'>     
+<!-- l. 71 --><p class='noindent'>When priority permits, <span class='rm-lmtt-10x-x-109'>SWI1_HighestPriority </span>is called. Inside SWI1 will be where you develop most of you
+F28379D code for Lab 7 and the Final Project. Taking a look: </p>
+<ul class='itemize2'>          
+<li class='itemize'>The IMU raw data is scaled to acceleration in g and rates in degrees/second.
+                                                                                                       
+                                                                                                       
+          </li>
+          <li class='itemize'>Then the sensor zero values are found by the first 2 seconds doing nothing, the next 2 seconds summing
+up 2000 readings, at 4 seconds dividing the sum by 2000 to find the average zero and finally after four
+seconds subtract the zero value from the sensor reading.
+</li>
+<li class='itemize'>For the next 2000 samples (2 seconds) a new feature is added and that is finding an average value for
+integral drift. This is a factor that can be subtracted for the gyro integral to help even more with the
+drift of the gyro’s integral.
+</li>
+<li class='itemize'>Finally after 6 seconds all zeroing has finished and the control code can be run.
+</li>
+<li class='itemize'>Calculate gyro bearing
+</li>
+<li class='itemize'>Calculate wheel velocity
+</li>
+<li class='itemize'>Check to see if there is any new data from LinuxCMDapp, OpenMV camera data, LabVIEW data, or
+new data from OptiTrack (Motion capture data).
+</li>
+<li class='itemize'>Perform Dead Reckoning and Kalman Filter data fusion of the motion tracking data. For now just know
+that this works to find the best value for <span class='rm-lmtt-10x-x-109'>ROBOTps.x</span>, <span class='rm-lmtt-10x-x-109'>ROBOTps.y</span>, <span class='rm-lmtt-10x-x-109'>ROBOTps.angle</span>. I will be lecturing
+on this towards the end of the semester.
+</li>
+<li class='itemize'>Then here after ROBOTps is found, is where you will be developing most of your code for Lab 7 and
+the final project. The function <span class='rm-lmtt-10x-x-109'>xy_control </span>is called to command the robot to a new X,Y coordinate.
+Then the control state machine, switch case statement is used to transition between the many states
+the robot can have. In each of these states you are making the decision of what “vref” and “turn” are
+equal to, to make the robot perform correctly. Right now there are only three states: 1: commanding
+the robot to an X, Y point in the course, 10: Wall Following if an obstacle gets in the way of the robot.
+Currently the robot walls follows for a minimum of 5 seconds then tries go back to driving towards an
+X, Y point. 20: Follow at Orange or Purple golf ball. There is no code here currently and neither state
+1 or state 10 transition to this state. You will be developing this code later in this lab.
+</li>
+<li class='itemize'>After  the  state  machine  switch  case  statement,  notice  that  <span class='rm-lmtt-10x-x-109'>PIcontrol() </span>is  called.  This  function
+implements the PI speed control of lab 5. Your code MUST call this <span class='rm-lmtt-10x-x-109'>PIcontrol() </span>function every time
+<span class='rm-lmtt-10x-x-109'>SWI1_HighestPriority </span>is called (every 1ms) for your wheel motors to run correctly.</li></ul>
+</li>     
+<li class='itemize'>Just as in Lab 6 <span class='rm-lmtt-10x-x-109'>SWI2_MiddlePriority() </span>processes the LADAR data.
+                                                                                                       
+                                                                                                       
+     </li>
+     <li class='itemize'><span class='rm-lmtt-10x-x-109'>SWI3_LowestPriority() </span>is currently not used and you can find a purpose for it in the final project.</li></ul>
+<!-- l. 90 --><p class='noindent'>Now you are ready to flash your F28379D board with the code and see how the robot is controlled with this starter code.
+<s>Before you can run this code your instructor needs to show you how to setup and start the motion tracking system called
+the OptiTrack system. Steps below are to remind you:</s>
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-4002x1'>     
+<!-- l. 93 --><p class='noindent'><s>Log into the Motion Tracking PC with username “dan5” and password “f33dback5”.</s> </p><figure class='figure' id='x1-4003r1'><span id='motive-sampleclient-and-ge423python-icons-on-the-motion-tracking-pc'></span> 
+ <img alt='Three shortcut icons
+on a black Windows desktop, in the top right corner of the screen. Top row: “GE423Pyth... - Shortcut” on
+the left and “Motive” on the right. Below them on the right: “SampleClie... - Shortcut”. These are the
+three programs started in the steps of this list.' height='177' src='Labs/Figures/Lab7/motive_desktop_icons.png' width='162' /> 
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Motive, SampleClient and GE423Python icons on the Motion Tracking PC                         </span></figcaption><!-- tex4ht:label?: x1-4003r1  -->
+</figure>     
+</li>
+<li class='enumerate' id='x1-4005x2'>     
+<!-- l. 106 --><p class='noindent'><s>Run the Application “Motive”. Icon in top right corner of left monitor.</s>
+</p>          
+<ol class='enumerate2' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-4007x1'><s>Inside Motive a Pop Up window will display and select “Open Existing Project” and select the most
+current project that starts with “SE423….” To give you some more space move the Motive application
+to the right monitor.</s>
+</li>
+<li class='enumerate' id='x1-4009x2'><s>Then double click the “SampleClient –Shortcut” icon, also in the top right corner. Wait for this terminal
+to start displaying a bunch of data really fast.</s>
+</li>
+<li class='enumerate' id='x1-4011x3'><s>Then finally double click the “GE423Python – Shortcut” icon, also in the top right corner. Wait for
+this terminal to start displaying the coordinates of the robots it sees in the course.</s>
+</li>
+<li class='enumerate' id='x1-4013x4'><s>Now you are ready to run your robot. The Raspberry Pi application “serial_COMandOpti” receives
+the motion tracking data and sends it to the F28379D board.</s></li></ol>
+</li></ol>
+<!-- l. 117 --><p class='noindent'><s>Once OptiTrack is running</s>, you can try out this code. </p>
+                                                                                                       
+                                                                                                       
+     <ul class='itemize1'>
+     <li class='itemize'>Flash this starter code to your F28379D board.
+</li>
+<li class='itemize'>Next, <s>to receive the motion tracking data</s>, you will need to run “serial_COMandOpti” on your Raspberry
+PI4. Pull up a ssh or putty session and in your PI4 folder run serial_COMandOpti.
+</li>
+<li class='itemize'>In another ssh or putty session run the LVCOMApp so you LABVIEW program can draw where your robot
+is located in the course.
+</li>
+<li class='itemize'>Run your LabVIEW program from Lab 6 (with grid lines).
+</li>
+<li class='itemize'>Now place your robot at x=0, y=0 and theta=0 <s>anywhere in the course</s> and press its yellow reset button.
+Wait the eight seconds for the robot to initialize its sensors and the flip on the motor amplifier switch to start
+the robot. NOTE: you should notice that the blue LED on the red board stops blinking when the sensors
+have found their zero values.
+</li>
+<li class='itemize'>Once your robot’s motors have been turned on, the robot should go to X, Y -4, 10; then -4, 2; then 0, 2;
+then 0, -3; then 0, 2; then 4, 2; then 4, 10; then 0, 9; and then repeat.
+</li>
+<li class='itemize'>After your robot has repeated its X, Y points a few times but a single 2ft by 2ft obstacle in its path. How
+well does it avoid the obstacle?
+</li>
+<li class='itemize'>     
+<!-- l. 127 --><p class='noindent'>Study the code a bit more to see how this X, Y control code is working. Find the <span class='rm-lmtt-10x-x-109'>robotdest </span>array in your code.
+Look in <span class='rm-lmtt-10x-x-109'>main() </span>for the values its elements are initialized to. The function <span class='rm-lmtt-10x-x-109'>xy_control() </span>returns 1 (or
+true) whenever the robot has reached within 0.5 feet of the desired X, Y point. <a id='x1-4014r1'></a></p><a id='checkoff-1'></a><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: Explain the waypoint
+code</label></p><div class='checkoff-body'>
+<!-- l. 130 --><p class='noindent'>Look at the call to <span class='rm-lmtt-10x-x-109'>xy_control() </span>in <span class='rm-lmtt-10x-x-109'>SWI1_HighestPriority() </span>and figure out and <span class='rm-lmbx-10x-x-109'>Explain to your Instructor</span>
+how the code moves from one point to another point listed in the <span class='rm-lmtt-10x-x-109'>robotdest </span>array. </p></div></div>
+<!-- l. 133 --><p class='noindent'><span class='rm-lmtt-10x-x-109'>NUMWAYPOINTS </span>is currently defined as 8. Change it to 10 and add two more way points (X, Y points) in the
+path for the robot to traverse. Feel free to add the points anywhere in the array. <a id='x1-4015r2'></a></p><a id='checkoff-2'></a><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: Robot drives ten
+waypoints</label></p><div class='checkoff-body'>
+<!-- l. 136 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo this working to your Instructor.</span> </p></div></div>
+</li></ul>   
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='exercise-2-up-and-running-with-openmv-cam-hello-world-'> <a id='x1-5000'></a>Exercise 2: Up and Running with OpenMV Cam Hello World </h3>
+<p id='exercise-2-up-and-running-with-openmv-cam-hello-world'><a id='Q1-1-8'></a>
+<!-- l. 142 --></p><p class='noindent'>In this exercise, we’ll get started working with the OpenMV Cam. The OpenMV project began in 2013, when Ibrahim
+Abdelkader took it upon himself to build a small, affordable, expandable machine vision module. Unlike the
+microcontrollers we’re used to working with in SE423, the OpenMV uses MicroPython, a lightweight version of Python 3
+that includes a small subset of the Python standard library and is optimized to run on microcontrollers. In
+addition to the standard MicroPython libraries, the OpenMV camera includes extensive machine vision and
+image processing libraries. To easily interface with the device, debug code, and capture snapshots to find
+color thresholds, the OpenMV team created an IDE. The IDE is available at OpenMV’s downloads page:
+</p>
+<div class='center'>
+<!-- l. 144 --><p class='noindent'>
+</p><!-- l. 145 --><p class='noindent'><a class='url' href='https://openmv.io/pages/download'><span class='rm-lmtt-10x-x-109'>https://openmv.io/pages/download</span></a></p></div>
+<!-- l. 148 --><p class='noindent'>Specs (If you’re curious): The OpenMV H7 Plus camera features a STM32H743VI ARM Cortex M7 processor
+running at 480 MHz. It incorporates 1MB static RAM and 2MB of flash storage. Its MT9M114 image sensor can
+record up to 640x480 8-bit images at 40fps, and 320x240 (or lower) images at 80fps. The standard lens 2.1mm,
+but can be replaced with specialized lenses thanks to an M12 lens mount. Other features of the board include a
+12-bit ADC and DAC, 3 I/O pins for servo control, and interrupts and PWM on the board’s 10 I/O pins. </p><figure class='figure' id='x1-5001r2'><span id='openmv-cam-board-and-pinout'></span> 
+
+<img alt='Pinout card of the OpenMV Cam (by Ibrahim Abdelkader and Kwabena W. Agyeman, https://openmv.io): a
+photo of the red camera board with its lens, with the two pin headers labelled. Left header, top to bottom: P0
+(PB15, SPI 2 MOSI, UART 1 RX), P1 (PB14, SPI 2 MISO, UART 1 TX), P2 (PB13, SPI 2 SCLK, CAN2 TX),
+P3 (PB12, SPI 2 SS, CAN2 RX), P4 (PB10, UART 3 TX, I2C 2 SCL), P5 (PB11, UART 3 RX, I2C 2 SDA), P6
+(PA5, ADC, DAC), and the 3.3V rail (250 mA supply max). Right header, top to bottom: Reset (connect to
+GND to reset), BOOT 0 (connect to 3.3V for DFU mode), Frame Sync, P9 (PD14, Servo 3, TIM4 CH3), P8
+(PD13, Servo 2, TIM4 CH2, I2C4 SDA), P7 (PD12, Servo 1, TIM4 CH1, I2C4 SCL), VIN (3.6V to 5V), and the
+GND rail. Notes on the card: LED1 red, LED2 green, LED3 blue, LED4 IR; all pins are 5V tolerant with a 3.3V
+output (P6 is not 5V tolerant in ADC or DAC mode) and can sink or source up to 25 mA, up to 120 mA in
+total; maximum current used is under 150 mA without and under 250 mA with a micro SD card.' height='213' src='Labs/Figures/Lab7/openmv_cam_pinout.png' width='379' /> 
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>OpenMV Cam board and pinout                                                                </span></figcaption><!-- tex4ht:label?: x1-5001r2  -->
+</figure>
+<!-- l. 161 --><p class='indent'>   First, fire up the IDE on the workstation computers or your laptop. It is ideal if each team has at least one laptop with
+the IDE installed so that you can work with the camera while it’s on the robot on the floor. You will need to capture
+images of golf balls on the ground to program the color thresholds, and this process is easier if you can directly connect the
+camera to your laptop.
+</p><!-- l. 163 --><p class='indent'>   <span class='rm-lmri-10x-x-109'>When you first open the IDE, you may receive pop up windows asking to update software. On the lab PCs do not
+perform the updates. On your laptop you can perform the updates. Also when you connect the camera to the IDE in steps
+below it will ask you to update the firmware of the camera. Unless your instructor asks you too, </span><span class='rm-lmbxi-10x-x-109'>do not update the
+OpenMV’s firmware. </span><span class='rm-lmri-10x-x-109'>Thanks.</span>
+</p><!-- l. 165 --><p class='indent'>   When you first open the IDE, you’ll see the following window: </p><figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 176 --><p class='noindent' id='openmv-ide-window-code-editor-frame-buffer-preview-histogram-connect-button-start-button-and-serial-terminal'><img alt='The OpenMV IDE window with helloworld_1.py open, with six parts labelled. “Code Editor”: the large dark
+panel on the left showing the Python script. “Frame Buffer Preview”: the panel in the top right corner, currently
+showing “No Image”. “Histogram”: the panel below the frame buffer preview, with three empty histograms
+(RGB Color Space) and their Mean, Median, Mode, StDev, Min, Max, LQ and UQ values. “Connect Button”
+and “Start Button”: the two icons at the bottom of the left toolbar, marked with red boxes; the connect button
+(a plug) is above the start button (a play arrow). “Serial Terminal”: the tab at the bottom left of the window,
+next to “Search Results”, marked with a red box.' height='296' src='Labs/Figures/Lab7/openmv_ide_window_labeled.png' width='542' /> <a id='x1-5002r3'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>OpenMV IDE window: Code Editor, Frame Buffer Preview, Histogram, Connect Button, Start Button
+and Serial Terminal                                                                                     </span></figcaption><!-- tex4ht:label?: x1-5002r3  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+<!-- l. 180 --><p class='indent'>   The “helloworld.py” script is automatically opened in the editor. Basic file commands such as copy and paste are in
+the leftmost panel. The “Connect” and “Start” buttons are on the bottom left, as is the “Serial Terminal” button. You’ll
+need to press this to open the serial terminal and view the output of “print()” statements in your code. The frame buffer
+preview panel is in the top right corner. When code is running on the OpenMV camera, the image currently stored in the
+module’s frame buffer is displayed here. Beneath the frame buffer preview panel is the “Histogram” panel. You can use
+the dropdown to view the histograms in different color spaces. The IDE also includes some useful information beneath
+the “Histogram” panel. When a camera is connected, it will display information about the camera, the
+camera’s COM port, the drive that exposes the camera’s flash memory or SD card, and the camera’s frame
+rate.
+</p><!-- l. 182 --><p class='indent'>   With the robot powered off and its battery removed, remove the USB cable connecting the camera to the Raspberry Pi
+from the camera and connect the camera to the Desktop PC or your laptop. You can use the USB cable that we use to
+connect to the JTAG for the RedBoard. When the camera boots up, it will appear as a USB storage device on the
+computer. You can use the file explorer to move programs and assets to the camera as well as interact with image saved to
+the camera’s SD card.
+</p><!-- l. 184 --><p class='indent'>   Press the connect button in the bottom left of the window (or press Cntrl+E). The “Start” button will turn green,
+indicating that you can now run the program in the code editor. Also notice that the information in the bottom right of
+the IDE window is updated. Note the COM port and drive location.
+</p><!-- l. 186 --><p class='indent'>   Now, press the “Start” button (Cntrl+R). The “helloworld.py” example runs a while loop that captures an image on
+each iteration using the <span class='rm-lmtt-10x-x-109'>sensor.snapshot() </span>method. This command stores an image in the frame buffer, which you
+should see in the frame buffer preview window.
+</p><!-- l. 188 --><p class='indent'>   The frame resolution and pixel format are set using the <span class='rm-lmtt-10x-x-109'>sensor.set_framesize() </span>and <span class='rm-lmtt-10x-x-109'>sensor.set_pixformat()</span>
+methods. Many more camera settings can be adjusted in the sensor library. See the docs here: </p>
+<div class='center'>
+<!-- l. 190 --><p class='noindent'>
+</p><!-- l. 191 --><p class='noindent'><a class='url' href='https://docs.openmv.io/library/omv.sensor.html'><span class='rm-lmtt-10x-x-109'>https://docs.openmv.io/library/omv.sensor.html</span></a></p></div>
+<!-- l. 194 --><p class='noindent'>Now, we’re going to capture a test image that we’ll use to set the color threshold values. With no battery in your robot,
+place the robot on the floor with a few orange and purple golf balls in the camera’s field of view and connect the camera
+to the OpenMV IDE. Make sure two colored golf balls are close to the camera and two are farther away. For color tracking
+OpenMV examples recommend that “auto gain” and “auto white balance” be disabled. So you need to add code to the
+Hello World program. But be sure to change the name of the helloworld program because the OpenMV IDE seems to
+rewrite the default <span class='rm-lmtt-10x-x-109'>helloworld_1.py </span>file over the top of one that you have saved. The best place to save your OpenMV
+files is in your “workspace\OpenMV” folder. The code you need to add after the <span class='rm-lmtt-10x-x-109'>sensor.set_framesize </span>command
+is:
+</p>   
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-5004r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'># must be turned off for color tracking</span></span> 
+<span class='fancyvrblineno'><a id='x1-5006r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>sensor.set_auto_gain(False,gain_db=11.4801)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5008r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>sensor.set_auto_whitebal(False) # must be turned off for color tracking</span></span></pre>
+<!-- l. 202 --><p class='noindent'>You can play with the <span class='rm-lmtt-10x-x-109'>gain_db </span>value if you want but 11.4801 seems to work pretty well. Run this code and you
+will notice that the picture is a bit darker than before these lines were added. Also notice that if you right
+click on the displayed picture you can save the picture to a file. This will be useful in the future when you
+want to take a number of pictures of how the camera views colors in different locations of the robot’s work
+area.
+</p><!-- l. 204 --><p class='indent'>   Before we go to the next step of finding a good LAB threshold value for these two golf ball colors it is nice to first find
+an approximate LAB range for each color. To find a LAB starting range, while OpenMV is displaying your image with the
+golf balls present on the floor, with your mouse click and drag a small box that just includes pixels with the color you want
+a LAB threshold range. Once you do this the histogram displayed on the right is just displaying the LAB range of the
+pixels inside that box. Look at the Min and Max values of the histogram and that will tell you a starting range for your
+LAB threshold. Do this for both colors and write down this initial LAB threshold before going on to the next
+paragraph.
+                                                                                                       
+                                                                                                       
+</p><!-- l. 206 --><p class='indent'>   To find a more precise threshold range for both of your colors there is a threshold editor tool that you can use. First make sure
+the “Zoom” button under the image is not clicked and have your code running viewing the golf balls. In the IDE, navigate to
+Tools<!-- l. 206 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Machine
+Vision<!-- l. 206 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Threshold
+Editor and a dialog will pop up giving you a selection of either the Frame Buffer or an Image File. Select Frame Buffer and
+the current image will be brought into the Threshold Editor tool. <span class='rm-lmri-10x-x-109'>But note you could have opened an image file you saved
+which may be useful in the future. </span>This will open a window containing your source image on the left and a binary
+image on the right. In the binary image, white pixels are in the threshold and black pixels are not in the
+threshold. That is, you want your golf ball of interest to be white and everything else to be black. Use the
+min/max sliders for the L, A, and B channels to adjust the threshold. Recall from lecture that the “L”
+channel is lightness, the “A” channel ranges from green to magenta, and the “B” channel ranges from blue to
+yellow. Ask your instructor for some tips on finding the correct LAB ranges. When you are satisfied with the
+threshold, copy or write down the threshold values towards the bottom of the window. We will use these
+values in the blob search code so the camera knows which colors to look for. Do this for both color golf
+balls.
+
+</p>   
+<h3 class='likesectionHead' id='exercise-3-manual-blob-search-'>  <a id='x1-6000'></a>Exercise 3: Manual Blob Search </h3>
+<p id='exercise-3-manual-blob-search'><a id='Q1-1-12'></a>
+<!-- l. 210 --></p><p class='noindent'>Next, we’ll create a crude blob search program that scans through each pixel in the image and recolors all pixels, within
+the threshold, to black. It also calculates the centroid of the detected pixels and draws crosshairs at that
+location.
+</p><!-- l. 212 --><p class='indent'>   First step is to copy the OpenMV starter files to your workspace folder. In File Explorer, find your repo’s folder and
+explore into “OpenMV”. Copy the three .py files and then explore to your “workspace\OpenMV” folder and paste the
+files there. <span class='rm-lmri-10x-x-109'>In “workspace\OpenMV” is where I recommend you save all your OpenMV files. This way when you
+add your CCS projects to Github by running “git add workspace” you will also be adding your OpenMV
+files.</span>
+</p><!-- l. 214 --><p class='indent'>   For this exercise you will load from “workspace\OpenMV” the file <span class='rm-lmtt-10x-x-109'>ManualBlob_STARTER.py</span>. In lines 7-14, assign your
+threshold values to the L, A, and B min and max values. Recall that the order of the six threshold values is: <span class='rm-lmtt-10x-x-109'>(L_min,
+L_max, A_min, A_max, B_min, B_max)</span>. Scroll down to the main loop at line 30 and notice the same <span class='rm-lmtt-10x-x-109'>sensor.snapshot()</span>
+method used to store an image in the frame buffer. This method returns an “image” object that we can use to
+interact with the image. Next, you will need to create “worker variables” that you will use to calculate the
+centroid of all pixels within the threshold. Review your notes from lecture on what worker variables are
+needed.
+</p><!-- l. 216 --><p class='indent'>   Next in the code is the two nested for loops that iterate over the columns in the outer loop and rows in the inner
+loop. Within these loops, the <span class='rm-lmtt-10x-x-109'>image.get_pixel() </span>method is used to get the RBG value of the pixel at
+column=i, row=j. Next, the <span class='rm-lmtt-10x-x-109'>rgb_to_lab() </span>method is used to convert the RBG values to LAB values. In
+line 49, we check to see if the pixel falls within the threshold. If the pixel does fall inside the threshold,
+you will need to add this pixel to the sum of pixels already found within in the threshold. Your worker
+variables will be used to keep track of these pixels. Note: one of your worker variables will need to be called
+“<span class='rm-lmtt-10x-x-109'>pixel_cnt</span>”.
+</p><!-- l. 218 --><p class='indent'>   After the for loops, use your worker variables to calculate the centroid of the image. <span class='rm-lmtt-10x-x-109'>X_cent = ? </span>and <span class='rm-lmtt-10x-x-109'>Y_cent =
+?</span>
+</p><!-- l. 220 --><p class='indent'>   Once you’ve made the required changes, connect to the camera and run the program. You should see an image in the
+frame buffer preview along with the centroid and frames per second printed to the serial terminal. Verify that the
+correct pixels were detected, that is, the region of interest is black, and notice the white crosshairs in the
+center of the detected region. Also notice that this program runs very slowly. Looping over an image like
+this is very inefficient, especially when implemented in a relatively slow language like Python. In the next
+                                                                                                       
+                                                                                                       
+exercise, we’ll see how OpenMV’s built-in blob search algorithm can get the job done much faster. One
+quick additional exercise: instead of painting the pixels within the threshold black, paint these pixels green
+instead.
+
+</p>   
+<h4 class='likesubsectionHead' id='multiblob'>  <a id='x1-7000'></a>MultiBlob</h4>
+<!-- l. 224 --><p class='noindent'>For this exercise you will use/open another python (.py) file you already copied to your “workspace\OpenMV” folder,
+MultiBlobtwoColorwithLCDQQVGA_firmware4_5_9.py. This script uses the <span class='rm-lmtt-10x-x-109'>image.find_blobs </span>method to find the three
+largest blobs that fall within two color thresholds. In addition to highlighting the blobs and drawing crosshairs at the
+centroids, it sends the areas and centroids over UART to the RedBoard. For now, we can ignore the communication
+protocol while we modify our vision algorithm. First, enter both of your color thresholds values into the
+“<span class='rm-lmtt-10x-x-109'>threshold1</span>” and “<span class='rm-lmtt-10x-x-109'>threshold2</span>” variables. Connect the camera again and run the script. You should see a
+rectangle drawn around the desired object with a cross hair in the center. Notice how much more quickly the
+built-in blob search algorithm performs and notice the frames per second (fps) printed to the terminal.
+We have a few additional knobs here to adjust the blob search algorithm. The “<span class='rm-lmtt-10x-x-109'>pixels_threshold</span>” and
+“<span class='rm-lmtt-10x-x-109'>area_threshold</span>” arguments of the ”<span class='rm-lmtt-10x-x-109'>find_blobs</span>” method set a minimum allowable area for the number of pixels in the
+blob and the area of the blob, respectively. If the algorithm doesn’t find the object, try reducing these
+threshold values until it reliably finds the object. If the algorithm picks up extraneous blobs smaller than the
+desired object, try increasing the values. If none of these methods work, you may need to go back and verify
+your threshold values. Play with these two thresholds so you see how they work. <a id='x1-7001r3'></a></p><p><a id='checkoff-3'></a></p><div aria-labelledby='checkoff-label-3' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='3' id='checkoff-box-3' type='checkbox' /> <label for='checkoff-box-3' id='checkoff-label-3'>TA Check-Off 3: MultiBlob finds the golf
+balls</label></p><div class='checkoff-body'>
+<!-- l. 227 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate this code working to your TA.</span> </p></div></div>
+   
+<h3 class='likesectionHead' id='exercise-4-interfacing-with-f28379d-board-and-distance-calculation-this-section-will-be-finished-week-two-'> <a id='x1-8000'></a>Exercise 4: Interfacing with F28379D Board and Distance Calculation (This section will be finished Week Two)
+</h3>
+<p id='exercise-4-interfacing-with-f28379d-board-and-distance-calculation-this-section-will-be-finished-week-two'><a id='Q1-1-15'></a>
+<!-- l. 232 --></p><p class='noindent'>In the previous exercises you used the OpenMV’s IDE to debug and download micro-Python programs to the OpenMV
+board. We will again use this IDE to modify starter code to search for both orange and light purple golf balls. After we
+have our OpenMV code ready to run continuously, the below steps will explain how to save the Python code on the
+OpenMV’s SD card so that when it is either powered on or reset, with a press of the reset button, it will be the default
+code running.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>The     OpenMV     code     we     will     use     for     Ex.     4     and     Ex.5     is     again     the     file
+MultiBlobtwoColorwithLCDQQVGA_firmware4_5_9.py. Open this file in the OpenMV IDE. Again it will
+be the best if you can use your own laptop to run the OpenMV IDE so you can move the robot to the floor.
+Either copy the MultiBlobtwoColorwithLCDQQVGA_firmware4_5_9.py file to your laptop or pull the latest
+code in your repository. Looking through the given code, it performs the “<span class='rm-lmtt-10x-x-109'>find_blobs</span>” algorithm to search
+for two color thresholds. It then sends the largest three blobs of <span class='rm-lmtt-10x-x-109'>threshold1 </span>and the largest three blobs of
+<span class='rm-lmtt-10x-x-109'>threshold2 </span>to the F28379D board over UART. If it does not find all three blobs of a color, it sends Area
+= 0, Column = 0, Row = 0 to indicate that this blob was not found. Also notice that the given thresholds
+are approximate ranges for orange and purple. As a first step change “<span class='rm-lmtt-10x-x-109'>threshold1</span>” so that it is the color
+range you found for the orange golf ball in Exercise 3. Change “<span class='rm-lmtt-10x-x-109'>threshold2</span>” to the range you found for the
+purple golf ball. Run this code from the OpenMV IDE and put the robot on the floor in the course. Put
+                                                                                                       
+                                                                                                       
+     both orange and purple balls in the field of view of the camera and make sure on the LCD screen that both
+     colors are found and cross hairs are placed on the blobs. Move the robot around the course and make sure
+     nothing else on the floor besides golf balls are recognized by the camera.
+</li>
+<li class='enumerate' id='x1-8004x2'>Now  that  the  OpenMV  code  seems  to  be  working  well,  we  would  like  to  make  this  code  the  default
+code  that  the  camera  runs  after  power  on  or  reset.  To  do  this  all  you  have  to  do  is  copy  this
+MultiBlobtwoColorwithLCDQQVGA_firmware4_5_9.py  to  the  OpenMV’s  SD  card  and  rename  the  file
+“<span class='rm-lmtt-10x-x-109'>main.py</span>”. When you connect the OpenMV camera to your laptop’s USB port, it should bring up a folder.
+This folder is OpenMV’s SD card. Look at the files and notice that one of the files is “<span class='rm-lmtt-10x-x-109'>main.py</span>.” So first
+copy your MultiBlobtwoColorwithLCDQQVGA_firmware4_5_9.py file to the OpenMV SD card. Then in the
+SD card delete the <span class='rm-lmtt-10x-x-109'>main.py </span>file. Finally rename <span class='rm-lmtt-10x-x-109'>MultiBlobtwoColorwithLCD.py </span>to <span class='rm-lmtt-10x-x-109'>main.py</span>. Once saved as
+<span class='rm-lmtt-10x-x-109'>main.py </span>you can either press the OpenMV’s reset button or unplug the OpenMV camera from USB and
+plug it back in. Once you do this your <span class='rm-lmtt-10x-x-109'>main.py </span>code will start running. Notice how the OpenMV’s blue
+LED is just on for a short burst about 2 times a second.
+</li>
+<li class='enumerate' id='x1-8006x3'>Before you go on and write code for the F28379D to receive this centroid data from the OpenMV camera,
+notice one more thing about the OpenMV camera. The OpenMV does not need to use a SD card. Remove
+the SD card from the camera and power on the OpenMV without the SD card. Notice that it also pulls
+open a folder. Also notice that the blue LED is blinking at a different rate. Technically you could copy your
+code to the <span class='rm-lmtt-10x-x-109'>main.py </span>file directly on the OpenMV and it would run the same as if you copied it to the SD
+card. When first working with the OpenMV we found ourselves copying code that we thought was bug free
+to <span class='rm-lmtt-10x-x-109'>main.py </span>but then found out later that we had some errors that caused the OpenMV to crash. For that
+reason I want you to leave the <span class='rm-lmtt-10x-x-109'>main.py </span>file that is on the OpenMV itself alone and only change the <span class='rm-lmtt-10x-x-109'>main.py</span>
+file that is on the SD card. When the SD card is inserted it is the only <span class='rm-lmtt-10x-x-109'>main.py </span>file that the OpenMV uses.
+But if you make a mistake in that <span class='rm-lmtt-10x-x-109'>main.py </span>file on the SD card you can power off the OpenMV camera,
+remove the SD card and power back on the OpenMV camera to see that the default <span class='rm-lmtt-10x-x-109'>main.py </span>code still runs.
+This makes for a good “sanity” check to see that the OpenMV is still working.</li></ol>
+<ul class='itemize1'>     
+<li class='itemize'>
+<!-- l. 241 --><p class='noindent'>Now let’s move to code on the F28379D board. The starter code is all set to read the centroid data sent from the
+OpenMV camera to the F28379D’s UART_SCIA. All you need to do is flash this starter code to the F28379D. Also
+your TA will show you how to plug the OpenMV camera’s USB port into one of the Raspberry PI’s
+USB ports. With the code flashed to the F28379D, place the robot on the floor in the course and
+press the reset button of the F28379D along with the reset button of the OpenMV. Once running
+put some golf balls in the camera’s view and you can see the “Max Blob Area, Max Blob Column
+Centroid, Max Blob Row Centriod” printed to the text LCD screen if you press button 1. The top line is
+the orange color and the second line is purple. Move the robot around a bit and notice the values
+changing on the text LCD. Put three purple and three orange balls in front of the robot and now
+press button 2. Notice the second largest blob coordinates are printed to the text LCD. Finally if you
+press button 3 the third largest blob coordinates are printed to the text LCD. <a id='x1-8007r4'></a></p><a id='checkoff-4'></a><div aria-labelledby='checkoff-label-4' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='4' id='checkoff-box-4' type='checkbox' /> <label for='checkoff-box-4' id='checkoff-label-4'>TA Check-Off 4: Blob data on the text
+LCD</label></p><div class='checkoff-body'>
+<!-- l. 244 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this working to your instructor.</span> </p></div></div>
+                                                                                                       
+                                                                                                       
+     </li>
+     <li class='itemize'>
+     <!-- l. 247 --><p class='noindent'>Now that you have areas and centroids printing to the text LCD (when you press the correct button), collect some
+data to find an equation that relates row centroid to the distance the golf ball is away from the robot. One very
+important assumption you will be making here is that the golf ball is always on the floor. Also since the camera has a
+fish eye lens, you will make sure the ball is in the center columns of the camera image. Ask your
+instructor for a yard stick and use it to measure the distance the center of the robot is away from the golf
+ball. Take measurements every 0.5 feet, starting at 1 foot, up to 4.5 feet away from the center of
+the robot. Record the distance from the robot and the row centroid at that distance. Then when
+you have the data recorded, use curve fitting in Matlab to find a good equation that calculates the
+distance in feet from the robot to the ball given the ball’s row centroid. This will not be a linear
+equation. Calculate this equation in your SWI1 function when a new centroid is found and every
+100ms print the distance the ball is away from the robot to the text LCD screen. <a id='x1-8008r5'></a></p><a id='checkoff-5'></a><div aria-labelledby='checkoff-label-5' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='5' id='checkoff-box-5' type='checkbox' /> <label for='checkoff-box-5' id='checkoff-label-5'>TA Check-Off 5: Distance to the golf
+ball</label></p><div class='checkoff-body'>
+<!-- l. 250 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demonstrate this working to your instructor.</span> </p></div></div>
+</li></ul>   
+
+<h3 class='likesectionHead' id='exercise-5-color-following-this-section-will-be-finished-week-two-'> <a id='x1-9000'></a>Exercise 5: Color Following (This section will be finished Week Two) </h3>
+<p id='exercise-5-color-following-this-section-will-be-finished-week-two'><a id='Q1-1-17'></a>     
+</p><ul class='itemize1'>
+<li class='itemize'>     
+<!-- l. 257 --><p class='noindent'>For this exercise you will start to implement RobotState 20 (Follow/Pickup Orange Golf ball) and
+RobotState 30 (Follow/Pickup Purple Golf ball). Looking at SWI1’s code you will notice there is an empty
+RobotState 20 case statement. You will be adding a case 30 later. For now let’s just focus on following
+the largest orange blob the OpenMV finds. For this reason at the line before the statement “switch
+(RobotState) {“, add “<span class='rm-lmtt-10x-x-109'>RobotState = 20</span>”. This will make the state machine code always run state
+20. Inside state 20 keep the code pretty simple for now. The goal is to follow the orange golf ball so
+it always stays in the center of the camera’s view. Because we are interested in the center of the
+camera’s view left to right, the following code will use the column centroid. Also since the goal is to
+keep the blob in the center columns of the camera’s view, it is nice to change the centroid so that
+zero is in the center of the view. So create a global float variable <span class='rm-lmtt-10x-x-109'>colcentroid </span>and since our camera
+image has 160 columns set it to <span class='rm-lmtt-10x-x-109'>colcentroid = MaxColThreshold1 - 80; colcentroid </span>will now
+be a value between -80 and 80. Additionally inside case 20 implement the following code listed as
+Pseudocode:
+</p>     
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-9002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>If MaxColThreshold1 == 0 || MaxAreaThreshold1 &lt; 3</span></span> 
+<span class='fancyvrblineno'><a id='x1-9004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Vref = 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-9006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Turn = 0</span></span> 
+<span class='fancyvrblineno'><a id='x1-9008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>Else</span></span> 
+<span class='fancyvrblineno'><a id='x1-9010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Vref = 0.75</span></span> 
+<span class='fancyvrblineno'><a id='x1-9012r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Turn = kpvision * (0 - colcentroid)</span></span> 
+<span class='fancyvrblineno'><a id='x1-9014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // start kpvision out as 0.05 and kpvision could need to be</span></span> 
+<span class='fancyvrblineno'><a id='x1-9016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // negative.</span></span></pre>
+<!-- l. 270 --><p class='noindent'>Run this code on the floor pushing an orange golf ball around making the robot follow. Tune your <span class='rm-lmtt-10x-x-109'>kpvision </span>value to
+make the robot flow nicely.
+</p>     
+</li>
+<li class='itemize'>     
+<!-- l. 271 --><p class='noindent'>With the robot being able to follow orange, modify RobotState 1 and RobotState 20 to do the following:
+                                                                                                       
+                                                                                                       
+          </p>
+          <ol class='enumerate1' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-9018x1'>Get rid of the hard coding of <span class='rm-lmtt-10x-x-109'>RobotState = 20 </span>at the top of the state machine code.
+</li>
+<li class='enumerate' id='x1-9020x2'>In RobotState 1, if MaxAreaTheshold1 is great than some area, switch to RobotState 20. To find this
+area, put the robot on the floor and move a golf ball towards the robot to the distance when you would
+want to start following towards the golf ball. Use this as the area to switch to RobotState 20.
+</li>
+<li class='enumerate' id='x1-9022x3'>In RobotState 20: here use the code you developed above that has the robot turn towards the golf ball
+and drive towards it keeping the largest orange blob in the center columns of the camera’s view. If
+MaxRowThreshold1 <!-- l. 277 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>&gt;</mo></mrow></math>
+“a large (bottom) row number” (you will need to play with this number) then switch to RobotState
+22.
+</li>
+<li class='enumerate' id='x1-9024x4'>In RobotState 22: set Vref and turn to zero to stop the robot. This is simulating you waiting for your
+gripper door to open. Keep track with a count variable how long you have been in RobotState 22. When
+1 second has gone by switch to RobotState 24.
+</li>
+<li class='enumerate' id='x1-9026x5'>In RobotState 24: set turn to zero and Vref to 0.5. Keep track with a count variable how long you have
+been in RobotState 24. When 1 second has gone by switch to RobotState 26.
+</li>
+<li class='enumerate' id='x1-9028x6'>In RobotState 26: set turn and Vref to 0. Keep track with a count variable how long you have been in
+RobotState 26. When 1 second has gone by switch back to RobotState 1 and the robot will continue
+to its X, Y point.
+</li>
+<li class='enumerate' id='x1-9030x7'>Using a similar count variable, modify RobotState 1 so that once you switch back to RobotState 1, you
+cannot switch to RobotState 20 or 30 (coming up in the next bullet) for 2 seconds.
+</li>
+<li class='enumerate' id='x1-9032x8'>Finally make sure “RobotState”, which is an <span class='rm-lmtt-10x-x-109'>int16_t</span>, is printed to the text LCD.
+</li>
+<li class='enumerate' id='x1-9034x9'>
+                                                                                                       
+                                                                                                       
+          <!-- l. 283 --><p class='noindent'><a id='x1-9035r6'></a></p><a id='checkoff-6'></a><div aria-labelledby='checkoff-label-6' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='6' id='checkoff-box-6' type='checkbox' /> <label for='checkoff-box-6' id='checkoff-label-6'>TA Check-Off 6: Robot follows an orange ball</label></p><div class='checkoff-body'>
+          <!-- l. 286 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this working to your instructor</span> </p></div></div>
+          </li></ol>
+</li>     
+<li class='itemize'>
+<!-- l. 290 --><p class='noindent'>Create a case 30, 32, 34, 36 that performs all the same steps as 20, 22, 24,26 but for purple and in case 1 switch to
+case 30 if the largest ball found was a purple golf ball. You will also have to change your case 1 switch to case 20 to
+check both orange and purple to see which is the largest if both are seen. <a id='x1-9036r7'></a></p><a id='checkoff-7'></a><div aria-labelledby='checkoff-label-7' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='7' id='checkoff-box-7' type='checkbox' /> <label for='checkoff-box-7' id='checkoff-label-7'>TA Check-Off 7: Robot follows orange and
+purple</label></p><div class='checkoff-body'>
+<!-- l. 293 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this working to your instructor.</span> </p></div></div>
+</li></ul>
+   
+<h3 class='likesectionHead' id='lab-check-off'> <a id='x1-10000'></a>Lab Check Off</h3>
+<p><a id='x1-10001r8'></a>   
+<a id='checkoff-8'></a></p><div aria-labelledby='checkoff-label-8' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='8' id='checkoff-box-8' type='checkbox' /> <label for='checkoff-box-8' id='checkoff-label-8'>TA Check-Off 8: Final waypoint and ball following</label></p><div class='checkoff-body'>
+<!-- l. 300 --><p class='indent'>   Show your TA the final F28379D program and LABVIEW program commanding the robot to go to the different x, y
+points and then if a golf ball is seen go towards the golf ball until it disappears. Stall for two seconds once it disappears
+and then return to commanding the robot to x, y points. </p></div></div>
+   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-11000'></a>Check-Off Summary</h3>
+<!-- l. 305 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: Explain the waypoint code</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off 2: Robot
+drives ten waypoints</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: MultiBlob finds the golf balls</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Blob data on the text LCD</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5:
+Distance to the golf ball</a></li><li><input aria-labelledby='checkoff-sum-6' data-checkoff='6' type='checkbox' /> <a href='#checkoff-6' id='checkoff-sum-6'>Check-Off 6: Robot follows an orange ball</a></li><li><input aria-labelledby='checkoff-sum-7' data-checkoff='7' type='checkbox' /> <a href='#checkoff-7' id='checkoff-sum-7'>Check-Off 7: Robot follows orange and purple</a></li><li><input aria-labelledby='checkoff-sum-8' data-checkoff='8' type='checkbox' /> <a href='#checkoff-8' id='checkoff-sum-8'>Check-Off
+8: Final waypoint and ball following</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 309 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

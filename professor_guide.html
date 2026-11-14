@@ -402,17 +402,20 @@ uv run tools/sync_deck_figures.py check</pre>
         </p>
 
         <h3 class="font-bold text-lg mb-3">Creating a new lab</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Copy this template and save it as <span class="ic">Labs/Lab4.tex</span> (or whatever number comes next):</p>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mb-3">Copy this template and save it as <span class="ic">Labs/Lab8.tex</span> (or whatever number comes next):</p>
 
         <div class="code-block p-4 text-sm mb-4">
           <button class="copy-btn" onclick="copyCode(this)">Copy</button>
           <pre>\documentclass[11pt]{article}
 
 \def\AssignmentMode{Lab}      % Do not change this for labs
-\def\HWNum{4}                 % Lab number
-\def\AssignmentText{Brief one-line description of the lab}
+\def\HWNum{8}                 % Lab number
 
 \input{header}                % Loads all shared formatting — do not move this line
+
+% Title box text. \CheckOffNotice adds "TA Check-Offs in this document: N".
+\def\AssignmentText{Brief one-line description of the lab \par
+\CheckOffNotice}
 
 \begin{document}
 
@@ -446,15 +449,45 @@ int main(void) {
 }
 \end{minted}
 
+\begin{checkoff}[Short title]  % Numbered red box with a tick box
+\textbf{Demo this working to your TA.}
+\end{checkoff}
+
+\section*{Check-Off Summary}
+
+Tick each box once your TA or instructor has checked you off.
+%
+\CheckOffSummary              % Lists every check-off of the lab
+
 \MakeFooter                   % Prints the reminder box at the bottom
 \end{document}</pre>
         </div>
+
+        <h3 class="font-bold text-lg mb-3">Marking check-offs</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">
+          Wherever students must show, demo or explain something to a TA or the instructor, put that sentence inside a
+          <span class="ic">checkoff</span> environment (it also works inside a list item, and in homeworks). It becomes a numbered
+          red call-out, "TA Check-Off 3: Short title", that cannot be overlooked, with a tick box students can click: a form field
+          in the PDF and the large-print PDF (it prints as an empty box), a checkbox in the HTML page (remembered in the browser)
+          and in the EPUB. <span class="ic">\CheckOffSummary</span> at the end lists them all, and
+          <span class="ic">\CheckOffNotice</span> in the title box says how many there are. The numbers are automatic, so
+          adding or moving a check-off never needs renumbering. The macros live in <span class="ic">checkoff.tex</span>.
+        </p>
+
+        <h3 class="font-bold text-lg mb-3">The original Word handouts</h3>
+        <p class="text-sm text-gray-700 dark:text-gray-300 mb-4">
+          Labs 1 to 7 and the final project were rebuilt from the instructor's Word handouts on the course website, word for
+          word. Each card on the site keeps an "Original handout" link (<span class="ic">original</span> and
+          <span class="ic">originalWord</span> in <span class="ic">data.labs</span>), and each
+          <span class="ic">Labs/*.tex</span> names its original in a comment at the top. When a Word handout changes, carry the
+          change over to the <span class="ic">.tex</span> by hand.
+        </p>
 
         <h3 class="font-bold text-lg mb-3">Registering the lab so CI compiles it</h3>
         <p class="text-sm text-gray-700 dark:text-gray-300 mb-2">Open <span class="ic">pdf-list.txt</span> and add a line for your new file:</p>
         <div class="code-block p-4 text-sm mb-4">
           <button class="copy-btn" onclick="copyCode(this)">Copy</button>
-          <pre>Labs/Lab4.tex</pre>
+          <pre>Labs/Lab8.tex</pre>
         </div>
 
         <div class="callout-danger rounded-lg p-4">
@@ -897,7 +930,7 @@ mkdir -p ~/.local/share/fonts &amp;&amp; cp fonts/*.otf ~/.local/share/fonts/ &a
             <tr><td>Change course name</td><td>Edit <span class="ic">\def\CourseCode</span> and <span class="ic">\def\CourseName</span> in <span class="ic">header.tex</span></td></tr>
             <tr><td>Change semester start date</td><td>Edit <span class="ic">\def\StartDate</span> in <span class="ic">timline.tex</span></td></tr>
             <tr><td>Add a lecture slide deck</td><td>Put <span class="ic">L23.pptx</span> in <span class="ic">Lectures/Slides/</span>, add entry to <span class="ic">data.lectures</span> in <span class="ic">site/index.html</span></td></tr>
-            <tr><td>Add a new lab</td><td>Create <span class="ic">Labs/Lab4.tex</span>, add card to <span class="ic">data.labs</span> in <span class="ic">site/index.html</span>. The current labs are published by the official course website, so they are not in <span class="ic">pdf-list.txt</span>; add a lab there only when this repo should build and publish it</td></tr>
+            <tr><td>Add a new lab</td><td>Create <span class="ic">Labs/Lab8.tex</span>, add card to <span class="ic">data.labs</span> in <span class="ic">site/index.html</span>. Add the file to <span class="ic">pdf-list.txt</span> so CI builds it (PDF, large print, HTML, EPUB); if it was rebuilt from a handout on the course website, link that with <span class="ic">original</span> / <span class="ic">originalWord</span></td></tr>
             <tr><td>Add a new homework</td><td>Create <span class="ic">Homeworks/HW7.tex</span>, add line to <span class="ic">pdf-list.txt</span>, add card to <span class="ic">data.hw</span> in <span class="ic">site/index.html</span></td></tr>
             <tr><td>Add a figure to the gallery</td><td>Put a <span class="ic">.tex</span> or <span class="ic">.svg</span> file in <span class="ic">Lectures/Figures/</span> — gallery updates automatically on next CI run</td></tr>
             <tr><td>Force a full rebuild</td><td>GitHub → Actions → Build LaTeX PDFs → Run workflow</td></tr>

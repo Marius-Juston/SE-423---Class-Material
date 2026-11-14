@@ -1,0 +1,90 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 7, RC Servo Test Program</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab7_RCServos.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab7_RCServos.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 34 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #7</span>
+</p><!-- l. 34 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>RCServo Test Program</span>
+</p><!-- l. 34 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 1</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+   
+<h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-1000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 38 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>                                                                                                       
+                                                                                                       
+<li class='enumerate' id='x1-1002x1'>Learn where to connect RC Servos to the robot and drive them with similar code you developed in HW #4.</li></ol>
+   
+<h3 class='likesectionHead' id='exercise-1-drive-rc-servos-connected-to-the-robot-'>  <a id='x1-2000'></a>Exercise 1: Drive RC Servos connected to the Robot </h3>
+<p id='exercise-1-drive-rc-servos-connected-to-the-robot'><a id='Q1-1-3'></a>
+<!-- l. 44 --></p><p class='noindent'>Your instructor will take you through all the coding for this exercise. You will be using a new “Starter” project called
+“FinalProjectwithCANAprilStarter”. You will be using this project starter in Lab 7 also.
+</p><!-- l. 46 --><p class='indent'>   The robot car can connect and drive five RC Servos (we will probably not use more than two). Your instructor
+will show you where to connect the RC Servos and that they are driven with PWM outputs EPWM3A,
+EPWM3B, EPWM5A, EPWM5B and EPWM6A. Perform the following steps to have the robot drive RC
+Servos:
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>     
+<!-- l. 49 --><p class='noindent'>In Timer2’s ISR, (which is called by default every 40ms.) Just call the function:
+</p>     
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-2004r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>PostSWI3();</span></span></pre>
+<!-- l. 55 --><p class='noindent'><span class='rm-lmri-10x-x-109'>This will cause the </span><span class='rm-lmtti-10x-x-109'>SWI3_LowestPriority </span><span class='rm-lmri-10x-x-109'>software interrupt to be called every 40ms. From here forward most of
+your code will need to be placed in the </span><span class='rm-lmtti-10x-x-109'>SWI1_HighestPriority </span><span class='rm-lmri-10x-x-109'>function. You can also place less important code in
+the </span><span class='rm-lmtti-10x-x-109'>SWI3_LowestPriority </span><span class='rm-lmri-10x-x-109'>function.</span>
+</p>     
+</li>
+<li class='enumerate' id='x1-2006x2'>     
+<!-- l. 56 --><p class='noindent'>In <span class='rm-lmtt-10x-x-109'>SWI3_LowestPriority</span>, first read the value of the encWheel:
+</p>     
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-2008r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>RCangle = readEncWheel();</span></span></pre>
+<!-- l. 62 --><p class='noindent'>Then call the five RC servo functions and pass <span class='rm-lmtt-10x-x-109'>RCangle </span>to each of them:
+</p>     
+<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-2010r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>setEPWM3A_RCServo(RCangle) //RCangle is a value from -90 to 90</span></span> 
+<span class='fancyvrblineno'><a id='x1-2012r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>setEPWM3B_RCServo(RCangle) //RCangle is a value from -90 to 90</span></span> 
+<span class='fancyvrblineno'><a id='x1-2014r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>setEPWM5A_RCServo(RCangle) //RCangle is a value from -90 to 90</span></span> 
+<span class='fancyvrblineno'><a id='x1-2016r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>setEPWM5B_RCServo(RCangle) //RCangle is a value from -90 to 90</span></span> 
+<span class='fancyvrblineno'><a id='x1-2018r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>setEPWM6A_RCServo(RCangle) //RCangle is a value from -90 to 90</span></span></pre>
+</li>
+<li class='enumerate' id='x1-2020x3'>     
+<!-- l. 72 --><p class='noindent'>Then print the value of <span class='rm-lmtt-10x-x-109'>RCangle </span>to the robot’s text LCD screen. Run your code. Now by spinning the encoder wheel
+in your hand, you can watch the text LCD screen and dial in the angle that moves the RC servos to certain angles.
+<a id='x1-2021r1'></a>     
+</p>
+<a id='checkoff-1'></a><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: All five RC servo connections</label></p><div class='checkoff-body'>
+<!-- l. 75 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this code working to your Instructor and test that all 5 RC Servo connections work.</span>
+</p>     
+</div></div>
+</li></ol>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='checkoff-summary'> <a id='x1-3000'></a>Check-Off Summary</h3>
+<!-- l. 81 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: All five RC servo connections</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 85 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

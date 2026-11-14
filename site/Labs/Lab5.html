@@ -1,0 +1,381 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 5</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab5.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab5.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 131 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #5</span>
+</p><!-- l. 131 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>DC Motor PI Speed Control and Robot Steering</span><br />
+<span class='rm-lmbx-10x-x-109'>One Week Lab</span>
+</p><!-- l. 131 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 7</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+   
+<h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-1000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 135 --><p class='noindent'>                                                                                                       
+                                                                                                       
+     </p>
+     <ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>Merge code from previous labs to produce code that samples both ADC channels and optical encoders for
+feedback and output’s PWM to control and drive the DC motors of the robot.
+</li>
+<li class='enumerate' id='x1-1004x2'>Learn to implement the PI control law to control the speed of the robot’s wheels.
+</li>
+<li class='enumerate' id='x1-1006x3'>Couple the PI controller for the left and right wheels in order to control both the speed and turn rate of the
+robot car.</li></ol>
+   
+<h3 class='likesectionHead' id='reading-before-lab'>  <a id='x1-2000'></a>Reading before Lab</h3>
+<!-- l. 143 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-2002x1'>Read through this entire lab.
+</li>
+<li class='enumerate' id='x1-2004x2'>Review your notes on the PID controller from the Continuous Control class you have taken, (SE320, ME360,
+ECE486, …). We will be implementing a PI control in this lab.</li></ol>
+   
+<h3 class='likesectionHead' id='laboratory-exercises'>  <a id='x1-3000'></a>Laboratory Exercises</h3>
+   
+<h3 class='likesectionHead' id='exercise-1-start-from-labstarter-but-merge-adcc-code-from-lab-4-'>  <a id='x1-4000'></a>Exercise 1: Start from Labstarter but Merge ADCC code from Lab 4 </h3>
+<p id='exercise-1-start-from-labstarter-but-merge-adcc-code-from-lab-4'><a id='Q1-1-5'></a>
+<!-- l. 152 --></p><p class='noindent'>First start out by creating a new project using LABstarter and rename in LAB5&lt;yourinitials&gt;. Then merge the ADCC
+code from Lab 4 into this labstarter. There are two ways you can accomplish this. One way would be to go through
+Lab 4’s Exercise 3 code and copy all the parts needed for sampling ADCC’s four gyro channels every
+1ms. The second way would be to copy the entire Lab 4 C file and paste over all the code for this new
+Lab 5 labstarter. Then you would need to go through this pasted code and remove all the code associated
+with ADCD (function generator) and ADCB (microphone). Either way you choose, take your time and
+                                                                                                       
+                                                                                                       
+go through your C code and make sure you have included all parts to sample ADCC channels C2, C3,
+C4 and C5 and have removed all the parts for ADCB and ADCD. Before you go on to Exercise 2, make
+sure to run this code and make sure it is working to sample the four ADCC channels every 1ms. Print
+every 100ms to the robot’s text LCD the degrees/second readings of ADCINC2, ADCINC3, ADCINC4
+and ADCINC5 after their respective “zeros” have been subtracted from the readings. Use the below item
+list to remind you what should be included: (All items are not necessarily listed here. Add other steps as
+needed.)
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-4002x1'>Setup EPWM4 and ADCC so that EPWM4 triggers four ADCC SOCs in order that channels C2, C3, C4
+and C5 are sampled every 1ms.
+</li>
+<li class='enumerate' id='x1-4004x2'>In ADCC’s ISR function convert the four channel’s values to volts.
+</li>
+<li class='enumerate' id='x1-4006x3'>For the first 2 seconds in <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>do nothing with the voltage readings allowing the IMU to settle in the
+case this was a power on cycle.
+</li>
+<li class='enumerate' id='x1-4008x4'>For the next 2 seconds sum up each channel’s reading and on the 2000<sup class='textsuperscript'><span class='rm-lmr-10'>th</span></sup> sample divide by 2000 to find the
+channel’s zero approximation.
+</li>
+<li class='enumerate' id='x1-4010x5'>Then for the remainder of calls to <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>take the channel’s voltage reading and subtract its zero value.
+Then multiply by the correct factor that converts the voltage reading to degrees/second.
+</li>
+<li class='enumerate' id='x1-4012x6'>Print these four readings to the text LCD every 100 ms.
+</li>
+<li class='enumerate' id='x1-4014x7'>     
+<!-- l. 161 --><p class='noindent'>Remember in <span class='rm-lmtt-10x-x-109'>main() </span>that you need to initialize:
+</p>          
+<ol class='enumerate2' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-4016x1'><span class='rm-lmtt-10x-x-109'>PieVectTable </span>with the <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>function and remove <span class='rm-lmtt-10x-x-109'>ADCD_ISR </span>and <span class='rm-lmtt-10x-x-109'>ADCB_ISR </span>if needed.
+                                                                                                       
+                                                                                                       
+          </li>
+<li class='enumerate' id='x1-4018x2'><span class='rm-lmtt-10x-x-109'>PIEIER1 </span>enabling the correct minor interrupt and disable the minor interrupt for ADCD and ADCB if
+needed.</li></ol>
+</li></ol>
+<p><a id='x1-4019r1'></a>
+<a id='checkoff-1'></a></p><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: Merged ADCC gyro sampling</label></p><div class='checkoff-body'>
+<!-- l. 170 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demo your code working to your TA.</span> </p></div></div>
+   
+<h3 class='likesectionHead' id='exercise-2-now-merge-lab3-code-to-achieve-open-loop-driving-of-the-robot-motors-and-calculate-speed-'> <a id='x1-5000'></a>Exercise 2: Now Merge Lab3 Code to Achieve Open Loop Driving of the Robot Motors and Calculate Speed.
+</h3>
+<p id='exercise-2-now-merge-lab3-code-to-achieve-open-loop-driving-of-the-robot-motors-and-calculate-speed'><a id='Q1-1-7'></a>
+<!-- l. 175 --></p><p class='noindent'>Exercise 2 is also a code merging exercise that will add all the PWM motor driving and optical encoder velocity
+calculations we performed in Lab 3. This code merge should be a bit easier as we do not have to worry about new
+interrupt functions.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-5002x1'>Copy  from  your  Lab  3  code  to  the  bottom  of  your  Lab  5  code  the  functions,  <span class='rm-lmtt-10x-x-109'>setEPWM1A</span>,  <span class='rm-lmtt-10x-x-109'>setEPWM2A</span>,
+<span class='rm-lmtt-10x-x-109'>init_eQEPs</span>, <span class='rm-lmtt-10x-x-109'>readEncLeft</span>, <span class='rm-lmtt-10x-x-109'>readEncRight</span>, <span class='rm-lmtt-10x-x-109'>readEncWheel</span>. Also make sure to copy the predefinitions of these
+functions towards the top of your Lab 5 code.
+</li>
+<li class='enumerate' id='x1-5004x2'>In <span class='rm-lmtt-10x-x-109'>main() </span>of your Lab 3 code find and copy your initializations of EPWM1 and EPWM2 and paste after
+the <span class='rm-lmtt-10x-x-109'>init_serial </span>functions in Lab 5’s code. Also make sure the call <span class='rm-lmtt-10x-x-109'>init_eQEP() </span>after these initializations
+of EPWM1 and EPWM2.
+</li>
+<li class='enumerate' id='x1-5006x3'>Copy all the global variables that you created in Lab 3 to calculate velocity of the left and right motor and
+command the PWM to the motors.
+</li>
+<li class='enumerate' id='x1-5008x4'>     
+<!-- l. 181 --><p class='noindent'>In Lab 3, you setup one of the CPU Timers to call its interrupt function every 1ms. In this lab I would like you to
+use the ADCC’s ISR function instead which is already being called every 1ms. Copy all the code
+you wrote in Lab 3 that was called every 1 ms in the CPU Timer into your <span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>function. The
+<span class='rm-lmtt-10x-x-109'>ADCC_ISR </span>code should be close to the following order: (again I may not list every step here, you add as
+needed)
+                                                                                                       
+                                                                                                       
+          </p>
+          <ol class='enumerate2' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-5010x1'>For the first 2 seconds when the ADCC readings are being ignored, simply call your <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and
+<span class='rm-lmtt-10x-x-109'>setEPWM2A </span>functions with zero passed to them so the motors do not move during those first 2 seconds.
+</li>
+<li class='enumerate' id='x1-5012x2'>In the same way for the 2<sup class='textsuperscript'><span class='rm-lmr-10'>nd</span></sup> 2 seconds also call the <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and 2A functions passing zero so the
+motors do not move.
+</li>
+<li class='enumerate' id='x1-5014x3'>          
+<!-- l. 186 --><p class='noindent'>Then from 4 seconds on
+</p>              
+<ol class='enumerate3' style='list-style-type:lower-roman'>
+<li class='enumerate' id='x1-5016x1'>Read the left and right wheel encoder values and scale to units of feet.
+</li>
+<li class='enumerate' id='x1-5018x2'>Use these wheel encoder values along with the previous encoder reading, 1 ms. prior, to calculate
+both the left and right wheel velocity in units of feet/second.
+</li>
+<li class='enumerate' id='x1-5020x3'>Read Encoder 3’s value. Here we are just using Encoder 3’s value as command to the motors, so
+set <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>equal to Encoder 3’s value like you did in Lab 3.
+</li>
+<li class='enumerate' id='x1-5022x4'>If you would like to copy your friction compensation code, you can here, but we are going to leave
+it commented out until exercise 3 when we implement PI speed control.
+</li>
+<li class='enumerate' id='x1-5024x5'>Copy your code that makes sure <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>are not greater than 10 or less than -10.
+</li>
+<li class='enumerate' id='x1-5026x6'>Call the <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and 2A functions passing them either <span class='rm-lmtt-10x-x-109'>uLeft </span>or <span class='rm-lmtt-10x-x-109'>uRight </span>as you did in Lab 3.
+Don’t forget the negative sign on one of those values.
+</li>
+<li class='enumerate' id='x1-5028x7'>Make sure to save your previous encoder positions to be used the next 1 ms. to calculate velocity.
+</li>
+                                                                                                       
+                                                                                                       
+<li class='enumerate' id='x1-5030x8'>Print every 100ms to the text LCD your Left and Right velocities and the value of the Encoder
+              Wheel.</li></ol>
+</li></ol>     
+</li>
+<li class='enumerate' id='x1-5032x5'>     
+<!-- l. 199 --><p class='noindent'>Compile and run your code. Using the third encoder dial in different commands and make sure the robot wheels spin
+in the correct direction and the velocities displayed are the correct units. <a id='x1-5033r2'></a></p><a id='checkoff-2'></a><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: Open loop driving and wheel
+speeds</label></p><div class='checkoff-body'>
+<!-- l. 202 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show this working to your TA.</span> </p></div></div>
+</li></ol>   
+
+<h3 class='likesectionHead' id='exercise-3-closedloop-speed-control-with-decoupled-control-loops-see-figure-1-'> <a id='x1-6000'></a>Exercise 3: Closed-Loop Speed Control with Decoupled Control Loops (See Figure 1). </h3>
+<p id='exercise-3-closedloop-speed-control-with-decoupled-control-loops-see-figure-1'><a id='Q1-1-9'></a>
+<!-- l. 208 --></p><p class='noindent'>Partners switch so that the other person can do some codding.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-6002x1'>     
+<!-- l. 211 --><p class='noindent'>In this exercise you will implement the decoupled PI controller shown in Figure 1. NOTE here that we will change
+the function of Encoder 3. Instead of being used to set <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>directly as in exercise 2, the value read
+from encoder 3 will set the “desired velocity” shown in Figure 1. From here forward we will call this desired velocity
+“Vref” (Velocity Reference). <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>will be set to the PI control equation. For example, <span class='rm-lmtt-10x-x-109'>uLeft =
+Kp*errKLeft + Ki*IKLeft</span>.
+</p>          
+<ol class='enumerate2' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-6004x1'>Modify the exercise 2 code that after 4 seconds drives the motors in an open-loop fashion to a PI
+closed-loop controller. After your code that calculates the speed of each wheel, set a <span class='rm-lmtt-10x-x-109'>Vref </span>float variable
+to Encoder 3’s value divided by 20 and calculate <span class='rm-lmtt-10x-x-109'>errLeft </span>(e1) and <span class='rm-lmtt-10x-x-109'>errRight </span>(e2) using <span class='rm-lmtt-10x-x-109'>Vref </span>and the
+wheel speeds.
+</li>
+<li class='enumerate' id='x1-6006x2'>Then with the current error, a previous error and the previous calculated integral, use the trapezoidal
+rule to find both <span class='rm-lmtt-10x-x-109'>IKleft </span>and <span class='rm-lmtt-10x-x-109'>IKright</span>.
+</li>
+<li class='enumerate' id='x1-6008x3'>Now that you have the error and integral states, you can calculate your <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>from the
+equations shown in Figure 1. For friction compensation use 60% of the columbic and viscous values you
+found in lab 3. As a start, use <span class='rm-lmtt-10x-x-109'>Kp = 3.0 </span>and <span class='rm-lmtt-10x-x-109'>Ki = 5.0</span>. These are good starting gains assuming that
+all velocities are measured in ft/second. You will tune these slightly in lab to achieve a more responsive
+PI control.
+                                                                                                       
+                                                                                                       
+          </li>
+<li class='enumerate' id='x1-6010x4'>Change what prints to the text LCD to the speeds of each wheel and your <span class='rm-lmtt-10x-x-109'>Vref </span>value.
+</li>
+<li class='enumerate' id='x1-6012x5'>Build and run your code. Use the encoder wheel to dial in a <span class='rm-lmtt-10x-x-109'>Vref </span>command. You should see your
+wheel’s velocities track this <span class='rm-lmtt-10x-x-109'>Vref </span>value. Try both positive and negative speeds.
+</li>
+<li class='enumerate' id='x1-6014x6'>          
+<!-- l. 219 --><p class='noindent'>Before going onto step 2, observe integral windup. Start your code, but leave the motor amplifier off. Dial in
+a <span class='rm-lmtt-10x-x-109'>Vref </span>of 1 foot/second and after a few seconds turn on the amp. The wheels should take off
+spinning at maximum speed. After a few seconds the wheels will die back down to the desired
+speed. To see what is happening add your <span class='rm-lmtt-10x-x-109'>IKLeft </span>and <span class='rm-lmtt-10x-x-109'>IKRight </span>floating point variables along with
+<span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>to Code Composer Studio’s Watch Expressions window. <a id='x1-6015r3'></a></p><a id='checkoff-3'></a><div aria-labelledby='checkoff-label-3' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='3' id='checkoff-box-3' type='checkbox' /> <label for='checkoff-box-3' id='checkoff-label-3'>TA Check-Off 3: Integral windup
+observed</label></p><div class='checkoff-body'>
+<!-- l. 222 --><p class='noindent'>What happens to <span class='rm-lmtt-10x-x-109'>IKLeft </span>and <span class='rm-lmtt-10x-x-109'>IKRight </span>the longer you wait to turn on the motor amp? <span class='rm-lmbx-10x-x-109'>Demo this to your
+TA.</span> </p></div></div>
+</li></ol>     
+</li>
+<li class='enumerate' id='x1-6017x2'>Correct for integral wind-up. Add two “if” statements after you have calculated <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>from the PI
+equation. If the absolute value (<span class='rm-lmtt-10x-x-109'>fabs() </span>floating point absolute value) of <span class='rm-lmtt-10x-x-109'>uLeft</span>/<span class='rm-lmtt-10x-x-109'>uRight </span>is greater than the maximum
+PWM output value of 10 then stop integrating by setting <span class='rm-lmtt-10x-x-109'>IKLeft/IKright = IKoldLeft/IKoldRight</span>. In other
+words if the control effort is at the maximum value it can output, then there is no reason for the integral to get any
+larger. NOTE: Make sure the saving of the past states <span class='rm-lmtt-10x-x-109'>IKoldLeft</span>,<span class='rm-lmtt-10x-x-109'>IKoldRight </span>is performed after these if
+statements.
+</li>
+<li class='enumerate' id='x1-6019x3'>     
+<!-- l. 226 --><p class='noindent'>Build and run your code. Test the robot on your bench. When you change the desired speed, <span class='rm-lmtt-10x-x-109'>Vref</span>, by rotating
+encoder 3, the robot’s wheel velocity should, after a small transient, match the desired speed. Check that you have
+corrected the integral windup issue for both positive and negative <span class='rm-lmtt-10x-x-109'>Vref </span>set points. Tune the <span class='rm-lmtt-10x-x-109'>Ki </span>gain to see if
+you can achieve a quicker transient response in motor speed. Try 15.0 then 25.0. <a id='x1-6020r4'></a></p><a id='checkoff-4'></a><div aria-labelledby='checkoff-label-4' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='4' id='checkoff-box-4' type='checkbox' /> <label for='checkoff-box-4' id='checkoff-label-4'>TA Check-Off 4: Decoupled PI speed
+control</label></p><div class='checkoff-body'>
+<!-- l. 229 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo this working to your TA.</span> </p></div></div>
+</li></ol>
+                                                                                                       
+                                                                                                       
+<figure class='figure' id='x1-6021r1'><span id='independent-pi-control-loops-for-the-right-and-left-motors'></span> 
+ <span aria-label='Simulink block diagram of two separate PI speed control loops that share one input, desired velocity (input port 1). Upper loop, right motor: a sum block adds desired velocity and subtracts the measured velocity v2 to give the error e2. The error e2 goes to a gain Kp and, in parallel, through an integrator (1 over s) followed by a gain Ki. A second sum block adds the Kp output and the Ki output. A third sum block adds to that the output of a friction_comp block whose input is v2; the result is the control effort u2, which drives the right_motor block. The output of right_motor is the velocity v2, fed back to the first sum block and to friction_comp. Lower loop, left motor: identical, with error e1 equal to desired velocity minus v1, gains Kp and Ki, an integrator named Integrator1, its own friction_comp block fed by v1, control effort u1, the left_motor block and its output velocity v1. Written out: u2 = Kp e2 + Ki times the integral of e2 + friction_comp(v2), and u1 = Kp e1 + Ki times the integral of e1 + friction_comp(v1). Nothing connects the two loops except the shared desired velocity.' role='img'> <img alt='[Picture]' src='Lab50x.svg' />             </span>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Independent PI control loops for the right and left motors.                                        </span></figcaption><!-- tex4ht:label?: x1-6021r1  -->
+</figure>   
+
+<h3 class='likesectionHead' id='exercise-4-closedloop-speed-control-with-coupled-control-loops-see-figure-2-'> <a id='x1-7000'></a>Exercise 4: Closed-Loop Speed Control with Coupled Control Loops (See Figure 2) </h3>
+<p id='exercise-4-closedloop-speed-control-with-coupled-control-loops-see-figure-2'><a id='Q1-1-12'></a>
+<!-- l. 269 --></p><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-7002x1'>Implement the coupled control algorithm shown in Figure 2. Use a <span class='rm-lmtt-10x-x-109'>Kp_turn </span>value of 3.0. Use the tuned <span class='rm-lmtt-10x-x-109'>Kp</span>
+and <span class='rm-lmtt-10x-x-109'>Ki </span>gains you found in exercise 3. Pay close attention to the ‘+’ and ‘-‘ in the block diagram sum blocks.
+Most of your PI control law equations remain the same. It is only the <span class='rm-lmtt-10x-x-109'>errLeft </span>and <span class='rm-lmtt-10x-x-109'>errRight </span>equations that
+change and note that they are slightly different from each other.
+</li>
+<li class='enumerate' id='x1-7004x2'>For this exercise keep “turn” equal to zero and <span class='rm-lmtt-10x-x-109'>Vref </span>equal to Encoder 3 divide by 20.
+</li>
+<li class='enumerate' id='x1-7006x3'>     
+<!-- l. 272 --><p class='noindent'>Build and run your code. Grab one of the wheels and see what happens to the wheels on the opposite side. <a id='x1-7007r5'></a></p><a id='checkoff-5'></a><div aria-labelledby='checkoff-label-5' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='5' id='checkoff-box-5' type='checkbox' /> <label for='checkoff-box-5' id='checkoff-label-5'>TA Check-Off 5: Coupled
+PI speed control</label></p><div class='checkoff-body'>
+<!-- l. 275 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo this working to your TA.</span> </p></div></div>
+</li></ol>
+                                                                                                       
+                                                                                                       
+<figure class='figure' id='x1-7008r2'><span id='coupled-pi-control-block-diagram'></span> 
+
+<span aria-label='Simulink block diagram of the coupled PI speed controller. It has two inputs: desired velocity (input port 1) and turn command (input port 2). A steering sum block on the right adds the right motor velocity v2, adds the turn command and subtracts the left motor velocity v1; its output is e_steer. A gain Kp_turn multiplies e_steer, and its output goes to the error sum blocks of both loops. Upper loop, right motor: the error sum block adds desired velocity, subtracts v2 and subtracts the Kp_turn output, giving e2. Lower loop, left motor: the error sum block adds desired velocity, adds the Kp_turn output and subtracts v1, giving e1. The rest of each loop is as in Figure 1: the error goes to a gain Kp and, in parallel, through an integrator (1 over s) and a gain Ki; the two are added; the output of a friction_comp block fed by that motor&#39;s velocity is added to give the control effort (u2 for right_motor, u1 for left_motor); the motor block outputs the velocity (v2 or v1). Written out: e_steer = v2 - v1 + turn command; e2 = desired velocity - v2 - Kp_turn e_steer; e1 = desired velocity - v1 + Kp_turn e_steer.' role='img'> <img alt='[Picture]' src='Lab51x.svg' />         </span>
+<figcaption class='caption'><span class='id'>Figure 2: </span><span class='content'>Coupled PI Control Block Diagram                                                              </span></figcaption><!-- tex4ht:label?: x1-7008r2  -->
+</figure>   
+
+<h3 class='likesectionHead' id='exercise-5-driving-around-see-figure-2-'> <a id='x1-8000'></a>Exercise 5: Driving Around (See Figure 2) </h3>
+<p id='exercise-5-driving-around-see-figure-2'><a id='Q1-1-15'></a>
+<!-- l. 340 --></p><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>The coupled control algorithm has two command inputs, <span class='rm-lmtt-10x-x-109'>Vref </span>and <span class='rm-lmtt-10x-x-109'>turn</span>. For the remainder of this semester
+these are the two commands your C code is going to use to drive the robot around its environment. By
+adjusting the “turn” variable you can control the rate of turn of the robot. It does not have units of degrees
+or radians per second but it is proportional to the robot’s rate of turn. Change your code so that <span class='rm-lmtt-10x-x-109'>Vref </span>is
+constant at 1 foot/second and <span class='rm-lmtt-10x-x-109'>turn </span>is now equal to Encoder 3’s value divided by 20.
+</li>
+<li class='enumerate' id='x1-8004x2'>     
+<!-- l. 342 --><p class='noindent'>Build and Flash your code to your robot. First run your code on the cake pan at your bench to see
+that it is working to steer the robot. Then when you know it is working, disconnect the cables to the
+robot and put it on the floor and power it with a battery. Power on the robot and after four seconds
+enable the motor amp. Your robot should start going forward at 1 foot/second. Use the encoder wheel
+to dial in turn values that make the robot steer around its environment. <a id='x1-8005r6'></a></p><a id='checkoff-6'></a><div aria-labelledby='checkoff-label-6' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='6' id='checkoff-box-6' type='checkbox' /> <label for='checkoff-box-6' id='checkoff-label-6'>TA Check-Off 6: Steering the robot on the
+floor</label></p><div class='checkoff-body'>
+<!-- l. 345 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo this working to your TA.</span> </p></div></div>
+                                                                                                       
+                                                                                                       
+     </li></ol>
+   
+<h3 class='likesectionHead' id='exercise-6-integrate-the-lpr510-gyro-rate-to-calculate-bearing-angle-of-robot-'> <a id='x1-9000'></a>Exercise 6: Integrate the LPR510 Gyro Rate to Calculate Bearing Angle of Robot </h3>
+<p id='exercise-6-integrate-the-lpr510-gyro-rate-to-calculate-bearing-angle-of-robot'><a id='Q1-1-17'></a>   
+</p><figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 359 --><p class='noindent' id='lpr510-gyro-breakout-board'><img alt='Two photos of the Pololu LPR510 gyro breakout board. Left: the component side of the small green board with
+the gyro chip in the middle and a row of nine pin holes along one long edge. Right: the bottom of the board next
+to a U.S. quarter for scale, with dimensions 1.0 inch long (0.8 inch between the mounting holes) and 0.5 inch
+wide. The pins are labelled, from top to bottom: VIN, GND, 3.3V, X, 4X, Vref, 4Z, Z, PD, ST.' height='146' src='Labs/Figures/Lab5/lpr510_gyro_board.png' width='325' /> <a id='x1-9001r3'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 3: </span><span class='content'>LPR510 gyro breakout board                                                                   </span></figcaption><!-- tex4ht:label?: x1-9001r3  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+<div class='center'>
+<!-- l. 363 --><p class='noindent'>
+</p><!-- l. 365 --><p class='noindent'><span class='rm-lmr-10'>4Z(ADCINC4) and 4X(ADCINC3) (4 here means 4 times the accuracy) Voltage Range</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>0.23V</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>-100</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s,</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>1.23V</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>0</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s,</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>2.23V</span>
+<!-- l. 365 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>100</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s</span>
+</p><!-- l. 367 --><p class='noindent'><span class='rm-lmr-10'>Z(ADCINC5) and X(ADCINC2) Voltage Range</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>0.23V</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>-400</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s,</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>1.23V</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>0</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s,</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>≈</mo></mrow></math><span class='rm-lmr-10'>2.23V</span>
+<!-- l. 367 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>
+<span class='rm-lmr-10'>400</span><sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup><span class='rm-lmr-10'>/s</span></p></div>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-9003x1'>In this final exercise you will integrate both of the LPR510 Gyro Z readings to find two measurements of
+the bearing angle of the robot. Recall from your PI controller how you used the trapezoidal integration rule
+to find the approximation of the integral of the velocity error. Using the trapezoidal integration rule, the
+current and previous gyro z readings and the previous calculated bearing angle, calculate the current bearing
+angle in units of radians. Do this for both the Z (+/- 400<sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup>/s range) and 4Z (+/- 100<sup class='textsuperscript'><span class='rm-lmr-10'>0</span></sup>/s range 4 times more
+accurate) Gyro outputs.
+</li>
+<li class='enumerate' id='x1-9005x2'>     
+<!-- l. 372 --><p class='noindent'>Build and Run your code. Turn the robot in place back and forth and check that your calculated angles make sense.
+For example, turn the robot approximately 90 degrees and see that the bearing angle is close to 1.57 radians. Do you
+notice any difference between the two gyro resolutions? Do you notice a drift in the calculation of the
+bearing over time? Sit the robot still and watch the rate the bearing drifts from zero. <a id='x1-9006r7'></a></p><a id='checkoff-7'></a><div aria-labelledby='checkoff-label-7' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='7' id='checkoff-box-7' type='checkbox' /> <label for='checkoff-box-7' id='checkoff-label-7'>TA Check-Off 7: Gyro bearing
+angle</label></p><div class='checkoff-body'>
+<!-- l. 375 --><p class='noindent'>Demonstrate that you can integrate the LPR510’s Z gyro axis to find the robot’s bearing. Do you notice a drift in
+the integral? </p></div></div>
+</li></ol>
+   
+<h3 class='likesectionHead' id='lab-check-off'>  <a id='x1-10000'></a>Lab Check Off</h3>
+<!-- l. 381 --><p class='noindent'>
+                                                                                                       
+                                                                                                       
+     </p>
+     <ol class='enumerate1'>
+<li class='enumerate' id='x1-10002x1'>Demonstrate your merged code from Lab 4 and Lab 3 working together in Lab 5’s project.
+</li>
+<li class='enumerate' id='x1-10004x2'>Demonstrate your Decoupled PI Speed control working controlling the speed of the motors with robot sitting
+on its cake pan. It of course would also work on the floor but that will be shown in Exercise 5.
+</li>
+<li class='enumerate' id='x1-10006x3'>Demonstrate your Coupled PI Speed control working controlling the speed of the motors with robot sitting
+on its cake pan.
+</li>
+<li class='enumerate' id='x1-10008x4'>With the robot on the ground, demonstrate that you can steer your robot around its environment.
+</li>
+<li class='enumerate' id='x1-10010x5'>Demonstrate that you can integrate the LPR510’s Z gyro axis to find the robot’s bearing. Do you notice a
+drift in the integral?
+</li>
+<li class='enumerate' id='x1-10012x6'>Submit all your written code after adding comments explaining your code and what you learned. Also be
+clear what code is for what exercise.</li></ol>
+   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-11000'></a>Check-Off Summary</h3>
+<!-- l. 392 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: Merged ADCC gyro sampling</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off 2:
+Open loop driving and wheel speeds</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: Integral windup observed</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Decoupled PI speed
+control</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5: Coupled PI speed control</a></li><li><input aria-labelledby='checkoff-sum-6' data-checkoff='6' type='checkbox' /> <a href='#checkoff-6' id='checkoff-sum-6'>Check-Off 6: Steering the robot on the floor</a></li><li><input aria-labelledby='checkoff-sum-7' data-checkoff='7' type='checkbox' /> <a href='#checkoff-7' id='checkoff-sum-7'>Check-Off 7: Gyro bearing
+angle</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 396 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

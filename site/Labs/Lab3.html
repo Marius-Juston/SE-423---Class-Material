@@ -1,0 +1,661 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 3</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab3.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab3.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 30 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #3</span>
+</p><!-- l. 30 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Pulse-Width Modulation, Optical Encoders and Friction Compensation</span><br />
+<span class='rm-lmbx-10x-x-109'>Two Week Lab</span>
+</p><!-- l. 30 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 10</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+   
+<h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-1000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 34 --><p class='noindent'>                                                                                                       
+                                                                                                       
+     </p>
+     <ol class='enumerate1'>
+<li class='enumerate' id='x1-1002x1'>Understand how a duty cycle varying square wave (PWM) can be used to command a seemingly linear and
+analog output.
+</li>
+<li class='enumerate' id='x1-1004x2'>Use EPWM12A to control the brightness of LED1.
+</li>
+<li class='enumerate' id='x1-1006x3'>Use  EPWM1A  and  EPWM2A  to  command  your  robot’s  two  DC  motors  in  both  the  clockwise  and
+counter-clockwise direction. Create two functions, <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and <span class='rm-lmtt-10x-x-109'>setEPWM2A</span>, that will help you get ready
+for controlling the speed and angle of the motor in future labs.
+</li>
+<li class='enumerate' id='x1-1008x4'>Use EQEP1, EQEP2 to read the angle movement in motor 1 and in motor 2. Calculate the spin rate of each
+wheel. Use EQEP3 as a command input to the robot.
+</li>
+<li class='enumerate' id='x1-1010x5'>Sample the robot moving at different speeds and plot the friction curves for your robot. Then use these
+friction curves to compensate for the friction of the robot.</li></ol>
+<div class='center'>
+<!-- l. 42 --><p class='noindent'>
+</p><!-- l. 43 --><p class='noindent'><span class='rm-lmbx-12'>Your robot can only be sitting in two locations: on the floor or on a stand on the bench
+with all wheels off the bench.</span></p></div>
+<!-- l. 46 --><p class='noindent'>Failure to do so may result in robot suicide, i.e. the robot may suddenly drive itself off the bench. If a student catastrophically
+breaks their robot, both the instructor’s and the student’s lab work will triple. Both will still have to come to lab, both
+will have to come after lab hours to use different group’s robot to complete the lab, and both will have to come in after
+hours to repair the robot so it can be used in other lab sections.
+
+</p>   
+<h3 class='likesectionHead' id='laboratory-exercises'>  <a id='x1-2000'></a>Laboratory Exercises</h3>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='exercise-1-epwm-peripheral-'>  <a id='x1-3000'></a>Exercise 1: EPWM Peripheral </h3>
+<p id='exercise-1-epwm-peripheral'><a id='Q1-1-4'></a>
+<!-- l. 52 --></p><p class='noindent'>Ask your instructor if there are changes to the repository. If there are, open a terminal and run through the steps in the
+“Using the SE423 repository” and the section “Course File Updates”. Once you have finished, create a new project from
+LABstarter as you have in previous labs and rename this project Lab3&lt;yourinitials&gt;.
+</p><!-- l. 54 --><p class='indent'>   Also ask your instructor if the PWM from the F28379D board is connected to the robot’s motor amplifiers.
+<span class='rm-lmri-10x-x-109'>This is a note to the instructor to check if the PWM cable has been moved from connecting to the F28027
+chip to the F28379D board. This would only be the case if we forgot to move the cable after the previous
+semester.</span>
+</p><!-- l. 56 --><p class='indent'>   As discussed in lecture, the EPWM peripheral has many more options than we will need for SE423 this semester. We
+are only going to need to focus on the basic features of this peripheral. I have created a condensed version of
+the EPWM chapter of the F28379D technical reference guide. The condensed version can be found here
+<a class='url' href='http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf</span></a>. The full technical reference guide can be found here
+<a class='url' href='http://coecsl.ece.illinois.edu/SE423/tms320f28379D_TechRefi.pdf'><span class='rm-lmtt-10x-x-109'>http://coecsl.ece.illinois.edu/SE423/tms320f28379D_TechRefi.pdf</span></a>.
+</p><!-- l. 58 --><p class='indent'>   To setup the PWM peripheral and its output channels, you will need to program the PWM peripheral registers
+through the “bitfield” unions TI defined. Let’s look at the definition of the bitfields for the registers TBCTL
+and AQCTLA. (Note: you can find these definitions in Code Composer Studio also by typing in the text
+<span class='rm-lmtt-10x-x-109'>EPwm12Regs</span>, somewhere in your <span class='rm-lmtt-10x-x-109'>main() </span>function, and then right clicking and selecting “Open Declaration.” Then
+do that one more time on the <span class='rm-lmtt-10x-x-109'>TBCTL_REG </span>union. YOU DO NOT cut and paste the below code into your
+code. I am just showing you how to view the definition of variables using “Open Declaration”. Make sure
+to delete this single line of code where you typed <span class='rm-lmtt-10x-x-109'>EPwm12Regs </span>otherwise you will receive a compiler error
+later.)
+</p>   
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-3002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct TBCTL_BITS {      // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-3004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CTRMODE:2;    // 1:0 Counter Mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-3006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PHSEN:1;      // 2 Phase Load Enable</span></span> 
+<span class='fancyvrblineno'><a id='x1-3008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PRDLD:1;      // 3 Active Period Load</span></span> 
+<span class='fancyvrblineno'><a id='x1-3010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 SYNCOSEL:2;   // 5:4 Sync Output Select</span></span> 
+<span class='fancyvrblineno'><a id='x1-3012r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 SWFSYNC:1;    // 6 Software Force Sync Pulse</span></span> 
+<span class='fancyvrblineno'><a id='x1-3014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 HSPCLKDIV:3;  // 9:7 High Speed TBCLK Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-3016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CLKDIV:3;     // 12:10 Time Base Clock Pre-scaler</span></span> 
+<span class='fancyvrblineno'><a id='x1-3018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PHSDIR:1;     // 13 Phase Direction Bit</span></span> 
+<span class='fancyvrblineno'><a id='x1-3020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 FREE_SOFT:2;  // 15:14 Emulation Mode Bits</span></span> 
+<span class='fancyvrblineno'><a id='x1-3022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-3024r12'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union TBCTL_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-3028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16  all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    struct  TBCTL_BITS  bit;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3032r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-3034r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>struct AQCTLA_BITS {     // bits description</span></span> 
+<span class='fancyvrblineno'><a id='x1-3036r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 ZRO:2;        // 1:0 Action Counter = Zero</span></span> 
+<span class='fancyvrblineno'><a id='x1-3038r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 PRD:2;        // 3:2 Action Counter = Period</span></span> 
+<span class='fancyvrblineno'><a id='x1-3040r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CAU:2;        // 5:4 Action Counter = Compare A Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-3042r21'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CAD:2;        // 7:6 Action Counter = Compare A Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-3044r22'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CBU:2;        // 9:8 Action Counter = Compare B Up</span></span> 
+<span class='fancyvrblineno'><a id='x1-3046r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 CBD:2;        // 11:10 Action Counter = Compare B Down</span></span> 
+<span class='fancyvrblineno'><a id='x1-3048r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16 rsvd1:4;      // 15:12 Reserved</span></span> 
+<span class='fancyvrblineno'><a id='x1-3050r25'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span> 
+<span class='fancyvrblineno'><a id='x1-3052r26'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-3054r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>union AQCTLA_REG {</span></span> 
+<span class='fancyvrblineno'><a id='x1-3056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    Uint16  all;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    struct  AQCTLA_BITS  bit;</span></span> 
+<span class='fancyvrblineno'><a id='x1-3060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>};</span></span></pre>
+<!-- l. 93 --><p class='noindent'>Looking at these bitfields notice the <span class='rm-lmtt-10x-x-109'>:1</span>, <span class='rm-lmtt-10x-x-109'>:2 </span>or <span class='rm-lmtt-10x-x-109'>:3 </span>after <span class='rm-lmtt-10x-x-109'>PHSEN</span>, <span class='rm-lmtt-10x-x-109'>CTRMODE</span>, <span class='rm-lmtt-10x-x-109'>CLKDIV </span>respectively. This is telling how many bits this
+portion of the bitfield uses. If you add up all the numbers after the colons, you see that it adds to 16, which is the size of
+both the TBCTL and AQCTLA registers. So each bit of the register can be assigned by this bitfield. To make
+this a bit more clear, look at the definition of TBCTL and AQCTLA from TI’s technical reference guide:
+</p><div class='table'>
+<!-- l. 95 --><p class='indent'>   </p><figure class='float' id='x1-3061r1'><span id='figure-1593-tbctl-register'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-1' rules='groups'><colgroup id='TBL-1-1g'><col id='TBL-1-1' /></colgroup><colgroup id='TBL-1-2g'><col id='TBL-1-2' /></colgroup><colgroup id='TBL-1-3g'><col id='TBL-1-3' /></colgroup><colgroup id='TBL-1-4g'><col id='TBL-1-4' /></colgroup><colgroup id='TBL-1-5g'><col id='TBL-1-5' /></colgroup><colgroup id='TBL-1-6g'><col id='TBL-1-6' /></colgroup><colgroup id='TBL-1-7g'><col id='TBL-1-7' /></colgroup><colgroup id='TBL-1-8g'><col id='TBL-1-8' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-01-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-01-3-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>15</span>                  </p></td><td class='td11' id='TBL-01-3-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>14</span>                 </p></td><td class='td11' id='TBL-01-3-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>13</span>                 </p></td><td class='td11' id='TBL-01-3-4' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>12</span>                 </p></td><td class='td11' id='TBL-01-3-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>11</span>                 </p></td><td class='td11' id='TBL-01-3-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>10</span>                 </p></td><td class='td11' id='TBL-01-3-7' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>9</span>                  </p></td><td class='td11' id='TBL-01-3-8' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 103 --><p class='noindent'><span class='rm-lmr-9'>8</span>                  </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-001-6-' style='vertical-align:baseline;'><td class='td11' colspan='2' id='TBL-001-6-1' style='text-align:center; white-space:nowrap;'>         <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>FREE_SOFT</span></div>              
+</td><td class='td11' id='TBL-001-6-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 104 --><p class='noindent'><span class='rm-lmr-9'>PHSDIR</span>        </p></td>
+<td class='td11' colspan='3' id='TBL-001-6-4' style='text-align:center; white-space:nowrap;'>                  <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CLKDIV</span></div>                            
+</td><td class='td11' colspan='2' id='TBL-001-6-7' style='text-align:center; white-space:nowrap;'>         <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>HSPCLKDIV</span></div>             </td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-0001-9-' style='vertical-align:baseline;'><td class='td11' colspan='2' id='TBL-0001-9-1' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' id='TBL-0001-9-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 105 --><p class='noindent'><span class='rm-lmr-9'>R/W-0h</span>         </p></td>
+<td class='td11' colspan='3' id='TBL-0001-9-4' style='text-align:center; white-space:nowrap;'>                   <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                             
+</td><td class='td11' colspan='2' id='TBL-0001-9-7' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-1h</span></div>                 
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-00001-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00001-12-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>7</span>                   </p></td><td class='td11' id='TBL-00001-12-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>6</span>                  </p></td><td class='td11' id='TBL-00001-12-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>5</span>                  </p></td><td class='td11' id='TBL-00001-12-4' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>4</span>                  </p></td><td class='td11' id='TBL-00001-12-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>3</span>                  </p></td><td class='td11' id='TBL-00001-12-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>2</span>                  </p></td><td class='td11' id='TBL-00001-12-7' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>1</span>                  </p></td><td class='td11' id='TBL-00001-12-8' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 106 --><p class='noindent'><span class='rm-lmr-9'>0</span>                  </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-000001-15-' style='vertical-align:baseline;'><td class='td11' id='TBL-000001-15-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 107 --><p class='noindent'><span class='rm-lmr-9'>HSPCLKDIV</span>   </p></td>
+<td class='td11' id='TBL-000001-15-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 107 --><p class='noindent'><span class='rm-lmr-9'>SWFSYNC</span>     </p></td>
+<td class='td11' colspan='2' id='TBL-000001-15-3' style='text-align:center; white-space:nowrap;'>         <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>SYNCOSEL</span></div>              
+</td><td class='td11' id='TBL-000001-15-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 107 --><p class='noindent'><span class='rm-lmr-9'>PRDLD</span>         </p></td>
+<td class='td11' id='TBL-000001-15-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 107 --><p class='noindent'><span class='rm-lmr-9'>PHSEN</span>          </p></td>
+<td class='td11' colspan='2' id='TBL-000001-15-7' style='text-align:center; white-space:nowrap;'>         <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CTRMODE</span></div>              
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-0000001-18-' style='vertical-align:baseline;'><td class='td11' id='TBL-0000001-18-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 108 --><p class='noindent'><span class='rm-lmr-9'>R/W-1h</span>          </p></td>
+<td class='td11' id='TBL-0000001-18-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 108 --><p class='noindent'><span class='rm-lmr-9'>R-0/W1S-0h</span>   </p></td>
+<td class='td11' colspan='2' id='TBL-0000001-18-3' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' id='TBL-0000001-18-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 108 --><p class='noindent'><span class='rm-lmr-9'>R/W-0h</span>         </p></td>
+<td class='td11' id='TBL-0000001-18-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 108 --><p class='noindent'><span class='rm-lmr-9'>R/W-0h</span>         </p></td>
+<td class='td11' colspan='2' id='TBL-0000001-18-7' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-3h</span></div>                 
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>                                                                                                  </div>
+
+<figcaption class='caption'><span class='id'>Table 1: </span><span class='content'>Figure 15-93. TBCTL Register
+</span></figcaption><!-- tex4ht:label?: x1-3061r1  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+<!-- l. 113 --><p class='indent'>   and </p><div class='table'>
+                                                                                                       
+                                                                                                       
+<!-- l. 115 --><p class='indent'>   </p><figure class='float' id='x1-3062r2'><span id='figure-15115-aqctla-register'></span>
+                                                                                                       
+                                                                                                       
+<div class='tabular'> <table class='tabular' id='TBL-2' rules='groups'><colgroup id='TBL-2-1g'><col id='TBL-2-1' /></colgroup><colgroup id='TBL-2-2g'><col id='TBL-2-2' /></colgroup><colgroup id='TBL-2-3g'><col id='TBL-2-3' /></colgroup><colgroup id='TBL-2-4g'><col id='TBL-2-4' /></colgroup><colgroup id='TBL-2-5g'><col id='TBL-2-5' /></colgroup><colgroup id='TBL-2-6g'><col id='TBL-2-6' /></colgroup><colgroup id='TBL-2-7g'><col id='TBL-2-7' /></colgroup><colgroup id='TBL-2-8g'><col id='TBL-2-8' /></colgroup><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-02-3-' style='vertical-align:baseline;'><td class='td11' id='TBL-02-3-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>15</span>                  </p></td><td class='td11' id='TBL-02-3-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>14</span>                 </p></td><td class='td11' id='TBL-02-3-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>13</span>                 </p></td><td class='td11' id='TBL-02-3-4' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>12</span>                 </p></td><td class='td11' id='TBL-02-3-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>11</span>                 </p></td><td class='td11' id='TBL-02-3-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>10</span>                 </p></td><td class='td11' id='TBL-02-3-7' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>9</span>                  </p></td><td class='td11' id='TBL-02-3-8' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 123 --><p class='noindent'><span class='rm-lmr-9'>8</span>                  </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-002-6-' style='vertical-align:baseline;'><td class='td11' colspan='4' id='TBL-002-6-1' style='text-align:center; white-space:nowrap;'>                         <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>RESERVED</span></div>                                      
+</td><td class='td11' colspan='2' id='TBL-002-6-5' style='text-align:center; white-space:nowrap;'>            <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CBD</span></div>                   
+</td><td class='td11' colspan='2' id='TBL-002-6-7' style='text-align:center; white-space:nowrap;'>            <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CBU</span></div>                   </td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-0002-9-' style='vertical-align:baseline;'><td class='td11' colspan='4' id='TBL-0002-9-1' style='text-align:center; white-space:nowrap;'>                           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R-0-0h</span></div>                                          
+</td><td class='td11' colspan='2' id='TBL-0002-9-5' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' colspan='2' id='TBL-0002-9-7' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-00002-12-' style='vertical-align:baseline;'><td class='td11' id='TBL-00002-12-1' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>7</span>                   </p></td><td class='td11' id='TBL-00002-12-2' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>6</span>                  </p></td><td class='td11' id='TBL-00002-12-3' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>5</span>                  </p></td><td class='td11' id='TBL-00002-12-4' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>4</span>                  </p></td><td class='td11' id='TBL-00002-12-5' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>3</span>                  </p></td><td class='td11' id='TBL-00002-12-6' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>2</span>                  </p></td><td class='td11' id='TBL-00002-12-7' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>1</span>                  </p></td><td class='td11' id='TBL-00002-12-8' style='white-space:normal; text-align:left; vertical-align:middle;'><!-- l. 126 --><p class='noindent'><span class='rm-lmr-9'>0</span>                  </p></td>
+</tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-000002-15-' style='vertical-align:baseline;'><td class='td11' colspan='2' id='TBL-000002-15-1' style='text-align:center; white-space:nowrap;'>             <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CAD</span></div>                   
+</td><td class='td11' colspan='2' id='TBL-000002-15-3' style='text-align:center; white-space:nowrap;'>            <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>CAU</span></div>                   
+</td><td class='td11' colspan='2' id='TBL-000002-15-5' style='text-align:center; white-space:nowrap;'>            <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>PRD</span></div>                   
+</td><td class='td11' colspan='2' id='TBL-000002-15-7' style='text-align:center; white-space:nowrap;'>            <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>ZRO</span></div>                   
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr><tr id='TBL-0000002-18-' style='vertical-align:baseline;'><td class='td11' colspan='2' id='TBL-0000002-18-1' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' colspan='2' id='TBL-0000002-18-3' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' colspan='2' id='TBL-0000002-18-5' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td><td class='td11' colspan='2' id='TBL-0000002-18-7' style='text-align:center; white-space:nowrap;'>           <div class='multicolumn' style='text-align:center; white-space:nowrap;'><span class='rm-lmr-9'>R/W-0h</span></div>                 
+</td></tr><tr class='hline' style='border-top:1px solid #000'><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td></tr></table>                                                                                                  </div>
+
+<figcaption class='caption'><span class='id'>Table 2: </span><span class='content'>Figure 15-115. AQCTLA Register
+</span></figcaption><!-- tex4ht:label?: x1-3062r2  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+   </div>
+<!-- l. 133 --><p class='indent'>   Notice how CLKDIV takes up 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So what
+the bitfield unions allow us to do in our program is to just assign the value of the three bits that are CLKDIV and not
+touch/change the other bits of the register. So you could code:
+</p>   
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-3064r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EPwm12Regs.TBCTL.bit.CLKDIV = 3;</span></span></pre>
+<!-- l. 139 --><p class='noindent'>and that would set bit 10 to 1, bit 11 to 1 and bit 12 to 0 in the TBCTL register and leave all the other bits the way
+they were. Since CLKDIV takes up 3 bits, the smallest number you could set it to is zero. <a id='x1-3065r1'></a></p><p><a id='checkoff-1'></a></p><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: Bitfield value
+answers</label></p><div class='checkoff-body'>
+<!-- l. 142 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>What is the largest number you could set it to? </span><span class='rm-lmri-10x-x-109'>(Technically you could set it to any number but only the bottom
+3 bits of the number are looked at in the assignment.) </span><span class='rm-lmbx-10x-x-109'>For the bitfield section CAU in AQCTLA, what are the
+numbers it can be assigned to? </span>Looking at the <a href='http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf'>condensed Tech. Ref.</a>, <span class='rm-lmbx-10x-x-109'>how do these different values
+assigned to AQCTLA’s CAU section change the PWM output? Show these answers to your TA.</span>
+</p></div></div>
+<!-- l. 145 --><p class='indent'>   So given that introduction to register bitfield assignments, let’s write some code in our <span class='rm-lmtt-10x-x-109'>main() </span>function to setup
+EPWM12A which can drive LED1. <span class='rm-lmri-10x-x-109'>If I do not list an option that you see defined in a register, then that means you should
+not set that option and it will be kept as the default. I may tell you an option that is already the default, but to
+make it clear to the reader of your code that this option is set, I would like you to assign it the default
+value even though that line of code is not necessary. </span>Set the following options in the EPWM registers for
+EPWM12A. A good place to write this initialization code is in your <span class='rm-lmtt-10x-x-109'>main() </span>function right after the calls to
+init_serialSCI A, B, C, D() <span class='rm-lmri-10x-x-109'>(Leave C and D commented out)</span>. Most of your initializations should be placed
+there.
+</p><!-- l. 147 --><p class='indent'>   With TBCTL write four lines of code to set: Count up Mode, Free Soft emulation mode to Free Run so that the
+PWM continues when you set a break point in your code, disable the phase loading and Clock divide by
+1.
+</p><!-- l. 149 --><p class='indent'>   With TBCTR: Start the timer at zero.
+</p><!-- l. 151 --><p class='indent'>   With TBPRD: Set the period (carrier frequency) of the PWM signal to 20KHz which is a period of 50 microseconds.
+Remember the clock source that the TBCTR register is counting has a frequency of 50MHz or a period of 1/50000000
+seconds.
+</p><!-- l. 153 --><p class='indent'>   With CMPA initially start the duty cycle at 50%.
+</p><!-- l. 155 --><p class='indent'>   With AQCTLA set it up such that the PWM signal is cleared when CMPA is reached and in addition have the pin be
+set when the TBCTR register is zero.
+</p><!-- l. 157 --><p class='indent'>   With TBPHS set the phase to zero, i.e. <span class='rm-lmtt-10x-x-109'>EPwm12Regs.TBPHS.bit.TBPHS =0; </span>I am not sure if this setting is necessary
+but I have seen it in a number of TI examples so I am just being safe here.
+</p><!-- l. 159 --><p class='indent'>   You also need to set the PinMux so EPWM12A is used instead of GPIO22. Use the <a href='http://coecsl.ece.illinois.edu/SE423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf'>PinMux table for the
+F28379D Launchpad</a> to help you here. Use the function <span class='rm-lmtt-10x-x-109'>GPIO_SetupPinMux </span>to change the PinMux such
+that GPIO22 is instead set as EPWM12A output pin. For example the below line of code sets GPIO158 as
+GPIO158:
+</p>   
+<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-3067r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(158, GPIO_MUX_CPU1, 0); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<!-- l. 165 --><p class='noindent'>Looking at the PinMux table, this below line of code sets GPIO40 to be instead the SDAB pin:
+</p>   
+<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-3069r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GPIO_SetupPinMux(40, GPIO_MUX_CPU1, 6); //GPIO PinName, CPU, Mux Index</span></span></pre>
+<!-- l. 171 --><p class='noindent'>Finally, it seems from a number of TI examples that it is a good idea to disable the pull-up resistor when an
+I/O pin is set as a PWM output pin for power consumption reasons. Add these five lines of code in the
+same area of your <span class='rm-lmtt-10x-x-109'>main() </span>function. You will be setting up EPWM1A and EPWM2A later is this lab. I
+went ahead and added their lines of code here just to make the explanation of the later steps in the lab
+simpler.
+                                                                                                       
+                                                                                                       
+</p>
+   <pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-3071r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EALLOW;  // Below are protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-3073r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO0 = 1; // For EPWM1A</span></span> 
+<span class='fancyvrblineno'><a id='x1-3075r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO2 = 1; // For EPWMA2</span></span> 
+<span class='fancyvrblineno'><a id='x1-3077r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>GpioCtrlRegs.GPAPUD.bit.GPIO22 = 1; // For EPWM12A</span></span> 
+<span class='fancyvrblineno'><a id='x1-3079r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>EDIS;</span></span></pre>
+
+<!-- l. 181 --><p class='noindent'>Compile your code and fix any compiler errors that you have. When ready, download this code to your Launchpad. When you run
+your code the EPWM12A signal driving LED1 is 50% duty cycle so the LED should be 50% on. You are going to change
+the duty cycle of EPWM12A by manually changing its CMPA register in Code Composer Studio. In CCS, select the menu
+View<!-- l. 181 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Registers
+and the Registers tab should show. There are a bunch of registers so you will have to scroll down until you see the
+“EPwm12Regs” register. Click the “&gt;” to expand the register. Scroll down until you find the TBPRD register and the
+CMPA register. Note the value in TBPRD. Expand the CMPA register and see that it is a 32bit register with two 16bit
+parts CMPA and CMPAHR. Leave CMPAHR at 0 and just change CMPA. First, try setting CMPA to 3/4th the value of
+TBPRD. What happens to the intensity of LED1? Change CMPA to the same value as TBPRD to see the maximum
+brightness (100% duty cycle). Play with other values for CMPA to see the brightness change. Also at this time have your
+TA show you how to scope this PWM signal driving LED1. <span class='rm-lmbx-10x-x-109'>Always shutdown the Raspberry Pi, if it is on
+(which it should not be for this lab), and power off your Robot when connecting the scope
+probes.</span>
+</p><!-- l. 183 --><p class='indent'>   Now that you see CMPA changes the brightness of LED1, write code in CPU Timer2’s interrupt function to increase,
+by one, the value of EPWM12’s CMPA register every one millisecond. Then when CMPA’s value reaches the value in
+TBPRD, change the state of your code to decease the value of CMPA, by one, each millisecond. Then when CMPA
+reaches 0 start increasing CMPA, by one, again each millisecond. This way your code will change the duty cycle
+from 0 to 100 and then from 100 to 0 and keep on repeating this process. The easiest way to code this
+is to create a global variable <span class='rm-lmtt-10x-x-109'>int16_t updown</span>. When updown is equal to 1, count up, when updown is
+0, count down. When up counting, check for CMPA to reach the value of TBPRD and switch to down
+counting. While down counting, check if CMPA equals zero to switch back to up counting. <a id='x1-3080r2'></a></p><p><a id='checkoff-2'></a></p><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: LED1 brightness
+ramping</label></p><div class='checkoff-body'>
+<!-- l. 186 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate working code to your TA.</span> </p></div></div>
+<figure class='figure'> 
+
+                                                                                                       
+                                                                                                       
+                                                                                                       
+                                                                                                       
+<!-- l. 191 --><p class='noindent' id='ramped-led1-brightness-pattern'><span aria-label='Plot of LED1 brightness against time in seconds. The vertical axis runs from 0 percent to 100 percent. The brightness is a triangle wave: it rises in a straight line from 0 percent to 100 percent, falls in a straight line back to 0 percent, and then repeats the same rise and fall a second time.' role='img'> <img alt='[Picture]' src='Lab30x.svg' /> </span><a id='x1-3081r1'></a>
+</p>
+<figcaption class='caption'><span class='id'>Figure 1: </span><span class='content'>Ramped LED1 Brightness Pattern
+</span></figcaption><!-- tex4ht:label?: x1-3081r1  -->
+                                                                                                       
+                                                                                                       
+   </figure>
+<!-- l. 207 --><p class='indent'>   Before going onto Exercise 2 let’s copy the EPWM12A settings and start out with these same settings for
+EPWM1 and EPWM2. EPWM1A and 2A will be used to drive the robot’s DC motors through an H-bridge
+IC.
+</p><!-- l. 209 --><p class='indent'>   Using the <span class='rm-lmtt-10x-x-109'>GPIO_SetupPinMux </span>function, set GPIO0’s pin function to EPWM1A and using another call to
+<span class='rm-lmtt-10x-x-109'>GPIO_SetupPinMux </span>set GPIO2’s pin function to EPWM2A. Use the <a href='http://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf'>PinMux Table</a> to find the correct mux
+setting.
+</p><!-- l. 211 --><p class='indent'>   Compile and Debug your code to make sure you did not create any type-O’s. All we did is add some additional
+initializations so your code should work the same.
+
+</p>   
+<h3 class='likesectionHead' id='exercise-2-epwm-to-drive-robots-dc-motors-'>  <a id='x1-4000'></a>Exercise 2: EPWM to drive Robot’s DC Motors </h3>
+<p id='exercise-2-epwm-to-drive-robots-dc-motors'><a id='Q1-1-9'></a>
+<!-- l. 215 --></p><p class='noindent'>Very similar to the start of Exercise 1, I want you to play with the EPWM1A and EPWM2A registers in the CCS
+Registers window to make both motors spin at different speeds and change the direction of spin. EPWM1A (GPIO0)
+controls the left motor. EPWM2A (GPIO2) controls the right motor. From lecture you should remember that each of
+these PWM signals drive the “Direction” pin of the motor’s amplifier (H-bridge). That means if we command a 50%
+duty cycle, the motor is told to spin in the positive direction 50% of the time and the negative direction
+50% of the time. Because the PWM carrier frequency is very fast, 20Khz, the motor will see that signal as
+a zero input and the motor will not move. 100% duty cycle will drive the motor with full torque in the
+positive direction. 0% duty cycle will drive the motor with full torque in the negative direction. Then for
+example, 75% duty cycle would drive the motor in the positive direction with 50% of the full torque. Try a
+number of duty cycles and make sure to switch direction of both motors. <a id='x1-4001r3'></a></p><p><a id='checkoff-3'></a></p><div aria-labelledby='checkoff-label-3' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='3' id='checkoff-box-3' type='checkbox' /> <label for='checkoff-box-3' id='checkoff-label-3'>TA Check-Off 3: Motors driven from the Registers
+window</label></p><div class='checkoff-body'>
+<!-- l. 218 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate to your TA.</span> </p></div></div>
+<!-- l. 221 --><p class='indent'>   Create two functions “<span class='rm-lmtt-10x-x-109'>void setEPWM1A(float controleffort)</span>” and “<span class='rm-lmtt-10x-x-109'>void setEPWM2A(float controleffort)</span>”
+that take as a parameter a floating point value “<span class='rm-lmtt-10x-x-109'>controleffort</span>”. Both of these functions will set EPWM1A or EPWM2A
+to a PWM duty cycle value related to the passed “<span class='rm-lmtt-10x-x-109'>controleffort</span>” value. When I design/code a digital controller, I
+always think of my control output (or control effort) to the system I am controlling as a value between -10 and 10. This is
+just the range I (and others) have chosen. I have seen other research papers/text books use a ranges like -1 to 1, -100 to
+100, 0 – 200, etc. By keeping the same range of output in all my controller designs, I can usually guess at good “ball park”
+starting values for my controller gains like Kp, Kd, and Ki in a PID controller. Perform the following steps/code in each of
+these functions:
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-4003x1'>For the float “<span class='rm-lmtt-10x-x-109'>controleffort</span>” function parameter, I would like you to use the range of -10 to 10. To make
+sure nothing greater than this range is used by this function, use two if statements inside your functions to
+saturate <span class='rm-lmtt-10x-x-109'>controleffort</span>. If the value passed is greater than 10 set it to 10. If the value passed is less than
+-10 set it to -10.
+</li>
+<li class='enumerate' id='x1-4005x2'>Determine the value to set in CMPA for EPWM1A and CMPA for EPWM2A. Remember that a duty cycle
+of 50% is a command of zero to the motor. Any duty cycle greater than 50% will cause the motor to spin in
+the positive direction. Any duty cycle less than 50% will cause the motor to spin in the negative direction.
+                                                                                                       
+                                                                                                       
+     In your functions, linearly scale the control effort which is in the range -10 to 10 to a duty cycle where -10
+     is 0% duty cycle, 0 is 50% and 10 is 100%. Given the duty cycle found in this linear scaling, set CMPA
+     appropriately to the percentage duty cycle. There is a bit of an issue here with type conversions. I asked
+you to make “<span class='rm-lmtt-10x-x-109'>controleffort</span>” a float but CMPA is a 16bit integer. Good news is that C does much of
+the type conversion for you automatically. Let’s say that your scaled value you would like to set CMPA
+to happens to be 345.67 and it is in the variable <span class='rm-lmtt-10x-x-109'>float mytmp</span>. If you perform the C instruction “<span class='rm-lmtt-10x-x-109'>CMPA =
+mytmp</span>”, the value will be truncated and CMPA will be assigned 345. It will NOT be rounded up to 346. Also,
+keep in mind that an integer divided by an integer gives you back an integer. For example this statement
+“<span class='rm-lmtt-10x-x-109'>float value = 1/5000</span>” is always 0. You would need to change the line to “<span class='rm-lmtt-10x-x-109'>float value = 1.0/5000.0</span>”
+to assign the fraction to value. Also, if you have two <span class='rm-lmtt-10x-x-109'>int16_t </span>variables and you divide them the result is
+an integer (<span class='rm-lmtt-10x-x-109'>int16_t</span>). If you want to assign a float the division of two integers you have to type cast the
+integers to a float i.e. “<span class='rm-lmtt-10x-x-109'>value = ((float)myint1)/((float)myint2)</span>”
+</li>
+<li class='enumerate' id='x1-4007x3'>     
+<!-- l. 226 --><p class='noindent'>In the same fashion you did in exercise 1 and using the functions you just created, gradually increase the command
+to the motor until you get to 10 and then gradually decrease the motor command until -10 is reached and then
+repeat. Here you will not be incrementing the CMPA value directly or monitoring if <span class='rm-lmtt-10x-x-109'>CMPA==TBPRD</span>, but instead
+adding to the float value that you are passing to your setEPWM functions. Every 1ms add 0.005 to the values passed
+to setEPWM until 10 is reached then start subtracting 0.005 from the values until -10 is reached and repeat. <a id='x1-4008r4'></a></p><a id='checkoff-4'></a><div aria-labelledby='checkoff-label-4' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='4' id='checkoff-box-4' type='checkbox' /> <label for='checkoff-box-4' id='checkoff-label-4'>TA Check-Off 4: Motors
+ramping up and down</label></p><div class='checkoff-body'>
+<!-- l. 229 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Show your TA that your setEPWM </span>functions are working correctly. </p></div></div>
+</li></ol>   
+
+<h3 class='likesectionHead' id='exercise-3-eqep-peripheral-optical-encoders-to-find-angle-of-the-robots-wheels-and-the-robots-speed-'> <a id='x1-5000'></a>Exercise 3: EQEP Peripheral, Optical Encoders to find angle of the robot’s wheels and the robot’s speed
+</h3>
+<p id='exercise-3-eqep-peripheral-optical-encoders-to-find-angle-of-the-robots-wheels-and-the-robots-speed'><a id='Q1-1-11'></a>
+<!-- l. 235 --></p><p class='noindent'>The eQEP peripheral, right out of a “power on reset” of the F28379D processor, is pretty much ready to count the A and
+B channels of an encoder angle sensor. For that reason, I am giving you the code for initializing and reading the angle
+values. There are many advanced features of the eQEP module and a number I have not played with yet. If this sounds
+interesting to you, you could turn playing with the advanced features of the eQEP into a part of your final project for this
+class. The only thing you need to add to the below code is a scale factor that converts the eQEP count value to a radian of
+the wheel value.
+</p><!-- l. 237 --><p class='indent'>   Look at your robot’s motors. Notice that there is a gear head between the motor and the wheel’s shaft. This gear
+ratio is 20:1, so 20 rotations of the DC motor cause one rotation of the wheel. Also look at the back end of the robot’s
+motor and see the enclosed optical encoder. This optical encoder has 500 slits for one rotation of the DC motor. So one
+rotation of the motor creates 500 square wave periods per rotation for both the A and B channels. Since the eQEP counts
+these pulses using the quadrature count mode, the total number of counts per revolution of the motor becomes 4 X 500
+or 2000 counts per revolution. Then combining this with the gear ratio of the motor, you can calculate
+the multiplication factor that converts eQEP counts to the number of radians the wheel has turned. Add
+this to both the <span class='rm-lmtt-10x-x-109'>ReadEncLeft() </span>and <span class='rm-lmtt-10x-x-109'>ReadEncRight() </span>functions so that they return radians of the wheel.
+With this multiplication factor added, cut and paste the below code into your C file. Make sure to create
+predefinitions of these four functions. Note the “<span class='rm-lmtt-10x-x-109'>readEncWheel</span>” function reads a third optical encoder you
+will hold in your hand to command the robot forwards and backwards. I gave you the scale factor for that
+encoder.
+                                                                                                       
+                                                                                                       
+</p>
+   <pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-5002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>void init_eQEPs(void) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5004r2'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // setup eQEP1 pins for input</span></span> 
+<span class='fancyvrblineno'><a id='x1-5008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //Disable internal pull-up for the selected output pins for reduced</span></span> 
+<span class='fancyvrblineno'><a id='x1-5012r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //power consumption</span></span> 
+<span class='fancyvrblineno'><a id='x1-5014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO20 (EQEP1A)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAPUD.bit.GPIO20 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO21 (EQEP1B)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAPUD.bit.GPIO21 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAQSEL2.bit.GPIO20 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAQSEL2.bit.GPIO21 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EDIS;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // This specifies which of the possible GPIO pins will be EQEP1</span></span> 
+<span class='fancyvrblineno'><a id='x1-5030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // functional pins.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5032r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Comment out other unwanted lines.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5034r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(20, GPIO_MUX_CPU1, 1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5036r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(21, GPIO_MUX_CPU1, 1);</span></span> 
+<span class='fancyvrblineno'><a id='x1-5038r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QEPCTL.bit.QPEN = 0; // make sure eqep in reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-5040r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QDECCTL.bit.QSRC = 0; // Quadrature count mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-5042r21'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QPOSCTL.all = 0x0; // Disable eQep Position Compare</span></span> 
+<span class='fancyvrblineno'><a id='x1-5044r22'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QCAPCTL.all = 0x0; // Disable eQep Capture</span></span> 
+<span class='fancyvrblineno'><a id='x1-5046r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QEINT.all = 0x0; // Disable all eQep interrupts</span></span> 
+<span class='fancyvrblineno'><a id='x1-5048r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // use full range of the 32 bit count</span></span> 
+<span class='fancyvrblineno'><a id='x1-5050r25'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QPOSMAX = 0xFFFFFFFF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5052r26'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // EQep uneffected by emulation suspend in Code Composer</span></span> 
+<span class='fancyvrblineno'><a id='x1-5054r27'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QEPCTL.bit.FREE_SOFT = 2;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QPOSCNT = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep1Regs.QEPCTL.bit.QPEN = 1; // Enable EQep</span></span> 
+<span class='fancyvrblineno'><a id='x1-5060r30'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5062r31'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5064r32'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // setup QEP2 pins for input</span></span> 
+<span class='fancyvrblineno'><a id='x1-5066r33'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //Disable internal pull-up for the selected output pinsfor reduced</span></span> 
+<span class='fancyvrblineno'><a id='x1-5068r34'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //power consumption</span></span> 
+<span class='fancyvrblineno'><a id='x1-5070r35'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO54 (EQEP2A)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5072r36'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPBPUD.bit.GPIO54 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5074r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO55 (EQEP2B)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5076r38'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPBPUD.bit.GPIO55 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5078r39'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPBQSEL2.bit.GPIO54 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5080r40'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPBQSEL2.bit.GPIO55 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5082r41'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EDIS;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5084r42'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(54, GPIO_MUX_CPU1, 5); // set GPIO54 and eQep2A</span></span> 
+<span class='fancyvrblineno'><a id='x1-5086r43'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(55, GPIO_MUX_CPU1, 5); // set GPIO55 and eQep2B</span></span> 
+<span class='fancyvrblineno'><a id='x1-5088r44'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QEPCTL.bit.QPEN = 0; // make sure qep reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-5090r45'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QDECCTL.bit.QSRC = 0; // Quadrature count mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-5092r46'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QPOSCTL.all = 0x0; // Disable eQep Position Compare</span></span> 
+<span class='fancyvrblineno'><a id='x1-5094r47'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QCAPCTL.all = 0x0; // Disable eQep Capture</span></span> 
+<span class='fancyvrblineno'><a id='x1-5096r48'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QEINT.all = 0x0; // Disable all eQep interrupts</span></span> 
+<span class='fancyvrblineno'><a id='x1-5098r49'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // use full range of the 32 bit count.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5100r50'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QPOSMAX = 0xFFFFFFFF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5102r51'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // EQep uneffected by emulation suspend</span></span> 
+<span class='fancyvrblineno'><a id='x1-5104r52'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QEPCTL.bit.FREE_SOFT = 2;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5106r53'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QPOSCNT = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5108r54'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep2Regs.QEPCTL.bit.QPEN = 1; // Enable EQep</span></span> 
+<span class='fancyvrblineno'><a id='x1-5110r55'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5112r56'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5114r57'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // setup QEP3 pins for input</span></span> 
+<span class='fancyvrblineno'><a id='x1-5116r58'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //Disable internal pull-up for the selected output pins for reduced</span></span> 
+<span class='fancyvrblineno'><a id='x1-5118r59'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //power consumption</span></span> 
+<span class='fancyvrblineno'><a id='x1-5120r60'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO54 (EQEP3A)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5122r61'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAPUD.bit.GPIO6 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5124r62'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Disable pull-up on GPIO55 (EQEP3B)</span></span> 
+<span class='fancyvrblineno'><a id='x1-5126r63'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAPUD.bit.GPIO7 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5128r64'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAQSEL1.bit.GPIO6 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5130r65'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioCtrlRegs.GPAQSEL1.bit.GPIO7 = 2; // Qual every 6 samples</span></span> 
+<span class='fancyvrblineno'><a id='x1-5132r66'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EDIS;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5134r67'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(6, GPIO_MUX_CPU1, 5); // set GPIO6 and eQep3A</span></span> 
+<span class='fancyvrblineno'><a id='x1-5136r68'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(7, GPIO_MUX_CPU1, 5); // set GPIO7 and eQep3B</span></span> 
+<span class='fancyvrblineno'><a id='x1-5138r69'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QEPCTL.bit.QPEN = 0; // make sure qep reset</span></span> 
+<span class='fancyvrblineno'><a id='x1-5140r70'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QDECCTL.bit.QSRC = 0; // Quadrature count mode</span></span> 
+<span class='fancyvrblineno'><a id='x1-5142r71'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QPOSCTL.all = 0x0; // Disable eQep Position Compare</span></span> 
+<span class='fancyvrblineno'><a id='x1-5144r72'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QCAPCTL.all = 0x0; // Disable eQep Capture</span></span> 
+<span class='fancyvrblineno'><a id='x1-5146r73'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QEINT.all = 0x0; // Disable all eQep interrupts</span></span> 
+<span class='fancyvrblineno'><a id='x1-5148r74'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // use full range of the 32 bit count.</span></span> 
+<span class='fancyvrblineno'><a id='x1-5150r75'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QPOSMAX = 0xFFFFFFFF;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5152r76'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // EQep uneffected by emulation suspend</span></span> 
+<span class='fancyvrblineno'><a id='x1-5154r77'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QEPCTL.bit.FREE_SOFT = 2;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5156r78'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QPOSCNT = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5158r79'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EQep3Regs.QEPCTL.bit.QPEN = 1; // Enable EQep</span></span> 
+<span class='fancyvrblineno'><a id='x1-5160r80'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5162r81'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5164r82'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5166r83'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float readEncLeft(void) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5168r84'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    int32_t raw = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5170r85'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    uint32_t QEP_maxvalue = 0xFFFFFFFFU; //4294967295U</span></span> 
+<span class='fancyvrblineno'><a id='x1-5172r86'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    raw = EQep1Regs.QPOSCNT;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5174r87'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // I don’t think this is needed and never true</span></span> 
+<span class='fancyvrblineno'><a id='x1-5176r88'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if (raw &gt;= QEP_maxvalue/2) raw -= QEP_maxvalue;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5178r89'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    return (raw*(???));</span></span> 
+<span class='fancyvrblineno'><a id='x1-5180r90'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5182r91'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5184r92'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float readEncRight(void) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5186r93'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    int32_t raw = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5188r94'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //4294967295U  -1 32bit signed int</span></span> 
+<span class='fancyvrblineno'><a id='x1-5190r95'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    uint32_t QEP_maxvalue = 0xFFFFFFFFU;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5192r96'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    raw = EQep2Regs.QPOSCNT;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5194r97'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // I don’t think this is needed and never true</span></span> 
+<span class='fancyvrblineno'><a id='x1-5196r98'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if (raw &gt;= QEP_maxvalue/2) raw -= QEP_maxvalue;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5198r99'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    return (raw*(???));</span></span> 
+<span class='fancyvrblineno'><a id='x1-5200r100'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-5202r101'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-5204r102'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>float readEncWheel(void) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-5206r103'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    int32_t raw = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5208r104'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    //4294967295U  -1 32bit signed int</span></span> 
+<span class='fancyvrblineno'><a id='x1-5210r105'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    uint32_t QEP_maxvalue = 0xFFFFFFFFU;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5212r106'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    raw = EQep3Regs.QPOSCNT;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5214r107'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // I don’t think this is needed and never true</span></span> 
+<span class='fancyvrblineno'><a id='x1-5216r108'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if (raw &gt;= QEP_maxvalue/2) raw -= QEP_maxvalue;</span></span> 
+<span class='fancyvrblineno'><a id='x1-5218r109'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    return (raw*(2*PI/4000.0));</span></span> 
+<span class='fancyvrblineno'><a id='x1-5220r110'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+
+<!-- l. 352 --><p class='noindent'>Call <span class='rm-lmtt-10x-x-109'>init_eQEPs() </span>inside <span class='rm-lmtt-10x-x-109'>main() </span>somewhere after the init_serialSCI A, B, C ,D() function calls but before the EINT line of
+code and the <span class='rm-lmtt-10x-x-109'>while(1) </span>loop. Then set one of the unused CPU timer interrupts to timeout every 1 milliseconds. Inside
+that CPU timer interrupt function, simply call the three read functions and assign their return values to
+float variables like “<span class='rm-lmtt-10x-x-109'>LeftWheel</span>”, “<span class='rm-lmtt-10x-x-109'>RightWheel</span>” and “<span class='rm-lmtt-10x-x-109'>HandKnob</span>”. Verify that your existing code is setting
+<span class='rm-lmtt-10x-x-109'>UARTPrint </span>to one at a reasonable rate, (say 10 times a seconds) to have the <span class='rm-lmtt-10x-x-109'>main() </span>while loop print your desired
+text to the Robot’s text LCD screen. Change the print lines to print your two wheel angle measurements
+and the third encoder knob angle. Build and run this code. With your code running manually move your
+robot’s wheels. As a check, try to rotate one of the wheels just one turn. You should see an angle close to
+<!-- l. 352 --><math display='inline'><mrow><mn>2</mn><mi>π</mi></mrow></math>. If not,
+you have the wrong multiplication factor in your read functions. Defining that the front of the robot car is the side the
+LIDAR is on and the back is the side the battery is inserted, does the labeling of left wheel and right wheel make sense?
+Forward speed will be defined as the front of the robot going forward. As you rotate your wheels you should see that if you
+rotate both motors in the forward direction one will give a negative angle. Negate the multiplication factor in that wheel’s
+read function so that both wheels read a positive angle when rotated in the forward direction. <a id='x1-5221r5'></a></p><p><a id='checkoff-5'></a></p><div aria-labelledby='checkoff-label-5' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='5' id='checkoff-box-5' type='checkbox' /> <label for='checkoff-box-5' id='checkoff-label-5'>TA Check-Off 5: Wheel encoders
+working</label></p><div class='checkoff-body'>
+<!-- l. 355 --><p class='indent'>   Demo Exercise 3, optical encoders working. When spun in positive direction both wheel encoders readings increase in
+the positive direction. </p></div></div>
+<!-- l. 358 --><p class='indent'>   Next you will be asked to put the robot on the floor and measure how many radian turns of the wheels
+equates to one foot traveled. Before you do that, you need to program the flash of your F28379D processor so
+that when you power on your robot your program will be running. So make sure you are printing both the
+right wheel and left wheel encoder readings to the text LCD screen. Then have your TA show you how to
+switch to loading your program into the flash of the F28379D processor. Once flashed, unplug the XDS200
+JTAG’s USB cable and power off the robot. Then power back on your robot and you should see your program
+running.
+</p><!-- l. 360 --><p class='indent'>   Next in this exercise you will calculate the speed at which your robot is driving forward or backward. It will
+be nice to know the speed of the robot in ft/s instead of rad/s. Instead of using the radius of the wheel,
+another easy way to convert between radians and feet is to simply put the robot on the floor and move
+the robot one or more feet without letting the wheels slip and that will tell you how many radians the
+wheels turn to reach one foot. Power off your robot and unplug the JTAG then put the robot on the floor.
+Line up your robot wheels and push the robot forward 3 feet. Look at the radian values displayed on the
+robot’s text LCD and divide by 3 feet to find the number of radians per foot. <span class='rm-lmbx-10x-x-109'>Create two more float
+variables and store the distance traveled by each wheel using this factor. </span>Print these distances to
+the robot’s text LCD to check they are correct by pushing the robot a certain distance. <a id='x1-5222r6'></a></p><p><a id='checkoff-6'></a></p><div aria-labelledby='checkoff-label-6' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='6' id='checkoff-box-6' type='checkbox' /> <label for='checkoff-box-6' id='checkoff-label-6'>TA Check-Off 6: Radians per foot
+factor</label></p><div class='checkoff-body'>
+<!-- l. 363 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Does this factor make sense? It should be equal to the radius of the wheel in feet. Show your TA.</span>
+</p></div></div>
+<!-- l. 366 --><p class='indent'>   Set the robot back on its stand on the table and reconnect the JTAG.
+</p><!-- l. 368 --><p class='indent'>   To finish up this exercise, use the third optical encoder attached to the robot as a type of joystick in your hand to dial
+in an input to the robot. Perform the following steps inside your 0.001 second timer function.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-5224x1'>     
+<!-- l. 371 --><p class='noindent'>Create two global float variables <span class='rm-lmtt-10x-x-109'>uLeft,uRight</span>, to be used as the control outputs to PWM channels 1A and
+2A. Modify your previous code so that every 1ms the third optical encoder, which you can manually
+turn, is used as the command to drive the robot’s two motors with the same value. This way you
+will have manual control of the robot moving forward and backward at different speeds. Perform the
+following:
+                                                                                                       
+                                                                                                       
+          </p>
+          <ol class='enumerate2' style='list-style-type:lower-alpha'>
+<li class='enumerate' id='x1-5226x1'>Set both <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>equal to <span class='rm-lmtt-10x-x-109'>HandKnob</span>. <span class='rm-lmri-10x-x-109'>NOTE, in later labs </span><span class='rm-lmtti-10x-x-109'>uLeft </span><span class='rm-lmri-10x-x-109'>and </span><span class='rm-lmtti-10x-x-109'>uRight </span><span class='rm-lmri-10x-x-109'>will be assigned
+values calculated by a control algorithm.</span>
+</li>
+<li class='enumerate' id='x1-5228x2'>Limit <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>to a value between –10 and 10.
+</li>
+<li class='enumerate' id='x1-5230x3'>Command <span class='rm-lmtt-10x-x-109'>EPWM1A </span>and <span class='rm-lmtt-10x-x-109'>EPWM2A </span>to the value of <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>using the <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and 2A functions.</li></ol>
+</li>
+<li class='enumerate' id='x1-5232x2'>     
+<!-- l. 380 --><p class='noindent'>Using the backwards difference rule (v = (p_current – p_old)/0.001) as a discrete approximation to the derivative,
+calculate the linear velocity corresponding to each motor in feet/second from the past and present motor position
+measurements, p_old and p_current respectively. p_old is the value of the encoder position 1ms previous. <a id='x1-5233r7'></a></p><a id='checkoff-7'></a><div aria-labelledby='checkoff-label-7' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='7' id='checkoff-box-7' type='checkbox' /> <label for='checkoff-box-7' id='checkoff-label-7'>TA Check-Off 7: Why p old
+is global</label></p><div class='checkoff-body'>
+<!-- l. 383 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Explain to your TA why p_old should be a global variable.</span> </p></div></div>
+</li>
+<li class='enumerate' id='x1-5235x3'>Print the velocity values of <span class='rm-lmbx-10x-x-109'>v1 </span>and <span class='rm-lmbx-10x-x-109'>v2 </span>on the first line of the LCD, and the reading from encoder 3 on the second
+line of the LCD screen every 100 ms. You have to limit the accuracy of your floating-point number printed in order
+for all the information to be displayed completely on the 20-character LCD line. For example use
+%.2f.
+</li>
+<li class='enumerate' id='x1-5237x4'>Make sure that the robot is on the bench stand with wheels OFF the ground. Enable the PWM amplifier when
+running this code so the motors will spin. The amplifier is enabled by flipping up the switch on the
+robot’s front amplifier board. When the motors start spinning, check the direction they are spinning.
+Given a positive input, both the motors should be spinning so they drive the robot forward. <span class='rm-lmri-10x-x-109'>The
+back end of the robot is the end the battery can be inserted. </span>If both the motors do not move in the
+forward direction when sending a positive control effort, change the sign of the control effort for the
+motor that is spinning in the wrong direction. The best place to add this negative sign is in front
+of the parameter passed to the appropriate <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>or 2A function. Do not change the sign of
+the control variable, e.g., if you think motor left is spinning the wrong way given a positive control
+input, add the sign change to the parameters of <span class='rm-lmtt-10x-x-109'>setEPWM1A </span>and do not do something like <span class='rm-lmtt-10x-x-109'>uLeft =
+-uLeft; </span>The sign change is necessary because the motors under the robot are mounted in opposite
+directions.
+</li>
+<li class='enumerate' id='x1-5239x5'>When you have both motors spinning in the positive direction given a positive PWM input, check the signs of the
+     two velocity readings. They should both be positive velocities. If show your TA because you may have performed an
+     earlier step incorrectly. Verify that your velocity (feet/sec) calculation changes if you put a load on the wheels (by
+adding resistance to the motion with your hand).</li></ol>
+<p><a id='x1-5240r8'></a>
+<a id='checkoff-8'></a></p><div aria-labelledby='checkoff-label-8' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='8' id='checkoff-box-8' type='checkbox' /> <label for='checkoff-box-8' id='checkoff-label-8'>TA Check-Off 8: Third encoder drives the motors</label></p><div class='checkoff-body'>
+<!-- l. 391 --><p class='indent'>   Demo last part of Exercise 3 using the third encoder to input a control effort to the motors and the robot’s speed
+displayed to the text LCD screen </p></div></div>
+   
+<h3 class='likesectionHead' id='exercise-4-friction-compensation-'>  <a id='x1-6000'></a>Exercise 4: Friction Compensation </h3>
+<p id='exercise-4-friction-compensation'><a id='Q1-1-13'></a>
+<!-- l. 396 --></p><p class='noindent'>In this final exercise you are going to implement a friction compensation algorithm to reduce the effects of the motor’s
+friction on your system. Your task will be to identify the friction acting on the motors. To accomplish this, you will
+produce a plot of applied motor control effort (or input) (on the y axis) vs. motor velocity (feet/s) (on the x axis). You will
+first record 10 or so data points split between positive and negative values. Then by making a plot of your data, you can
+determine approximations of both the viscous and coulomb friction of the motors in both the positive and negative
+directions.
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-6002x1'>Using the third encoder to change the open loop command to the motors, record the steady state ft/sec
+velocity of the robot driving on the floor at 10 different control inputs. Be sure your measurements make
+sense… if you read 1 foot per second from the LCD, then the robot should actually be moving approximately
+1 foot every second. If the robot is driving too fast to measure the values, you will obviously have to use
+a smaller magnitude of control input. Be sure to measure both positive and negative velocity values (robot
+moving forward AND backward).
+</li>
+<li class='enumerate' id='x1-6004x2'>     
+<!-- l. 400 --><p class='noindent'><a id='x1-6005r9'></a></p><a id='checkoff-9'></a><div aria-labelledby='checkoff-label-9' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='9' id='checkoff-box-9' type='checkbox' /> <label for='checkoff-box-9' id='checkoff-label-9'>TA Check-Off 9: Friction plot</label></p><div class='checkoff-body'>
+<!-- l. 403 --><p class='noindent'>Produce a plot of control input vs. speed in MATLAB to show to your instructor. </p></div></div>
+</li>
+<li class='enumerate' id='x1-6007x3'>Using two separate regression fits, one for positive velocities and one for negative velocities, find the
+two lines that best fit your measured data points in the positive and negative velocity regimes. Ask
+your instructor for help if you don’t know how to quickly do a regression in MATLAB. From the
+best-fit lines, note the y intercepts. These are your values for positive and negative coulomb friction. We
+will label these values Cpos and Cneg (note Cneg will be a negative value). The slopes of the two
+lines are your values for positive and negative viscous friction. We will label these values Vpos and
+Vneg.
+</li>
+                                                                                                       
+                                                                                                       
+<li class='enumerate' id='x1-6009x4'>
+     <!-- l. 406 --><p class='noindent'>With these identified parameters, add the following friction compensation algorithm to your code (assuming your
+motor one command variable is called “<span class='rm-lmtt-10x-x-109'>uLeft</span>”):
+</p>     
+<pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-6011r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>if (velLeft&gt; 0.0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-6013r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        uLeft = uLeft + Vpos*velLeft + Cpos;</span></span> 
+<span class='fancyvrblineno'><a id='x1-6015r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span> 
+<span class='fancyvrblineno'><a id='x1-6017r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>else {</span></span> 
+<span class='fancyvrblineno'><a id='x1-6019r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        uLeft = uLeft + Vneg*velLeft + Cneg;</span></span> 
+<span class='fancyvrblineno'><a id='x1-6021r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<!-- l. 417 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>And perform similar instructions for uRight</span>
+</p>     
+<!-- l. 419 --><p class='noindent'>As a starting point use 100% (in future labs we will only use 60 - 80% of the identified values) of the values
+identified for Vpos, Vneg, Cpos, and Cneg. In your code make sure that only the friction compensation
+is activated for this section. The easiest way to do this is to assign <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>to zero each
+time in your 1ms code instead of assigning <span class='rm-lmtt-10x-x-109'>uLeft </span>and <span class='rm-lmtt-10x-x-109'>uRight </span>the value of <span class='rm-lmtt-10x-x-109'>HandKnob</span>. Compile your
+code.</p></li></ol>
+<!-- l. 422 --><p class='noindent'>Test your friction compensation code by pushing the robot when it is on the floor. Your robot should roll for a long distance if
+the friction compensation is working well. You may need to hand tune your friction gains slightly to get the robot to roll
+for a good distance when you push it. <a id='x1-6022r10'></a></p><p><a id='checkoff-10'></a></p><div aria-labelledby='checkoff-label-10' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='10' id='checkoff-box-10' type='checkbox' /> <label for='checkoff-box-10' id='checkoff-label-10'>TA Check-Off 10: Friction compensation working</label></p><div class='checkoff-body'>
+<!-- l. 425 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Demonstrate your working code to your instructor.</span> </p></div></div>
+   
+<h3 class='likesectionHead' id='lab-checkoffs'> <a id='x1-7000'></a>Lab Checkoffs</h3>
+<!-- l. 430 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-7002x1'>Demo Exercise 1, LED getting brighter and dimmer repeatedly.
+</li>
+<li class='enumerate' id='x1-7004x2'>Demo Exercise 2, motors ramping up and down in speed.
+</li>
+<li class='enumerate' id='x1-7006x3'>Demo Exercise 3, optical encoders working. When spun in positive direction both wheel encoders readings
+increase in the positive direction.
+</li>
+<li class='enumerate' id='x1-7008x4'>Demo last part of Exercise 3 using the third encoder to input a control effort to the motors and the robot’s
+speed displayed to the text LCD screen
+</li>
+<li class='enumerate' id='x1-7010x5'>Demo Exercise 4, your friction plot and your friction compensation working.</li></ol>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='what-to-submit-to-gradescope'>  <a id='x1-8000'></a>What to Submit to Gradescope</h3>
+<!-- l. 440 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>Your final commented source code for Exercise 1, 2, 3 and 4. Make sure all parts of the exercises are in the
+code or commented out. Be very clear in your code what parts are for each exercise. Comments should high
+light what you learned in this lab.</li></ol>
+   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-9000'></a>Check-Off Summary</h3>
+<!-- l. 446 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: Bitfield value answers</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off 2: LED1
+brightness ramping</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: Motors driven from the Registers window</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Motors ramping up and
+down</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5: Wheel encoders working</a></li><li><input aria-labelledby='checkoff-sum-6' data-checkoff='6' type='checkbox' /> <a href='#checkoff-6' id='checkoff-sum-6'>Check-Off 6: Radians per foot factor</a></li><li><input aria-labelledby='checkoff-sum-7' data-checkoff='7' type='checkbox' /> <a href='#checkoff-7' id='checkoff-sum-7'>Check-Off 7: Why p old is
+global</a></li><li><input aria-labelledby='checkoff-sum-8' data-checkoff='8' type='checkbox' /> <a href='#checkoff-8' id='checkoff-sum-8'>Check-Off 8: Third encoder drives the motors</a></li><li><input aria-labelledby='checkoff-sum-9' data-checkoff='9' type='checkbox' /> <a href='#checkoff-9' id='checkoff-sum-9'>Check-Off 9: Friction plot</a></li><li><input aria-labelledby='checkoff-sum-10' data-checkoff='10' type='checkbox' /> <a href='#checkoff-10' id='checkoff-sum-10'>Check-Off 10: Friction compensation
+working</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 450 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

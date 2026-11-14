@@ -155,6 +155,7 @@ table[rules] {border-left:solid black 0.4pt; border-right:solid black 0.4pt; }
 .hline {border-top: 1px solid black;}
 .hline + .vspace:last-child{display:none;}
 .hline:first-child{border-bottom:1px solid black;border-top:none;}
+div.colorbox {width: fit-content; padding: 0.2em;}
 tr.hline td hr{display:none}
 .partToc a, .partToc, .likepartToc a, .likepartToc {line-height: 200%; font-weight:bold; font-size:110%;}
 .theindex-letter{ margin-top: 1em;}
@@ -193,7 +194,7 @@ p + figcaption, img + figcaption{margin-top: 1em;}
 .tcolorbox{margin-top:0.5em;margin-bottom: 0.5em;}
 .tcolorbox .lowerbox{margin-top:0pt;}
 .rotatebox{display: inline-block;}
-div.verbatiminput {font-family: monospace,monospace; white-space: nowrap; }
+div.verbatiminput {font-family: monospace,monospace; white-space: pre-wrap; }
 .equation-star td{text-align:center; vertical-align:middle; }
 table.equation-star { width:100%; } 
 .boxed{border: 1px solid black; padding-left:2px; padding-right:2px;}
@@ -223,6 +224,17 @@ code, tt, .lstinline, [class*="lmtt"] { overflow-wrap: anywhere; }
 code.verb, span.obeylines-h { white-space: pre-wrap; overflow-wrap: anywhere; }
 img, svg { max-width: 100%; height: auto; }
 figure:has(> table), div:has(> table), math[display="block"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+.checkoff { border: 2px solid #a00008; border-left-width: 0.6rem; border-radius: 6px; background-color: #fdf1f1; color: #111111; padding: 0.5em 0.8em; margin: 0.8em 0; color-scheme: light; }
+.checkoff p { margin: 0.2em 0; text-indent: 0; }
+.checkoff-head { font-weight: 700; display: flex; align-items: center; gap: 0.5em; }
+.checkoff-head label { color: #a00008; cursor: pointer; }
+.checkoff input[type="checkbox"], .checkoff-summary input[type="checkbox"] { width: 24px; height: 24px; margin: 0; flex: none; accent-color: #a00008; cursor: pointer; }
+.checkoff:has(input:checked) { border-color: #1b6e36; background-color: #eef8f0; }
+.checkoff:has(input:checked) .checkoff-head label { color: #145229; }
+.checkoff a, .checkoff a * { color: #0b3d91 !important; }
+ul.checkoff-summary { list-style: none; padding-left: 0; }
+ul.checkoff-summary li { display: flex; align-items: center; gap: 0.5em; margin: 0.35em 0; }
+ul.checkoff-summary a { display: inline-block; padding-block: 3px; }
 #tcolobox-1 .tcolorbox-title{color: #FFFFFF; background-color: #404040;}
 #tcolobox-1 .tcolorbox-content{color: #000000; background-color: #DFDFDF; border: 1px solid #404040;}
 #tcolobox-1 > div{ padding-top:14.22635px; padding-bottom:14.22635px; padding-left:19.9169px; padding-right:19.9169px; }

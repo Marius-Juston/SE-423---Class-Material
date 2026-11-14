@@ -1,0 +1,431 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Laboratory Assignment 1</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='Lab1.css' rel='stylesheet' type='text/css' /> 
+<meta content='Lab1.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Laboratory Assignment #1</span>
+</p><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Introduction to Programming the Robot Car’s TMS320F28379D Processor</span>
+</p><!-- l. 29 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 5</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+   
+<h3 class='likesectionHead' id='goals-for-this-lab-assignment'> <a id='x1-1000'></a>Goals for this Lab Assignment</h3>
+<!-- l. 33 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>                                                                                                       
+                                                                                                       
+<li class='enumerate' id='x1-1002x1'>Learn about the rules and responsibilities of access to the lab room, 3080ECEB, and its PCs.
+</li>
+<li class='enumerate' id='x1-1004x2'>Start to become familiar with the TMS320F28379D LaunchPad and Code Composer Studio v12.
+</li>
+<li class='enumerate' id='x1-1006x3'>Build and run your first microcontroller (DSP) program.
+</li>
+<li class='enumerate' id='x1-1008x4'>Study the given starter code.</li></ol>
+   
+<h3 class='likesectionHead' id='laboratory-exercises'>  <a id='x1-2000'></a>Laboratory Exercises</h3>
+   
+<h3 class='likesectionHead' id='exercise-1-'>  <a id='x1-3000'></a>Exercise 1 </h3>
+<p id='exercise-1'><a id='Q1-1-4'></a>
+<!-- l. 44 --></p><p class='noindent'>Recommended Drive Usage:
+</p>     
+<dl class='description'><dt class='description'><a id='x1-3001x'></a>
+C: Drive 
+</dt><dd class='description'>
+<!-- l. 47 --><p class='noindent'>You will be cloning your repository to the <code class='lstinline'><span style='color:#000000'>C:\</span></code> drive below in Exercise 2. You will want to get in the habit
+of “committing” and “pushing” your newly developed code to your repository each time you leave the lab.
+We will be showing you how to use “git” for this purpose.
+</p>     
+</dd>
+<dt class='description'><a id='x1-3002x'></a>
+N: Drive 
+</dt><dd class='description'>
+<!-- l. 48 --><p class='noindent'>This drive is a read only drive. There is a “scratch” directory on the <code class='lstinline'><span style='color:#000000'>N:\</span></code> drive that does give you write
+permissions. Use <code class='lstinline'><span style='color:#000000'>N:\scratch</span></code> only to transfer files from one account or PC to another and not to save work
+because it is flushed periodically. Because you will be heavily using your “git” repository, you should not
+need to use this too often.
+</p>     
+</dd>
+<dt class='description'><a id='x1-3003x'></a>
+U: Drive 
+</dt><dd class='description'>
+<!-- l. 49 --><p class='noindent'>When you log into the PCs in the Mechatronics Lab, the computer will automatically map to your own
+personal drive labeled “U:”. This directory is only accessible by your login name and is your personal space to
+store your work (other than your repository) if you wish. I do not recommend that you clone your repository
+to this drive due to some issues with Code Composer Studio.</p></dd></dl>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='exercise-2-'>  <a id='x1-4000'></a>Exercise 2 </h3>
+<p id='exercise-2'><a id='Q1-1-6'></a>
+<!-- l. 54 --></p><p class='noindent'>First follow the other Lab 1 document “Using the SE423 Repository” and its first section “Create your Repository” to
+check out the SE423 repository to your lab PC and/or your personal laptop. If you are going to be using both the lab PC
+and your laptop for development you will want to create the same path on both your laptop as on the lab PC. Create a
+folder using you and your partner’s NetIDs (do not use any spaces) at the root <code class='lstinline'><span style='color:#000000'>C:\</span></code> drive and keep all your
+files there. It is also a good idea for you to make backups of your lab files outside of your Git repository
+as you progress through the semester. Making this extra backup will save you when we can’t figure out
+what went wrong with Git. Git is awesome and normally works great but every once in a while I have
+seen issues that caused students to lose versions of their files. This is mainly due to us being beginner Git
+users.
+
+</p>   
+<h3 class='likesectionHead' id='exercise-3-'>  <a id='x1-5000'></a>Exercise 3 </h3>
+<p id='exercise-3'><a id='Q1-1-8'></a>     
+</p><ul class='itemize1'>
+<li class='itemize'>Open Code Composer Studio 12 (CCS 12) and select the “workspace” folder in your repository. For example,
+if your netID was “superstdnt”, you would have checked out your repository in <code class='lstinline'><span style='color:#000000'>c:\superstdnt\SE423_repo</span></code>.
+The workspace folder then to select would be <code class='lstinline'><span style='color:#000000'>c:\superstdnt\SE423_repo\workspace</span></code>.
+</li>
+<li class='itemize'>Once  CCS  12  is  done  loading  your  workspace,  you  need  to  load  the  “LABstarter”  project.  When
+you  perform  this  load,  the  project  is  copied  into  your  workspace.  Therefore,  if  you  rename  this
+project,  you  will  be  able  to  load  the  “LABstarter”  project  again  if  you  would  like  to  start  another
+minimal  project.  I  purposely  located  this  “LABstarter”  project  in  the  same  folder  that  has  many  of
+the  example  projects  you  will  be  studying  this  semester.  These  examples  are  part  of  the  software
+development  stack  that  TI  calls  C2000ware.  I  have  copied  the  needed  parts  of  C2000ware  into  our
+repository  so  that  if  you  accidently  modify  something  you  can  easily  get  it  back.  Again  now  if  your
+NetID  was  “superstdnt”,  perform  the  following  to  load  your  starter  project.  In  CCS  select  the  menu
+Project<!-- l. 60 --><math display='inline'><mrow> <mo class='MathClass-rel' stretchy='false'>→</mo></mrow></math>Import
+CCS Projects. Click “Browse” and explore to “<code class='lstinline'><span style='color:#000000'>C:\superstdnt\SE423_repo\C2000Ware_4_01_00_00\device_support\f2837xd\examples\cpu1\LABstarter</span></code>”
+and finally press “Finish”. Your project should then be loaded into the CCS environment. Then rename the
+project “<code class='lstinline'><span style='color:#000000'>LAB1&lt;yourinitials&gt;</span></code>” by right clicking on the project name “LABstarter” and selecting “Rename”.
+Also explore into the project and find the file “<code class='lstinline'><span style='color:#000000'>LABstarter_main.c</span></code>”. Right-Click on “<code class='lstinline'><span style='color:#000000'>LABstarter_main.c</span></code>”
+and select “Rename”. Change the name to “<code class='lstinline'><span style='color:#000000'>lab1_main.c</span></code>”. To save you some headaches in the future, I
+recommend you perform one more step after you have created a new “LABstarter” project. Right click on
+your project name in the Project Explorer and select “Properties.” Select “General” on the left hand side.
+Then in the “Project” tab find the “Connection” drop down and select “Texas Instruments XDS2xx USB
+Debug Probe.” “Apply and Close”.
+</li>
+<li class='itemize'>Now that you have the project loaded you can build the code and download it to the LaunchPad board. Have your
+     TA show you how to connect the robot to the USB of your PC and then in CCS hit the green “Debug” button
+     <img alt='[Picture]' src='Lab10x.svg' /> and in the dialog box the pops up, select CPU1 only. This will compile the code and load it to your
+LaunchPad board.
+</li>
+<li class='itemize'>     
+<!-- l. 62 --><p class='noindent'>Click the Suspend button  <img alt='[Picture]' src='Lab11x.svg' /> to pause the code and the Resume (or Play) button  <img alt='[Picture]' src='Lab12x.svg' /> to resume or
+start your code’s execution Use both of these to prove to yourself that both the blue and red LEDs are blinking on
+and off. Use one more button in CCS 12, the Restart  <img alt='[Picture]' src='Lab13x.svg' /> button. Run your code and then press the pause
+button to stop you code. If you hit the Resume button the code starts up again from where you stopped it. If you
+press the Restart button, CCS will take you back to the beginning of your code and then you can click the Resume
+button to start your code again from the beginning. This saves time if you just need to restart the same code.
+If you need to make changes to your code, Restart does not download the new code. You have to
+re-Debug your code to get the new changes downloaded to the processor. <a id='x1-5001r1'></a></p><a id='checkoff-1'></a><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: First DSP project built and
+running</label></p><div class='checkoff-body'>
+<!-- l. 65 --><p class='noindent'>Demonstrate to your TA that you have successfully created, built and ran your first DSP project.
+</p>     
+</div></div>
+</li>     
+<li class='itemize'>
+<!-- l. 67 --><p class='noindent'>Read through the <span class='rm-lmtt-10x-x-109'>main() </span>function of your <code class='lstinline'><span style='color:#000000'>lab1_main.c</span></code> file and see if you can find the function that changes the
+period of the timer functions. Change the period and see if the LEDs blink at a different rate. <a id='x1-5002r2'></a></p><a id='checkoff-2'></a><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: Changed LED blink
+period</label></p><div class='checkoff-body'>
+<!-- l. 70 --><p class='noindent'>Show your program that changed the period of the blink rate of the blue and red LED. </p></div></div>
+</li>     
+<li class='itemize'>Then have your TA show you how to shutdown the robot’s Raspberry Pi4 and how to power off the robot and
+remove its power supply.</li></ul>
+   
+<h3 class='likesectionHead' id='exercise-4-'>  <a id='x1-6000'></a>Exercise 4 </h3>
+<p id='exercise-4'><a id='Q1-1-10'></a>     
+</p><ul class='itemize1'>
+<li class='itemize'>For this exercise, instead of using the robot, use your F28379D LaunchXL board (Red Board) by itself. Find
+a mini USB cable that connects to your F28379D board. Most of the time when you use your F28379D board
+you will be starting with a new project using “HWStarter” but for this exercise use “LABstarter” again
+creating a new project with the same steps as above. Rename this project “<code class='lstinline'><span style='color:#000000'>printtest&lt;yourinitials&gt;</span></code>” and
+remember to rename the <code class='lstinline'><span style='color:#000000'>LABstarter_main.c</span></code> file to <code class='lstinline'><span style='color:#000000'>printtest_main.c</span></code>. Also right click on this new project
+and select “Properties” and make sure the Connection is set to “Texas Instruments XDS100v2 USB Debug
+Probe.”
+</li>
+<li class='itemize'>
+                                                                                                       
+                                                                                                       
+     <!-- l. 79 --><p class='noindent'>Look at the code and you will see that the functions <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>and <span class='rm-lmtt-10x-x-109'>serial_printf </span>are called every time the
+     variable <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is equal to one. <a id='x1-6001r3'></a></p><a id='checkoff-3'></a><div aria-labelledby='checkoff-label-3' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='3' id='checkoff-box-3' type='checkbox' /> <label for='checkoff-box-3' id='checkoff-label-3'>TA Check-Off 3: How often UARTPrint is set</label></p><div class='checkoff-body'>
+     <!-- l. 82 --><p class='noindent'>How often is <span class='rm-lmtt-10x-x-109'>UARTPrint </span>getting set to one? <span class='rm-lmbx-10x-x-109'>Show your answer to your TA</span>. </p></div></div>
+<!-- l. 84 --><p class='noindent'><span class='rm-lmtt-10x-x-109'>UART_printfLine </span>prints to the two lines of the robot’s text LCD. Since we are not using the robot for this exercise
+these functions write data to a serial port, but it is ignored since there is no LCD screen connected to your
+homework F28379D board. The reason we are using just the F28379D board and not the robot is that we want to
+send and receive data through the USB cable to a serial terminal called Tera Term. Go ahead and uncomment the
+<span class='rm-lmtt-10x-x-109'>serial_printf </span>line of code that is just above the <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>function calls. Build and run this
+program.
+</p>     
+</li>
+<li class='itemize'>We need to figure out what serial port COM number your USB serial port is using. The easiest way to find this is to
+run “Device Manager” in Windows and find the “Ports” item. Under ports find the COM number for the device
+titled “XDS100 Class USB Serial Port”. Run Tera Term and select the “Serial” item and find the XDS100 Class
+USB Serial Port in the list of COM ports. Final thing to do is change the Baud (or Bite) rate of the COM port. Still
+in Tera Term select the menu item “Setup” and then “Serial Port…”. Change the “Speed” to 115200 if it is not
+already. Then save this setup by again going to “Setup” and “Save Setup” and select the default .ini file to save
+these settings.
+</li>
+<li class='itemize'>Now you are ready to “bug/debug” you code in Code Composer Studio. Download and run your code and you
+should see text printed in the serial terminal.
+</li>
+<li class='itemize'>     
+<!-- l. 87 --><p class='noindent'>Also click (or give focus) to Tera Term and type some text into the terminal. The typed text will not be shown in
+the window, but those characters are being sent to the F28379D. Notice that when you type the number of
+characters received increases (which one of the values printed to the terminal). In CCS and your Printtest project,
+find and open the file <code class='lstinline'><span style='color:#000000'>F28379dSerial.c</span></code>. Towards the bottom of the file find the function <span class='rm-lmtt-10x-x-109'>__interrupt void
+RXAINT_recv_ready(void) </span>This function is called every time a character is sent across the serial port. The sent
+character is received in the local variable “<span class='rm-lmtt-10x-x-109'>RXAdata</span>”. Write an if statement that checks if the character
+in “<span class='rm-lmtt-10x-x-109'>RXAdata</span>” is equal to the character ‘a’. If it is ‘a’ turn on Board Red LED. Write another if
+statement that checks if “<span class='rm-lmtt-10x-x-109'>RXAdata</span>” is equal to ‘b’. If it is ‘b’ turn off Board Red LED. Use the
+command <span class='rm-lmtt-10x-x-109'>GpioDataRegs.GPBSET.bit.GPIO34 = 1; </span>to turn OFF Board Red LED. Use the command
+<span class='rm-lmtt-10x-x-109'>GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1; </span>to turn ON Board Red LED. Also make sure to find in
+CPU_Timer0’s interrupt function the line that toggles on and off GPIO34. Comment that line out so you can
+control the on/off of the RED LED by pressing the ‘a’ and ‘b’ keys. <a id='x1-6002r4'></a></p><a id='checkoff-4'></a><div aria-labelledby='checkoff-label-4' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='4' id='checkoff-box-4' type='checkbox' /> <label for='checkoff-box-4' id='checkoff-label-4'>TA Check-Off 4: Red LED controlled from the
+terminal</label></p><div class='checkoff-body'>
+<!-- l. 90 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo this working to your TA.</span> </p></div></div>
+</li>     
+<li class='itemize'>
+<!-- l. 92 --><p class='noindent'>In addition, write code here in the <span class='rm-lmtt-10x-x-109'>RXAINT_recv_ready </span>interrupt function that looks for other pressed
+keys and in the same way turns on and off LEDS 1 through 4 on the robot’s green breakout board.
+We do not have these LEDS on the F28379D Board but your TA will show you the Pin Mux Guide
+(Note that this is the Lab PinMux Guide and there is another one for your homework board),
+<a class='url' href='https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf'><span class='rm-lmtt-10x-x-109'>https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf</span></a> and how to
+connect the Oscilloscope to the pins that control these LEDS and you can watch them transition on the scope’s
+                                                                                                       
+                                                                                                       
+     screen. </p>
+          <ul class='itemize2'>
+<li class='itemize'>LED1 is connected to GPIO22.
+</li>
+<li class='itemize'>LED2 is connected to GPIO94.
+</li>
+<li class='itemize'>LED3 is connected to GPIO95.
+</li>
+<li class='itemize'>LED4 is connected to GPIO97.
+</li>
+<li class='itemize'>LED5 is connected to GPIO111.</li></ul>
+<!-- l. 102 --><p class='noindent'><span class='rm-lmri-10x-x-109'>The GPIO pins are controlled by registers starting with the label GPA, GPB, GPC, GPD, GPE or GPF. GPA
+registers (i.e. GPASET, GPACLEAR, GPATOGGLE, GPADAT) control IO pins 0 through 31. GPB registers (i.e.
+GPBSET, GPBCLEAR, GPBTOGGLE, GPBDAT) control IO pins 32 through 63, etc.. So which GP registers
+control 94, 95, 97 and 111?</span>
+</p>     
+<!-- l. 104 --><p class='noindent'>For LED5, add code in Timer 0’s interrupt function so that LED5 is toggled on and off every 3<sup class='textsuperscript'><span class='rm-lmr-10'>rd</span></sup> time Timer0’s
+interrupt function is called. <a id='x1-6003r5'></a></p><a id='checkoff-5'></a><div aria-labelledby='checkoff-label-5' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='5' id='checkoff-box-5' type='checkbox' /> <label for='checkoff-box-5' id='checkoff-label-5'>TA Check-Off 5: LEDs 1 through 5 on the oscilloscope</label></p><div class='checkoff-body'>
+<!-- l. 107 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Demo your program working to your TA.</span> </p></div></div>
+</li></ul>   
+
+<h3 class='likesectionHead' id='exercise-5-'> <a id='x1-7000'></a>Exercise 5 </h3>
+<p id='exercise-5'><a id='Q1-1-12'></a>
+<!-- l. 113 --></p><p class='noindent'>Below is an introduction to the starter code given to you for this semester’s lab assignments. I used green for the code and
+black for my commentary. This listing leaves out quite a bit of the initialization starter code to keep the listing shorter.
+Read though the below code and commentary and find the same sections of code in your project you created above. Ask
+your instructor to clarify any initial questions you have about the starter code. You will have many questions, of course, as
+this is the first time you are reading through this code. We will be going over this code many times in lecture and lab
+sessions.
+</p>   
+<pre class='fancyvrb' id='fancyvrb1'><span class='fancyvrblineno'><a id='x1-7002r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//######################################################################</span></span> 
+<span class='fancyvrblineno'><a id='x1-7004r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// FILE:   LABstarter_main.c</span></span> 
+<span class='fancyvrblineno'><a id='x1-7006r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//</span></span> 
+<span class='fancyvrblineno'><a id='x1-7008r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// TITLE:  Lab Starter</span></span> 
+<span class='fancyvrblineno'><a id='x1-7010r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>//######################################################################</span></span> 
+<span class='fancyvrblineno'><a id='x1-7012r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7014r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Included Files</span></span> 
+<span class='fancyvrblineno'><a id='x1-7016r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;stdio.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7018r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;stdlib.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7020r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;stdarg.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7022r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;string.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7024r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;math.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7026r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include &lt;limits.h&gt;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7028r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "F28x_Project.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7030r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "driverlib.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7032r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "device.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7034r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "f28379dSerial.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7036r18'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "LEDPatterns.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7038r19'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "song.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7040r20'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "dsp.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7042r21'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#include "fpu32/fpu_rfft.h"</span></span> 
+<span class='fancyvrblineno'><a id='x1-7044r22'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7046r23'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#define PI          3.1415926535897932384626433832795</span></span> 
+<span class='fancyvrblineno'><a id='x1-7048r24'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#define TWOPI       6.283185307179586476925286766559</span></span> 
+<span class='fancyvrblineno'><a id='x1-7050r25'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>#define HALFPI      1.5707963267948966192313216916398</span></span> 
+<span class='fancyvrblineno'><a id='x1-7052r26'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7054r27'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7056r28'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Interrupt Service Routines predefinition</span></span> 
+<span class='fancyvrblineno'><a id='x1-7058r29'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7060r30'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer1_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7062r31'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7064r32'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void SWI_isr(void);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7066r33'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7068r34'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// Count variables</span></span> 
+<span class='fancyvrblineno'><a id='x1-7070r35'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numTimer0calls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7072r36'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint32_t numSWIcalls = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7074r37'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>extern uint32_t numRXA;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7076r38'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7078r39'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>uint16_t LEDdisplaynum = 0;</span></span></pre>
+<!-- l. 157 --><p class='noindent'>For these C exercises, this is where I would like you to create any global variables or global functions. Actually, the
+only kind of functions we will create this semester will be global functions. We will never need to create
+a function inside another function and that includes not creating functions inside your <span class='rm-lmtt-10x-x-109'>main() </span>function.
+You can of course put your global functions anywhere outside of other functions. It is just nice to have all
+your functions defined in one spot of your code so they are easier for you to find. The same goes for global
+variables.
+</p>   
+<pre class='fancyvrb' id='fancyvrb2'><span class='fancyvrblineno'><a id='x1-7080r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>void main(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7082r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7084r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // PLL, WatchDog, enable Peripheral Clocks</span></span> 
+<span class='fancyvrblineno'><a id='x1-7086r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // This example function is found in the F2837xD_SysCtrl.c file.</span></span> 
+<span class='fancyvrblineno'><a id='x1-7088r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitSysCtrl();</span></span> 
+<span class='fancyvrblineno'><a id='x1-7090r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7092r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    InitGpio();</span></span> 
+<span class='fancyvrblineno'><a id='x1-7094r8'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7096r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blue LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-7098r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7100r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7102r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPASET.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7104r13'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7106r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Red LED on LaunchPad</span></span> 
+<span class='fancyvrblineno'><a id='x1-7108r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7110r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7112r17'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPBSET.bit.GPIO34 = 1;</span></span></pre>
+                                                                                                       
+                                                                                                       
+<!-- l. 179 --><p class='noindent'>… <span class='rm-lmri-10x-x-109'>Purposely left code out here in this listing because it is all initializations that we will discuss in future labs and not important
+here </span>…
+</p>   
+<pre class='fancyvrb' id='fancyvrb3'><span class='fancyvrblineno'><a id='x1-7114r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EALLOW;  // This is needed to write to EALLOW protected registers</span></span> 
+<span class='fancyvrblineno'><a id='x1-7116r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER0_INT = &amp;cpu_timer0_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7118r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER1_INT = &amp;cpu_timer1_isr;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7120r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieVectTable.TIMER2_INT = &amp;cpu_timer2_isr;</span></span></pre>
+<!-- l. 188 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+</p>   
+<pre class='fancyvrb' id='fancyvrb4'><span class='fancyvrblineno'><a id='x1-7122r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Configure CPU-Timer 0, 1, and 2 to interrupt every second:</span></span> 
+<span class='fancyvrblineno'><a id='x1-7124r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // 200MHz CPU Freq, 1 second Period (in uSeconds)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7126r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7128r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer1, 200, 20000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7130r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7132r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7134r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable CpuTimer Interrupt bit TIE</span></span> 
+<span class='fancyvrblineno'><a id='x1-7136r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7138r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer1Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7140r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2Regs.TCR.all = 0x4000;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7142r11'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7144r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    init_serial(&amp;SerialA,115200);</span></span></pre>
+<!-- l. 205 --><p class='noindent'><span class='rm-lmri-10x-x-109'>… Purposely left code out of listing …</span>
+</p>   
+<pre class='fancyvrb' id='fancyvrb5'><span class='fancyvrblineno'><a id='x1-7146r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Enable global Interrupts and higher priority real-time debug</span></span> 
+<span class='fancyvrblineno'><a id='x1-7148r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // events</span></span> 
+<span class='fancyvrblineno'><a id='x1-7150r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    EINT;  // Enable Global interrupt INTM</span></span> 
+<span class='fancyvrblineno'><a id='x1-7152r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    ERTM;  // Enable Global realtime interrupt DBGM</span></span> 
+<span class='fancyvrblineno'><a id='x1-7154r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7156r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // IDLE loop. Just sit and loop forever (optional):</span></span> 
+<span class='fancyvrblineno'><a id='x1-7158r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    while(1)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7160r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    {</span></span></pre>
+<!-- l. 218 --><p class='noindent'>Look below in the timer 2’s interrupt function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>, and you will see that <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set to 1 every 50th
+time the timer 2’s function is entered. So both the rate at which timer 2’s function is called and this modulus 50
+determines the rate at which the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function is called. <span class='rm-lmtt-10x-x-109'>serial_printf </span>prints text to Tera Term or some
+other serial terminal program. Also notice that after the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function call, <span class='rm-lmtt-10x-x-109'>UARTPrint </span>is set back to 0. Think
+about why that is important. Add a comment to the <span class='rm-lmtt-10x-x-109'>UARTPrint = 0; </span>line of code explaining why it must be set back to
+zero here to make this code work correctly. (Correctly means that the <span class='rm-lmtt-10x-x-109'>serial_printf </span>function is called at a periodic
+rate.)
+</p>   
+<pre class='fancyvrb' id='fancyvrb6'><span class='fancyvrblineno'><a id='x1-7162r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      if (UARTPrint == 1 ) {</span></span></pre>
+<!-- l. 224 --><p class='noindent'>For this exercise, I would like you to put most of your written code here. In future labs you will find that code run here, in
+this continuous while loop “<span class='rm-lmtt-10x-x-109'>while(1)</span>”, is less important code. It will be your lower priority code that does not have as
+strict of timing. Also this is the only place in your code that you should call <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>(and <span class='rm-lmtt-10x-x-109'>serial_printf </span>for
+this lab). <span class='rm-lmtt-10x-x-109'>UART_printfLine </span>is somewhat of a large function and depending on how many variables you print can take
+some time and is not deterministic.
+</p>   
+<pre class='fancyvrb' id='fancyvrb7'><span class='fancyvrblineno'><a id='x1-7164r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Normally on the Robot Car we only use the below</span></span> 
+<span class='fancyvrblineno'><a id='x1-7166r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // UART_printfLine functions to write to the</span></span> 
+<span class='fancyvrblineno'><a id='x1-7168r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // on board LCD screen. This below serial_printf is only used</span></span> 
+<span class='fancyvrblineno'><a id='x1-7170r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // in lab 1 to print to a serial</span></span> 
+<span class='fancyvrblineno'><a id='x1-7172r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // terminal over a USB cable like you will for your Homeworks.</span></span> 
+<span class='fancyvrblineno'><a id='x1-7174r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //serial_printf(&amp;SerialA,"Num Timer2:%ld Num SerialRX: %ld\r\n",</span></span> 
+<span class='fancyvrblineno'><a id='x1-7176r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //              CpuTimer2.InterruptCount,numRXA);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7178r8'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7180r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        //IMPORTANT!! %ld is for an int32_t. To print an int16_t use %d</span></span> 
+<span class='fancyvrblineno'><a id='x1-7182r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(1,"Timer2 Calls %ld",CpuTimer2.InterruptCount);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7184r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UART_printfLine(2,"T0 %ld,T1 %ld",CpuTimer0.InterruptCount,</span></span> 
+<span class='fancyvrblineno'><a id='x1-7186r12'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>                        CpuTimer1.InterruptCount);</span></span> 
+<span class='fancyvrblineno'><a id='x1-7188r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 0;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7190r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>      }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7192r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7194r16'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<!-- l. 245 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>“magic”. (We will explain this in detail
+soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer0_isr() </span>is called every 10ms, without fail, in this starter code. (It actually
+“interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 10000
+(microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer0, 200, 10000);</span>” to have it be called at a different
+rate.
+</p>   
+<pre class='fancyvrb' id='fancyvrb8'><span class='fancyvrblineno'><a id='x1-7196r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer0_isr - CPU Timer0 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-7198r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer0_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7200r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7202r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer0.InterruptCount++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7204r5'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7206r6'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    numTimer0calls++;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7208r7'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7210r8'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((numTimer0calls%5) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-7212r9'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        // Blink LaunchPad Red LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-7214r10'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        GpioDataRegs.GPBTOGGLE.bit.GPIO34 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7216r11'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7218r12'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7220r13'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Acknowledge this interrupt to receive more interrupts from group 1</span></span> 
+<span class='fancyvrblineno'><a id='x1-7222r14'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    PieCtrlRegs.PIEACK.all = PIEACK_GROUP1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7224r15'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+<!-- l. 265 --><p class='noindent'>Right now consider the calling of this function, <span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>“magic”. (We will explain this in detail
+soon in the course.) “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr() </span>is called every 40ms, without fail, in this starter code. (It actually
+“interrupts” the code running in the <span class='rm-lmtt-10x-x-109'>main() </span>“<span class='rm-lmtt-10x-x-109'>while(1)</span>” while loop.) In <span class='rm-lmtt-10x-x-109'>main() </span>you can change the 40000
+(microseconds) in the line of code “<span class='rm-lmtt-10x-x-109'>ConfigCpuTimer(&amp;CpuTimer2, 200, 40000);</span>” to have it be called at a different
+rate.
+</p>   
+<pre class='fancyvrb' id='fancyvrb9'><span class='fancyvrblineno'><a id='x1-7226r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>// cpu_timer2_isr CPU Timer2 ISR</span></span> 
+<span class='fancyvrblineno'><a id='x1-7228r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>__interrupt void cpu_timer2_isr(void)</span></span> 
+<span class='fancyvrblineno'><a id='x1-7230r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>{</span></span> 
+<span class='fancyvrblineno'><a id='x1-7232r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    // Blink LaunchPad Blue LED</span></span> 
+<span class='fancyvrblineno'><a id='x1-7234r5'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    GpioDataRegs.GPATOGGLE.bit.GPIO31 = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7236r6'></a></span><span class='fancyvrbline'> 
+</span><span class='fancyvrblineno'><a id='x1-7238r7'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    CpuTimer2.InterruptCount++;</span></span></pre>
+<!-- l. 277 --><p class='noindent'>Since “<span class='rm-lmtt-10x-x-109'>CpuTimer2.InterruptCount</span>” increments by 1 each time in this function, this below if statement sets <span class='rm-lmtt-10x-x-109'>UARTPrint </span>to 1
+every 10th time into this function “<span class='rm-lmtt-10x-x-109'>cpu_timer2_isr()</span>”. The % in C is modulus. Modulus returns the remainder of the
+divide operation. So 23 % 10 equals 3, 67 % 10 equals 7, etc.
+</p>   
+<pre class='fancyvrb' id='fancyvrb10'><span class='fancyvrblineno'><a id='x1-7240r1'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    if ((CpuTimer2.InterruptCount % 10) == 0) {</span></span> 
+<span class='fancyvrblineno'><a id='x1-7242r2'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>        UARTPrint = 1;</span></span> 
+<span class='fancyvrblineno'><a id='x1-7244r3'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>    }</span></span> 
+<span class='fancyvrblineno'><a id='x1-7246r4'></a></span><span class='fancyvrbline'><span class='rm-lmtt-9'>}</span></span></pre>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='lab-checkoff'> <a id='x1-8000'></a>Lab Checkoff</h3>
+<!-- l. 288 --><p class='noindent'>     
+</p>
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>Demonstrate to your TA that you have successfully created, built and ran your first DSP project.
+</li>
+<li class='enumerate' id='x1-8004x2'>Show your program that changed the period of the blink rate of the blue and red LED.
+</li>
+<li class='enumerate' id='x1-8006x3'>Show in lab that you can print text to the robot’s text LCD and the PC’s serial terminal. Also show that
+when you type text into the serial terminal the number of characters received changes in the print line and
+when you type ‘a’ The RED LED turns ON and when you type ‘b’ RED LED turns OFF.
+</li>
+<li class='enumerate' id='x1-8008x4'>Show your program that also turns on and off LEDS 1 through 5 (O<span class='rm-lmri-10x-x-109'>n the Oscilloscope)</span>.</li></ol>
+   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-9000'></a>Check-Off Summary</h3>
+<!-- l. 297 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: First DSP project built and running</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off
+2: Changed LED blink period</a></li><li><input aria-labelledby='checkoff-sum-3' data-checkoff='3' type='checkbox' /> <a href='#checkoff-3' id='checkoff-sum-3'>Check-Off 3: How often UARTPrint is set</a></li><li><input aria-labelledby='checkoff-sum-4' data-checkoff='4' type='checkbox' /> <a href='#checkoff-4' id='checkoff-sum-4'>Check-Off 4: Red LED controlled from the
+terminal</a></li><li><input aria-labelledby='checkoff-sum-5' data-checkoff='5' type='checkbox' /> <a href='#checkoff-5' id='checkoff-sum-5'>Check-Off 5: LEDs 1 through 5 on the oscilloscope</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 301 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>

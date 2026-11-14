@@ -1,0 +1,175 @@
+<!DOCTYPE html> 
+<html lang='en-US' xml:lang='en-US'> 
+<head> <title>SE 423 Mechatronics: Final Project</title> 
+<meta charset='utf-8' /> 
+<meta content='TeX4ht (https://tug.org/tex4ht/)' name='generator' /> 
+<meta content='width=device-width,initial-scale=1' name='viewport' /> 
+<link href='FinalProject.css' rel='stylesheet' type='text/css' /> 
+<meta content='FinalProject.tex' name='src' /> 
+<link href='https://fonts.googleapis.com' rel='preconnect' /> 
+<link crossorigin='anonymous' href='https://fonts.gstatic.com' rel='preconnect' /> 
+<link href='https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible+Next:ital,wght@0,400;0,700;1,400;1,700' rel='stylesheet' /> 
+<script> addEventListener('DOMContentLoaded', function () { var child = String.fromCharCode(62); var boxes = document.querySelectorAll('figure:has(' + child + ' table), div:has(' + child + ' table), math[display="block"]'); function mark() { boxes.forEach(function (el) { if (Math.sign(el.scrollWidth - el.clientWidth - 1) === 1) { el.tabIndex = 0; el.setAttribute('role', el.tagName === 'math' ? 'math' : 'region'); if (el.tagName !== 'math') { if (!el.hasAttribute('aria-label')) { var cap = el.querySelector('figcaption, caption'); el.setAttribute('aria-label', (cap ? cap.textContent.trim() : 'Table') + ' (scrolls sideways)'); } } } else if (el.tabIndex === 0) { el.removeAttribute('tabindex'); } }); } mark(); addEventListener('resize', mark); }); </script> 
+<script> addEventListener('DOMContentLoaded', function () { var boxes = document.querySelectorAll('input[data-checkoff]'); function key(n) { return 'se423-checkoff:' + location.pathname + ':' + n; } function setAll(n, on) { boxes.forEach(function (b) { if (b.dataset.checkoff === n) { b.checked = on; } }); } boxes.forEach(function (b) { try { if (localStorage.getItem(key(b.dataset.checkoff)) === '1') { b.checked = true; } } catch (e) {} b.addEventListener('change', function () { setAll(b.dataset.checkoff, b.checked); try { if (b.checked) { localStorage.setItem(key(b.dataset.checkoff), '1'); } else { localStorage.removeItem(key(b.dataset.checkoff)); } } catch (e) {} }); }); }); </script> 
+</head><body>
+<div class='tcolorbox tcolorbox' id='tcolobox-1'>     
+<div class='tcolorbox-content'><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-12x-x-120'>SE 423 Mechatronics</span><br />
+<span class='rm-lmbx-12x-x-120'>Final Project</span>
+</p><!-- l. 29 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Final Robotics Project Overview</span>
+</p><!-- l. 29 --><p class='noindent'><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>TA Check-Offs in this document: 2</span></span> <span class='rm-lmbx-10x-x-109'>(marked “TA Check-Off” in the text and listed at the
+end)</span>
+</p>
+ 
+</div> 
+</div>
+<!-- l. 31 --><p class='noindent'>Your final robotics project will be completed in <span class='rm-lmbx-10x-x-109'>teams of 4 or 5 students</span>. This capstone assignment is an
+opportunity to showcase your skills in robotics, control systems, sensing, and software integration. Each team
+must <span class='rm-lmbx-10x-x-109'>propose and execute a unique robotics project</span>, designed, built, and tested over the next <span class='rm-lmbx-10x-x-109'>three
+weeks</span>.
+</p><!-- l. 33 --><p class='indent'>   The first week will focus on your <span class='rm-lmbx-10x-x-109'>project pitch</span>, where you will define your goals, assign roles, and begin your system
+design. This will be followed by two weeks of development, testing, and iteration.
+                                                                                                       
+                                                                                                       
+</p>
+   <h3 class='likesectionHead' id='project-requirements-and-roles'>  <a id='x1-1000'></a>Project Requirements and Roles</h3>
+<!-- l. 37 --><p class='noindent'>Each team must include the following core components in their project: </p>
+<ul class='itemize1'>     
+<li class='itemize'><span class='rm-lmbx-10x-x-109'>Path Planning</span>: Design algorithms for navigating the robot from one location to another, with or without
+a predefined map.
+</li>
+<li class='itemize'><span class='rm-lmbx-10x-x-109'>Sensing and Perception</span>: Use LIDAR, a camera color, and/or camera AprilTag vision to help the robot
+perceive its environment and make decisions in real time.
+</li>
+<li class='itemize'><span class='rm-lmbx-10x-x-109'>Control Systems</span>: The implement control loop to decide the values of Vref and Turn each 1ms in the
+robot’s <span class='rm-lmtt-10x-x-109'>SWI1_HighestPriority </span>function. Vref and Turn are the inputs to the given PI speed controller of
+the robot.</li></ul>
+<!-- l. 45 --><p class='noindent'>Each component should have 1–2 members assigned.
+
+</p>   
+<h3 class='likesectionHead' id='sample-project-idea'>  <a id='x1-2000'></a>Sample Project Idea</h3>
+<!-- l. 49 --><p class='noindent'>An example project could involve <span class='rm-lmbx-10x-x-109'>autonomous hallway navigation</span>, where your robot: </p>
+<ul class='itemize1'>     
+<li class='itemize'>Follows hallway walls using sensor input.
+</li>
+<li class='itemize'>Avoids obstacles using LIDAR or vision.
+</li>
+<li class='itemize'>Collects small objects (e.g., golf balls) using the collection system from Lab 7.
+</li>
+<li class='itemize'>Returns autonomously to the starting point.
+</li>
+<li class='itemize'>Outputs live position and obstacle data to LabVIEW.</li></ul>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='sample-advanced-feature-ideas-optional'>  <a id='x1-3000'></a>Sample Advanced Feature Ideas (Optional)</h3>
+<!-- l. 61 --><p class='noindent'>Consider implementing creative or advanced features to enhance your project: </p>
+<ul class='itemize1'>     
+<li class='itemize'>Improve localization by fusing LIDAR and camera data.
+</li>
+<li class='itemize'>Use A* path planning and adapt to newly discovered obstacles.
+</li>
+<li class='itemize'>Explore an entire hallway before returning to the start.
+</li>
+<li class='itemize'>Live obstacle mapping into LabVIEW, logging, and presentation of performance
+</li>
+<li class='itemize'>Trigger speech or audio responses (via LabVIEW or onboard) when people are detected.
+</li>
+<li class='itemize'>Use shape, color, and AprilTags to recognize specific objects (e.g., a trash can).
+</li>
+<li class='itemize'>Deliver objects to multiple pre-known locations with return to a loading zone between each delivery.</li></ul>
+   
+<h3 class='likesectionHead' id='milestone-timeline'>  <a id='x1-4000'></a>Milestone Timeline</h3>
+   
+<h4 class='likesubsectionHead' id='week-1-pitch-planning'>  <a id='x1-5000'></a>Week 1: Pitch &amp; Planning</h4>
+<!-- l. 77 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Pitch Due: Friday, May 1</span><sup class='textsuperscript'><span class='rm-lmbx-10'>st</span></sup> <span class='rm-lmbx-10x-x-109'>at 17:00</span> </p>
+<ul class='itemize1'>     
+<li class='itemize'>Submit your project proposal.
+</li>
+<li class='itemize'>Define project goals and component responsibilities.
+                                                                                                       
+                                                                                                       
+     </li>
+     <li class='itemize'>Begin hardware setup and initial code testing.
+</li>
+<li class='itemize'>Outline initial plan of the steps your are going to take to achieve your goal.</li></ul>
+   
+<h4 class='likesubsectionHead' id='week-2-subsystem-development-integration'>  <a id='x1-6000'></a>Week 2: Subsystem Development &amp; Integration</h4>
+<p><a id='x1-6001r1'></a>   
+<a id='checkoff-1'></a></p><div aria-labelledby='checkoff-label-1' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='1' id='checkoff-box-1' type='checkbox' /> <label for='checkoff-box-1' id='checkoff-label-1'>TA Check-Off 1: Week 2 subsystem milestone</label></p><div class='checkoff-body'>
+<!-- l. 89 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Milestone Due: Thursday, May 7 at 17:00</span> </p>
+<ul class='itemize1'>     
+<li class='itemize'>Demonstrate individual subsystem functionality (e.g., object collection, path planning, etc).
+</li>
+<li class='itemize'>Show integration of position reporting to LabVIEW, Python, RPI C program, etc.
+</li>
+<li class='itemize'>Document progress and challenges.</li></ul>
+</div></div>   
+
+<h4 class='likesubsectionHead' id='week-3-final-testing-presentation'> <a id='x1-7000'></a>Week 3: Final Testing &amp; Presentation</h4>
+<p><a id='x1-7001r2'></a>   
+<a id='checkoff-2'></a></p><div aria-labelledby='checkoff-label-2' class='checkoff' role='note'><p class='checkoff-head'><input data-checkoff='2' id='checkoff-box-2' type='checkbox' /> <label for='checkoff-box-2' id='checkoff-label-2'>TA Check-Off 2: Final Demo Day</label></p><div class='checkoff-body'>
+<!-- l. 101 --><p class='indent'>   <span class='rm-lmbx-10x-x-109'>Final Demo Day: Thursday, May 14, 11:00–14:00</span> </p>
+<ul class='itemize1'>     
+<li class='itemize'>Full system integration and final testing.
+</li>
+<li class='itemize'>Prepare live demonstration for Demo.
+</li>
+<li class='itemize'>Capture photos and videos for your report.
+</li>
+<li class='itemize'>Submit final report (due one day after Demo).</li></ul>
+                                                                                                       
+                                                                                                       
+</div></div>
+<!-- l. 111 --><p class='noindent'><span class='rm-lmri-10x-x-109'>Note</span>: Demo end time is flexible for those attending the ISE Senior Design Final until 13:00 on the same
+day.
+
+</p>   
+<h3 class='likesectionHead' id='final-report-requirements'>  <a id='x1-8000'></a>Final Report Requirements</h3>
+<!-- l. 115 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Due: Friday, May 15, 17:00</span>
+</p><!-- l. 117 --><p class='indent'>   Create a web-based final report that includes the following:
+</p>     
+<ol class='enumerate1'>
+<li class='enumerate' id='x1-8002x1'>A written summary of your project’s strategy and how your team used the robot’s sensors.
+</li>
+<li class='enumerate' id='x1-8004x2'>Photos and videos of your robot in action (instructor videos from Demo day will also be provided).
+</li>
+<li class='enumerate' id='x1-8006x3'>     
+<!-- l. 122 --><p class='noindent'>A downloadable zip file with all <span class='rm-lmbx-10x-x-109'>commented </span>project source code: </p>
+<ul class='itemize1'>          
+<li class='itemize'>C code
+</li>
+<li class='itemize'>Linux code
+</li>
+<li class='itemize'>LabVIEW files</li></ul>
+</li>
+<li class='enumerate' id='x1-8008x4'>Team photo(s) and full names of all group members.
+</li>
+<li class='enumerate' id='x1-8010x5'>Please use <span class='rm-lmbx-10x-x-109'>Hackster.io </span>to host your report, if possible.</li></ol>
+
+                                                                                                       
+                                                                                                       
+   <h3 class='likesectionHead' id='grading-criteria'>  <a id='x1-9000'></a>Grading Criteria</h3>
+<!-- l. 134 --><p class='noindent'>Your grade will be based on: </p>
+<ul class='itemize1'>     
+<li class='itemize'><span class='rm-lmbx-10x-x-109'>Individual Effort</span>
+</li>
+<li class='itemize'><span class='rm-lmbx-10x-x-109'>Completion and quality of the final report</span></li></ul>
+<!-- l. 141 --><p class='noindent'><span class='rm-lmri-10x-x-109'>Note</span>: Your final grade is <span class='rm-lmbx-10x-x-109'>not dependent </span>on your robot being fully functional on Demo day — effort and documentation are
+what count most.
+
+</p>   
+<h3 class='likesectionHead' id='checkoff-summary'>  <a id='x1-10000'></a>Check-Off Summary</h3>
+<!-- l. 145 --><p class='noindent'>Tick each box once your TA or instructor has checked you off. </p><ul class='checkoff-summary'><li><input aria-labelledby='checkoff-sum-1' data-checkoff='1' type='checkbox' /> <a href='#checkoff-1' id='checkoff-sum-1'>Check-Off 1: Week 2 subsystem milestone</a></li><li><input aria-labelledby='checkoff-sum-2' data-checkoff='2' type='checkbox' /> <a href='#checkoff-2' id='checkoff-sum-2'>Check-Off 2: Final
+Demo Day</a></li></ul>
+<div class='tcolorbox tcolorbox' id='tcolobox-2'>     
+<div class='tcolorbox-content'><!-- l. 149 --><p class='noindent'><span class='rm-lmbx-10x-x-109'>Make sure that you </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>comment</span></span> <span class='rm-lmbx-10x-x-109'>you code and put your </span><span style='color:#C9030B;'><span class='rm-lmbx-10x-x-109'>initials</span></span> <span class='rm-lmbx-10x-x-109'>in your Gradescope
+submission! See</span>
+<a class='url' href='https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf'><span class='rm-lmtk-10x-x-109'>https://marius-juston.github.io/SE-423---Class-Material/Homeworks/commenting_code_example.pdf</span></a>
+<span class='rm-lmbx-10x-x-109'>for how we expect the code to be commented like!</span>
+</p>
+ 
+</div> 
+</div>
+ 
+</body> 
+</html>
