@@ -9,5 +9,14 @@ Homeworks/LabVIEW1.tex
 Homeworks/LabVIEW2.tex
 Homeworks/LabVIEW3.tex
 Homeworks/LabVIEW4.tex
+Labs/Lab1.tex
+Labs/Lab2.tex
+Labs/Lab3.tex
+Labs/Lab4.tex
+Labs/Lab5.tex
+Labs/Lab6.tex
+Labs/Lab7_RCServos.tex
+Labs/Lab7.tex
+Labs/FinalProject.tex
 
 Homeworks/commenting_code_example.tex

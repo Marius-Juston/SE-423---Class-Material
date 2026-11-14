@@ -1,0 +1,185 @@
+% ============================
+% checkoff.tex - TA check-offs (loaded by header.tex)
+% ----------------------------
+% \begin{checkoff}[Short title]
+%   What to show the TA.
+% \end{checkoff}
+%     A numbered call-out wherever work must be demonstrated to a TA or the
+%     instructor. It works in running text and inside lists, and may contain
+%     inline code (it is an environment, not a command, so \mintinline and
+%     \lstinline work inside). The box carries a checkbox the reader can tick:
+%       PDF (normal and large print)  a tagged form field (l3pdffield); it
+%                                     prints as an empty box
+%       HTML                          <input type="checkbox">, remembered in the
+%                                     browser (script in se423.cfg)
+%       EPUB                          <input type="checkbox"> (no script)
+%     The short title (plain text) is what the summary lists; without it the
+%     summary says "Check-Off n".
+%
+% \CheckOffSummary
+%     The list of every check-off of the document (put it at the end). Each
+%     line has the same checkbox as its call-out (ticking one ticks the other,
+%     except in EPUB, which lists links only) and links back to the call-out.
+%
+% \CheckOffCount, \CheckOffNotice
+%     The number of check-offs in the document, and a ready-made line with it
+%     for the title box (end \AssignmentText with "\par \CheckOffNotice").
+%
+% The list and the count come from the .aux file, so they are right from the
+% second LaTeX run on (latexmk, make4ht and tex4ebook all run more than once).
+% Colours: only `highlight` (header.tex) and greys, and never colour alone: every
+% call-out starts with the words "TA Check-Off".
+% ============================
+\newcounter{SEcheckoff}
+\makeatletter
+% --- list of check-offs, collected through the .aux file --------------------
+\gdef\SE@checkofflist{}
+\gdef\SE@checkoffcount{0}
+% Written to the .aux by \CheckOff: {number}{short title}
+\newcommand{\SE@checkoffentry}[2]{%
+  \g@addto@macro\SE@checkofflist{\SE@checkoffline{#1}{#2}}%
+  \gdef\SE@checkoffcount{#1}%
+}
+\newcommand{\CheckOffCount}{\SE@checkoffcount}
+% A line for the title box (\AssignmentText): how many check-offs to expect.
+\newcommand{\CheckOffNotice}{%
+  \textcolor{highlight}{TA Check-Offs in this document: \CheckOffCount}
+  (marked ``TA Check-Off'' in the text and listed at the end)%
+}
+\newcommand{\SE@checkoffrecord}[1]{%
+  \immediate\write\@auxout{\string\SE@checkoffentry{\theSEcheckoff}{\unexpanded{#1}}}%
+}
+\AtEndDocument{%
+  \ifnum\SE@checkoffcount=\value{SEcheckoff}\else
+    \@latex@warning@no@line{Check-off list changed. Rerun to get the summary right}%
+  \fi
+}
+\makeatother
+%
+\ifSEhtml
+  % ----- HTML / EPUB ---------------------------------------------------------
+  \makeatletter
+  \NewDocumentEnvironment{checkoff}{O{}}{%
+    \refstepcounter{SEcheckoff}%
+    \SE@checkoffrecord{#1}%
+    \ifvmode\IgnorePar\fi\EndP
+    % Link target made by tex4ht, so the summary's links also resolve when the
+    % document is split over several files (EPUB).
+    \Link{}{checkoff-\theSEcheckoff}\EndLink
+    \HCode{<div class="checkoff" role="note"
+      aria-labelledby="checkoff-label-\theSEcheckoff"><p class="checkoff-head"><input
+      type="checkbox" id="checkoff-box-\theSEcheckoff" data-checkoff="\theSEcheckoff" />
+      <label id="checkoff-label-\theSEcheckoff" for="checkoff-box-\theSEcheckoff">TA
+      Check-Off \theSEcheckoff}%
+    \if\relax\detokenize{#1}\relax\else\HCode{: }#1\fi
+    \HCode{</label></p><div class="checkoff-body">}%
+    \par\ShowPar
+  }{%
+    \ifvmode\IgnorePar\fi\EndP
+    \HCode{</div></div>}%
+    \par
+  }
+  \newcommand{\SE@checkoffline}[2]{%
+    \HCode{<li>}%
+    \ifdefined\SEebook\else
+      \HCode{<input type="checkbox" data-checkoff="#1"
+        aria-labelledby="checkoff-sum-#1" /> }%
+    \fi
+    \Link{checkoff-#1}{checkoff-sum-#1}Check-Off #1%
+    \if\relax\detokenize{#2}\relax\else: #2\fi
+    \EndLink
+    \HCode{</li>}%
+  }
+  \newcommand{\CheckOffSummary}{%
+    \ifvmode\IgnorePar\fi\EndP
+    \HCode{<ul class="checkoff-summary">}%
+    \SE@checkofflist
+    \HCode{</ul>}%
+    \par
+  }
+  \makeatother
+\else
+  % ----- PDF -----------------------------------------------------------------
+  \usepackage{l3pdffield}
+  \ExplSyntaxOn
+  % An empty box, and the same box with a check mark drawn in it (no font
+  % needed, so the mark looks the same in every viewer and in print).
+  \pdffield_appearance:nn { SEcheckoff/Off }
+    {
+      \begin{tikzpicture}[x=1em,y=1em]
+        \draw[line~width=0.9pt,rounded~corners=0.12em,fill=white] (0,0) rectangle (1,1);
+      \end{tikzpicture}
+    }
+  \pdffield_appearance:nn { SEcheckoff/Yes }
+    {
+      \begin{tikzpicture}[x=1em,y=1em]
+        \draw[line~width=0.9pt,rounded~corners=0.12em,fill=white] (0,0) rectangle (1,1);
+        \draw[line~width=1.6pt,line~cap=round,line~join=round]
+          (0.2,0.52) -- (0.42,0.24) -- (0.82,0.8);
+      \end{tikzpicture}
+    }
+  % #1 number, #2 accessible name (both fully expanded: they name the field)
+  \NewDocumentCommand{\SEcheckoffbox}{m m}
+    { \use:e { \exp_not:N \SE_checkoff_box:nn {#1} {#2} } }
+  \cs_new_protected:Npn \SE_checkoff_box:nn #1#2
+    {
+      \leavevmode
+      \raisebox{-0.18em}
+        {
+          % PDF/UA-2 8.10.2.3: a widget without a visible label of its own
+          % needs a Contents entry (the description assistive technology reads).
+          \pdf_string_from_unicode:nnN { utf16/hex } {#2} \l_tmpa_str
+          \pdfannot_dict_put:nne { widget } { Contents } { \l_tmpa_str }
+          \pdffield_checkbox:n
+            {
+              name = checkoff#1,
+              altname = {#2},
+              appearance = SEcheckoff,
+              setannotflags = Print, % an unticked box still prints
+              width = 1em, height = 1em, depth = 0pt,
+            }
+        }
+    }
+  \ExplSyntaxOff
+  \makeatletter
+  \NewDocumentEnvironment{checkoff}{O{}}{%
+    \par
+    \refstepcounter{SEcheckoff}%
+    \SE@checkoffrecord{#1}%
+    \begin{tcolorbox}[
+        enhanced, breakable=false,
+        colback=highlight!6!white,
+        colframe=highlight,
+        boxrule=0.6pt, leftrule=3mm,
+        arc=1mm,
+        left=2.5mm, right=2.5mm, top=1.2mm, bottom=1.2mm,
+        before skip=2mm, after skip=2mm,
+        width=\linewidth,
+    ]
+    \raggedright
+    \hypertarget{checkoff.\theSEcheckoff}{}%
+    \SEcheckoffbox{\theSEcheckoff}{TA check-off \theSEcheckoff\space done}\enspace
+    {\bfseries\color{highlight}TA Check-Off \theSEcheckoff
+      \if\relax\detokenize{#1}\relax\else: #1\fi}\par
+    \vspace{0.6mm}%
+    \ignorespaces
+  }{%
+    \par
+    \end{tcolorbox}
+    \par
+  }
+  \newcommand{\SE@checkoffline}[2]{%
+    \item \SEcheckoffbox{#1}{TA check-off #1 done}\enspace
+      \hyperlink{checkoff.#1}{Check-Off #1\if\relax\detokenize{#2}\relax\else: #2\fi}%
+  }
+  \newcommand{\CheckOffSummary}{%
+    \par
+    \ifnum\SE@checkoffcount>0
+      \begin{itemize}
+        \renewcommand{\labelitemi}{}%
+        \SE@checkofflist
+      \end{itemize}
+    \fi
+  }
+  \makeatother
+\fi

@@ -225,9 +225,13 @@
 \@namedef{Assignment@LabVIEW@type}{LabVIEW Assignment}
 \@namedef{Assignment@LabVIEW@footer}{LabVIEW}
 
+% The final project has no number: leave \HWNum empty (\def\HWNum{}).
+\@namedef{Assignment@Project@type}{Final Project}
+\@namedef{Assignment@Project@footer}{Final Project}
+
 \@ifundefined{Assignment@\AssignmentMode @type}{
   \PackageError{AssignmentMode}{Invalid AssignmentMode}{%
-    Valid options: HW, Lab, LabVIEW}
+    Valid options: HW, Lab, LabVIEW, Project}
 }{
   \edef\AssignmentType{\@nameuse{Assignment@\AssignmentMode @type}}
   \edef\AssignmentFooter{\@nameuse{Assignment@\AssignmentMode @footer}}
@@ -238,7 +242,9 @@
 % and announced by screen readers), e.g. "SE 423 Mechatronics: Homework Assignment 3".
 % A document can override it after \input{header}:
 %   \renewcommand{\SEDocTitle}{...}\hypersetup{pdftitle={\SEDocTitle}}
-\newcommand{\SEDocTitle}{\CourseCode\ \CourseName: \AssignmentType\ \HWNum}
+% \SEIfNum{text}: text, unless the document has no number (\def\HWNum{}).
+\newcommand{\SEIfNum}[1]{\ifx\HWNum\empty\else#1\fi}
+\newcommand{\SEDocTitle}{\CourseCode\ \CourseName: \AssignmentType\SEIfNum{\ \HWNum}}
 \hypersetup{pdftitle={\SEDocTitle}}
 
 % ============================
@@ -247,7 +253,7 @@
 \pagestyle{fancy}
 \fancyhf{}
 \fancyfoot[L]{// \CourseCode, \CourseName}
-\fancyfoot[R]{// \AssignmentFooter~\HWNum, Page \thepage\ of \pageref{LastPage}}
+\fancyfoot[R]{// \AssignmentFooter\SEIfNum{~\HWNum}, Page \thepage\ of \pageref{LastPage}}
 \renewcommand{\headrulewidth}{0pt}
 % Footer as wide as the final text block: a document that changes its margins
 % after \input{header} (the syllabus) otherwise gets a footer running off the page.
@@ -272,7 +278,7 @@
 \centering
 \setstretch{1.2}
 
-{\bfseries\Large \CourseCode\ \CourseName \\ \AssignmentType\ \#\HWNum\par}
+{\bfseries\Large \CourseCode\ \CourseName \\ \AssignmentType\SEIfNum{\ \#\HWNum}\par}
 
 \vspace{2mm}
 
@@ -417,6 +423,52 @@
 \newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}
 
 \pgfplotsset{compat=1.18}
+
+% ============================
+% Small helpers for handouts rebuilt from the Word originals
+% ----------------------------
+% \SEenumlabel{ii}{alph}: number the enumerate level (i, ii, iii, iv) with
+% arabic | alph | Alph | roman | Roman, e.g. "a." for sub-steps. Use this instead
+% of \renewcommand{\labelenumii}{...}: the HTML/EPUB list then shows the same
+% letters (se423.cfg puts the list style on the <ol>; a redefined label alone is lost
+% there). Scoped like any redefinition (put it inside the outer list or a group).
+\makeatletter
+\newcommand{\SEenumlabel}[2]{%
+  \expandafter\def\csname labelenum#1\endcsname{\csname #2\endcsname{enum#1}.}%
+  \expandafter\def\csname SE@oltype@#1\endcsname{\csname SE@olcode@#2\endcsname}%
+}
+\def\SE@olcode@arabic{decimal}\def\SE@olcode@alph{lower-alpha}\def\SE@olcode@Alph{upper-alpha}
+\def\SE@olcode@roman{lower-roman}\def\SE@olcode@Roman{upper-roman}
+% Expands to style="list-style-type:lower-alpha" (etc.) for the list level being
+% opened, or to nothing. (A style, not the type attribute: tex4ht's stylesheet
+% sets list-style-type per level, which would win over the attribute.)
+\newcommand{\SEoltype}{%
+  \ifcsname SE@oltype@\romannumeral\@enumdepth\endcsname
+    style="list-style-type:\csname SE@oltype@\romannumeral\@enumdepth\endcsname"%
+  \fi
+}
+% \SEstruck{text}: text the instructor has struck out in the original handout
+% but left in. The words are kept; the PDF draws a line through them (word by
+% word, so the text still breaks over lines), HTML/EPUB use <s>.
+% Plain text only: no verbatim/\mintinline inside, no trailing space.
+\ifSEhtml
+  \newcommand{\SEstruck}[1]{\HCode{<s>}#1\HCode{</s>}}
+\else
+  \newcommand{\SEstruck}[1]{\leavevmode\SE@struckwords#1 \@nil}
+  \def\SE@struckwords#1 #2\@nil{%
+    \setbox\z@\hbox{#1}%
+    \rlap{\copy\z@}\rule[0.52ex]{\wd\z@}{0.6pt}%
+    \if\relax\detokenize{#2}\relax\else
+      \leaders\hrule height \dimexpr0.52ex+0.6pt\relax depth -0.52ex
+        \hskip\fontdimen2\font plus \fontdimen3\font minus \fontdimen4\font\relax
+      \SE@struckwords#2\@nil
+    \fi
+  }
+\fi
+\makeatother
+
+% TA check-offs: \CheckOff, \CheckOffSummary, \CheckOffCount (see checkoff.tex)
+\input{checkoff}
 
 \newcommand{\MakeFooter}{%
 \par

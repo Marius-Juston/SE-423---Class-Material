@@ -2,7 +2,7 @@
 % We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
 % (testphase = phase-III) is incompatible with the htlatex DVI pipeline
 % and would error with "Generic hooks cannot be added to '\addcontentsline'".
-% \HCode is defined by tex4ht before our file is read, so this branch is safe. 
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
   testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
@@ -11,32 +11,51 @@
 }
 \fi
 
-
 \documentclass[11pt]{article}
 
-\def\AssignmentMode{Lab}     % HW | Lab | LabVIEW
+\def\AssignmentMode{Lab}     % HW | Lab | LabVIEW | Project
 \def\HWNum{1}
-\def\AssignmentText{The Demonstration Check-Offs For Exercises 2, 3, 5, 7, 8, 9 And 10 Are Due By \textcolor{red}{\HWCheckOffTime~\GetDate{2}{1}}. \\
-Remainder Due On Gradescope, by \textcolor{red}{\HWSubmitTime~\GetDate{2}{2}}.}
 
 % Course metadata
 \input{header}
+
+% Title box: the lab's title, its length, and the number of TA check-offs.
+\def\AssignmentText{Title of the Lab \\
+One-Week Lab \par
+\CheckOffNotice}
 %
 \begin{document}
 
 \MakeAssignmentTitle
 
-\section*{Goal for this Lab Assignment}
-
+\section*{Goals for this Lab Assignment}
+%
+\begin{itemize}
+    \item First goal.
+\end{itemize}
+%
 \section*{Laboratory Exercises}
 
-\section*{Lab Check Off}
+\Ex[Title of the exercise]
 
-\mintinline{c}{helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_helo_}
-
-\newpage
-\mintinline{c}{hello}
+Text of the exercise, with code like \mintinline{c}{GpioDataRegs.GPBSET.bit.GPIO34 = 1;} inline or in a block
+(at most 72 characters per line):
+%
 \begin{minted}{c}
+GpioDataRegs.GPBSET.bit.GPIO34 = 1;
 \end{minted}
 %
+% Wherever something must be shown to a TA: a numbered call-out with a tick box
+% (see checkoff.tex). It also works inside \item.
+\begin{checkoff}[Short title of what is checked]
+\textbf{Demo this working to your TA.}
+\end{checkoff}
+%
+\section*{Check-Off Summary}
+
+Tick each box once your TA or instructor has checked you off.
+%
+\CheckOffSummary
+
+\MakeFooter
 \end{document}

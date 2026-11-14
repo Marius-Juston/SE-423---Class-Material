@@ -126,7 +126,7 @@ jobs:
             PPTX="$CHANGED"
             # Files every document reads (preamble, fonts, HTML config): rebuild all of
             # them, else the published PDFs/HTML keep the old version.
-            if echo "$CHANGED" | grep -qE '(^| )(header|fontsetup|icons|timline)\.tex|\.cfg( |$)'; then
+            if echo "$CHANGED" | grep -qE '(^| )(header|fontsetup|icons|timline|checkoff)\.tex|\.cfg( |$)'; then
               echo "Shared LaTeX file changed — rebuilding every document."
               FILES="$FILES $(grep -v '^[[:space:]]*$' pdf-list.txt | tr '\n' ' ')"
               FILES=$(echo $FILES | tr ' ' '\n' | sort -u | tr '\n' ' ')

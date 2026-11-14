@@ -54,7 +54,7 @@ sh tools/install-hooks.sh                            # pre-commit hook: extract 
 
 **Local TeX caveat:** Debian/Ubuntu's packaged TeX Live (2023) lacks `luaotfload` unless `texlive-luatex` is installed, and its LaTeX kernel is too old for the PDF/UA tagging in the homeworks. Use TeX Live 2026 (as CI does) to reproduce CI builds.
 
-`pdf-list.txt` lists every `.tex` file the CI compiles (syllabus, homeworks, LabVIEW). The lab handouts (`Labs/`) are published by the official course website, so they are deliberately not in the list; don't add them. All files in that list must build without errors before a PR is merged.
+`pdf-list.txt` lists every `.tex` file the CI compiles (syllabus, homeworks, LabVIEW, labs, final project). All files in that list must build without errors before a PR is merged.
 
 ## Architecture
 
@@ -65,6 +65,7 @@ All LaTeX documents share a common preamble via `\input{header}` at the top of e
 - **`header.tex`** — imports all packages, defines UIUC color palette, custom macros (`\MakeAssignmentTitle`, `\Ex`), and the `\ifSEhtml` flag for PDF-vs-HTML conditional compilation
 - **`icons.tex`** — icon/symbol definitions used across documents
 - **`timline.tex`** — shared course timeline header included in assignments
+- **`checkoff.tex`** — TA check-offs (loaded by `header.tex`): the `checkoff` environment, `\CheckOffSummary`, `\CheckOffNotice` (see *Labs and check-offs*)
 - **`fontsetup.tex`** — sets the course typeface, Atkinson Hyperlegible Next, from the OTFs vendored in `fonts/` (SIL OFL). Loaded by `header.tex` and by every `Lectures/Figures/*.tex`; needs LuaLaTeX (no-op under pdfLaTeX/tex4ht). Builds must run from the repo root so `fonts/` resolves
 - **`tools/sync_deck_figures.py`** + **`Lectures/Slides/figures.toml`** — every picture in the decks has a source file in `Lectures/Figures/{svg,png,jpg,gif,ppm}/` (deck-only images in per-deck subfolders); `auto --base REF` copies each change in the direction it was made since REF (slide edited → file, file edited → slide, both → conflict), `sync`/`pull` force a direction, `check` reports drift, `extract` registers new pictures and prunes deleted ones (and their generated files). `tools/git-hooks/pre-commit` (enabled by `tools/install-hooks.sh`) runs extract + auto and stages what they write. Pictures are keyed by slide id + `a16:creationId`, not by `ppt/media` names (PowerPoint renumbers those). Video/audio placeholders (YouTube embeds, sound clips) are not figures and are skipped
 - **`se423.cfg`** — tex4ht configuration for accessibility output (overrides inline styles to meet WCAG AA; also sets Atkinson Hyperlegible Next for HTML output)
@@ -84,7 +85,7 @@ The `\ifSEhtml` flag switches between `minted` (PDF) and a verbatim fallback (HT
 
 Builds run 4 at a time (LaTeX documents and their large-print editions, HTML, slide decks), each LaTeX build in its own folder and each LibreOffice with its own profile; EPUBs build one at a time (tex4ebook shares working files between documents). veraPDF validates all PDFs of a flavour in one run, and `check_html.py --jobs` splits pages over several browsers. A new push to a pull request cancels its running build; pushes to `main` never cancel each other.
 
-Incremental builds only rebuild files that changed, except that a change to a file every document reads (`header.tex`, `fontsetup.tex`, `icons.tex`, `timline.tex`, any `*.cfg`) rebuilds every document in `pdf-list.txt`, and a change to `tools/a11y/pptx_to_html.py` or `tools/a11y/tag_slide_pdf.py` re-exports every deck. Trigger the workflow manually (workflow_dispatch) to rebuild everything.
+Incremental builds only rebuild files that changed, except that a change to a file every document reads (`header.tex`, `fontsetup.tex`, `icons.tex`, `timline.tex`, `checkoff.tex`, any `*.cfg`) rebuilds every document in `pdf-list.txt`, and a change to `tools/a11y/pptx_to_html.py` or `tools/a11y/tag_slide_pdf.py` re-exports every deck. Trigger the workflow manually (workflow_dispatch) to rebuild everything.
 
 ### Site (`site/`)
 
@@ -138,6 +139,16 @@ Every picture on a slide (except the UIUC template logos, listed under `ignore`)
 - Entries are keyed by `<slide id>/<a16:creationId>` (fallback `shape-<id>`), which survive saves and slide reordering; `slide =` is informational only.
 - When scripting deck edits in tests or tools, write decks with `Deck.save` (keeps zip order/compression) and keep the hook's contract: everything a run writes goes through `written()` so `--written` can stage it.
 - Never rename or renumber files in `ppt/media/` by hand, and don't edit decks with scripts that rewrite `[Content_Types].xml` or drop unknown parts: preserve zip entry order and compression (see `Deck.save`).
+
+## Labs and check-offs
+
+`Labs/Lab1.tex` … `Lab7.tex`, `Lab7_RCServos.tex` and `FinalProject.tex` (`\def\AssignmentMode{Project}`, empty `\HWNum`) were rebuilt from the instructor's Word handouts on the course website (URL in a comment at the top of each file; the site cards link them as `original` / `originalWord` in `data.labs`). Rules:
+- **Wording is the instructor's, refined over years: do not rephrase, fix grammar, reorder or drop text, code or code comments.** Only markup changes. To carry over a changed handout, convert the `.docx` with pandoc for the exact text and diff it against the built PDF's text.
+- Every place where students show, demo or explain something to a TA/instructor is a `\begin{checkoff}[Short title] … \end{checkoff}` holding the original sentence(s), word for word (not "have your TA show you …"). It is an environment so inline code works inside it. The box is numbered automatically and has a tick box in every format: a tagged form field in both PDFs (l3pdffield; passes PDF/UA-2, prints as an empty box), a checkbox in HTML (state kept in `localStorage`, script and CSS in `se423.cfg`) and in EPUB (no script).
+- Each lab ends with the original's "Lab Check Off" list (when it has one), then `\section*{Check-Off Summary}` with `\CheckOffSummary` (list from the `.aux`, right from the second run), then `\MakeFooter`. The title box ends with `\par \CheckOffNotice`.
+- `\mintinline`/`\lstinline` must not sit inside another command's argument (`\textbf{…}`, `\caption{…}`): the HTML build fails. Use `{\bfseries …}` / `{\itshape …}` or close and reopen the command around the code.
+- Sub-step labels (a., i.): `\SEenumlabel{ii}{alph}` (header.tex), never `\renewcommand{\labelenumii}`: the HTML list then shows the same letters. Text the instructor struck out but kept: `\SEstruck{…}`.
+- `Labs/LabTemplate.tex` is the starting point for a new lab; add the new file to `pdf-list.txt` and `data.labs`.
 
 ## LaTeX Conventions
 
