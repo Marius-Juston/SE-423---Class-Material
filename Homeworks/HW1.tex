@@ -2,12 +2,12 @@
 % We skip it under tex4ht/make4ht, where the PDF/UA-2 tagging machinery
 % (testphase = phase-III) is incompatible with the htlatex DVI pipeline
 % and would error with "Generic hooks cannot be added to '\addcontentsline'".
-% \HCode is defined by tex4ht before our file is read, so this branch is safe. 
+% \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -18,7 +18,7 @@
 \def\HWNum{1}
 
 % Course metadata
-\input{header} 
+\input{header}
 
 \def\AssignmentText{The Demonstration Check-Offs For Exercises 2, 3, 5, 7, 8, 9 And 10 Are Due By \textcolor{highlight}{\HWCheckOffTime~\GetDate{2}{1}}. \par
 Remainder Due On Gradescope, by \textcolor{highlight}{\HWSubmitTime~\GetDate{2}{2}}.}
@@ -35,84 +35,84 @@ For this exercise, I would like you to go through the “C Essentials Training�
     \item Chapter 3’s final challenge, Binary Math
     \item Chapter 4’s final challenge, The Grid Challenge
     \item Chapter 5’s final challenge, Complete the Code
-    \item Byte Splitting and Combining 
+    \item Byte Splitting and Combining
 \end{itemize}
 %
-Yes, I know the solution code is included in the course’s download file. Try your best not look at the solutions, as that will help you teach yourself C. DO NOT just submit the solution code! The areas I want you to really think about as you go through this training are: the different types of variables in C and how to declare global and local variables. The \texttt{printf} statement and how to use it to print integer variables and floating point variables. Writing functions and how to call those functions in your C code.  
+Yes, I know the solution code is included in the course’s download file. Try your best not look at the solutions, as that will help you teach yourself C. DO NOT just submit the solution code! The areas I want you to really think about as you go through this training are: the different types of variables in C and how to declare global and local variables. The \texttt{printf} statement and how to use it to print integer variables and floating point variables. Writing functions and how to call those functions in your C code.
 \par
 There are several free C compilers that you can use to run the C code you write for these training exercises. I am thinking that using an online C compiler may be the easiest way to go. You can Google “online C compilers” to see which one you like, or you can try this one, which seems to work pretty well: \url{https://www.onlinegdb.com/online_c_compiler}. I think the biggest issue you will have with the online compilers is saving your files. So, I recommend cutting and pasting your code into a text editor and saving your work from there, instead of saving it from the online webpage.
 
-\subsection*{Byte Splitting and Combining} 
+\subsection*{Byte Splitting and Combining}
 Discard bits 8-15, the top 8 bits, from the hex numbers 0xC492 and print out the resulting number as an integer, a hexadecimal number, and a binary number. Now, do the same, but by just discarding bits 0-7, the bottom 8 bits. Implement the function again for 0xB8AA. Further, combine the high byte 0xA5 and the low byte 0x5D and print the result as an integer, a hexadecimal number, and a binary number using a function. Put the combined 2-byte number back into the byte-split function.
 
 \Ex[Solder breakout board]
 
-Solder your breakout board. (When in doubt, view the demo board in the lab.)  In previous semesters, a TA made recordings while soldering a board very similar to your breakout board. On the board, he is soldering; you will see more parts than you have to solder. Keep that in mind when you are watching these videos, and use them as a guide, not as the exact way you need to solder this board.  \url{https://www.youtube.com/playlist?list=PL-csvMdAo235aAa4sEBl57S_syIAsQHoW}   
+Solder your breakout board. (When in doubt, view the demo board in the lab.)  In previous semesters, a TA made recordings while soldering a board very similar to your breakout board. On the board, he is soldering; you will see more parts than you have to solder. Keep that in mind when you are watching these videos, and use them as a guide, not as the exact way you need to solder this board.  \url{https://www.youtube.com/playlist?list=PL-csvMdAo235aAa4sEBl57S_syIAsQHoW}
 %
 \begin{enumerate}
-    \item Solder the four 2X10 gold-plated headers. \textbf{Show your instructor that you have them in the correct orientation before soldering} 
+    \item Solder the four 2X10 gold-plated headers. \textbf{Show your instructor that you have them in the correct orientation before soldering}
     \item Solder 18 1k Ohm resistors along with 18 surface mount LEDs!! Make sure you know the LEDs' orientation!!
     \item Solder 3 74LVC04 surface mount inverter chips. Also, 3 0.1uF capacitors right next to these chips.
     \item Solder 4 push buttons.
     \item Solder 1 buzzer, orientation does not matter, and one 100 Ohm resistor next to the buzzer.
-    \item Solder one 2X2 header, which controls the input to the buzzer. Make sure it is in the center holes.  
+    \item Solder one 2X2 header, which controls the input to the buzzer. Make sure it is in the center holes.
     \item Solder two 3X1 and two 2X1 headers, which connect to the RC servos in homework 4.
     \item See the demo board for the placement of a long wire and two short wires. They are shown in the picture but are clearer on the demo board. This is illustrated in Figure \ref{fig:demo_board}.
 \end{enumerate}
 %
-\begin{figure}[H] 
-\centering
-%
-\begin{subfigure}[b]{0.245\textwidth}
-\centering
-\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board2.jpg}{%
-    Soldered breakout board, top-left view. Two red ellipses highlight
-    the locations where a long wire (upper) and a short wire (lower)
-    bridge between header pins on the left edge of the board.%
-}{%
-    \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
-    \draw[red, thick] (0.225,0.28) ellipse (0.1 and 0.1);%
-}
-% \caption{First image}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.495\textwidth}
-\centering
-\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board1.jpg}{%
-    Top-down view of the centre region of the soldered breakout
-    board. Five red circles mark the soldering points: four around
-    the chip and surface-mount components in the middle, and one on
-    the left near the buzzer header.%
-}{%
-    \draw[red, thick] (0.3,0.765) ellipse (0.075 and 0.075);
-    \draw[red, thick] (0.575,0.765) ellipse (0.075 and 0.075);
-    \draw[red, thick] (0.31,0.46) ellipse (0.075 and 0.075);
-    \draw[red, thick] (0.575,0.46) ellipse (0.075 and 0.075);
-    \draw[red, thick] (0.076,0.575) ellipse (0.075 and 0.075);%
-}
-% \caption{Second image}
-\end{subfigure}
-\hfill
-\begin{subfigure}[b]{0.245\textwidth}
-\centering
-\Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board3.jpg}{%
-    Top-right view of the soldered breakout board. A single red
-    ellipse marks the placement of a short jumper wire on the right
-    edge of the board.%
-}{%
-    \draw[red, thick] (0.2,0.36) ellipse (0.15 and 0.2);%
-}
-% \caption{Third image}
-\end{subfigure}
-%
-\caption{Demo board soldering options}
-\label{fig:demo_board}
+\begin{figure}[H]
+    \centering
+    %
+    \begin{subfigure}[b]{0.245\textwidth}
+        \centering
+        \Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board2.jpg}{%
+            Soldered breakout board, top-left view. Two red ellipses highlight
+            the locations where a long wire (upper) and a short wire (lower)
+            bridge between header pins on the left edge of the board.%
+        }{%
+            \draw[red, thick] (0.225,0.825) ellipse (0.15 and 0.15);
+            \draw[red, thick] (0.225,0.28) ellipse (0.1 and 0.1);%
+        }
+        % \caption{First image}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.495\textwidth}
+        \centering
+        \Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board1.jpg}{%
+            Top-down view of the centre region of the soldered breakout
+            board. Five red circles mark the soldering points: four around
+            the chip and surface-mount components in the middle, and one on
+            the left near the buzzer header.%
+        }{%
+            \draw[red, thick] (0.3,0.765) ellipse (0.075 and 0.075);
+            \draw[red, thick] (0.575,0.765) ellipse (0.075 and 0.075);
+            \draw[red, thick] (0.31,0.46) ellipse (0.075 and 0.075);
+            \draw[red, thick] (0.575,0.46) ellipse (0.075 and 0.075);
+            \draw[red, thick] (0.076,0.575) ellipse (0.075 and 0.075);%
+        }
+        % \caption{Second image}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.245\textwidth}
+        \centering
+        \Annotated[width=\linewidth]{Homeworks/Figures/HW1/Board3.jpg}{%
+            Top-right view of the soldered breakout board. A single red
+            ellipse marks the placement of a short jumper wire on the right
+            edge of the board.%
+        }{%
+            \draw[red, thick] (0.2,0.36) ellipse (0.15 and 0.2);%
+        }
+        % \caption{Third image}
+    \end{subfigure}
+    %
+    \caption{Demo board soldering options}
+    \label{fig:demo_board}
 \end{figure}
 %
 \Ex[Create you homework repository]
 %
 \begin{enumerate}
-    \item Follow the document \href{http://coecsl.ece.illinois.edu/se423/Using the SE423 Repository.pdf}{Using the SE423 Repository} and its first section “Create your Repository” to check out the SE423 repository to your lab PC and/or your personal laptop. If you are going to use both the lab PC and your laptop for development, you will want to create the same path on both. Create a folder named your NetID at the root of the \verb|C:\| drive, and keep all your files there. It is also a good idea for you to make backups of your lab files outside of your Git repository as you progress through the semester. Making this extra backup will save you when we cannot figure out what went wrong with Git. Git is awesome and normally works great, but every once in a while, I have seen issues that caused students to lose versions of their files.    
+        \item Follow the document \href{http://coecsl.ece.illinois.edu/se423/Using the SE423 Repository.pdf}{Using the SE423 Repository} and its first section “Create your Repository” to check out the SE423 repository to your lab PC and/or your personal laptop. If you are going to use both the lab PC and your laptop for development, you will want to create the same path on both. Create a folder named your NetID at the root of the \verb|C:\| drive, and keep all your files there. It is also a good idea for you to make backups of your lab files outside of your Git repository as you progress through the semester. Making this extra backup will save you when we cannot figure out what went wrong with Git. Git is awesome and normally works great, but every once in a while, I have seen issues that caused students to lose versions of their files.
     \item Open Code Composer Studio 12 (CCS 12) and select the “workspace” folder in your repository. For example, if your netID were “superstdnt”, you would have checked out your repository in \lstinline|c:\superstdnt\SE423_HWrepo|. The workspace folder to select would be \lstinline{c:\superstdnt\SE423_HWrepo\workspace}.
     \item Once CCS 12 is done loading your workspace, you need to load the “HWstarter” project. When you perform this load, the project is copied into your workspace. Therefore, if you rename this project, you can reload the “HWstarter” project to start another minimal project. I purposely placed this “HWstarter” project in the same folder as many of the example projects you will be studying this semester. These examples are part of TI's software development stack, called C2000ware. I have copied the necessary parts of C2000ware into our repository so that if you accidentally modify something, you can easily restore it. Again, if your NetID was “superstdnt”, perform the following to load your starter project. In CCS, select the menu Project$\rightarrow$Import CCS Projects. Click “Browse” and explore to “\lstinline{C:\superstdnt\SE423_HWrepo\C2000Ware_4_01_00_00\device_support\f2837xd\examples\cpu1\HWstarter}” and finally press “Finish”. Your project should then be loaded into the CCS environment. Let us then rename the project “\lstinline|HW1<yourinitials>|” by right-clicking on the project name “HWstarter”. In the dialog box, change the name to “\lstinline|HW1<yourinitials>|” i.e., HW1djb. Also, explore the project and find the file “HWstarter\_main.c”. Right-Click on “HWstarter\_main.c” and select “Rename”. Change the name to “\lstinline|HW1<yourinitials>_main.c|”. To save you some headaches in the future, I recommend you take one more step after creating a new “HWstarter” project. Right-click on your project name in the Project Explorer and select “Properties.”  Select “General” on the left-hand side. Then, in the “Project” tab, find the “Connection” drop-down and select “Texas Instruments XDS100v2 USB Debug Probe.” Apply and Close.
     \item Now that you have the project loaded, you can build the code and download it to the LaunchPad board. Plug your LaunchPad into your PC's USB port, then in CCS, hit the green “Debug” button \debugBtn, and in the dialog box that pops up, select CPU1 only. This will compile the code and load it to your LaunchPad board.
@@ -150,7 +150,6 @@ Below is an introduction to the starter code given to you for this semester’s 
 #define TWOPI       6.283185307179586476925286766559
 #define HALFPI      1.5707963267948966192313216916398
 
-
 // Interrupt Service Routines predefinition
 __interrupt void cpu_timer0_isr(void);
 __interrupt void cpu_timer1_isr(void);
@@ -175,13 +174,13 @@ void main(void)
     InitSysCtrl();
 
     InitGpio();
-	
-	// Blue LED on LaunchPad
+
+        // Blue LED on LaunchPad
     GPIO_SetupPinMux(31, GPIO_MUX_CPU1, 0);
     GPIO_SetupPinOptions(31, GPIO_OUTPUT, GPIO_PUSHPULL);
     GpioDataRegs.GPASET.bit.GPIO31 = 1;
 
-	// Red LED on LaunchPad
+        // Red LED on LaunchPad
     GPIO_SetupPinMux(34, GPIO_MUX_CPU1, 0);
     GPIO_SetupPinOptions(34, GPIO_OUTPUT, GPIO_PUSHPULL);
     GpioDataRegs.GPBSET.bit.GPIO34 = 1;
@@ -201,7 +200,7 @@ void main(void)
 \begin{minted}{c}
     // Configure CPU-Timer 0, 1, and 2 to interrupt every second:
     // 200MHz CPU Freq, 1 second Period (in uSeconds)
-    ConfigCpuTimer(&CpuTimer0, 200, 10000);  
+    ConfigCpuTimer(&CpuTimer0, 200, 10000);
     ConfigCpuTimer(&CpuTimer1, 200, 20000);
     ConfigCpuTimer(&CpuTimer2, 200, 40000);
 
@@ -231,10 +230,10 @@ Look below in the timer 2’s interrupt function, \texttt{cpu\_timer2\_isr()}, a
       if (UARTPrint == 1 ) {
 \end{minted}
 %
-For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this continuous while loop “\mintinline{c}{while(1)}”, is less important code. It will be your lower-priority code, which does not have as strict timing requirements. Also, this is the only place in your code that you should call \texttt{serial\_printf}. \texttt{serial\_printf} is a reasonably large function, and depending on how many variables you print, it can take some time and is not deterministic.    
+For exercise 8, I would like you to put most of your written code here. In future labs, you will find that code run here, in this continuous while loop “\mintinline{c}{while(1)}”, is less important code. It will be your lower-priority code, which does not have as strict timing requirements. Also, this is the only place in your code that you should call \texttt{serial\_printf}. \texttt{serial\_printf} is a reasonably large function, and depending on how many variables you print, it can take some time and is not deterministic.
 %
 \begin{minted}{c}
-	serial_printf(&SerialA, "Num Timer2:%ld Num SerialRX: %ld\r\n", 
+        serial_printf(&SerialA, "Num Timer2:%ld Num SerialRX: %ld\r\n",
             CpuTimer2.InterruptCount,numRXA);
         UARTPrint = 0;
       }
@@ -242,7 +241,7 @@ For exercise 8, I would like you to put most of your written code here. In futur
 }
 \end{minted}
 %
-Right now, consider the calling of this function, \texttt{cpu\_timer0\_isr()} “magic”. (We will explain this in detail soon in the course.) “\texttt{cpu\_timer0\_isr()} is called every 10ms, without fail, in this starter code. (It actually “interrupts” the code running in the \texttt{main()} “\mintinline{c}{while(1)}” while loop.)  In \texttt{main()} you can change the 10000 (microseconds) in the line of code “\mintinline{c}{ConfigCpuTimer(&CpuTimer0, 200, 10000);}” to have it be called at a different rate. For example, if you change the 10000 to 25000, the interrupt function will be called every 25ms.  
+Right now, consider the calling of this function, \texttt{cpu\_timer0\_isr()} “magic”. (We will explain this in detail soon in the course.) “\texttt{cpu\_timer0\_isr()} is called every 10ms, without fail, in this starter code. (It actually “interrupts” the code running in the \texttt{main()} “\mintinline{c}{while(1)}” while loop.)  In \texttt{main()} you can change the 10000 (microseconds) in the line of code “\mintinline{c}{ConfigCpuTimer(&CpuTimer0, 200, 10000);}” to have it be called at a different rate. For example, if you change the 10000 to 25000, the interrupt function will be called every 25ms.
 %
 \begin{minted}{c}
 // cpu_timer0_isr - CPU Timer0 ISR
@@ -278,7 +277,7 @@ __interrupt void cpu_timer2_isr(void)
     CpuTimer2.InterruptCount++;
 \end{minted}
 %
-Since “\texttt{CpuTimer2.InterruptCount}” increments by 1 each time in this function, the following if statement sets \texttt{UARTPrint} to 1 every 50th time in this function “\texttt{cpu\_timer2\_isr()}”. The \% in C is modulus. Modulus returns the remainder of the division operation. So 23 \% 50 equals 23, 67 \% 50 equals 17, etc.  
+Since “\texttt{CpuTimer2.InterruptCount}” increments by 1 each time in this function, the following if statement sets \texttt{UARTPrint} to 1 every 50th time in this function “\texttt{cpu\_timer2\_isr()}”. The \% in C is modulus. Modulus returns the remainder of the division operation. So 23 \% 50 equals 23, 67 \% 50 equals 17, etc.
 %
 \begin{minted}{c}
     if ((CpuTimer2.InterruptCount % 50) == 0) {
@@ -297,13 +296,14 @@ Answer this question after finishing Q5 above.  “\texttt{CpuTimer2.InterruptCo
 
 \Ex[Input saturation]
 
-Write a global function and name it “\texttt{saturate}”. Do not use any global variables in this function. This function should have two \mintinline{c}{float} parameters, “\texttt{input}” and “\texttt{saturation\_limit}”, and return a \mintinline{c}{float}. This return value is saturated by “\texttt{saturation\_limit}”. “\texttt{input}” is the input signal (or input value) that will be saturated if its value is greater than +\texttt{saturation\_limit} or less than –\texttt{saturation\_limit}. For example, if “\texttt{input}” is passed 3.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 3.4. If “\texttt{input}” is passed 9.5 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 5.5. If “\texttt{input}” is passed -7.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return -5.5. You will test this function in Exercise 8.  
+Write a global function and name it “\texttt{saturate}”. Do not use any global variables in this function. This function should have two \mintinline{c}{float} parameters, “\texttt{input}” and “\texttt{saturation\_limit}”, and return a \mintinline{c}{float}. This return value is saturated by “\texttt{saturation\_limit}”. “\texttt{input}” is the input signal (or input value) that will be saturated if its value is greater than +\texttt{saturation\_limit} or less than –\texttt{saturation\_limit}. For example, if “\texttt{input}” is passed 3.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 3.4. If “\texttt{input}” is passed 9.5 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return 5.5. If “\texttt{input}” is passed -7.4 and “\texttt{saturation\_limit}” is passed 5.5, then “\texttt{saturate}” will return -5.5. You will test this function in Exercise 8.
 
 \Ex[Sine wave saturation:]
 
-We are going to use the “\texttt{sin()}” function to generate a sine wave at the sample rate of 250ms. Create five global float variables and one global 32-bit integer: 
+We are going to use the “\texttt{sin()}” function to generate a sine wave at the sample rate of 250ms. Create five global float variables and one global 32-bit integer:
 %
-\begin{enumerate} \item 
+\begin{enumerate}
+    \item
 \begin{minted}{c}
 float sinvalue = 0;
 float time = 0;
@@ -312,176 +312,175 @@ float frequency = 0.05;
 float offset = 0.25;
 int32_t timeint = 0;
 \end{minted}
-\item Then inside the same if statement where “\texttt{serial\_printf}” is called and before “\texttt{serial\_printf}” write three lines of code: 
-\item 
+    \item Then inside the same if statement where “\texttt{serial\_printf}” is called and before “\texttt{serial\_printf}” write three lines of code:
+    \item
 \begin{minted}{c}
 timeint = timeint+1;
 time = timeint*0.25;
 sinvalue = ampl*sin(2*PI*frequency*time) + offset;
 \end{minted}
-\item Create one more global float variable, \mintinline{c}{float satvalue = 0;}
-\item In another line of C code, set “\verb|satvalue|” equal to your “\verb|saturate|” function that is passed “\verb|sinvalue|” to the “input” parameter and constant 2.65 passed to the "\verb|saturation_limit|” parameter.
-\item As a final step, modify the \texttt{serial\_printf} statement so that it prints on one line: timeint, time with 2 digits of precision, \verb|sinvalue| with 3 digits of precision, and \verb|satvalue| with 2 digits of precision.  \%.3f is the formatter for printing a float with 3 digits of precision. \%ld is the formatter to print a 32-bit integer.   
-\item Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the prints. \textbf{Demo this code to your TA in person.} The print out should look something like
-\item 
+        \item Create one more global float variable, \mintinline{c}{float satvalue = 0;}
+        \item In another line of C code, set “\verb|satvalue|” equal to your “\verb|saturate|” function that is passed “\verb|sinvalue|” to the “input” parameter and constant 2.65 passed to the "\verb|saturation_limit|” parameter.
+        \item As a final step, modify the \texttt{serial\_printf} statement so that it prints on one line: timeint, time with 2 digits of precision, \verb|sinvalue| with 3 digits of precision, and \verb|satvalue| with 2 digits of precision.  \%.3f is the formatter for printing a float with 3 digits of precision. \%ld is the formatter to print a 32-bit integer.
+    \item Build and run this code on your Launchpad (red board). Does everything work correctly? Check TeraTerm for the prints. \textbf{Demo this code to your TA in person.} The print out should look something like
+    \item
 \begin{minted}{c}
 Timeint = 30, Time = 7.50sec, Input = 2.371, SatOut = 2.37
 Timeint = 31, Time = 7.75sec, Input = 2.198, SatOut = 2.20
 Etc...
-\end{minted} 
-\item A common mistake with \texttt{serial\_printf} is to use the \%d formatter for 32 bit integers. (\%d is for 16-bit integers only on the F28379D processor.)  In the \texttt{serial\_printf} statement, change the \%ld formatter to \%d and see what happens. \textbf{Also, demo this to your TA in person}. 
-\item On Gradescope, upload a PDF of your commented code file.
+\end{minted}
+    \item A common mistake with \texttt{serial\_printf} is to use the \%d formatter for 32 bit integers. (\%d is for 16-bit integers only on the F28379D processor.)  In the \texttt{serial\_printf} statement, change the \%ld formatter to \%d and see what happens. \textbf{Also, demo this to your TA in person}.
+    \item On Gradescope, upload a PDF of your commented code file.
 \end{enumerate}
 %
 \subsection*{LED’s Default GPIO Assignments: (Listed here for reference)}
 %
 \begin{table}[H]
-\centering
-\caption{LED GPIO Mapping and Control Registers}
-\label{tab:led_gpio_mapping}
-\renewcommand{\arraystretch}{1.15}
-% Row 1 is the header row (tagged as column headers in the PDF). Natural-width
-% columns: no register name wraps, so the table fits a page in large print too.
-\SETableHeaders{1}
-\begin{tabular}{c c c l l l l}
-\toprule
-\textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} & \textbf{SET} & \textbf{CLEAR} & \textbf{TOGGLE} \\
-\midrule
-LED1  & 22  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
-LED2  & 94  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
-LED3  & 95  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
-LED4  & 97  & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
-LED5  & 111 & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
-LED6  & 130 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
-LED7  & 131 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
-LED8  & 25  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
-LED9  & 26  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
-LED10 & 27  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
-LED11 & 60  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
-LED12 & 61  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
-LED13 & 157 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
-LED14 & 158 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
-LED15 & 159 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
-LED16 & 160 & GPF & GPFDAT & GPFSET & GPFCLEAR & GPFTOGGLE \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{LED GPIO Mapping and Control Registers}
+    \label{tab:led_gpio_mapping}
+    \renewcommand{\arraystretch}{1.15}
+    % Row 1 is the header row (tagged as column headers in the PDF). Natural-width
+    % columns: no register name wraps, so the table fits a page in large print too.
+    \SETableHeaders{1}
+    \begin{tabular}{c c c l l l l}
+        \toprule
+        \textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} & \textbf{SET} & \textbf{CLEAR} & \textbf{TOGGLE} \\
+        \midrule
+        LED1  & 22  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+        LED2  & 94  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
+        LED3  & 95  & GPC & GPCDAT & GPCSET & GPCCLEAR & GPCTOGGLE \\
+        LED4  & 97  & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
+        LED5  & 111 & GPD & GPDDAT & GPDSET & GPDCLEAR & GPDTOGGLE \\
+        LED6  & 130 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+        LED7  & 131 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+        LED8  & 25  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+        LED9  & 26  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+        LED10 & 27  & GPA & GPADAT & GPASET & GPACLEAR & GPATOGGLE \\
+        LED11 & 60  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
+        LED12 & 61  & GPB & GPBDAT & GPBSET & GPBCLEAR & GPBTOGGLE \\
+        LED13 & 157 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+        LED14 & 158 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+        LED15 & 159 & GPE & GPEDAT & GPESET & GPECLEAR & GPETOGGLE \\
+        LED16 & 160 & GPF & GPFDAT & GPFSET & GPFCLEAR & GPFTOGGLE \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 %
 \subsection*{Push Button’s Default GPIO Assignments:}
 %
 \begin{table}[H]
-\centering
-\caption{Push Button's GPIO Mapping and Control Registers}
-\label{tab:push_button_gpio_mapping}
-\renewcommand{\arraystretch}{1.15}
-% Row 1 is the header row (tagged as column headers in the PDF).
-\SETableHeaders{1}
-\begin{tabular}{cccc}
-\toprule
-\textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} \\
-\midrule
-PB1  & 4  & GPA & GPADAT \\
-PB2  & 5  & GPA & GPADAT \\
-PB3  & 6  & GPA & GPADAT \\
-PB4  & 7  & GPA & GPADAT \\
-JoyStick PB  & 8 & GPA & GPADAT \\
-\bottomrule
-\end{tabular}
+    \centering
+    \caption{Push Button's GPIO Mapping and Control Registers}
+    \label{tab:push_button_gpio_mapping}
+    \renewcommand{\arraystretch}{1.15}
+    % Row 1 is the header row (tagged as column headers in the PDF).
+    \SETableHeaders{1}
+    \begin{tabular}{cccc}
+        \toprule
+        \textbf{LED} & \textbf{GPIO} & \textbf{Bank} & \textbf{DAT} \\
+        \midrule
+        PB1  & 4  & GPA & GPADAT \\
+        PB2  & 5  & GPA & GPADAT \\
+        PB3  & 6  & GPA & GPADAT \\
+        PB4  & 7  & GPA & GPADAT \\
+        JoyStick PB  & 8 & GPA & GPADAT \\
+        \bottomrule
+    \end{tabular}
 \end{table}
 %
-\subsubsection*{GPIO Register Use when GPIO pin set as Output:} 
+\subsubsection*{GPIO Register Use when GPIO pin set as Output:}
 The GPIO Registers are 32-bit registers, but we use unions and bitfields in C/C++ to control a single bit of each register at a time. The “\verb|.all|” part of the C/C++ union is the entire 32-bit register. The “\verb|.bit.GPIO19|” is just one bit in the 32-bit register. So these two lines of C code perform the same operation:
 %
 \begin{table}[H]
-\centering
-\caption{GPIO Register Functional Definitions and Usage Constraints}
-\label{tab:gpio_registers_output}
-\footnotesize
-\renewcommand{\arraystretch}{1.2}
-% Row 1 is the header row (tagged as column headers in the PDF).
-\SETableHeaders{1}
-\begin{tabular}{|p{0.13\columnwidth}|p{0.32\columnwidth}|p{0.42\columnwidth}|}
-\hline
-\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
-GP?DAT & 
-\texttt{GP?DAT.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline 
-\texttt{GP?DAT.bit.GPIO? = 0;} \newline Sets Pin Low, 0V/GND \newline 
- & \textbf{FOR TECHNICAL REASONS, DO NOT USE DAT FOR TURNING ON AND OFF LEDS. JUST USE IT TO READ THE STATE OF THE PUSHBUTTONS BELOW.}
-\\ \hline
-GP?SET & 
-\texttt{GP?SET.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline 
-\texttt{GP?SET.bit.GPIO? = 0;} \newline Does Nothing & 
-\texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 1;} \newline Sets GPIO37 High/3.3V. \newline \texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 0;} \newline Does Nothing. \\ \hline
-GP?CLEAR & 
-\texttt{GP?CLEAR.bit.GPIO? = 1;} \newline Sets Pin Low, 0V/GND \newline 
-\texttt{GP?CLEAR.bit.GPIO? = 0;} \newline Does Nothing & 
-\texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1;} \newline Sets GPIO70 Low/0V. \newline \texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0;} \newline Does Nothing. \\ \hline
-GP?TOGGLE & 
-\texttt{GP?TOGGLE.bit.GPIO? = 1;} \newline Sets Pin opposite of its current state \newline 
-\texttt{GP?TOGGLE.bit.GPIO? = 0;} \newline Does Nothing & 
-\texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1;} \newline State toggles (3.3V $\leftrightarrow$ 0V) \newline \texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;}\newline Does Nothing \\ \hline
-\end{tabular}
+    \centering
+    \caption{GPIO Register Functional Definitions and Usage Constraints}
+    \label{tab:gpio_registers_output}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.2}
+    % Row 1 is the header row (tagged as column headers in the PDF).
+    \SETableHeaders{1}
+    \begin{tabular}{|p{0.13\columnwidth}|p{0.32\columnwidth}|p{0.42\columnwidth}|}
+        \hline
+        \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+        GP?DAT &
+        \texttt{GP?DAT.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline
+        \texttt{GP?DAT.bit.GPIO? = 0;} \newline Sets Pin Low, 0V/GND \newline
+        & \textbf{FOR TECHNICAL REASONS, DO NOT USE DAT FOR TURNING ON AND OFF LEDS. JUST USE IT TO READ THE STATE OF THE PUSHBUTTONS BELOW.}
+        \\ \hline
+        GP?SET &
+        \texttt{GP?SET.bit.GPIO? = 1;} \newline Sets Pin High, 3.3V \newline
+        \texttt{GP?SET.bit.GPIO? = 0;} \newline Does Nothing &
+        \texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 1;} \newline Sets GPIO37 High/3.3V. \newline \texttt{GpioDataRegs.GPBSET.bit.GPIO37 = 0;} \newline Does Nothing. \\ \hline
+        GP?CLEAR &
+        \texttt{GP?CLEAR.bit.GPIO? = 1;} \newline Sets Pin Low, 0V/GND \newline
+        \texttt{GP?CLEAR.bit.GPIO? = 0;} \newline Does Nothing &
+        \texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 1;} \newline Sets GPIO70 Low/0V. \newline \texttt{GpioDataRegs.GPCCLEAR.bit.GPIO70 = 0;} \newline Does Nothing. \\ \hline
+        GP?TOGGLE &
+        \texttt{GP?TOGGLE.bit.GPIO? = 1;} \newline Sets Pin opposite of its current state \newline
+        \texttt{GP?TOGGLE.bit.GPIO? = 0;} \newline Does Nothing &
+        \texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 1;} \newline State toggles (3.3V $\leftrightarrow$ 0V) \newline \texttt{GpioDataRegs.GPDTOGGLE.bit.GPIO98 = 0;}\newline Does Nothing \\ \hline
+    \end{tabular}
 \end{table}
 %
-\subsubsection*{GPIO Register Use When GPIO Pin Set as Input:}  
-Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.    
+\subsubsection*{GPIO Register Use When GPIO Pin Set as Input:}
+Each GPIO pin, when configured as an input, has an internal pull-up resistor that can be enabled or disabled for that pin. With the passive push button on our breakout board, we will need to enable the pull-up resistor.
 %
 \begin{table}[H]
-\centering
-\caption{GPIO Register Functional Definitions and Usage Constraints} 
-\label{tab:gpio_registers_input}
-\footnotesize
-\renewcommand{\arraystretch}{1.2}
-% Row 1 is the header row (tagged as column headers in the PDF).
-\SETableHeaders{1}
-% The example column fits the longest code line in large print too.
-\begin{tabular}{|p{0.13\columnwidth}|p{0.27\columnwidth}|p{0.49\columnwidth}|}
-\hline
-\textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
-GP?DAT &
-If \texttt{GP?DAT.bit.GPIO? = 1}, the pin is logic high (3.3\,V).\newline
-If \texttt{GP?DAT.bit.GPIO? = 0}, the pin is logic low (0\,V/GND). &
-\begin{minipage}[t]{\linewidth}
+    \centering
+    \caption{GPIO Register Functional Definitions and Usage Constraints}
+    \label{tab:gpio_registers_input}
+    \footnotesize
+    \renewcommand{\arraystretch}{1.2}
+    % Row 1 is the header row (tagged as column headers in the PDF).
+    \SETableHeaders{1}
+    % The example column fits the longest code line in large print too.
+    \begin{tabular}{|p{0.13\columnwidth}|p{0.27\columnwidth}|p{0.49\columnwidth}|}
+        \hline
+        \textbf{Register} & \textbf{Usage} & \textbf{Example} \\ \hline
+        GP?DAT &
+        If \texttt{GP?DAT.bit.GPIO? = 1}, the pin is logic high (3.3\,V).\newline
+        If \texttt{GP?DAT.bit.GPIO? = 0}, the pin is logic low (0\,V/GND). &
+        \begin{minipage}[t]{\linewidth}
 \begin{minted}{c}
 if (GpioDataRegs.GPADAT.bit.GPIO19 == 1) {
-    // Code executed when input pin 
+    // Code executed when input pin
     // GPIO19 is High (3.3V)
 } else {
-    // Code executed when input pin 
+    // Code executed when input pin
     // GPIO19 is Low (0V/GND)
 }
 \end{minted}
-\end{minipage}
-\\ \hline
-\end{tabular}
+        \end{minipage}
+        \\ \hline
+    \end{tabular}
 \end{table}
 %
 \Ex[LED toggles]
 
-Using the GPIO reference tables above \textbf{(note the example code in the table)}, add code to your CPU Timer2 interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed, toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and off.  
+Using the GPIO reference tables above \textbf{(note the example code in the table)}, add code to your CPU Timer2 interrupt service routine to toggle on and off LED10 and 11 every 100ms. In addition, if pushbutton 1 is pressed, toggle LED12 and LED13 on and off. Moreover, if pushbutton 4 is pressed, toggle LED14 and 15 on and off.
 
 \Ex[LED patterns]
 
-Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate within one of the CPU timer interrupt functions.  
+Have some fun with the LEDs and switches, and impress me with some fun shapes and patterns. For example, have these different shapes display when pushbuttons are pressed. Also, when another pushbutton is pressed, have LEDs chase each other in a fun pattern. You are not allowed to use a delay function here. Instead, perform the LED change at the time rate within one of the CPU timer interrupt functions.
 
 \Ex[Binary operations]
 
-Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value over the serial port using the “\verb|serial_printf|” function.    
+Find the result of the following C statements. First, do the calculations by hand and show your work. Then try these calculations one at a time on your Launchpad to verify the answers. An easy way to display the result is to send the value over the serial port using the “\verb|serial_printf|” function.
 %
 \begin{enumerate}
-    \item First, explain why each character sent over the serial port takes 10/9600 seconds, assuming that the bit rate is 9600 bits per second when using the \verb|serial_printf| function.
-\item  \mintinline{c}{x = 532 & 205;}
-\item \mintinline{c}{x = 0x4f & 0x1ad;}
-\item 	\mintinline{c}{x = 0x02ad | 0x1a1;}
-\item 	\mintinline{c}{x = 0x3ba >> 4;}
-\item 	\mintinline{c}{x = 104 << 3;}
-\item 	\mintinline{c}{x = 495 & (0x5 << 4);} 
+        \item First, explain why each character sent over the serial port takes 10/9600 seconds, assuming that the bit rate is 9600 bits per second when using the \verb|serial_printf| function.
+        \item  \mintinline{c}{x = 532 & 205;}
+        \item \mintinline{c}{x = 0x4f & 0x1ad;}
+        \item     \mintinline{c}{x = 0x02ad | 0x1a1;}
+        \item     \mintinline{c}{x = 0x3ba >> 4;}
+        \item     \mintinline{c}{x = 104 << 3;}
+        \item     \mintinline{c}{x = 495 & (0x5 << 4);}
 \end{enumerate}
 %
 \Ex[Type bit sizes]
 
-Read section 6.3 of the F28379D C reference guide (\url{https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf}). How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: \mintinline{c}{int}, \mintinline{c}{long int}, \mintinline{c}{unsigned int}, \mintinline{c}{short int}, \mintinline{c}{char}, \mintinline{c}{double}, \mintinline{c}{float}?    
-
+Read section 6.3 of the F28379D C reference guide (\url{https://coecsl.ece.illinois.edu/se423/C2000CcompilerRefGuide.pdf}). How many bits (not bytes) does this processor use for each of the following variable types using the COFF library: \mintinline{c}{int}, \mintinline{c}{long int}, \mintinline{c}{unsigned int}, \mintinline{c}{short int}, \mintinline{c}{char}, \mintinline{c}{double}, \mintinline{c}{float}?
 
 \Ex[UART signal display]
 

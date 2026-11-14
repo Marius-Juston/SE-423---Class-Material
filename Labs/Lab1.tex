@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -60,15 +60,15 @@ First follow the other Lab 1 document “Using the SE423 Repository” and its f
     \item Once CCS 12 is done loading your workspace, you need to load the “LABstarter” project. When you perform this load, the project is copied into your workspace. Therefore, if you rename this project, you will be able to load the “LABstarter” project again if you would like to start another minimal project. I purposely located this “LABstarter” project in the same folder that has many of the example projects you will be studying this semester. These examples are part of the software development stack that TI calls C2000ware. I have copied the needed parts of C2000ware into our repository so that if you accidently modify something you can easily get it back. Again now if your NetID was “superstdnt”, perform the following to load your starter project. In CCS select the menu Project$\rightarrow$Import CCS Projects. Click “Browse” and explore to “\lstinline|C:\superstdnt\SE423_repo\C2000Ware_4_01_00_00\device_support\f2837xd\examples\cpu1\LABstarter|” and finally press “Finish”. Your project should then be loaded into the CCS environment. Then rename the project “\lstinline|LAB1<yourinitials>|” by right clicking on the project name “LABstarter” and selecting “Rename”. Also explore into the project and find the file “\lstinline|LABstarter_main.c|”. Right-Click on “\lstinline|LABstarter_main.c|” and select “Rename”. Change the name to “\lstinline|lab1_main.c|”. To save you some headaches in the future, I recommend you perform one more step after you have created a new “LABstarter” project. Right click on your project name in the Project Explorer and select “Properties.” Select “General” on the left hand side. Then in the “Project” tab find the “Connection” drop down and select “Texas Instruments XDS2xx USB Debug Probe.” “Apply and Close”.
     \item Now that you have the project loaded you can build the code and download it to the LaunchPad board. Have your TA show you how to connect the robot to the USB of your PC and then in CCS hit the green “Debug” button \debugBtn\ and in the dialog box the pops up, select CPU1 only. This will compile the code and load it to your LaunchPad board.
     \item Click the Suspend button \pauseBtn\ to pause the code and the Resume (or Play) button \playBtn\ to resume or start your code’s execution Use both of these to prove to yourself that both the blue and red LEDs are blinking on and off. Use one more button in CCS 12, the Restart \restartBtn\ button. Run your code and then press the pause button to stop you code. If you hit the Resume button the code starts up again from where you stopped it. If you press the Restart button, CCS will take you back to the beginning of your code and then you can click the Resume button to start your code again from the beginning. This saves time if you just need to restart the same code. If you need to make changes to your code, Restart does not download the new code. You have to re-Debug your code to get the new changes downloaded to the processor.
-%
-    \begin{checkoff}[First DSP project built and running]
-    Demonstrate to your TA that you have successfully created, built and ran your first DSP project.
-    \end{checkoff}
-    \item Read through the \mintinline{c}{main()} function of your \lstinline|lab1_main.c| file and see if you can find the function that changes the period of the timer functions. Change the period and see if the LEDs blink at a different rate.
-%
-    \begin{checkoff}[Changed LED blink period]
-    Show your program that changed the period of the blink rate of the blue and red LED.
-    \end{checkoff}
+        %
+        \begin{checkoff}[First DSP project built and running]
+                Demonstrate to your TA that you have successfully created, built and ran your first DSP project.
+        \end{checkoff}
+        \item Read through the \mintinline{c}{main()} function of your \lstinline|lab1_main.c| file and see if you can find the function that changes the period of the timer functions. Change the period and see if the LEDs blink at a different rate.
+        %
+        \begin{checkoff}[Changed LED blink period]
+                Show your program that changed the period of the blink rate of the blue and red LED.
+        \end{checkoff}
     \item Then have your TA show you how to shutdown the robot’s Raspberry Pi4 and how to power off the robot and remove its power supply.
 \end{itemize}
 %
@@ -76,36 +76,36 @@ First follow the other Lab 1 document “Using the SE423 Repository” and its f
 %
 \begin{itemize}
     \item For this exercise, instead of using the robot, use your F28379D LaunchXL board (Red Board) by itself. Find a mini USB cable that connects to your F28379D board. Most of the time when you use your F28379D board you will be starting with a new project using “HWStarter” but for this exercise use “LABstarter” again creating a new project with the same steps as above. Rename this project “\lstinline|printtest<yourinitials>|” and remember to rename the \lstinline|LABstarter_main.c| file to \lstinline|printtest_main.c|. Also right click on this new project and select “Properties” and make sure the Connection is set to “Texas Instruments XDS100v2 USB Debug Probe.”
-    \item Look at the code and you will see that the functions \mintinline{c}{UART_printfLine} and \mintinline{c}{serial_printf} are called every time the variable \mintinline{c}{UARTPrint} is equal to one.
-%
-    \begin{checkoff}[How often UARTPrint is set]
-    How often is \mintinline{c}{UARTPrint} getting set to one? \textbf{Show your answer to your TA}.
-    \end{checkoff}
-    \mintinline{c}{UART_printfLine} prints to the two lines of the robot’s text LCD. Since we are not using the robot for this exercise these functions write data to a serial port, but it is ignored since there is no LCD screen connected to your homework F28379D board. The reason we are using just the F28379D board and not the robot is that we want to send and receive data through the USB cable to a serial terminal called Tera Term. Go ahead and uncomment the \mintinline{c}{serial_printf} line of code that is just above the \mintinline{c}{UART_printfLine} function calls. Build and run this program.
+        \item Look at the code and you will see that the functions \mintinline{c}{UART_printfLine} and \mintinline{c}{serial_printf} are called every time the variable \mintinline{c}{UARTPrint} is equal to one.
+        %
+        \begin{checkoff}[How often UARTPrint is set]
+                How often is \mintinline{c}{UARTPrint} getting set to one? \textbf{Show your answer to your TA}.
+        \end{checkoff}
+        \mintinline{c}{UART_printfLine} prints to the two lines of the robot’s text LCD. Since we are not using the robot for this exercise these functions write data to a serial port, but it is ignored since there is no LCD screen connected to your homework F28379D board. The reason we are using just the F28379D board and not the robot is that we want to send and receive data through the USB cable to a serial terminal called Tera Term. Go ahead and uncomment the \mintinline{c}{serial_printf} line of code that is just above the \mintinline{c}{UART_printfLine} function calls. Build and run this program.
     \item We need to figure out what serial port COM number your USB serial port is using. The easiest way to find this is to run “Device Manager” in Windows and find the “Ports” item. Under ports find the COM number for the device titled “XDS100 Class USB Serial Port”. Run Tera Term and select the “Serial” item and find the XDS100 Class USB Serial Port in the list of COM ports. Final thing to do is change the Baud (or Bite) rate of the COM port. Still in Tera Term select the menu item “Setup” and then “Serial Port…”. Change the “Speed” to 115200 if it is not already. Then save this setup by again going to “Setup” and “Save Setup” and select the default .ini file to save these settings.
     \item Now you are ready to “bug/debug” you code in Code Composer Studio. Download and run your code and you should see text printed in the serial terminal.
-    \item Also click (or give focus) to Tera Term and type some text into the terminal. The typed text will not be shown in the window, but those characters are being sent to the F28379D. Notice that when you type the number of characters received increases (which one of the values printed to the terminal). In CCS and your Printtest project, find and open the file \lstinline|F28379dSerial.c|. Towards the bottom of the file find the function \mintinline{c}{__interrupt void RXAINT_recv_ready(void)} This function is called every time a character is sent across the serial port. The sent character is received in the local variable “\mintinline{c}{RXAdata}”. Write an if statement that checks if the character in “\mintinline{c}{RXAdata}” is equal to the character ‘a’. If it is ‘a’ turn on Board Red LED. Write another if statement that checks if “\mintinline{c}{RXAdata}” is equal to ‘b’. If it is ‘b’ turn off Board Red LED. Use the command \mintinline{c}{GpioDataRegs.GPBSET.bit.GPIO34 = 1;} to turn OFF Board Red LED. Use the command \mintinline{c}{GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;} to turn ON Board Red LED. Also make sure to find in CPU\_Timer0’s interrupt function the line that toggles on and off GPIO34. Comment that line out so you can control the on/off of the RED LED by pressing the ‘a’ and ‘b’ keys.
-%
-    \begin{checkoff}[Red LED controlled from the terminal]
-    \textbf{Demo this working to your TA.}
-    \end{checkoff}
-    \item In addition, write code here in the \mintinline{c}{RXAINT_recv_ready} interrupt function that looks for other pressed keys and in the same way turns on and off LEDS 1 through 4 on the robot’s green breakout board. We do not have these LEDS on the F28379D Board but your TA will show you the Pin Mux Guide (Note that this is the Lab PinMux Guide and there is another one for your homework board), \url{https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf} and how to connect the Oscilloscope to the pins that control these LEDS and you can watch them transition on the scope’s screen.
-%
-    \begin{itemize}
-        \item LED1 is connected to GPIO22.
-        \item LED2 is connected to GPIO94.
-        \item LED3 is connected to GPIO95.
-        \item LED4 is connected to GPIO97.
-        \item LED5 is connected to GPIO111.
-    \end{itemize}
-%
-    \textit{The GPIO pins are controlled by registers starting with the label GPA, GPB, GPC, GPD, GPE or GPF. GPA registers (i.e. GPASET, GPACLEAR, GPATOGGLE, GPADAT) control IO pins 0 through 31. GPB registers (i.e. GPBSET, GPBCLEAR, GPBTOGGLE, GPBDAT) control IO pins 32 through 63, etc.. So which GP registers control 94, 95, 97 and 111?}
+        \item Also click (or give focus) to Tera Term and type some text into the terminal. The typed text will not be shown in the window, but those characters are being sent to the F28379D. Notice that when you type the number of characters received increases (which one of the values printed to the terminal). In CCS and your Printtest project, find and open the file \lstinline|F28379dSerial.c|. Towards the bottom of the file find the function \mintinline{c}{__interrupt void RXAINT_recv_ready(void)} This function is called every time a character is sent across the serial port. The sent character is received in the local variable “\mintinline{c}{RXAdata}”. Write an if statement that checks if the character in “\mintinline{c}{RXAdata}” is equal to the character ‘a’. If it is ‘a’ turn on Board Red LED. Write another if statement that checks if “\mintinline{c}{RXAdata}” is equal to ‘b’. If it is ‘b’ turn off Board Red LED. Use the command \mintinline{c}{GpioDataRegs.GPBSET.bit.GPIO34 = 1;} to turn OFF Board Red LED. Use the command \mintinline{c}{GpioDataRegs.GPBCLEAR.bit.GPIO34 = 1;} to turn ON Board Red LED. Also make sure to find in CPU\_Timer0’s interrupt function the line that toggles on and off GPIO34. Comment that line out so you can control the on/off of the RED LED by pressing the ‘a’ and ‘b’ keys.
+        %
+        \begin{checkoff}[Red LED controlled from the terminal]
+                \textbf{Demo this working to your TA.}
+        \end{checkoff}
+        \item In addition, write code here in the \mintinline{c}{RXAINT_recv_ready} interrupt function that looks for other pressed keys and in the same way turns on and off LEDS 1 through 4 on the robot’s green breakout board. We do not have these LEDS on the F28379D Board but your TA will show you the Pin Mux Guide (Note that this is the Lab PinMux Guide and there is another one for your homework board), \url{https://coecsl.ece.illinois.edu/se423/Lab_PinMuxTableF28379DLaunchPadSE423Robot.pdf} and how to connect the Oscilloscope to the pins that control these LEDS and you can watch them transition on the scope’s screen.
+        %
+        \begin{itemize}
+            \item LED1 is connected to GPIO22.
+            \item LED2 is connected to GPIO94.
+            \item LED3 is connected to GPIO95.
+            \item LED4 is connected to GPIO97.
+            \item LED5 is connected to GPIO111.
+        \end{itemize}
+        %
+        \textit{The GPIO pins are controlled by registers starting with the label GPA, GPB, GPC, GPD, GPE or GPF. GPA registers (i.e. GPASET, GPACLEAR, GPATOGGLE, GPADAT) control IO pins 0 through 31. GPB registers (i.e. GPBSET, GPBCLEAR, GPBTOGGLE, GPBDAT) control IO pins 32 through 63, etc.. So which GP registers control 94, 95, 97 and 111?}
 
-    For LED5, add code in Timer 0’s interrupt function so that LED5 is toggled on and off every 3\textsuperscript{rd} time Timer0’s interrupt function is called.
-%
-    \begin{checkoff}[LEDs 1 through 5 on the oscilloscope]
-    \textbf{Demo your program working to your TA.}
-    \end{checkoff}
+        For LED5, add code in Timer 0’s interrupt function so that LED5 is toggled on and off every 3\textsuperscript{rd} time Timer0’s interrupt function is called.
+        %
+        \begin{checkoff}[LEDs 1 through 5 on the oscilloscope]
+                \textbf{Demo your program working to your TA.}
+        \end{checkoff}
 \end{itemize}
 %
 \Ex
@@ -138,7 +138,6 @@ Below is an introduction to the starter code given to you for this semester’s 
 #define PI          3.1415926535897932384626433832795
 #define TWOPI       6.283185307179586476925286766559
 #define HALFPI      1.5707963267948966192313216916398
-
 
 // Interrupt Service Routines predefinition
 __interrupt void cpu_timer0_isr(void);

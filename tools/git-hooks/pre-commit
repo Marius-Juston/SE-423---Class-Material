@@ -12,10 +12,26 @@
 # 2. Accessibility (when a .tex document or a deck is staged), via
 #    tools/a11y/run_all.py --files: stops the commit only on problems that are new
 #    compared with a11y-baseline.json (missing alt text, missing slide titles, ...).
-# 3. Python tooling (when a .py script, its .py.lock or ruff.toml is staged): the
+# 3. LaTeX layout (when a handout is staged: Homeworks/*.tex, Labs/*.tex,
+#    syllabus.tex), via tools/tex-fmt.sh: the staged handouts are formatted
+#    (indentation only, the text is untouched) and staged again. Never stops a commit.
+# 4. Python tooling (when a .py script, its .py.lock or ruff.toml is staged): the
 #    uv lockfiles match the scripts' dependencies, ruff lint and format pass.
 
 staged=$(git diff --cached --name-only --diff-filter=ACMR)
+
+# LaTeX layout first (no uv needed), so the checks below see the formatted files.
+root=$(git rev-parse --show-toplevel)
+for f in $(echo "$staged" | grep -E '^((Homeworks|Labs)/[^/]+|syllabus)\.tex$'); do
+  if ! git -C "$root" diff --quiet -- "$f"; then
+    # Partly staged: formatting would pull the unstaged edits into this commit.
+    echo "pre-commit: $f has unstaged changes, not formatted (CI will remind you)." >&2
+  elif sh "$root/tools/tex-fmt.sh" "$f"; then
+    git -C "$root" add -- "$f"
+  else
+    echo "pre-commit: tex-fmt not available, $f not formatted (commit continues)." >&2
+  fi
+done
 echo "$staged" | grep -qE '^Lectures/(Slides/.+\.pptx|Slides/figures\.toml|Figures/)' && sync=1 || sync=
 echo "$staged" | grep -qE '\.(tex|pptx)$' && a11y=1 || a11y=
 echo "$staged" | grep -qE '(\.py|\.py\.lock|^ruff\.toml)$' && py=1 || py=
@@ -28,7 +44,6 @@ if ! command -v uv >/dev/null 2>&1; then
   exit 0
 fi
 
-root=$(git rev-parse --show-toplevel)
 status=0
 
 if [ -n "$sync" ]; then

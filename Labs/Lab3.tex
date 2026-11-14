@@ -5,9 +5,9 @@
 % \HCode is defined by tex4ht before our file is read, so this branch is safe.
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
-  pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
-  lang = en-US                             % Sets the document language
+    testphase = {phase-III, math, table}, % Activates core tagging, math, and tables
+    pdfstandard = ua-2,                   % Sets the PDF/UA-2 accessibility standard
+    lang = en-US                             % Sets the document language
 }
 \fi
 
@@ -22,7 +22,7 @@
 \input{header}
 
 \def\AssignmentText{Pulse-Width Modulation, Optical Encoders and Friction Compensation \\
-Two Week Lab \par
+    Two Week Lab \par
 \CheckOffNotice}
 %
 \begin{document}
@@ -34,7 +34,7 @@ Two Week Lab \par
 \begin{enumerate}
     \item Understand how a duty cycle varying square wave (PWM) can be used to command a seemingly linear and analog output.
     \item Use EPWM12A to control the brightness of LED1.
-    \item Use EPWM1A and EPWM2A to command your robot’s two DC motors in both the clockwise and counter-clockwise direction. Create two functions, \mintinline{c}{setEPWM1A} and \mintinline{c}{setEPWM2A}, that will help you get ready for controlling the speed and angle of the motor in future labs.
+        \item Use EPWM1A and EPWM2A to command your robot’s two DC motors in both the clockwise and counter-clockwise direction. Create two functions, \mintinline{c}{setEPWM1A} and \mintinline{c}{setEPWM2A}, that will help you get ready for controlling the speed and angle of the motor in future labs.
     \item Use EQEP1, EQEP2 to read the angle movement in motor 1 and in motor 2. Calculate the spin rate of each wheel. Use EQEP3 as a command input to the robot.
     \item Sample the robot moving at different speeds and plot the friction curves for your robot. Then use these friction curves to compensate for the friction of the robot.
 \end{enumerate}
@@ -93,41 +93,41 @@ union AQCTLA_REG {
 Looking at these bitfields notice the \mintinline{c}{:1}, \mintinline{c}{:2} or \mintinline{c}{:3} after \mintinline{c}{PHSEN}, \mintinline{c}{CTRMODE}, \mintinline{c}{CLKDIV} respectively. This is telling how many bits this portion of the bitfield uses. If you add up all the numbers after the colons, you see that it adds to 16, which is the size of both the TBCTL and AQCTLA registers. So each bit of the register can be assigned by this bitfield. To make this a bit more clear, look at the definition of TBCTL and AQCTLA from TI’s technical reference guide:
 %
 \begin{table}[H]
-\footnotesize
-\centering
-\setlength{\tabcolsep}{2pt}
-% Rows 1 and 4 hold the bit numbers: the column headers of each half of the register.
-\SETableHeaders{1,4}
-\begin{tabular}{|*{8}{>{\centering\arraybackslash}m{0.11\linewidth}|}}
-\hline
-\rowcolor{gray!20} 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\ \hline
-\multicolumn{2}{|c|}{FREE\_SOFT} & PHSDIR & \multicolumn{3}{c|}{CLKDIV} & \multicolumn{2}{c|}{HSPCLKDIV} \\ \hline
-\multicolumn{2}{|c|}{R/W-0h} & R/W-0h & \multicolumn{3}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-1h} \\ \hline
-\rowcolor{gray!20} 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\ \hline
-HSPCLKDIV & SWFSYNC & \multicolumn{2}{c|}{SYNCOSEL} & PRDLD & PHSEN & \multicolumn{2}{c|}{CTRMODE} \\ \hline
-R/W-1h & R-0/W1S-0h & \multicolumn{2}{c|}{R/W-0h} & R/W-0h & R/W-0h & \multicolumn{2}{c|}{R/W-3h} \\ \hline
-\end{tabular}
-\caption{Figure 15-93. TBCTL Register}
+    \footnotesize
+    \centering
+    \setlength{\tabcolsep}{2pt}
+    % Rows 1 and 4 hold the bit numbers: the column headers of each half of the register.
+    \SETableHeaders{1,4}
+    \begin{tabular}{|*{8}{>{\centering\arraybackslash}m{0.11\linewidth}|}}
+        \hline
+        \rowcolor{gray!20} 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\ \hline
+        \multicolumn{2}{|c|}{FREE\_SOFT} & PHSDIR & \multicolumn{3}{c|}{CLKDIV} & \multicolumn{2}{c|}{HSPCLKDIV} \\ \hline
+        \multicolumn{2}{|c|}{R/W-0h} & R/W-0h & \multicolumn{3}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-1h} \\ \hline
+        \rowcolor{gray!20} 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\ \hline
+        HSPCLKDIV & SWFSYNC & \multicolumn{2}{c|}{SYNCOSEL} & PRDLD & PHSEN & \multicolumn{2}{c|}{CTRMODE} \\ \hline
+        R/W-1h & R-0/W1S-0h & \multicolumn{2}{c|}{R/W-0h} & R/W-0h & R/W-0h & \multicolumn{2}{c|}{R/W-3h} \\ \hline
+    \end{tabular}
+    \caption{Figure 15-93. TBCTL Register}
 \end{table}
 %
 and
 %
 \begin{table}[H]
-\footnotesize
-\centering
-\setlength{\tabcolsep}{2pt}
-% Rows 1 and 4 hold the bit numbers: the column headers of each half of the register.
-\SETableHeaders{1,4}
-\begin{tabular}{|*{8}{>{\centering\arraybackslash}m{0.11\linewidth}|}}
-\hline
-\rowcolor{gray!20} 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\ \hline
-\multicolumn{4}{|c|}{RESERVED} & \multicolumn{2}{c|}{CBD} & \multicolumn{2}{c|}{CBU} \\ \hline
-\multicolumn{4}{|c|}{R-0-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} \\ \hline
-\rowcolor{gray!20} 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\ \hline
-\multicolumn{2}{|c|}{CAD} & \multicolumn{2}{c|}{CAU} & \multicolumn{2}{c|}{PRD} & \multicolumn{2}{c|}{ZRO} \\ \hline
-\multicolumn{2}{|c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} \\ \hline
-\end{tabular}
-\caption{Figure 15-115. AQCTLA Register}
+    \footnotesize
+    \centering
+    \setlength{\tabcolsep}{2pt}
+    % Rows 1 and 4 hold the bit numbers: the column headers of each half of the register.
+    \SETableHeaders{1,4}
+    \begin{tabular}{|*{8}{>{\centering\arraybackslash}m{0.11\linewidth}|}}
+        \hline
+        \rowcolor{gray!20} 15 & 14 & 13 & 12 & 11 & 10 & 9 & 8 \\ \hline
+        \multicolumn{4}{|c|}{RESERVED} & \multicolumn{2}{c|}{CBD} & \multicolumn{2}{c|}{CBU} \\ \hline
+        \multicolumn{4}{|c|}{R-0-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} \\ \hline
+        \rowcolor{gray!20} 7 & 6 & 5 & 4 & 3 & 2 & 1 & 0 \\ \hline
+        \multicolumn{2}{|c|}{CAD} & \multicolumn{2}{c|}{CAU} & \multicolumn{2}{c|}{PRD} & \multicolumn{2}{c|}{ZRO} \\ \hline
+        \multicolumn{2}{|c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} & \multicolumn{2}{c|}{R/W-0h} \\ \hline
+    \end{tabular}
+    \caption{Figure 15-115. AQCTLA Register}
 \end{table}
 %
 Notice how CLKDIV takes up 3 bits of the TBCTL register. CAU takes up 2 bits of the AQCTLA register. So what the bitfield unions allow us to do in our program is to just assign the value of the three bits that are CLKDIV and not touch/change the other bits of the register. So you could code:
@@ -139,7 +139,7 @@ EPwm12Regs.TBCTL.bit.CLKDIV = 3;
 and that would set bit 10 to 1, bit 11 to 1 and bit 12 to 0 in the TBCTL register and leave all the other bits the way they were. Since CLKDIV takes up 3 bits, the smallest number you could set it to is zero.
 %
 \begin{checkoff}[Bitfield value answers]
-\textbf{What is the largest number you could set it to?} \textit{(Technically you could set it to any number but only the bottom 3 bits of the number are looked at in the assignment.)} \textbf{For the bitfield section CAU in AQCTLA, what are the numbers it can be assigned to?} Looking at the \href{http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf}{condensed Tech. Ref.}, \textbf{how do these different values assigned to AQCTLA’s CAU section change the PWM output?} \textbf{Show these answers to your TA.}
+        \textbf{What is the largest number you could set it to?} \textit{(Technically you could set it to any number but only the bottom 3 bits of the number are looked at in the assignment.)} \textbf{For the bitfield section CAU in AQCTLA, what are the numbers it can be assigned to?} Looking at the \href{http://coecsl.ece.illinois.edu/SE423/EPWM_Peripheral.pdf}{condensed Tech. Ref.}, \textbf{how do these different values assigned to AQCTLA’s CAU section change the PWM output?} \textbf{Show these answers to your TA.}
 \end{checkoff}
 %
 So given that introduction to register bitfield assignments, let’s write some code in our \mintinline{c}{main()} function to setup EPWM12A which can drive LED1. \textit{If I do not list an option that you see defined in a register, then that means you should not set that option and it will be kept as the default. I may tell you an option that is already the default, but to make it clear to the reader of your code that this option is set, I would like you to assign it the default value even though that line of code is not necessary.} Set the following options in the EPWM registers for EPWM12A. A good place to write this initialization code is in your \mintinline{c}{main()} function right after the calls to init\_serialSCI A, B, C, D() \textit{(Leave C and D commented out)}. Most of your initializations should be placed there.
@@ -183,7 +183,7 @@ Compile your code and fix any compiler errors that you have. When ready, downloa
 Now that you see CMPA changes the brightness of LED1, write code in CPU Timer2’s interrupt function to increase, by one, the value of EPWM12’s CMPA register every one millisecond. Then when CMPA’s value reaches the value in TBPRD, change the state of your code to decease the value of CMPA, by one, each millisecond. Then when CMPA reaches 0 start increasing CMPA, by one, again each millisecond. This way your code will change the duty cycle from 0 to 100 and then from 100 to 0 and keep on repeating this process. The easiest way to code this is to create a global variable \mintinline{c}{int16_t updown}. When updown is equal to 1, count up, when updown is 0, count down. When up counting, check for CMPA to reach the value of TBPRD and switch to down counting. While down counting, check if CMPA equals zero to switch back to up counting.
 %
 \begin{checkoff}[LED1 brightness ramping]
-\textbf{Demonstrate working code to your TA.}
+        \textbf{Demonstrate working code to your TA.}
 \end{checkoff}
 %
 \begin{figure}[H]
@@ -215,19 +215,19 @@ Compile and Debug your code to make sure you did not create any type-O’s. All 
 Very similar to the start of Exercise 1, I want you to play with the EPWM1A and EPWM2A registers in the CCS Registers window to make both motors spin at different speeds and change the direction of spin. EPWM1A (GPIO0) controls the left motor. EPWM2A (GPIO2) controls the right motor. From lecture you should remember that each of these PWM signals drive the “Direction” pin of the motor’s amplifier (H-bridge). That means if we command a 50\% duty cycle, the motor is told to spin in the positive direction 50\% of the time and the negative direction 50\% of the time. Because the PWM carrier frequency is very fast, 20Khz, the motor will see that signal as a zero input and the motor will not move. 100\% duty cycle will drive the motor with full torque in the positive direction. 0\% duty cycle will drive the motor with full torque in the negative direction. Then for example, 75\% duty cycle would drive the motor in the positive direction with 50\% of the full torque. Try a number of duty cycles and make sure to switch direction of both motors.
 %
 \begin{checkoff}[Motors driven from the Registers window]
-\textbf{Demonstrate to your TA.}
+        \textbf{Demonstrate to your TA.}
 \end{checkoff}
 %
 Create two functions “\mintinline{c}{void setEPWM1A(float controleffort)}” and “\mintinline{c}{void setEPWM2A(float controleffort)}” that take as a parameter a floating point value “\mintinline{c}{controleffort}”. Both of these functions will set EPWM1A or EPWM2A to a PWM duty cycle value related to the passed “\mintinline{c}{controleffort}” value. When I design/code a digital controller, I always think of my control output (or control effort) to the system I am controlling as a value between -10 and 10. This is just the range I (and others) have chosen. I have seen other research papers/text books use a ranges like -1 to 1, -100 to 100, 0 – 200, etc. By keeping the same range of output in all my controller designs, I can usually guess at good “ball park” starting values for my controller gains like Kp, Kd, and Ki in a PID controller. Perform the following steps/code in each of these functions:
 %
 \begin{enumerate}
-    \item For the float “\mintinline{c}{controleffort}” function parameter, I would like you to use the range of -10 to 10. To make sure nothing greater than this range is used by this function, use two if statements inside your functions to saturate \mintinline{c}{controleffort}. If the value passed is greater than 10 set it to 10. If the value passed is less than -10 set it to -10.
-    \item Determine the value to set in CMPA for EPWM1A and CMPA for EPWM2A. Remember that a duty cycle of 50\% is a command of zero to the motor. Any duty cycle greater than 50\% will cause the motor to spin in the positive direction. Any duty cycle less than 50\% will cause the motor to spin in the negative direction. In your functions, linearly scale the control effort which is in the range -10 to 10 to a duty cycle where -10 is 0\% duty cycle, 0 is 50\% and 10 is 100\%. Given the duty cycle found in this linear scaling, set CMPA appropriately to the percentage duty cycle. There is a bit of an issue here with type conversions. I asked you to make “\mintinline{c}{controleffort}” a float but CMPA is a 16bit integer. Good news is that C does much of the type conversion for you automatically. Let’s say that your scaled value you would like to set CMPA to happens to be 345.67 and it is in the variable \mintinline{c}{float mytmp}. If you perform the C instruction “\mintinline{c}{CMPA = mytmp}”, the value will be truncated and CMPA will be assigned 345. It will NOT be rounded up to 346. Also, keep in mind that an integer divided by an integer gives you back an integer. For example this statement “\mintinline{c}{float value = 1/5000}” is always 0. You would need to change the line to “\mintinline{c}{float value = 1.0/5000.0}” to assign the fraction to value. Also, if you have two \mintinline{c}{int16_t} variables and you divide them the result is an integer (\mintinline{c}{int16_t}). If you want to assign a float the division of two integers you have to type cast the integers to a float i.e. “\mintinline{c}{value = ((float)myint1)/((float)myint2)}”
-    \item In the same fashion you did in exercise 1 and using the functions you just created, gradually increase the command to the motor until you get to 10 and then gradually decrease the motor command until -10 is reached and then repeat. Here you will not be incrementing the CMPA value directly or monitoring if \mintinline{c}{CMPA==TBPRD}, but instead adding to the float value that you are passing to your setEPWM functions. Every 1ms add 0.005 to the values passed to setEPWM until 10 is reached then start subtracting 0.005 from the values until -10 is reached and repeat.
-%
-    \begin{checkoff}[Motors ramping up and down]
-    \textbf{Show your TA that your setEPWM} functions are working correctly.
-    \end{checkoff}
+        \item For the float “\mintinline{c}{controleffort}” function parameter, I would like you to use the range of -10 to 10. To make sure nothing greater than this range is used by this function, use two if statements inside your functions to saturate \mintinline{c}{controleffort}. If the value passed is greater than 10 set it to 10. If the value passed is less than -10 set it to -10.
+        \item Determine the value to set in CMPA for EPWM1A and CMPA for EPWM2A. Remember that a duty cycle of 50\% is a command of zero to the motor. Any duty cycle greater than 50\% will cause the motor to spin in the positive direction. Any duty cycle less than 50\% will cause the motor to spin in the negative direction. In your functions, linearly scale the control effort which is in the range -10 to 10 to a duty cycle where -10 is 0\% duty cycle, 0 is 50\% and 10 is 100\%. Given the duty cycle found in this linear scaling, set CMPA appropriately to the percentage duty cycle. There is a bit of an issue here with type conversions. I asked you to make “\mintinline{c}{controleffort}” a float but CMPA is a 16bit integer. Good news is that C does much of the type conversion for you automatically. Let’s say that your scaled value you would like to set CMPA to happens to be 345.67 and it is in the variable \mintinline{c}{float mytmp}. If you perform the C instruction “\mintinline{c}{CMPA = mytmp}”, the value will be truncated and CMPA will be assigned 345. It will NOT be rounded up to 346. Also, keep in mind that an integer divided by an integer gives you back an integer. For example this statement “\mintinline{c}{float value = 1/5000}” is always 0. You would need to change the line to “\mintinline{c}{float value = 1.0/5000.0}” to assign the fraction to value. Also, if you have two \mintinline{c}{int16_t} variables and you divide them the result is an integer (\mintinline{c}{int16_t}). If you want to assign a float the division of two integers you have to type cast the integers to a float i.e. “\mintinline{c}{value = ((float)myint1)/((float)myint2)}”
+        \item In the same fashion you did in exercise 1 and using the functions you just created, gradually increase the command to the motor until you get to 10 and then gradually decrease the motor command until -10 is reached and then repeat. Here you will not be incrementing the CMPA value directly or monitoring if \mintinline{c}{CMPA==TBPRD}, but instead adding to the float value that you are passing to your setEPWM functions. Every 1ms add 0.005 to the values passed to setEPWM until 10 is reached then start subtracting 0.005 from the values until -10 is reached and repeat.
+        %
+        \begin{checkoff}[Motors ramping up and down]
+                \textbf{Show your TA that your setEPWM} functions are working correctly.
+        \end{checkoff}
 \end{enumerate}
 %
 \Ex[EQEP Peripheral, Optical Encoders to find angle of the robot’s wheels and the robot’s speed]
@@ -352,7 +352,7 @@ float readEncWheel(void) {
 Call \mintinline{c}{init_eQEPs()} inside \mintinline{c}{main()} somewhere after the init\_serialSCI A, B, C ,D() function calls but before the EINT line of code and the \mintinline{c}{while(1)} loop. Then set one of the unused CPU timer interrupts to timeout every 1 milliseconds. Inside that CPU timer interrupt function, simply call the three read functions and assign their return values to float variables like “\mintinline{c}{LeftWheel}”, “\mintinline{c}{RightWheel}” and “\mintinline{c}{HandKnob}”. Verify that your existing code is setting \mintinline{c}{UARTPrint} to one at a reasonable rate, (say 10 times a seconds) to have the \mintinline{c}{main()} while loop print your desired text to the Robot’s text LCD screen. Change the print lines to print your two wheel angle measurements and the third encoder knob angle. Build and run this code. With your code running manually move your robot’s wheels. As a check, try to rotate one of the wheels just one turn. You should see an angle close to $2\pi$. If not, you have the wrong multiplication factor in your read functions. Defining that the front of the robot car is the side the LIDAR is on and the back is the side the battery is inserted, does the labeling of left wheel and right wheel make sense? Forward speed will be defined as the front of the robot going forward. As you rotate your wheels you should see that if you rotate both motors in the forward direction one will give a negative angle. Negate the multiplication factor in that wheel’s read function so that both wheels read a positive angle when rotated in the forward direction.
 %
 \begin{checkoff}[Wheel encoders working]
-Demo Exercise 3, optical encoders working. When spun in positive direction both wheel encoders readings increase in the positive direction.
+        Demo Exercise 3, optical encoders working. When spun in positive direction both wheel encoders readings increase in the positive direction.
 \end{checkoff}
 %
 Next you will be asked to put the robot on the floor and measure how many radian turns of the wheels equates to one foot traveled. Before you do that, you need to program the flash of your F28379D processor so that when you power on your robot your program will be running. So make sure you are printing both the right wheel and left wheel encoder readings to the text LCD screen. Then have your TA show you how to switch to loading your program into the flash of the F28379D processor. Once flashed, unplug the XDS200 JTAG’s USB cable and power off the robot. Then power back on your robot and you should see your program running.
@@ -360,7 +360,7 @@ Next you will be asked to put the robot on the floor and measure how many radian
 Next in this exercise you will calculate the speed at which your robot is driving forward or backward. It will be nice to know the speed of the robot in ft/s instead of rad/s. Instead of using the radius of the wheel, another easy way to convert between radians and feet is to simply put the robot on the floor and move the robot one or more feet without letting the wheels slip and that will tell you how many radians the wheels turn to reach one foot. Power off your robot and unplug the JTAG then put the robot on the floor. Line up your robot wheels and push the robot forward 3 feet. Look at the radian values displayed on the robot’s text LCD and divide by 3 feet to find the number of radians per foot. \textbf{Create two more float variables and store the distance traveled by each wheel using this factor.} Print these distances to the robot’s text LCD to check they are correct by pushing the robot a certain distance.
 %
 \begin{checkoff}[Radians per foot factor]
-\textbf{Does this factor make sense? It should be equal to the radius of the wheel in feet. Show your TA.}
+        \textbf{Does this factor make sense? It should be equal to the radius of the wheel in feet. Show your TA.}
 \end{checkoff}
 %
 Set the robot back on its stand on the table and reconnect the JTAG.
@@ -368,27 +368,27 @@ Set the robot back on its stand on the table and reconnect the JTAG.
 To finish up this exercise, use the third optical encoder attached to the robot as a type of joystick in your hand to dial in an input to the robot. Perform the following steps inside your 0.001 second timer function.
 %
 \begin{enumerate}
-    \item Create two global float variables \mintinline{c}{uLeft,uRight}, to be used as the control outputs to PWM channels 1A and 2A. Modify your previous code so that every 1ms the third optical encoder, which you can manually turn, is used as the command to drive the robot’s two motors with the same value. This way you will have manual control of the robot moving forward and backward at different speeds. Perform the following:
-%
-    \SEenumlabel{ii}{alph}%
-    \begin{enumerate}
-        \item Set both \mintinline{c}{uLeft} and \mintinline{c}{uRight} equal to \mintinline{c}{HandKnob}. {\itshape NOTE, in later labs \mintinline{c}{uLeft} and \mintinline{c}{uRight} will be assigned values calculated by a control algorithm.}
-        \item Limit \mintinline{c}{uLeft} and \mintinline{c}{uRight} to a value between –10 and 10.
-        \item Command \mintinline{c}{EPWM1A} and \mintinline{c}{EPWM2A} to the value of \mintinline{c}{uLeft} and \mintinline{c}{uRight} using the \mintinline{c}{setEPWM1A} and 2A functions.
-    \end{enumerate}
-%
+        \item Create two global float variables \mintinline{c}{uLeft,uRight}, to be used as the control outputs to PWM channels 1A and 2A. Modify your previous code so that every 1ms the third optical encoder, which you can manually turn, is used as the command to drive the robot’s two motors with the same value. This way you will have manual control of the robot moving forward and backward at different speeds. Perform the following:
+        %
+        \SEenumlabel{ii}{alph}%
+        \begin{enumerate}
+                \item Set both \mintinline{c}{uLeft} and \mintinline{c}{uRight} equal to \mintinline{c}{HandKnob}. {\itshape NOTE, in later labs \mintinline{c}{uLeft} and \mintinline{c}{uRight} will be assigned values calculated by a control algorithm.}
+                \item Limit \mintinline{c}{uLeft} and \mintinline{c}{uRight} to a value between –10 and 10.
+                \item Command \mintinline{c}{EPWM1A} and \mintinline{c}{EPWM2A} to the value of \mintinline{c}{uLeft} and \mintinline{c}{uRight} using the \mintinline{c}{setEPWM1A} and 2A functions.
+        \end{enumerate}
+        %
     \item Using the backwards difference rule (v = (p\_current – p\_old)/0.001) as a discrete approximation to the derivative, calculate the linear velocity corresponding to each motor in feet/second from the past and present motor position measurements, p\_old and p\_current respectively. p\_old is the value of the encoder position 1ms previous.
-%
-    \begin{checkoff}[Why p old is global]
-    \textbf{Explain to your TA why p\_old should be a global variable.}
-    \end{checkoff}
+        %
+        \begin{checkoff}[Why p old is global]
+                \textbf{Explain to your TA why p\_old should be a global variable.}
+        \end{checkoff}
     \item Print the velocity values of \textbf{v1} and \textbf{v2} on the first line of the LCD, and the reading from encoder 3 on the second line of the LCD screen every 100 ms. You have to limit the accuracy of your floating-point number printed in order for all the information to be displayed completely on the 20-character LCD line. For example use \%.2f.
-    \item Make sure that the robot is on the bench stand with wheels OFF the ground. Enable the PWM amplifier when running this code so the motors will spin. The amplifier is enabled by flipping up the switch on the robot’s front amplifier board. When the motors start spinning, check the direction they are spinning. Given a positive input, both the motors should be spinning so they drive the robot forward. \textit{The back end of the robot is the end the battery can be inserted.} If both the motors do not move in the forward direction when sending a positive control effort, change the sign of the control effort for the motor that is spinning in the wrong direction. The best place to add this negative sign is in front of the parameter passed to the appropriate \mintinline{c}{setEPWM1A} or 2A function. Do not change the sign of the control variable, e.g., if you think motor left is spinning the wrong way given a positive control input, add the sign change to the parameters of \mintinline{c}{setEPWM1A} and do not do something like \mintinline{c}{uLeft = -uLeft;} The sign change is necessary because the motors under the robot are mounted in opposite directions.
+        \item Make sure that the robot is on the bench stand with wheels OFF the ground. Enable the PWM amplifier when running this code so the motors will spin. The amplifier is enabled by flipping up the switch on the robot’s front amplifier board. When the motors start spinning, check the direction they are spinning. Given a positive input, both the motors should be spinning so they drive the robot forward. \textit{The back end of the robot is the end the battery can be inserted.} If both the motors do not move in the forward direction when sending a positive control effort, change the sign of the control effort for the motor that is spinning in the wrong direction. The best place to add this negative sign is in front of the parameter passed to the appropriate \mintinline{c}{setEPWM1A} or 2A function. Do not change the sign of the control variable, e.g., if you think motor left is spinning the wrong way given a positive control input, add the sign change to the parameters of \mintinline{c}{setEPWM1A} and do not do something like \mintinline{c}{uLeft = -uLeft;} The sign change is necessary because the motors under the robot are mounted in opposite directions.
     \item When you have both motors spinning in the positive direction given a positive PWM input, check the signs of the two velocity readings. They should both be positive velocities. If show your TA because you may have performed an earlier step incorrectly. Verify that your velocity (feet/sec) calculation changes if you put a load on the wheels (by adding resistance to the motion with your hand).
 \end{enumerate}
 %
 \begin{checkoff}[Third encoder drives the motors]
-Demo last part of Exercise 3 using the third encoder to input a control effort to the motors and the robot’s speed displayed to the text LCD screen
+        Demo last part of Exercise 3 using the third encoder to input a control effort to the motors and the robot’s speed displayed to the text LCD screen
 \end{checkoff}
 %
 \Ex[Friction Compensation]
@@ -398,13 +398,13 @@ In this final exercise you are going to implement a friction compensation algori
 \begin{enumerate}
     \item Using the third encoder to change the open loop command to the motors, record the steady state ft/sec velocity of the robot driving on the floor at 10 different control inputs. Be sure your measurements make sense… if you read 1 foot per second from the LCD, then the robot should actually be moving approximately 1 foot every second. If the robot is driving too fast to measure the values, you will obviously have to use a smaller magnitude of control input. Be sure to measure both positive and negative velocity values (robot moving forward AND backward).
     \item \leavevmode
-%
-    \begin{checkoff}[Friction plot]
-    Produce a plot of control input vs. speed in MATLAB to show to your instructor.
-    \end{checkoff}
+        %
+        \begin{checkoff}[Friction plot]
+                Produce a plot of control input vs. speed in MATLAB to show to your instructor.
+        \end{checkoff}
     \item Using two separate regression fits, one for positive velocities and one for negative velocities, find the two lines that best fit your measured data points in the positive and negative velocity regimes. Ask your instructor for help if you don’t know how to quickly do a regression in MATLAB. From the best-fit lines, note the y intercepts. These are your values for positive and negative coulomb friction. We will label these values Cpos and Cneg (note Cneg will be a negative value). The slopes of the two lines are your values for positive and negative viscous friction. We will label these values Vpos and Vneg.
-    \item With these identified parameters, add the following friction compensation algorithm to your code (assuming your motor one command variable is called “\mintinline{c}{uLeft}”):
-%
+        \item With these identified parameters, add the following friction compensation algorithm to your code (assuming your motor one command variable is called “\mintinline{c}{uLeft}”):
+        %
 \begin{minted}{c}
 if (velLeft> 0.0) {
         uLeft = uLeft + Vpos*velLeft + Cpos;
@@ -413,16 +413,16 @@ else {
         uLeft = uLeft + Vneg*velLeft + Cneg;
 }
 \end{minted}
-%
-    \textbf{And perform similar instructions for uRight}
+        %
+        \textbf{And perform similar instructions for uRight}
 
-    As a starting point use 100\% (in future labs we will only use 60 - 80\% of the identified values) of the values identified for Vpos, Vneg, Cpos, and Cneg. In your code make sure that only the friction compensation is activated for this section. The easiest way to do this is to assign \mintinline{c}{uLeft} and \mintinline{c}{uRight} to zero each time in your 1ms code instead of assigning \mintinline{c}{uLeft} and \mintinline{c}{uRight} the value of \mintinline{c}{HandKnob}. Compile your code.
+        As a starting point use 100\% (in future labs we will only use 60 - 80\% of the identified values) of the values identified for Vpos, Vneg, Cpos, and Cneg. In your code make sure that only the friction compensation is activated for this section. The easiest way to do this is to assign \mintinline{c}{uLeft} and \mintinline{c}{uRight} to zero each time in your 1ms code instead of assigning \mintinline{c}{uLeft} and \mintinline{c}{uRight} the value of \mintinline{c}{HandKnob}. Compile your code.
 \end{enumerate}
 %
 Test your friction compensation code by pushing the robot when it is on the floor. Your robot should roll for a long distance if the friction compensation is working well. You may need to hand tune your friction gains slightly to get the robot to roll for a good distance when you push it.
 %
 \begin{checkoff}[Friction compensation working]
-\textbf{Demonstrate your working code to your instructor.}
+        \textbf{Demonstrate your working code to your instructor.}
 \end{checkoff}
 %
 \section*{Lab Checkoffs}

@@ -1,15 +1,15 @@
 \ifdefined\HCode\else
 \DocumentMetadata{
-  testphase = {phase-III, math, table},
-  pdfstandard = ua-2,
-  lang = en-US
+    testphase = {phase-III, math, table},
+    pdfstandard = ua-2,
+    lang = en-US
 }
 \fi
 
 \documentclass[11pt]{article}
 
 % Required packages:
-\def\AssignmentMode{HW}     % HW | Lab | LabVIEW 
+\def\AssignmentMode{HW}     % HW | Lab | LabVIEW
 \def\HWNum{Code Commenting}
 \def\AssignmentText{All homework code is expected to be \textcolor{highlight}{commented} and have your \textcolor{highlight}{initialed} on each of the lines. Points WILL be taken off if this is not done.}
 
@@ -166,10 +166,10 @@ Each function should have the following structed documentation:
     \item Brief summary (first sentence)
     \item A more detailed description.
     \item \lstinline{@param <parameter name> <description of parameter>} for each parameter, ordered by when it appears in the function's parameters
-    \item \lstinline{@return <description of what gets returned>}, when applicable (\mintinline{c}{void} functions would not have this)
+        \item \lstinline{@return <description of what gets returned>}, when applicable (\mintinline{c}{void} functions would not have this)
     \item \lstinline{@pre <parameter expectations>}, providing expectations of what the input is supposed to satisfy when inputted into it
     \item \lstinline{@post <return expectations>}, providing expectations of how the parameters are modified during the function
-    \item \lstinline{@note} or \lstinline{@warning} when relevant 
+    \item \lstinline{@note} or \lstinline{@warning} when relevant
 \end{enumerate}
 
 \begin{minted}[escapeinside=||]{c}
@@ -200,7 +200,6 @@ void cstyle( int theory );
  */
 double mean(const double *data, size_t length);
 \end{minted}
-
 
 \begin{minted}[escapeinside=||]{c}
 /**
